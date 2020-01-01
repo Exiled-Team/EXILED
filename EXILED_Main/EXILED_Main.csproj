@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1ABEC6CE-E209-4C38-AB45-2F3B7F6091CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EXILED</RootNamespace>
+    <AssemblyName>EXILED</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>../bin/EXILED</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>../bin/EXILED/</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\..\References\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Authenticators, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Mirror.Authenticators.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Components, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Mirror.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+      <HintPath>..\..\..\joker\dlls\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
+      <HintPath>..\..\..\joker\dlls\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\References\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\joker\dlls\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\..\joker\dlls\System.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\joker\dlls\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.StackTrace, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\References\System.Diagnostics.StackTrace.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Globalization.Extensions, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\..\References\System.Globalization.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\joker\dlls\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\joker\dlls\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>..\..\..\joker\dlls\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
+    <Compile Include="LevenshteinDistance.cs" />
+    <Compile Include="MainLoader.cs" />
+    <Compile Include="Plugin.cs" />
+    <Compile Include="PluginManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+</Project>
