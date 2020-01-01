@@ -30,6 +30,7 @@ namespace EXILED
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		private EventHandlers handlers;
+		private int patchFixer = 0;
 		
 		public override void OnEnable()
 		{
@@ -42,7 +43,8 @@ namespace EXILED
 			Debug("Patching..");
 			try
 			{
-				instance = HarmonyInstance.Create("exiled.patches");
+				patchFixer++;
+				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
 				instance.PatchAll();
 			}
 			catch (Exception e)
