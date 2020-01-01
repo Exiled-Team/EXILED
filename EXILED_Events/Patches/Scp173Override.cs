@@ -2,7 +2,7 @@ using EXILED;
 using Harmony;
 using UnityEngine;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp173PlayerScript), "FixedUpdate")]
 	public class Scp173Override

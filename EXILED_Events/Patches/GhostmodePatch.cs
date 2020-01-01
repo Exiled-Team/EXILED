@@ -6,7 +6,7 @@ using Mirror;
 using UnityEngine;
 using Utf8Json.Internal.DoubleConversion;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerPositionManager), "TransmitData")]
 	public class GhostmodePatch

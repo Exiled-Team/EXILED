@@ -5,7 +5,7 @@ using EXILED;
 using Harmony;
 using UnityEngine;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
   [HarmonyPatch(typeof(MTFRespawn), "RespawnDeadPlayers")]
   public class RespawnEvent

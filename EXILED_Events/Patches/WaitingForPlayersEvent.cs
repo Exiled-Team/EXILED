@@ -1,7 +1,7 @@
 using EXILED;
 using Harmony;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof (ServerConsole), "AddLog")]
 	public class WaitingForPlayersEvent

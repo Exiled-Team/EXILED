@@ -2,7 +2,7 @@ using EXILED;
 using Harmony;
 using UnityEngine;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof (PlyMovementSync), "AntiFly", typeof (Vector3))]
 	public class AntiAntiFly

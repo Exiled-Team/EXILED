@@ -3,7 +3,7 @@ using System.IO;
 using EXILED;
 using Harmony;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(CheaterReport), "IssueReport")]
 	public class CheaterReportOverride

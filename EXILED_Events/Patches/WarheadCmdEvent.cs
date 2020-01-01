@@ -1,14 +1,13 @@
-using EXILED;
 using Harmony;
 
-namespace JokersPlugin
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerInteract), "CallCmdUsePanel")]
 	public class WarheadLockPatch
 	{
 		public static bool Prefix(PlayerInteract __instance, string n)
 		{
-			if (EXILED.plugin.WarheadLockPatchDisable)
+			if (plugin.WarheadLockPatchDisable)
 				return true;
 
 			bool allow = true;

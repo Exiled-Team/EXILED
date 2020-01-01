@@ -4,7 +4,7 @@ using Grenades;
 using Harmony;
 using UnityEngine;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp096PlayerScript), "IncreaseRage")]
 	public class Scp096ProcessLookingOverride

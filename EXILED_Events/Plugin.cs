@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using EXILED.Patches;
 using Harmony;
-using JokersPlugin;
-using UnityEngine;
-using Object = UnityEngine.Object;
 using Random = System.Random;
 
 namespace EXILED

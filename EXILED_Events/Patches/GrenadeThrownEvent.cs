@@ -4,7 +4,7 @@ using Harmony;
 using Mirror;
 using UnityEngine;
 
-namespace JokersPlugin.Patches
+namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(GrenadeManager), nameof(GrenadeManager.CallCmdThrowGrenade))]
 	public class GrenadeThrownEvent
