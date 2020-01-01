@@ -169,7 +169,7 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\..\EXILED_Main\EXILED_Main.csproj">
+      <ProjectReference Include="..\EXILED_Main\EXILED_Main.csproj">
         <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
         <Name>EXILED_Main</Name>
       </ProjectReference>
