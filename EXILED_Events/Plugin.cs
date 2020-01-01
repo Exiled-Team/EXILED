@@ -30,7 +30,7 @@ namespace EXILED
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		private EventHandlers handlers;
-		private int patchFixer = 0;
+		private static int patchFixer = 0;
 		
 		public override void OnEnable()
 		{
