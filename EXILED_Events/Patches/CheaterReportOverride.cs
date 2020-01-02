@@ -1,6 +1,4 @@
 using System;
-using System.IO;
-using EXILED;
 using Harmony;
 
 namespace EXILED.Patches
@@ -12,7 +10,7 @@ namespace EXILED.Patches
 			string reportedSteamId, string reportedAuth, string reportedIp, string reporterAuth, string reporterIp,
 			ref string reason, ref byte[] signature, string reporterPublicKey, int reportedId)
 		{
-			if (EXILED.plugin.CheaterReportPatchDisable)
+			if (EventPlugin.CheaterReportPatchDisable)
 				return true;
 
 			try

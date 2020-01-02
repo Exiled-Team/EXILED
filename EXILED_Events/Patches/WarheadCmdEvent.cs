@@ -8,7 +8,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(PlayerInteract __instance, string n)
 		{
-			if (plugin.WarheadLockPatchDisable)
+			if (EventPlugin.WarheadLockPatchDisable)
 				return true;
 
 			try

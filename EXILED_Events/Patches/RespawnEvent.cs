@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EXILED;
 using Harmony;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ namespace EXILED.Patches
   {
     public static bool Prefix(MTFRespawn __instance)
     {
-      if (EXILED.plugin.RespawnPatchDisable)
+      if (EventPlugin.RespawnPatchDisable)
         return true;
       
       try
@@ -30,7 +29,7 @@ namespace EXILED.Patches
           }
 
         players.ShuffleList();
-        int r = EXILED.plugin.Gen.Next(100);
+        int r = EventPlugin.Gen.Next(100);
         int maxRespawn = 15;
         List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         bool isChaos = r > 50;

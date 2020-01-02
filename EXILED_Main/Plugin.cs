@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -12,24 +13,28 @@ namespace EXILED
 		public abstract void OnDisable();
 		public abstract void OnReload();
 
+		//Used to send INFO level messages to the game console.
 		public static void Info(string message)
 		{
-			Type type = typeof(Plugin);
-			ServerConsole.AddLog($"[INFO] {type.Namespace}: {message}");
+			Assembly assembly = Assembly.GetCallingAssembly();
+			ServerConsole.AddLog($"[INFO] [{assembly.GetName().Name}]: {message}");
 		}
 
+		//Used to send DEBUG level messages to the game console. Server must have EXILED_Debug enabled.
 		public static void Debug(string message)
 		{
-			Type type = typeof(Plugin);
-			ServerConsole.AddLog($"[DEBUG] {type.Namespace}: {message}");
+			Assembly assembly = Assembly.GetCallingAssembly();
+			ServerConsole.AddLog($"[DEBUG] [{assembly.GetName().Name}]: {message}");
 		}
 
+		//Used to send ERROR level messages to the game console. This should be used to send errors only. It's recommended to send any messages in the catch block of a try/catch as errors with the exception string.
 		public static void Error(string message)
 		{
-			Type type = typeof(Plugin);
-			ServerConsole.AddLog($"[ERROR] {type.Namespace}: {message}");
+			Assembly assembly = Assembly.GetCallingAssembly();
+			ServerConsole.AddLog($"[ERROR] [{assembly.GetName().Name}]: {message}");
 		}
 
+		//Gets a list of all current player ReferenceHubs.
 		public static List<ReferenceHub> GetHubs()
 		{
 			List<ReferenceHub> hubs = new List<ReferenceHub>();
@@ -39,6 +44,7 @@ namespace EXILED
 			return hubs;
 		}
 
+		//Gets the spawn point of the selected role.
 		public static Vector3 GetRandomSpawnPoint(RoleType role)
 		{
 			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(role);
@@ -47,6 +53,7 @@ namespace EXILED
 			return randomPosition.transform.position;
 		}
 
+		//Gets the team value of the given role - the normal assembly does not offer a public means of doing this, ree.
 		public static Team GetTeam(RoleType role)
 		{
 			switch (role)
@@ -81,8 +88,10 @@ namespace EXILED
 			}
 		}
 
+		//Gets the reference hub of a specific game object.
 		public static ReferenceHub GetPlayer(GameObject obj) => ReferenceHub.GetHub(obj);
 
+		//Gets the reference hub of a player based on a string that can be either their playerID, userID, or name, checking in that order. Returns null if no match is found.
 		public static ReferenceHub GetPlayer(string args)
 		{
 			try

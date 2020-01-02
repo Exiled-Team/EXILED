@@ -1,5 +1,4 @@
 using System;
-using EXILED;
 using Harmony;
 
 namespace EXILED.Patches
@@ -9,7 +8,7 @@ namespace EXILED.Patches
 	{
 		public static void Postfix(ConsumableAndWearableItems __instance)
 		{
-			if (plugin.UseMedicalPatchDisable)
+			if (EventPlugin.UseMedicalPatchDisable)
 				return;
 
 			try

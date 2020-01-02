@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using EXILED;
 using Harmony;
 using Mirror;
 using UnityEngine;
-using Utf8Json.Internal.DoubleConversion;
 
 namespace EXILED.Patches
 {
@@ -13,7 +11,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(PlayerPositionManager __instance)
 		{
-			if (EXILED.plugin.GhostmodePatchDisable)
+			if (EventPlugin.GhostmodePatchDisable)
 				return true;
 			
 			try
@@ -81,7 +79,7 @@ namespace EXILED.Patches
 					{
 						for (int index = 0; index < __instance.usedData; ++index)
 						{
-							if (__instance.transmitBuffer[index].uses268 || EXILED.plugin.GhostedIds.Contains(__instance.transmitBuffer[index].playerID))
+							if (__instance.transmitBuffer[index].uses268 || EventPlugin.GhostedIds.Contains(__instance.transmitBuffer[index].playerID))
 								__instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f,
 									__instance.transmitBuffer[index].playerID);
 						}

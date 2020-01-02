@@ -1,9 +1,6 @@
 using System;
-using EXILED;
 using Grenades;
 using Harmony;
-using Mirror;
-using UnityEngine;
 
 namespace EXILED.Patches
 {
@@ -12,7 +9,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(ref GrenadeManager __instance, ref int id, ref bool slowThrow, ref double time)
 		{
-			if (EXILED.plugin.GrenadeThrownPatchDisable)
+			if (EventPlugin.GrenadeThrownPatchDisable)
 				return true;
 
 			try

@@ -1,9 +1,5 @@
 using System;
-using System.Linq;
-using EXILED;
-using Grenades;
 using Harmony;
-using UnityEngine;
 
 namespace EXILED.Patches
 {
@@ -12,7 +8,7 @@ namespace EXILED.Patches
 	{
 			public static bool Prefix(Scp096PlayerScript __instance, float amount)
 			{
-				if (EXILED.plugin.Scp096PatchDisable)
+				if (EventPlugin.Scp096PatchDisable)
 					return true;
 				__instance._rageProgress += amount;
 				if (__instance._rageProgress < 0.150000005960464)
@@ -36,7 +32,7 @@ namespace EXILED.Patches
 		{
 			public static bool Prefix(Scp096PlayerScript __instance)
 			{
-				if (EXILED.plugin.Scp096PatchDisable)
+				if (EventPlugin.Scp096PatchDisable)
 					return true;
 
 				bool allow = true;

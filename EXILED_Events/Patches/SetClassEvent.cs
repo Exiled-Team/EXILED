@@ -1,5 +1,4 @@
 using System;
-using EXILED;
 using Harmony;
 
 namespace EXILED.Patches
@@ -9,7 +8,7 @@ namespace EXILED.Patches
 	{
 		public static void Postfix(CharacterClassManager __instance, RoleType id)
 		{
-			if (plugin.SetClassPatchDisable)
+			if (EventPlugin.SetClassPatchDisable)
 				return;
 
 			try

@@ -1,5 +1,4 @@
 using System;
-using EXILED;
 using Harmony;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp173PlayerScript __instance)
 		{
-			if (EXILED.plugin.Scp173PatchDisable)
+			if (EventPlugin.Scp173PatchDisable)
 				return true;
 
 			try

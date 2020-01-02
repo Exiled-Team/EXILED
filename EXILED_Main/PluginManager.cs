@@ -3,11 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using Discord;
-using Harmony;
 using Loader;
-using ModuleLoader.Attributes;
 
 namespace EXILED
 {
@@ -15,15 +11,21 @@ namespace EXILED
 	{
 		private static readonly List<Plugin> _plugins = new List<Plugin>();
 		private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-		private static string _typeOverrides;
+		private static string _typeOverrides = "";
 		
 		public static void LoadPlugins()
 		{
-			string path = Path.Combine(AppData, "modloader");
+			string path = Path.Combine(AppData, "Plugins");
 
 			if (Environment.CurrentDirectory.ToLower().Contains("testing"))
-				path = Path.Combine(AppData, "modloader_testing");
-			
+				path = Path.Combine(AppData, "Plugins_Testing");
+
+			if (!Directory.Exists(path))
+			{
+				Plugin.Info($"Plugin directory not found - creating: {path}");
+				Directory.CreateDirectory(path);
+			}
+
 			List<string> mods = Directory.GetFiles(path).Where(p => !p.EndsWith("overrides.txt")).ToList();
 			if (File.Exists($"{path}/overrides.txt"))
 				_typeOverrides = File.ReadAllText($"{path}/overrides.txt");
@@ -45,6 +47,8 @@ namespace EXILED
 
 			foreach (string mod in mods)
 			{
+				if (mod.Contains("EXILED.dll"))
+					continue;
 				LoadPlugin(mod);
 			}
 		}
@@ -56,23 +60,20 @@ namespace EXILED
 			{
 				byte[] file = ModLoader.ReadFile(mod);
 				Assembly assembly = Assembly.Load(file);
-
+				
 				foreach (Type type in assembly.GetTypes())
 				{
-
 					if (type.IsAbstract)
 					{
-						ServerConsole.AddLog($"Type is abstract! {type.FullName}");
 						continue;
 					}
 
 					if (type.FullName != null && _typeOverrides.Contains(type.FullName))
 					{
 						ServerConsole.AddLog($"Overriding type check for {type.FullName}");
-					}						
+					}
 					else if (!typeof(Plugin).IsAssignableFrom(type))
 					{
-						ServerConsole.AddLog($"Found type not subclass! {type.FullName}");
 						continue;
 					}
 					ServerConsole.AddLog($"Loading type {type.FullName}");
@@ -148,8 +149,6 @@ namespace EXILED
 
 				_plugins.Clear();
 
-				ReloadHarmony();
-				
 				LoadPlugins();
 				OnEnable();
 			}
@@ -157,12 +156,6 @@ namespace EXILED
 			{
 				ServerConsole.AddLog($"There was an error while reloading. {e}");
 			}
-		}
-
-		private static void ReloadHarmony()
-		{
-			MainLoader.instance.UnpatchAll("EventHooks");
-			MainLoader.instance.PatchAll(Assembly.GetExecutingAssembly());
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace EXILED.Patches
 	{
 		public static void Prefix(string text, Color c, bool nospace)
 		{
-			if (!text.StartsWith("Round finished! Anomalies: ") || EXILED.plugin.GetRoundDuration() < 2)
+			if (!text.StartsWith("Round finished! Anomalies: ") || EventPlugin.GetRoundDuration() < 2)
 				return;
 			try
 			{

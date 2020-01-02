@@ -6,13 +6,15 @@ using Random = System.Random;
 
 namespace EXILED
 {
-	public class plugin : EXILED.Plugin
+	public class EventPlugin : Plugin
 	{
 		private HarmonyInstance instance;
 		public static List<int> GhostedIds = new List<int>();
 		internal static DateTime RoundTime;
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
+		
+		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		public static bool AntiFlyPatchDisable;
 		public static bool CheaterReportPatchDisable;
 		public static bool GhostmodePatchDisable;
@@ -26,9 +28,12 @@ namespace EXILED
 		public static bool WaitingForPlayersPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
-		private EventHandlers handlers;
-		private static int patchFixer = 0;
 		
+		private EventHandlers handlers;
+		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
+		private static int patchFixer;
+		
+		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
 			Info("Enabled.");
@@ -36,10 +41,12 @@ namespace EXILED
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
+			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
 			
 			Debug("Patching..");
 			try
 			{
+				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
 				patchFixer++;
 				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
 				instance.PatchAll();
@@ -52,9 +59,11 @@ namespace EXILED
 			Debug("Patching complete. c:");
 		}
 
+		//The below method gets called when the plugin is disabled by the EXILED loader.
 		public override void OnDisable()
 		{
 			Info("Disabled.");
+			//You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
 			Debug("Removing Event Handlers..");
 			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
@@ -64,10 +73,8 @@ namespace EXILED
 			Debug("Unpatching complete. Goodbye. :c");
 		}
 
-		public override void OnReload()
-		{
-			
-		}
+		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
+		public override void OnReload() {}
 
 		public override string getName { get; }
 

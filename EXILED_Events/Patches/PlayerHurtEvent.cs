@@ -1,5 +1,4 @@
 using System;
-using EXILED;
 using Harmony;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace EXILED.Patches
 	{
 		public static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
 		{
-			if (EXILED.plugin.PlayerHurtPatchDisable)
+			if (EventPlugin.PlayerHurtPatchDisable)
 				return;
 			try
 			{
@@ -24,7 +23,7 @@ namespace EXILED.Patches
 
 		public static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
 		{
-			if (EXILED.plugin.PlayerHurtPatchDisable)
+			if (EventPlugin.PlayerHurtPatchDisable)
 				return;
 
 			try

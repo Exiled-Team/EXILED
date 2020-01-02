@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using EXILED;
 using Harmony;
 using UnityEngine;
 
@@ -11,12 +10,12 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(TeslaGate __instance, bool hurtRange)
 		{
-			return EXILED.plugin.TriggerTeslaPatchDisable;
+			return EventPlugin.TriggerTeslaPatchDisable;
 		}
 
 		public static void Postfix(TeslaGate __instance, bool hurtRange, ref List<PlayerStats> __result)
 		{
-			if (EXILED.plugin.TriggerTeslaPatchDisable)
+			if (EventPlugin.TriggerTeslaPatchDisable)
 				return;
 
 			try

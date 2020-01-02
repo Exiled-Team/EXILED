@@ -7,11 +7,11 @@ namespace EXILED.Patches
 	public class EventHandlers
 	{
 		private readonly Plugin plugin;
-		public EventHandlers(plugin plugin) => this.plugin = plugin;
+		public EventHandlers(EventPlugin plugin) => this.plugin = plugin;
 		
 		public void OnWaitingForPlayers()
 		{
-			EXILED.plugin.GhostedIds.Clear();
+			EventPlugin.GhostedIds.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
 		}
 
@@ -24,7 +24,7 @@ namespace EXILED.Patches
 		{
 			for (;;)
 			{
-				EXILED.plugin.RoundTime = DateTime.Now;
+				EventPlugin.RoundTime = DateTime.Now;
 				yield return Timing.WaitForSeconds(1f);
 			}
 		}

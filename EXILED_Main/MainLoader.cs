@@ -1,26 +1,16 @@
-﻿
-using System.Linq;
-using System.Reflection;
-using Harmony;
+﻿using Harmony;
 
 namespace EXILED
 {
 	public class MainLoader
 	{
-
-		internal static HarmonyInstance instance;
-		
+		//This method is called by the assembly's Loader class when the server starts.
 		public static void EntryPointForLoader()
 		{
-			instance = HarmonyInstance.Create("EventHooks");
-			instance.PatchAll();
-			
 			ServerConsole.AddLog($"Initalizing Mod Loader");
 
 			PluginManager.LoadPlugins();
 			PluginManager.OnEnable();
 		}
-		
-
 	}
 }
