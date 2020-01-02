@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Harmony;
 using UnityEngine;
@@ -11,25 +12,33 @@ namespace EXILED.Patches
 		{
 			if (EXILED.plugin.Scp173PatchDisable)
 				return true;
-			
-			__instance.DoBlinkingSequence();
-			if (!__instance.iAm173)
-				return false;
-			__instance._allowMove = true;
-			foreach (GameObject player in PlayerManager.players)
-			{
-				if (ReferenceHub.GetHub(player).characterClassManager.CurClass == RoleType.Tutorial)
-					continue;
-				Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
-				if (!component.SameClass && component.LookFor173(__instance.gameObject, true) &&
-				    __instance.LookFor173(component.gameObject, false))
-				{
-					__instance._allowMove = false;
-					break;
-				}
-			}
 
-			return false;
+			try
+			{
+				__instance.DoBlinkingSequence();
+				if (!__instance.iAm173)
+					return false;
+				__instance._allowMove = true;
+				foreach (GameObject player in PlayerManager.players)
+				{
+					if (ReferenceHub.GetHub(player).characterClassManager.CurClass == RoleType.Tutorial)
+						continue;
+					Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
+					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) &&
+					    __instance.LookFor173(component.gameObject, false))
+					{
+						__instance._allowMove = false;
+						break;
+					}
+				}
+
+				return false;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"SCP173 patch error: {e}");
+				return true;
+			}
 		}
 	}
 }

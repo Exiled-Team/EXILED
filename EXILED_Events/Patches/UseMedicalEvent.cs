@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Harmony;
 
@@ -8,10 +9,17 @@ namespace EXILED.Patches
 	{
 		public static void Postfix(ConsumableAndWearableItems __instance)
 		{
-			if (EXILED.plugin.UseMedicalPatchDisable)
+			if (plugin.UseMedicalPatchDisable)
 				return;
-			
-			Events.InvokeUseMedicalItem(__instance.gameObject, __instance.GetComponent<Inventory>().curItem);
+
+			try
+			{
+				Events.InvokeUseMedicalItem(__instance.gameObject, __instance.GetComponent<Inventory>().curItem);
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"UseMedicalItem event error: {e}");
+			}
 		}
 	}
 }

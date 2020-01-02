@@ -1,3 +1,4 @@
+using System;
 using Harmony;
 
 namespace EXILED.Patches
@@ -7,7 +8,14 @@ namespace EXILED.Patches
   {
     public static void Prefix()
     {
-      Events.InvokeRoundStart();
+      try
+      {
+        Events.InvokeRoundStart();
+      }
+      catch (Exception e)
+      {
+        Plugin.Error($"Round end event error: {e}");
+      }
     }
   }
 }

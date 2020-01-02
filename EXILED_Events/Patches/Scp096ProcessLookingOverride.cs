@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using EXILED;
 using Grenades;
@@ -13,12 +14,20 @@ namespace EXILED.Patches
 			{
 				if (EXILED.plugin.Scp096PatchDisable)
 					return true;
-				
 				__instance._rageProgress += amount;
 				if (__instance._rageProgress < 0.150000005960464)
 					return false;
-				Events.InvokeScp096Enrage(__instance);
-				return true;
+
+				try
+				{
+					Events.InvokeScp096Enrage(__instance);
+					return true;
+				}
+				catch (Exception e)
+				{
+					Plugin.Error($"SCP096 Enrage event error: {e}");
+					return true;
+				}
 			}
 		}
 

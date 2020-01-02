@@ -114,7 +114,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"TransmitData Error. {e}");
+				Plugin.Error($"TransmitData Error: {e}");
 				return true;
 			}
 		}

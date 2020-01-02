@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Harmony;
 using UnityEngine;
@@ -11,16 +12,31 @@ namespace EXILED.Patches
 		{
 			if (EXILED.plugin.PlayerHurtPatchDisable)
 				return;
-			Events.InvokePlayerHurt(__instance, ref info, go);
+			try
+			{
+				Events.InvokePlayerHurt(__instance, ref info, go);
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Player hurt event error: {e}");
+			}
 		}
 
 		public static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
 		{
 			if (EXILED.plugin.PlayerHurtPatchDisable)
 				return;
-			
-			if (go.GetComponent<PlayerStats>().health < 1 || go.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator)
-				Events.InvokePlayerDeath(__instance, ref info, go);
+
+			try
+			{
+				if (go.GetComponent<PlayerStats>().health < 1 ||
+				    go.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator)
+					Events.InvokePlayerDeath(__instance, ref info, go);
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Player death event error: {e}");
+			}
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EXILED;
 using Harmony;
@@ -17,18 +18,26 @@ namespace EXILED.Patches
 		{
 			if (EXILED.plugin.TriggerTeslaPatchDisable)
 				return;
-			
-			__result = new List<PlayerStats>();
-			foreach (GameObject player in PlayerManager.players)
+
+			try
 			{
-				bool triggerable = true;
-				if (Vector3.Distance(__instance.transform.position, player.transform.position) < __instance.sizeOfTrigger &&
-				    player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
+				__result = new List<PlayerStats>();
+				foreach (GameObject player in PlayerManager.players)
 				{
-					Events.InvokeTriggerTesla(player, hurtRange, ref triggerable);
-					if (triggerable)
-						__result.Add(player.GetComponent<PlayerStats>());
+					bool triggerable = true;
+					if (Vector3.Distance(__instance.transform.position, player.transform.position) <
+					    __instance.sizeOfTrigger &&
+					    player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
+					{
+						Events.InvokeTriggerTesla(player, hurtRange, ref triggerable);
+						if (triggerable)
+							__result.Add(player.GetComponent<PlayerStats>());
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Tesla trigger event error: {e}");
 			}
 		}
 	}

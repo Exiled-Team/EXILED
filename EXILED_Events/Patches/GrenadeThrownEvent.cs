@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Grenades;
 using Harmony;
@@ -14,9 +15,17 @@ namespace EXILED.Patches
 			if (EXILED.plugin.GrenadeThrownPatchDisable)
 				return true;
 
-			bool allow = true;
-			Events.InvokeGrenadeThrown(ref __instance, ref id, ref slowThrow, ref time, ref allow);
-			return allow;
+			try
+			{
+				bool allow = true;
+				Events.InvokeGrenadeThrown(ref __instance, ref id, ref slowThrow, ref time, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Grenade thrown patch error: {e}");
+				return true;
+			}
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using Harmony;
 
 namespace EXILED.Patches
@@ -10,9 +11,17 @@ namespace EXILED.Patches
 			if (plugin.WarheadLockPatchDisable)
 				return true;
 
-			bool allow = true;
-			Events.InvokeWarheadEvent(__instance, ref n, ref allow);
-			return allow;
+			try
+			{
+				bool allow = true;
+				Events.InvokeWarheadEvent(__instance, ref n, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Warhead event error: {e}");
+				return true;
+			}
 		}
 	}
 }

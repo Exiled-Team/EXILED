@@ -11,7 +11,14 @@ namespace EXILED.Patches
 		{
 			if (!text.StartsWith("Round finished! Anomalies: ") || EXILED.plugin.GetRoundDuration() < 2)
 				return;
-			Events.InvokeRoundEnd();
+			try
+			{
+				Events.InvokeRoundEnd();
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Round end event error: {e}");
+			}
 		}
 	}
 }

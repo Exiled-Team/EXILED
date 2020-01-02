@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Harmony;
 
@@ -10,9 +11,16 @@ namespace EXILED.Patches
 		{
 			if (EXILED.plugin.WaitingForPlayersPatchDisable)
 				return;
-			
-			if (q == "Waiting for players..")
-				Events.InvokeWaitingForPlayers();
+
+			try
+			{
+				if (q == "Waiting for players..")
+					Events.InvokeWaitingForPlayers();
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"WaitingForPlayers event error: {e}");
+			}
 		}
 	}
 }

@@ -14,8 +14,16 @@ namespace EXILED.Patches
   {
     public static bool Prefix(ref ConnectionRequest request)
     {
-      PreAuthPatch.HandleConnection(request);
-      return false;
+      try
+      {
+        HandleConnection(request);
+        return false;
+      }
+      catch (Exception e)
+      {
+        Plugin.Error($"Preauth event error: {e}");
+        return true;
+      }
     }
 
     private static void HandleConnection(ConnectionRequest request)

@@ -9,9 +9,17 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(ref string q, ref CommandSender sender)
 		{
-			bool allow = true;
-			Events.InvokeCommand(ref q, ref sender, ref allow);
-			return allow;
+			try
+			{
+				bool allow = true;
+				Events.InvokeCommand(ref q, ref sender, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"RA Command event error: {e}");
+				return true;
+			}
 		}
 	}
 }

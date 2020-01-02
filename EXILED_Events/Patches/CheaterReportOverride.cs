@@ -14,15 +14,24 @@ namespace EXILED.Patches
 		{
 			if (EXILED.plugin.CheaterReportPatchDisable)
 				return true;
-			
-			if (reportedSteamId == reporterSteamId) 
-				reporter.SendToClient(__instance.connectionToClient, "You can't report yourself!" + Environment.NewLine, "yellow");
 
-			int serverId = ServerConsole.Port;
-			bool allow = true;
-			Events.InvokeCheaterReport(reporterSteamId, reportedSteamId, reportedIp, reason, serverId, ref allow);
-			
-			return allow;
+			try
+			{
+				if (reportedSteamId == reporterSteamId)
+					reporter.SendToClient(__instance.connectionToClient,
+						"You can't report yourself!" + Environment.NewLine, "yellow");
+
+				int serverId = ServerConsole.Port;
+				bool allow = true;
+				Events.InvokeCheaterReport(reporterSteamId, reportedSteamId, reportedIp, reason, serverId, ref allow);
+
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Cheater Report Patch error: {e}");
+				return true;
+			}
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using EXILED;
 using Harmony;
 
@@ -8,10 +9,17 @@ namespace EXILED.Patches
 	{
 		public static void Postfix(CharacterClassManager __instance, RoleType id)
 		{
-			if (EXILED.plugin.SetClassPatchDisable)
+			if (plugin.SetClassPatchDisable)
 				return;
-			
-			Events.InvokeSetClass(__instance, id);
+
+			try
+			{
+				Events.InvokeSetClass(__instance, id);
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"SetClass event error: {e}");
+			}
 		}
 	}
 }
