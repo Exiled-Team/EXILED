@@ -9,7 +9,7 @@ using Mirror.LiteNetLib4Mirror;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (CustomLiteNetLib4MirrorTransport), "ProcessConnectionRequest", new Type[] {typeof (ConnectionRequest)})]
+	[HarmonyPatch(typeof (CustomLiteNetLib4MirrorTransport), "ProcessConnectionRequest", typeof (ConnectionRequest))]
   public class PreAuthPatch
   {
     public static bool Prefix(ref ConnectionRequest request)
@@ -34,7 +34,7 @@ namespace EXILED.Patches
       {
         byte result1;
         byte result2;
-        if (!request.Data.TryGetByte(out result1) || !request.Data.TryGetByte(out result2) || (int) result1 != (int) CustomNetworkManager.Major || (int) result2 != (int) CustomNetworkManager.Minor)
+        if (!request.Data.TryGetByte(out result1) || !request.Data.TryGetByte(out result2) || result1 != CustomNetworkManager.Major || result2 != CustomNetworkManager.Minor)
         {
           rejectData.Reset();
           rejectData.Put(3);
@@ -46,8 +46,8 @@ namespace EXILED.Patches
           {
             if (CustomLiteNetLib4MirrorTransport.IpRateLimit.Contains(request.RemoteEndPoint.Address.ToString()))
             {
-              ServerConsole.AddLog(string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", (object) request.RemoteEndPoint));
-              ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", (object) request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
+              ServerConsole.AddLog(string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", request.RemoteEndPoint));
+              ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
               rejectData.Reset();
               rejectData.Put(12);
               request.Reject(rejectData);
@@ -57,10 +57,10 @@ namespace EXILED.Patches
           }
           if (!CharacterClassManager.OnlineMode)
           {
-            KeyValuePair<BanDetails, BanDetails> keyValuePair = BanHandler.QueryBan((string) null, request.RemoteEndPoint.Address.ToString());
+            KeyValuePair<BanDetails, BanDetails> keyValuePair = BanHandler.QueryBan(null, request.RemoteEndPoint.Address.ToString());
             if (keyValuePair.Value != null)
             {
-              ServerConsole.AddLog(string.Format("Player tried to connect from banned endpoint {0}.", (object) request.RemoteEndPoint));
+              ServerConsole.AddLog(string.Format("Player tried to connect from banned endpoint {0}.", request.RemoteEndPoint));
               rejectData.Reset();
               rejectData.Put(6);
               rejectData.Put(keyValuePair.Value.Expires);
@@ -98,14 +98,14 @@ namespace EXILED.Patches
                 {
                   if (!ECDSA.VerifyBytes(string.Format("{0};{1};{2};{3}", (object) result3, (object) result5, (object) result6, (object) result4), result7, ServerConsole.PublicKey))
                   {
-                    ServerConsole.AddLog(string.Format("Player from endpoint {0} sent preauthentication token with invalid digital signature.", (object) request.RemoteEndPoint));
+                    ServerConsole.AddLog(string.Format("Player from endpoint {0} sent preauthentication token with invalid digital signature.", request.RemoteEndPoint));
                     rejectData.Reset();
                     rejectData.Put(2);
                     request.Reject(rejectData);
                   }
                   else if (TimeBehaviour.CurrentUnixTimestamp > result4)
                   {
-                    ServerConsole.AddLog(string.Format("Player from endpoint {0} sent expired preauthentication token.", (object) request.RemoteEndPoint));
+                    ServerConsole.AddLog(string.Format("Player from endpoint {0} sent expired preauthentication token.", request.RemoteEndPoint));
                     ServerConsole.AddLog("Make sure that time and timezone set on server is correct. We recommend synchronizing the time.");
                     rejectData.Reset();
                     rejectData.Put(11);
@@ -117,8 +117,8 @@ namespace EXILED.Patches
                     {
                       if (CustomLiteNetLib4MirrorTransport.UserRateLimit.Contains(result3))
                       {
-                        ServerConsole.AddLog(string.Format("Incoming connection from {0} ({1}) rejected due to exceeding the rate limit.", (object) result3, (object) request.RemoteEndPoint));
-                        ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} ({1}) rejected due to exceeding the rate limit.", (object) result3, (object) request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
+                        ServerConsole.AddLog(string.Format("Incoming connection from {0} ({1}) rejected due to exceeding the rate limit.", result3, request.RemoteEndPoint));
+                        ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} ({1}) rejected due to exceeding the rate limit.", result3, request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
                         rejectData.Reset();
                         rejectData.Put(12);
                         request.Reject(rejectData);
@@ -153,14 +153,14 @@ namespace EXILED.Patches
                     }
                     if ((!flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreWhitelist) || !ServerStatic.GetPermissionsHandler().IsVerified) && !WhiteList.IsWhitelisted(result3))
                     {
-                      ServerConsole.AddLog(string.Format("Player {0} tried joined from endpoint {1}, but is not whitelisted.", (object) result3, (object) request.RemoteEndPoint));
+                      ServerConsole.AddLog(string.Format("Player {0} tried joined from endpoint {1}, but is not whitelisted.", result3, request.RemoteEndPoint));
                       rejectData.Reset();
                       rejectData.Put(7);
                       request.Reject(rejectData);
                     }
                     else if (CustomLiteNetLib4MirrorTransport.Geoblocking != GeoblockingMode.None && (!flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreGeoblock) || !ServerStatic.GetPermissionsHandler().BanTeamBypassGeo) && (!CustomLiteNetLib4MirrorTransport.GeoblockIgnoreWhitelisted || !WhiteList.IsOnWhitelist(result3)) && (CustomLiteNetLib4MirrorTransport.Geoblocking == GeoblockingMode.Whitelist && !CustomLiteNetLib4MirrorTransport.GeoblockingList.Contains(result6.ToUpper()) || CustomLiteNetLib4MirrorTransport.Geoblocking == GeoblockingMode.Blacklist && CustomLiteNetLib4MirrorTransport.GeoblockingList.Contains(result6.ToUpper())))
                     {
-                      ServerConsole.AddLog(string.Format("Player {0} ({1}) tried joined from blocked country {2}.", (object) result3, (object) request.RemoteEndPoint, (object) result6.ToUpper()));
+                      ServerConsole.AddLog(string.Format("Player {0} ({1}) tried joined from blocked country {2}.", result3, request.RemoteEndPoint, result6.ToUpper()));
                       rejectData.Reset();
                       rejectData.Put(9);
                       request.Reject(rejectData);
@@ -183,8 +183,8 @@ namespace EXILED.Patches
                         if (allow)
                         {
                           request.Accept();
-                          ServerConsole.AddLog(string.Format("Player {0} preauthenticated from endpoint {1}.", (object) result3, (object) request.RemoteEndPoint));
-                          ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("{0} preauthenticated from endpoint {1}.", (object) result3, (object) request.RemoteEndPoint), ServerLogs.ServerLogType.ConnectionUpdate);
+                          ServerConsole.AddLog(string.Format("Player {0} preauthenticated from endpoint {1}.", result3, request.RemoteEndPoint));
+                          ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("{0} preauthenticated from endpoint {1}.", result3, request.RemoteEndPoint), ServerLogs.ServerLogType.ConnectionUpdate);
                         }
                       }
                       else
@@ -198,7 +198,7 @@ namespace EXILED.Patches
                 }
                 catch (Exception ex)
                 {
-                  ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", (object) request.RemoteEndPoint, (object) ex.Message));
+                  ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, ex.Message));
                   rejectData.Reset();
                   rejectData.Put(2);
                   request.Reject(rejectData);
@@ -210,7 +210,7 @@ namespace EXILED.Patches
       }
       catch (Exception ex)
       {
-        ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", (object) request.RemoteEndPoint, (object) ex.Message));
+        ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, ex.Message));
         rejectData.Reset();
         rejectData.Put(4);
         request.Reject(rejectData);

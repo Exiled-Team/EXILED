@@ -9,6 +9,7 @@ namespace EXILED
 		{
 			ServerConsole.AddLog($"Initalizing Mod Loader");
 
+			ConfigHandler.LoadConfig();
 			PluginManager.LoadPlugins();
 			PluginManager.OnEnable();
 		}

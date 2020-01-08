@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using GameCore;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace EXILED
 {
 	public abstract class Plugin
-	{ 
+	{
+		private static bool debug = ConfigFile.ServerConfig.GetBool("exiled_debug", false);
+		public static YamlConfig Config = ConfigHandler.PluginConfig;
 		public abstract string getName { get; }
 		public abstract void OnEnable();
 		public abstract void OnDisable();
@@ -23,6 +26,8 @@ namespace EXILED
 		//Used to send DEBUG level messages to the game console. Server must have EXILED_Debug enabled.
 		public static void Debug(string message)
 		{
+			if (!debug)
+				return;
 			Assembly assembly = Assembly.GetCallingAssembly();
 			ServerConsole.AddLog($"[DEBUG] [{assembly.GetName().Name}]: {message}");
 		}

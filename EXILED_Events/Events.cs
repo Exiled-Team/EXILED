@@ -74,12 +74,12 @@ namespace EXILED
 		}
 
 		public static event Scp096Enrage Scp096EnrageEvent;
-		public delegate void Scp096Enrage(Scp096PlayerScript script);
+		public delegate void Scp096Enrage(Scp096PlayerScript script, ref bool allow);
 
-		public static void InvokeScp096Enrage(Scp096PlayerScript script)
+		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
 		{
 			Scp096Enrage scp096Enrage = Scp096EnrageEvent;
-			scp096Enrage?.Invoke(script);
+			scp096Enrage?.Invoke(script, ref allow);
 		}
 
 		public static event Scp096Calm Scp096CalmEvent;
@@ -93,7 +93,7 @@ namespace EXILED
 		
 		public static event OnRoundStart RoundStartEvent;
 		public delegate void OnRoundStart();
-		internal static void InvokeRoundStart()
+		public static void InvokeRoundStart()
 		{
 			OnRoundStart roundStartEvent = RoundStartEvent;
 			roundStartEvent?.Invoke();
@@ -101,7 +101,7 @@ namespace EXILED
 
 		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref string userid, ConnectionRequest request, ref bool allow);
-		internal static void InvokePreAuth(
+		public static void InvokePreAuth(
 			ref string userid,
 			ConnectionRequest request,
 			ref bool allow)
@@ -112,7 +112,7 @@ namespace EXILED
 
 		public static event OnRoundEnd RoundEndEvent;
 		public delegate void OnRoundEnd();
-		internal static void InvokeRoundEnd()
+		public static void InvokeRoundEnd()
 		{
 			OnRoundEnd roundEndEvent = RoundEndEvent;
 			roundEndEvent?.Invoke();
@@ -121,7 +121,7 @@ namespace EXILED
 		
 		public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref string query, ref CommandSender sender, ref bool allow);
-		internal static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
+		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			OnCommand adminCommandEvent = RemoteAdminCommandEvent;
 			adminCommandEvent?.Invoke(ref query, ref sender, ref allow);
@@ -130,7 +130,7 @@ namespace EXILED
 		public static event OnCheaterReport CheaterReportEvent;
 		public delegate void OnCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow);
 
-		internal static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId,
+		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId,
 			ref bool allow)
 		{
 			OnCheaterReport onCheaterReport = CheaterReportEvent;
@@ -140,10 +140,19 @@ namespace EXILED
 		public static event OnWarheadCommand WarheadCommandEvent;
 		public delegate void OnWarheadCommand(PlayerInteract interaction, ref string n, ref bool allow);
 
-		internal static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
+		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
 		{
 			OnWarheadCommand onWarheadCommand = WarheadCommandEvent;
 			onWarheadCommand?.Invoke(interaction, ref n, ref allow);
+		}
+
+		public static event OnDoorInteract DoorInteractEvent;
+		public delegate void OnDoorInteract(GameObject player, Door door, ref bool allow);
+
+		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
+		{
+			OnDoorInteract onDoorInteract = DoorInteractEvent;
+			onDoorInteract?.Invoke(player, door, ref allow);
 		}
 	}
 }

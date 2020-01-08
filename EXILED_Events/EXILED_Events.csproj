@@ -150,6 +150,7 @@
         <Compile Include="LevenshteinDistance.cs" />
         <Compile Include="Patches\AntiFlyOverride.cs" />
         <Compile Include="Patches\CheaterReportOverride.cs" />
+        <Compile Include="Patches\DoorInteractionEvent.cs" />
         <Compile Include="Patches\GhostmodePatch.cs" />
         <Compile Include="Patches\GrenadeThrownEvent.cs" />
         <Compile Include="Patches\PlayerHurtEvent.cs" />

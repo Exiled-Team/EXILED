@@ -16,8 +16,9 @@ namespace EXILED.Patches
 
 				try
 				{
-					Events.InvokeScp096Enrage(__instance);
-					return true;
+					bool allow = true;
+					Events.InvokeScp096Enrage(__instance, ref allow);
+					return allow;
 				}
 				catch (Exception e)
 				{
