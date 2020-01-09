@@ -154,5 +154,21 @@ namespace EXILED
 			OnDoorInteract onDoorInteract = DoorInteractEvent;
 			onDoorInteract?.Invoke(player, door, ref allow);
 		}
+
+		public static event OnPlayerJoin PlayerJoinEvent;
+		public delegate void OnPlayerJoin(ReferenceHub hub, ref string ban, ref string steamban, bool DNT);
+		public static void InvokePlayerJoin(ReferenceHub hub, ref string ban, ref string steamban, bool DNT)
+		{
+			OnPlayerJoin onPlayerJoin = PlayerJoinEvent;
+			onPlayerJoin?.Invoke(hub, ref ban, ref steamban, DNT);
+		}
+
+		public static event OnPlayerLeave PlayerLeaveEvent;
+		public delegate void OnPlayerLeave(ReferenceHub hub, string userId, GameObject obj);
+		public static void InvokePlayerLeave(ReferenceHub hub, string userId, GameObject obj)
+		{
+			OnPlayerLeave onPlayerLeave = PlayerLeaveEvent;
+			onPlayerLeave?.Invoke(hub, userId, obj);
+		}
 	}
 }

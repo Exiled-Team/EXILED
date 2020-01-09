@@ -154,6 +154,8 @@
         <Compile Include="Patches\GhostmodePatch.cs" />
         <Compile Include="Patches\GrenadeThrownEvent.cs" />
         <Compile Include="Patches\PlayerHurtEvent.cs" />
+        <Compile Include="Patches\PlayerJoinEvent.cs" />
+        <Compile Include="Patches\PlayerLeaveEvent.cs" />
         <Compile Include="Patches\PreAuthEventPatch.cs" />
         <Compile Include="Patches\RACommandPatch.cs" />
         <Compile Include="Patches\RespawnEvent.cs" />
