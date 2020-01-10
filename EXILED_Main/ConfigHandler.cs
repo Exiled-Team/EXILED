@@ -13,7 +13,8 @@ namespace EXILED
 		{
 			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 			string exiledPath = Path.Combine(appData, "EXILED");
-			string path = Path.Combine(exiledPath, $"config.yml");
+			string path = Path.Combine(exiledPath, $"{ServerStatic.ServerPort}-config.yml");
+			Plugin.Debug($"Config path: {path}");
 			
 			if (!File.Exists(path))
 				File.Create(path).Close();

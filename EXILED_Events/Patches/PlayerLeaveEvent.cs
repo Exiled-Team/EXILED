@@ -7,7 +7,7 @@ namespace EXILED.Patches
 	public class PlayerLeaveEvent
 	{
 		[HarmonyPatch(typeof(ReferenceHub), "OnDestroy")]
-		public static void Postfix(ReferenceHub __instance)
+		public static void Prefix(ReferenceHub __instance)
 		{
 			try
 			{
