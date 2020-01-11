@@ -10,7 +10,7 @@ namespace EXILED
 	public abstract class Plugin
 	{
 		private static bool debug = ConfigFile.ServerConfig.GetBool("exiled_debug", false);
-		public static YamlConfig Config = ConfigHandler.PluginConfig;
+		public static YamlConfig Config;
 		public abstract string getName { get; }
 		public abstract void OnEnable();
 		public abstract void OnDisable();

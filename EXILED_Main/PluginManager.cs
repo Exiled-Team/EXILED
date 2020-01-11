@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Loader;
+using MEC;
 
 namespace EXILED
 {
@@ -13,8 +14,9 @@ namespace EXILED
 		private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 		private static string _typeOverrides = "";
 		
-		public static void LoadPlugins()
+		public static IEnumerator<float> LoadPlugins()
 		{
+			yield return Timing.WaitForSeconds(0.5f);
 			string path = Path.Combine(AppData, "Plugins");
 
 			if (Environment.CurrentDirectory.ToLower().Contains("testing"))
@@ -51,6 +53,8 @@ namespace EXILED
 					continue;
 				LoadPlugin(mod);
 			}
+			
+			OnEnable();
 		}
 
 		public static void LoadPlugin(string mod)

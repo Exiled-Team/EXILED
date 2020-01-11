@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
-    <Compile Include="ConfigHandler.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="MainLoader.cs" />
     <Compile Include="Plugin.cs" />
