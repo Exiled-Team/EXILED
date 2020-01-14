@@ -18,7 +18,8 @@ namespace EXILED
 			if (!File.Exists(path))
 				File.Create(path).Close();
 			Plugin.Config = new YamlConfig(path);
-			
+
+			CustomNetworkManager.Modded = true;
 			Timing.RunCoroutine(PluginManager.LoadPlugins());
 		}
 	}
