@@ -28,7 +28,6 @@ namespace EXILED.Patches
 
     private static void HandleConnection(ConnectionRequest request)
     {
-      ServerConsole.AddLog("Preauthing xd");
       NetDataWriter rejectData = new NetDataWriter();
       try
       {

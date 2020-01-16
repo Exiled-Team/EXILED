@@ -31,6 +31,15 @@ namespace EXILED
 			setClass?.Invoke(ccm, id);
 		}
 		
+		// public static event OnPlayerSpawn PlayerSpawnEvent;
+		// public delegate void OnPlayerSpawn(ReferenceHub rh, RoleType id);
+		// public static void InvokePlayerSpawn(CharacterClassManager ccm, RoleType id)
+		// {
+		// 	ReferenceHub hub = Plugin.GetPlayer(ccm.gameObject);
+		// 	OnPlayerSpawn onPlayerSpawn = PlayerSpawnEvent;
+		// 	onPlayerSpawn?.Invoke(hub, id);
+		// }
+
 		public static event PlayerHurt PlayerHurtEvent;
 		public delegate void PlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj);
 		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
@@ -156,11 +165,11 @@ namespace EXILED
 		}
 
 		public static event OnPlayerJoin PlayerJoinEvent;
-		public delegate void OnPlayerJoin(ReferenceHub hub, ref string ban, ref string steamban, bool DNT);
-		public static void InvokePlayerJoin(ReferenceHub hub, ref string ban, ref string steamban, bool DNT)
+		public delegate void OnPlayerJoin(ReferenceHub hub);
+		public static void InvokePlayerJoin(ReferenceHub hub)
 		{
 			OnPlayerJoin onPlayerJoin = PlayerJoinEvent;
-			onPlayerJoin?.Invoke(hub, ref ban, ref steamban, DNT);
+			onPlayerJoin?.Invoke(hub);
 		}
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
