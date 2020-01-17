@@ -17,19 +17,29 @@ namespace EXILED
 		}
 		
 		public static event GrenadeThrown GrenadeThrownEvent;
-		public delegate void GrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow);
+		public delegate void GrenadeThrown(ref GrenadeThrownEvent ev);
 		public static void InvokeGrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow)
 		{
 			GrenadeThrown grenadeThrown = GrenadeThrownEvent;
-			grenadeThrown?.Invoke(ref gm, ref id, ref slow, ref fuse, ref allow);
+			GrenadeThrownEvent ev = new GrenadeThrownEvent()
+			{
+				Player = Plugin.GetPlayer(gm.gameObject),
+				Gm = gm
+			};
+			grenadeThrown?.Invoke(ref ev);
 		}
 		
 		public static event SetClass SetClassEvent;
-		public delegate void SetClass(CharacterClassManager ccm, RoleType id);
+		public delegate void SetClass(SetClassEvent ev);
 		public static void InvokeSetClass(CharacterClassManager ccm, RoleType id)
 		{
 			SetClass setClass = SetClassEvent;
-			setClass?.Invoke(ccm, id);
+			SetClassEvent ev = new SetClassEvent()
+			{
+				Player = Plugin.GetPlayer(ccm.gameObject),
+				Role = id
+			};
+			setClass?.Invoke(ev);
 		}
 		
 		// public static event OnPlayerSpawn PlayerSpawnEvent;
@@ -42,63 +52,115 @@ namespace EXILED
 		// }
 
 		public static event PlayerHurt PlayerHurtEvent;
-		public delegate void PlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj);
+		public delegate void PlayerHurt(ref PlayerHurtEvent ev);
 		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
 		{
 			PlayerHurt playerHurt = PlayerHurtEvent;
-			playerHurt?.Invoke(stats, ref info, obj);
+			PlayerHurtEvent ev = new PlayerHurtEvent()
+			{
+				Player = Plugin.GetPlayer(stats.gameObject),
+				Attacker = Plugin.GetPlayer(obj),
+				Info = info
+			};
+			playerHurt?.Invoke(ref ev);
+			info = ev.Info;
 		}
 		
 		public static event TriggerTesla TriggerTeslaEvent;
-		public delegate void TriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable);
+		public delegate void TriggerTesla(ref TriggerTeslaEvent ev);
 		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
 		{
 			TriggerTesla triggerTesla = TriggerTeslaEvent;
-			triggerTesla?.Invoke(obj, hurtRange, ref triggerable);
+			TriggerTeslaEvent ev = new TriggerTeslaEvent()
+			{
+				Player = Plugin.GetPlayer(obj),
+				Triggerable = triggerable
+			};
+			triggerTesla?.Invoke(ref ev);
+			triggerable = ev.Triggerable;
 		}
 
 		public static event PlayerDeath PlayerDeathEvent;
-		public delegate void PlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj); 
+		public delegate void PlayerDeath(ref PlayerDeathEvent ev); 
 		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
 		{
 			PlayerDeath playerDeath = PlayerDeathEvent;
-			playerDeath?.Invoke(stats, ref info, obj);
+			PlayerDeathEvent ev = new PlayerDeathEvent()
+			{
+				Player = Plugin.GetPlayer(stats.gameObject),
+				Killer = Plugin.GetPlayer(obj),
+				Info = info
+			};
+			playerDeath?.Invoke(ref ev);
+			info = ev.Info;
 		}
 
 		public static event TeamRespawn TeamRespawnEvent;
-		public delegate void TeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn);
+		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
 
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn)
 		{
 			TeamRespawn teamRespawn = TeamRespawnEvent;
-			teamRespawn?.Invoke(ref isChaos, ref maxRespawn, ref toRespawn);
+			List<ReferenceHub> respawn = new List<ReferenceHub>();
+			foreach (GameObject obj in toRespawn)
+				respawn.Add(Plugin.GetPlayer(obj));
+			TeamRespawnEvent ev = new TeamRespawnEvent()
+			{
+				IsChaos = isChaos,
+				MaxRespawnAmt = maxRespawn,
+				ToRespawn = respawn
+			};
+			teamRespawn?.Invoke(ref ev);
+			maxRespawn = ev.MaxRespawnAmt;
+			toRespawn = new List<GameObject>();
+			foreach (ReferenceHub hub in ev.ToRespawn)
+				toRespawn.Add(hub.gameObject);
 		}
 
 		public static event UseMedicalItem UseMedicalItemEvent;
-		public delegate void UseMedicalItem(GameObject obj, ItemType type);
+		public delegate void UseMedicalItem(MedicalItemEvent ev);
 
 		public static void InvokeUseMedicalItem(GameObject obj, ItemType type)
 		{
 			UseMedicalItem useMedicalItem = UseMedicalItemEvent;
-			useMedicalItem?.Invoke(obj, type);
+			MedicalItemEvent ev = new MedicalItemEvent()
+			{
+				Player = Plugin.GetPlayer(obj),
+				Item = type
+			};
+			useMedicalItem?.Invoke(ev);
 		}
 
 		public static event Scp096Enrage Scp096EnrageEvent;
-		public delegate void Scp096Enrage(Scp096PlayerScript script, ref bool allow);
+		public delegate void Scp096Enrage(ref Scp096EnrageEvent ev);
 
 		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
 		{
 			Scp096Enrage scp096Enrage = Scp096EnrageEvent;
-			scp096Enrage?.Invoke(script, ref allow);
+			Scp096EnrageEvent ev = new Scp096EnrageEvent()
+			{
+				Player = Plugin.GetPlayer(script.gameObject),
+				Script = script,
+				Allow = allow
+			};
+			scp096Enrage?.Invoke(ref ev);
+			allow = ev.Allow;
 		}
 
 		public static event Scp096Calm Scp096CalmEvent;
-		public delegate void Scp096Calm(Scp096PlayerScript script, ref bool allow);
+		public delegate void Scp096Calm(ref Scp096CalmEvent ev);
 
 		public static void InvokeScp096Calm(Scp096PlayerScript script, ref bool allow)
 		{
 			Scp096Calm scp096Calm = Scp096CalmEvent;
-			scp096Calm?.Invoke(script, ref allow);
+			Scp096CalmEvent ev = new Scp096CalmEvent()
+			{
+				Player = Plugin.GetPlayer(script.gameObject),
+				Script = script,
+				Allow = allow
+			};
+			scp096Calm?.Invoke(ref ev);
+			allow = ev.Allow;
 		}
 		
 		public static event OnRoundStart RoundStartEvent;
@@ -110,14 +172,19 @@ namespace EXILED
 		}
 
 		public static event OnPreAuth PreAuthEvent;
-		public delegate void OnPreAuth(ref string userid, ConnectionRequest request, ref bool allow);
-		public static void InvokePreAuth(
-			ref string userid,
-			ConnectionRequest request,
-			ref bool allow)
+		public delegate void OnPreAuth(ref PreauthEvent ev);
+		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
 			OnPreAuth preAuthEvent = PreAuthEvent;
-			preAuthEvent?.Invoke(ref userid, request, ref allow);
+			PreauthEvent ev = new PreauthEvent()
+			{
+				Allow = allow,
+				Request = request,
+				UserId = userid
+			};
+			preAuthEvent?.Invoke(ref ev);
+			allow = ev.Allow;
+			userid = ev.UserId;
 		}
 
 		public static event OnRoundEnd RoundEndEvent;
@@ -130,55 +197,93 @@ namespace EXILED
 		
 		
 		public static event OnCommand RemoteAdminCommandEvent;
-		public delegate void OnCommand(ref string query, ref CommandSender sender, ref bool allow);
+		public delegate void OnCommand(ref RACommandEvent ev);
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			OnCommand adminCommandEvent = RemoteAdminCommandEvent;
-			adminCommandEvent?.Invoke(ref query, ref sender, ref allow);
+			RACommandEvent ev = new RACommandEvent()
+			{
+				Allow = allow,
+				Command = query,
+				Sender = sender
+			};
+			adminCommandEvent?.Invoke(ref ev);
+			query = ev.Command;
+			sender = ev.Sender;
+			allow = ev.Allow;
 		}
 		
 		public static event OnCheaterReport CheaterReportEvent;
-		public delegate void OnCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow);
+		public delegate void OnCheaterReport(ref CheaterReportEvent ev);
 
-		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId,
-			ref bool allow)
+		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow)
 		{
 			OnCheaterReport onCheaterReport = CheaterReportEvent;
-			onCheaterReport?.Invoke(reporterId, reportedId, reportedIp, reason, serverId, ref allow);
+			CheaterReportEvent ev = new CheaterReportEvent()
+			{
+				Allow = allow,
+				Report = reason,
+				ReportedId = reportedId,
+				ReportedIp = reportedIp,
+				ReporterId = reporterId
+			};
+			onCheaterReport?.Invoke(ref ev);
+			allow = ev.Allow;
 		}
 
 		public static event OnWarheadCommand WarheadCommandEvent;
-		public delegate void OnWarheadCommand(PlayerInteract interaction, ref string n, ref bool allow);
+		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
 
 		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
 		{
 			OnWarheadCommand onWarheadCommand = WarheadCommandEvent;
-			onWarheadCommand?.Invoke(interaction, ref n, ref allow);
+			WarheadLeverEvent ev = new WarheadLeverEvent()
+			{
+				Player = Plugin.GetPlayer(interaction.gameObject),
+				Allow = allow
+			};
+			onWarheadCommand?.Invoke(ref ev);
+			allow = ev.Allow;
 		}
 
 		public static event OnDoorInteract DoorInteractEvent;
-		public delegate void OnDoorInteract(GameObject player, Door door, ref bool allow);
+		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
 
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
 			OnDoorInteract onDoorInteract = DoorInteractEvent;
-			onDoorInteract?.Invoke(player, door, ref allow);
+			DoorInteractionEvent ev = new DoorInteractionEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow,
+				Door = door
+			};
+			onDoorInteract?.Invoke(ref ev);
+			allow = ev.Allow;
 		}
 
 		public static event OnPlayerJoin PlayerJoinEvent;
-		public delegate void OnPlayerJoin(ReferenceHub hub);
+		public delegate void OnPlayerJoin(PlayerJoinEvent ev);
 		public static void InvokePlayerJoin(ReferenceHub hub)
 		{
 			OnPlayerJoin onPlayerJoin = PlayerJoinEvent;
-			onPlayerJoin?.Invoke(hub);
+			PlayerJoinEvent ev = new PlayerJoinEvent()
+			{
+				Player = hub
+			};
+			onPlayerJoin?.Invoke(ev);
 		}
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
-		public delegate void OnPlayerLeave(ReferenceHub hub, string userId, GameObject obj);
+		public delegate void OnPlayerLeave(PlayerLeaveEvent ev);
 		public static void InvokePlayerLeave(ReferenceHub hub, string userId, GameObject obj)
 		{
 			OnPlayerLeave onPlayerLeave = PlayerLeaveEvent;
-			onPlayerLeave?.Invoke(hub, userId, obj);
+			PlayerLeaveEvent ev = new PlayerLeaveEvent()
+			{
+				Player = hub
+			};
+			onPlayerLeave?.Invoke(ev);
 		}
 	}
 }

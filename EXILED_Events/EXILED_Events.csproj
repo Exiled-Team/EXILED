@@ -145,6 +145,7 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="EventArgs.cs" />
         <Compile Include="EventHandlers.cs" />
         <Compile Include="Events.cs" />
         <Compile Include="LevenshteinDistance.cs" />
