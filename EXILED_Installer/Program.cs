@@ -15,7 +15,7 @@ namespace EXILED_Installer
 		public static void Main(string[] args)
 		{
 			if (args.Length < 1)
-				args = new[] { "/home/scp/scp_server/SCPSL_Data/Managed" };
+				args = new[] { "/home/scp/scp_server" };
 			
 			Console.WriteLine("Getting latest download URL..");
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url+"latest");
@@ -38,9 +38,11 @@ namespace EXILED_Installer
 			ExtractTarGz("EXILED.tar.gz", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 			
 			Console.WriteLine("Extraction complete, moving files..");
+			string installPath = Path.Combine(args[0], "SCPSL_Data");
+			string path2 = Path.Combine(installPath, "Managed");
 			if (!Directory.Exists(args[0]))
 				throw new ArgumentException("The provided Managed folder does not exist.");
-			File.Move(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Assembly-CSharp.dll"), args[0]);
+			File.Move(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Assembly-CSharp.dll"), path2);
 			
 			Console.WriteLine("Installation complete.");
 		}
