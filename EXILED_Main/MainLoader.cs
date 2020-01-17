@@ -21,6 +21,8 @@ namespace EXILED
 
 			CustomNetworkManager.Modded = true;
 			Timing.RunCoroutine(PluginManager.LoadPlugins());
+			HarmonyInstance instance = HarmonyInstance.Create("com.joker.exiled.main");
+			instance.PatchAll();
 		}
 	}
 }
