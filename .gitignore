@@ -79,3 +79,8 @@
 /bin/EXILED/UnityEngine.XRModule.dll
 /bin/EXILED/zxing.unity.dll
 /EXILED_Installer/bin/Debug/EXILED.tar.gz
+/EXILED_Installer/obj/Debug/EXILED_Installer.csproj.FileListAbsolute.txt
+/EXILED_Installer/bin/Debug/EXILED_Installer.exe
+/EXILED_Installer/obj/Debug/EXILED_Installer.exe
+/EXILED_Installer/bin/Debug/EXILED_Installer.pdb
+/EXILED_Installer/obj/Debug/EXILED_Installer.pdb
