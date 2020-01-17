@@ -58,8 +58,8 @@ namespace EXILED
 			PlayerHurt playerHurt = PlayerHurtEvent;
 			PlayerHurtEvent ev = new PlayerHurtEvent()
 			{
-				Player = Plugin.GetPlayer(stats.gameObject),
-				Attacker = Plugin.GetPlayer(obj),
+				Attacker = Plugin.GetPlayer(stats.gameObject),
+				Player = Plugin.GetPlayer(obj),
 				Info = info
 			};
 			playerHurt?.Invoke(ref ev);
@@ -87,8 +87,8 @@ namespace EXILED
 			PlayerDeath playerDeath = PlayerDeathEvent;
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
-				Player = Plugin.GetPlayer(stats.gameObject),
-				Killer = Plugin.GetPlayer(obj),
+				Killer = Plugin.GetPlayer(stats.gameObject),
+				Player = Plugin.GetPlayer(obj),
 				Info = info
 			};
 			playerDeath?.Invoke(ref ev);

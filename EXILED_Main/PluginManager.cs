@@ -148,13 +148,12 @@ namespace EXILED
 		{
 			try
 			{
+				Plugin.Info($"Reloading Plugins..");
 				OnDisable();
 				OnReload();
-
 				_plugins.Clear();
 
 				Timing.RunCoroutine(LoadPlugins());
-				OnEnable();
 			}
 			catch (Exception e)
 			{
