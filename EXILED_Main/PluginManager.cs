@@ -153,7 +153,7 @@ namespace EXILED
 
 				_plugins.Clear();
 
-				LoadPlugins();
+				Timing.RunCoroutine(LoadPlugins());
 				OnEnable();
 			}
 			catch (Exception e)
