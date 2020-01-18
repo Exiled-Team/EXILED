@@ -11,16 +11,13 @@ namespace EXILED.Patches
 		{
 			try
 			{
-				Plugin.Info($"Scp-096 Enrage event check.");
 				if (EventPlugin.Scp096PatchDisable)
 					return true;
-
-				Plugin.Info($"Scp-096 Enrage event check2");
+				
 				__instance._rageProgress += amount;
 				if (__instance._rageProgress <
 				    (double) __instance.rageCurve.Evaluate(Mathf.Min(PlayerManager.players.Count, 20)))
 					return false;
-				Plugin.Info($"Scp-096 Enrage event firing..");
 				bool allow = true;
 				Events.InvokeScp096Enrage(__instance, ref allow);
 				if (allow == false)
@@ -46,11 +43,9 @@ namespace EXILED.Patches
 			{
 				try
 				{
-					Plugin.Info($"Scp-096 Calm event check.");
 					if (EventPlugin.Scp096PatchDisable)
 						return true;
-
-					Plugin.Info($"Scp-096 calm event firing..");
+					
 					bool allow = true;
 					Events.InvokeScp096Calm(__instance, ref allow);
 					return allow;
