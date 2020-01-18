@@ -285,5 +285,21 @@ namespace EXILED
 			};
 			onPlayerLeave?.Invoke(ev);
 		}
+		public static event OnConsoleCommand ConsoleCommandEvent;
+		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
+		public static void InvokeConsoleCommand(ReferenceHub hub, string command, bool encrypted, out string returnMessage, out string color)
+		{
+			OnConsoleCommand onConsoleCommand = ConsoleCommandEvent;
+			ConsoleCommandEvent ev = new ConsoleCommandEvent(encrypted)
+			{
+				Command = command,
+				Player = hub,
+				ReturnMessage = "Command not found.",
+				Color = "red"
+			};
+			onConsoleCommand?.Invoke(ev);
+			returnMessage = ev.ReturnMessage;
+			color = ev.Color;
+		}
 	}
 }
