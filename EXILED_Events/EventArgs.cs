@@ -111,4 +111,16 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public ReferenceHub Player { get; set; }
 	}
+	public class ConsoleCommandEvent : EventArgs
+	{
+		public ConsoleCommandEvent(bool encrypted)
+		{
+			Encrypted = encrypted;
+		}
+		public ReferenceHub Player { get; set; }
+		public string Command { get; set; }
+		public string ReturnMessage { get; set; }
+		public bool Encrypted { get; private set; }
+		public string Color { get; set; }
+	}
 }
