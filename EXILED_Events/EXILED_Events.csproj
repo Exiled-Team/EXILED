@@ -158,14 +158,14 @@
     <Compile Include="Patches\PlayerJoinEvent.cs" />
     <Compile Include="Patches\PlayerLeaveEvent.cs" />
     <Compile Include="Patches\PreAuthEventPatch.cs" />
-    <Compile Include="Patches\ProcessGameConsoleQueryOverride.cs" />
+    <Compile Include="Patches\GameConsoleQueryOverride.cs" />
     <Compile Include="Patches\RACommandPatch.cs" />
     <Compile Include="Patches\RespawnEvent.cs" />
     <Compile Include="Patches\RoundEndPatch.cs" />
     <Compile Include="Patches\RoundStartPatch.cs" />
     <Compile Include="Patches\Scp096ProcessLookingOverride.cs" />
     <Compile Include="Patches\Scp173Override.cs" />
-    <Compile Include="Patches\ServerConsoleTypeCommandEvent.cs" />
+    <Compile Include="Patches\ServerCommandPatch.cs" />
     <Compile Include="Patches\SetClassEvent.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
     <Compile Include="Patches\UseMedicalEvent.cs" />
