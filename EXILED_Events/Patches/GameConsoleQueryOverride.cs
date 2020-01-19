@@ -12,7 +12,10 @@ namespace EXILED.Patches
 			{
 				ReferenceHub hub = ReferenceHub.GetHub(__instance.gameObject);
 				Events.InvokeConsoleCommand(hub, query, encrypted, out string returnMessage, out string color);
-				__instance.GCT.SendToClient(__instance.connectionToClient, returnMessage, color);
+				if (color == null)
+					color = "white";
+				if (!string.IsNullOrEmpty(returnMessage))
+					__instance.GCT.SendToClient(__instance.connectionToClient, returnMessage, color);
 				return false;
 			}
 			catch (Exception e)

@@ -18,6 +18,7 @@ namespace EXILED
 			if (!File.Exists(path))
 				File.Create(path).Close();
 			Plugin.Config = new YamlConfig(path);
+			Plugin.debug = Plugin.Config.GetBool("exiled_debug", false);
 
 			CustomNetworkManager.Modded = true;
 			Timing.RunCoroutine(PluginManager.LoadPlugins());

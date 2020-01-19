@@ -32,7 +32,7 @@ namespace EXILED.Patches
         int r = EventPlugin.Gen.Next(100);
         int maxRespawn = 15;
         List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
-        bool isChaos = r > 50;
+        bool isChaos = __instance.nextWaveIsCI;
         Plugin.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
         Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref toRespawn);
 
