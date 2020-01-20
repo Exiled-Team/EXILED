@@ -16,8 +16,21 @@ namespace EXILED
 		
 		public static IEnumerator<float> LoadPlugins()
 		{
+			
 			yield return Timing.WaitForSeconds(0.5f);
 			string path = Path.Combine(AppData, "Plugins");
+			string exiled = Path.Combine(AppData, "EXILED");
+			string deps = Path.Combine(exiled, "dependencies");
+			try
+			{
+				if (Directory.Exists(deps))
+					Directory.Move(deps, Path.Combine(path, "dependencies"));
+				LoadDeps();
+			}
+			catch (Exception e)
+			{
+				Plugin.Error(e.ToString());
+			}
 
 			if (Environment.CurrentDirectory.ToLower().Contains("testing"))
 				path = Path.Combine(AppData, "Plugins_Testing");
@@ -56,6 +69,41 @@ namespace EXILED
 			
 			OnEnable();
 		}
+
+		private static List<Assembly> localLoaded = new List<Assembly>();
+
+		private static void LoadDeps()
+		{
+			Plugin.Info("Loading dependencies...");
+			string pl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plugins");
+			string folder = Path.Combine(pl, "dependencies");
+			Plugin.Info("Searching Directory '" + folder + "'");
+			if (!Directory.Exists(folder))
+				Directory.CreateDirectory(folder);
+			string[] depends = Directory.GetFiles(folder);
+			foreach (string dll in depends)
+			{
+				if (!dll.EndsWith(".dll"))
+					continue;
+				if (IsLoaded(dll))
+					return;
+				Assembly a = Assembly.LoadFrom(dll);
+				localLoaded.Add(a);
+				Plugin.Info("Loaded dependency " + a.FullName);
+			}
+			Plugin.Info("Complete!");
+		}
+		
+		private static bool IsLoaded(string a)
+		{
+			foreach(Assembly asm in localLoaded)
+			{
+				if (asm.Location == a)
+					return true;
+			}
+			return false;
+		}
+
 
 		public static void LoadPlugin(string mod)
 		{

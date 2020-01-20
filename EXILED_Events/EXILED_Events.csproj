@@ -166,6 +166,7 @@
     <Compile Include="Patches\Scp096ProcessLookingOverride.cs" />
     <Compile Include="Patches\Scp173Override.cs" />
     <Compile Include="Patches\ServerCommandPatch.cs" />
+    <Compile Include="Patches\ServerNamePatch.cs" />
     <Compile Include="Patches\SetClassEvent.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
     <Compile Include="Patches\UseMedicalEvent.cs" />
