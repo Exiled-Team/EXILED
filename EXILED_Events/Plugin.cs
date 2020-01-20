@@ -59,6 +59,7 @@ namespace EXILED
 			}
 
 			Debug("Patching complete. c:");
+			ServerConsole.ReloadServerName();
 		}
 
 		//The below method gets called when the plugin is disabled by the EXILED loader.
