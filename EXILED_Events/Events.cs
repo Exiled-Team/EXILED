@@ -22,13 +22,40 @@ namespace EXILED
 		{
 			GrenadeThrown grenadeThrown = GrenadeThrownEvent;
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
-			{
+			{   
 				Player = Plugin.GetPlayer(gm.gameObject),
 				Gm = gm
 			};
 			grenadeThrown?.Invoke(ref ev);
 		}
-		
+
+        public static event SCP914Upgrade SCP914UpgradeEvent;
+        public delegate void SCP914Upgrade(SCP914UpgradeEvent ev);
+        public static void InvokeSCP914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, List<Pickup> pickups, Scp914.Scp914Knob knobSetting)
+        {
+            List<ReferenceHub> players = new List<ReferenceHub>();
+            foreach (CharacterClassManager ccm in ccms)
+            {
+                players.Add(Plugin.GetPlayer(ccm.gameObject));
+            }
+
+            List<ItemType> items = new List<ItemType>();
+            foreach (Pickup pick in pickups)
+            {
+                items.Add(pick.info.itemId);
+            }
+
+            SCP914Upgrade activated = SCP914UpgradeEvent;
+            SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
+            {
+                Machine = machine,
+                Players = players,
+                Items = items,
+                KnobSetting = knobSetting
+            };
+            activated?.Invoke(ev);
+        }
+
 		public static event SetClass SetClassEvent;
 		public delegate void SetClass(SetClassEvent ev);
 		public static void InvokeSetClass(CharacterClassManager ccm, RoleType id)
