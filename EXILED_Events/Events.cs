@@ -44,17 +44,11 @@ namespace EXILED
                 players.Add(Plugin.GetPlayer(ccm.gameObject));
             }
 
-            List<ItemType> items = new List<ItemType>();
-            foreach (Pickup pick in pickups)
-            {
-                items.Add(pick.info.itemId);
-            }
-            
             SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
             {
                 Machine = machine,
                 Players = players,
-                Items = items,
+                Items = pickups,
                 KnobSetting = knobSetting
             };
             activated?.Invoke(ev);
