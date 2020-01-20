@@ -10,8 +10,10 @@ namespace EXILED.Patches
 		{
 			try
 			{
-				ReferenceHub hub = ReferenceHub.GetHub(__instance.gameObject);
-				Events.InvokeConsoleCommand(hub, query, encrypted, out string returnMessage, out string color);
+				if (EventPlugin.PlayerConsoleCommandPatchDisable)
+					return true;
+				
+				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color);
 				if (color == null)
 					color = "white";
 				if (!string.IsNullOrEmpty(returnMessage))

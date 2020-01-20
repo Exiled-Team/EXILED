@@ -21,6 +21,8 @@ namespace EXILED
 		public static void InvokeGrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow)
 		{
 			GrenadeThrown grenadeThrown = GrenadeThrownEvent;
+			if (grenadeThrown == null)
+				return;
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
 				Player = Plugin.GetPlayer(gm.gameObject),
@@ -33,6 +35,9 @@ namespace EXILED
         public delegate void SCP914Upgrade(SCP914UpgradeEvent ev);
         public static void InvokeSCP914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, List<Pickup> pickups, Scp914.Scp914Knob knobSetting)
         {
+	        SCP914Upgrade activated = SCP914UpgradeEvent;
+	        if (activated == null)
+		        return;
             List<ReferenceHub> players = new List<ReferenceHub>();
             foreach (CharacterClassManager ccm in ccms)
             {
@@ -44,8 +49,7 @@ namespace EXILED
             {
                 items.Add(pick.info.itemId);
             }
-
-            SCP914Upgrade activated = SCP914UpgradeEvent;
+            
             SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
             {
                 Machine = machine,
@@ -61,6 +65,9 @@ namespace EXILED
 		public static void InvokeSetClass(CharacterClassManager ccm, RoleType id)
 		{
 			SetClass setClass = SetClassEvent;
+			if (setClass == null)
+				return;
+			
 			SetClassEvent ev = new SetClassEvent()
 			{
 				Player = Plugin.GetPlayer(ccm.gameObject),
@@ -83,6 +90,9 @@ namespace EXILED
 		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
 		{
 			PlayerHurt playerHurt = PlayerHurtEvent;
+			if (playerHurt == null)
+				return;
+			
 			PlayerHurtEvent ev = new PlayerHurtEvent()
 			{
 				Attacker = Plugin.GetPlayer(stats.gameObject),
@@ -98,6 +108,9 @@ namespace EXILED
 		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
 		{
 			TriggerTesla triggerTesla = TriggerTeslaEvent;
+			if (triggerTesla == null)
+				return;
+			
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
 				Player = Plugin.GetPlayer(obj),
@@ -112,6 +125,9 @@ namespace EXILED
 		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
 		{
 			PlayerDeath playerDeath = PlayerDeathEvent;
+			if (playerDeath == null)
+				return;
+			
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
 				Killer = Plugin.GetPlayer(stats.gameObject),
@@ -128,6 +144,9 @@ namespace EXILED
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn)
 		{
 			TeamRespawn teamRespawn = TeamRespawnEvent;
+			if (teamRespawn == null)
+				return;
+			
 			List<ReferenceHub> respawn = new List<ReferenceHub>();
 			foreach (GameObject obj in toRespawn)
 				respawn.Add(Plugin.GetPlayer(obj));
@@ -150,6 +169,9 @@ namespace EXILED
 		public static void InvokeUseMedicalItem(GameObject obj, ItemType type)
 		{
 			UseMedicalItem useMedicalItem = UseMedicalItemEvent;
+			if (useMedicalItem == null)
+				return;
+			
 			MedicalItemEvent ev = new MedicalItemEvent()
 			{
 				Player = Plugin.GetPlayer(obj),
@@ -164,6 +186,9 @@ namespace EXILED
 		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
 		{
 			Scp096Enrage scp096Enrage = Scp096EnrageEvent;
+			if (scp096Enrage == null)
+				return;
+			
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
 			{
 				Player = Plugin.GetPlayer(script.gameObject),
@@ -180,6 +205,9 @@ namespace EXILED
 		public static void InvokeScp096Calm(Scp096PlayerScript script, ref bool allow)
 		{
 			Scp096Calm scp096Calm = Scp096CalmEvent;
+			if (scp096Calm == null)
+				return;
+			
 			Scp096CalmEvent ev = new Scp096CalmEvent()
 			{
 				Player = Plugin.GetPlayer(script.gameObject),
@@ -203,6 +231,9 @@ namespace EXILED
 		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
 			OnPreAuth preAuthEvent = PreAuthEvent;
+			if (preAuthEvent == null)
+				return;
+			
 			PreauthEvent ev = new PreauthEvent()
 			{
 				Allow = allow,
@@ -228,6 +259,9 @@ namespace EXILED
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			OnCommand adminCommandEvent = RemoteAdminCommandEvent;
+			if (adminCommandEvent == null)
+				return;
+			
 			RACommandEvent ev = new RACommandEvent()
 			{
 				Allow = allow,
@@ -246,6 +280,9 @@ namespace EXILED
 		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow)
 		{
 			OnCheaterReport onCheaterReport = CheaterReportEvent;
+			if (onCheaterReport == null)
+				return;
+			
 			CheaterReportEvent ev = new CheaterReportEvent()
 			{
 				Allow = allow,
@@ -264,6 +301,9 @@ namespace EXILED
 		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
 		{
 			OnWarheadCommand onWarheadCommand = WarheadCommandEvent;
+			if (onWarheadCommand == null)
+				return;
+			
 			WarheadLeverEvent ev = new WarheadLeverEvent()
 			{
 				Player = Plugin.GetPlayer(interaction.gameObject),
@@ -279,6 +319,9 @@ namespace EXILED
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
 			OnDoorInteract onDoorInteract = DoorInteractEvent;
+			if (onDoorInteract == null)
+				return;
+			
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
 				Player = Plugin.GetPlayer(player),
@@ -294,6 +337,9 @@ namespace EXILED
 		public static void InvokePlayerJoin(ReferenceHub hub)
 		{
 			OnPlayerJoin onPlayerJoin = PlayerJoinEvent;
+			if (onPlayerJoin == null)
+				return;
+			
 			PlayerJoinEvent ev = new PlayerJoinEvent()
 			{
 				Player = hub
@@ -306,6 +352,9 @@ namespace EXILED
 		public static void InvokePlayerLeave(ReferenceHub hub, string userId, GameObject obj)
 		{
 			OnPlayerLeave onPlayerLeave = PlayerLeaveEvent;
+			if (onPlayerLeave == null)
+				return;
+			
 			PlayerLeaveEvent ev = new PlayerLeaveEvent()
 			{
 				Player = hub
@@ -314,9 +363,17 @@ namespace EXILED
 		}
 		public static event OnConsoleCommand ConsoleCommandEvent;
 		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
-		public static void InvokeConsoleCommand(ReferenceHub hub, string command, bool encrypted, out string returnMessage, out string color)
+		public static void InvokeConsoleCommand(GameObject obj, string command, bool encrypted, out string returnMessage, out string color)
 		{
 			OnConsoleCommand onConsoleCommand = ConsoleCommandEvent;
+			if (onConsoleCommand == null)
+			{
+				returnMessage = string.Empty;
+				color = null;
+				return;
+			}
+
+			ReferenceHub hub = Plugin.GetPlayer(obj);
 			ConsoleCommandEvent ev = new ConsoleCommandEvent(encrypted)
 			{
 				Command = command,

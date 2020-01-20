@@ -28,6 +28,8 @@ namespace EXILED
 		public static bool WaitingForPlayersPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
+		public static bool NineFourteenMachinePatchDisable;
+		public static bool PlayerConsoleCommandPatchDisable;
 		
 		private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
