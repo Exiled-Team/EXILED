@@ -33,7 +33,7 @@ namespace EXILED
 
         public static event SCP914Upgrade SCP914UpgradeEvent;
         public delegate void SCP914Upgrade(SCP914UpgradeEvent ev);
-        public static void InvokeSCP914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, List<Pickup> pickups, Scp914.Scp914Knob knobSetting)
+        public static void InvokeSCP914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
         {
 	        SCP914Upgrade activated = SCP914UpgradeEvent;
 	        if (activated == null)
@@ -46,12 +46,15 @@ namespace EXILED
 
             SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
             {
+	            Allow = allow,
                 Machine = machine,
                 Players = players,
                 Items = pickups,
                 KnobSetting = knobSetting
             };
             activated?.Invoke(ev);
+            pickups = ev.Items;
+            allow = ev.Allow;
         }
 
 		public static event SetClass SetClassEvent;
