@@ -13,7 +13,7 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(Scp914.Scp914Machine), "ProcessItems")]
     public class _914MachineOverride
     {
-        public bool Prefix(Scp914.Scp914Machine __instance)
+        public static bool Prefix(Scp914.Scp914Machine __instance)
         {
             if (!NetworkServer.active)
                 return true;
