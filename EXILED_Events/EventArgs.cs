@@ -17,6 +17,14 @@ namespace EXILED
 		public GrenadeManager Gm { get; set; }
 	}
 
+    public class SCP914UpgradeEvent : EventArgs
+    {
+        public Scp914.Scp914Machine Machine;
+        public List<ReferenceHub> Players;
+        public List<ItemType> Items;
+        public Scp914.Scp914Knob KnobSetting;
+    }
+
 	public class SetClassEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
