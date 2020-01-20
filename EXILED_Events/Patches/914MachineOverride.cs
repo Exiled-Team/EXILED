@@ -38,7 +38,7 @@ namespace EXILED.Patches
             List<Pickup> pickups = __instance.items;
             bool allowUpgrade = true;
             
-            Events.InvokeSCP914Upgrade(__instance, __instance.players, ref pickups, __instance.knobState, ref allowUpgrade);
+            Events.InvokeScp914Upgrade(__instance, __instance.players, ref pickups, __instance.knobState, ref allowUpgrade);
             
             __instance.items.Clear();
             foreach (Pickup p in pickups)

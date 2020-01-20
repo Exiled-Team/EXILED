@@ -31,11 +31,11 @@ namespace EXILED
 			grenadeThrown?.Invoke(ref ev);
 		}
 
-        public static event SCP914Upgrade SCP914UpgradeEvent;
-        public delegate void SCP914Upgrade(ref SCP914UpgradeEvent ev);
-        public static void InvokeSCP914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
+        public static event Scp914Upgrade Scp914UpgradeEvent;
+        public delegate void Scp914Upgrade(ref SCP914UpgradeEvent ev);
+        public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
         {
-	        SCP914Upgrade activated = SCP914UpgradeEvent;
+	        Scp914Upgrade activated = Scp914UpgradeEvent;
 	        if (activated == null)
 		        return;
             List<ReferenceHub> players = new List<ReferenceHub>();
