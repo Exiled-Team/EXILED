@@ -129,6 +129,9 @@ namespace EXILED
 				Player = Plugin.GetPlayer(obj),
 				Info = info
 			};
+
+			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+				return;
 			playerHurt?.Invoke(ref ev);
 			info = ev.Info;
 		}
@@ -147,6 +150,9 @@ namespace EXILED
 				Player = Plugin.GetPlayer(obj),
 				Info = info
 			};
+			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+				return;
+			
 			playerDeath?.Invoke(ref ev);
 			info = ev.Info;
 		}

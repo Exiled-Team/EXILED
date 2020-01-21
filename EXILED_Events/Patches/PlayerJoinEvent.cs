@@ -11,7 +11,9 @@ namespace EXILED.Patches
     {
       try
       {
-        Events.InvokePlayerJoin(Plugin.GetPlayer(__instance.gameObject));
+        ReferenceHub hub = Plugin.GetPlayer(__instance.gameObject);
+        if (!string.IsNullOrEmpty(hub.characterClassManager.UserId))
+          Events.InvokePlayerJoin(hub);
       }
       catch (Exception e)
       {
