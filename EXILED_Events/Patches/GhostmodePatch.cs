@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Harmony;
 using Mirror;
 using UnityEngine;
+using Utf8Json.Resolvers.Internal;
 
 namespace EXILED.Patches
 {
@@ -16,6 +17,11 @@ namespace EXILED.Patches
 			
 			try
 			{
+				++__instance.frame;
+				if (__instance.frame != __instance.syncFrequency)
+					return false;
+				__instance.frame = 0;
+				
 				List<GameObject> players = PlayerManager.players;
 				__instance.usedData = players.Count;
 				if (__instance.receivedData == null || __instance.receivedData.Length < __instance.usedData)

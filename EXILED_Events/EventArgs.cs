@@ -19,9 +19,10 @@ namespace EXILED
 
     public class SCP914UpgradeEvent : EventArgs
     {
+	    public bool Allow;
         public Scp914.Scp914Machine Machine;
         public List<ReferenceHub> Players;
-        public List<ItemType> Items;
+        public List<Pickup> Items;
         public Scp914.Scp914Knob KnobSetting;
     }
 

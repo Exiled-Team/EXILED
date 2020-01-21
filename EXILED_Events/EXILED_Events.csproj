@@ -149,6 +149,7 @@
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="LevenshteinDistance.cs" />
+    <Compile Include="Patches\914MachineOverride.cs" />
     <Compile Include="Patches\AntiFlyOverride.cs" />
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />
