@@ -129,7 +129,7 @@ public class EventHandlers
 {
 	public void PlayerJoined(PlayerJoinEvent ev)
 	{
-		Extenstions.Broadcast(ev.Player, 5, "<color=lime>Welcome to my cool server!</color>");
+		ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
 	}
 }
 ```
