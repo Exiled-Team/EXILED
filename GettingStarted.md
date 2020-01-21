@@ -2,8 +2,14 @@
 *(Written by [KadeDev](https://github.com/KadeDev) for the community)*
 
 **Table of contents**
+
 *Want to just skip ahead to the part you want? Heres your chance!*
-**TODO ADD IN GITHUB**
+
+[Intro](#intro)
+
+[Sample Plugin](#sample-plugin)
+
+[Events and ReferenceHubs](#referencehubs--events)
 
 ## Getting Started
 ### Intro
@@ -129,3 +135,10 @@ public class EventHandlers
 ```
 
 And then congratulations! You have made your very first Exiled Plugin!
+
+### What now?
+If you want more information you should join our [Discord!](https://discord.gg/SXnFZez)
+
+We have a #resources channel that you might find useful.
+
+Or you could read all the events that we have! If you want to check them out [here!](https://github.com/galaxy119/EXILED/blob/master/EXILED_Events/EventArgs.cs)
