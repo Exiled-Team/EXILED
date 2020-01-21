@@ -145,16 +145,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventArgs.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Events.cs" />
+    <Compile Include="Events\EventArgs.cs" />
+    <Compile Include="Events\MapEvents.cs" />
+    <Compile Include="Events\PlayerEvents.cs" />
+    <Compile Include="Events\ServerEvents.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="Patches\914MachineOverride.cs" />
     <Compile Include="Patches\AntiFlyOverride.cs" />
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />
+    <Compile Include="Patches\DropItemEvent.cs" />
     <Compile Include="Patches\GhostmodePatch.cs" />
     <Compile Include="Patches\GrenadeThrownEvent.cs" />
+    <Compile Include="Patches\PickupItemEvent.cs" />
     <Compile Include="Patches\PlayerHurtEvent.cs" />
     <Compile Include="Patches\PlayerJoinEvent.cs" />
     <Compile Include="Patches\PlayerLeaveEvent.cs" />
