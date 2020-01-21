@@ -35,7 +35,7 @@ This text you see here is *actually* written in Markdown! To get a feel for Mark
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md) But make sure to follow these rules when publishing your plugins:
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md) But make sure to follow these rules when publishing your plugins:
 
  - Your plugin must contain a class that inherits from EXILED.Plugin, if it does not, EXILED will not load your plugin when the server starts.
  - When a plugin is loaded, the code within the aforementioned class' ``OnEnable()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer. 
