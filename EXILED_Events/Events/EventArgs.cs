@@ -152,4 +152,37 @@ namespace EXILED
 		public ReferenceHub Target { get; set; }
 		public bool Allow { get; set; }
 	}
+
+	public class GeneratorOpenEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Generator079 Generator { get; set; }
+		public bool Allow { get; set; }
+	}
+	
+	public class GeneratorCloseEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Generator079 Generator { get; set; }
+		public bool Allow { get; set; }
+	}
+	
+	public class GeneratorInsertTabletEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Generator079 Generator { get; set; }
+		public bool Allow { get; set; }
+	}
+	
+	public class GeneratorEjectTabletEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Generator079 Generator { get; set; }
+		public bool Allow { get; set; }
+	}
+	
+	public class GeneratorFinishEvent : EventArgs
+	{
+		public Generator079 Generator { get; set; }
+	}
 }

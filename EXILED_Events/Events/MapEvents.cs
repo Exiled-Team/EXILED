@@ -84,5 +84,87 @@ namespace EXILED
 			pickups = ev.Items;
 			allow = ev.Allow;
 		}
+
+		public static event GeneratorOpen GeneratorOpenedEvent;
+		public delegate void GeneratorOpen(ref GeneratorOpenEvent ev);
+		public static void InvokeGeneratorOpen(GameObject player, Generator079 generator, ref bool allow)
+		{
+			GeneratorOpen generatorOpen = GeneratorOpenedEvent;
+			if (generatorOpen == null)
+				return;
+			GeneratorOpenEvent ev = new GeneratorOpenEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Generator = generator,
+				Allow = allow
+			};
+			generatorOpen.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+		
+		public static event GeneratorClose GeneratorClosedEvent;
+		public delegate void GeneratorClose(ref GeneratorCloseEvent ev);
+		public static void InvokeGeneratorClose(GameObject player, Generator079 generator, ref bool allow)
+		{
+			GeneratorClose generatorClose = GeneratorClosedEvent;
+			if (generatorClose == null)
+				return;
+			GeneratorCloseEvent ev = new GeneratorCloseEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Generator = generator,
+				Allow = allow
+			};
+			generatorClose.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+		
+		public static event GeneratorInsert GeneratorInsertedEvent;
+		public delegate void GeneratorInsert(ref GeneratorInsertTabletEvent ev);
+		public static void InvokeGeneratorInsert(GameObject player, Generator079 generator, ref bool allow)
+		{
+			GeneratorInsert generatorInsert = GeneratorInsertedEvent;
+			if (generatorInsert == null)
+				return;
+			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Generator = generator,
+				Allow = allow
+			};
+			generatorInsert.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+		
+		public static event GeneratorEject GeneratorEjectedEvent;
+		public delegate void GeneratorEject(ref GeneratorEjectTabletEvent ev);
+		public static void InvokeGeneratorEject(GameObject player, Generator079 generator, ref bool allow)
+		{
+			GeneratorEject generatorEject = GeneratorEjectedEvent;
+			if (generatorEject == null)
+				return;
+			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Generator = generator,
+				Allow = allow
+			};
+			generatorEject.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+		
+		public static event GeneratorFinish GeneratorFinishedEvent;
+		public delegate void GeneratorFinish(ref GeneratorFinishEvent ev);
+		public static void InvokeGeneratorFinish(Generator079 generator)
+		{
+			GeneratorFinish generatorFinish = GeneratorFinishedEvent;
+			if (generatorFinish == null)
+				return;
+			GeneratorFinishEvent ev = new GeneratorFinishEvent()
+			{
+				Generator = generator,
+			};
+			generatorFinish.Invoke(ref ev);
+		}
 	}
 }
