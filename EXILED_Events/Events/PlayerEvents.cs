@@ -220,5 +220,41 @@ namespace EXILED
 			allow = ev.Allow;
 			item = ev.Item;
 		}
+
+		public static event HandcuffCuffed PlayerHandcuffedEvent;
+		public delegate void HandcuffCuffed(ref HandcuffEvent ev);
+
+		public static void InvokePlayerHandcuff(GameObject player, GameObject target, ref bool allow)
+		{
+			HandcuffCuffed handcuffCuffed = PlayerHandcuffedEvent;
+			if (handcuffCuffed == null)
+				return;
+			HandcuffEvent ev = new HandcuffEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Target = Plugin.GetPlayer(target),
+				Allow = allow
+			};
+			handcuffCuffed.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+		
+		public static event HandcuffFreed PlayerHandcuffFreedEvent;
+		public delegate void HandcuffFreed(ref HandcuffEvent ev);
+
+		public static void InvokePlayerHandcuffFree(GameObject player, GameObject target, ref bool allow)
+		{
+			HandcuffFreed handcuffFreed = PlayerHandcuffFreedEvent;
+			if (handcuffFreed == null)
+				return;
+			HandcuffEvent ev = new HandcuffEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Target = Plugin.GetPlayer(target),
+				Allow = allow
+			};
+			handcuffFreed.Invoke(ref ev);
+			allow = ev.Allow;
+		}
 	}
 }

@@ -158,6 +158,7 @@
     <Compile Include="Patches\DropItemEvent.cs" />
     <Compile Include="Patches\GhostmodePatch.cs" />
     <Compile Include="Patches\GrenadeThrownEvent.cs" />
+    <Compile Include="Patches\HandcuffEvent.cs" />
     <Compile Include="Patches\PickupItemEvent.cs" />
     <Compile Include="Patches\PlayerHurtEvent.cs" />
     <Compile Include="Patches\PlayerJoinEvent.cs" />

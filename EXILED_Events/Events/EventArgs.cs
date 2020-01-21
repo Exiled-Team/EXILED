@@ -145,4 +145,11 @@ namespace EXILED
 		public Pickup.PickupInfo Item { get; set; }
 		public bool Allow { get; set; }
 	}
+
+	public class HandcuffEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public ReferenceHub Target { get; set; }
+		public bool Allow { get; set; }
+	}
 }
