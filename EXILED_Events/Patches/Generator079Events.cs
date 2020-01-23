@@ -1,3 +1,4 @@
+using System;
 using Harmony;
 using Mirror;
 using UnityEngine;
@@ -9,76 +10,85 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Generator079 __instance, GameObject person, string command)
 		{
-			if (command.StartsWith("EPS_TABLET"))
+			try
 			{
-				if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance.localTime <= 0.0 ||
-				    Generator079.mainGenerator.forcedOvercharge)
-					return false;
-				Inventory component = person.GetComponent<Inventory>();
-				foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
+				if (command.StartsWith("EPS_TABLET"))
 				{
-					if (syncItemInfo.id == ItemType.WeaponManagerTablet)
+					if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance.localTime <= 0.0 ||
+					    Generator079.mainGenerator.forcedOvercharge)
+						return false;
+					Inventory component = person.GetComponent<Inventory>();
+					foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
 					{
-						bool allow = true;
-						Events.InvokeGeneratorInsert(person, __instance, ref allow);
-						if (!allow)
-							return false;
-						component.items.Remove(syncItemInfo);
-						__instance.NetworkisTabletConnected = true;
-						break;
-					}
-				}
-			}
-			else if (command.StartsWith("EPS_CANCEL"))
-			{
-				if (!__instance.isTabletConnected)
-					return false;
-				bool allow = true;
-				Events.InvokeGeneratorEject(person, __instance, ref allow);
-				if (allow)
-					__instance.EjectTablet();
-			}
-			else if (command.StartsWith("EPS_DOOR"))
-			{
-				Inventory component = person.GetComponent<Inventory>();
-				if (component == null || __instance.doorAnimationCooldown > 0.0 || __instance.deniedCooldown > 0.0)
-					return false;
-				if (!__instance.isDoorUnlocked)
-				{
-					bool flag = person.GetComponent<ServerRoles>().BypassMode;
-					if (component.curItem > ItemType.KeycardJanitor)
-					{
-						foreach (string permission in component.GetItemByID(component.curItem).permissions)
+						if (syncItemInfo.id == ItemType.WeaponManagerTablet)
 						{
-							if (permission == "ARMORY_LVL_2")
-								flag = true;
+							bool allow = true;
+							Events.InvokeGeneratorInsert(person, __instance, ref allow);
+							if (!allow)
+								return false;
+							component.items.Remove(syncItemInfo);
+							__instance.NetworkisTabletConnected = true;
+							break;
 						}
 					}
-					if (flag)
+				}
+				else if (command.StartsWith("EPS_CANCEL"))
+				{
+					if (!__instance.isTabletConnected)
+						return false;
+					bool allow = true;
+					Events.InvokeGeneratorEject(person, __instance, ref allow);
+					if (allow)
+						__instance.EjectTablet();
+				}
+				else if (command.StartsWith("EPS_DOOR"))
+				{
+					Inventory component = person.GetComponent<Inventory>();
+					if (component == null || __instance.doorAnimationCooldown > 0.0 || __instance.deniedCooldown > 0.0)
+						return false;
+					if (!__instance.isDoorUnlocked)
 					{
-						__instance.NetworkisDoorUnlocked = true;
-						__instance.doorAnimationCooldown = 0.5f;
+						bool flag = person.GetComponent<ServerRoles>().BypassMode;
+						if (component.curItem > ItemType.KeycardJanitor)
+						{
+							foreach (string permission in component.GetItemByID(component.curItem).permissions)
+							{
+								if (permission == "ARMORY_LVL_2")
+									flag = true;
+							}
+						}
+
+						if (flag)
+						{
+							__instance.NetworkisDoorUnlocked = true;
+							__instance.doorAnimationCooldown = 0.5f;
+						}
+						else
+							__instance.RpcDenied();
 					}
 					else
-						__instance.RpcDenied();
-				}
-				else
-				{
-					bool allow = true;
-					Events.InvokeGeneratorOpen(person, __instance, ref allow);
-					if (!allow)
 					{
-						__instance.RpcDenied();
-						return false;
+						bool allow = true;
+						Events.InvokeGeneratorOpen(person, __instance, ref allow);
+						if (!allow)
+						{
+							__instance.RpcDenied();
+							return false;
+						}
+
+						__instance.doorAnimationCooldown = 1.5f;
+						__instance.NetworkisDoorOpen = !__instance.isDoorOpen;
+						__instance.RpcDoSound(__instance.isDoorOpen);
 					}
-
-					__instance.doorAnimationCooldown = 1.5f;
-					__instance.NetworkisDoorOpen = !__instance.isDoorOpen;
-					__instance.RpcDoSound(__instance.isDoorOpen);
 				}
-			}
 
-			return false;
+				return false;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"Generator079 error: {e}");
+				return true;
+			}
 		}
 	}
 
