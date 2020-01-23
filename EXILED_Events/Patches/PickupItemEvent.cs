@@ -31,7 +31,7 @@ namespace EXILED.Patches
             component.Networkinfo = info;
             if (durability <= 0)
               component.Delete();
-            __instance.hub.ammoBox.SetAmmo(type, ammo);
+            __instance.hub.ammoBox.SetOneAmount(type, $"{ammo}");
           }
         }
       }

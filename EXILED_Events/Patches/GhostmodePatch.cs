@@ -17,11 +17,6 @@ namespace EXILED.Patches
 			
 			try
 			{
-				++__instance.frame;
-				if (__instance.frame != __instance.syncFrequency)
-					return false;
-				__instance.frame = 0;
-				
 				List<GameObject> players = PlayerManager.players;
 				__instance.usedData = players.Count;
 				if (__instance.receivedData == null || __instance.receivedData.Length < __instance.usedData)

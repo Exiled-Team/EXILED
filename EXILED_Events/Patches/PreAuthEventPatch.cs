@@ -43,7 +43,7 @@ namespace EXILED.Patches
         {
           if (CustomLiteNetLib4MirrorTransport.IpRateLimiting)
           {
-            if (CustomLiteNetLib4MirrorTransport.IpRateLimit.Contains(request.RemoteEndPoint.Address))
+            if (CustomLiteNetLib4MirrorTransport.IpRateLimit.Contains(request.RemoteEndPoint.Address.ToString()))
             {
               ServerConsole.AddLog(string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", request.RemoteEndPoint));
               ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
@@ -52,7 +52,7 @@ namespace EXILED.Patches
               request.Reject(rejectData);
               return;
             }
-            CustomLiteNetLib4MirrorTransport.IpRateLimit.Add(request.RemoteEndPoint.Address);
+            CustomLiteNetLib4MirrorTransport.IpRateLimit.Add(request.RemoteEndPoint.Address.ToString());
           }
           if (!CharacterClassManager.OnlineMode)
           {
