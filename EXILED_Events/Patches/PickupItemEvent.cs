@@ -22,6 +22,12 @@ namespace EXILED.Patches
         if (component == null || !__instance._pickupInProgressServer ||
             (t != __instance._pickupObjectServer || __instance._pickupProgressServer > 0.25) || component.info.locked)
           return false;
+        
+        bool allow = true;
+        Events.InvokePickupItem(__instance.gameObject, ref component.info, ref allow);
+        if (allow == false)
+          return false;
+        
         Item itemById1 = __instance.hub.inventory.GetItemByID(component.info.itemId);
         if (itemById1.noEquipable)
         {
@@ -55,10 +61,6 @@ namespace EXILED.Patches
               component.Delete();
               if (itemId == ItemType.None)
                 break;
-              bool allow = true;
-              Events.InvokePickupItem(__instance.gameObject, ref component.info, ref allow);
-              if (allow == false)
-                return false;
               __instance.AddItem(itemId,
                 (Object) t.GetComponent<Pickup>() == (Object) null ? -1f : component.info.durability,
                 component.info.weaponMods);
