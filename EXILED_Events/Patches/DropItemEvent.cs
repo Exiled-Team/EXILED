@@ -18,7 +18,11 @@ namespace EXILED.Patches
 				if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
 					return false;
 
-				Events.InvokeDropItem(__instance.gameObject, ref syncItemInfo);
+				bool allow = true;
+				Events.InvokeDropItem(__instance.gameObject, ref syncItemInfo, ref allow);
+				if (!allow)
+					return false;
+				
 				__instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position,
 					__instance.camera.transform.rotation, syncItemInfo.modSight, syncItemInfo.modBarrel,
 					syncItemInfo.modOther);

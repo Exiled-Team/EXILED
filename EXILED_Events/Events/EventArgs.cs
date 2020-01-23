@@ -137,6 +137,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public Inventory.SyncItemInfo Item { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PickupItemEvent : EventArgs

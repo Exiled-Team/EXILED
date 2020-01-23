@@ -191,7 +191,7 @@ namespace EXILED
 		public static event DropItem DropItemEvent;
 		public delegate void DropItem(ref DropItemEvent ev);
 
-		public static void InvokeDropItem(GameObject player, ref Inventory.SyncItemInfo item)
+		public static void InvokeDropItem(GameObject player, ref Inventory.SyncItemInfo item, ref bool allow)
 		{
 			DropItem dropItem = DropItemEvent;
 			if (dropItem == null)
@@ -200,9 +200,11 @@ namespace EXILED
 			{
 				Player = Plugin.GetPlayer(player),
 				Item = item,
+				Allow = allow
 			};
 
 			dropItem.Invoke(ref ev);
+			allow = ev.Allow;
 			item = ev.Item;
 		}
 
