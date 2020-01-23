@@ -183,9 +183,14 @@ namespace EXILED
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
 				Player = Plugin.GetPlayer(gm.gameObject),
-				Gm = gm
+				Gm = gm,
+				Id = id,
+				Allow = allow
 			};
 			grenadeThrown?.Invoke(ref ev);
+			allow = ev.Allow;
+			id = ev.Id;
+			gm = ev.Gm;
 		}
 
 		public static event DropItem DropItemEvent;

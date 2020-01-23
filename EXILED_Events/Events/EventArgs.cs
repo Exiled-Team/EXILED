@@ -15,6 +15,8 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public GrenadeManager Gm { get; set; }
+		public int Id { get; set; }
+		public bool Allow { get; set; }
 	}
 
     public class SCP914UpgradeEvent : EventArgs
