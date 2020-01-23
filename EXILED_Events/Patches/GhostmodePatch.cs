@@ -76,7 +76,7 @@ namespace EXILED.Patches
 					// 			if (!Plugin.Scp096Targets.Contains(__instance.transmitBuffer[i].playerID))
 					// 				__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0f, __instance.transmitBuffer[i].playerID);
 					// }
-					else if (component1.CurClass != RoleType.Scp079 || component1.CurClass != RoleType.Spectator)
+					else if (component1.CurClass != RoleType.Scp079 && component1.CurClass != RoleType.Spectator)
 					{
 						for (int index = 0; index < __instance.usedData; ++index)
 						{
