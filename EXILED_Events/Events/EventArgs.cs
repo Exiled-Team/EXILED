@@ -154,6 +154,12 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
+	public class GeneratorUnlockEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Generator079 Generator { get; set; }
+		public bool Allow { get; set; }
+	}
 	public class GeneratorOpenEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }

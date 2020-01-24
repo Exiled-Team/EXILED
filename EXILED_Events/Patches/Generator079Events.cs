@@ -48,17 +48,19 @@ namespace EXILED.Patches
 						return false;
 					if (!__instance.isDoorUnlocked)
 					{
-						bool flag = person.GetComponent<ServerRoles>().BypassMode;
+						bool allow = person.GetComponent<ServerRoles>().BypassMode;
 						if (component.curItem > ItemType.KeycardJanitor)
 						{
 							foreach (string permission in component.GetItemByID(component.curItem).permissions)
 							{
 								if (permission == "ARMORY_LVL_2")
-									flag = true;
+									allow = true;
 							}
 						}
+						
+						Events.InvokeGeneratorUnlock(person, __instance, ref allow);
 
-						if (flag)
+						if (allow)
 						{
 							__instance.NetworkisDoorUnlocked = true;
 							__instance.doorAnimationCooldown = 0.5f;
