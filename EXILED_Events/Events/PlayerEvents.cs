@@ -97,8 +97,8 @@ namespace EXILED
 			OnConsoleCommand onConsoleCommand = ConsoleCommandEvent;
 			if (onConsoleCommand == null)
 			{
-				returnMessage = string.Empty;
-				color = null;
+				returnMessage = "Command not found.";
+				color = "red";
 				return;
 			}
 
