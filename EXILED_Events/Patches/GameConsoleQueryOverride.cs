@@ -14,7 +14,7 @@ namespace EXILED.Patches
 					return true;
 				
 				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color);
-				if (!string.IsNullOrEmpty(color))
+				if (string.IsNullOrEmpty(color))
 					color = "white";
 				if (!string.IsNullOrEmpty(returnMessage))
 					__instance.GCT.SendToClient(__instance.connectionToClient, returnMessage, color);
