@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -82,6 +83,23 @@ namespace EXILED
 			};
 			activated?.Invoke(ref ev);
 			pickups = ev.Items;
+			allow = ev.Allow;
+		}
+
+		public static event GeneratorUnlock GeneratorUnlockEvent;
+		public delegate void GeneratorUnlock(ref GeneratorUnlockEvent ev);
+		internal static void InvokeGeneratorUnlock(GameObject person, Generator079 generator, ref bool allow)
+		{
+			GeneratorUnlock generatorUnlock = GeneratorUnlockEvent;
+			if (generatorUnlock == null)
+				return;
+			GeneratorUnlockEvent ev = new GeneratorUnlockEvent()
+			{
+				Allow = allow,
+				Generator = generator,
+				Player = Plugin.GetPlayer(person)
+			};
+			generatorUnlock.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 

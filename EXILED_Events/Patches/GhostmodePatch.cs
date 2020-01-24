@@ -69,7 +69,7 @@ namespace EXILED.Patches
 							}
 						}
 					}
-					else if (component1.CurClass != RoleType.Scp079 || component1.CurClass != RoleType.Spectator)
+          else if (component1.CurClass != RoleType.Scp079 && component1.CurClass != RoleType.Spectator)
 					{
 						for (int index = 0; index < __instance.usedData; ++index)
 						{
