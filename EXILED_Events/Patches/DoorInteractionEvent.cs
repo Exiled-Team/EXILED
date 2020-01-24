@@ -67,21 +67,47 @@ namespace EXILED.Patches
 
 						if (allow) component1.ChangeState();
 						else __instance.RpcDenied(doorId);
-						return false;
 					}
 				}
 				else
 				{
-					try
+					if (string.IsNullOrEmpty(component1.permissionLevel))
 					{
-						if (string.IsNullOrEmpty(component1.permissionLevel))
+						if (component1.locked)
 						{
-							if (component1.locked)
+							__instance.RpcDenied(doorId);
+							return false;
+						}
+
+						try
+						{
+							Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
+
+							if (allow == false)
 							{
 								__instance.RpcDenied(doorId);
 								return false;
 							}
+							component1.ChangeState();
+							return false;
+						}
+						catch (Exception e)
+						{
+							Plugin.Error($"Door interaction error: {e}");
 
+							if (allow) component1.ChangeState();
+							else __instance.RpcDenied(doorId);
+							return false;
+						}
+					}
+					Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
+					if (item == null)
+					{
+						// Let the plugins decide in case the default options to open the door weren't met
+						if (!component1.locked)
+						{
+							// Instead of passing allow as true, pass it as false
+							allow = false;
 							try
 							{
 								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
@@ -99,71 +125,36 @@ namespace EXILED.Patches
 
 								if (allow) component1.ChangeState();
 								else __instance.RpcDenied(doorId);
-								return false;
 							}
 						}
-						Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
-						if (item == null)
-						{
-							// Let the plugins decide in case the default options to open the door weren't met
-							if (!component1.locked)
-							{
-								// Instead of passing allow as true, pass it as false
-								allow = false;
-								try
-								{
-									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-									if (allow == false)
-									{
-										__instance.RpcDenied(doorId);
-										return false;
-									}
-									component1.ChangeState();
-								}
-								catch (Exception e)
-								{
-									Plugin.Error($"Door interaction error: {e}");
-
-									if (allow) component1.ChangeState();
-									else __instance.RpcDenied(doorId);
-									return false;
-								}
-							}
-							else
-								__instance.RpcDenied(doorId);
-						}
-						else if (item.permissions.Contains(component1.permissionLevel))
-						{
-							if (!component1.locked)
-							{
-								try
-								{
-									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-									if (allow == false)
-									{
-										__instance.RpcDenied(doorId);
-										return false;
-									}
-									component1.ChangeState();
-								}
-								catch (Exception e)
-								{
-									Plugin.Error($"Door interaction error: {e}");
-
-									if (allow) component1.ChangeState();
-									else __instance.RpcDenied(doorId);
-									return false;
-								}
-							}
-							else
-								__instance.RpcDenied(doorId);
-						}
+						else
+							__instance.RpcDenied(doorId);
 					}
-					catch
+					else if (item.permissions.Contains(component1.permissionLevel))
 					{
-						__instance.RpcDenied(doorId);
+						if (!component1.locked)
+						{
+							try
+							{
+								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
+
+								if (allow == false)
+								{
+									__instance.RpcDenied(doorId);
+									return false;
+								}
+								component1.ChangeState();
+							}
+							catch (Exception e)
+							{
+								Plugin.Error($"Door interaction error: {e}");
+
+								if (allow) component1.ChangeState();
+								else __instance.RpcDenied(doorId);
+							}
+						}
+						else
+							__instance.RpcDenied(doorId);
 					}
 				}
 			}
