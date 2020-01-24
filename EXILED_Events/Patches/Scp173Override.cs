@@ -20,8 +20,12 @@ namespace EXILED.Patches
 				__instance._allowMove = true;
 				foreach (GameObject player in PlayerManager.players)
 				{
-					if (ReferenceHub.GetHub(player).characterClassManager.CurClass == RoleType.Tutorial)
+					ReferenceHub hub = Plugin.GetPlayer(player);
+					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
+					{
+						
 						continue;
+					}
 					Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
 					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) &&
 					    __instance.LookFor173(component.gameObject, false))

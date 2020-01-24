@@ -25,6 +25,7 @@ namespace EXILED.Patches
 					__instance.receivedData[index] = new PlayerPositionData(players[index]);
 				if (__instance.transmitBuffer == null || __instance.transmitBuffer.Length < __instance.usedData)
 					__instance.transmitBuffer = new PlayerPositionData[__instance.usedData * 2];
+				
 				foreach (GameObject gameObject in players)
 				{
 					CharacterClassManager component1 = gameObject.GetComponent<CharacterClassManager>();
@@ -47,7 +48,7 @@ namespace EXILED.Patches
 							Quaternion rot = Quaternion.LookRotation(dir);
 							if (angle <= 80f)
 							{
-								__instance.transmitBuffer[i] = new PlayerPositionData(__instance.transmitBuffer[i].position, Quaternion.Inverse(rot).y, __instance.transmitBuffer[i].playerID, __instance.transmitBuffer[i].uses268);
+								__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[i].playerID);
 							}
 						}
 					}
@@ -68,14 +69,6 @@ namespace EXILED.Patches
 							}
 						}
 					}
-					// else if (component1.CurClass == RoleType.Scp096)
-					// {
-					// 	Scp096PlayerScript script = component1.GetComponent<Scp096PlayerScript>();
-					// 	if (script.Networkenraged == Scp096PlayerScript.RageState.Enraged || script.Networkenraged == Scp096PlayerScript.RageState.Panic)
-					// 		for (int i = 0; i < __instance.usedData; i++)
-					// 			if (!Plugin.Scp096Targets.Contains(__instance.transmitBuffer[i].playerID))
-					// 				__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0f, __instance.transmitBuffer[i].playerID);
-					// }
 					else if (component1.CurClass != RoleType.Scp079 || component1.CurClass != RoleType.Spectator)
 					{
 						for (int index = 0; index < __instance.usedData; ++index)
