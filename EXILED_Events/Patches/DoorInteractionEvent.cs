@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
+	[HarmonyPatch(typeof(PlayerInteract), "CallCmdOpenDoor", typeof(GameObject))]
 	public class DoorInteractionEvent
 	{
-		[HarmonyPatch(typeof(PlayerInteract), "CallCmdOpenDoor")]
 		public static bool Prefix(PlayerInteract __instance, GameObject doorId)
 		{
 			bool allow = true;
@@ -102,10 +102,14 @@ namespace EXILED.Patches
 								return false;
 							}
 						}
-						else if (__instance._inv.GetItemByID(__instance._inv.curItem).permissions.Contains(component1.permissionLevel))
+						Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
+						if (item == null)
 						{
+							// Let the plugins decide in case the default options to open the door weren't met
 							if (!component1.locked)
 							{
+								// Instead of passing allow as true, pass it as false
+								allow = false;
 								try
 								{
 									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
@@ -129,13 +133,10 @@ namespace EXILED.Patches
 							else
 								__instance.RpcDenied(doorId);
 						}
-						else
+						else if (item.permissions.Contains(component1.permissionLevel))
 						{
-							// Let the plugins decide in case the default options to open the door weren't met
 							if (!component1.locked)
 							{
-								// Instead of passing allow as true, pass it as false
-								allow = false;
 								try
 								{
 									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
@@ -150,7 +151,7 @@ namespace EXILED.Patches
 								catch (Exception e)
 								{
 									Plugin.Error($"Door interaction error: {e}");
-								
+
 									if (allow) component1.ChangeState();
 									else __instance.RpcDenied(doorId);
 									return false;
