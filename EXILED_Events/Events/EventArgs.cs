@@ -145,7 +145,7 @@ namespace EXILED
 	public class PickupItemEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
-		public Pickup.PickupInfo Item { get; set; }
+		public Pickup Item { get; set; }
 		public bool Allow { get; set; }
 	}
 
