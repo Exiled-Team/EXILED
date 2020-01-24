@@ -183,9 +183,14 @@ namespace EXILED
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
 				Player = Plugin.GetPlayer(gm.gameObject),
-				Gm = gm
+				Gm = gm,
+				Id = id,
+				Allow = allow
 			};
 			grenadeThrown?.Invoke(ref ev);
+			allow = ev.Allow;
+			id = ev.Id;
+			gm = ev.Gm;
 		}
 
 		public static event DropItem DropItemEvent;
@@ -212,7 +217,7 @@ namespace EXILED
 
 		public delegate void PickupItem(ref PickupItemEvent ev);
 
-		public static void InvokePickupItem(GameObject player, ref Pickup.PickupInfo item, ref bool allow)
+		public static void InvokePickupItem(GameObject player, ref Pickup item, ref bool allow)
 		{
 			PickupItem pickupItem = PickupItemEvent;
 			if (pickupItem == null)

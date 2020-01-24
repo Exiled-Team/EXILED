@@ -24,7 +24,7 @@ namespace EXILED.Patches
           return false;
         
         bool allow = true;
-        Events.InvokePickupItem(__instance.gameObject, ref component.info, ref allow);
+        Events.InvokePickupItem(__instance.gameObject, ref component, ref allow);
         if (allow == false)
           return false;
         

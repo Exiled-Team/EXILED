@@ -15,6 +15,8 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public GrenadeManager Gm { get; set; }
+		public int Id { get; set; }
+		public bool Allow { get; set; }
 	}
 
     public class SCP914UpgradeEvent : EventArgs
@@ -143,7 +145,7 @@ namespace EXILED
 	public class PickupItemEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
-		public Pickup.PickupInfo Item { get; set; }
+		public Pickup Item { get; set; }
 		public bool Allow { get; set; }
 	}
 
