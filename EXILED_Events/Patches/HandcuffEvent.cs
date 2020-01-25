@@ -10,6 +10,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)
 		{
+			if (EventPlugin.HandcuffEventPatchDisable)
+				return true;
+			
 			if (!__instance._interactRateLimit.CanExecute() || target == null || Vector3.Distance(target.transform.position, __instance.transform.position) > __instance.raycastDistance * 1.10000002384186)
 				return false;
 			Handcuffs handcuffs = ReferenceHub.GetHub(target).handcuffs;
@@ -69,6 +72,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)
 		{
+			if (EventPlugin.HandcuffEventPatchDisable)
+				return true;
+			
 			if (!__instance._interactRateLimit.CanExecute(true) || target == null || (Vector3.Distance(target.transform.position, __instance.transform.position) > __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager.Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
 				return false;
 			bool allow = true;
@@ -85,6 +91,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Handcuffs __instance)
 		{
+			if (EventPlugin.HandcuffEventPatchDisable)
+				return true;
+
 			foreach (GameObject player in PlayerManager.players)
 			{
 				Handcuffs handcuffs = ReferenceHub.GetHub(player).handcuffs;

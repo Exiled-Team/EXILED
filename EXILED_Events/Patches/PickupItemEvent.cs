@@ -11,6 +11,9 @@ namespace EXILED.Patches
 	{
     public static bool Prefix(Searching __instance, GameObject t)
     {
+      if (EventPlugin.PickupItemEventPatchDisable)
+        return true;
+      
       try
       {
         if (!__instance._playerInteractRateLimit.CanExecute(true) || t == null ||

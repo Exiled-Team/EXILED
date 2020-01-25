@@ -9,6 +9,9 @@ namespace EXILED.Patches
   {
     public static void Postfix(NicknameSync __instance)
     {
+      if (EventPlugin.PlayerJoinEventPatchDisable)
+        return;
+      
       try
       {
         ReferenceHub hub = Plugin.GetPlayer(__instance.gameObject);

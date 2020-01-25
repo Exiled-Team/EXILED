@@ -9,6 +9,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Inventory __instance, int itemInventoryIndex)
 		{
+			if (EventPlugin.DropItemEventPatchDisable)
+				return true;
+			
 			try
 			{
 				if (!__instance._iawRateLimit.CanExecute(true) || itemInventoryIndex < 0 ||

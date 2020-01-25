@@ -10,6 +10,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Generator079 __instance, GameObject person, string command)
 		{
+			if (EventPlugin.Generator079EventPatchDisable)
+				return true;
+			
 			try
 			{
 				if (command.StartsWith("EPS_TABLET"))

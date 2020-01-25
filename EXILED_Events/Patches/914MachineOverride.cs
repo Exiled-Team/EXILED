@@ -15,6 +15,9 @@ namespace EXILED.Patches
     {
         public static bool Prefix(Scp914.Scp914Machine __instance)
         {
+            if (EventPlugin.NineFourteenMachinePatchDisable)
+                return true;
+            
             try
             {
                 if (!NetworkServer.active)

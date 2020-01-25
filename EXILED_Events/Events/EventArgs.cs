@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Grenades;
 using LiteNetLib;
 using UnityEngine;
-using static BanHandler;
 
 namespace EXILED
 {
@@ -20,53 +19,7 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
-	public class OnShootEvent : EventArgs
-	{
-		public GameObject Target;
-		public ReferenceHub Shooter;
-		public float Damage;
-		public bool Allow;
-		public float Distance;
-	}
-
-	public class Scp106TeleportEvent : EventArgs
-	{
-		public ReferenceHub Player;
-		public Vector3 PortalPosition;
-		public bool Allow;
-	}
-
-	public class PocketDimDamageEvent : EventArgs
-	{
-		public ReferenceHub Player;
-		public bool Allow;
-	}
-
-	public class PocketDimEscapedEvent : EventArgs
-	{
-		public ReferenceHub Player;
-		public bool Allow;
-	}
-
-	public class PlayerBannedEvent : EventArgs
-	{
-		public BanDetails Details;
-		public BanType Type;
-	}
-
-	public class PocketDimEnterEvent : EventArgs
-	{
-		public ReferenceHub Player;
-		public bool Allow;
-	}
-
-	public class PocketDimDeathEvent : EventArgs
-	{
-		public ReferenceHub Player;
-		public bool Allow;
-	}
-
-	public class SCP914UpgradeEvent : EventArgs
+    public class SCP914UpgradeEvent : EventArgs
     {
 	    public bool Allow;
         public Scp914.Scp914Machine Machine;
@@ -240,5 +193,81 @@ namespace EXILED
 	public class GeneratorFinishEvent : EventArgs
 	{
 		public Generator079 Generator { get; set; }
+	}
+
+	public class Scp079TriggerTeslaEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class DecontaminationEvent : EventArgs
+	{
+		public bool Allow { get; set; }
+	}
+
+	public class CheckEscapeEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class IntercomSpeakEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class CheckRoundEndEvent : EventArgs
+	{
+		public bool Allow { get; set; }
+		public bool ForceEnd { get; set; }
+		public RoundSummary.LeadingTeam LeadingTeam { get; set; }
+	}
+  
+  	public class OnShootEvent : EventArgs
+	{
+		public GameObject Target;
+		public ReferenceHub Shooter;
+		public float Damage;
+		public bool Allow;
+		public float Distance;
+	}
+
+	public class Scp106TeleportEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public Vector3 PortalPosition;
+		public bool Allow;
+	}
+
+	public class PocketDimDamageEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+	}
+
+	public class PocketDimEscapedEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+	}
+
+	public class PlayerBannedEvent : EventArgs
+	{
+		public BanDetails Details;
+		public BanType Type;
+	}
+
+	public class PocketDimEnterEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+	}
+
+	public class PocketDimDeathEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
 	}
 }
