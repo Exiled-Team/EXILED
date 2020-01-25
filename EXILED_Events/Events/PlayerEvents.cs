@@ -1,6 +1,7 @@
 using EXILED.Patches;
 using Grenades;
 using UnityEngine;
+using static BanHandler;
 
 namespace EXILED
 {
@@ -420,14 +421,6 @@ namespace EXILED
 			};
 			PocketDimEscapedEvent?.Invoke(ev);
 			allow = ev.Allow;
-		}
-
-		public static event PlayerBanned PlayerBannedEvent;
-		public delegate void PlayerBanned(PlayerBannedEvent ev);
-
-		public static void InvokePlayerBanned(BanDetails details, BanType type)
-		{
-
 		}
 
 		public static event PocketDimDeath PocketDimDeathEvent;

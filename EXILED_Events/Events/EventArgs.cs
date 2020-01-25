@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Grenades;
 using LiteNetLib;
 using UnityEngine;
+using static BanHandler;
 
 namespace EXILED
 {

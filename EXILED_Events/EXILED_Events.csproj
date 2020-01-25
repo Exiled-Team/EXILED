@@ -178,6 +178,7 @@
     <Compile Include="Patches\079TriggerTeslaEvent.cs" />
     <Compile Include="Patches\914MachineOverride.cs" />
     <Compile Include="Patches\AntiFlyOverride.cs" />
+    <Compile Include="Patches\BanHandlerOverride.cs" />
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\CheckEscapeEvent.cs" />
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
@@ -201,6 +202,9 @@
     <Compile Include="Patches\RoundRestartEvent.cs" />
     <Compile Include="Patches\RoundStartPatch.cs" />
     <Compile Include="Patches\Scp096ProcessLookingOverride.cs" />
+    <Compile Include="Patches\Scp106PlayerScriptOverride.cs" />
+    <Compile Include="Patches\Scp106PocketDimOverride.cs" />
+    <Compile Include="Patches\Scp106PocketDimTeleportOverride.cs" />
     <Compile Include="Patches\Scp173Override.cs" />
     <Compile Include="Patches\ServerCommandPatch.cs" />
     <Compile Include="Patches\ServerNamePatch.cs" />
@@ -209,6 +213,7 @@
     <Compile Include="Patches\UseMedicalEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
     <Compile Include="Patches\WarheadCmdEvent.cs" />
+    <Compile Include="Patches\WeaponManagerOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReloadCommandHandler.cs" />
