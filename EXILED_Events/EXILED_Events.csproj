@@ -193,6 +193,7 @@
     <Compile Include="Patches\RACommandPatch.cs" />
     <Compile Include="Patches\RespawnEvent.cs" />
     <Compile Include="Patches\RoundEndPatch.cs" />
+    <Compile Include="Patches\RoundRestartEvent.cs" />
     <Compile Include="Patches\RoundStartPatch.cs" />
     <Compile Include="Patches\Scp096ProcessLookingOverride.cs" />
     <Compile Include="Patches\Scp173Override.cs" />

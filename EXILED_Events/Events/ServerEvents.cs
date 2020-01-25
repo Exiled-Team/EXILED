@@ -40,7 +40,14 @@ namespace EXILED
 			OnRoundEnd roundEndEvent = RoundEndEvent;
 			roundEndEvent?.Invoke();
 		}
-		
+
+		public static event OnRoundRestart RoundRestartEvent;
+		public delegate void OnRoundRestart();
+		public static void InvokeRoundRestart()
+		{
+			OnRoundRestart onRoundRestart = RoundRestartEvent;
+			onRoundRestart?.Invoke();
+		}
 		
 		public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref RACommandEvent ev);
