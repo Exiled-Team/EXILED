@@ -441,5 +441,25 @@ namespace EXILED
 			PocketDimDeathEvent?.Invoke(ev);
 			allow = ev.Allow;
 		}
+
+		public static event PlayerReload PlayerReloadEvent;
+
+		public delegate void PlayerReload(ref PlayerReloadEvent ev);
+
+		public static void InvokePlayerReload(GameObject player, ref bool allow)
+		{
+			PlayerReload playerReload = PlayerReloadEvent;
+			if (playerReload == null)
+				return;
+			
+			PlayerReloadEvent ev = new PlayerReloadEvent
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow
+			};
+			
+			playerReload.Invoke(ref ev);
+			allow = ev.Allow;
+		}
 	}
 }

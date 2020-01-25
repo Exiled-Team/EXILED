@@ -271,4 +271,10 @@ namespace EXILED
 		public ReferenceHub Player;
 		public bool Allow;
 	}
+
+	public class PlayerReloadEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
 }

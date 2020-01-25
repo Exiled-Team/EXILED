@@ -197,6 +197,7 @@
     <Compile Include="Patches\PreAuthEventPatch.cs" />
     <Compile Include="Patches\GameConsoleQueryOverride.cs" />
     <Compile Include="Patches\RACommandPatch.cs" />
+    <Compile Include="Patches\ReloadEvent.cs" />
     <Compile Include="Patches\RespawnEvent.cs" />
     <Compile Include="Patches\RoundEndPatch.cs" />
     <Compile Include="Patches\RoundRestartEvent.cs" />
