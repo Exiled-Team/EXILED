@@ -101,13 +101,10 @@ namespace EXILED.Patches
 						}
 					}
 					Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
-					if (item == null)
+					if (item != null && item.permissions.Contains(component1.permissionLevel))
 					{
-						// Let the plugins decide in case the default options to open the door weren't met
 						if (!component1.locked)
 						{
-							// Instead of passing allow as true, pass it as false
-							allow = false;
 							try
 							{
 								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
@@ -130,10 +127,13 @@ namespace EXILED.Patches
 						else
 							__instance.RpcDenied(doorId);
 					}
-					else if (item.permissions.Contains(component1.permissionLevel))
+					else
 					{
+						// Let the plugins decide in case the default options to open the door weren't met
 						if (!component1.locked)
 						{
+							// Instead of passing allow as true, pass it as false
+							allow = false;
 							try
 							{
 								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
