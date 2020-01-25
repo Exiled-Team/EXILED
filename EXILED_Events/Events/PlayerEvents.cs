@@ -1,6 +1,7 @@
 using EXILED.Patches;
 using Grenades;
 using UnityEngine;
+using static BanHandler;
 
 namespace EXILED
 {
@@ -21,6 +22,128 @@ namespace EXILED
 				Item = type
 			};
 			useMedicalItem?.Invoke(ev);
+		}
+
+
+		public static event OnShoot OnShootEvent;
+		public delegate void OnShoot(OnShootEvent ev);
+
+		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, float damage, float distance, ref bool allow)
+		{
+			OnShootEvent ev = new OnShootEvent()
+			{
+				Shooter = shooter,
+				Target = target,
+				Damage = damage,
+				Distance = distance,
+				Allow = allow
+			};
+			OnShootEvent?.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event Scp106Teleport Scp106TeleportEvent;
+		public delegate void Scp106Teleport(Scp106TeleportEvent ev);
+
+		public static void InvokeScp106Teleport(GameObject Gplayer, Vector3 PortalPos, ref bool allow)
+		{
+			Scp106Teleport scp106Teleport = Scp106TeleportEvent;
+			if (scp106Teleport == null)
+				return;
+
+			ReferenceHub Player = Plugin.GetPlayer(Gplayer);
+			Scp106TeleportEvent ev = new Scp106TeleportEvent()
+			{
+				Player = Player,
+				PortalPosition = PortalPos,
+				Allow = allow
+			};
+			scp106Teleport.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event PocketDimDamage PocketDimDamageEvent;
+		public delegate void PocketDimDamage(PocketDimDamageEvent ev);
+
+		public static void InvokePocketDimDamage(GameObject Gplayer, ref bool allow)
+		{
+			PocketDimDamage pocketDimDamage = PocketDimDamageEvent;
+			if (pocketDimDamage == null)
+				return;
+
+			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			PocketDimDamageEvent ev = new PocketDimDamageEvent()
+			{
+				Player = player,
+				Allow = allow
+			};
+			PocketDimDamageEvent?.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event PocketDimEnter PocketDimEnterEvent;
+		public delegate void PocketDimEnter(PocketDimEnterEvent ev);
+
+		public static void InvokePocketDimEnter(GameObject Gplayer, ref bool allow)
+		{
+			PocketDimEnter pocketDimEnter = PocketDimEnterEvent;
+			if (pocketDimEnter == null)
+				return;
+
+			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			PocketDimEnterEvent ev = new PocketDimEnterEvent()
+			{
+				Player = player,
+				Allow = allow
+			};
+			PocketDimEnterEvent?.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event PocketDimEscaped PocketDimEscapedEvent;
+		public delegate void PocketDimEscaped(PocketDimEscapedEvent ev);
+
+		public static void InvokePocketDimEscaped(GameObject Gplayer, ref bool allow)
+		{
+			PocketDimEscaped pocketDimEscaped = PocketDimEscapedEvent;
+			if (pocketDimEscaped == null)
+				return;
+
+			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			PocketDimEscapedEvent ev = new PocketDimEscapedEvent()
+			{
+				Player = player,
+				Allow = allow
+			};
+			PocketDimEscapedEvent?.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event PlayerBanned PlayerBannedEvent;
+		public delegate void PlayerBanned(PlayerBannedEvent ev);
+
+		public static void InvokePlayerBanned(BanDetails details, BanType type)
+		{
+
+		}
+
+		public static event PocketDimDeath PocketDimDeathEvent;
+		public delegate void PocketDimDeath(PocketDimDeathEvent ev);
+
+		public static void InvokePocketDimDeath(GameObject Gplayer, ref bool allow)
+		{
+			PocketDimDeath pocketDimDeath = PocketDimDeathEvent;
+			if (pocketDimDeath == null)
+				return;
+
+			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			PocketDimDeathEvent ev = new PocketDimDeathEvent()
+			{
+				Player = player,
+				Allow = allow
+			};
+			PocketDimDeathEvent?.Invoke(ev);
+			allow = ev.Allow;
 		}
 
 		public static event Scp096Enrage Scp096EnrageEvent;

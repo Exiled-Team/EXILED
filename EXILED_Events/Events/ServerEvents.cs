@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using LiteNetLib;
 using UnityEngine;
+using static BanHandler;
 
 namespace EXILED
 {
@@ -121,6 +122,24 @@ namespace EXILED
 			toRespawn = new List<GameObject>();
 			foreach (ReferenceHub hub in ev.ToRespawn)
 				toRespawn.Add(hub.gameObject);
+		}
+
+
+		public static event PlayerBanned PlayerBannedEvent;
+		public delegate void PlayerBanned(PlayerBannedEvent ev);
+
+		public static void InvokePlayerBanned(BanDetails details, BanType type)
+		{
+			PlayerBanned playerBanned = PlayerBannedEvent;
+			if (playerBanned == null)
+				return;
+
+			PlayerBannedEvent ev = new PlayerBannedEvent()
+			{
+				Details = details,
+				Type = type
+			};
+			PlayerBannedEvent?.Invoke(ev);
 		}
 	}
 }
