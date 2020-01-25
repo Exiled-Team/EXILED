@@ -184,5 +184,48 @@ namespace EXILED
 			};
 			generatorFinish.Invoke(ref ev);
 		}
+
+		public static event Decontamination DecontaminationEvent;
+
+		public delegate void Decontamination(ref DecontaminationEvent ev);
+
+		public static void InvokeDecontamination(ref bool allow)
+		{
+			Decontamination decontamination = DecontaminationEvent;
+			if (decontamination == null)
+				return;
+			DecontaminationEvent ev = new DecontaminationEvent
+			{
+				Allow = allow
+			};
+			
+			decontamination.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+
+		public static event CheckRoundEnd CheckRoundEndEvent;
+
+		public delegate void CheckRoundEnd(ref CheckRoundEndEvent ev);
+
+		public static void InvokeCheckRoundEnd(ref bool force, ref bool allow, ref RoundSummary.LeadingTeam team, ref bool teamChanged)
+		{
+			CheckRoundEnd checkRoundEnd = CheckRoundEndEvent;
+			if (checkRoundEnd == null)
+				return;
+			
+			CheckRoundEndEvent ev = new CheckRoundEndEvent
+			{
+				LeadingTeam = team,
+				ForceEnd = force,
+				Allow = allow
+			};
+			
+			checkRoundEnd.Invoke(ref ev);
+			if (team != ev.LeadingTeam)
+				teamChanged = true;
+			team = ev.LeadingTeam;
+			allow = ev.Allow;
+			force = ev.ForceEnd;
+		}
 	}
 }

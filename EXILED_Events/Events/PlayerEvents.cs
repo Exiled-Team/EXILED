@@ -269,5 +269,63 @@ namespace EXILED
 			handcuffFreed.Invoke(ref ev);
 			allow = ev.Allow;
 		}
+
+		public static event Scp079TriggerTesla Scp079TriggerTeslaEvent;
+		public delegate void Scp079TriggerTesla(ref Scp079TriggerTeslaEvent ev);
+		public static void InvokeScp079TriggerTesla(GameObject player, ref bool allow)
+		{
+			Scp079TriggerTesla scp079TriggerTesla = Scp079TriggerTeslaEvent;
+			if (scp079TriggerTesla == null)
+				return;
+			
+			Scp079TriggerTeslaEvent ev = new Scp079TriggerTeslaEvent
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow
+			};
+			
+			scp079TriggerTesla.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+
+		public static event CheckEscape CheckEscapeEvent;
+
+		public delegate void CheckEscape(ref CheckEscapeEvent ev);
+
+		public static void InvokeCheckEscape(GameObject ply, ref bool allow)
+		{
+			CheckEscape checkEscape = CheckEscapeEvent;
+			if (checkEscape == null)
+				return;
+			
+			CheckEscapeEvent ev = new CheckEscapeEvent
+			{
+				Player = Plugin.GetPlayer(ply),
+				Allow = allow
+			};
+			
+			checkEscape.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+
+		public static event IntercomSpeak IntercomSpeakEvent;
+
+		public delegate void IntercomSpeak(ref IntercomSpeakEvent ev);
+
+		public static void InvokeIntercomSpeak(GameObject player, ref bool allow)
+		{
+			IntercomSpeak intercomSpeak = IntercomSpeakEvent;
+			if (intercomSpeak == null)
+				return;
+			
+			IntercomSpeakEvent ev = new IntercomSpeakEvent
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow
+			};
+			
+			intercomSpeak.Invoke(ref ev);
+			allow = ev.Allow;
+		}
 	}
 }

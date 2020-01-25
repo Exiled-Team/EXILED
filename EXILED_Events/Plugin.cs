@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using EXILED.Patches;
 using Harmony;
 using Random = System.Random;
@@ -30,11 +31,24 @@ namespace EXILED
 		public static bool GrenadeThrownPatchDisable;
 		public static bool NineFourteenMachinePatchDisable;
 		public static bool PlayerConsoleCommandPatchDisable;
+		public static bool Scp079TriggerTeslaPatchDisable;
+		public static bool CheckEscapeEventPatchDisable;
+		public static bool CheckRoundEndEventPatchDisable;
+		public static bool DecontaminationEventPatchDisable;
+		public static bool IntercomSpeakingEventPatchDisable;
+		public static bool RoundRestartEventPatchDisable;
+		public static bool DoorInteractionEventPatchDisable;
+		public static bool PlayerJoinEventPatchDisable;
+		public static bool PlayerLeaveEventPatchDisable;
+		public static bool DropItemEventPatchDisable;
+		public static bool PickupItemEventPatchDisable;
+		public static bool Generator079EventPatchDisable;
+		public static bool HandcuffEventPatchDisable;
 		
 		private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
-		
+
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{

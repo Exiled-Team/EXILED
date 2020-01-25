@@ -10,6 +10,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(PlayerInteract __instance, GameObject doorId)
 		{
+			if (EventPlugin.DoorInteractionEventPatchDisable)
+				return true;
+			
 			bool allow = true;
 			if (!__instance._playerInteractRateLimit.CanExecute() || __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract || (doorId == null || __instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator))
 				return false;

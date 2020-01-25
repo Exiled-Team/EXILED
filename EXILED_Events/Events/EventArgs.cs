@@ -194,4 +194,34 @@ namespace EXILED
 	{
 		public Generator079 Generator { get; set; }
 	}
+
+	public class Scp079TriggerTeslaEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class DecontaminationEvent : EventArgs
+	{
+		public bool Allow { get; set; }
+	}
+
+	public class CheckEscapeEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class IntercomSpeakEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class CheckRoundEndEvent : EventArgs
+	{
+		public bool Allow { get; set; }
+		public bool ForceEnd { get; set; }
+		public RoundSummary.LeadingTeam LeadingTeam { get; set; }
+	}
 }
