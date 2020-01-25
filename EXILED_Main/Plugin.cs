@@ -95,6 +95,14 @@ namespace EXILED
 
 		//Gets the reference hub of a specific game object.
 		public static ReferenceHub GetPlayer(GameObject obj) => ReferenceHub.GetHub(obj);
+		
+		public static ReferenceHub GetPlayer(int pId)
+		{
+			foreach (ReferenceHub hub in GetHubs())
+				if (hub.queryProcessor.PlayerId == pId)
+					return hub;
+			return null;
+		}
 
 		//Gets the reference hub of a player based on a string that can be either their playerID, userID, or name, checking in that order. Returns null if no match is found.
 		public static ReferenceHub GetPlayer(string args)

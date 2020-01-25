@@ -8,7 +8,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
   [HarmonyPatch(typeof(MTFRespawn), "RespawnDeadPlayers")]
-  public class RespawnEvent
+ public class RespawnEvent
   {
     public static bool Prefix(MTFRespawn __instance)
     {
@@ -18,47 +18,52 @@ namespace EXILED.Patches
       try
       {
         int num = 0;
-        IEnumerable<GameObject> source = PlayerManager.players.Where(item => item.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator && !item.GetComponent<ServerRoles>().OverwatchEnabled);
-        if (__instance.priorityMTFRespawn)
-          source = source.OrderBy(item => item.GetComponent<CharacterClassManager>().DeathTime);
-        List<GameObject> list = source.Take(__instance.nextWaveIsCI ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount).ToList();
-        if (ConfigFile.ServerConfig.GetBool("use_crypto_rng"))
-          list.ShuffleListSecure();
-        else
-          list.ShuffleList();
         __instance.playersToNTF.Clear();
-        if (__instance.nextWaveIsCI && AlphaWarheadController.Host.detonated)
-          __instance.nextWaveIsCI = false;
-        
+        List<GameObject> players = PlayerManager.players
+          .Where(c => c.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator).ToList();
+        Plugin.Debug($"Respawn: Got players: {players.Count}");
+        foreach (GameObject player in players.ToArray())
+          if (player.GetComponent<ServerRoles>().OverwatchEnabled)
+          {
+            Plugin.Debug($"Removing {ReferenceHub.GetHub(player)} -- Overwatch true");
+            players.Remove(player);
+          }
+
+        players.ShuffleList();
+        int r = EventPlugin.Gen.Next(100);
         int maxRespawn = 15;
-        List<GameObject> toRespawn = list;
+        List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         bool isChaos = __instance.nextWaveIsCI;
+        Plugin.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
         Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref toRespawn);
 
-        toRespawn = toRespawn.Take(maxRespawn).ToList();
-        
         foreach (GameObject ply in toRespawn)
         {
           if (!(ply == null))
           {
             ++num;
-            if (__instance.nextWaveIsCI)
+            if (isChaos)
             {
-              __instance.GetComponent<CharacterClassManager>().SetPlayersClass(RoleType.ChaosInsurgency, ply);
-              ServerLogs.AddLog(ServerLogs.Modules.ClassChange, ply.GetComponent<NicknameSync>().MyNick + " (" + ply.GetComponent<CharacterClassManager>().UserId + ") respawned as Chaos Insurgency agent.", ServerLogs.ServerLogType.GameEvent);
+              __instance.GetComponent<CharacterClassManager>()
+                .SetPlayersClass(RoleType.ChaosInsurgency, ply);
+              ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
+                ply.GetComponent<NicknameSync>().MyNick + " (" + ply.GetComponent<CharacterClassManager>().UserId +
+                ") respawned as Chaos Insurgency agent.", ServerLogs.ServerLogType.GameEvent);
             }
             else
               __instance.playersToNTF.Add(ply);
           }
         }
+
         if (num > 0)
         {
-          ServerLogs.AddLog(ServerLogs.Modules.ClassChange, (__instance.nextWaveIsCI ? "Chaos Insurgency" : "MTF") + " respawned!", ServerLogs.ServerLogType.GameEvent);
+          ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
+            (__instance.nextWaveIsCI ? "Chaos Insurgency" : "MTF") + " respawned!", ServerLogs.ServerLogType.GameEvent);
           if (__instance.nextWaveIsCI)
             __instance.Invoke("CmdDelayCIAnnounc", 1f);
         }
+
         __instance.SummonNTF();
-        
         return false;
       }
       catch (Exception e)
