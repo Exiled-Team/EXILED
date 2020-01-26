@@ -139,7 +139,7 @@ namespace EXILED.Shared
 					}
 
 					_plugins.Add(p);
-					ServerConsole.AddLog($"Successfully loaded {p.getName}");
+					ServerConsole.AddLog($"Successfully loaded {p.Name}");
 				}
 			}
 			catch (Exception e)
@@ -158,7 +158,7 @@ namespace EXILED.Shared
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while enabling {e}");
+					ServerConsole.AddLog($"Plugin {plugin.Name} threw an exception while enabling {e}");
 				}
 			}
 		}
@@ -173,7 +173,7 @@ namespace EXILED.Shared
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while reloading {e}");
+					ServerConsole.AddLog($"Plugin {plugin.Name} threw an exception while reloading {e}");
 				}
 			}
 		}
@@ -188,7 +188,7 @@ namespace EXILED.Shared
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while disabling {e}");
+					ServerConsole.AddLog($"Plugin {plugin.Name} threw an exception while disabling {e}");
 				}
 			}
 		}

@@ -93,7 +93,7 @@ namespace EXILED.Events
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
 		public override void OnReload() {}
 
-		public override string getName { get; }
+		public override string Name { get; }
 
 		public static double GetRoundDuration() => Math.Abs((RoundTime - DateTime.Now).TotalSeconds);
 	}
