@@ -461,5 +461,20 @@ namespace EXILED
 			playerReload.Invoke(ref ev);
 			allow = ev.Allow;
 		}
+
+		public static event PlayerSpawn PlayerSpawnEvent;
+		public delegate void PlayerSpawn(PlayerSpawnEvent ev);
+		public static void InvokePlayerSpawn(ReferenceHub player, RoleType role)
+		{
+			PlayerSpawn playerSpawn = PlayerSpawnEvent;
+			if (playerSpawn == null)
+				return; 
+			PlayerSpawnEvent ev = new PlayerSpawnEvent
+			{
+				Player = player,
+				Role = role
+			};
+			playerSpawn.Invoke(ev);
+		}
 	}
 }

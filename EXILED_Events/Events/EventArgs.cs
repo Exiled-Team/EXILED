@@ -277,4 +277,10 @@ namespace EXILED
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
 	}
+
+	public class PlayerSpawnEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public RoleType Role { get; set; }
+	}
 }

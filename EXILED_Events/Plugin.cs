@@ -58,6 +58,7 @@ namespace EXILED
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
+			Events.SetClassEvent += handlers.OnSetClass;
 			
 			Debug("Patching..");
 			try

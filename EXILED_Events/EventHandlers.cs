@@ -28,5 +28,17 @@ namespace EXILED.Patches
 				yield return Timing.WaitForSeconds(1f);
 			}
 		}
+
+		public void OnSetClass(EXILED.SetClassEvent ev)
+		{
+			Timing.RunCoroutine(InvokeSpawn(ev.Player, ev.Role));
+		}
+
+		public IEnumerator<float> InvokeSpawn(ReferenceHub hub, RoleType role)
+		{
+			yield return Timing.WaitForSeconds(0.05f);
+			
+			Events.InvokePlayerSpawn(hub, role);
+		}
 	}
 }
