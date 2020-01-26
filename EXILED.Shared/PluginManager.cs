@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using EXILED.Shared.Helpers;
 using Loader;
 using MEC;
 
@@ -29,7 +30,7 @@ namespace EXILED.Shared
 			}
 			catch (Exception e)
 			{
-				Plugin.Error(e.ToString());
+                LogHelper.Error(e.ToString());
 			}
 
 			if (Environment.CurrentDirectory.ToLower().Contains("testing"))
@@ -37,7 +38,7 @@ namespace EXILED.Shared
 
 			if (!Directory.Exists(path))
 			{
-				Plugin.Info($"Plugin directory not found - creating: {path}");
+                LogHelper.Info($"Plugin directory not found - creating: {path}");
 				Directory.CreateDirectory(path);
 			}
 
@@ -74,10 +75,10 @@ namespace EXILED.Shared
 
 		private static void LoadDeps()
 		{
-			Plugin.Info("Loading dependencies...");
+            LogHelper.Info("Loading dependencies...");
 			string pl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plugins");
 			string folder = Path.Combine(pl, "dependencies");
-			Plugin.Info("Searching Directory '" + folder + "'");
+            LogHelper.Info("Searching Directory '" + folder + "'");
 			if (!Directory.Exists(folder))
 				Directory.CreateDirectory(folder);
 			string[] depends = Directory.GetFiles(folder);
@@ -89,9 +90,9 @@ namespace EXILED.Shared
 					return;
 				Assembly a = Assembly.LoadFrom(dll);
 				localLoaded.Add(a);
-				Plugin.Info("Loaded dependency " + a.FullName);
+				LogHelper.Info("Loaded dependency " + a.FullName);
 			}
-			Plugin.Info("Complete!");
+			LogHelper.Info("Complete!");
 		}
 		
 		private static bool IsLoaded(string a)
@@ -196,7 +197,7 @@ namespace EXILED.Shared
 		{
 			try
 			{
-				Plugin.Info($"Reloading Plugins..");
+				LogHelper.Info($"Reloading Plugins..");
 				OnDisable();
 				OnReload();
 				_plugins.Clear();

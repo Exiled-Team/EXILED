@@ -1,5 +1,5 @@
 ﻿using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using Console = GameCore.Console;
 
@@ -19,7 +19,7 @@ namespace EXILED.Events.Patches
             }
             catch (Exception e)
             {
-                Plugin.Error($"Server Command event error: {e}");
+                LogHelper.Error($"Server Command event error: {e}");
                 return true;
             }
 

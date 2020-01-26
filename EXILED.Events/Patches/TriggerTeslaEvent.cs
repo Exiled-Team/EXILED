@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using UnityEngine;
 
@@ -37,7 +37,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Tesla trigger event error: {e}");
+				LogHelper.Error($"Tesla trigger event error: {e}");
 			}
 		}
 	}

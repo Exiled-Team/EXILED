@@ -2,6 +2,7 @@ using EXILED.Shared;
 using Harmony;
 using System;
 using System.Collections.Generic;
+using EXILED.Shared.Helpers;
 using Random = System.Random;
 
 namespace EXILED.Events
@@ -51,14 +52,14 @@ namespace EXILED.Events
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
-			Info("Enabled.");
-			Debug("Adding Event Handlers..");
+			LogHelper.Info("Enabled.");
+            LogHelper.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
-			
-			Debug("Patching..");
+
+            LogHelper.Debug("Patching..");
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
@@ -68,25 +69,25 @@ namespace EXILED.Events
 			}
 			catch (Exception e)
 			{
-				Error($"Patching failed! {e}");
+                LogHelper.Error($"Patching failed! {e}");
 			}
 
-			Debug("Patching complete. c:");
+            LogHelper.Debug("Patching complete. c:");
 			ServerConsole.ReloadServerName();
 		}
 
 		//The below method gets called when the plugin is disabled by the EXILED loader.
 		public override void OnDisable()
 		{
-			Info("Disabled.");
+            LogHelper.Info("Disabled.");
 			//You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
-			Debug("Removing Event Handlers..");
+            LogHelper.Debug("Removing Event Handlers..");
 			Events.Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.Events.RoundStartEvent -= handlers.OnRoundStart;
 			handlers = null;
-			Debug("Unpatching..");
+            LogHelper.Debug("Unpatching..");
 			instance.UnpatchAll();
-			Debug("Unpatching complete. Goodbye. :c");
+            LogHelper.Debug("Unpatching complete. Goodbye. :c");
 		}
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.

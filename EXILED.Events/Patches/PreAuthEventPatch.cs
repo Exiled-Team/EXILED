@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cryptography;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using GameCore;
 using Harmony;
 using LiteNetLib;
@@ -22,7 +22,7 @@ namespace EXILED.Events.Patches
       }
       catch (Exception e)
       {
-        Plugin.Error($"Preauth event error: {e}");
+        LogHelper.Error($"Preauth event error: {e}");
         return true;
       }
     }

@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Grenades;
 using Harmony;
 
@@ -21,7 +21,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Grenade thrown patch error: {e}");
+				LogHelper.Error($"Grenade thrown patch error: {e}");
 				return true;
 			}
 		}

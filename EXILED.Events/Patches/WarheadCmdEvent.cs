@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 
 namespace EXILED.Events.Patches
@@ -20,7 +20,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Warhead event error: {e}");
+				LogHelper.Error($"Warhead event error: {e}");
 				return true;
 			}
 		}

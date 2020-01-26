@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using Mirror;
 using UnityEngine;
@@ -51,7 +51,7 @@ namespace EXILED.Events.Patches
             }
             catch (Exception e)
             {
-                Plugin.Error(e.ToString());
+                LogHelper.Error(e.ToString());
                 return true;
             }
         }

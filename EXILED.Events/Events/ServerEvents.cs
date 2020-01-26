@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using LiteNetLib;
 using UnityEngine;
 
@@ -110,7 +110,7 @@ namespace EXILED.Events.Events
 			
 			List<ReferenceHub> respawn = new List<ReferenceHub>();
 			foreach (GameObject obj in toRespawn)
-				respawn.Add(Plugin.GetPlayer(obj));
+				respawn.Add(PlayersHelper.GetPlayer(obj));
 			TeamRespawnEvent ev = new TeamRespawnEvent()
 			{
 				IsChaos = isChaos,

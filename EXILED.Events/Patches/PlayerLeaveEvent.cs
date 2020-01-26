@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 
 namespace EXILED.Events.Patches
@@ -18,7 +18,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Error in PlayerLeave Event: {e}");
+				LogHelper.Error($"Error in PlayerLeave Event: {e}");
 			}
 		}
 	}

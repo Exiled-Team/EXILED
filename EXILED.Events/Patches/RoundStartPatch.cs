@@ -1,22 +1,22 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 
 namespace EXILED.Events.Patches
 {
-  [HarmonyPatch(typeof (CharacterClassManager), "CmdStartRound")]
-  public class RoundStartPatch
-  {
-    public static void Prefix()
+    [HarmonyPatch(typeof(CharacterClassManager), "CmdStartRound")]
+    public class RoundStartPatch
     {
-      try
-      {
-        Events.Events.InvokeRoundStart();
-      }
-      catch (Exception e)
-      {
-        Plugin.Error($"Round end event error: {e}");
-      }
+        public static void Prefix()
+        {
+            try
+            {
+                Events.Events.InvokeRoundStart();
+            }
+            catch (Exception e)
+            {
+                LogHelper.Error($"Round end event error: {e}");
+            }
+        }
     }
-  }
 }

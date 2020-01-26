@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -96,7 +96,7 @@ namespace EXILED.Events.Patches
       }
       catch (Exception e)
       {
-        Plugin.Error($"Item Pickup error: {e}");
+        LogHelper.Error($"Item Pickup error: {e}");
         return true;
       }
     }

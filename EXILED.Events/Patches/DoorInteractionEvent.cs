@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using UnityEngine;
 
@@ -45,7 +45,7 @@ namespace EXILED.Events.Patches
 					}
 					catch (Exception e)
 					{
-						Plugin.Error($"Door interaction error: {e}");
+						LogHelper.Error($"Door interaction error: {e}");
 
 						if (allow) component1.ChangeState();
 						else __instance.RpcDenied(doorId);
@@ -67,7 +67,7 @@ namespace EXILED.Events.Patches
 					}
 					catch (Exception e)
 					{
-						Plugin.Error($"Door interaction error: {e}");
+						LogHelper.Error($"Door interaction error: {e}");
 
 						if (allow) component1.ChangeState();
 						else __instance.RpcDenied(doorId);
@@ -97,7 +97,7 @@ namespace EXILED.Events.Patches
 						}
 						catch (Exception e)
 						{
-							Plugin.Error($"Door interaction error: {e}");
+							LogHelper.Error($"Door interaction error: {e}");
 
 							if (allow) component1.ChangeState();
 							else __instance.RpcDenied(doorId);
@@ -122,7 +122,7 @@ namespace EXILED.Events.Patches
 							}
 							catch (Exception e)
 							{
-								Plugin.Error($"Door interaction error: {e}");
+								LogHelper.Error($"Door interaction error: {e}");
 
 								if (allow) component1.ChangeState();
 								else __instance.RpcDenied(doorId);
@@ -151,7 +151,7 @@ namespace EXILED.Events.Patches
 							}
 							catch (Exception e)
 							{
-								Plugin.Error($"Door interaction error: {e}");
+								LogHelper.Error($"Door interaction error: {e}");
 
 								if (allow) component1.ChangeState();
 								else __instance.RpcDenied(doorId);

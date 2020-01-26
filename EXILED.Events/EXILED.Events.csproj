@@ -174,7 +174,6 @@
     <Compile Include="Events\MapEvents.cs" />
     <Compile Include="Events\PlayerEvents.cs" />
     <Compile Include="Events\ServerEvents.cs" />
-    <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="Patches\079TriggerTeslaEvent.cs" />
     <Compile Include="Patches\914MachineOverride.cs" />
     <Compile Include="Patches\AntiFlyOverride.cs" />

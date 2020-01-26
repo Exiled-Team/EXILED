@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using UnityEngine;
 
@@ -18,7 +18,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Player hurt event error: {e}");
+				LogHelper.Error($"Player hurt event error: {e}");
 			}
 		}
 
@@ -35,7 +35,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Player death event error: {e}");
+				LogHelper.Error($"Player death event error: {e}");
 			}
 		}
 	}

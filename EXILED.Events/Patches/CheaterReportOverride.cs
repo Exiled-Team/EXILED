@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 
 namespace EXILED.Events.Patches
@@ -28,7 +28,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Cheater Report Patch error: {e}");
+				LogHelper.Error($"Cheater Report Patch error: {e}");
 				return true;
 			}
 		}

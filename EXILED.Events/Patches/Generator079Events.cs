@@ -1,5 +1,5 @@
 using System;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using Harmony;
 using UnityEngine;
 
@@ -91,7 +91,7 @@ namespace EXILED.Events.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Generator079 error: {e}");
+				LogHelper.Error($"Generator079 error: {e}");
 				return true;
 			}
 		}

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using EXILED.Shared;
+using EXILED.Shared.Helpers;
 using UnityEngine;
 
 namespace EXILED.Events.Events
@@ -17,7 +17,7 @@ namespace EXILED.Events.Events
 			
 			WarheadLeverEvent ev = new WarheadLeverEvent()
 			{
-				Player = Plugin.GetPlayer(interaction.gameObject),
+				Player = PlayersHelper.GetPlayer(interaction.gameObject),
 				Allow = allow
 			};
 			onWarheadCommand?.Invoke(ref ev);
@@ -35,7 +35,7 @@ namespace EXILED.Events.Events
 			
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = PlayersHelper.GetPlayer(player),
 				Allow = allow,
 				Door = door
 			};
@@ -53,7 +53,7 @@ namespace EXILED.Events.Events
 			
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
-				Player = Plugin.GetPlayer(obj),
+				Player = PlayersHelper.GetPlayer(obj),
 				Triggerable = triggerable
 			};
 			triggerTesla?.Invoke(ref ev);
@@ -70,7 +70,7 @@ namespace EXILED.Events.Events
 			List<ReferenceHub> players = new List<ReferenceHub>();
 			foreach (CharacterClassManager ccm in ccms)
 			{
-				players.Add(Plugin.GetPlayer(ccm.gameObject));
+				players.Add(PlayersHelper.GetPlayer(ccm.gameObject));
 			}
 
 			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
@@ -97,7 +97,7 @@ namespace EXILED.Events.Events
 			{
 				Allow = allow,
 				Generator = generator,
-				Player = Plugin.GetPlayer(person)
+				Player = PlayersHelper.GetPlayer(person)
 			};
 			generatorUnlock.Invoke(ref ev);
 			allow = ev.Allow;
@@ -112,7 +112,7 @@ namespace EXILED.Events.Events
 				return;
 			GeneratorOpenEvent ev = new GeneratorOpenEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = PlayersHelper.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -129,7 +129,7 @@ namespace EXILED.Events.Events
 				return;
 			GeneratorCloseEvent ev = new GeneratorCloseEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = PlayersHelper.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -146,7 +146,7 @@ namespace EXILED.Events.Events
 				return;
 			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = PlayersHelper.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -163,7 +163,7 @@ namespace EXILED.Events.Events
 				return;
 			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = PlayersHelper.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
