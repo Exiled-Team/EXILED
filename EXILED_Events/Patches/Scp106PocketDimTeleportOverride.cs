@@ -13,24 +13,16 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(PocketDimensionTeleport), "OnTriggerEnter")]
     public class Scp106PocketDimTeleportOverride
     {
-        public static void Prefix(PocketDimensionTeleport __instance, Collider other)
+        public static bool Prefix(PocketDimensionTeleport __instance, Collider other)
         {
-			if (!NetworkServer.active)
-				return;
 			NetworkIdentity component = other.GetComponent<NetworkIdentity>();
 			if (component != null)
 			{
 				if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || UnityEngine.Object.FindObjectOfType<BlastDoor>().isClosed)
 				{
-					bool AllowDeath = true;
-
-					Events.InvokePocketDimDeath(__instance.gameObject, ref AllowDeath);
-
-					if (!AllowDeath)
-						return;
-
 					component.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
 				}
+				
 				else if (__instance.type == PocketDimensionTeleport.PDTeleportType.Exit)
 				{
 					__instance.tpPositions.Clear();
@@ -49,12 +41,12 @@ namespace EXILED.Patches
 						foreach (GameObject gameObject2 in GameObject.FindGameObjectsWithTag("PD_EXIT"))
 							__instance.tpPositions.Add(gameObject2.transform.position);
 
-					bool AllowEscape = true;
+					bool allowEscape = true;
 
-					Events.InvokePocketDimEscaped(__instance.gameObject, ref AllowEscape);
+					Events.InvokePocketDimEscaped(__instance.gameObject, ref allowEscape);
 
-					if (!AllowEscape)
-						return;
+					if (!allowEscape)
+						return false;
 
 					Vector3 pos = __instance.tpPositions[UnityEngine.Random.Range(0, __instance.tpPositions.Count)];
 					pos.y += 2f;
@@ -67,6 +59,7 @@ namespace EXILED.Patches
 				if (__instance.RefreshExit)
 					ImageGenerator.pocketDimensionGenerator.GenerateRandom();
 			}
+			return false;
 		}
     }
 }

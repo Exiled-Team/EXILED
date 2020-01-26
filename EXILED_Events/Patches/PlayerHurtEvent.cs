@@ -13,6 +13,14 @@ namespace EXILED.Patches
 				return;
 			try
 			{
+				if (info.GetDamageType() == DamageTypes.Pocket)
+				{
+					bool allow = true;
+					Events.InvokePocketDimDamage(__instance.gameObject, ref allow);
+					if (!allow)
+						info.Amount = 0f;
+				}
+
 				Events.InvokePlayerHurt(__instance, ref info, go);
 			}
 			catch (Exception e)
@@ -30,7 +38,16 @@ namespace EXILED.Patches
 			{
 				if (go.GetComponent<PlayerStats>().health < 1 ||
 				    go.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator)
+				{
+					if (info.GetDamageType() == DamageTypes.Pocket)
+					{
+						bool allow = true;
+						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
+						if (!allow)
+							info.Amount = 0;
+					}
 					Events.InvokePlayerDeath(__instance, ref info, go);
+				}
 			}
 			catch (Exception e)
 			{

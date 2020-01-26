@@ -13,34 +13,28 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(Scp106PlayerScript), "CallCmdMovePlayer")]
     public class Scp106PocketDimOverride
     {
-        public static void Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
+        public static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
         {
 			if (!__instance._iawRateLimit.CanExecute(true))
-				return;
+				return false;
 			if (ply == null)
-				return;
+				return false;
 
 			CharacterClassManager component = ply.GetComponent<CharacterClassManager>();
 			if (component == null)
-				return;
+				return false;
 			if (!ServerTime.CheckSynchronization(t) || !__instance.iAm106 || Vector3.Distance(__instance.GetComponent<PlyMovementSync>().RealModelPosition, ply.transform.position) >= 3f || !component.IsHuman())
-				return;
+				return false;
 
 			CharacterClassManager component2 = ply.GetComponent<CharacterClassManager>();
 			if (component2.GodMode)
-				return;
+				return false;
 			if (component2.Classes.SafeGet(component2.CurClass).team == Team.SCP)
-				return;
+				return false;
 
 			__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
 			if (Scp106PlayerScript.blastDoor.isClosed)
 			{
-				bool AllowDamage = true;
-
-				Events.InvokePocketDimDamage(ply, ref AllowDamage);
-
-				if (!AllowDamage)
-					return;
 				__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
 				__instance.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(500f, __instance.GetComponent<NicknameSync>().MyNick + " (" + __instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106, __instance.GetComponent<QueryProcessor>().PlayerId), ply);
 			}
@@ -78,30 +72,29 @@ namespace EXILED.Patches
 
 				// Invoke enter
 
-				bool AllowEnter = true;
+				bool allowEnter = true;
 
-				Events.InvokePocketDimEnter(ply, ref AllowEnter);
+				Events.InvokePocketDimEnter(ply, ref allowEnter);
 
-				if (!AllowEnter)
-					return;
-
-				ply.GetComponent<PlyMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
+				if (allowEnter)
+					ply.GetComponent<PlyMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
 
 				// Invoke damage.
 
-				bool AllowDamage = true;
+				bool allowDamage = true;
 
 
-				Events.InvokePocketDimDamage(ply, ref AllowDamage);
+				Events.InvokePocketDimDamage(ply, ref allowDamage);
 
-				if (!AllowDamage)
-					return;
-				__instance.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(40f, __instance.GetComponent<NicknameSync>().MyNick + " (" + __instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106, __instance.GetComponent<QueryProcessor>().PlayerId), ply);
+				if (allowDamage)
+					__instance.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(40f, __instance.GetComponent<NicknameSync>().MyNick + " (" + __instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106, __instance.GetComponent<QueryProcessor>().PlayerId), ply);
 
 			}
 			PlayerEffectsController componentInParent = ply.GetComponentInParent<PlayerEffectsController>();
 			componentInParent.GetEffect<Corroding>("Corroding").isInPd = true;
 			componentInParent.EnableEffect("Corroding");
-		}
+
+			return false;
+        }
     }
 }
