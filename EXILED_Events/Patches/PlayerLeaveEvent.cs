@@ -4,9 +4,9 @@ using Harmony;
 
 namespace EXILED.Patches
 {
+	[HarmonyPatch(typeof(ReferenceHub), "OnDestroy")]
 	public class PlayerLeaveEvent
 	{
-		[HarmonyPatch(typeof(ReferenceHub), "OnDestroy")]
 		public static void Prefix(ReferenceHub __instance)
 		{
 			if (EventPlugin.PlayerLeaveEventPatchDisable)
