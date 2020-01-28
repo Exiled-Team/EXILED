@@ -74,7 +74,7 @@ namespace EXILED.Patches
 					else
 					{
 						bool allow = true;
-						if (__instance.NetworkisDoorOpen)
+						if (!__instance.NetworkisDoorOpen)
 							Events.InvokeGeneratorOpen(person, __instance, ref allow);
 						else
 							Events.InvokeGeneratorClose(person, __instance, ref allow);
