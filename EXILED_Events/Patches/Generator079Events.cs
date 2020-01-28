@@ -74,7 +74,11 @@ namespace EXILED.Patches
 					else
 					{
 						bool allow = true;
-						Events.InvokeGeneratorOpen(person, __instance, ref allow);
+						if (__instance.NetworkisDoorOpen)
+							Events.InvokeGeneratorOpen(person, __instance, ref allow);
+						else
+							Events.InvokeGeneratorClose(person, __instance, ref allow);
+						
 						if (!allow)
 						{
 							__instance.RpcDenied();
