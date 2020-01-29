@@ -12,21 +12,21 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(WeaponManager), "CallCmdShoot")]
     public class WeaponManagerOverride
     {
-        public static void Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
+        public static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
         {
             // Nw spahgetti code
             if (__instance._iawRateLimit.CanExecute(true))
-                return;
+                return false;
             ReferenceHub hub = __instance.hub;
             int itemIndex = __instance.hub.inventory.GetItemIndex();
             if (itemIndex < 0 || itemIndex >= __instance.hub.inventory.items.Count)
-                return;
+	            return false;;
             if (__instance.curWeapon < 0 || ((__instance.reloadCooldown > 0f || __instance.fireCooldown > 0f) && !__instance.isLocalPlayer || hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID || hub.inventory.items[itemIndex].durability <= 0f))
-                return;
+	            return false;;
             if (Vector3.Distance(__instance.camera.transform.position, sourcePos) > 6.5f)
             {
                 __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-                return;
+                return false;;
             }
             hub.inventory.items.ModifyDuration(itemIndex, hub.inventory.items[itemIndex].durability - 1f);
             __instance.scp268.ServerDisable();
@@ -83,27 +83,27 @@ namespace EXILED.Patches
 				if (Math.Abs(__instance.camera.transform.position.y - characterClassManager.transform.position.y) > 40f)
 				{
 					__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-					return;
+					return false;;
 				}
 				if (Vector3.Distance(characterClassManager.transform.position, targetPos) > 6.5f)
 				{
 					__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-					return;
+					return false;;
 				}
 				if (Physics.Linecast(__instance.camera.transform.position, sourcePos, __instance.raycastServerMask))
 				{
 					__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-					return;
+					return false;;
 				}
 				if (_f && Physics.Linecast(sourcePos, targetPos, __instance.raycastServerMask))
 				{
 					__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-					return;
+					return false;;
 				}
 				if (characterClassManager.gameObject == __instance.gameObject)
 				{
 					__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-					return;
+					return false;;
 				}
 				float num2 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
 				float num3 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num2);
@@ -122,17 +122,16 @@ namespace EXILED.Patches
 				}
 				num3 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
 				num3 *= __instance.overallDamagerFactor;
-				bool Allow = true;
+				bool allow = true;
 
-				Events.InvokeOnShoot(hub, target, num3, num2, ref Allow);
+				Events.InvokeOnShoot(hub, target, num3, num2, ref allow);
 
-				if (Allow)
+				if (allow)
 				{
 					__instance.hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(num3, __instance.hub.nicknameSync.MyNick + " (" + __instance.hub.characterClassManager.UserId + ")", DamageTypes.FromWeaponId(__instance.curWeapon), __instance.hub.queryProcessor.PlayerId), characterClassManager.gameObject);
 					__instance.RpcConfirmShot(true, __instance.curWeapon);
 					__instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)characterClassManager.CurClass, num2);
 				}
-				return;
 			}
 			else
 			{
@@ -146,13 +145,13 @@ namespace EXILED.Patches
 					if (target != null && hitboxType == "window" && target.GetComponent<BreakableWindow>() != null)
 					{
 						BreakWindow(__instance, Vector3.Distance(__instance.camera.transform.position, target.transform.position), target.GetComponent<BreakableWindow>());
-						return;
+						return false;;
 					}
 					__instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), __instance.curWeapon, 0f);
 					__instance.RpcConfirmShot(false, __instance.curWeapon);
-					return;
 				}
 			}
+			return false;
 		}
 
 		public static void BreakWindow(WeaponManager __instance, float distance, BreakableWindow target)
