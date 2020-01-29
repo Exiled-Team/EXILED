@@ -481,7 +481,6 @@ namespace EXILED
 		public delegate void Scp106Contain(Scp106ContainEvent ev);
 		public static void InvokeScp106ContainEvent(GameObject player, ref bool allow)
 		{
-			Plugin.Info("aaaa");
 			Scp106Contain scp106Contain = Scp106ContainEvent;
 			if (scp106Contain == null)
 				return;

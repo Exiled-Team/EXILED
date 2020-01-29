@@ -11,7 +11,6 @@ namespace EXILED.Patches
 				return true;
 
 			bool allow = true;
-			Plugin.Info("yes");
 			Events.InvokeScp106ContainEvent(__instance.gameObject, ref allow);
 			return allow;
 		}
