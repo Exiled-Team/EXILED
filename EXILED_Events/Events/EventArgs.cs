@@ -283,4 +283,10 @@ namespace EXILED
 		public ReferenceHub Player { get; set; }
 		public RoleType Role { get; set; }
 	}
+
+	public class Scp106ContainEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
 }

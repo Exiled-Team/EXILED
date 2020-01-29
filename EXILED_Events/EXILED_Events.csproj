@@ -203,6 +203,7 @@
     <Compile Include="Patches\RoundRestartEvent.cs" />
     <Compile Include="Patches\RoundStartPatch.cs" />
     <Compile Include="Patches\Scp096ProcessLookingOverride.cs" />
+    <Compile Include="Patches\Scp106ContainEvent.cs" />
     <Compile Include="Patches\Scp106PlayerScriptOverride.cs" />
     <Compile Include="Patches\Scp106PocketDimOverride.cs" />
     <Compile Include="Patches\Scp106PocketDimTeleportOverride.cs" />
