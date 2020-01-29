@@ -44,7 +44,8 @@ namespace EXILED
 		public static bool PickupItemEventPatchDisable;
 		public static bool Generator079EventPatchDisable;
 		public static bool HandcuffEventPatchDisable;
-		
+		public static bool Scp106ContainEventDisable;
+
 		private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;

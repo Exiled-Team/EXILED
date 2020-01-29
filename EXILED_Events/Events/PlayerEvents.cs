@@ -476,5 +476,22 @@ namespace EXILED
 			};
 			playerSpawn.Invoke(ev);
 		}
+
+		public static event Scp106Contain Scp106ContainEvent;
+		public delegate void Scp106Contain(Scp106ContainEvent ev);
+		public static void InvokeScp106ContainEvent(GameObject player, ref bool allow)
+		{
+			Plugin.Info("aaaa");
+			Scp106Contain scp106Contain = Scp106ContainEvent;
+			if (scp106Contain == null)
+				return;
+			Scp106ContainEvent ev = new Scp106ContainEvent
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow
+			};
+			scp106Contain?.Invoke(ev);
+			allow = ev.Allow;
+		}
 	}
 }
