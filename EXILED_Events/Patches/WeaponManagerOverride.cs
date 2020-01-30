@@ -25,6 +25,13 @@ namespace EXILED.Patches
               (__instance.hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID ||
                __instance.hub.inventory.items[itemIndex].durability <= 0.0))
             return false;
+          
+          Plugin.Debug("Invoking shoot event");
+          bool allowShot = true;
+          Events.InvokeOnShoot(__instance.hub, target, ref allowShot);
+          if (!allowShot)
+            return false;
+          
           if (Vector3.Distance(__instance.camera.transform.position, sourcePos) > 6.5)
           {
             __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient,
@@ -127,7 +134,8 @@ namespace EXILED.Patches
                   num2 *= 4f;
 
                 bool allow = true;
-                Events.InvokeOnShoot(__instance.hub, target, num2, num1, ref allow);
+                Plugin.Debug("Invoking late shoot.");
+                Events.InvokeOnLateShoot(__instance.hub, target, num2, num1, ref allow);
                 if (!allow)
                   return false;
 

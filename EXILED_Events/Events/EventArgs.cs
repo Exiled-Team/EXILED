@@ -226,7 +226,7 @@ namespace EXILED
 		public RoundSummary.LeadingTeam LeadingTeam { get; set; }
 	}
   
-  	public class OnShootEvent : EventArgs
+  	public class LateShootEvent : EventArgs
 	{
 		public GameObject Target;
 		public ReferenceHub Shooter;
@@ -234,6 +234,13 @@ namespace EXILED
 		public bool Allow;
 		public float Distance;
 	}
+
+    public class ShootEvent : EventArgs
+    {
+	    public ReferenceHub Shooter { get; set; }
+	    public GameObject Target { get; set; }
+	    public bool Allow { get; set; }
+    }
 
 	public class Scp106TeleportEvent : EventArgs
 	{

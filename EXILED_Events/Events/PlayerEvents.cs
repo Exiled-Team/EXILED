@@ -329,12 +329,16 @@ namespace EXILED
 			allow = ev.Allow;
 		}
     
-    		public static event OnShoot OnShootEvent;
-		public delegate void OnShoot(OnShootEvent ev);
+		public static event OnLateShoot LateShootEvent;
+		public delegate void OnLateShoot(ref LateShootEvent ev);
 
-		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, float damage, float distance, ref bool allow)
+		public static void InvokeOnLateShoot(ReferenceHub shooter, GameObject target, float damage, float distance, ref bool allow)
 		{
-			OnShootEvent ev = new OnShootEvent()
+			OnLateShoot onLateShoot = LateShootEvent;
+			if (onLateShoot == null)
+				return;
+			
+			LateShootEvent ev = new LateShootEvent()
 			{
 				Shooter = shooter,
 				Target = target,
@@ -342,7 +346,26 @@ namespace EXILED
 				Distance = distance,
 				Allow = allow
 			};
-			OnShootEvent?.Invoke(ev);
+			onLateShoot.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+
+		public static event OnShoot ShootEvent;
+
+		public delegate void OnShoot(ref ShootEvent ev);
+
+		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, ref bool allow)
+		{
+			OnShoot onShoot = ShootEvent;
+			if (onShoot == null)
+				return;
+			ShootEvent ev = new ShootEvent
+			{
+				Shooter = shooter,
+				Allow = allow,
+				Target = target
+			};
+			onShoot.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
