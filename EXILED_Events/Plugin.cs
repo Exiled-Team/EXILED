@@ -25,7 +25,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 5,
-			Patch = 0
+			Patch = 1
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -105,6 +105,11 @@ namespace EXILED
 		{
 			Info($"Attempting auto-update..");
 			Debug($"URL: {VersionUpdateUrl}");
+			if (VersionUpdateUrl == "none")
+			{
+				Error("Version update was queued but not URL was set. This error should never happen.");
+				return;
+			}
 			
 			string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
 			Debug($"Creating temporary directory: {tempPath}..");
@@ -205,7 +210,7 @@ namespace EXILED
 
 
 			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
-			return major < Version.Major || minor != Version.Minor || patch != Version.Patch;
+			return major != Version.Major || minor != Version.Minor || patch != Version.Patch;
 		}
 		
 		private static string Between(string str , string firstString, string lastString)

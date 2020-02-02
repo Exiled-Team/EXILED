@@ -1,3 +1,5 @@
+using RemoteAdmin;
+
 namespace EXILED
 {
 	public static class ReloadCommandHandler
@@ -6,7 +8,7 @@ namespace EXILED
 		public static void CommandHandler(ref RACommandEvent ev)
 		{
 			string[] args = ev.Command.Split(' ');
-			if (args[0].ToLower() == "reload")
+			if (args[0].ToLower() == "reloadplugins")
 			{
 				ev.Allow = false;
 				PluginManager.ReloadPlugins();

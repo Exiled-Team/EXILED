@@ -209,6 +209,8 @@
     <Compile Include="Patches\Scp106PocketDimOverride.cs" />
     <Compile Include="Patches\Scp106PocketDimTeleportOverride.cs" />
     <Compile Include="Patches\Scp173Override.cs" />
+    <Compile Include="Patches\Scp914ActivationEvent.cs" />
+    <Compile Include="Patches\Scp914KnobChangeEvent.cs" />
     <Compile Include="Patches\ServerCommandPatch.cs" />
     <Compile Include="Patches\ServerNamePatch.cs" />
     <Compile Include="Patches\SetClassEvent.cs" />
