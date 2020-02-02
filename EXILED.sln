@@ -1,8 +1,4 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29609.76
-MinimumVisualStudioVersion = 10.0.40219.1
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXILED_Events", "EXILED_Events\EXILED_Events.csproj", "{1E6C4350-5067-4CE7-91DB-6420D027A4FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXILED_Main", "EXILED_Main\EXILED_Main.csproj", "{1ABEC6CE-E209-4C38-AB45-2F3B7F6091CA}"
@@ -27,11 +23,5 @@ Global
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {20A4FD57-AC60-4446-A224-22E04DF48D78}
 	EndGlobalSection
 EndGlobal
