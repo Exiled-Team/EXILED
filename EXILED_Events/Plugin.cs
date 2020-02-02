@@ -68,14 +68,14 @@ namespace EXILED
 		{
 			Info("Enabled.");
 			Info("Checking version status..");
-			if (IsUpdateAvailible())
-			{
-				Info("There is an new version of EXILED available.");
-				if (Config.GetBool("exiled_auto_update", true))
-				{
-					AutoUpdate();
-				}
-			}
+			 if (IsUpdateAvailible())
+			 {
+			 	Info("There is an new version of EXILED available.");
+			 	if (Config.GetBool("exiled_auto_update", true))
+			 	{
+			 		AutoUpdate();
+			    }
+			 }
 
 			Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
@@ -121,13 +121,34 @@ namespace EXILED
 			string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
 			string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
 			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
+			File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
 			File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
 			File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
 			Debug($"Files moved, cleaning up..");
-			Directory.Delete(tempPath);
+			DeleteDirectory(tempPath);
 			
 			Info("Auto-update complete, restarting server..");
 			Application.Quit();
+		}
+		
+		public static void DeleteDirectory(string target_dir)
+		{
+			string[] files = Directory.GetFiles(target_dir);
+			string[] dirs = Directory.GetDirectories(target_dir);
+
+			foreach (string file in files)
+			{
+				File.SetAttributes(file, FileAttributes.Normal);
+				File.Delete(file);
+			}
+
+			foreach (string dir in dirs)
+			{
+				DeleteDirectory(dir);
+			}
+
+			Directory.Delete(target_dir, false);
 		}
 
 		//The below method gets called when the plugin is disabled by the EXILED loader.
@@ -153,8 +174,8 @@ namespace EXILED
 
 		public bool IsUpdateAvailible()
 		{
-			string url = "https://githib.com/galaxy119/EXILED/releases/";
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}/latest");
+			string url = "https://github.com/galaxy119/EXILED/releases/";
+			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}latest/");
 			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 			Stream stream = response.GetResponseStream();
 			StreamReader reader = new StreamReader(stream);
@@ -183,8 +204,8 @@ namespace EXILED
 			}
 
 
-			VersionUpdateUrl = $"{url}/download/{version}/EXILED.tar.gz";
-			return major != Version.Major || minor != Version.Minor || patch != Version.Patch;
+			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
+			return major < Version.Major || minor != Version.Minor || patch != Version.Patch;
 		}
 		
 		private static string Between(string str , string firstString, string lastString)
