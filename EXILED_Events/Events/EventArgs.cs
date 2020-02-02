@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Grenades;
 using LiteNetLib;
+using Scp914;
 using UnityEngine;
 using static BanHandler;
 
@@ -295,5 +296,19 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
+	}
+
+	public class Scp914ActivationEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+		public double Time { get; set; }
+	}
+
+	public class Scp914KnobChangeEvent : EventArgs
+	{
+		public bool Allow { get; set; }
+		public Scp914Knob KnobSetting { get; set; }
+		public ReferenceHub Player { get; set; }
 	}
 }

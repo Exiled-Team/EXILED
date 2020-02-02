@@ -1,5 +1,6 @@
 using EXILED.Patches;
 using Grenades;
+using Scp914;
 using UnityEngine;
 using static BanHandler;
 
@@ -514,6 +515,46 @@ namespace EXILED
 			};
 			scp106Contain?.Invoke(ev);
 			allow = ev.Allow;
+		}
+		
+		public static event Scp914Activation Scp914ActivationEvent;
+		public delegate void Scp914Activation(ref Scp914ActivationEvent ev);
+		public static void InvokeScp914Activation(GameObject obj, ref bool allow, ref double time)
+		{
+			Scp914Activation scp914Activation = Scp914ActivationEvent;
+			if (scp914Activation == null)
+				return;
+			ReferenceHub player = Plugin.GetPlayer(obj);
+			Scp914ActivationEvent ev = new Scp914ActivationEvent
+			{
+				Player = player,
+				Allow = allow,
+				Time = time
+			};
+			scp914Activation.Invoke(ref ev);
+			allow = ev.Allow;
+			time = ev.Time;
+		}
+
+		public static event Scp914KnobChange Scp914KnobChangeEvent;
+
+		public delegate void Scp914KnobChange(ref Scp914KnobChangeEvent ev);
+
+		public static void InvokeScp914KnobChange(GameObject player, ref bool allow, ref Scp914Knob knobSetting)
+		{
+			Scp914KnobChange scp914KnobChange = Scp914KnobChangeEvent;
+			if (scp914KnobChange == null)
+				return;
+			ReferenceHub hub = Plugin.GetPlayer(player);
+			Scp914KnobChangeEvent ev = new Scp914KnobChangeEvent
+			{
+				Player = hub,
+				Allow = allow,
+				KnobSetting = knobSetting
+			};
+			scp914KnobChange.Invoke(ref ev);
+			allow = ev.Allow;
+			knobSetting = ev.KnobSetting;
 		}
 	}
 }

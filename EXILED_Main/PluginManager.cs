@@ -48,7 +48,7 @@ namespace EXILED
 			bool eventsInstalled = true;
 			if (mods.All(m => !m.Contains("EXILED_Events.dll")))
 			{
-				ServerConsole.AddLog(
+				Plugin.Error(
 					"WARN: Events plugin not installed, plugins that do not handle their own events will not function and may cause errors.");
 				eventsInstalled = false;
 			}
@@ -107,7 +107,7 @@ namespace EXILED
 
 		public static void LoadPlugin(string mod)
 		{
-			ServerConsole.AddLog($"Loading {mod}");
+			Plugin.Info($"Loading {mod}");
 			try
 			{
 				byte[] file = ModLoader.ReadFile(mod);
@@ -117,33 +117,35 @@ namespace EXILED
 				{
 					if (type.IsAbstract)
 					{
+						Plugin.Debug($"{type.FullName} is abstract, skipping.");
 						continue;
 					}
 
 					if (type.FullName != null && _typeOverrides.Contains(type.FullName))
 					{
-						ServerConsole.AddLog($"Overriding type check for {type.FullName}");
+						Plugin.Debug($"Overriding type check for {type.FullName}");
 					}
 					else if (!typeof(Plugin).IsAssignableFrom(type))
 					{
+						Plugin.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.");
 						continue;
 					}
-					ServerConsole.AddLog($"Loading type {type.FullName}");
+					Plugin.Info($"Loading type {type.FullName}");
 					object plugin = Activator.CreateInstance(type);
-					ServerConsole.AddLog($"Instantiated type {type.FullName}");
+					Plugin.Info($"Instantiated type {type.FullName}");
 					if (!(plugin is Plugin p))
 					{
-						ServerConsole.AddLog($"not plugin error! {type.FullName}");
+						Plugin.Info($"not plugin error! {type.FullName}");
 						continue;
 					}
 
 					_plugins.Add(p);
-					ServerConsole.AddLog($"Successfully loaded {p.getName}");
+					Plugin.Info($"Successfully loaded {p.getName}");
 				}
 			}
 			catch (Exception e)
 			{
-				ServerConsole.AddLog($"Error while initalizing {mod}! {e}");
+				Plugin.Error($"Error while initalizing {mod}! {e}");
 			}
 		}
 
@@ -157,7 +159,7 @@ namespace EXILED
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while enabling {e}");
+					Plugin.Error($"Plugin {plugin.getName} threw an exception while enabling {e}");
 				}
 			}
 		}
@@ -172,7 +174,7 @@ namespace EXILED
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while reloading {e}");
+					Plugin.Error($"Plugin {plugin.getName} threw an exception while reloading {e}");
 				}
 			}
 		}
@@ -187,7 +189,7 @@ namespace EXILED
 				}
 				catch (Exception e)
 				{
-					ServerConsole.AddLog($"Plugin {plugin.getName} threw an exception while disabling {e}");
+					Plugin.Error($"Plugin {plugin.getName} threw an exception while disabling {e}");
 				}
 			}
 		}
@@ -205,7 +207,7 @@ namespace EXILED
 			}
 			catch (Exception e)
 			{
-				ServerConsole.AddLog($"There was an error while reloading. {e}");
+				Plugin.Error($"There was an error while reloading. {e}");
 			}
 		}
 	}

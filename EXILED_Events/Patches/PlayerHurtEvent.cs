@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Harmony;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace EXILED.Patches
 	[HarmonyPatch(typeof(PlayerStats), "HurtPlayer")]
 	public class PlayerHurtEvent
 	{
+		public static List<string> DeathStuff = new List<string>();
 		public static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
 		{
 			if (EventPlugin.PlayerHurtPatchDisable)
@@ -20,21 +22,41 @@ namespace EXILED.Patches
 					if (!allow)
 						info.Amount = 0f;
 					
-					if (info.Amount >= __instance.health)
+					if (info.Amount >= go.GetComponent<PlayerStats>().health)
 						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
 					if (!allow)
 						info.Amount = 0f;
 				}
 
 				Events.InvokePlayerHurt(__instance, ref info, go);
-				
-				if (info.Amount >= __instance.health)
+				if (info.Amount >= go.GetComponent<PlayerStats>().health)
+				{
+					CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
+					if (ccm != null)
+					{
+						if (DeathStuff.Contains(ccm.UserId))
+							return;
+						DeathStuff.Add(ccm.UserId);
+					}
 					Events.InvokePlayerDeath(__instance, ref info, go);
+				}
 			}
 			catch (Exception e)
 			{
 				Plugin.Error($"Player hurt/death event error: {e}");
 			}
+		}
+	}
+
+	[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
+	public class DeathFix
+	{
+		public static void Postfix(PlayerStats __instance, PlayerStats.HitInfo info, GameObject go)
+		{
+			CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
+			if (ccm != null)
+				if (PlayerHurtEvent.DeathStuff.Contains(ccm.UserId))
+					PlayerHurtEvent.DeathStuff.Remove(ccm.UserId);
 		}
 	}
 }
