@@ -32,6 +32,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>..\bin\EXILED\EXILED.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -89,12 +90,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
+    <Compile Include="Extensions\CassieExtensions.cs" />
+    <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="MainLoader.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

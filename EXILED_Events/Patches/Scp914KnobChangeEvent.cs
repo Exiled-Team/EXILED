@@ -12,7 +12,7 @@ namespace EXILED.Patches
 			if (!__instance._playerInteractRateLimit.CanExecute(true) || __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract || (Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.knob.position)))
 				return false;
 			Scp914Knob knobSetting = Scp914Machine.singleton.knobState;
-			if (knobSetting + 1 >= Scp914Machine.knobStateMax)
+			if (knobSetting + 1 > Scp914Machine.knobStateMax)
 				knobSetting = Scp914Machine.knobStateMin;
 			else
 				knobSetting += 1;
