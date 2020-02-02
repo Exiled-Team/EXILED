@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXILED_Main", "EXILED_Main\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXILED_Installer", "EXILED_Installer\EXILED_Installer.csproj", "{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EXILED_Permissions", "EXILED_Permissions\EXILED_Permissions.csproj", "{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,5 +25,15 @@ Global
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68878B6E-9F53-4209-9223-150E7D276236}
 	EndGlobalSection
 EndGlobal
