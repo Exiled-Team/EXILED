@@ -20,7 +20,7 @@ namespace EXILED.Patches
 					if (!allow)
 						info.Amount = 0f;
 					
-					if (info.Amount >= __instance.health)
+					if (info.Amount >= go.GetComponent<PlayerStats>().health)
 						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
 					if (!allow)
 						info.Amount = 0f;
@@ -28,7 +28,7 @@ namespace EXILED.Patches
 
 				Events.InvokePlayerHurt(__instance, ref info, go);
 				
-				if (info.Amount >= __instance.health)
+				if (info.Amount >= go.GetComponent<PlayerStats>().health)
 					Events.InvokePlayerDeath(__instance, ref info, go);
 			}
 			catch (Exception e)

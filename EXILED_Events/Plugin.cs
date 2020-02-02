@@ -1,8 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text;
 using EXILED.Patches;
 using Harmony;
+using UnityEngine;
 using Random = System.Random;
 
 namespace EXILED
@@ -14,6 +20,13 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
+		public static string VersionUpdateUrl = "none";
+		public static ExiledVersion Version = new ExiledVersion
+		{
+			Major = 1,
+			Minor = 5,
+			Patch = 0
+		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		public static bool AntiFlyPatchDisable;
@@ -54,6 +67,16 @@ namespace EXILED
 		public override void OnEnable()
 		{
 			Info("Enabled.");
+			Info("Checking version status..");
+			if (IsUpdateAvailible())
+			{
+				Info("There is an new version of EXILED available.");
+				if (Config.GetBool("exiled_auto_update", true))
+				{
+					AutoUpdate();
+				}
+			}
+
 			Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
@@ -78,6 +101,35 @@ namespace EXILED
 			ServerConsole.ReloadServerName();
 		}
 
+		private void AutoUpdate()
+		{
+			Info($"Attempting auto-update..");
+			Debug($"URL: {VersionUpdateUrl}");
+			
+			string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+			Debug($"Creating temporary directory: {tempPath}..");
+			
+			if (!Directory.Exists(tempPath))
+				Directory.CreateDirectory(tempPath);
+			string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
+			using (WebClient client = new WebClient())
+				client.DownloadFile(VersionUpdateUrl, exiledTemp);
+			
+			Debug("Download successful, extracting contents..");
+			ExtractTarGz(exiledTemp, tempPath);
+			Debug($"Extraction complete, moving files..");
+			string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
+			string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
+			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+			File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
+			File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
+			Debug($"Files moved, cleaning up..");
+			Directory.Delete(tempPath);
+			
+			Info("Auto-update complete, restarting server..");
+			Application.Quit();
+		}
+
 		//The below method gets called when the plugin is disabled by the EXILED loader.
 		public override void OnDisable()
 		{
@@ -98,5 +150,123 @@ namespace EXILED
 		public override string getName { get; }
 
 		public static double GetRoundDuration() => Math.Abs((RoundTime - DateTime.Now).TotalSeconds);
+
+		public bool IsUpdateAvailible()
+		{
+			string url = "https://githib.com/galaxy119/EXILED/releases/";
+			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}/latest");
+			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+			Stream stream = response.GetResponseStream();
+			StreamReader reader = new StreamReader(stream);
+			string read = reader.ReadToEnd();
+			string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			string line = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
+			string version = Between(line, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
+			string[] versionArray = version.Split('.');
+
+			if (!int.TryParse(versionArray[0], out int major))
+			{
+				Error($"Unable to parse EXILED major version.");
+				return false;
+			}
+
+			if (!int.TryParse(versionArray[1], out int minor))
+			{
+				Error($"Unable to parse EXILED minor version.");
+				return false;
+			}
+
+			if (!int.TryParse(versionArray[2], out int patch))
+			{
+				Error($"Unable to parse EXILED patch version.");
+				return false;
+			}
+
+
+			VersionUpdateUrl = $"{url}/download/{version}/EXILED.tar.gz";
+			return major != Version.Major || minor != Version.Minor || patch != Version.Patch;
+		}
+		
+		private static string Between(string str , string firstString, string lastString)
+		{
+			int pos1 = str.IndexOf(firstString, StringComparison.Ordinal) + firstString.Length;
+			int pos2 = str.IndexOf(lastString, StringComparison.Ordinal);
+			string finalString = str.Substring(pos1, pos2 - pos1);
+			return finalString;
+		}
+		private static void ExtractTarGz(string filename, string outputDir)
+		{
+			using (FileStream stream = File.OpenRead(filename))
+			{
+				ExtractTarGz(stream, outputDir);
+			}
+		}
+
+
+		private static void ExtractTarGz(Stream stream, string outputDir)
+		{
+			using (GZipStream gzip = new GZipStream(stream, CompressionMode.Decompress))
+			{
+				const int chunk = 4096;
+				using (MemoryStream memStr = new MemoryStream())
+				{
+					int read;
+					byte[] buffer = new byte[chunk];
+					do
+					{
+						read = gzip.Read(buffer, 0, chunk);
+						memStr.Write(buffer, 0, read);
+					} while (read == chunk);
+
+					memStr.Seek(0, SeekOrigin.Begin);
+					ExtractTar(memStr, outputDir);
+				}
+			}
+		}
+
+		private static void ExtractTar(Stream stream, string outputDir)
+		{
+			byte[] buffer = new byte[100];
+			while (true)
+			{
+				try
+				{
+					stream.Read(buffer, 0, 100);
+					string name = Encoding.ASCII.GetString(buffer).Trim('\0');
+					if (string.IsNullOrWhiteSpace(name))
+						break;
+					stream.Seek(24, SeekOrigin.Current);
+					stream.Read(buffer, 0, 12);
+					long size = Convert.ToInt64(Encoding.UTF8.GetString(buffer, 0, 12).Trim('\0').Trim(), 8);
+
+					stream.Seek(376L, SeekOrigin.Current);
+
+					string output = Path.Combine(outputDir, name);
+					if (!Directory.Exists(Path.GetDirectoryName(output)))
+						Directory.CreateDirectory(Path.GetDirectoryName(output));
+					if (!name.Equals("./", StringComparison.InvariantCulture))
+					{
+						using (FileStream str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
+						{
+							byte[] buf = new byte[size];
+							stream.Read(buf, 0, buf.Length);
+							str.Write(buf, 0, buf.Length);
+						}
+					}
+
+					long pos = stream.Position;
+
+					long offset = 512 - (pos % 512);
+					if (offset == 512)
+						offset = 0;
+
+					stream.Seek(offset, SeekOrigin.Current);
+				}
+				catch (Exception)
+				{
+					// ignored
+				}
+			}
+		}
 	}
 }
