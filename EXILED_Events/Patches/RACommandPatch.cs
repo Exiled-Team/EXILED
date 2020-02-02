@@ -26,9 +26,13 @@ namespace EXILED.Patches
 						allow = false;
 					}
 				}
+
+				if (q.Contains("REQUEST_DATA PLAYER_LIST SILENT")) 
+					return true;
 				
 				Events.InvokeCommand(ref q, ref sender, ref allow);
 				return allow;
+
 			}
 			catch (Exception e)
 			{
