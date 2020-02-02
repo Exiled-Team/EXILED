@@ -24,8 +24,8 @@ namespace EXILED
 		public static ExiledVersion Version = new ExiledVersion
 		{
 			Major = 1,
-			Minor = 5,
-			Patch = 1
+			Minor = 6,
+			Patch = 0
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
