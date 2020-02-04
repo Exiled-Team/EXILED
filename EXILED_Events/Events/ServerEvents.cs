@@ -142,5 +142,26 @@ namespace EXILED
 			};
 			PlayerBannedEvent?.Invoke(ev);
 		}
+
+
+		public static event SetGroup SetGroupEvent;
+		public delegate void SetGroup(SetGroupEvent ev);
+
+		public static void InvokeSetGroup(GameObject player, ref UserGroup group, ref bool allow)
+		{
+			SetGroup setGroup = SetGroupEvent;
+			if (setGroup == null)
+				return;
+
+			SetGroupEvent ev = new SetGroupEvent()
+			{
+				Player = Plugin.GetPlayer(player),
+				Group = group,
+				Allow = allow
+			};
+			SetGroupEvent?.Invoke(ev);
+			allow = ev.Allow;
+			group = ev.Group;
+		}
 	}
 }
