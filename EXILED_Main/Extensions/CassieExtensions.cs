@@ -25,7 +25,7 @@ namespace EXILED.Extensions
         /// <summary>
         /// Plays a cassie message.
         /// </summary>
-        public void CassieMessage(string msg, bool makeHold, bool makeNoise)
+        public static void CassieMessage(string msg, bool makeHold, bool makeNoise)
         {
             mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise);
         }
@@ -33,7 +33,7 @@ namespace EXILED.Extensions
         /// <summary>
         /// Plays a cassie message with a delay.
         /// </summary>
-        public IEnumerator<float> DelayedCassieMessage(string msg, bool makeHold, bool makeNoise, float delay)
+        public static IEnumerator<float> DelayedCassieMessage(string msg, bool makeHold, bool makeNoise, float delay)
         {
             yield return Timing.WaitForSeconds(delay);
             mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise);

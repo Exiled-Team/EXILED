@@ -311,4 +311,11 @@ namespace EXILED
 		public Scp914Knob KnobSetting { get; set; }
 		public ReferenceHub Player { get; set; }
 	}
+
+	public class SetGroupEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public UserGroup Group { get; set; }
+		public bool Allow { get; set; }
+	}
 }
