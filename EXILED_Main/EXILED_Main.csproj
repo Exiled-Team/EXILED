@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
     <Compile Include="Extensions\CassieExtensions.cs" />
+    <Compile Include="Extensions\MapExtensions.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="MainLoader.cs" />
