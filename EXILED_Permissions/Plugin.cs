@@ -26,7 +26,7 @@ namespace EXILED
                 Directory.CreateDirectory(pluginDir);
             if (!File.Exists(Path.Combine(pluginDir, "permissions.yml")))
                 File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"), Encoding.UTF8.GetString(Resources.permissions));
-            PermissionPlugin.ReloadPermissions();
+            ReloadPermissions();
             Events.RemoteAdminCommandEvent += EventHandlers.RemoteAdminCommandEvent;
         }
 
@@ -34,7 +34,7 @@ namespace EXILED
         {
             string yml = File.ReadAllText(Path.Combine(pluginDir, "permissions.yml"));
             var deserializer = new DeserializerBuilder()
-                .WithNamingConvention(new CamelCaseNamingConvention())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
             permissionsconfig = deserializer.Deserialize<YML>(yml);
         }
@@ -42,7 +42,7 @@ namespace EXILED
         public static void SavePermissions()
         {
             var serializer = new SerializerBuilder()
-                .WithNamingConvention(new CamelCaseNamingConvention())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
             File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"), serializer.Serialize(permissionsconfig));
         }
@@ -68,7 +68,7 @@ namespace EXILED
             }
             else
             {
-                group = PermissionPlugin.GetDefaultGroup();
+                group = GetDefaultGroup();
             }
             if (group != null)
             {
