@@ -1,3 +1,4 @@
+using System;
 using Harmony;
 
 namespace EXILED.Patches
@@ -9,7 +10,14 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.RoundRestartEventPatchDisable)
 				return;
-			Events.InvokeRoundRestart();
+			try
+			{
+				Events.InvokeRoundRestart();
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"RoundRestart Error: {e}");
+			}
 		}
 	}
 }

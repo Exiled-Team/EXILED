@@ -172,17 +172,5 @@ namespace EXILED.Patches
           return true;
         }
       }
-
-      public static void BreakWindow(WeaponManager __instance, float distance, BreakableWindow target)
-		{
-			if (distance > 40f) // Distance protection
-			{
-				__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected", "red");
-				return;
-			}
-			float damage = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(distance);
-			target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
-			__instance.RpcConfirmShot(true, __instance.curWeapon);
-		}
     }
 }

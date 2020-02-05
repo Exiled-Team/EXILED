@@ -11,29 +11,37 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.IntercomSpeakingEventPatchDisable)
 				return true;
-			
-			if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+
+			try
+			{
+				if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+					return false;
+
+				bool allow = true;
+				if (player)
+				{
+					if (!__instance.ServerAllowToSpeak())
+						return false;
+					Events.InvokeIntercomSpeak(__instance.gameObject, ref allow);
+					if (allow)
+						Intercom.host.RequestTransmission(__instance.gameObject);
+				}
+				else
+				{
+					if (!(Intercom.host.Networkspeaker == __instance.gameObject))
+						return false;
+					Events.InvokeIntercomSpeak(__instance.gameObject, ref allow);
+					if (allow)
+						Intercom.host.RequestTransmission(null);
+				}
+
 				return false;
-
-			bool allow = true;
-			if (player)
-			{
-				if (!__instance.ServerAllowToSpeak())
-					return false;
-				Events.InvokeIntercomSpeak(__instance.gameObject, ref allow);
-				if (allow)
-					Intercom.host.RequestTransmission(__instance.gameObject);
 			}
-			else
+			catch (Exception e)
 			{
-				if (!(Intercom.host.Networkspeaker == __instance.gameObject))
-					return false;
-				Events.InvokeIntercomSpeak(__instance.gameObject, ref allow);
-				if (allow)
-					Intercom.host.RequestTransmission(null);
+				Plugin.Error($"IntercomSpeaking Error: {e}");
+				return true;
 			}
-
-			return false;
 		}
 	}
 }

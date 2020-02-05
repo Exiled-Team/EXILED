@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace EXILED.Extensions
 {
-    public static class PlayerExtensions
+    public static class Player
     {
         /// <summary>
         /// Gets the position of a <see cref="ReferenceHub">player</see>

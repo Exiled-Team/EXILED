@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using MEC;
 
 namespace EXILED.Patches
@@ -39,6 +40,15 @@ namespace EXILED.Patches
 			yield return Timing.WaitForSeconds(0.05f);
 			
 			Events.InvokePlayerSpawn(hub, role);
+		}
+
+		public void OnPlayerLeave(EXILED.PlayerLeaveEvent ev)
+		{
+			if (Plugin.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
+				Plugin.IdHubs.Remove(ev.Player.queryProcessor.PlayerId);
+
+			if (Plugin.StrHubs.ContainsValue(ev.Player))
+				Plugin.StrHubs.Remove(Plugin.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
 		}
 	}
 }

@@ -19,8 +19,8 @@ namespace EXILED.Patches
 				if (instruction.opcode == OpCodes.Call)
 				{
 					if (instruction.operand != null 
-						&& instruction.operand is MethodBase methodBase 
-						&& methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)) // could get the MethodInfo like I did with CustomProcess but nah
+					    && instruction.operand is MethodBase methodBase 
+					    && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)) // could get the MethodInfo like I did with CustomProcess but nah
 					{
 						yield return instruction;
 					}

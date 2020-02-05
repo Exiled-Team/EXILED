@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
 
 namespace EXILED.Patches
 {
@@ -10,9 +11,17 @@ namespace EXILED.Patches
 			if (EventPlugin.SetGroupEventDisable)
 				return true;
 
-			bool allow = true;
-			Events.InvokeSetGroup(__instance.gameObject, ref group, ref allow);
-			return allow;
+			try
+			{
+				bool allow = true;
+				Events.InvokeSetGroup(__instance.gameObject, ref group, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"SetGroup Error: {e}");
+				return true;
+			}
 		}
 	}
 }

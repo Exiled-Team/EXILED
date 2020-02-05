@@ -36,12 +36,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
-    <Reference Include="EXILED">
-      <HintPath>..\..\SMEXiled\Dlls\EXILED.dll</HintPath>
-    </Reference>
-    <Reference Include="EXILED_Events">
-      <HintPath>..\..\SMEXiled\Dlls\EXILED_Events.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -81,6 +75,16 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EXILED_Events\EXILED_Events.csproj">
+      <Project>{1e6c4350-5067-4ce7-91db-6420d027a4fc}</Project>
+      <Name>EXILED_Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXILED_Main\EXILED_Main.csproj">
+      <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
+      <Name>EXILED_Main</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

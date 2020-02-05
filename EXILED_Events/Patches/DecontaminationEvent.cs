@@ -1,3 +1,4 @@
+using System;
 using Harmony;
 
 namespace EXILED.Patches
@@ -7,12 +8,20 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(DecontaminationLCZ __instance)
 		{
-			if (EventPlugin.DecontaminationEventPatchDisable)
+			try
+			{
+				if (EventPlugin.DecontaminationEventPatchDisable)
+					return true;
+
+				bool allow = true;
+				Events.InvokeDecontamination(ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"DeconEvent Error: {e}");
 				return true;
-			
-			bool allow = true;
-			Events.InvokeDecontamination(ref allow);
-			return allow;
+			}
 		}
 	}
 }

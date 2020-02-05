@@ -15,6 +15,8 @@ namespace EXILED
 		public abstract void OnEnable();
 		public abstract void OnDisable();
 		public abstract void OnReload();
+		public static Dictionary<int, ReferenceHub> IdHubs = new Dictionary<int, ReferenceHub>();
+		public static Dictionary<string, ReferenceHub> StrHubs = new Dictionary<string, ReferenceHub>();
 
 		//Used to send INFO level messages to the game console.
 		public static void Info(string message)
@@ -98,9 +100,15 @@ namespace EXILED
 		
 		public static ReferenceHub GetPlayer(int pId)
 		{
+			if (IdHubs.ContainsKey(pId))
+				return IdHubs[pId];
 			foreach (ReferenceHub hub in GetHubs())
 				if (hub.queryProcessor.PlayerId == pId)
+				{
+					IdHubs.Add(pId, hub);
 					return hub;
+				}
+
 			return null;
 		}
 
@@ -109,19 +117,17 @@ namespace EXILED
 		{
 			try
 			{
+				if (StrHubs.ContainsKey(args))
+					return StrHubs[args];
+				
 				GameObject ply = null;
 				if (short.TryParse(args, out short pID))
 				{
-					Debug("Trying to find by PID..");
-					foreach (GameObject pl in PlayerManager.players)
-						if (pl.GetComponent<ReferenceHub>()?.queryProcessor.PlayerId == pID)
-						{
-							ply = pl;
-							Debug("Found PID match.");
-						}
+					return GetPlayer(pID);
 				}
-				else if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") ||
-				         args.EndsWith("@patreon"))
+
+				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") ||
+				    args.EndsWith("@patreon"))
 				{
 					Debug("Trying to find by SID..");
 					foreach (GameObject pl in PlayerManager.players)
@@ -174,8 +180,9 @@ namespace EXILED
 				}
 
 				ReferenceHub hub = ReferenceHub.GetHub(ply);
-				if (hub == null)
-					return null;
+				if (hub != null)
+					StrHubs.Add(args, hub);
+
 				return hub;
 			}
 			catch (Exception)

@@ -1,3 +1,4 @@
+using System;
 using Dissonance;
 using Harmony;
 using UnityEngine;
@@ -9,15 +10,25 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(CharacterClassManager __instance)
 		{
-			if (EventPlugin.CheckEscapeEventPatchDisable)
-				return true;
-			
-			if (!__instance._interactRateLimit.CanExecute(true) || (double) Vector3.Distance(__instance.transform.position, __instance.GetComponent<Escape>().worldPosition) >= (double) (Escape.radius * 2))
-				return false;
+			try
+			{
+				if (EventPlugin.CheckEscapeEventPatchDisable)
+					return true;
 
-			bool allow = true;
-			Events.InvokeCheckEscape(__instance.gameObject, ref allow);
-			return allow;
+				if (!__instance._interactRateLimit.CanExecute(true) ||
+				    (double) Vector3.Distance(__instance.transform.position,
+					    __instance.GetComponent<Escape>().worldPosition) >= (double) (Escape.radius * 2))
+					return false;
+
+				bool allow = true;
+				Events.InvokeCheckEscape(__instance.gameObject, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"CheckEscape Error: {e}");
+				return true;
+			}
 		}
 	}
 }

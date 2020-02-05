@@ -1,4 +1,5 @@
-﻿using Harmony;
+﻿using System;
+using Harmony;
 
 namespace EXILED.Patches
 {
@@ -10,9 +11,17 @@ namespace EXILED.Patches
 			if (EventPlugin.Scp106ContainEventDisable)
 				return true;
 
-			bool allow = true;
-			Events.InvokeScp106ContainEvent(__instance.gameObject, ref allow);
-			return allow;
+			try
+			{
+				bool allow = true;
+				Events.InvokeScp106ContainEvent(__instance.gameObject, ref allow);
+				return allow;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"SCP106Contain Error: {e}");
+				return true;
+			}
 		}
 	}
 }

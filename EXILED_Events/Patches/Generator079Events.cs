@@ -110,13 +110,21 @@ namespace EXILED.Patches
 		{
 			if (__instance.prevFinish || __instance.localTime > 0.0)
 				return false;
-			Events.InvokeGeneratorFinish(__instance);
-			__instance.prevFinish = true;
-			__instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
-			__instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
-			__instance.asource.PlayOneShot(__instance.unlockSound);
+			try
+			{
+				Events.InvokeGeneratorFinish(__instance);
+				__instance.prevFinish = true;
+				__instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
+				__instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
+				__instance.asource.PlayOneShot(__instance.unlockSound);
 
-			return false;
+				return false;
+			}
+			catch (Exception e)
+			{
+				Plugin.Error($"079CheckFinish Error: {e}");
+				return true;
+			}
 		}
 	}
 }

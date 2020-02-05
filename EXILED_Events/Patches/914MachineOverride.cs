@@ -54,7 +54,7 @@ namespace EXILED.Patches
             }
             catch (Exception e)
             {
-                Plugin.Error(e.ToString());
+                Plugin.Error($"SCP914 Upgrade Error: {e}");
                 return true;
             }
         }

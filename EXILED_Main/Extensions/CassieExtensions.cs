@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EXILED.Extensions
 {
-    public static class CassieExtensions
+    public static class Cassie
     {
         private static MTFRespawn _mtfRespawn;
         public static MTFRespawn mtfRespawn

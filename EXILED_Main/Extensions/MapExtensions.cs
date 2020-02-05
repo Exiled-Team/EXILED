@@ -18,7 +18,7 @@ namespace EXILED.Extensions
 				if (_hostInventory == null)
 				{
 					// Benchmarked by Petris (SL Programmer), GetHub is faster than a single GetComponent
-					_hostInventory = ReferenceHub.GetHub(PlayerManager.localPlayer).inventory;
+					_hostInventory = Plugin.GetPlayer(PlayerManager.localPlayer).inventory;
 				}
 				return _hostInventory;
 			}

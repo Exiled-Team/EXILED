@@ -24,7 +24,7 @@ namespace EXILED
 		public static ExiledVersion Version = new ExiledVersion
 		{
 			Major = 1,
-			Minor = 6,
+			Minor = 7,
 			Patch = 0
 		};
 		
@@ -84,6 +84,7 @@ namespace EXILED
 			Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
 			Events.SetClassEvent += handlers.OnSetClass;
+			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			
 			Debug("Patching..");
 			try
