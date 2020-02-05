@@ -4,7 +4,7 @@
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
         <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{35A1CDC4-6485-4902-8193-E85E633B55FF}</ProjectGuid>
+        <ProjectGuid>{21E4B856-E5D1-482A-A670-C6EF2DDDFDAB}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>EXILED_Idler</RootNamespace>
@@ -17,7 +17,7 @@
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
+        <OutputPath>../bin/EXILED</OutputPath>
         <DefineConstants>DEBUG;TRACE</DefineConstants>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
@@ -35,13 +35,7 @@
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
           <HintPath>..\..\References\Assembly-CSharp_publicized.dll</HintPath>
         </Reference>
-        <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\bin\EXILED\Mirror.dll</HintPath>
-        </Reference>
         <Reference Include="Mono.WebBrowser" />
-        <Reference Include="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <HintPath>..\..\References\mscorlib.dll</HintPath>
-        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />

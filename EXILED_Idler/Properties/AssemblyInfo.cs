@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("EXILED_Idler")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -18,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("35A1CDC4-6485-4902-8193-E85E633B55FF")]
+[assembly: Guid("21E4B856-E5D1-482A-A670-C6EF2DDDFDAB")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -30,4 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

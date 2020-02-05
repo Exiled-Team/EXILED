@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading;
 using EXILED;
 using UnityEngine;
@@ -6,7 +6,7 @@ using Exception = Mono.WebBrowser.Exception;
 
 namespace EXILED_Idler
 {
-	public class IdlePlus : Plugin
+	public class Plugin : EXILED.Plugin
 	{
 		private static Thread _thread;
 
@@ -18,10 +18,10 @@ namespace EXILED_Idler
 		{
 			_thread = new Thread(DoIdleCheck);
 			_thread.Start();
-			Events.PreAuthEvent += EventsOnPreAuthEvent;
+			Events.PreAuthEvent += OnPreAuthEvent;
 		}
 
-		private void EventsOnPreAuthEvent(ref PreauthEvent ev)
+		private void OnPreAuthEvent(ref PreauthEvent ev)
 		{
 			Info("Server process resuming..");
 			WasLastCheckIdle = false;
@@ -38,7 +38,7 @@ namespace EXILED_Idler
 			
 		}
 
-		public override string getName => "IdlePlus";
+		public override string getName => "EXILED_Idler";
 
 
 
@@ -84,8 +84,10 @@ namespace EXILED_Idler
 		public static bool IsServerIdle()
 		{
 			lock(PlayerManager.players)
+			{
 				if (PlayerManager.players.Count == 0)
 					return true;
+			}
 
 			return false;
 		}
