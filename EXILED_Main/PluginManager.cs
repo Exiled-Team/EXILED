@@ -60,9 +60,18 @@ namespace EXILED
 				mods.Remove(eventsPlugin);
 			}
 
+			bool permsInstalled = mods.Any(m => m.Contains("EXILED_Permissions.dll"));
+
+			if (permsInstalled)
+			{
+				string permsPlugin = mods.FirstOrDefault(m => m.Contains("EXILED_Permissions.dll"));
+				LoadPlugin(permsPlugin);
+				mods.Remove(permsPlugin);
+			}
+
 			foreach (string mod in mods)
 			{
-				if (mod.Contains("EXILED.dll"))
+				if (mod.EndsWith("EXILED.dll"))
 					continue;
 				LoadPlugin(mod);
 			}

@@ -14,7 +14,7 @@ namespace EXILED.Patches
 				QueryProcessor queryProcessor = sender is PlayerCommandSender playerCommandSender ? playerCommandSender.Processor : null;
 				bool allow = true;
 				
-				if (q.ToLower() == "gban-kick")
+				if (q.ToLower().StartsWith("gban-kick"))
 				{
 					if (queryProcessor == null || !queryProcessor._sender.SR.RaEverywhere)
 					{
