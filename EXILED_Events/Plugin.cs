@@ -25,7 +25,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 7,
-			Patch = 2
+			Patch = 3
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -105,38 +105,51 @@ namespace EXILED
 
 		private void AutoUpdate()
 		{
-			Info($"Attempting auto-update..");
-			Debug($"URL: {VersionUpdateUrl}");
-			if (VersionUpdateUrl == "none")
+			try
 			{
-				Error("Version update was queued but not URL was set. This error should never happen.");
-				return;
+				Info($"Attempting auto-update..");
+				Debug($"URL: {VersionUpdateUrl}");
+				if (VersionUpdateUrl == "none")
+				{
+					Error("Version update was queued but not URL was set. This error should never happen.");
+					return;
+				}
+
+				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+				Debug($"Creating temporary directory: {tempPath}..");
+
+				if (!Directory.Exists(tempPath))
+					Directory.CreateDirectory(tempPath);
+				string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
+				using (WebClient client = new WebClient())
+					client.DownloadFile(VersionUpdateUrl, exiledTemp);
+
+				Debug("Download successful, extracting contents..");
+				ExtractTarGz(exiledTemp, tempPath);
+				Debug($"Extraction complete, moving files..");
+				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
+				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
+				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+				File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
+				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
+				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
+				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
+				File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
+				File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
+				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Permissions.dll"),
+					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
+				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
+					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
+				Debug($"Files moved, cleaning up..");
+				DeleteDirectory(tempPath);
+
+				Info("Auto-update complete, restarting server..");
+				Application.Quit();
 			}
-			
-			string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-			Debug($"Creating temporary directory: {tempPath}..");
-			
-			if (!Directory.Exists(tempPath))
-				Directory.CreateDirectory(tempPath);
-			string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
-			using (WebClient client = new WebClient())
-				client.DownloadFile(VersionUpdateUrl, exiledTemp);
-			
-			Debug("Download successful, extracting contents..");
-			ExtractTarGz(exiledTemp, tempPath);
-			Debug($"Extraction complete, moving files..");
-			string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
-			string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
-			string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-			File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-			File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-			File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-			File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-			Debug($"Files moved, cleaning up..");
-			DeleteDirectory(tempPath);
-			
-			Info("Auto-update complete, restarting server..");
-			Application.Quit();
+			catch (Exception e)
+			{
+				Error($"Auto-update Error: {e}");
+			}
 		}
 		
 		public static void DeleteDirectory(string target_dir)
