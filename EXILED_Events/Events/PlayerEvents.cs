@@ -11,18 +11,20 @@ namespace EXILED
 		public static event UseMedicalItem UseMedicalItemEvent;
 		public delegate void UseMedicalItem(MedicalItemEvent ev);
 
-		public static void InvokeUseMedicalItem(GameObject obj, ItemType type)
+		public static void InvokeUseMedicalItem(GameObject obj, ItemType type, ref bool allow)
 		{
 			UseMedicalItem useMedicalItem = UseMedicalItemEvent;
 			if (useMedicalItem == null)
 				return;
-			
+
 			MedicalItemEvent ev = new MedicalItemEvent()
 			{
 				Player = Plugin.GetPlayer(obj),
-				Item = type
+				Item = type,
+				Allow = allow
 			};
 			useMedicalItem?.Invoke(ev);
+			allow = ev.Allow;
 		}
 
 		public static event Scp096Enrage Scp096EnrageEvent;
