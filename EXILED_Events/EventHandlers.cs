@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EXILED.Extensions;
+using Grenades;
 using MEC;
+using Mirror;
+using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace EXILED.Patches
 {
@@ -13,6 +18,8 @@ namespace EXILED.Patches
 		public void OnWaitingForPlayers()
 		{
 			EventPlugin.GhostedIds.Clear();
+			Plugin.IdHubs.Clear();
+			Plugin.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
 		}
 
