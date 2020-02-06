@@ -25,7 +25,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 7,
-			Patch = 3
+			Patch = 4
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -108,7 +108,7 @@ namespace EXILED
 			try
 			{
 				Info($"Attempting auto-update..");
-				Debug($"URL: {VersionUpdateUrl}");
+				Info($"URL: {VersionUpdateUrl}");
 				if (VersionUpdateUrl == "none")
 				{
 					Error("Version update was queued but not URL was set. This error should never happen.");
@@ -116,7 +116,7 @@ namespace EXILED
 				}
 
 				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-				Debug($"Creating temporary directory: {tempPath}..");
+				Info($"Creating temporary directory: {tempPath}..");
 
 				if (!Directory.Exists(tempPath))
 					Directory.CreateDirectory(tempPath);
@@ -124,9 +124,9 @@ namespace EXILED
 				using (WebClient client = new WebClient())
 					client.DownloadFile(VersionUpdateUrl, exiledTemp);
 
-				Debug("Download successful, extracting contents..");
+				Info("Download successful, extracting contents..");
 				ExtractTarGz(exiledTemp, tempPath);
-				Debug($"Extraction complete, moving files..");
+				Info($"Extraction complete, moving files..");
 				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
 				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
 				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -140,7 +140,7 @@ namespace EXILED
 					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
 				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
 					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
-				Debug($"Files moved, cleaning up..");
+				Info($"Files moved, cleaning up..");
 				DeleteDirectory(tempPath);
 
 				Info("Auto-update complete, restarting server..");
@@ -225,7 +225,25 @@ namespace EXILED
 
 
 			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
-			return major != Version.Major || minor != Version.Minor || patch != Version.Patch;
+			if (major > Version.Major)
+			{
+				Info($"Major version outdated: Current {Version.Major}. New: {major}");
+				return true;
+			}
+
+			if (minor > Version.Minor && major == Version.Major)
+			{
+				Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
+				return true;
+			}
+
+			if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
+			{
+				Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
+				return true;
+			}
+
+			return false;
 		}
 		
 		private static string Between(string str , string firstString, string lastString)
