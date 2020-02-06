@@ -67,6 +67,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public ItemType Item { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class Scp096EnrageEvent : EventArgs
