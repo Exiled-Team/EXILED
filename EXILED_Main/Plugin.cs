@@ -31,14 +31,20 @@ namespace EXILED
 			if (!debug)
 				return;
 			Assembly assembly = Assembly.GetCallingAssembly();
-			ServerConsole.AddLog($"[DEBUG] [{assembly.GetName().Name}]: {message}");
+			ServerConsole.AddLog($"[DEBUG] [{assembly.GetName().Name}]: {message} LOGTYPE02");
+		}
+
+		public static void Warn(string message)
+		{
+			Assembly assembly = Assembly.GetCallingAssembly();
+			ServerConsole.AddLog($"[WARN] [{assembly.GetName().Name}]: {message} LOGTYPE14");
 		}
 
 		//Used to send ERROR level messages to the game console. This should be used to send errors only. It's recommended to send any messages in the catch block of a try/catch as errors with the exception string.
 		public static void Error(string message)
 		{
 			Assembly assembly = Assembly.GetCallingAssembly();
-			ServerConsole.AddLog($"[ERROR] [{assembly.GetName().Name}]: {message}");
+			ServerConsole.AddLog($"[ERROR] [{assembly.GetName().Name}]: {message} LOGTYPE-8");
 		}
 
 		//Gets a list of all current player ReferenceHubs.
