@@ -37,7 +37,7 @@ namespace EXILED
 
 			if (!Directory.Exists(path))
 			{
-				Plugin.Info($"Plugin directory not found - creating: {path}");
+				Plugin.Warn($"Plugin directory not found - creating: {path}");
 				Directory.CreateDirectory(path);
 			}
 
@@ -48,8 +48,8 @@ namespace EXILED
 			bool eventsInstalled = true;
 			if (mods.All(m => !m.Contains("EXILED_Events.dll")))
 			{
-				Plugin.Error(
-					"WARN: Events plugin not installed, plugins that do not handle their own events will not function and may cause errors.");
+				Plugin.Warn(
+					"Events plugin not installed, plugins that do not handle their own events will not function and may cause errors.");
 				eventsInstalled = false;
 			}
 
@@ -86,7 +86,7 @@ namespace EXILED
 			Plugin.Info("Loading dependencies...");
 			string pl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plugins");
 			string folder = Path.Combine(pl, "dependencies");
-			Plugin.Info("Searching Directory '" + folder + "'");
+			Plugin.Debug("Searching Directory '" + folder + "'");
 			if (!Directory.Exists(folder))
 				Directory.CreateDirectory(folder);
 			string[] depends = Directory.GetFiles(folder);
@@ -100,7 +100,7 @@ namespace EXILED
 				localLoaded.Add(a);
 				Plugin.Info("Loaded dependency " + a.FullName);
 			}
-			Plugin.Info("Complete!");
+			Plugin.Debug("Complete!");
 		}
 		
 		private static bool IsLoaded(string a)
@@ -144,7 +144,7 @@ namespace EXILED
 					Plugin.Info($"Instantiated type {type.FullName}");
 					if (!(plugin is Plugin p))
 					{
-						Plugin.Info($"not plugin error! {type.FullName}");
+						Plugin.Error($"not plugin error! {type.FullName}");
 						continue;
 					}
 
