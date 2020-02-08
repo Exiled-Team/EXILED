@@ -34,7 +34,7 @@ namespace EXILED.Patches
 	        }
 	        catch (Exception e)
 	        {
-		        Plugin.Error($"SCP106Portal Error: {e}");
+		        Log.Error($"SCP106Portal Error: {e}");
 		        return true;
 	        }
         }

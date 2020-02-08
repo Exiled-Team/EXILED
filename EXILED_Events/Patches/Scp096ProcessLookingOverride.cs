@@ -30,7 +30,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SCP-096 Enrage event: {e}");
+				Log.Error($"SCP-096 Enrage event: {e}");
 				return true;
 			}
 		}
@@ -52,7 +52,7 @@ namespace EXILED.Patches
 				}
 				catch (Exception e)
 				{
-					Plugin.Error($"SCP-096 Calm event: {e}");
+					Log.Error($"SCP-096 Calm event: {e}");
 					return true;
 				}
 			}

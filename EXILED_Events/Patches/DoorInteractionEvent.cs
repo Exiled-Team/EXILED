@@ -53,7 +53,7 @@ namespace EXILED.Patches
 						}
 						catch (Exception e)
 						{
-							Plugin.Error($"Door interaction error: {e}");
+							Log.Error($"Door interaction error: {e}");
 
 							if (allow) component1.ChangeState();
 							else __instance.RpcDenied(doorId);
@@ -79,7 +79,7 @@ namespace EXILED.Patches
 						}
 						catch (Exception e)
 						{
-							Plugin.Error($"Door interaction error: {e}");
+							Log.Error($"Door interaction error: {e}");
 
 							if (allow) component1.ChangeState();
 							else __instance.RpcDenied(doorId);
@@ -110,7 +110,7 @@ namespace EXILED.Patches
 							}
 							catch (Exception e)
 							{
-								Plugin.Error($"Door interaction error: {e}");
+								Log.Error($"Door interaction error: {e}");
 
 								if (allow) component1.ChangeState();
 								else __instance.RpcDenied(doorId);
@@ -137,7 +137,7 @@ namespace EXILED.Patches
 								}
 								catch (Exception e)
 								{
-									Plugin.Error($"Door interaction error: {e}");
+									Log.Error($"Door interaction error: {e}");
 
 									if (allow) component1.ChangeState();
 									else __instance.RpcDenied(doorId);
@@ -167,7 +167,7 @@ namespace EXILED.Patches
 								}
 								catch (Exception e)
 								{
-									Plugin.Error($"Door interaction error: {e}");
+									Log.Error($"Door interaction error: {e}");
 
 									if (allow) component1.ChangeState();
 									else __instance.RpcDenied(doorId);
@@ -183,7 +183,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"DoorInteraction Error: {e}");
+				Log.Error($"DoorInteraction Error: {e}");
 				return true;
 			}
 		}

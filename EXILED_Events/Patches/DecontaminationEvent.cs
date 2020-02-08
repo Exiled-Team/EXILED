@@ -19,7 +19,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"DeconEvent Error: {e}");
+				Log.Error($"DeconEvent Error: {e}");
 				return true;
 			}
 		}

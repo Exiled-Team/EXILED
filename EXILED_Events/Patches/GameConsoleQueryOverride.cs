@@ -22,7 +22,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Console Command event error: {e}");
+				Log.Error($"Console Command event error: {e}");
 				return true;
 			}
 		}

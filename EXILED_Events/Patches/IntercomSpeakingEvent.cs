@@ -39,7 +39,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"IntercomSpeaking Error: {e}");
+				Log.Error($"IntercomSpeaking Error: {e}");
 				return true;
 			}
 		}

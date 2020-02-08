@@ -19,7 +19,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SCP106Contain Error: {e}");
+				Log.Error($"SCP106Contain Error: {e}");
 				return true;
 			}
 		}

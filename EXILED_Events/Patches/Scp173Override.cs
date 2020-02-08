@@ -1,4 +1,5 @@
 using System;
+using EXILED.Extensions;
 using Harmony;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace EXILED.Patches
 				__instance._allowMove = true;
 				foreach (GameObject player in PlayerManager.players)
 				{
-					ReferenceHub hub = Plugin.GetPlayer(player);
+					ReferenceHub hub = Player.GetPlayer(player);
 					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
 					{
 						
@@ -39,7 +40,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SCP173 patch error: {e}");
+				Log.Error($"SCP173 patch error: {e}");
 				return true;
 			}
 		}

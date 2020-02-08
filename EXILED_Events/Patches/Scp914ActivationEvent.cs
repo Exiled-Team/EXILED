@@ -28,7 +28,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SCP914Activation Error: {e}");
+				Log.Error($"SCP914Activation Error: {e}");
 				return true;
 			}
 		}

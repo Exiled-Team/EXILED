@@ -116,7 +116,7 @@ namespace EXILED.Patches
 	        }
 	        catch (Exception e)
 	        {
-		        Plugin.Error($"SCP106Pocket Error: {e}");
+		        Log.Error($"SCP106Pocket Error: {e}");
 		        return true;
 	        }
         }

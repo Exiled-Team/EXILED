@@ -43,7 +43,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Player hurt/death event error: {e}");
+				Log.Error($"Player hurt/death event error: {e}");
 			}
 		}
 	}

@@ -19,7 +19,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SetGroup Error: {e}");
+				Log.Error($"SetGroup Error: {e}");
 				return true;
 			}
 		}

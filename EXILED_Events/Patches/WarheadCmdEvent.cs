@@ -19,7 +19,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Warhead event error: {e}");
+				Log.Error($"Warhead event error: {e}");
 				return true;
 			}
 		}

@@ -12,12 +12,12 @@ namespace EXILED
 		private static string path = Path.Combine(exiledPath, $"{ServerStatic.ServerPort}-config.yml");
 		public static void EntryPointForLoader()
 		{
-			ServerConsole.AddLog($"Initalizing Mod Loader");
+			Log.Info($"Initalizing Mod Loader");
 
 			if (!File.Exists(path))
 				File.Create(path).Close();
 			Plugin.Config = new YamlConfig(path);
-			Plugin.debug = Plugin.Config.GetBool("exiled_debug", false);
+			Log.debug = Plugin.Config.GetBool("exiled_debug", false);
 
 			CustomNetworkManager.Modded = true;
 			Timing.RunCoroutine(PluginManager.LoadPlugins());

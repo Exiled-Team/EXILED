@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EXILED.Extensions;
 using LiteNetLib;
 using Scp914;
 using UnityEngine;
@@ -111,7 +112,7 @@ namespace EXILED
 			
 			List<ReferenceHub> respawn = new List<ReferenceHub>();
 			foreach (GameObject obj in toRespawn)
-				respawn.Add(Plugin.GetPlayer(obj));
+				respawn.Add(Player.GetPlayer(obj));
 			TeamRespawnEvent ev = new TeamRespawnEvent()
 			{
 				IsChaos = isChaos,
@@ -155,7 +156,7 @@ namespace EXILED
 
 			SetGroupEvent ev = new SetGroupEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Group = group,
 				Allow = allow
 			};

@@ -79,7 +79,7 @@ namespace EXILED.Patches
         }
         catch (Exception e)
         {
-          Plugin.Error($"SCP106PocketEscape Error {e}");
+          Log.Error($"SCP106PocketEscape Error {e}");
           return true;
         }
       }

@@ -1,4 +1,5 @@
 using System;
+using EXILED.Extensions;
 using GameCore;
 using Harmony;
 
@@ -14,13 +15,13 @@ namespace EXILED.Patches
       
       try
       {
-        ReferenceHub hub = Plugin.GetPlayer(__instance.gameObject);
+        ReferenceHub hub = Player.GetPlayer(__instance.gameObject);
         if (!string.IsNullOrEmpty(hub.characterClassManager.UserId))
           Events.InvokePlayerJoin(hub);
       }
       catch (Exception e)
       {
-        Plugin.Error($"PlayerJoin Event error: {e}");
+        Log.Error($"PlayerJoin Event error: {e}");
       }
     }
   }

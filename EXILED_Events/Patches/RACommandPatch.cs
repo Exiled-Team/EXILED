@@ -21,7 +21,7 @@ namespace EXILED.Patches
 						sender.RaReply(
 							$"GBAN-KICK# Permission to run command denied by the server. If this is an unexpected error, contact EXILED developers.",
 							false, true, string.Empty);
-						Plugin.Error(
+						Log.Error(
 							$"A user {sender.Nickname} attempted to run GBAN-KICK and was denied permission. If this is an unexpected error, contact EXILED developers.");
 						allow = false;
 					}
@@ -36,7 +36,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"RA Command event error: {e}");
+				Log.Error($"RA Command event error: {e}");
 				return true;
 			}
 		}

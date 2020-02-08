@@ -26,7 +26,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Reload Error: {e}");
+				Log.Error($"Reload Error: {e}");
 				return true;
 			}
 		}

@@ -21,11 +21,11 @@ namespace EXILED.Patches
         __instance.playersToNTF.Clear();
         List<GameObject> players = PlayerManager.players
           .Where(c => c.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator).ToList();
-        Plugin.Debug($"Respawn: Got players: {players.Count}");
+        Log.Debug($"Respawn: Got players: {players.Count}");
         foreach (GameObject player in players.ToArray())
           if (player.GetComponent<ServerRoles>().OverwatchEnabled)
           {
-            Plugin.Debug($"Removing {ReferenceHub.GetHub(player)} -- Overwatch true");
+            Log.Debug($"Removing {ReferenceHub.GetHub(player)} -- Overwatch true");
             players.Remove(player);
           }
 
@@ -34,7 +34,7 @@ namespace EXILED.Patches
         int maxRespawn = 15;
         List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         bool isChaos = __instance.nextWaveIsCI;
-        Plugin.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
+        Log.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
         Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref toRespawn);
 
         foreach (GameObject ply in toRespawn)
@@ -68,7 +68,7 @@ namespace EXILED.Patches
       }
       catch (Exception e)
       {
-        Plugin.Error($"Respawn Event error: {e}");
+        Log.Error($"Respawn Event error: {e}");
         return true;
       }
     }

@@ -18,8 +18,8 @@ namespace EXILED.Patches
 		public void OnWaitingForPlayers()
 		{
 			EventPlugin.GhostedIds.Clear();
-			Plugin.IdHubs.Clear();
-			Plugin.StrHubs.Clear();
+			Player.IdHubs.Clear();
+			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
 		}
 
@@ -51,11 +51,11 @@ namespace EXILED.Patches
 
 		public void OnPlayerLeave(EXILED.PlayerLeaveEvent ev)
 		{
-			if (Plugin.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
-				Plugin.IdHubs.Remove(ev.Player.queryProcessor.PlayerId);
+			if (Player.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
+				Player.IdHubs.Remove(ev.Player.queryProcessor.PlayerId);
 
-			if (Plugin.StrHubs.ContainsValue(ev.Player))
-				Plugin.StrHubs.Remove(Plugin.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
+			if (Player.StrHubs.ContainsValue(ev.Player))
+				Player.StrHubs.Remove(Player.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"UseMedicalItem event error: {e}");
+				Log.Error($"UseMedicalItem event error: {e}");
 				return true;
 			}
 		}

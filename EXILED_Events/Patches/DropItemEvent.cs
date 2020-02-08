@@ -34,7 +34,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Drop Item error: {e}");
+				Log.Error($"Drop Item error: {e}");
 				return true;
 			}
 		}

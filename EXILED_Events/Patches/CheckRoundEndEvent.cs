@@ -42,6 +42,7 @@ namespace EXILED.Patches
 				{
 					if (!(player == null))
 					{
+						Dictionary<GameObject, ReferenceHub> hubs = new Dictionary<GameObject, ReferenceHub>(20, new ReferenceHub.GameObjectComparer());
 						CharacterClassManager component = player.GetComponent<CharacterClassManager>();
 						if (component.Classes.CheckBounds(component.CurClass))
 						{

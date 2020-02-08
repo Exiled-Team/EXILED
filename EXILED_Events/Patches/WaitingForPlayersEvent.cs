@@ -18,7 +18,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"WaitingForPlayers event error: {e}");
+				Log.Error($"WaitingForPlayers event error: {e}");
 			}
 		}
 	}

@@ -55,7 +55,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"079Tesla Error: {e}");
+				Log.Error($"079Tesla Error: {e}");
 				return true;
 			}
 		}

@@ -4,8 +4,6 @@ public static class Extenstions
 {
     public static bool CheckPermission(this ReferenceHub rh, string permission)
     {
-        if (rh.gameObject == PlayerManager.localPlayer)
-            return true;
-        return PermissionPlugin.CheckPermission(rh, permission);
+        return rh.gameObject == PlayerManager.localPlayer || PermissionPlugin.CheckPermission(rh, permission);
     }
 }

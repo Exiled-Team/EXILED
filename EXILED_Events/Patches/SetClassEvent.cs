@@ -17,7 +17,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SetClass event error: {e}");
+				Log.Error($"SetClass event error: {e}");
 			}
 		}
 	}

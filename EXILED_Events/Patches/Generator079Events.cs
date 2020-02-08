@@ -96,7 +96,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Generator079 error: {e}");
+				Log.Error($"Generator079 error: {e}");
 				return true;
 			}
 		}
@@ -122,7 +122,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"079CheckFinish Error: {e}");
+				Log.Error($"079CheckFinish Error: {e}");
 				return true;
 			}
 		}

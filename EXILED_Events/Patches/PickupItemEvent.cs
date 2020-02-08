@@ -96,7 +96,7 @@ namespace EXILED.Patches
       }
       catch (Exception e)
       {
-        Plugin.Error($"Item Pickup error: {e}");
+        Log.Error($"Item Pickup error: {e}");
         return true;
       }
     }

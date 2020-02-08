@@ -26,7 +26,7 @@ namespace EXILED.Patches
                __instance.hub.inventory.items[itemIndex].durability <= 0.0))
             return false;
           
-          Plugin.Debug("Invoking shoot event");
+          Log.Debug("Invoking shoot event");
           bool allowShot = true;
           Events.InvokeOnShoot(__instance.hub, target, ref allowShot);
           if (!allowShot)
@@ -134,7 +134,7 @@ namespace EXILED.Patches
                   num2 *= 4f;
 
                 bool allow = true;
-                Plugin.Debug("Invoking late shoot.");
+                Log.Debug("Invoking late shoot.");
                 Events.InvokeOnLateShoot(__instance.hub, target, num2, num1, ref allow);
                 if (!allow)
                   return false;
@@ -168,7 +168,7 @@ namespace EXILED.Patches
         }
         catch (Exception e)
         {
-          Plugin.Error($"OnShoot: {e}");
+          Log.Error($"OnShoot: {e}");
           return true;
         }
       }

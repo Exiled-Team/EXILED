@@ -1,3 +1,4 @@
+using EXILED.Extensions;
 using EXILED.Patches;
 using Grenades;
 using Scp914;
@@ -19,7 +20,7 @@ namespace EXILED
 
 			MedicalItemEvent ev = new MedicalItemEvent()
 			{
-				Player = Plugin.GetPlayer(obj),
+				Player = Player.GetPlayer(obj),
 				Item = type,
 				Allow = allow
 			};
@@ -38,7 +39,7 @@ namespace EXILED
 			
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
 			{
-				Player = Plugin.GetPlayer(script.gameObject),
+				Player = Player.GetPlayer(script.gameObject),
 				Script = script,
 				Allow = allow
 			};
@@ -57,7 +58,7 @@ namespace EXILED
 			
 			Scp096CalmEvent ev = new Scp096CalmEvent()
 			{
-				Player = Plugin.GetPlayer(script.gameObject),
+				Player = Player.GetPlayer(script.gameObject),
 				Script = script,
 				Allow = allow
 			};
@@ -106,7 +107,7 @@ namespace EXILED
 				return;
 			}
 
-			ReferenceHub hub = Plugin.GetPlayer(obj);
+			ReferenceHub hub = Player.GetPlayer(obj);
 			ConsoleCommandEvent ev = new ConsoleCommandEvent(encrypted)
 			{
 				Command = command,
@@ -129,8 +130,8 @@ namespace EXILED
 			
 			PlayerHurtEvent ev = new PlayerHurtEvent()
 			{
-				Attacker = Plugin.GetPlayer(stats.gameObject),
-				Player = Plugin.GetPlayer(obj),
+				Attacker = Player.GetPlayer(stats.gameObject),
+				Player = Player.GetPlayer(obj),
 				Info = info
 			};
 
@@ -150,8 +151,8 @@ namespace EXILED
 			
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
-				Killer = Plugin.GetPlayer(stats.gameObject),
-				Player = Plugin.GetPlayer(obj),
+				Killer = Player.GetPlayer(stats.gameObject),
+				Player = Player.GetPlayer(obj),
 				Info = info
 			};
 			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
@@ -171,7 +172,7 @@ namespace EXILED
 			
 			SetClassEvent ev = new SetClassEvent()
 			{
-				Player = Plugin.GetPlayer(ccm.gameObject),
+				Player = Player.GetPlayer(ccm.gameObject),
 				Role = id
 			};
 			setClass?.Invoke(ev);
@@ -186,7 +187,7 @@ namespace EXILED
 				return;
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
-				Player = Plugin.GetPlayer(gm.gameObject),
+				Player = Player.GetPlayer(gm.gameObject),
 				Gm = gm,
 				Id = id,
 				Allow = allow
@@ -207,7 +208,7 @@ namespace EXILED
 				return;
 			DropItemEvent ev = new DropItemEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Item = item,
 				Allow = allow
 			};
@@ -228,7 +229,7 @@ namespace EXILED
 				return;
 			PickupItemEvent ev = new PickupItemEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Item = item,
 				Allow = allow
 			};
@@ -248,8 +249,8 @@ namespace EXILED
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
-				Player = Plugin.GetPlayer(player),
-				Target = Plugin.GetPlayer(target),
+				Player = Player.GetPlayer(player),
+				Target = Player.GetPlayer(target),
 				Allow = allow
 			};
 			handcuffCuffed.Invoke(ref ev);
@@ -266,8 +267,8 @@ namespace EXILED
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
-				Player = Plugin.GetPlayer(player),
-				Target = Plugin.GetPlayer(target),
+				Player = Player.GetPlayer(player),
+				Target = Player.GetPlayer(target),
 				Allow = allow
 			};
 			handcuffFreed.Invoke(ref ev);
@@ -284,7 +285,7 @@ namespace EXILED
 			
 			Scp079TriggerTeslaEvent ev = new Scp079TriggerTeslaEvent
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow
 			};
 			
@@ -304,7 +305,7 @@ namespace EXILED
 			
 			CheckEscapeEvent ev = new CheckEscapeEvent
 			{
-				Player = Plugin.GetPlayer(ply),
+				Player = Player.GetPlayer(ply),
 				Allow = allow
 			};
 			
@@ -324,7 +325,7 @@ namespace EXILED
 			
 			IntercomSpeakEvent ev = new IntercomSpeakEvent
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow
 			};
 			
@@ -380,11 +381,10 @@ namespace EXILED
 			Scp106Teleport scp106Teleport = Scp106TeleportEvent;
 			if (scp106Teleport == null)
 				return;
-
-			ReferenceHub Player = Plugin.GetPlayer(Gplayer);
+			
 			Scp106TeleportEvent ev = new Scp106TeleportEvent()
 			{
-				Player = Player,
+				Player = Player.GetPlayer(Gplayer),
 				PortalPosition = PortalPos,
 				Allow = allow
 			};
@@ -401,7 +401,7 @@ namespace EXILED
 			if (pocketDimDamage == null)
 				return;
 
-			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			ReferenceHub player = Player.GetPlayer(Gplayer);
 			PocketDimDamageEvent ev = new PocketDimDamageEvent()
 			{
 				Player = player,
@@ -420,7 +420,7 @@ namespace EXILED
 			if (pocketDimEnter == null)
 				return;
 
-			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			ReferenceHub player = Player.GetPlayer(Gplayer);
 			PocketDimEnterEvent ev = new PocketDimEnterEvent()
 			{
 				Player = player,
@@ -439,7 +439,7 @@ namespace EXILED
 			if (pocketDimEscaped == null)
 				return;
 
-			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			ReferenceHub player = Player.GetPlayer(Gplayer);
 			PocketDimEscapedEvent ev = new PocketDimEscapedEvent()
 			{
 				Player = player,
@@ -458,7 +458,7 @@ namespace EXILED
 			if (pocketDimDeath == null)
 				return;
 
-			ReferenceHub player = Plugin.GetPlayer(Gplayer);
+			ReferenceHub player = Player.GetPlayer(Gplayer);
 			PocketDimDeathEvent ev = new PocketDimDeathEvent()
 			{
 				Player = player,
@@ -480,7 +480,7 @@ namespace EXILED
 			
 			PlayerReloadEvent ev = new PlayerReloadEvent
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow
 			};
 			
@@ -512,7 +512,7 @@ namespace EXILED
 				return;
 			Scp106ContainEvent ev = new Scp106ContainEvent
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow
 			};
 			scp106Contain?.Invoke(ev);
@@ -526,7 +526,7 @@ namespace EXILED
 			Scp914Activation scp914Activation = Scp914ActivationEvent;
 			if (scp914Activation == null)
 				return;
-			ReferenceHub player = Plugin.GetPlayer(obj);
+			ReferenceHub player = Player.GetPlayer(obj);
 			Scp914ActivationEvent ev = new Scp914ActivationEvent
 			{
 				Player = player,
@@ -547,7 +547,7 @@ namespace EXILED
 			Scp914KnobChange scp914KnobChange = Scp914KnobChangeEvent;
 			if (scp914KnobChange == null)
 				return;
-			ReferenceHub hub = Plugin.GetPlayer(player);
+			ReferenceHub hub = Player.GetPlayer(player);
 			Scp914KnobChangeEvent ev = new Scp914KnobChangeEvent
 			{
 				Player = hub,

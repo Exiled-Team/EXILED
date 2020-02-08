@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace EXILED.Extensions
 {
@@ -17,8 +18,7 @@ namespace EXILED.Extensions
 			{
 				if (_hostInventory == null)
 				{
-					// Benchmarked by Petris (SL Programmer), GetHub is faster than a single GetComponent
-					_hostInventory = Plugin.GetPlayer(PlayerManager.localPlayer).inventory;
+					_hostInventory = Player.GetPlayer(PlayerManager.localPlayer).inventory;
 				}
 				return _hostInventory;
 			}
@@ -78,5 +78,12 @@ namespace EXILED.Extensions
 		/// Detonates the nuke.
 		/// </summary>
 		public static void DetonateNuke() => AlphaWarheadController.Detonate();
+		
+		public static Vector3 GetRandomSpawnPoint(RoleType role)
+		{
+			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(role);
+			
+			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
+		}
 	}
 }

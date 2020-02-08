@@ -21,7 +21,7 @@ namespace EXILED.Patches
       }
       catch (Exception e)
       {
-        Plugin.Error($"Preauth event error: {e}");
+        Log.Error($"Preauth event error: {e}");
         return true;
       }
     }

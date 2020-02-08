@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EXILED.Extensions;
 using Harmony;
 using Mirror;
 using UnityEngine;
@@ -35,7 +36,7 @@ namespace EXILED.Patches
 					{
 						for (int i = 0; i < __instance.usedData; i++)
 						{
-							ReferenceHub hub = Plugin.GetPlayer(__instance.transmitBuffer[i].playerID.ToString());
+							ReferenceHub hub = Player.GetPlayer(__instance.transmitBuffer[i].playerID.ToString());
 							if (hub.characterClassManager.CurClass != RoleType.Tutorial)
 								continue;
 							Scp049PlayerScript script = hub.GetComponent<Scp049PlayerScript>();
@@ -69,7 +70,7 @@ namespace EXILED.Patches
 							}
 						}
 					}
-          else if (component1.CurClass != RoleType.Scp079 && component1.CurClass != RoleType.Spectator)
+					else if (component1.CurClass != RoleType.Scp079 && component1.CurClass != RoleType.Spectator)
 					{
 						for (int index = 0; index < __instance.usedData; ++index)
 						{
@@ -106,7 +107,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"TransmitData Error: {e}");
+				Log.Error($"TransmitData Error: {e}");
 				return true;
 			}
 		}

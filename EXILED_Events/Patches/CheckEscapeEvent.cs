@@ -26,7 +26,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"CheckEscape Error: {e}");
+				Log.Error($"CheckEscape Error: {e}");
 				return true;
 			}
 		}

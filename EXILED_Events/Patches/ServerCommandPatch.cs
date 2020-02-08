@@ -18,7 +18,7 @@ namespace EXILED.Patches
             }
             catch (Exception e)
             {
-                Plugin.Error($"Server Command event error: {e}");
+                Log.Error($"Server Command event error: {e}");
                 return true;
             }
 

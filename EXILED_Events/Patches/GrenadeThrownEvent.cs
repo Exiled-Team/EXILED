@@ -20,7 +20,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Grenade thrown patch error: {e}");
+				Log.Error($"Grenade thrown patch error: {e}");
 				return true;
 			}
 		}

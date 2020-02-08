@@ -36,7 +36,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Tesla trigger event error: {e}");
+				Log.Error($"Tesla trigger event error: {e}");
 			}
 		}
 	}

@@ -33,7 +33,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"SCP914Knob Error: {e}");
+				Log.Error($"SCP914Knob Error: {e}");
 				return true;
 			}
 		}

@@ -16,7 +16,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"RoundRestart Error: {e}");
+				Log.Error($"RoundRestart Error: {e}");
 			}
 		}
 	}

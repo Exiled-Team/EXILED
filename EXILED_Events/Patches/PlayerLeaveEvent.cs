@@ -18,7 +18,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Error in PlayerLeave Event: {e}");
+				Log.Error($"Error in PlayerLeave Event: {e}");
 			}
 		}
 	}

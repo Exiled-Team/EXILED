@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EXILED.Extensions;
 using UnityEngine;
 
 namespace EXILED
@@ -17,7 +18,7 @@ namespace EXILED
 			
 			WarheadLeverEvent ev = new WarheadLeverEvent()
 			{
-				Player = Plugin.GetPlayer(interaction.gameObject),
+				Player = Player.GetPlayer(interaction.gameObject),
 				Allow = allow
 			};
 			onWarheadCommand?.Invoke(ref ev);
@@ -35,7 +36,7 @@ namespace EXILED
 			
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow,
 				Door = door
 			};
@@ -53,7 +54,7 @@ namespace EXILED
 			
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
-				Player = Plugin.GetPlayer(obj),
+				Player = Player.GetPlayer(obj),
 				Triggerable = triggerable
 			};
 			triggerTesla?.Invoke(ref ev);
@@ -70,7 +71,7 @@ namespace EXILED
 			List<ReferenceHub> players = new List<ReferenceHub>();
 			foreach (CharacterClassManager ccm in ccms)
 			{
-				players.Add(Plugin.GetPlayer(ccm.gameObject));
+				players.Add(Player.GetPlayer(ccm.gameObject));
 			}
 
 			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
@@ -97,7 +98,7 @@ namespace EXILED
 			{
 				Allow = allow,
 				Generator = generator,
-				Player = Plugin.GetPlayer(person)
+				Player = Player.GetPlayer(person)
 			};
 			generatorUnlock.Invoke(ref ev);
 			allow = ev.Allow;
@@ -112,7 +113,7 @@ namespace EXILED
 				return;
 			GeneratorOpenEvent ev = new GeneratorOpenEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -129,7 +130,7 @@ namespace EXILED
 				return;
 			GeneratorCloseEvent ev = new GeneratorCloseEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -146,7 +147,7 @@ namespace EXILED
 				return;
 			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};
@@ -163,7 +164,7 @@ namespace EXILED
 				return;
 			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Generator = generator,
 				Allow = allow
 			};

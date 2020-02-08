@@ -1,3 +1,4 @@
+using EXILED.Extensions;
 using RemoteAdmin;
 
 namespace EXILED
@@ -12,6 +13,7 @@ namespace EXILED
 			{
 				ev.Allow = false;
 				PluginManager.ReloadPlugins();
+				ev.Sender.RAMessage("Reloading ploogins..");
 			}
 		}
 	}

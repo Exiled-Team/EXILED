@@ -1,4 +1,6 @@
-﻿namespace EXILED
+﻿using EXILED.Extensions;
+
+namespace EXILED
 {
     public class EventHandlers
     {
@@ -7,7 +9,7 @@
             if (ev.Command.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
                 return;
             string[] args = ev.Command.Split(' ');
-            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" ? ReferenceHub.GetHub(PlayerManager.localPlayer) : Plugin.GetPlayer(ev.Sender.SenderId);
+            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" ? ReferenceHub.GetHub(PlayerManager.localPlayer) : Player.GetPlayer(ev.Sender.SenderId);
 
             switch(args[0].ToLower())
             {

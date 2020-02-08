@@ -25,7 +25,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 7,
-			Patch = 6
+			Patch = 7
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -67,18 +67,18 @@ namespace EXILED
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
-			Info("Enabled.");
-			Info("Checking version status..");
+			Log.Info("Enabled.");
+			Log.Info("Checking version status..");
 			 if (IsUpdateAvailible())
 			 {
-			 	Info("There is an new version of EXILED available.");
+				 Log.Info("There is an new version of EXILED available.");
 			 	if (Config.GetBool("exiled_auto_update", true))
 			 	{
 			 		AutoUpdate();
 			    }
 			 }
 
-			Debug("Adding Event Handlers..");
+			 Log.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
@@ -86,7 +86,7 @@ namespace EXILED
 			Events.SetClassEvent += handlers.OnSetClass;
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			
-			Debug("Patching..");
+			Log.Debug("Patching..");
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
@@ -96,10 +96,10 @@ namespace EXILED
 			}
 			catch (Exception e)
 			{
-				Error($"Patching failed! {e}");
+				Log.Error($"Patching failed! {e}");
 			}
 
-			Debug("Patching complete. c:");
+			Log.Debug("Patching complete. c:");
 			ServerConsole.ReloadServerName();
 		}
 
@@ -107,16 +107,16 @@ namespace EXILED
 		{
 			try
 			{
-				Info($"Attempting auto-update..");
-				Info($"URL: {VersionUpdateUrl}");
+				Log.Info($"Attempting auto-update..");
+				Log.Info($"URL: {VersionUpdateUrl}");
 				if (VersionUpdateUrl == "none")
 				{
-					Error("Version update was queued but not URL was set. This error should never happen.");
+					Log.Error("Version update was queued but not URL was set. This error should never happen.");
 					return;
 				}
 
 				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-				Info($"Creating temporary directory: {tempPath}..");
+				Log.Info($"Creating temporary directory: {tempPath}..");
 
 				if (!Directory.Exists(tempPath))
 					Directory.CreateDirectory(tempPath);
@@ -124,9 +124,9 @@ namespace EXILED
 				using (WebClient client = new WebClient())
 					client.DownloadFile(VersionUpdateUrl, exiledTemp);
 
-				Info("Download successful, extracting contents..");
+				Log.Info("Download successful, extracting contents..");
 				ExtractTarGz(exiledTemp, tempPath);
-				Info($"Extraction complete, moving files..");
+				Log.Info($"Extraction complete, moving files..");
 				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
 				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
 				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -140,15 +140,15 @@ namespace EXILED
 					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
 				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
 					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
-				Info($"Files moved, cleaning up..");
+				Log.Info($"Files moved, cleaning up..");
 				DeleteDirectory(tempPath);
 
-				Info("Auto-update complete, restarting server..");
+				Log.Info("Auto-update complete, restarting server..");
 				Application.Quit();
 			}
 			catch (Exception e)
 			{
-				Error($"Auto-update Error: {e}");
+				Log.Error($"Auto-update Error: {e}");
 			}
 		}
 		
@@ -174,15 +174,15 @@ namespace EXILED
 		//The below method gets called when the plugin is disabled by the EXILED loader.
 		public override void OnDisable()
 		{
-			Info("Disabled.");
+			Log.Info("Disabled.");
 			//You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
-			Debug("Removing Event Handlers..");
+			Log.Debug("Removing Event Handlers..");
 			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
 			handlers = null;
-			Debug("Unpatching..");
+			Log.Debug("Unpatching..");
 			instance.UnpatchAll();
-			Debug("Unpatching complete. Goodbye. :c");
+			Log.Debug("Unpatching complete. Goodbye. :c");
 		}
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
@@ -207,19 +207,19 @@ namespace EXILED
 
 			if (!int.TryParse(versionArray[0], out int major))
 			{
-				Error($"Unable to parse EXILED major version.");
+				Log.Error($"Unable to parse EXILED major version.");
 				return false;
 			}
 
 			if (!int.TryParse(versionArray[1], out int minor))
 			{
-				Error($"Unable to parse EXILED minor version.");
+				Log.Error($"Unable to parse EXILED minor version.");
 				return false;
 			}
 
 			if (!int.TryParse(versionArray[2], out int patch))
 			{
-				Error($"Unable to parse EXILED patch version.");
+				Log.Error($"Unable to parse EXILED patch version.");
 				return false;
 			}
 
@@ -227,19 +227,19 @@ namespace EXILED
 			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
 			if (major > Version.Major)
 			{
-				Info($"Major version outdated: Current {Version.Major}. New: {major}");
+				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
 				return true;
 			}
 
 			if (minor > Version.Minor && major == Version.Major)
 			{
-				Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
+				Log.Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
 				return true;
 			}
 
 			if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
 			{
-				Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
+				Log.Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
 				return true;
 			}
 

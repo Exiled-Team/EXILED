@@ -18,7 +18,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Round end event error: {e}");
+				Log.Error($"Round end event error: {e}");
 			}
 		}
 	}

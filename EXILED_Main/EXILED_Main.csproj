@@ -94,6 +94,7 @@
     <Compile Include="Extensions\MapExtensions.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="LevenshteinDistance.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="MainLoader.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="PluginManager.cs" />

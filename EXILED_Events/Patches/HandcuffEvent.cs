@@ -81,7 +81,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Handcuffed Error: {e}");
+				Log.Error($"Handcuffed Error: {e}");
 				return true;
 			}
 		}
@@ -111,7 +111,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"HandcuffFreeTeammate Error: {e}");
+				Log.Error($"HandcuffFreeTeammate Error: {e}");
 				return true;
 			}
 		}
@@ -144,7 +144,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"HandcuffFree Error: {e}");
+				Log.Error($"HandcuffFree Error: {e}");
 				return true;
 			}
 		}

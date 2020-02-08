@@ -27,7 +27,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"Cheater Report Patch error: {e}");
+				Log.Error($"Cheater Report Patch error: {e}");
 				return true;
 			}
 		}

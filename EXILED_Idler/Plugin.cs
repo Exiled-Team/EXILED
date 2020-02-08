@@ -23,7 +23,7 @@ namespace EXILED_Idler
 
 		private void OnPreAuthEvent(ref PreauthEvent ev)
 		{
-			Info("Server process resuming..");
+			Log.Info("Server process resuming..");
 			WasLastCheckIdle = false;
 			LastActive = DateTime.UtcNow;
 		}
@@ -53,12 +53,12 @@ namespace EXILED_Idler
 					if (idle && !WasLastCheckIdle)
 					{
 						LastActive = DateTime.UtcNow;
-						Debug("cool, the server is idle for the first time");
+						Log.Debug("cool, the server is idle for the first time");
 					}
 
 					if (idle && WasLastCheckIdle && LastActive != null && DateTime.UtcNow.Subtract(LastActive).TotalMinutes > 3)
 					{
-						Info("The server is now idle..");
+						Log.Info("The server is now idle..");
 						Time.timeScale = 0.01f;
 						Application.targetFrameRate = 1;
 					}
@@ -67,14 +67,14 @@ namespace EXILED_Idler
 					{
 						Time.timeScale = 1f;
 						Application.targetFrameRate = 60;
-						Debug("oh no, the server isnt idle");
+						Log.Debug("oh no, the server isnt idle");
 					}
 
 					WasLastCheckIdle = idle;
 				}
 				catch (Exception e)
 				{
-					Error(e.ToString());
+					Log.Error(e.ToString());
 				}
 				Thread.Sleep(5000);
 			}
