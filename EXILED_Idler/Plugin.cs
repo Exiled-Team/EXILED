@@ -44,6 +44,7 @@ namespace EXILED_Idler
 
 		public static void DoIdleCheck()
 		{
+			bool idleSent = false;
 			while(_thread != null)
 			{
 				try
@@ -53,12 +54,17 @@ namespace EXILED_Idler
 					if (idle && !WasLastCheckIdle)
 					{
 						LastActive = DateTime.UtcNow;
-						Log.Info("The server is now idle..");
+						Log.Debug("Server is idle..");
 					}
 
 					if (idle && WasLastCheckIdle && LastActive != null && DateTime.UtcNow.Subtract(LastActive).TotalMinutes > 3)
 					{
-						Log.Debug("The server is now idle..");
+						if (!idleSent)
+						{
+							Log.Info("The server is now idle..");
+							idleSent = true;
+						}
+
 						Time.timeScale = 0.01f;
 						Application.targetFrameRate = 1;
 					}
@@ -67,7 +73,8 @@ namespace EXILED_Idler
 					{
 						Time.timeScale = 1f;
 						Application.targetFrameRate = 60;
-						Log.Debug("The server is no longer idle.");
+						Log.Info("The server is no longer idle.");
+						idleSent = false;
 					}
 
 					WasLastCheckIdle = idle;
