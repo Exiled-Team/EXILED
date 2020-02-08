@@ -16,7 +16,6 @@ namespace EXILED
 		
 		public static IEnumerator<float> LoadPlugins()
 		{
-			
 			yield return Timing.WaitForSeconds(0.5f);
 			string path = Path.Combine(AppData, "Plugins");
 			string exiled = Path.Combine(AppData, "EXILED");
