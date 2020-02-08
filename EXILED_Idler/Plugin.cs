@@ -13,6 +13,7 @@ namespace EXILED_Idler
 		public static DateTime LastActive;
 
 		public static bool WasLastCheckIdle;
+		public static bool IdleSent;
 		
 		public override void OnEnable()
 		{
@@ -58,7 +59,12 @@ namespace EXILED_Idler
 
 					if (idle && WasLastCheckIdle && LastActive != null && DateTime.UtcNow.Subtract(LastActive).TotalMinutes > 3)
 					{
-						Log.Debug("The server is now idle..");
+						if (!IdleSent)
+						{
+							Log.Info("The server is now idle..!");
+							IdleSent = true;
+						}
+
 						Time.timeScale = 0.01f;
 						Application.targetFrameRate = 1;
 					}
@@ -68,6 +74,7 @@ namespace EXILED_Idler
 						Time.timeScale = 1f;
 						Application.targetFrameRate = 60;
 						Log.Debug("The server is no longer idle.");
+						IdleSent = false;
 					}
 
 					WasLastCheckIdle = idle;
