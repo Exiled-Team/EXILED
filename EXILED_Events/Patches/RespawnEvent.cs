@@ -28,7 +28,8 @@ namespace EXILED.Patches
             players.Remove(player);
           }
 
-        players.ShuffleList();
+        if (Plugin.Config.GetBool("exiled_random_respawns"))
+          players.ShuffleList();
         int r = EventPlugin.Gen.Next(100);
         int maxRespawn = 15;
         List<GameObject> toRespawn = players.Take(maxRespawn).ToList();

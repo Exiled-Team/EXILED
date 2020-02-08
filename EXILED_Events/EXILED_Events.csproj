@@ -215,6 +215,7 @@
     <Compile Include="Patches\ServerNamePatch.cs" />
     <Compile Include="Patches\SetClassEvent.cs" />
     <Compile Include="Patches\SetGroupEvent.cs" />
+    <Compile Include="Patches\SmortClassPickerFix.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
     <Compile Include="Patches\UseMedicalEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
