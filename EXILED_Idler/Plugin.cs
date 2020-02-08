@@ -53,12 +53,12 @@ namespace EXILED_Idler
 					if (idle && !WasLastCheckIdle)
 					{
 						LastActive = DateTime.UtcNow;
-						Log.Debug("cool, the server is idle for the first time");
+						Log.Info("The server is now idle..");
 					}
 
 					if (idle && WasLastCheckIdle && LastActive != null && DateTime.UtcNow.Subtract(LastActive).TotalMinutes > 3)
 					{
-						Log.Info("The server is now idle..");
+						Log.Debug("The server is now idle..");
 						Time.timeScale = 0.01f;
 						Application.targetFrameRate = 1;
 					}
@@ -67,7 +67,7 @@ namespace EXILED_Idler
 					{
 						Time.timeScale = 1f;
 						Application.targetFrameRate = 60;
-						Log.Debug("oh no, the server isnt idle");
+						Log.Debug("The server is no longer idle.");
 					}
 
 					WasLastCheckIdle = idle;
