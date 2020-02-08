@@ -1,6 +1,5 @@
 using System;
 using EXILED.Extensions;
-using GameCore;
 using Harmony;
 
 namespace EXILED.Patches

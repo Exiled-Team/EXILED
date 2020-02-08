@@ -1,5 +1,4 @@
 using EXILED.Extensions;
-using RemoteAdmin;
 
 namespace EXILED
 {

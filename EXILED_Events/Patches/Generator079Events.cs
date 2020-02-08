@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Harmony;
-using Mirror;
 using UnityEngine;
 
 namespace EXILED.Patches

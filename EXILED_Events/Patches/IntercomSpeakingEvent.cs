@@ -1,6 +1,5 @@
 using System;
 using Harmony;
-using UnityEngine;
 
 namespace EXILED.Patches
 {

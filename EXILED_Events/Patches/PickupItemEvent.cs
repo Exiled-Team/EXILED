@@ -1,6 +1,5 @@
 using System;
 using Harmony;
-using Mirror;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

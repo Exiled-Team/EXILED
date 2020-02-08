@@ -1,7 +1,6 @@
 using System;
 using GameCore;
 using Harmony;
-using Mirror;
 using UnityEngine;
 
 namespace EXILED.Patches

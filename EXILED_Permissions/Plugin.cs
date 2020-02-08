@@ -1,14 +1,9 @@
 ﻿using EXILED_Permissions.Properties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 

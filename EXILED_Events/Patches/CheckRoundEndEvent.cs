@@ -3,7 +3,6 @@ using System.Reflection.Emit;
 using System.Reflection;
 using GameCore;
 using Harmony;
-using MEC;
 using UnityEngine;
 
 namespace EXILED.Patches

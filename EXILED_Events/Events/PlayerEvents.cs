@@ -1,9 +1,7 @@
 using EXILED.Extensions;
-using EXILED.Patches;
 using Grenades;
 using Scp914;
 using UnityEngine;
-using static BanHandler;
 
 namespace EXILED
 {

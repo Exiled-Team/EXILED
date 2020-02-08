@@ -4,7 +4,6 @@ using EXILED.Extensions;
 using Harmony;
 using Mirror;
 using UnityEngine;
-using Utf8Json.Resolvers.Internal;
 
 namespace EXILED.Patches
 {
