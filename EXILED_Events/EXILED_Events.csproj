@@ -195,6 +195,7 @@
     <Compile Include="Patches\PlayerHurtEvent.cs" />
     <Compile Include="Patches\PlayerJoinEvent.cs" />
     <Compile Include="Patches\PlayerLeaveEvent.cs" />
+    <Compile Include="Patches\PlayerSpawnEvent.cs" />
     <Compile Include="Patches\PreAuthEventPatch.cs" />
     <Compile Include="Patches\GameConsoleQueryOverride.cs" />
     <Compile Include="Patches\RACommandPatch.cs" />
@@ -215,7 +216,9 @@
     <Compile Include="Patches\ServerNamePatch.cs" />
     <Compile Include="Patches\SetClassEvent.cs" />
     <Compile Include="Patches\SetGroupEvent.cs" />
+    <Compile Include="Patches\SetRandomRolesPatch.cs" />
     <Compile Include="Patches\SmortClassPickerFix.cs" />
+    <Compile Include="Patches\StartItemsEvent.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
     <Compile Include="Patches\UseMedicalEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
