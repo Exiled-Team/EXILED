@@ -39,6 +39,8 @@ namespace EXILED
 		public static bool TriggerTeslaPatchDisable;
 		public static bool UseMedicalPatchDisable;
 		public static bool WaitingForPlayersPatchDisable;
+        public static bool PlayerSpawnEventPatchDisable;
+        public static bool SetRandomRolesPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		public static bool NineFourteenMachinePatchDisable;
@@ -52,6 +54,7 @@ namespace EXILED
 		public static bool DoorInteractionEventPatchDisable;
 		public static bool PlayerJoinEventPatchDisable;
 		public static bool PlayerLeaveEventPatchDisable;
+        public static bool StartItemsEventPatchDisable;
 		public static bool DropItemEventPatchDisable;
 		public static bool PickupItemEventPatchDisable;
 		public static bool Generator079EventPatchDisable;
@@ -82,7 +85,6 @@ namespace EXILED
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
-			Events.SetClassEvent += handlers.OnSetClass;
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			
 			Log.Debug("Patching..");

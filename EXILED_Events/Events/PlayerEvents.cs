@@ -1,6 +1,7 @@
 using EXILED.Extensions;
 using Grenades;
 using Scp914;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EXILED
@@ -175,8 +176,26 @@ namespace EXILED
 			};
 			setClass?.Invoke(ev);
 		}
-		
-		public static event GrenadeThrown GrenadeThrownEvent;
+
+        public static event StartItems StartItemsEvent;
+        public delegate void StartItems(StartItemsEvent ev);
+        public static void InvokeStartItems(CharacterClassManager ccm, RoleType id, ref List<ItemType> startItems)
+        {
+            StartItems sT = StartItemsEvent;
+            if (sT == null)
+                return;
+
+            StartItemsEvent ev = new StartItemsEvent()
+            {
+                Player = Player.GetPlayer(ccm.gameObject),
+                Role = id,
+                StartItems = startItems
+            };
+            sT?.Invoke(ev);
+            startItems = ev.StartItems;
+        }
+
+        public static event GrenadeThrown GrenadeThrownEvent;
 		public delegate void GrenadeThrown(ref GrenadeThrownEvent ev);
 		public static void InvokeGrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow)
 		{
@@ -488,17 +507,21 @@ namespace EXILED
 
 		public static event PlayerSpawn PlayerSpawnEvent;
 		public delegate void PlayerSpawn(PlayerSpawnEvent ev);
-		public static void InvokePlayerSpawn(ReferenceHub player, RoleType role)
+		public static void InvokePlayerSpawn(CharacterClassManager ccm, RoleType role, ref Vector3 spawnPoint, ref float rotY)
 		{
 			PlayerSpawn playerSpawn = PlayerSpawnEvent;
 			if (playerSpawn == null)
 				return; 
 			PlayerSpawnEvent ev = new PlayerSpawnEvent
 			{
-				Player = player,
-				Role = role
+				Player = Player.GetPlayer(ccm.gameObject),
+				Role = role,
+                Spawnpoint = spawnPoint,
+                RotationY = rotY
 			};
 			playerSpawn.Invoke(ev);
+            spawnPoint = ev.Spawnpoint;
+            rotY = ev.RotationY;
 		}
 
 		public static event Scp106Contain Scp106ContainEvent;

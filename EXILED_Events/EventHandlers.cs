@@ -33,18 +33,6 @@ namespace EXILED.Patches
 			}
 		}
 
-		public void OnSetClass(EXILED.SetClassEvent ev)
-		{
-			Timing.RunCoroutine(InvokeSpawn(ev.Player, ev.Role));
-		}
-
-		public IEnumerator<float> InvokeSpawn(ReferenceHub hub, RoleType role)
-		{
-			yield return Timing.WaitForSeconds(0.05f);
-			
-			Events.InvokePlayerSpawn(hub, role);
-		}
-
 		public void OnPlayerLeave(EXILED.PlayerLeaveEvent ev)
 		{
 			if (Player.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
