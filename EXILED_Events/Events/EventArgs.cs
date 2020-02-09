@@ -36,7 +36,14 @@ namespace EXILED
 		public RoleType Role { get; set; }
 	}
 
-	public class PlayerHurtEvent : EventArgs
+    public class StartItemsEvent : EventArgs
+    {
+        public ReferenceHub Player { get; set; }
+        public RoleType Role { get; set; }
+        public List<ItemType> StartItems { get; set; }
+    }
+
+    public class PlayerHurtEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
 		public ReferenceHub Attacker { get; set; }
@@ -291,6 +298,8 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public RoleType Role { get; set; }
+        public Vector3 Spawnpoint { get; set; }
+        public float RotationY { get; set; }
 	}
 
 	public class Scp106ContainEvent : EventArgs
