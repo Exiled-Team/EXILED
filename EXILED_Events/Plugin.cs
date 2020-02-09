@@ -24,7 +24,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 7,
-			Patch = 7
+			Patch = 8
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -70,7 +70,7 @@ namespace EXILED
 		public override void OnEnable()
 		{
 			Log.Info("Enabled.");
-			Log.Info("Checking version status..");
+			Log.Info($"Checking version status.. Current version: {Version.Major}.{Version.Minor}.{Version.Patch}");
 			 if (IsUpdateAvailible())
 			 {
 				 Log.Info("There is an new version of EXILED available.");
