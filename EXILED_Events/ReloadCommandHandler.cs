@@ -1,4 +1,6 @@
 using EXILED.Extensions;
+using MEC;
+using UnityEngine;
 
 namespace EXILED
 {
@@ -8,11 +10,18 @@ namespace EXILED
 		public static void CommandHandler(ref RACommandEvent ev)
 		{
 			string[] args = ev.Command.Split(' ');
-			if (args[0].ToLower() == "reloadplugins")
+			switch (args[0].ToLower())
 			{
-				ev.Allow = false;
-				PluginManager.ReloadPlugins();
-				ev.Sender.RAMessage("Reloading ploogins..");
+				case "reloadplugins":
+					ev.Allow = false;
+					PluginManager.ReloadPlugins();
+					ev.Sender.RAMessage("Reloading ploogins..");
+					break;
+				case "reconnectrs":
+					ev.Allow = false;
+					PlayerManager.localPlayer.GetComponent<PlayerStats>()?.Roundrestart();
+					Timing.CallDelayed(1.5f, Application.Quit);
+					break;
 			}
 		}
 	}
