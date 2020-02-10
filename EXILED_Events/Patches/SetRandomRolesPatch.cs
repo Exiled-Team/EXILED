@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System;
-using System.Collections.Generic;
-using GameCore;
 using Harmony;
 using Mirror;
-using UnityEngine;
-using Console = GameCore.Console;
-using Object = UnityEngine.Object;
-using Random = UnityEngine.Random;
 using MEC;
 
 namespace EXILED.Patches
