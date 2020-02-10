@@ -29,10 +29,10 @@ namespace EXILED.Patches
                 switch (role.team)
                 {
                     case Team.MTF:
-                        AchievementManager.Achieve("arescue", true);
+                        AchievementManager.Achieve("arescue");
                         break;
                     case Team.CHI:
-                        AchievementManager.Achieve("chaos", true);
+                        AchievementManager.Achieve("chaos");
                         break;
                     case Team.RSC:
                     case Team.CDP:
@@ -77,9 +77,9 @@ namespace EXILED.Patches
                                     Inventory component3 = PlayerManager.localPlayer.GetComponent<Inventory>();
                                     for (ushort num = 0; num < 3; num += 1)
                                     {
-                                        if (component2.GetAmmo((int)num) >= 15)
+                                        if (component2.GetAmmo(num) >= 15)
                                         {
-                                            component3.SetPickup(component2.types[(int)num].inventoryID, (float)component2.GetAmmo((int)num), randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
+                                            component3.SetPickup(component2.types[num].inventoryID, component2.GetAmmo(num), randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
                                         }
                                     }
                                 }
@@ -111,7 +111,7 @@ namespace EXILED.Patches
                 __instance.Scp106.iAm106 = (__instance.CurClass == RoleType.Scp106);
                 __instance.Scp173.iAm173 = (__instance.CurClass == RoleType.Scp173);
                 __instance.Scp939.iAm939 = __instance.CurClass.Is939();
-                __instance.RefreshPlyModel(RoleType.None);
+                __instance.RefreshPlyModel();
                 return false;
             }
             catch (Exception e)

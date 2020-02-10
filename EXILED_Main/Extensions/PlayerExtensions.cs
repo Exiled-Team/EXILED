@@ -62,7 +62,7 @@ namespace EXILED.Extensions
         public static void SetRank(this ReferenceHub rh, string name, string color, bool show)
         {
             // Developer note: I bet I just needed to use the show once. But hey, better be safe than sorry.
-            var ug = new UserGroup()
+            UserGroup ug = new UserGroup()
             {
                 BadgeColor = color,
                 BadgeText = name,
@@ -79,10 +79,8 @@ namespace EXILED.Extensions
         /// <summary>
         /// Gets the nickname of a <see cref="ReferenceHub">player</see>
         /// </summary>
-        public static string GetNickname(this ReferenceHub rh)
-        {
-            return rh.nicknameSync.Network_myNickSync;
-        }
+        public static string GetNickname(this ReferenceHub rh) => rh.nicknameSync.Network_myNickSync;
+
         /// <summary>
         /// Sets the nickname of a <see cref="ReferenceHub"/> to <paramref name="name"/>
         /// </summary>
@@ -113,7 +111,7 @@ namespace EXILED.Extensions
         /// Sends a message to the RA console of a <paramref name="sender"/>. <paramref name="pluginName"/> will be the name of your <see cref="Assembly"/>
         /// </summary>
         public static void RAMessage(this CommandSender sender, string message, bool success = true, string pluginName = null) =>
-            sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().FullName) + "#" + message, success, true, string.Empty);
+            sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
 
         /// <summary>
         /// A simple broadcast to a player. Doesn't get logged to the console.
