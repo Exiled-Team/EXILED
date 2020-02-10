@@ -17,7 +17,7 @@ namespace EXILED.Extensions
         /// <summary>
         /// Gets the position of a <see cref="ReferenceHub">player</see>
         /// </summary>
-        public static void GetPosition(this ReferenceHub rh) => rh.plyMovementSync.GetRealPosition();
+        public static Vector3 GetPosition(this ReferenceHub rh) => rh.plyMovementSync.GetRealPosition();
         /// <summary>
         /// Gets the rotations from a <see cref="ReferenceHub">player</see>
         /// </summary>
