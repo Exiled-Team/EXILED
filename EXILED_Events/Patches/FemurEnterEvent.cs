@@ -38,7 +38,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Plugin.Error($"FemurEnterEvent event error: {e}");
+				Log.Error($"FemurEnterEvent event error: {e}");
 				return true;
 			}
 			return false;

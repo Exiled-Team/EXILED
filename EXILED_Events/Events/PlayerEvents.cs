@@ -589,7 +589,7 @@ namespace EXILED
 				return;
 			FemurEnterEvent ev = new FemurEnterEvent
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = Player.GetPlayer(player),
 				Allow = allow
 			};
 			femurEnter?.Invoke(ev);
