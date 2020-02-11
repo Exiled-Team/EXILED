@@ -24,7 +24,8 @@ namespace EXILED_Idler
 
 		private void OnPreAuthEvent(ref PreauthEvent ev)
 		{
-			Log.Info("Server process resuming..");
+			if (WasLastCheckIdle)
+				Log.Info("Server process resuming..");
 			WasLastCheckIdle = false;
 			LastActive = DateTime.UtcNow;
 		}

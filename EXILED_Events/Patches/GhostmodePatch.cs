@@ -35,20 +35,24 @@ namespace EXILED.Patches
 					{
 						for (int i = 0; i < __instance.usedData; i++)
 						{
-							ReferenceHub hub = Player.GetPlayer(__instance.transmitBuffer[i].playerID.ToString());
+							ReferenceHub hub = Player.GetPlayer(__instance.transmitBuffer[i].playerID);
 							if (hub.characterClassManager.CurClass != RoleType.Tutorial)
 								continue;
 							Scp049PlayerScript script = hub.GetComponent<Scp049PlayerScript>();
 							Vector3 fwd = script.plyCam.transform.forward;
 							Vector3 pos = script.gameObject.transform.position;
 							Vector3 position = component1.gameObject.transform.position;
-							float angle = Vector3.Angle(fwd,
-								(pos - position).normalized);
+							float angle = Vector3.Angle(fwd, (pos - position).normalized);
 							Vector3 dir = (pos - position).normalized;
 							Quaternion rot = Quaternion.LookRotation(dir);
-							if (angle <= 80f)
+							
+							if (angle >= 100f)
 							{
-								__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[i].playerID);
+								float newAngle = Vector3.Angle(new Vector3(fwd.x, fwd.y + 180f, fwd.z),
+									(pos - position).normalized);
+								Log.Info($"{angle} {newAngle}");
+								if (component1.CurClass == RoleType.Scp096 && EventPlugin.Scp096Fix || component1.CurClass == RoleType.Scp173 && EventPlugin.Scp173Fix)
+									__instance.transmitBuffer[i] = new PlayerPositionData(__instance.transmitBuffer[i].position, newAngle, __instance.transmitBuffer[i].playerID);
 							}
 						}
 					}
@@ -76,6 +80,16 @@ namespace EXILED.Patches
 							if (__instance.transmitBuffer[index].uses268 || EventPlugin.GhostedIds.Contains(__instance.transmitBuffer[index].playerID))
 								__instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f,
 									__instance.transmitBuffer[index].playerID);
+						}
+					}
+
+					if (EventPlugin.TargetGhost.ContainsKey(Player.GetPlayer(gameObject)))
+					{
+						for (int i = 0; i < __instance.usedData; i++)
+						{
+							if (EventPlugin.TargetGhost[Player.GetPlayer(gameObject)]
+								.Contains(__instance.transmitBuffer[i].playerID))
+								__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[i].playerID);
 						}
 					}
 

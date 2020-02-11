@@ -15,7 +15,7 @@ namespace EXILED.Patches
 			{
 				bool allow = true;
 				Events.InvokeWarheadEvent(__instance, ref n, ref allow);
-				return allow;
+				return !EventPlugin.WarheadLocked && allow;
 			}
 			catch (Exception e)
 			{
