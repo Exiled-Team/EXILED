@@ -319,4 +319,10 @@ namespace EXILED
 		public UserGroup Group { get; set; }
 		public bool Allow { get; set; }
 	}
+
+	public class FemurEnterEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
 }

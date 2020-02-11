@@ -59,6 +59,7 @@ namespace EXILED
 		public static bool HandcuffEventPatchDisable;
 		public static bool Scp106ContainEventDisable;
 		public static bool SetGroupEventDisable;
+		public static bool FemurEnterEventDisable;
 
 		private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
