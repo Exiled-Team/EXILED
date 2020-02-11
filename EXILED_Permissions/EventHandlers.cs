@@ -9,7 +9,7 @@ namespace EXILED
             if (ev.Command.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
                 return;
             string[] args = ev.Command.Split(' ');
-            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" ? ReferenceHub.GetHub(PlayerManager.localPlayer) : Player.GetPlayer(ev.Sender.SenderId);
+            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Player.GetPlayer(PlayerManager.localPlayer) : Player.GetPlayer(ev.Sender.SenderId);
 
             switch(args[0].ToLower())
             {
