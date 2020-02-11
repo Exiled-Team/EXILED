@@ -37,11 +37,11 @@
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\References\BouncyCastle.Crypto.dll</HintPath>
@@ -186,6 +186,7 @@
     <Compile Include="Patches\DecontaminationEvent.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />
     <Compile Include="Patches\DropItemEvent.cs" />
+    <Compile Include="Patches\FemurEnterEvent.cs" />
     <Compile Include="Patches\Generator079Events.cs" />
     <Compile Include="Patches\GhostmodePatch.cs" />
     <Compile Include="Patches\GrenadeThrownEvent.cs" />

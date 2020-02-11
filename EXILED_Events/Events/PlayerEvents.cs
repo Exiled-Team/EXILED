@@ -579,5 +579,21 @@ namespace EXILED
 			allow = ev.Allow;
 			knobSetting = ev.KnobSetting;
 		}
+
+		public static event FemurEnter FemurEnterEvent;
+		public delegate void FemurEnter(FemurEnterEvent ev);
+		public static void InvokeFemurEnterEvent(GameObject player, ref bool allow)
+		{
+			FemurEnter femurEnter = FemurEnterEvent;
+			if (femurEnter == null)
+				return;
+			FemurEnterEvent ev = new FemurEnterEvent
+			{
+				Player = Plugin.GetPlayer(player),
+				Allow = allow
+			};
+			femurEnter?.Invoke(ev);
+			allow = ev.Allow;
+		}
 	}
 }
