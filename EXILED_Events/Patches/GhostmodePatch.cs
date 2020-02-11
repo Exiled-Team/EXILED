@@ -50,7 +50,6 @@ namespace EXILED.Patches
 							{
 								float newAngle = Vector3.Angle(new Vector3(fwd.x, fwd.y + 180f, fwd.z),
 									(pos - position).normalized);
-								Log.Info($"{angle} {newAngle}");
 								if (component1.CurClass == RoleType.Scp096 && EventPlugin.Scp096Fix || component1.CurClass == RoleType.Scp173 && EventPlugin.Scp173Fix)
 									__instance.transmitBuffer[i] = new PlayerPositionData(__instance.transmitBuffer[i].position, newAngle, __instance.transmitBuffer[i].playerID);
 							}
