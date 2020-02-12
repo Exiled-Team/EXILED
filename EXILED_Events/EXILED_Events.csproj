@@ -225,6 +225,7 @@
     <Compile Include="Patches\UseMedicalEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
     <Compile Include="Patches\WarheadCmdEvent.cs" />
+    <Compile Include="Patches\WarheadDetonationPatch.cs" />
     <Compile Include="Patches\WeaponManagerOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
