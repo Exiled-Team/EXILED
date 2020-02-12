@@ -192,7 +192,6 @@
     <Compile Include="Patches\GrenadeThrownEvent.cs" />
     <Compile Include="Patches\HandcuffEvent.cs" />
     <Compile Include="Patches\IntercomSpeakingEvent.cs" />
-    <Compile Include="Patches\MultiAdminCompatabilityPatches.cs" />
     <Compile Include="Patches\PickupItemEvent.cs" />
     <Compile Include="Patches\PlayerHurtEvent.cs" />
     <Compile Include="Patches\PlayerJoinEvent.cs" />

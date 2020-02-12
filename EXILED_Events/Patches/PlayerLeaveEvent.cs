@@ -10,7 +10,9 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.PlayerLeaveEventPatchDisable)
 				return;
-			
+
+			Log.Info("Player disconnect: ");
+
 			try
 			{
 				Events.InvokePlayerLeave(__instance, __instance.characterClassManager.UserId, __instance.gameObject);
