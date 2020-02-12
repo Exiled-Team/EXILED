@@ -35,9 +35,41 @@ namespace EXILED
 		
 		[Obsolete("Use Map.GetRandomSpawnPoint")]
 		public static Vector3 GetRandomSpawnPoint(RoleType role) => Map.GetRandomSpawnPoint(role);
-		
+
 		[Obsolete("Use Player.GetTeam")]
-		public static Team GetTeam(RoleType role) => Player.GetTeam(role);
+		public static Team GetTeam(RoleType role)
+		{
+			switch (role)
+			{
+				case RoleType.ChaosInsurgency:
+					return Team.CHI;
+				case RoleType.Scientist:
+					return Team.RSC;
+				case RoleType.ClassD:
+					return Team.CDP;
+				case RoleType.Scp049:
+				case RoleType.Scp93953:
+				case RoleType.Scp93989:
+				case RoleType.Scp0492:
+				case RoleType.Scp079:
+				case RoleType.Scp096:
+				case RoleType.Scp106:
+				case RoleType.Scp173:
+					return Team.SCP;
+				case RoleType.Spectator:
+					return Team.RIP;
+				case RoleType.FacilityGuard:
+				case RoleType.NtfCadet:
+				case RoleType.NtfLieutenant:
+				case RoleType.NtfCommander:
+				case RoleType.NtfScientist:
+					return Team.MTF;
+				case RoleType.Tutorial:
+					return Team.TUT;
+				default:
+					return Team.RIP;
+			}
+		}
 		
 		[Obsolete("Use Player.GetPlayer")]
 		public static ReferenceHub GetPlayer(GameObject obj) => ReferenceHub.GetHub(obj);

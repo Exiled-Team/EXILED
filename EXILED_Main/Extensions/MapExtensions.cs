@@ -73,7 +73,12 @@ namespace EXILED.Extensions
 		/// Detonates the nuke.
 		/// </summary>
 		public static void DetonateNuke() => AlphaWarheadController.Detonate();
-		
+
+		/// <summary>
+		/// Gets the random spawn point of the indicated role.
+		/// </summary>
+		/// <param name="role">RoleType</param>
+		/// <returns>Vector3 spawnPoint</returns>
 		public static Vector3 GetRandomSpawnPoint(RoleType role)
 		{
 			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(role);

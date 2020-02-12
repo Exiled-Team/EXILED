@@ -29,10 +29,9 @@ namespace EXILED.Extensions
         /// <summary>
         /// Plays a cassie message with a delay.
         /// </summary>
-        public static IEnumerator<float> DelayedCassieMessage(string msg, bool makeHold, bool makeNoise, float delay)
+        public static void DelayedCassieMessage(string msg, bool makeHold, bool makeNoise, float delay)
         {
-            yield return Timing.WaitForSeconds(delay);
-            mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise);
+            Timing.CallDelayed(delay, () => mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise));
         }
     }
 }
