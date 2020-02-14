@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EXILED.Extensions;
 using Harmony;
 using UnityEngine;
 
@@ -18,19 +19,17 @@ namespace EXILED.Patches
       {
         int num = 0;
         __instance.playersToNTF.Clear();
-        List<GameObject> players = PlayerManager.players
-          .Where(c => c.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator).ToList();
+        List<GameObject> players = EventPlugin.DeadPlayers;
         Log.Debug($"Respawn: Got players: {players.Count}");
         foreach (GameObject player in players.ToArray())
           if (player.GetComponent<ServerRoles>().OverwatchEnabled)
           {
-            Log.Debug($"Removing {ReferenceHub.GetHub(player)} -- Overwatch true");
+            Log.Debug($"Removing {Player.GetPlayer(player)} -- Overwatch true");
             players.Remove(player);
           }
 
         if (Plugin.Config.GetBool("exiled_random_respawns"))
           players.ShuffleList();
-        int r = EventPlugin.Gen.Next(100);
         int maxRespawn = 15;
         List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         bool isChaos = __instance.nextWaveIsCI;
@@ -52,6 +51,8 @@ namespace EXILED.Patches
             }
             else
               __instance.playersToNTF.Add(ply);
+
+            EventPlugin.DeadPlayers.Remove(ply);
           }
         }
 

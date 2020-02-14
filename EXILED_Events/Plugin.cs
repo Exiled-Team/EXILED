@@ -69,6 +69,7 @@ namespace EXILED
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
+		public static List<GameObject> DeadPlayers = new List<GameObject>();
 
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
@@ -94,6 +95,8 @@ namespace EXILED
 			Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
+			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
+			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
 			
 			Log.Debug("Patching..");
 			try
@@ -188,6 +191,9 @@ namespace EXILED
 			Log.Debug("Removing Event Handlers..");
 			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
+			Events.RemoteAdminCommandEvent -= ReloadCommandHandler.CommandHandler;
+			Events.PlayerLeaveEvent -= handlers.OnPlayerLeave;
+			Events.PlayerDeathEvent -= handlers.OnPlayerDeath;
 			handlers = null;
 			Log.Debug("Unpatching..");
 			instance.UnpatchAll();

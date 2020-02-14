@@ -10,6 +10,8 @@ namespace EXILED.Patches
 	{
 		private readonly Plugin plugin;
 		public EventHandlers(EventPlugin plugin) => this.plugin = plugin;
+
+		public bool RoundStarted;
 		
 		public void OnWaitingForPlayers()
 		{
@@ -17,11 +19,14 @@ namespace EXILED.Patches
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
+			EventPlugin.DeadPlayers.Clear();
+			RoundStarted = false;
 		}
 
 		public void OnRoundStart()
 		{
 			Timing.KillCoroutines("resetroundtime");
+			RoundStarted = true;
 		}
 
 		public IEnumerator<float> ResetRoundTime()
@@ -40,6 +45,29 @@ namespace EXILED.Patches
 
 			if (Player.StrHubs.ContainsValue(ev.Player))
 				Player.StrHubs.Remove(Player.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
+			
+			if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
+				EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
+		}
+
+		public void OnPlayerDeath(ref PlayerDeathEvent ev)
+		{
+			if (ev.Player == null || ev.Player.characterClassManager.IsHost ||
+			    string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+				return;
+			
+			if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
+				EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
+		}
+
+		public void OnPlayerJoin(EXILED.PlayerJoinEvent ev)
+		{
+			if (ev.Player == null || ev.Player.characterClassManager.IsHost ||
+			    string.IsNullOrEmpty(ev.Player.characterClassManager.UserId) || !RoundStarted)
+				return;
+			
+			if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject)) 
+				EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
 		}
 	}
 }
