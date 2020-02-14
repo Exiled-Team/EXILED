@@ -77,7 +77,6 @@ namespace EXILED
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status..");
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
-			Log.Info("Player connect: ");
 			if (IsUpdateAvailible())
 			{
 				Log.Info("There is an new version of EXILED available.");

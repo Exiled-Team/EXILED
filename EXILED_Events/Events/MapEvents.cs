@@ -24,6 +24,14 @@ namespace EXILED
 			allow = ev.Allow;
 		}
 
+		public static event OnWarheadDetonation WarheadDetonationEvent;
+		public delegate void OnWarheadDetonation();
+		public static void InvokeWarheadDetonation()
+		{
+			OnWarheadDetonation warheadDetonationEvent = WarheadDetonationEvent;
+			warheadDetonationEvent?.Invoke();
+		}
+
 		public static event OnDoorInteract DoorInteractEvent;
 		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
 

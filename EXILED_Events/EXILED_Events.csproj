@@ -192,7 +192,6 @@
     <Compile Include="Patches\GrenadeThrownEvent.cs" />
     <Compile Include="Patches\HandcuffEvent.cs" />
     <Compile Include="Patches\IntercomSpeakingEvent.cs" />
-    <Compile Include="Patches\MultiAdminCompatabilityPatches.cs" />
     <Compile Include="Patches\PickupItemEvent.cs" />
     <Compile Include="Patches\PlayerHurtEvent.cs" />
     <Compile Include="Patches\PlayerJoinEvent.cs" />
@@ -225,6 +224,7 @@
     <Compile Include="Patches\UseMedicalEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
     <Compile Include="Patches\WarheadCmdEvent.cs" />
+    <Compile Include="Patches\WarheadDetonationPatch.cs" />
     <Compile Include="Patches\WeaponManagerOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
