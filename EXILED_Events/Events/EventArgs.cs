@@ -336,4 +336,12 @@ namespace EXILED
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
 	}
+
+    public class SyncDataEvent : EventArgs
+    {
+        public ReferenceHub Player;
+        public int State;
+        public Vector2 v2;
+        public bool Allow { get; set; }
+    }
 }
