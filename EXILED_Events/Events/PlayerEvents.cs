@@ -595,5 +595,25 @@ namespace EXILED
 			femurEnter?.Invoke(ev);
 			allow = ev.Allow;
 		}
-	}
+
+        public static event SyncData SyncDataEvent;
+        public delegate void SyncData (ref SyncDataEvent ev);
+        public static void InvokeSyncData(GameObject player, ref int state, ref Vector2 v2, ref bool allow)
+        {
+            SyncData syncdata = SyncDataEvent;
+            if (syncdata == null)
+                return;
+
+            SyncDataEvent ev = new SyncDataEvent
+            {
+                Player = Player.GetPlayer(player),
+                State = state,
+                v2 = v2,
+                Allow = allow
+            };
+
+            syncdata.Invoke(ref ev);
+            allow = ev.Allow;
+        }
+    }
 }

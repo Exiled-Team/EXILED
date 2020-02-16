@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -183,6 +184,7 @@
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\CheckEscapeEvent.cs" />
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
+    <Compile Include="Patches\SyncDataEvent.cs" />
     <Compile Include="Patches\DecontaminationEvent.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />
     <Compile Include="Patches\DropItemEvent.cs" />
