@@ -19,6 +19,8 @@ namespace EXILED.Patches
 
             try
             {
+                if (!__instance._mSyncRateLimit.CanExecute())
+                    return false;
                 bool allow = true;
                 Events.InvokeSyncData(__instance.gameObject, ref state, ref v2, ref allow);
                 return allow;
