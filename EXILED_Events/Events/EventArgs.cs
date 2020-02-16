@@ -19,6 +19,8 @@ namespace EXILED
 		public GrenadeManager Gm { get; set; }
 		public int Id { get; set; }
 		public bool Allow { get; set; }
+		public bool Slow { get; set; }
+		public double Fuse { get; set; }
 	}
 
     public class SCP914UpgradeEvent : EventArgs

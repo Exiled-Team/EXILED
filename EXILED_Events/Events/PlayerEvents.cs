@@ -204,15 +204,19 @@ namespace EXILED
 				return;
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
-				Player = Player.GetPlayer(gm.gameObject),
+				Player = gm.gameObject.GetPlayer(),
 				Gm = gm,
 				Id = id,
-				Allow = allow
+				Allow = allow,
+				Slow = slow,
+				Fuse = fuse
 			};
 			grenadeThrown?.Invoke(ref ev);
 			allow = ev.Allow;
 			id = ev.Id;
 			gm = ev.Gm;
+			slow = ev.Slow;
+			fuse = ev.Fuse;
 		}
 
 		public static event DropItem DropItemEvent;

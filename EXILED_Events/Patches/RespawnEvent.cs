@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EXILED.Extensions;
+using GameCore;
 using Harmony;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace EXILED.Patches
         List<GameObject> players = EventPlugin.DeadPlayers;
         Log.Debug($"Respawn: Got players: {players.Count}");
         foreach (GameObject player in players.ToArray())
-          if (player.GetComponent<ServerRoles>().OverwatchEnabled)
+          if (player.GetComponent<ServerRoles>().OverwatchEnabled || player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
           {
             Log.Debug($"Removing {Player.GetPlayer(player)} -- Overwatch true");
             players.Remove(player);
@@ -30,9 +31,9 @@ namespace EXILED.Patches
 
         if (Plugin.Config.GetBool("exiled_random_respawns"))
           players.ShuffleList();
-        int maxRespawn = 15;
-        List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         bool isChaos = __instance.nextWaveIsCI;
+        int maxRespawn = isChaos ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;
+        List<GameObject> toRespawn = players.Take(maxRespawn).ToList();
         Log.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
         Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref toRespawn);
 
