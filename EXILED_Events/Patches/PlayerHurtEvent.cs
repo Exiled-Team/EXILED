@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using EXILED.Extensions;
 using Harmony;
 using UnityEngine;
 
@@ -28,7 +29,16 @@ namespace EXILED.Patches
 						info.Amount = 0f;
 				}
 
-				Events.InvokePlayerHurt(__instance, ref info, go);
+                if(info.GetDamageType() == DamageTypes.Grenade)
+                {
+                    ReferenceHub thrower = Player.GetPlayer(info.PlyId);
+                    Events.InvokePlayerHurt((thrower != null) ? thrower.playerStats : __instance, ref info, go);
+				}
+				else
+				{
+					Events.InvokePlayerHurt(__instance, ref info, go);
+				}
+
 				if (info.Amount >= go.GetComponent<PlayerStats>().health)
 				{
 					CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
