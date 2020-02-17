@@ -10,6 +10,9 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.RoundRestartEventPatchDisable)
 				return;
+
+			Log.Info("Round restarting");
+
 			try
 			{
 				Events.InvokeRoundRestart();
