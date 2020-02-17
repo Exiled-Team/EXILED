@@ -29,10 +29,10 @@ namespace EXILED.Patches
 						info.Amount = 0f;
 				}
 
-                if(info.GetDamageType() == DamageTypes.Grenade)
-                {
-                    ReferenceHub thrower = Player.GetPlayer(info.PlyId);
-                    Events.InvokePlayerHurt((thrower != null) ? thrower.playerStats : __instance, ref info, go);
+                                if(info.GetDamageType() == DamageTypes.Grenade)
+                                {
+                                        ReferenceHub thrower = Player.GetPlayer(info.PlyId);
+                                        Events.InvokePlayerHurt((thrower != null) ? thrower.playerStats : __instance, ref info, go);
 				}
 				else
 				{
