@@ -339,9 +339,9 @@ namespace EXILED.Extensions
 		public static Transform GetCurrentRoom(this ReferenceHub rh)
 		{
 			Vector3 playerPos = rh.plyMovementSync.GetRealPosition();
-            Vector3 end = pos - new Vector3(0f, 10f, 0f);
+            Vector3 end = playerPos - new Vector3(0f, 10f, 0f);
             RaycastHit raycastHit;
-            bool flag = Physics.Linecast(pos, end, out raycastHit, -84058629);
+            bool flag = Physics.Linecast(playerPos, end, out raycastHit, -84058629);
             if (!flag || raycastHit.transform == null)
             {
                 return null;
