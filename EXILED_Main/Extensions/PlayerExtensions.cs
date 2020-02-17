@@ -25,11 +25,28 @@ namespace EXILED.Extensions
         public static string GetUserId(this ReferenceHub rh) => rh.characterClassManager.UserId;
 
         /// <summary>
+        /// Sets a player's UserID
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newId"></param>
+        /// <returns></returns>
+        public static void SetUserId(this ReferenceHub rh, string newId) =>
+	        rh.characterClassManager.NetworkSyncedUserId = newId;
+
+        /// <summary>
         /// Gets a player's PlayerID
         /// </summary>
         /// <param name="rh">Player</param>
         /// <returns>int PlayerID</returns>
         public static int GetPlayerId(this ReferenceHub rh) => rh.queryProcessor.PlayerId;
+
+        /// <summary>
+        /// Sets a player's PlayerID
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newId"></param>
+        /// <returns></returns>
+        public static void SetPlayerId(this ReferenceHub rh, int newId) => rh.queryProcessor.NetworkPlayerId = newId;
         
         /// <summary>
         /// Gets a player's Overwatch status.
@@ -37,6 +54,15 @@ namespace EXILED.Extensions
         /// <param name="rh">Player</param>
         /// <returns>True if in overwatch.</returns>
         public static bool GetOverwatch(this ReferenceHub rh) => rh.serverRoles.OverwatchEnabled;
+
+        /// <summary>
+        /// Sets a player's Overwatch status.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newStatus"></param>
+        /// <returns></returns>
+        public static void SetOverwatch(this ReferenceHub rh, bool newStatus) =>
+	        rh.serverRoles.OverwatchEnabled = newStatus;
         
         /// <summary>
         /// Gets a player's Current Role.
@@ -44,7 +70,14 @@ namespace EXILED.Extensions
         /// <param name="rh">Player</param>
         /// <returns>RoleType Player's role</returns>
         public static RoleType GetRole(this ReferenceHub rh) => rh.characterClassManager.CurClass;
-        
+
+        /// <summary>
+        /// Sets a player's role.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newRole"></param>
+        public static void SetRole(this ReferenceHub rh, RoleType newRole) =>
+	        rh.characterClassManager.SetClassID(newRole);
 
         /// <summary>
         /// Gets the position of a <see cref="ReferenceHub">player</see>
