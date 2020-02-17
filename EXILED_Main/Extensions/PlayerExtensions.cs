@@ -18,6 +18,35 @@ namespace EXILED.Extensions
         public static IEnumerable<ReferenceHub> GetHubs() => ReferenceHub.Hubs.Values;
 
         /// <summary>
+        /// Gets a player's UserID
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns>string, can be empty.</returns>
+        public static string UserId(this ReferenceHub rh) => rh.characterClassManager.UserId;
+
+        /// <summary>
+        /// Gets a player's PlayerID
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns>int PlayerID</returns>
+        public static int PlayerId(this ReferenceHub rh) => rh.queryProcessor.PlayerId;
+        
+        /// <summary>
+        /// Gets a player's Overwatch status.
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns>True if in overwatch.</returns>
+        public static bool Overwatch(this ReferenceHub rh) => rh.serverRoles.OverwatchEnabled;
+        
+        /// <summary>
+        /// Gets a player's Current Role.
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns>RoleType Player's role</returns>
+        public static RoleType Role(this ReferenceHub rh) => rh.characterClassManager.CurClass;
+        
+
+        /// <summary>
         /// Gets the position of a <see cref="ReferenceHub">player</see>
         /// </summary>
         public static Vector3 GetPosition(this ReferenceHub rh) => rh.plyMovementSync.GetRealPosition();
