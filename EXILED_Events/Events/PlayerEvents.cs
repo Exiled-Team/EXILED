@@ -121,22 +121,22 @@ namespace EXILED
 		
 		public static event PlayerHurt PlayerHurtEvent;
 		public delegate void PlayerHurt(ref PlayerHurtEvent ev);
-		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
+		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj, int pid = 0)
 		{
 			PlayerHurt playerHurt = PlayerHurtEvent;
 			if (playerHurt == null)
 				return;
 			
-			PlayerHurtEvent ev = new PlayerHurtEvent()
+			PlayerHurtEvent ev = new PlayerHurtEvent
 			{
-				Attacker = Player.GetPlayer(stats.gameObject),
-				Player = Player.GetPlayer(obj),
+				Attacker = pid == 0 ? stats.gameObject.GetPlayer() : Player.GetPlayer(pid),
+				Player = obj.GetPlayer(),
 				Info = info
 			};
 
 			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
 				return;
-			playerHurt?.Invoke(ref ev);
+			playerHurt.Invoke(ref ev);
 			info = ev.Info;
 		}
 		
