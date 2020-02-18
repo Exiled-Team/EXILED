@@ -297,9 +297,9 @@ namespace EXILED
 		private readonly bool log;
 		private string userId;
 		private int duration;
+		private ReferenceHub bannedPlayer;
+		private bool allow = true;
 
-		public readonly ReferenceHub BannedPlayer;
-		
 		public string Reason;
 		public string FullMessage;
 
@@ -308,7 +308,6 @@ namespace EXILED
 			this.log = log;
 			this.userId = userId;
 			this.duration = duration;
-			BannedPlayer = bannedPlayer;
 			Reason = reason;
 
 			// Set to true in the constructor to avoid triggering the logs.
@@ -338,9 +337,11 @@ namespace EXILED
 			{
 				if (userId == value) return;
 
+				if (userId == null) userId = "(null)";
+				
 				if(log)
 					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
-					+ $" changed UserID: {userId} to {value}");
+					+ $" changed UserID from {userId} to {value}");
 
 				userId = value;
 			}
@@ -349,7 +350,6 @@ namespace EXILED
 				return userId;
 			}
 		}
-		private bool allow = true;
 		public bool Allow
 		{
 			set
@@ -365,6 +365,21 @@ namespace EXILED
 			get 
 			{
 				return allow;
+			}
+		}
+		public ReferenceHub BannedPlayer
+		{
+			set
+			{
+				if (value == null || BannedPlayer == value) return;
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed the banned player from user {bannedPlayer.nicknameSync.Network_myNickSync} ({bannedPlayer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
+				bannedPlayer = value;
+			}
+			get
+			{
+				return bannedPlayer;
 			}
 		}
 		private void LogBanChange(string msg)

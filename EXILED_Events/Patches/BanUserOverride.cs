@@ -44,7 +44,7 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
-				Events.InvokePlayerBan(userHub, ref userId, ref duration, ref allow, ref message, ref reason);
+				Events.InvokePlayerBan(ref userHub, ref userId, ref duration, ref allow, ref message, ref reason);
 
 				if (!allow)
 					return false;

@@ -146,7 +146,7 @@ namespace EXILED
 		public static event PlayerBan PlayerBanEvent;
 		public delegate void PlayerBan(PlayerBanEvent ev);
 
-		public static void InvokePlayerBan(ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason)
+		public static void InvokePlayerBan(ref ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason)
 		{
 			PlayerBan playerBan = PlayerBanEvent;
 			if (playerBan == null)
@@ -165,6 +165,7 @@ namespace EXILED
 			duration = ev.Duration;
 			message = ev.FullMessage;
 			reason = ev.Reason;
+			user = ev.BannedPlayer;
 		}
 
 		public static event SetGroup SetGroupEvent;
