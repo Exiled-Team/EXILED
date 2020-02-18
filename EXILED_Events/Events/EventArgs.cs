@@ -124,6 +124,19 @@ namespace EXILED
 		public Door Door { get; set; }
 		public bool Allow { get; set; }
 	}
+	public class LockerInteractionEvent : EventArgs
+	{
+		public readonly ReferenceHub Player;
+		public readonly Locker Locker;
+		public readonly int LockerId;
+		public LockerInteractionEvent(ReferenceHub rh, Locker locker, int lockerId)
+		{
+			Player = rh;
+			Locker = locker;
+			LockerId = lockerId;
+		}
+		public bool Allow { get; set; }
+	}
 
 	public class PlayerLeaveEvent : EventArgs
 	{
