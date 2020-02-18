@@ -181,9 +181,11 @@
     <Compile Include="Patches\914MachineOverride.cs" />
     <Compile Include="Patches\AntiFlyOverride.cs" />
     <Compile Include="Patches\BanHandlerOverride.cs" />
+    <Compile Include="Patches\BanUserOverride.cs" />
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\CheckEscapeEvent.cs" />
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
+    <Compile Include="Patches\LockerEventOverride.cs" />
     <Compile Include="Patches\SyncDataEvent.cs" />
     <Compile Include="Patches\DecontaminationEvent.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />

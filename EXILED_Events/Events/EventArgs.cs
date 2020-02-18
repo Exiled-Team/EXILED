@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Grenades;
 using LiteNetLib;
 using Scp914;
@@ -121,6 +122,19 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public Door Door { get; set; }
+		public bool Allow { get; set; }
+	}
+	public class LockerInteractionEvent : EventArgs
+	{
+		public readonly ReferenceHub Player;
+		public readonly Locker Locker;
+		public readonly int LockerId;
+		public LockerInteractionEvent(ReferenceHub rh, Locker locker, int lockerId)
+		{
+			Player = rh;
+			Locker = locker;
+			LockerId = lockerId;
+		}
 		public bool Allow { get; set; }
 	}
 
@@ -276,6 +290,108 @@ namespace EXILED
 	{
 		public BanDetails Details;
 		public BanType Type;
+	}
+
+	public class PlayerBanEvent : EventArgs
+	{
+		private readonly bool log;
+		private string userId;
+		private int duration;
+		private ReferenceHub bannedPlayer;
+		private bool allow = true;
+
+		public string Reason;
+		public string FullMessage;
+
+		public PlayerBanEvent(bool log, ReferenceHub bannedPlayer, string reason, string userId, int duration)
+		{
+			this.log = log;
+			this.userId = userId;
+			this.duration = duration;
+			Reason = reason;
+
+			// Set to true in the constructor to avoid triggering the logs.
+			allow = true;
+		}
+
+		public int Duration
+		{
+			set
+			{
+				if (duration == value) return;
+
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed duration: {duration} to {value} for ID: {userId}");
+
+				duration = value;
+			}
+			get 
+			{
+				return duration;
+			}
+		}
+		public string UserId
+		{
+			set
+			{
+				if (userId == value) return;
+
+				if (userId == null) userId = "(null)";
+				
+				if(log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed UserID from {userId} to {value}");
+
+				userId = value;
+			}
+			get
+			{
+				return userId;
+			}
+		}
+		public bool Allow
+		{
+			set
+			{
+				if (allow == value) return;
+				
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" {(value ? "allowed" : "denied")} banning user with ID: {UserId}");
+
+				allow = value;
+			}
+			get 
+			{
+				return allow;
+			}
+		}
+		public ReferenceHub BannedPlayer
+		{
+			set
+			{
+				if (value == null || BannedPlayer == value) return;
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed the banned player from user {bannedPlayer.nicknameSync.Network_myNickSync} ({bannedPlayer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
+				bannedPlayer = value;
+			}
+			get
+			{
+				return bannedPlayer;
+			}
+		}
+		private void LogBanChange(string msg)
+		{
+			string time = TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz");
+			object lockObject = ServerLogs.LockObject;
+			lock (lockObject)
+			{
+				ServerLogs.Queue.Enqueue(new ServerLogs.ServerLog(msg, "AntiBackdoor", "EXILED-Ban", time));
+			}
+			ServerLogs._write = true;
+		}
 	}
 
 	public class PocketDimEnterEvent : EventArgs

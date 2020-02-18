@@ -7,6 +7,7 @@ namespace EXILED.Extensions
 	{
 		private static Inventory _hostInventory;
 		private static AlphaWarheadController _alphaWarheadController;
+		private static Broadcast _broadcast;
 		public static Inventory HostInventory
 		{
 			get
@@ -29,6 +30,17 @@ namespace EXILED.Extensions
 				return _alphaWarheadController;
 			}
 		}
+		internal static Broadcast BroadcastComponent
+		{
+			get
+			{
+				if(_broadcast == null)
+				{
+					_broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
+				}
+				return _broadcast;
+			}
+		}
 		
 		/// <summary>
 		/// Spawns an item of type <paramref name="itemType"/> in a desired <paramref name="position"/>.
@@ -43,8 +55,16 @@ namespace EXILED.Extensions
 		/// <returns>The <see cref="Pickup"/></returns>
 		public static Pickup SpawnItem(ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
 			=> HostInventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
-		
-			/// <summary>
+		/// <summary>
+		/// Broadcasts a message to all players.
+		/// </summary>
+		/// <param name="message">What will be broadcasted (supports Unity Rich Text formatting)</param>
+		/// <param name="duration">The duration in seconds</param>
+		/// <param name="monospace">If the message should be in monospace</param>
+		public static void Broadcast(string message, uint duration, bool monospace = false)
+			=> BroadcastComponent.RpcAddElement(message, duration, monospace);
+		public static void ClearBroadcasts() => BroadcastComponent.RpcClearElements();
+		/// <summary>
 		/// Starts the warhead.
 		/// </summary>
 		public static void StartWarhead() => AlphaWarheadController.StartDetonation();

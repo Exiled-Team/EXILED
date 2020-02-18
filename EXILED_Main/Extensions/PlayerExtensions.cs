@@ -181,8 +181,12 @@ namespace EXILED.Extensions
         /// <summary>
         /// A simple broadcast to a player. Doesn't get logged to the console.
         /// </summary>
-        public static void Broadcast(this ReferenceHub rh, uint time, string message) => rh.GetComponent<Broadcast>().TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
-        
+        public static void Broadcast(this ReferenceHub rh, uint time, string message) => Map.BroadcastComponent.TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
+        /// <summary>
+        /// Clears the brodcast of a player. Doesn't get logged to the console.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static void ClearBroadcasts(this ReferenceHub rh) => Map.BroadcastComponent.TargetClearElements(rh.scp079PlayerScript.connectionToClient);
         /// <summary>
         /// Gets the team a player belongs to.
         /// </summary>

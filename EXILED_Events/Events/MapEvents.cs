@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EXILED.Extensions;
 using UnityEngine;
@@ -50,7 +51,23 @@ namespace EXILED
 			onDoorInteract?.Invoke(ref ev);
 			allow = ev.Allow;
 		}
-		
+
+		public static event OnLockerInteract LockerInteractEvent;
+		public delegate void OnLockerInteract(LockerInteractionEvent ev);
+
+		internal static void InvokeLockerInteract(GameObject gameObject, Locker locker, int lockerid, ref bool allow)
+		{
+			OnLockerInteract onLockerInteract = LockerInteractEvent;
+			if (onLockerInteract == null)
+				return;
+			LockerInteractionEvent ev = new LockerInteractionEvent(Player.GetPlayer(gameObject), locker, lockerid)
+			{
+				Allow = allow,
+			};
+			onLockerInteract?.Invoke(ev);
+			allow = ev.Allow;
+		}
+
 		public static event TriggerTesla TriggerTeslaEvent;
 		public delegate void TriggerTesla(ref TriggerTeslaEvent ev);
 		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
