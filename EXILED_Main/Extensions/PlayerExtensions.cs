@@ -334,5 +334,28 @@ namespace EXILED.Extensions
 				return null;
 			}
 		}
+		
+		/// <summary>
+		/// Get the current room a player are in (from Smod2).
+		/// </summary>
+		/// <param name="rh">Player's ReferenceHub</param>
+		/// <returns>Transform or null</returns>
+		public static Transform GetCurrentRoom(this ReferenceHub rh)
+		{
+			Vector3 playerPos = rh.plyMovementSync.GetRealPosition();
+            Vector3 end = playerPos - new Vector3(0f, 10f, 0f);
+            RaycastHit raycastHit;
+            bool flag = Physics.Linecast(playerPos, end, out raycastHit, -84058629);
+            if (!flag || raycastHit.transform == null)
+            {
+                return null;
+            }
+            Transform transform = raycastHit.transform;
+            while (transform.parent != null && transform.parent.parent != null)
+            {
+                transform = transform.parent;
+            }
+            return transform;
+        }
     }
 }
