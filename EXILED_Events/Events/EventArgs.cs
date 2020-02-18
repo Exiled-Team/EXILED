@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Grenades;
 using LiteNetLib;
 using Scp914;
@@ -276,6 +277,93 @@ namespace EXILED
 	{
 		public BanDetails Details;
 		public BanType Type;
+	}
+
+	public class PlayerBanEvent : EventArgs
+	{
+		private readonly bool log;
+		private string userId;
+		private int duration;
+
+		public readonly ReferenceHub BannedPlayer;
+		
+		public string Reason;
+		public string FullMessage;
+
+		public PlayerBanEvent(bool log, ReferenceHub bannedPlayer, string reason, string userId, int duration)
+		{
+			this.log = log;
+			this.userId = userId;
+			this.duration = duration;
+			BannedPlayer = bannedPlayer;
+			Reason = reason;
+
+			// Set to true in the constructor to avoid triggering the logs.
+			allow = true;
+		}
+
+		public int Duration
+		{
+			set
+			{
+				if (duration == value) return;
+
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed duration: {duration} to {value} for ID: {userId}");
+
+				duration = value;
+			}
+			get 
+			{
+				return duration;
+			}
+		}
+		public string UserId
+		{
+			set
+			{
+				if (userId == value) return;
+
+				if(log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed UserID: {userId} to {value}");
+
+				userId = value;
+			}
+			get
+			{
+				return userId;
+			}
+		}
+		private bool allow = true;
+		public bool Allow
+		{
+			set
+			{
+				if (allow == value) return;
+				
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" {(value ? "allowed" : "denied")} banning user with ID: {UserId}");
+
+				allow = value;
+			}
+			get 
+			{
+				return allow;
+			}
+		}
+		private void LogBanChange(string msg)
+		{
+			string time = TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz");
+			object lockObject = ServerLogs.LockObject;
+			lock (lockObject)
+			{
+				ServerLogs.Queue.Enqueue(new ServerLogs.ServerLog(msg, "AntiBackdoor", "EXILED-Ban", time));
+			}
+			ServerLogs._write = true;
+		}
 	}
 
 	public class PocketDimEnterEvent : EventArgs
