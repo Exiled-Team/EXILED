@@ -178,7 +178,10 @@ namespace EXILED.Extensions
         /// </summary>
         public static void RAMessage(this CommandSender sender, string message, bool success = true, string pluginName = null) =>
             sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
-
+        /// <summary>
+        /// A simple broadcast to a player. Doesn't get logged to the console and can be monospace.
+        /// </summary>
+        public static void Broadcast(this ReferenceHub rh, uint time, string message, bool monospace = false) => Map.BroadcastComponent.TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, monospace);
         /// <summary>
         /// A simple broadcast to a player. Doesn't get logged to the console.
         /// </summary>
