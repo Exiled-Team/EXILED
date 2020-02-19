@@ -69,5 +69,14 @@ namespace EXILED.Patches
 			if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject)) 
 				EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
 		}
-	}
+
+        public void OnSetClass(EXILED.SetClassEvent ev)
+        {
+            if (ev.Role != RoleType.Spectator)
+            {
+                if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
+                    EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
+            }
+        }
+    }
 }
