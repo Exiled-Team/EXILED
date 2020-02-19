@@ -1,4 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EXILED.ApiObjects;
+using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace EXILED.Extensions
@@ -67,16 +71,19 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Starts the warhead.
 		/// </summary>
+		[Obsolete("Use StartNuke")]
 		public static void StartWarhead() => AlphaWarheadController.StartDetonation();
 		
 		/// <summary>
 		/// Stops the warhead.
 		/// </summary>
+		[Obsolete("Use StopNuke")]
 		public static void StopWarhead() => AlphaWarheadController.CancelDetonation();
 		
 		/// <summary>
 		/// Detonates the warhead.
 		/// </summary>
+		[Obsolete("Use DetonateNuke")]
 		public static void DetonateWarhead() => AlphaWarheadController.Detonate();
 
 		/// <summary>
@@ -105,5 +112,7 @@ namespace EXILED.Extensions
 			
 			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
 		}
+
+		public static IEnumerable<Room> GetRooms() => Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj });
 	}
 }

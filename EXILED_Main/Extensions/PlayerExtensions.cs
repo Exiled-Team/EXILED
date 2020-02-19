@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EXILED.ApiObjects;
 using UnityEngine;
 
 namespace EXILED.Extensions
@@ -15,7 +16,7 @@ namespace EXILED.Extensions
         /// Returns an IEnumerable of ReferenceHubs for all players on the server.
         /// </summary>
         /// <returns>IEnumerable(ReferenceHub)</returns>
-        public static IEnumerable<ReferenceHub> GetHubs() => ReferenceHub.Hubs.Values;
+        public static IEnumerable<ReferenceHub> GetHubs() => ReferenceHub.Hubs.Values.Where(h => !h.characterClassManager.IsHost);
 
         /// <summary>
         /// Gets a player's UserID
@@ -337,5 +338,37 @@ namespace EXILED.Extensions
 				return null;
 			}
 		}
+		
+		/// <summary>
+		/// Get the current room a player are in (from Smod2).
+		/// </summary>
+		/// <param name="rh">Player's ReferenceHub</param>
+		/// <returns>Transform or null</returns>
+		private static List<Room> rooms = new List<Room>();
+		public static Room GetCurrentRoom(this ReferenceHub rh)
+		{
+			Vector3 playerPos = rh.plyMovementSync.GetRealPosition();
+			Vector3 end = playerPos - new Vector3(0f, 10f, 0f);
+			bool flag = Physics.Linecast(playerPos, end, out RaycastHit raycastHit, -84058629);
+            if (!flag || raycastHit.transform == null)
+            {
+                return null;
+            }
+            Transform transform = raycastHit.transform;
+            while (transform.parent != null && transform.parent.parent != null)
+            {
+                transform = transform.parent;
+            }
+
+            foreach (Room room in rooms)
+	            if (room.Position == transform.position)
+		            return room;
+            return new Room
+            {
+	            Name = transform.name,
+	            Position = transform.position,
+	            Transform = transform
+            };
+        }
     }
 }

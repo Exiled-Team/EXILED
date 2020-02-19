@@ -45,7 +45,7 @@ namespace EXILED.Patches
 
 			if (Player.StrHubs.ContainsValue(ev.Player))
 				Player.StrHubs.Remove(Player.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
-			
+
 			if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
 				EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
 		}
