@@ -183,6 +183,10 @@ namespace EXILED.Extensions
         /// </summary>
         public static void Broadcast(this ReferenceHub rh, uint time, string message) => Map.BroadcastComponent.TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
         /// <summary>
+        /// A simple broadcast to a player. Doesn't get logged to the console and can be monospace.
+        /// </summary>
+        public static void Broadcast(this ReferenceHub rh, uint time, string message, bool monospace = false) => Map.BroadcastComponent.TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, monospace);
+        /// <summary>
         /// Clears the brodcast of a player. Doesn't get logged to the console.
         /// </summary>
         /// <param name="rh"></param>
