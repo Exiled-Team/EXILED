@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerInteract), "CallCmdUsePanel")]
+	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUsePanel))]
 	public class WarheadLockPatch
 	{
 		public static bool Prefix(PlayerInteract __instance, string n)

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(Scp914.Scp914Machine), "ProcessItems")]
+    [HarmonyPatch(typeof(Scp914.Scp914Machine), nameof(Scp914.Scp914Machine.ProcessItems))]
     public class _914MachineOverride
     {
         public static bool Prefix(Scp914.Scp914Machine __instance)

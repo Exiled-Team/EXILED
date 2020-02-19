@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Searching), "CallCmdPickupItem")]
+	[HarmonyPatch(typeof(Searching), nameof(Searching.CallCmdPickupItem))]
 	public class PickupItemEvent
 	{
     public static bool Prefix(Searching __instance, GameObject t)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(TeslaGate), "PlayersInRange")]
+	[HarmonyPatch(typeof(TeslaGate), nameof(TeslaGate.PlayersInRange))]
 	public class TriggerTeslaEvent
 	{
 		public static bool Prefix(TeslaGate __instance, bool hurtRange)

@@ -4,7 +4,7 @@ using MEC;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(ConsumableAndWearableItems), "CallCmdUseMedicalItem")]
+	[HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdUseMedicalItem))]
 	public class UseMedicalEvent
 	{
 		public static bool Prefix(ConsumableAndWearableItems __instance)

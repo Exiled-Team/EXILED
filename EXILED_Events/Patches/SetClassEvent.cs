@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(CharacterClassManager), "SetClassID")]
+	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))]
 	public class SetClassEvent
 	{
 		public static void Postfix(CharacterClassManager __instance, RoleType id)

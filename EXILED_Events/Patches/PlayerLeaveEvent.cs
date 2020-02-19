@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(ReferenceHub), "OnDestroy")]
+	[HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
 	public class PlayerLeaveEvent
 	{
 		public static void Prefix(ReferenceHub __instance)

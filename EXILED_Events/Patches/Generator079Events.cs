@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Generator079), "Interact")]
+	[HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
 	public class Generator079Tablet
 	{
 		public static bool Prefix(Generator079 __instance, GameObject person, string command)

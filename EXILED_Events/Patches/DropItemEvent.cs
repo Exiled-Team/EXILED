@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Inventory), "CallCmdDropItem")]
+	[HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
 	public class DropItemEvent
 	{
 		public static bool Prefix(Inventory __instance, int itemInventoryIndex)

@@ -5,7 +5,7 @@ using Console = GameCore.Console;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (Console), "AddLog", typeof (string), typeof (Color), typeof (bool))]
+	[HarmonyPatch(typeof (Console), nameof(Console.AddLog), typeof (string), typeof (Color), typeof (bool))]
 	public class RoundEndPatch
 	{
 		public static void Prefix(string text, Color c, bool nospace)

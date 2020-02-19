@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
     // joker kinda cute uwu
-    [HarmonyPatch(typeof(WeaponManager), "CallCmdShoot")]
+    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
     public class WeaponManagerOverride
     {
       public static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir,

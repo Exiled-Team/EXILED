@@ -4,7 +4,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(NicknameSync), "SetNick")]
+    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.SetNick))]
     public class PlayerJoinEvent
     {
         public static void Postfix(NicknameSync __instance)

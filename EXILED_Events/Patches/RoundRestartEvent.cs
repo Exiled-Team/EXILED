@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerStats), "Roundrestart")]
+	[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
 	public class RoundRestartEvent
 	{
 		public static void Prefix(PlayerStats __instance)

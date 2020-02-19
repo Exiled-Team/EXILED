@@ -9,7 +9,7 @@ using Mirror.LiteNetLib4Mirror;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (CustomLiteNetLib4MirrorTransport), "ProcessConnectionRequest", typeof (ConnectionRequest))]
+	[HarmonyPatch(typeof (CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest), typeof (ConnectionRequest))]
   public class PreAuthPatch
   {
     public static bool Prefix(ref ConnectionRequest request)

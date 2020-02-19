@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(CharacterClassManager), "ApplyProperties")]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
     public class PlayerSpawnEvent
     {
         public static bool Prefix(CharacterClassManager __instance, bool lite = false, bool escape = false)

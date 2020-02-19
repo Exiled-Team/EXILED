@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(RemoteAdmin.QueryProcessor), "ProcessGameConsoleQuery", new Type[] { typeof(string), typeof(bool) })]
+    [HarmonyPatch(typeof(RemoteAdmin.QueryProcessor), nameof(RemoteAdmin.QueryProcessor.ProcessGameConsoleQuery), new Type[] { typeof(string), typeof(bool) })]
     public class GameConsoleQueryOverride
     {
 		public static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, ref bool encrypted)

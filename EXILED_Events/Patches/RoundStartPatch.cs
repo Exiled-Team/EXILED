@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-  [HarmonyPatch(typeof (CharacterClassManager), "CmdStartRound")]
+  [HarmonyPatch(typeof (CharacterClassManager), nameof(CharacterClassManager.CmdStartRound))]
   public class RoundStartPatch
   {
     public static void Prefix()

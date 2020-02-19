@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(CharacterClassManager), "SetPlayersClass")]
+	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))]
     public class StartItemsEvent
     {
         public static bool Prefix(CharacterClassManager __instance, RoleType classid, GameObject ply, bool lite = false, bool escape = false)

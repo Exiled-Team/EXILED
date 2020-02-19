@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(CheaterReport), "IssueReport")]
+	[HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.IssueReport))]
 	public class CheaterReportOverride
 	{
 		public static bool Prefix(CheaterReport __instance, GameConsoleTransmission reporter, string reporterSteamId,

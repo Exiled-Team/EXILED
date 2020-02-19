@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Scp173PlayerScript), "FixedUpdate")]
+	[HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
 	public class Scp173Override
 	{
 		public static bool Prefix(Scp173PlayerScript __instance)

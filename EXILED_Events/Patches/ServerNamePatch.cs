@@ -2,7 +2,7 @@ using Harmony;
 
 namespace EXILED
 {
-	[HarmonyPatch(typeof(ServerConsole), "ReloadServerName")]
+	[HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.ReloadServerName))]
 	public class ServerNamePatch
 	{
 		public static void Postfix()

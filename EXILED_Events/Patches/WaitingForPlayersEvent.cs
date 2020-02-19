@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (ServerConsole), "AddLog")]
+	[HarmonyPatch(typeof (ServerConsole), nameof(ServerConsole.AddLog))]
 	public class WaitingForPlayersEvent
 	{
 		public static void Prefix(string q)

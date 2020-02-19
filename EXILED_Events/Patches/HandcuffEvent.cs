@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Handcuffs), "CallCmdCuffTarget")]
+	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdCuffTarget))]
 	public class HandcuffEvent
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)

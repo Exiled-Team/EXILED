@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerInteract), "CallCmdOpenDoor", typeof(GameObject))]
+	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
 	public class DoorInteractionEvent
 	{
 		public static bool Prefix(PlayerInteract __instance, GameObject doorId)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-  [HarmonyPatch(typeof(MTFRespawn), "RespawnDeadPlayers")]
+  [HarmonyPatch(typeof(MTFRespawn), nameof(MTFRespawn.RespawnDeadPlayers))]
  public class RespawnEvent
   {
     public static bool Prefix(MTFRespawn __instance)

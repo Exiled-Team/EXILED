@@ -4,7 +4,7 @@ using Console = GameCore.Console;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(Console), "TypeCommand", new Type[] { typeof(string), typeof(CommandSender) })]
+    [HarmonyPatch(typeof(Console), nameof(Console.TypeCommand), new Type[] { typeof(string), typeof(CommandSender) })]
     class ServerCommandPatch
     {
         public static bool Prefix(ref string cmd)

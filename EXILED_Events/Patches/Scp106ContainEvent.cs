@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerInteract), "CallCmdContain106")]
+	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdContain106))]
 	class Scp106ContainEvent
 	{
 		public static bool Prefix(CharacterClassManager __instance)

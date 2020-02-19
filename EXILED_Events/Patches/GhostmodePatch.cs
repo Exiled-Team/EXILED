@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerPositionManager), "TransmitData")]
+	[HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
 	public class GhostmodePatch
 	{
 		public static bool Prefix(PlayerPositionManager __instance)

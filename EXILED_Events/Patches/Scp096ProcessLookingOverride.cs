@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Scp096PlayerScript), "IncreaseRage")]
+	[HarmonyPatch(typeof(Scp096PlayerScript), nameof(Scp096PlayerScript.IncreaseRage))]
 	public class Scp096ProcessLookingOverride
 	{
 		public static bool Prefix(Scp096PlayerScript __instance, float amount)

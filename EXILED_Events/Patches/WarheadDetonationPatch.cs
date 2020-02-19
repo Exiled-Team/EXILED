@@ -3,7 +3,7 @@ using Harmony;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(AlphaWarheadController), "Detonate")]
+    [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     public class WarheadDetonationPatch
     {
         public static void Prefix()

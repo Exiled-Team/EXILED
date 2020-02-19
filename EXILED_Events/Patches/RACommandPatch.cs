@@ -4,7 +4,7 @@ using RemoteAdmin;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (CommandProcessor), "ProcessQuery", typeof (string), typeof (CommandSender))]
+	[HarmonyPatch(typeof (CommandProcessor), nameof(CommandProcessor.ProcessQuery), typeof (string), typeof (CommandSender))]
 	public class OnCommandPatch
 	{
 		public static bool Prefix(ref string q, ref CommandSender sender)

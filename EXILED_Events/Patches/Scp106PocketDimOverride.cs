@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(Scp106PlayerScript), "CallCmdMovePlayer")]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
     public class Scp106PocketDimOverride
     {
         public static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)

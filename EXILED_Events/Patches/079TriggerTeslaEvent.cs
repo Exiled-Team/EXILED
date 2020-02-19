@@ -8,7 +8,7 @@ namespace EXILED.Patches
 	[HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
 	public class Scp079TriggerTeslaEvent
 	{
-		public static bool prefix(Scp079PlayerScript __instance, string command, GameObject target)
+		public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
 		{
 			try
 			{

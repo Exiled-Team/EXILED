@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(PlayerStats), "HurtPlayer")]
+	[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
 	public class PlayerHurtEvent
 	{
 		public static List<string> DeathStuff = new List<string>();
