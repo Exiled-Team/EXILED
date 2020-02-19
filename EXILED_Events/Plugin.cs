@@ -23,8 +23,8 @@ namespace EXILED
 		public static ExiledVersion Version = new ExiledVersion
 		{
 			Major = 1,
-			Minor = 7,
-			Patch = 15
+			Minor = 8,
+			Patch = 0
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -70,6 +70,7 @@ namespace EXILED
 		private static int patchFixer;
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
+		public static bool NameTracking;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<GameObject> DeadPlayers = new List<GameObject>();
 
@@ -90,6 +91,7 @@ namespace EXILED
 
 			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
 			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
+			NameTracking = Config.GetBool("exiled_name_tracking", true);
 			Log.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
