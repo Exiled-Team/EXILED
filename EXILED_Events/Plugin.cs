@@ -100,7 +100,8 @@ namespace EXILED
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
-			
+            Events.SetClassEvent += handlers.OnSetClass;
+
 			Log.Debug("Patching..");
 			try
 			{
