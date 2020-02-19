@@ -43,8 +43,8 @@ namespace EXILED.Patches
 			if (Player.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
 				Player.IdHubs.Remove(ev.Player.queryProcessor.PlayerId);
 
-			if (Player.StrHubs.ContainsValue(ev.Player))
-				Player.StrHubs.Remove(Player.StrHubs.FirstOrDefault(s => s.Value == ev.Player).Key);
+			foreach (KeyValuePair<string, ReferenceHub> entry in Player.StrHubs.Where(s => s.Value == ev.Player).ToList())
+				Player.StrHubs.Remove(entry.Key);
 
 			if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
 				EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);

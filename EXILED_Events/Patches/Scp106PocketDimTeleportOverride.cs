@@ -17,7 +17,7 @@ namespace EXILED.Patches
         try
         {
           NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
-          if (!(component1 != null))
+          if (component1 == null)
             return false;
           if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer ||
               Object.FindObjectOfType<BlastDoor>().isClosed)
@@ -57,6 +57,8 @@ namespace EXILED.Patches
             Vector3 tpPosition = __instance.tpPositions[Random.Range(0, __instance.tpPositions.Count)];
             tpPosition.y += 2f;
             PlyMovementSync component2 = other.GetComponent<PlyMovementSync>();
+            if (component2 == null)
+              return false;
             component2.SetSafeTime(2f);
 
             bool allowEscape = true;
