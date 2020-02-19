@@ -113,6 +113,6 @@ namespace EXILED.Extensions
 			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
 		}
 
-		public static IEnumerable<Room> GetRooms() => Object.FindObjectsOfType<Component>().Where(c => c.CompareTag("Room")).Select(comp => new Room(){Name = comp.name, Position = comp.transform.position, Transform = comp.transform});
+		public static IEnumerable<Room> GetRooms() => Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj });
 	}
 }
