@@ -142,7 +142,7 @@ namespace EXILED
 		
 		public static event PlayerDeath PlayerDeathEvent;
 		public delegate void PlayerDeath(ref PlayerDeathEvent ev); 
-		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj)
+		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj, int pid = 0)
 		{
 			PlayerDeath playerDeath = PlayerDeathEvent;
 			if (playerDeath == null)
@@ -150,7 +150,7 @@ namespace EXILED
 			
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
-				Killer = Player.GetPlayer(stats.gameObject),
+				Killer = pid == 0 ? stats.gameObject.GetPlayer() : Player.GetPlayer(pid),
 				Player = Player.GetPlayer(obj),
 				Info = info
 			};
