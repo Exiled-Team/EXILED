@@ -48,9 +48,67 @@ namespace EXILED
 
     public class PlayerHurtEvent : EventArgs
 	{
+		private PlayerStats.HitInfo info;
 		public ReferenceHub Player { get; set; }
 		public ReferenceHub Attacker { get; set; }
-		public PlayerStats.HitInfo Info { get; set; }
+		private DamageTypes.DamageType damageType = DamageTypes.None;
+
+		public int Time
+		{
+			get
+			{
+				return info.Time;
+			}
+		}
+		/// <summary>
+		/// The DamageType as a <see cref="DamageTypes.DamageType"/>
+		/// </summary>
+		public DamageTypes.DamageType DamageType
+		{
+			get 
+			{
+				if (damageType == DamageTypes.None)
+					damageType = DamageTypes.FromIndex(info.Tool);
+				return damageType;
+			}
+		}
+		/// <summary>
+		/// The DamageType's <see cref="int"/> value
+		/// </summary>
+		public int Tool
+		{
+			get 
+			{
+				return info.Tool;
+			}
+		}
+		/// <summary>
+		/// The amount of damage to be dealt
+		/// </summary>
+		public float Amount
+		{
+			get 
+			{
+				return info.Amount;
+			}
+			set 
+			{
+				info.Amount = value;
+			}
+		}
+
+		public PlayerStats.HitInfo Info
+		{ 
+			get
+			{
+				return info;
+			}
+			set
+			{
+				damageType = DamageTypes.None;
+				info = value;
+			}
+		}
 	}
 
 	public class PlayerDeathEvent : EventArgs
