@@ -18,9 +18,18 @@ namespace EXILED
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             pluginDir = Path.Combine(appData, "Plugins", "Exiled Permissions");
             if (!Directory.Exists(pluginDir))
+            {
+                Log.Warn("Permissions directory missing, creating.");
                 Directory.CreateDirectory(pluginDir);
+            }
+
             if (!File.Exists(Path.Combine(pluginDir, "permissions.yml")))
-                File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"), Encoding.UTF8.GetString(Resources.permissions));
+            {
+                Log.Warn("Permissions file missing, creating.");
+                File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"),
+                    Encoding.UTF8.GetString(Resources.permissions));
+            }
+
             ReloadPermissions();
             Events.RemoteAdminCommandEvent += EventHandlers.RemoteAdminCommandEvent;
         }
@@ -54,27 +63,82 @@ namespace EXILED
 
         public static bool CheckPermission(ReferenceHub hub, string permission)
         {
+            if (hub == null)
+            {
+                Log.Error("Reference hub was null, unable to check permissions.");
+                return false;
+            }
+
+            Log.Debug($"Hub: {hub.nicknameSync.MyNick} ID: {hub.characterClassManager.UserId}");
+            if (string.IsNullOrEmpty(permission))
+            {
+                Log.Error("Permission checked was null.");
+                return false;
+            }
+            
+            Log.Debug($"Permission string: {permission}");
             UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(hub.characterClassManager.UserId);
             Group group = null;
             if (userGroup != null)
             {
+                Log.Debug($"UserGroup: {userGroup.BadgeText}");
                 string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == hub.serverRoles.Group).Key;
-                permissionsconfig.groups.TryGetValue(groupName, out group);
+                Log.Debug($"GroupName: {groupName}");
+                if (permissionsconfig == null)
+                {
+                    Log.Error("Permissions config is null.");
+                    return false;
+                }
+
+                if (!permissionsconfig.groups.Any())
+                {
+                    Log.Error("No permissionconfig groups.");
+                    return false;
+                }
+
+                if (!permissionsconfig.groups.TryGetValue(groupName, out group))
+                {
+                    Log.Error("Could not get permission value.");
+                    return false;
+                }
+                Log.Debug($"Got group.");
             }
             else
             {
+                Log.Debug("user group is null, getting default..");
                 group = GetDefaultGroup();
             }
+            
             if (group != null)
             {
+                Log.Debug("Group is not null!");
                 if (permission.Contains("."))
                 {
-                    if (group.permissions.Contains(permission.Split('.')[0] + ".*"))
+                    Log.Debug("Group contains perm seperator");
+                    if (group.permissions.Any(s => s == ".*"))
+                    {
+                        Log.Debug("All perms granted for all nodes.");
                         return true;
+                    }
+                    if (group.permissions.Contains(permission.Split('.')[0] + ".*"))
+                    {
+                        Log.Debug("Check 1: True, returning.");
+                        return true;
+                    }
                 }
+
                 if (group.permissions.Contains(permission) || group.permissions.Contains("*"))
+                {
+                    Log.Debug("Check 2: True, returning.");
                     return true;
+                }
             }
+            else
+            {
+                Log.Debug("Group is null, returning false.");
+                return false;
+            }
+            Log.Debug("No permissions found.");
             return false;
         }
 
