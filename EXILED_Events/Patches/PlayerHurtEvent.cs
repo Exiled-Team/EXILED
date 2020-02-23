@@ -43,7 +43,11 @@ namespace EXILED.Patches
 							return;
 						DeathStuff.Add(ccm.UserId);
 					}
-					Events.InvokePlayerDeath(__instance, ref info, go);
+
+					if(info.GetDamageType() == DamageTypes.Grenade)
+						Events.InvokePlayerDeath(__instance, ref info, go, info.PlyId);
+					else
+						Events.InvokePlayerDeath(__instance, ref info, go);
 				}
 			}
 			catch (Exception e)
