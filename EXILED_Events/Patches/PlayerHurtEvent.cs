@@ -34,7 +34,7 @@ namespace EXILED.Patches
 				else
 					Events.InvokePlayerHurt(__instance, ref info, go);
 
-				if (info.Amount >= go.GetComponent<PlayerStats>().health)
+				if (info.Amount >= go.GetComponent<PlayerStats>().health || (go.GetComponent<PlayerStats>().health - info.Amount) <= 1f)
 				{
 					CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
 					if (ccm != null)
