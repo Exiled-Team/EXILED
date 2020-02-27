@@ -179,7 +179,7 @@ namespace EXILED
 
         public static event StartItems StartItemsEvent;
         public delegate void StartItems(StartItemsEvent ev);
-        public static void InvokeStartItems(CharacterClassManager ccm, RoleType id, ref List<ItemType> startItems)
+        public static void InvokeStartItems(GameObject obj, RoleType id, ref List<ItemType> startItems)
         {
             StartItems sT = StartItemsEvent;
             if (sT == null)
@@ -187,7 +187,7 @@ namespace EXILED
 
             StartItemsEvent ev = new StartItemsEvent()
             {
-                Player = Player.GetPlayer(ccm.gameObject),
+                Player = Player.GetPlayer(obj),
                 Role = id,
                 StartItems = startItems
             };
