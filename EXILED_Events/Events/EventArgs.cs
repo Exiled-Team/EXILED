@@ -366,6 +366,7 @@ namespace EXILED
 			this.log = log;
 			this.userId = userId;
 			this.duration = duration;
+			this.bannedPlayer = bannedPlayer;
 			Reason = reason;
 
 			// Set to true in the constructor to avoid triggering the logs.
