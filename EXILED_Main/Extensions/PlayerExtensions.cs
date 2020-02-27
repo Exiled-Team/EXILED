@@ -185,6 +185,7 @@ namespace EXILED.Extensions
         /// <summary>
         /// A simple broadcast to a player. Doesn't get logged to the console.
         /// </summary>
+        [Obsolete("Append ', false' to your broadcasts to use the new, updated method.", true)]
         public static void Broadcast(this ReferenceHub rh, uint time, string message) => Map.BroadcastComponent.TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
         /// <summary>
         /// Clears the brodcast of a player. Doesn't get logged to the console.
