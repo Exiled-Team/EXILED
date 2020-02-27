@@ -1,6 +1,7 @@
 using System;
 using EXILED.Extensions;
 using Harmony;
+using MEC;
 
 namespace EXILED.Patches
 {
@@ -18,6 +19,14 @@ namespace EXILED.Patches
 
             try
             {
+                Timing.CallDelayed(0.25f, () => { 
+                    foreach(ReferenceHub player in Player.GetHubs())
+                    {
+                        if(player.characterClassManager.NetworkMuted)
+                            player.characterClassManager.SetDirtyBit(1ul);
+                    }
+                });
+
                 ReferenceHub hub = Player.GetPlayer(__instance.gameObject);
                 if (!string.IsNullOrEmpty(hub.characterClassManager.UserId))
                     Events.InvokePlayerJoin(hub);
