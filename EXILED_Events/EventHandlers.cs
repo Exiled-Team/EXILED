@@ -72,6 +72,9 @@ namespace EXILED.Patches
 
         public void OnSetClass(EXILED.SetClassEvent ev)
         {
+	        if (ev.Player == null || ev.Player.characterClassManager.IsHost || string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+		        return;
+	        
 	        if (ev.Role == RoleType.Spectator)
 	        {
 		        if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
