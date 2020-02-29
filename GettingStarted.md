@@ -119,7 +119,7 @@ We are going to make another class called 'Extenstions' this will allow us to st
 public static class Extenstions
 {
 	public static void Broadcast(this ReferenceHub rh, uint time, string message) =>
-	    rh.GetComponent<Broadcast>()TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
+	    rh.GetComponent<Broadcast>().TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
 }
 ```
 That will be our broadcast function we will use. Now lets add it to our event.
