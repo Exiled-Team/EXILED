@@ -125,7 +125,7 @@ namespace EXILED.Patches
                       }
                       CustomLiteNetLib4MirrorTransport.UserRateLimit.Add(result3);
                     }
-                    if (flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreBans) || !ServerStatic.GetPermissionsHandler().IsVerified)
+                    if (!flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreBans) || !ServerStatic.GetPermissionsHandler().IsVerified)
                     {
                       KeyValuePair<BanDetails, BanDetails> keyValuePair = BanHandler.QueryBan(result3, request.RemoteEndPoint.Address.ToString());
                       if (keyValuePair.Key != null || keyValuePair.Value != null)
