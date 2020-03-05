@@ -86,5 +86,5 @@ namespace EXILED.Patches
                     EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
             }
         }
-    }
+	}
 }

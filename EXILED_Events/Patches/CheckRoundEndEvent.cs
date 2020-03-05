@@ -13,6 +13,9 @@ namespace EXILED.Patches
 		private static readonly MethodInfo CustomProcess = SymbolExtensions.GetMethodInfo(() => Process(null));
 		static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr)
 		{
+			if (EventPlugin.CheckRoundEndEventPatchDisable)
+				yield break;
+			
 			foreach (CodeInstruction instruction in instr)
 			{
 				if (instruction.opcode == OpCodes.Call)

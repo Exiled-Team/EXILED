@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore;
 using Harmony;
 using Mirror;
@@ -25,8 +26,12 @@ namespace EXILED.Patches
 				int num = 0;
 				float[] array2 = new float[] { 0f, 0.4f, 0.6f, 0.5f };
 				__instance.laterJoinNextIndex = 0;
+				
 				for (int i = 0; i < array.Length; i++)
 				{
+					if (array[i].GetComponent<ServerRoles>().OverwatchEnabled)
+						continue;
+					
 					RoleType roleType = (RoleType) ((__instance.ForceClass < RoleType.Scp173)
 						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i])
 						: ((int) __instance.ForceClass));
@@ -113,7 +118,7 @@ namespace EXILED.Patches
 						str = "Clearing Balanced Picker List";
 						ConfigFile.smBalancedPicker.Clear();
 						str = "Re-building Balanced Picker List";
-						foreach (GameObject gameObject in shuffledPlayerList)
+						foreach (GameObject gameObject in shuffledPlayerList.ToList())
 						{
 							if (!(gameObject == null))
 							{
@@ -132,6 +137,11 @@ namespace EXILED.Patches
 								}
 
 								if (__instance.SrvRoles.DoNotTrack)
+								{
+									shuffledPlayerList.Remove(gameObject);
+								}
+
+								if (gameObject.GetComponent<ServerRoles>().OverwatchEnabled)
 								{
 									shuffledPlayerList.Remove(gameObject);
 								}
@@ -300,7 +310,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception e)
 			{
-				Log.Error($"StupidClassPicked: {e}");
+				Log.Error($"StupidClassPicker: {e}");
 				return true;
 			}
 		}

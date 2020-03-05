@@ -24,7 +24,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 8,
-			Patch = 1
+			Patch = 2
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -63,6 +63,7 @@ namespace EXILED
 		public static bool SetGroupEventDisable;
 		public static bool FemurEnterEventDisable;
         public static bool CmdSyncDataEventDisable;
+        public static bool GrenadeExplosionEventDisabled;
 
 
         private EventHandlers handlers;
@@ -101,8 +102,7 @@ namespace EXILED
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
             Events.SetClassEvent += handlers.OnSetClass;
-
-			Log.Debug("Patching..");
+            Log.Debug("Patching..");
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
