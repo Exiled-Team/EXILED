@@ -12,8 +12,10 @@ namespace EXILED.Patches
 			{
 				if (EventPlugin.PlayerConsoleCommandPatchDisable)
 					return true;
-				
-				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color);
+
+                string returnMessage = "Command not found.", color = "red";
+
+				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, ref returnMessage, ref color);
 				if (string.IsNullOrEmpty(color))
 					color = "white";
 				if (!string.IsNullOrEmpty(returnMessage))

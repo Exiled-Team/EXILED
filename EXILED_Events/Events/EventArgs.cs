@@ -26,11 +26,11 @@ namespace EXILED
 
     public class SCP914UpgradeEvent : EventArgs
     {
-	    public bool Allow;
-        public Scp914.Scp914Machine Machine;
-        public List<ReferenceHub> Players;
-        public List<Pickup> Items;
-        public Scp914.Scp914Knob KnobSetting;
+	    public bool Allow { get; set; }
+        public Scp914Machine Machine { get; set; }
+        public List<ReferenceHub> Players { get; set; }
+        public List<Pickup> Items { get; set; }
+        public Scp914Knob KnobSetting { get; set; }
     }
 
 	public class SetClassEvent : EventArgs
@@ -182,17 +182,20 @@ namespace EXILED
 		public Door Door { get; set; }
 		public bool Allow { get; set; }
 	}
+
 	public class LockerInteractionEvent : EventArgs
 	{
 		public readonly ReferenceHub Player;
 		public readonly Locker Locker;
 		public readonly int LockerId;
+
 		public LockerInteractionEvent(ReferenceHub rh, Locker locker, int lockerId)
 		{
 			Player = rh;
 			Locker = locker;
 			LockerId = lockerId;
 		}
+
 		public bool Allow { get; set; }
 	}
 
@@ -206,6 +209,7 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public ReferenceHub Player { get; set; }
 	}
+
 	public class ConsoleCommandEvent : EventArgs
 	{
 		public ConsoleCommandEvent(bool encrypted)
@@ -311,12 +315,12 @@ namespace EXILED
   
   	public class LateShootEvent : EventArgs
 	{
-		public GameObject Target;
-		public ReferenceHub Shooter;
-		public float Damage;
-		public bool Allow;
-		public float Distance;
-	}
+		public GameObject Target { get; set; }
+        public ReferenceHub Shooter { get; set; }
+        public float Damage { get; set; }
+        public bool Allow { get; set; }
+        public float Distance { get; set; }
+    }
 
     public class ShootEvent : EventArgs
     {
@@ -327,27 +331,27 @@ namespace EXILED
 
 	public class Scp106TeleportEvent : EventArgs
 	{
-		public ReferenceHub Player;
-		public Vector3 PortalPosition;
-		public bool Allow;
+		public ReferenceHub Player { get; set; }
+		public Vector3 PortalPosition { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PocketDimDamageEvent : EventArgs
 	{
-		public ReferenceHub Player;
-		public bool Allow;
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PocketDimEscapedEvent : EventArgs
 	{
-		public ReferenceHub Player;
-		public bool Allow;
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PlayerBannedEvent : EventArgs
 	{
-		public BanDetails Details;
-		public BanType Type;
+		public BanDetails Details { get; set; }
+		public BanType Type { get; set; }
 	}
 
 	public class PlayerBanEvent : EventArgs
@@ -455,14 +459,14 @@ namespace EXILED
 
 	public class PocketDimEnterEvent : EventArgs
 	{
-		public ReferenceHub Player;
-		public bool Allow;
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PocketDimDeathEvent : EventArgs
 	{
-		public ReferenceHub Player;
-		public bool Allow;
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class PlayerReloadEvent : EventArgs
@@ -514,9 +518,24 @@ namespace EXILED
 
     public class SyncDataEvent : EventArgs
     {
-        public ReferenceHub Player;
-        public int State;
+        public ReferenceHub Player { get; set; }
+        public int State { get; set; }
         public Vector2 v2;
         public bool Allow { get; set; }
+    }
+
+    public class WarheadKeycardAccessEvent : EventArgs
+    {
+        public ReferenceHub Player { get; set; }
+        public bool Allow { get; set; }
+        public string PermissionLevel { get; set; }
+    }
+
+    public class Scp079GainExperienceEvent : EventArgs
+    {
+        public ReferenceHub Player { get; set; }
+        public bool Allow { get; set; }
+        public ExpGainType GainType { get; set; }
+        public float Amount { get; set; }
     }
 }

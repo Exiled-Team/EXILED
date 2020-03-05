@@ -10,62 +10,55 @@ namespace EXILED
 	{
 		public static event OnRoundStart RoundStartEvent;
 		public delegate void OnRoundStart();
-		public static void InvokeRoundStart()
-		{
-			OnRoundStart roundStartEvent = RoundStartEvent;
-			roundStartEvent?.Invoke();
-		}
+
+		public static void InvokeRoundStart() => RoundStartEvent?.Invoke();
 
 		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
+
 		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
-			OnPreAuth preAuthEvent = PreAuthEvent;
-			if (preAuthEvent == null)
-				return;
-			
+            if (PreAuthEvent == null) return;
+
 			PreauthEvent ev = new PreauthEvent()
 			{
 				Allow = allow,
 				Request = request,
 				UserId = userid
 			};
-			preAuthEvent?.Invoke(ref ev);
+
+            PreAuthEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 			userid = ev.UserId;
 		}
 
 		public static event OnRoundEnd RoundEndEvent;
 		public delegate void OnRoundEnd();
-		public static void InvokeRoundEnd()
-		{
-			OnRoundEnd roundEndEvent = RoundEndEvent;
-			roundEndEvent?.Invoke();
-		}
+
+		public static void InvokeRoundEnd() => RoundEndEvent?.Invoke();
 
 		public static event OnRoundRestart RoundRestartEvent;
 		public delegate void OnRoundRestart();
-		public static void InvokeRoundRestart()
-		{
-			OnRoundRestart onRoundRestart = RoundRestartEvent;
-			onRoundRestart?.Invoke();
-		}
+
+		public static void InvokeRoundRestart() => RoundRestartEvent?.Invoke();
 		
 		public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref RACommandEvent ev);
+
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
-			OnCommand adminCommandEvent = RemoteAdminCommandEvent;
-			if (adminCommandEvent == null)
-				return;
-			
+            if (RemoteAdminCommandEvent == null) return;
+
 			RACommandEvent ev = new RACommandEvent()
 			{
 				Allow = allow,
 				Command = query,
 				Sender = sender
 			};
-			adminCommandEvent?.Invoke(ref ev);
+
+            RemoteAdminCommandEvent.Invoke(ref ev);
+
 			query = ev.Command;
 			sender = ev.Sender;
 			allow = ev.Allow;
@@ -76,10 +69,8 @@ namespace EXILED
 
 		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow)
 		{
-			OnCheaterReport onCheaterReport = CheaterReportEvent;
-			if (onCheaterReport == null)
-				return;
-			
+            if (CheaterReportEvent == null) return;
+
 			CheaterReportEvent ev = new CheaterReportEvent()
 			{
 				Allow = allow,
@@ -88,102 +79,102 @@ namespace EXILED
 				ReportedIp = reportedIp,
 				ReporterId = reporterId
 			};
-			onCheaterReport?.Invoke(ref ev);
+
+            CheaterReportEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
 		
 		public static event WaitingForPlayers WaitingForPlayersEvent;
 		public delegate void WaitingForPlayers();
-		public static void InvokeWaitingForPlayers()
-		{
-			WaitingForPlayers waitingForPlayers = WaitingForPlayersEvent;
-			waitingForPlayers?.Invoke();
-		}
+
+		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent?.Invoke();
 		
 		public static event TeamRespawn TeamRespawnEvent;
 		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
 
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn)
 		{
-			TeamRespawn teamRespawn = TeamRespawnEvent;
-			if (teamRespawn == null)
-				return;
-			
+            if (TeamRespawnEvent == null) return;
+
 			List<ReferenceHub> respawn = new List<ReferenceHub>();
-			foreach (GameObject obj in toRespawn)
-				respawn.Add(Player.GetPlayer(obj));
+
+			foreach (GameObject playerGameObject in toRespawn)
+				respawn.Add(Player.GetPlayer(playerGameObject));
+
 			TeamRespawnEvent ev = new TeamRespawnEvent()
 			{
 				IsChaos = isChaos,
 				MaxRespawnAmt = maxRespawn,
 				ToRespawn = respawn
 			};
-			teamRespawn?.Invoke(ref ev);
+
+            TeamRespawnEvent.Invoke(ref ev);
+
 			maxRespawn = ev.MaxRespawnAmt;
 			toRespawn = new List<GameObject>();
-			foreach (ReferenceHub hub in ev.ToRespawn)
-				toRespawn.Add(hub.gameObject);
-		}
 
+			foreach (ReferenceHub playerReferenceHub in ev.ToRespawn)
+				toRespawn.Add(playerReferenceHub.gameObject);
+		}
 
 		public static event PlayerBanned PlayerBannedEvent;
 		public delegate void PlayerBanned(PlayerBannedEvent ev);
 
 		public static void InvokePlayerBanned(BanDetails details, BanType type)
 		{
-			PlayerBanned playerBanned = PlayerBannedEvent;
-			if (playerBanned == null)
-				return;
+            if (PlayerBannedEvent == null) return;
 
 			PlayerBannedEvent ev = new PlayerBannedEvent()
 			{
 				Details = details,
 				Type = type
 			};
-			PlayerBannedEvent?.Invoke(ev);
+
+			PlayerBannedEvent.Invoke(ev);
 		}
 
 		public static event PlayerBan PlayerBanEvent;
 		public delegate void PlayerBan(PlayerBanEvent ev);
 
-		public static void InvokePlayerBan(ref ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason)
+		public static void InvokePlayerBan(ref ReferenceHub playerReferenceHub, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason)
 		{
-			PlayerBan playerBan = PlayerBanEvent;
-			if (playerBan == null)
-				return;
+            if (PlayerBanEvent == null) return;
+
 			// ev.Allow is already set to true in the constructor
 			// Private field values set in the constructor to avoid triggering the logs
-			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), user, reason, userId, duration)
+			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), playerReferenceHub, reason, userId, duration)
 			{
 				FullMessage = message,
 				Reason = reason
 			};
 
-			playerBan?.Invoke(ev);
+            PlayerBanEvent.Invoke(ev);
+
 			allow = ev.Allow;
 			userId = ev.UserId;
 			duration = ev.Duration;
 			message = ev.FullMessage;
 			reason = ev.Reason;
-			user = ev.BannedPlayer;
+			playerReferenceHub = ev.BannedPlayer;
 		}
 
 		public static event SetGroup SetGroupEvent;
 		public delegate void SetGroup(SetGroupEvent ev);
 
-		public static void InvokeSetGroup(GameObject player, ref UserGroup group, ref bool allow)
+		public static void InvokeSetGroup(GameObject playerGameObject, ref UserGroup group, ref bool allow)
 		{
-			SetGroup setGroup = SetGroupEvent;
-			if (setGroup == null)
-				return;
+            if (SetGroupEvent == null) return;
 
 			SetGroupEvent ev = new SetGroupEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = Player.GetPlayer(playerGameObject),
 				Group = group,
 				Allow = allow
 			};
-			SetGroupEvent?.Invoke(ev);
+
+			SetGroupEvent.Invoke(ev);
+
 			allow = ev.Allow;
 			group = ev.Group;
 		}

@@ -155,6 +155,21 @@ namespace EXILED.Extensions
             rh.nicknameSync.Network_myNickSync = name;
             MEC.Timing.RunCoroutine(BlinkTag(rh));
         }
+
+        /// <summary>
+        /// Gets the health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns></returns>
+        public static float GetHealth(this ReferenceHub rh) => rh.playerStats.health;
+
+        /// <summary>
+        /// Sets the health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <param name="amount">Health amount</param>
+        public static void SetHealth(this ReferenceHub rh, float amount) => rh.playerStats.health = amount;
+
         private static IEnumerator<float> BlinkTag(ReferenceHub rh)
         {
             yield return MEC.Timing.WaitForOneFrame;
@@ -162,6 +177,7 @@ namespace EXILED.Extensions
             yield return MEC.Timing.WaitForOneFrame;
             rh.characterClassManager.CallCmdRequestShowTag(false);
         }
+
         /// <summary>
         /// Gives an item to the specified player.
         /// </summary>
