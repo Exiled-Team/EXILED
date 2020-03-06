@@ -85,6 +85,7 @@ namespace EXILED.Patches
 	        {
 		        if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
 			        EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
+		        ev.Player.inventory.ServerDropAll();
 	        }
 	        else
             {

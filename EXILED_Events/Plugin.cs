@@ -24,7 +24,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 8,
-			Patch = 3
+			Patch = 4
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
