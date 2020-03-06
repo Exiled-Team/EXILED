@@ -29,9 +29,6 @@ namespace EXILED.Patches
 				
 				for (int i = 0; i < array.Length; i++)
 				{
-					if (array[i].GetComponent<ServerRoles>().OverwatchEnabled)
-						continue;
-					
 					RoleType roleType = (RoleType) ((__instance.ForceClass < RoleType.Scp173)
 						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i])
 						: ((int) __instance.ForceClass));
@@ -118,7 +115,7 @@ namespace EXILED.Patches
 						str = "Clearing Balanced Picker List";
 						ConfigFile.smBalancedPicker.Clear();
 						str = "Re-building Balanced Picker List";
-						foreach (GameObject gameObject in shuffledPlayerList.ToList())
+						foreach (GameObject gameObject in shuffledPlayerList)
 						{
 							if (!(gameObject == null))
 							{
@@ -137,11 +134,6 @@ namespace EXILED.Patches
 								}
 
 								if (__instance.SrvRoles.DoNotTrack)
-								{
-									shuffledPlayerList.Remove(gameObject);
-								}
-
-								if (gameObject.GetComponent<ServerRoles>().OverwatchEnabled)
 								{
 									shuffledPlayerList.Remove(gameObject);
 								}

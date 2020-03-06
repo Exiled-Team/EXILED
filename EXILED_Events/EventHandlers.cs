@@ -27,6 +27,12 @@ namespace EXILED.Patches
 		{
 			Timing.KillCoroutines("resetroundtime");
 			RoundStarted = true;
+			foreach (ReferenceHub hub in Player.GetHubs())
+				if (hub.serverRoles.OverwatchEnabled)
+				{
+					hub.serverRoles.SetOverwatchStatus(false);
+					Timing.CallDelayed(1f, () => hub.serverRoles.SetOverwatchStatus(true));
+				}
 		}
 
 		public IEnumerator<float> ResetRoundTime()
