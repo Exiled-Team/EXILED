@@ -8,7 +8,29 @@ namespace EXILED
 {
 	public partial class Events
 	{
-		public static event UseMedicalItem UseMedicalItemEvent;
+        public static event OnScp079GainExperienceEvent Scp079GainExperienceEvent;
+        public delegate void OnScp079GainExperienceEvent(Scp079GainExperienceEvent ev);
+
+        public static void InvokeScp079GainExperienceEvent(GameObject playerGameObject, ExpGainType gainType, ref bool allow, ref float amount)
+        {
+            if (Scp079GainExperienceEvent == null)
+                return;
+
+            Scp079GainExperienceEvent ev = new Scp079GainExperienceEvent
+            {
+                Player = Player.GetPlayer(playerGameObject),
+                Allow = allow,
+                GainType = gainType,
+                Amount = amount
+            };
+
+            Scp079GainExperienceEvent.Invoke(ev);
+
+            allow = ev.Allow;
+            amount = ev.Amount;
+        }
+
+        public static event UseMedicalItem UseMedicalItemEvent;
 		public delegate void UseMedicalItem(MedicalItemEvent ev);
 
 		public static void InvokeUseMedicalItem(GameObject obj, ItemType type, ref bool allow)

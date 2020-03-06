@@ -64,6 +64,8 @@ namespace EXILED
 		public static bool FemurEnterEventDisable;
         public static bool CmdSyncDataEventDisable;
         public static bool GrenadeExplosionEventDisabled;
+        public static bool WarheadKeycardAccessEventDisable;
+        public static bool Scp079GainExperienceEventDisable;
 
 
         private EventHandlers handlers;

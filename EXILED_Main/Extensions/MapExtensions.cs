@@ -12,7 +12,10 @@ namespace EXILED.Extensions
 		private static Inventory _hostInventory;
 		private static AlphaWarheadController _alphaWarheadController;
 		private static Broadcast _broadcast;
-		public static Inventory HostInventory
+        private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
+        private static DecontaminationLCZ _decontaminationLCZ;
+
+        public static Inventory HostInventory
 		{
 			get
 			{
@@ -23,6 +26,7 @@ namespace EXILED.Extensions
 				return _hostInventory;
 			}
 		}
+
 		public static AlphaWarheadController AlphaWarheadController
 		{
 			get
@@ -34,6 +38,7 @@ namespace EXILED.Extensions
 				return _alphaWarheadController;
 			}
 		}
+
 		internal static Broadcast BroadcastComponent
 		{
 			get
@@ -45,19 +50,41 @@ namespace EXILED.Extensions
 				return _broadcast;
 			}
 		}
-		
-		/// <summary>
-		/// Spawns an item of type <paramref name="itemType"/> in a desired <paramref name="position"/>.
-		/// </summary>
-		/// <param name="itemType">The type of the item to be spawned</param>
-		/// <param name="durability">The durability (or ammo, depends on the weapon) of the item</param>
-		/// <param name="position">Where the item will be spawned</param>
-		/// <param name="rotation">The rotation. We recommend you to use <see cref="Quaternion.Euler(float, float, float)"/></param>
-		/// <param name="sight">The sight the weapon will have (0 is nothing, 1 is the first sight available in the weapon manager, and so on)</param>
-		/// <param name="barrel">The barrel of the weapon (0 is no custom barrel, 1 is the first barrel available, and so on)</param>
-		/// <param name="other">Other attachments like flashlight, laser or ammo counter</param>
-		/// <returns>The <see cref="Pickup"/></returns>
-		public static Pickup SpawnItem(ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
+
+        internal static AlphaWarheadNukesitePanel AlphaWarheadNukesitePanel
+        {
+            get
+            {
+                if (_alphaWarheadNukesitePanel == null)
+                    _alphaWarheadNukesitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+
+                return _alphaWarheadNukesitePanel;
+            }
+        }
+
+        internal static DecontaminationLCZ DecontaminationLCZ
+        {
+            get
+            {
+                if (_decontaminationLCZ == null)
+                    _decontaminationLCZ = PlayerManager.localPlayer.GetComponent<DecontaminationLCZ>();
+
+                return _decontaminationLCZ;
+            }
+        }
+
+        /// <summary>
+        /// Spawns an item of type <paramref name="itemType"/> in a desired <paramref name="position"/>.
+        /// </summary>
+        /// <param name="itemType">The type of the item to be spawned</param>
+        /// <param name="durability">The durability (or ammo, depends on the weapon) of the item</param>
+        /// <param name="position">Where the item will be spawned</param>
+        /// <param name="rotation">The rotation. We recommend you to use <see cref="Quaternion.Euler(float, float, float)"/></param>
+        /// <param name="sight">The sight the weapon will have (0 is nothing, 1 is the first sight available in the weapon manager, and so on)</param>
+        /// <param name="barrel">The barrel of the weapon (0 is no custom barrel, 1 is the first barrel available, and so on)</param>
+        /// <param name="other">Other attachments like flashlight, laser or ammo counter</param>
+        /// <returns>The <see cref="Pickup"/></returns>
+        public static Pickup SpawnItem(ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
 			=> HostInventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
 		/// <summary>
 		/// Broadcasts a message to all players.
@@ -101,12 +128,31 @@ namespace EXILED.Extensions
 		/// </summary>
 		public static void DetonateNuke() => AlphaWarheadController.Detonate();
 
-		/// <summary>
-		/// Gets the random spawn point of the indicated role.
-		/// </summary>
-		/// <param name="role">RoleType</param>
-		/// <returns>Vector3 spawnPoint</returns>
-		public static Vector3 GetRandomSpawnPoint(RoleType role)
+        /// <summary>
+        /// Enable/Disable the nuke lever or gets its status.
+        /// </summary>
+        public static bool IsNukeLeverEnabled
+        {
+            get => AlphaWarheadNukesitePanel.Networkenabled;
+            set => AlphaWarheadNukesitePanel.Networkenabled = value;
+        }
+
+        /// <summary>
+        /// Gets the nuke detonation status.
+        /// </summary>
+        public static bool IsNukeDetonated => AlphaWarheadController.detonated;
+
+        /// <summary>
+        /// Gets the LCZ decontamination status.
+        /// </summary>
+        public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
+
+        /// <summary>
+        /// Gets the random spawn point of the indicated role.
+        /// </summary>
+        /// <param name="role">RoleType</param>
+        /// <returns>Vector3 spawnPoint</returns>
+        public static Vector3 GetRandomSpawnPoint(RoleType role)
 		{
 			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(role);
 			

@@ -7,7 +7,28 @@ namespace EXILED
 {
 	public partial class Events
 	{
-		public static event OnWarheadCommand WarheadCommandEvent;
+        public static event OnWarheadKeycardAccessEvent WarheadKeycardAccessEvent;
+        public delegate void OnWarheadKeycardAccessEvent(WarheadKeycardAccessEvent ev);
+
+        public static void InvokeWarheadKeycardAccessEvent(GameObject playerGameObject, ref bool allow, ref string permissionLevel)
+        {
+            if (WarheadKeycardAccessEvent == null)
+                return;
+
+            WarheadKeycardAccessEvent ev = new WarheadKeycardAccessEvent()
+            {
+                Player = Player.GetPlayer(playerGameObject),
+                Allow = allow,
+                PermissionLevel = permissionLevel
+            };
+
+            WarheadKeycardAccessEvent.Invoke(ev);
+
+            allow = ev.Allow;
+            permissionLevel = ev.PermissionLevel;
+        }
+
+        public static event OnWarheadCommand WarheadCommandEvent;
 		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
 
 		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
