@@ -377,7 +377,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="rh">Player</param>
 		/// <returns></returns>
-		public static float Health(this ReferenceHub rh) => rh.playerStats.health;
+		public static float GetHealth(this ReferenceHub rh) => rh.playerStats.health;
 
 		/// <summary>
 		/// Sets the health of a <see cref="ReferenceHub">player</see>.
