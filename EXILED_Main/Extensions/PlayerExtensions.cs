@@ -371,5 +371,19 @@ namespace EXILED.Extensions
 	            Transform = transform
             };
         }
+		
+		/// <summary>
+		/// Gets the health of a <see cref="ReferenceHub">player</see>.
+		/// </summary>
+		/// <param name="rh">Player</param>
+		/// <returns></returns>
+		public static float Health(this ReferenceHub rh) => rh.playerStats.health;
+
+		/// <summary>
+		/// Sets the health of a <see cref="ReferenceHub">player</see>.
+		/// </summary>
+		/// <param name="rh">Player</param>
+		/// <param name="amount">Health amount</param>
+		public static void SetHealth(this ReferenceHub rh, float amount) => rh.playerStats.health = amount;
     }
 }

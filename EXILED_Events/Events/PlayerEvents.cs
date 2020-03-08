@@ -8,6 +8,68 @@ namespace EXILED
 {
 	public partial class Events
 	{
+		public static event Scp079ExpGain Scp079ExpGainEvent;
+		public delegate void Scp079ExpGain(Scp079ExpGainEvent ev);
+		public static void InvokeScp079ExpGain(GameObject obj, ExpGainType type, ref bool allow, ref float amount)
+		{
+			Scp079ExpGain scp079ExpGain = Scp079ExpGainEvent;
+			if (scp079ExpGain == null)
+				return;
+			
+			Scp079ExpGainEvent ev = new Scp079ExpGainEvent()
+			{
+				Player = obj.GetPlayer(),
+				GainType = type,
+				Allow = allow,
+				Amount = amount
+			};
+			
+			scp079ExpGain.Invoke(ev);
+			allow = ev.Allow;
+			amount = ev.Amount;
+		}
+
+		public static event Scp079LvlGain Scp079LvlGainEvent;
+
+		public delegate void Scp079LvlGain(Scp079LvlGainEvent ev);
+
+		public static void InvokeScp079LvlGain(GameObject obj, int oldLvl, ref int newLvl, ref bool allow)
+		{
+			Scp079LvlGain scp079LvlGain = Scp079LvlGainEvent;
+			if (scp079LvlGain == null)
+				return;
+			Scp079LvlGainEvent ev = new Scp079LvlGainEvent()
+			{
+				Player = obj.GetPlayer(),
+				OldLvl = oldLvl,
+				NewLvl = newLvl,
+				Allow = allow
+			};
+			scp079LvlGain.Invoke(ev);
+			allow = ev.Allow;
+			newLvl = ev.NewLvl;
+		}
+
+		public static event WarheadKeycardAccess WarheadKeycardAccessEvent;
+
+		public delegate void WarheadKeycardAccess(WarheadKeycardAccessEvent ev);
+
+		public static void InvokeWarheadKeycardAccess(GameObject obj, ref bool allow, ref string permission)
+		{
+			WarheadKeycardAccess warheadKeycardAccess = WarheadKeycardAccessEvent;
+			if (warheadKeycardAccess == null)
+				return;
+			WarheadKeycardAccessEvent ev = new WarheadKeycardAccessEvent()
+			{
+				Player = obj.GetPlayer(),
+				Allow = allow,
+				RequiredPerms = permission
+			};
+			warheadKeycardAccess.Invoke(ev);
+			allow = ev.Allow;
+			permission = ev.RequiredPerms;
+		}
+
 		public static event UseMedicalItem UseMedicalItemEvent;
 		public delegate void UseMedicalItem(MedicalItemEvent ev);
 

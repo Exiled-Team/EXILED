@@ -187,6 +187,7 @@
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
     <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerEventOverride.cs" />
+    <Compile Include="Patches\Scp079Events.cs" />
     <Compile Include="Patches\SyncDataEvent.cs" />
     <Compile Include="Patches\DecontaminationEvent.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />
@@ -230,6 +231,7 @@
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
     <Compile Include="Patches\WarheadCmdEvent.cs" />
     <Compile Include="Patches\WarheadDetonationPatch.cs" />
+    <Compile Include="Patches\WarheadKeycardEvent.cs" />
     <Compile Include="Patches\WeaponManagerOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

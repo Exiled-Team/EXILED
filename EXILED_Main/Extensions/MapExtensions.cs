@@ -12,6 +12,9 @@ namespace EXILED.Extensions
 		private static Inventory _hostInventory;
 		private static AlphaWarheadController _alphaWarheadController;
 		private static Broadcast _broadcast;
+		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
+		private static DecontaminationLCZ _decontaminationLCZ;
+		
 		public static Inventory HostInventory
 		{
 			get
@@ -43,6 +46,28 @@ namespace EXILED.Extensions
 					_broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
 				}
 				return _broadcast;
+			}
+		}
+		
+		internal static AlphaWarheadNukesitePanel AlphaWarheadNukesitePanel
+		{
+			get
+			{
+				if (_alphaWarheadNukesitePanel == null)
+					_alphaWarheadNukesitePanel = Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
+
+				return _alphaWarheadNukesitePanel;
+			}
+		}
+
+		internal static DecontaminationLCZ DecontaminationLCZ
+		{
+			get
+			{
+				if (_decontaminationLCZ == null)
+					_decontaminationLCZ = PlayerManager.localPlayer.GetComponent<DecontaminationLCZ>();
+
+				return _decontaminationLCZ;
 			}
 		}
 		
@@ -113,6 +138,25 @@ namespace EXILED.Extensions
 			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
 		}
 
+		/// <summary>
+		/// Enable/Disable the nuke lever or gets its status.
+		/// </summary>
 		public static IEnumerable<Room> GetRooms() => Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj });
+		
+		public static bool IsNukeLeverEnabled
+		{
+			get => AlphaWarheadNukesitePanel.Networkenabled;
+			set => AlphaWarheadNukesitePanel.Networkenabled = value;
+		}
+
+		/// <summary>
+		/// Gets the nuke detonation status.
+		/// </summary>
+		public static bool IsNukeDetonated => AlphaWarheadController.detonated;
+
+		/// <summary>
+		/// Gets the LCZ decontamination status.
+		/// </summary>
+		public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
 	}
 }

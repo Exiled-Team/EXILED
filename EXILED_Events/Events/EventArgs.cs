@@ -519,4 +519,27 @@ namespace EXILED
         public Vector2 v2;
         public bool Allow { get; set; }
     }
+
+    public class WarheadKeycardAccessEvent : EventArgs
+    {
+	    public ReferenceHub Player;
+	    public bool Allow;
+	    public string RequiredPerms;
+    }
+
+    public class Scp079ExpGainEvent : EventArgs
+    {
+	    public ReferenceHub Player;
+	    public bool Allow;
+	    public ExpGainType GainType;
+	    public float Amount;
+    }
+
+    public class Scp079LvlGainEvent : EventArgs
+    {
+	    public ReferenceHub Player;
+	    public bool Allow;
+	    public int OldLvl;
+	    public int NewLvl;
+    }
 }
