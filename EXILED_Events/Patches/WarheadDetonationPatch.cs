@@ -36,7 +36,7 @@ namespace EXILED.Patches
             
             Events.InvokeWarheadCancel(disabler, ref allow);
 
-            return !allow || EventPlugin.WarheadLocked;
+            return allow && !EventPlugin.WarheadLocked;
         }
     }
 
