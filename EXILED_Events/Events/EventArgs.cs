@@ -226,6 +226,12 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
+	public class ItemDroppedEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public Pickup Item;
+	}
+
 	public class PickupItemEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
@@ -323,6 +329,7 @@ namespace EXILED
 	    public ReferenceHub Shooter { get; set; }
 	    public GameObject Target { get; set; }
 	    public bool Allow { get; set; }
+	    public Vector3 TargetPos;
     }
 
 	public class Scp106TeleportEvent : EventArgs
@@ -541,5 +548,16 @@ namespace EXILED
 	    public bool Allow;
 	    public int OldLvl;
 	    public int NewLvl;
+    }
+
+    public class WarheadCancelEvent : EventArgs
+    {
+	    public ReferenceHub Player;
+	    public bool Allow;
+    }
+
+    public class WarheadStartEvent : EventArgs
+    {
+	    public bool Allow;
     }
 }

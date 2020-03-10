@@ -25,10 +25,11 @@ namespace EXILED.Patches
 				if (!allow)
 					return false;
 				
-				__instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position,
+				Pickup dropped = __instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position,
 					__instance.camera.transform.rotation, syncItemInfo.modSight, syncItemInfo.modBarrel,
 					syncItemInfo.modOther);
 				__instance.items.RemoveAt(itemInventoryIndex);
+				Events.InvokeItemDropped(__instance.gameObject, dropped);
 				return false;
 			}
 			catch (Exception e)

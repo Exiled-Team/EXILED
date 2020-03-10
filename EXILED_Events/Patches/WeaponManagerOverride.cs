@@ -24,7 +24,7 @@ namespace EXILED.Patches
           
           Log.Debug("Invoking shoot event");
           bool allowShot = true;
-          Events.InvokeOnShoot(__instance.hub, target, ref allowShot);
+          Events.InvokeOnShoot(__instance.hub, target, ref allowShot, ref targetPos);
           if (!allowShot)
             return false;
           

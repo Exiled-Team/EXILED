@@ -1,29 +1,15 @@
 using System;
 using System.Collections.Generic;
 using EXILED.Extensions;
+using EXILED.Patches;
 using UnityEngine;
 
 namespace EXILED
 {
 	public partial class Events
 	{
-		public static event OnWarheadCommand WarheadCommandEvent;
+		[Obsolete("Use WarheadCancelEvent instead.", true)]
 		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
-
-		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
-		{
-			OnWarheadCommand onWarheadCommand = WarheadCommandEvent;
-			if (onWarheadCommand == null)
-				return;
-			
-			WarheadLeverEvent ev = new WarheadLeverEvent()
-			{
-				Player = Player.GetPlayer(interaction.gameObject),
-				Allow = allow
-			};
-			onWarheadCommand?.Invoke(ref ev);
-			allow = ev.Allow;
-		}
 
 		public static event OnWarheadDetonation WarheadDetonationEvent;
 		public delegate void OnWarheadDetonation();
@@ -44,11 +30,43 @@ namespace EXILED
 			
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow,
 				Door = door
 			};
 			onDoorInteract?.Invoke(ref ev);
+			allow = ev.Allow;
+		}
+
+		public static event WarheadCancelled WarheadCancelledEvent;
+		public delegate void WarheadCancelled(WarheadCancelEvent ev);
+		public static void InvokeWarheadCancel(GameObject obj, ref bool allow)
+		{
+			if (WarheadCancelledEvent == null)
+				return;
+			
+			WarheadCancelEvent ev = new WarheadCancelEvent
+			{
+				Allow = allow,
+				Player = obj ? obj.GetPlayer() : null
+			};
+			WarheadCancelledEvent.Invoke(ev);
+			allow = ev.Allow;
+		}
+
+		public static event WarheadStart WarheadStartEvent;
+		public delegate void WarheadStart(WarheadStartEvent ev);
+		public static void InvokeWarheadStart(ref bool allow)
+		{
+			if (WarheadStartEvent == null)
+				return;
+			
+			WarheadStartEvent ev = new WarheadStartEvent
+			{
+				Allow = allow
+			};
+			
+			WarheadStartEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -60,7 +78,7 @@ namespace EXILED
 			OnLockerInteract onLockerInteract = LockerInteractEvent;
 			if (onLockerInteract == null)
 				return;
-			LockerInteractionEvent ev = new LockerInteractionEvent(Player.GetPlayer(gameObject), locker, lockerid)
+			LockerInteractionEvent ev = new LockerInteractionEvent(gameObject.GetPlayer(), locker, lockerid)
 			{
 				Allow = allow,
 			};
@@ -78,7 +96,7 @@ namespace EXILED
 			
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
-				Player = Player.GetPlayer(obj),
+				Player = obj.GetPlayer(),
 				Triggerable = triggerable
 			};
 			triggerTesla?.Invoke(ref ev);
@@ -95,7 +113,7 @@ namespace EXILED
 			List<ReferenceHub> players = new List<ReferenceHub>();
 			foreach (CharacterClassManager ccm in ccms)
 			{
-				players.Add(Player.GetPlayer(ccm.gameObject));
+				players.Add(ccm.gameObject.GetPlayer());
 			}
 
 			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
@@ -122,7 +140,7 @@ namespace EXILED
 			{
 				Allow = allow,
 				Generator = generator,
-				Player = Player.GetPlayer(person)
+				Player = person.GetPlayer()
 			};
 			generatorUnlock.Invoke(ref ev);
 			allow = ev.Allow;
@@ -137,7 +155,7 @@ namespace EXILED
 				return;
 			GeneratorOpenEvent ev = new GeneratorOpenEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
@@ -154,7 +172,7 @@ namespace EXILED
 				return;
 			GeneratorCloseEvent ev = new GeneratorCloseEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
@@ -171,7 +189,7 @@ namespace EXILED
 				return;
 			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
@@ -188,7 +206,7 @@ namespace EXILED
 				return;
 			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};

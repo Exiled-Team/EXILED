@@ -81,7 +81,7 @@ namespace EXILED
 
 			MedicalItemEvent ev = new MedicalItemEvent()
 			{
-				Player = Player.GetPlayer(obj),
+				Player = obj.GetPlayer(),
 				Item = type,
 				Allow = allow
 			};
@@ -100,7 +100,7 @@ namespace EXILED
 			
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
 			{
-				Player = Player.GetPlayer(script.gameObject),
+				Player = script.gameObject.GetPlayer(),
 				Script = script,
 				Allow = allow
 			};
@@ -119,7 +119,7 @@ namespace EXILED
 			
 			Scp096CalmEvent ev = new Scp096CalmEvent()
 			{
-				Player = Player.GetPlayer(script.gameObject),
+				Player = script.gameObject.GetPlayer(),
 				Script = script,
 				Allow = allow
 			};
@@ -168,7 +168,7 @@ namespace EXILED
 				return;
 			}
 
-			ReferenceHub hub = Player.GetPlayer(obj);
+			ReferenceHub hub = obj.GetPlayer();
 			ConsoleCommandEvent ev = new ConsoleCommandEvent(encrypted)
 			{
 				Command = command,
@@ -213,7 +213,7 @@ namespace EXILED
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
 				Killer = pid == 0 ? stats.gameObject.GetPlayer() : Player.GetPlayer(pid),
-				Player = Player.GetPlayer(obj),
+				Player = obj.GetPlayer(),
 				Info = info
 			};
 			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
@@ -233,7 +233,7 @@ namespace EXILED
 			
 			SetClassEvent ev = new SetClassEvent()
 			{
-				Player = Player.GetPlayer(ccm.gameObject),
+				Player = ccm.gameObject.GetPlayer(),
 				Role = id
 			};
 			setClass?.Invoke(ev);
@@ -249,7 +249,7 @@ namespace EXILED
 
             StartItemsEvent ev = new StartItemsEvent()
             {
-                Player = Player.GetPlayer(obj),
+                Player = obj.GetPlayer(),
                 Role = id,
                 StartItems = startItems
             };
@@ -291,7 +291,7 @@ namespace EXILED
 				return;
 			DropItemEvent ev = new DropItemEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Item = item,
 				Allow = allow
 			};
@@ -299,6 +299,20 @@ namespace EXILED
 			dropItem.Invoke(ref ev);
 			allow = ev.Allow;
 			item = ev.Item;
+		}
+
+		public static event ItemDropped ItemDroppedEvent;
+		public delegate void ItemDropped(ItemDroppedEvent ev);
+		public static void InvokeItemDropped(GameObject player, Pickup item)
+		{
+			if (ItemDroppedEvent == null)
+				return;
+			ItemDroppedEvent ev = new ItemDroppedEvent
+			{
+				Player = player.GetPlayer(),
+				Item = item,
+			};
+			ItemDroppedEvent.Invoke(ev);
 		}
 
 		public static event PickupItem PickupItemEvent;
@@ -312,7 +326,7 @@ namespace EXILED
 				return;
 			PickupItemEvent ev = new PickupItemEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Item = item,
 				Allow = allow
 			};
@@ -332,8 +346,8 @@ namespace EXILED
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
-				Player = Player.GetPlayer(player),
-				Target = Player.GetPlayer(target),
+				Player = player.GetPlayer(),
+				Target = target.GetPlayer(),
 				Allow = allow
 			};
 			handcuffCuffed.Invoke(ref ev);
@@ -350,8 +364,8 @@ namespace EXILED
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
-				Player = Player.GetPlayer(player),
-				Target = Player.GetPlayer(target),
+				Player = player.GetPlayer(),
+				Target = target.GetPlayer(),
 				Allow = allow
 			};
 			handcuffFreed.Invoke(ref ev);
@@ -368,7 +382,7 @@ namespace EXILED
 			
 			Scp079TriggerTeslaEvent ev = new Scp079TriggerTeslaEvent
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow
 			};
 			
@@ -388,7 +402,7 @@ namespace EXILED
 			
 			CheckEscapeEvent ev = new CheckEscapeEvent
 			{
-				Player = Player.GetPlayer(ply),
+				Player = ply.GetPlayer(),
 				Allow = allow
 			};
 			
@@ -408,7 +422,7 @@ namespace EXILED
 			
 			IntercomSpeakEvent ev = new IntercomSpeakEvent
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow
 			};
 			
@@ -441,7 +455,7 @@ namespace EXILED
 
 		public delegate void OnShoot(ref ShootEvent ev);
 
-		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, ref bool allow)
+		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, ref bool allow, ref Vector3 targetPos)
 		{
 			OnShoot onShoot = ShootEvent;
 			if (onShoot == null)
@@ -450,10 +464,12 @@ namespace EXILED
 			{
 				Shooter = shooter,
 				Allow = allow,
-				Target = target
+				Target = target,
+				TargetPos = targetPos
 			};
 			onShoot.Invoke(ref ev);
 			allow = ev.Allow;
+			targetPos = ev.TargetPos;
 		}
 
 		public static event Scp106Teleport Scp106TeleportEvent;
@@ -467,7 +483,7 @@ namespace EXILED
 			
 			Scp106TeleportEvent ev = new Scp106TeleportEvent()
 			{
-				Player = Player.GetPlayer(Gplayer),
+				Player = Gplayer.GetPlayer(),
 				PortalPosition = PortalPos,
 				Allow = allow
 			};
@@ -484,7 +500,7 @@ namespace EXILED
 			if (pocketDimDamage == null)
 				return;
 
-			ReferenceHub player = Player.GetPlayer(Gplayer);
+			ReferenceHub player = Gplayer.GetPlayer();
 			PocketDimDamageEvent ev = new PocketDimDamageEvent()
 			{
 				Player = player,
@@ -503,7 +519,7 @@ namespace EXILED
 			if (pocketDimEnter == null)
 				return;
 
-			ReferenceHub player = Player.GetPlayer(Gplayer);
+			ReferenceHub player = Gplayer.GetPlayer();
 			PocketDimEnterEvent ev = new PocketDimEnterEvent()
 			{
 				Player = player,
@@ -522,7 +538,7 @@ namespace EXILED
 			if (pocketDimEscaped == null)
 				return;
 
-			ReferenceHub player = Player.GetPlayer(Gplayer);
+			ReferenceHub player = Gplayer.GetPlayer();
 			PocketDimEscapedEvent ev = new PocketDimEscapedEvent()
 			{
 				Player = player,
@@ -541,7 +557,7 @@ namespace EXILED
 			if (pocketDimDeath == null)
 				return;
 
-			ReferenceHub player = Player.GetPlayer(Gplayer);
+			ReferenceHub player = Gplayer.GetPlayer();
 			PocketDimDeathEvent ev = new PocketDimDeathEvent()
 			{
 				Player = player,
@@ -563,7 +579,7 @@ namespace EXILED
 			
 			PlayerReloadEvent ev = new PlayerReloadEvent
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow
 			};
 			
@@ -580,7 +596,7 @@ namespace EXILED
 				return; 
 			PlayerSpawnEvent ev = new PlayerSpawnEvent
 			{
-				Player = Player.GetPlayer(ccm.gameObject),
+				Player = ccm.gameObject.GetPlayer(),
 				Role = role,
                 Spawnpoint = spawnPoint,
                 RotationY = rotY
@@ -599,7 +615,7 @@ namespace EXILED
 				return;
 			Scp106ContainEvent ev = new Scp106ContainEvent
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow
 			};
 			scp106Contain?.Invoke(ev);
@@ -613,7 +629,7 @@ namespace EXILED
 			Scp914Activation scp914Activation = Scp914ActivationEvent;
 			if (scp914Activation == null)
 				return;
-			ReferenceHub player = Player.GetPlayer(obj);
+			ReferenceHub player = obj.GetPlayer();
 			Scp914ActivationEvent ev = new Scp914ActivationEvent
 			{
 				Player = player,
@@ -634,7 +650,7 @@ namespace EXILED
 			Scp914KnobChange scp914KnobChange = Scp914KnobChangeEvent;
 			if (scp914KnobChange == null)
 				return;
-			ReferenceHub hub = Player.GetPlayer(player);
+			ReferenceHub hub = player.GetPlayer();
 			Scp914KnobChangeEvent ev = new Scp914KnobChangeEvent
 			{
 				Player = hub,
@@ -655,7 +671,7 @@ namespace EXILED
 				return;
 			FemurEnterEvent ev = new FemurEnterEvent
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow
 			};
 			femurEnter?.Invoke(ev);
@@ -672,7 +688,7 @@ namespace EXILED
 
             SyncDataEvent ev = new SyncDataEvent
             {
-                Player = Player.GetPlayer(player),
+                Player = player.GetPlayer(),
                 State = state,
                 v2 = v2,
                 Allow = allow

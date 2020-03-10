@@ -385,5 +385,57 @@ namespace EXILED.Extensions
 		/// <param name="rh">Player</param>
 		/// <param name="amount">Health amount</param>
 		public static void SetHealth(this ReferenceHub rh, float amount) => rh.playerStats.health = amount;
+
+		/// <summary>
+		/// Get the item in the player's hand, can return null.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <returns>SyncItemInfo or null</returns>
+		public static Inventory.SyncItemInfo GetCurrentItem(this ReferenceHub rh) => rh.inventory.GetItemInHand();
+		/// <summary>
+		/// Get a list of all items in a player's inventory. Can be empty.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <returns>List<SyncItemInfo></returns>
+		public static List<Inventory.SyncItemInfo> GetAllItems(this ReferenceHub rh) => rh.inventory.items.ToList();
+
+		/// <summary>
+		/// Sets the player's current item in their hand.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <param name="type"></param>
+		public static void SetCurrentItem(this ReferenceHub rh, ItemType type) => rh.inventory.SetCurItem(type);
+
+		/// <summary>
+		/// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <param name="type"></param>
+		public static void AddItem(this ReferenceHub rh, ItemType type) => rh.inventory.AddNewItem(type);
+		/// <summary>
+		/// Add an item with the specified info to a player's inventory.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <param name="info"></param>
+		public static void AddItem(this ReferenceHub rh, Inventory.SyncItemInfo info) => rh.inventory.AddNewItem(info.id, info.durability, info.modSight, info.modBarrel, info.modOther);
+
+		/// <summary>
+		/// Sets the player's inventory to the provided list of items, clearing any items they already possess.
+		/// </summary>
+		/// <param name="rh"></param>
+		/// <param name="items"></param>
+		public static void SetInventory(this ReferenceHub rh, List<Inventory.SyncItemInfo> items)
+		{
+			rh.ClearInventory();
+			foreach (Inventory.SyncItemInfo item in items)
+				rh.inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+		}
+		
+		/// <summary>
+		/// Clears a player's inventory.
+		/// </summary>
+		/// <param name="rh"></param>
+
+		public static void ClearInventory(this ReferenceHub rh) => rh.inventory.items.Clear();
     }
 }

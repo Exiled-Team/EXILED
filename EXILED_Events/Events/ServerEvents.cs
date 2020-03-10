@@ -111,7 +111,7 @@ namespace EXILED
 			
 			List<ReferenceHub> respawn = new List<ReferenceHub>();
 			foreach (GameObject obj in toRespawn)
-				respawn.Add(Player.GetPlayer(obj));
+				respawn.Add(obj.GetPlayer());
 			TeamRespawnEvent ev = new TeamRespawnEvent()
 			{
 				IsChaos = isChaos,
@@ -179,7 +179,7 @@ namespace EXILED
 
 			SetGroupEvent ev = new SetGroupEvent()
 			{
-				Player = Player.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Group = group,
 				Allow = allow
 			};

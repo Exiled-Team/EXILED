@@ -24,7 +24,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 8,
-			Patch = 6
+			Patch = 7
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -216,9 +216,14 @@ namespace EXILED
 		public bool IsUpdateAvailible()
 		{
 			string url = "https://github.com/galaxy119/EXILED/releases/";
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}latest/");
+			url += Config.GetBool("exiled_testing") ? "" : "latest/";
+			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
 			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 			Stream stream = response.GetResponseStream();
+			if (stream == null)
+			{
+				throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
+			}
 			StreamReader reader = new StreamReader(stream);
 			string read = reader.ReadToEnd();
 			string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
