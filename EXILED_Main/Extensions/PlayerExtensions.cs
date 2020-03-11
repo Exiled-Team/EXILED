@@ -437,5 +437,44 @@ namespace EXILED.Extensions
 		/// <param name="rh"></param>
 
 		public static void ClearInventory(this ReferenceHub rh) => rh.inventory.items.Clear();
+
+		/// <summary>
+		/// Bans the player.
+		/// </summary>
+		/// <param name="hub"></param>
+		/// <param name="dur"></param>
+		/// <param name="reason"></param>
+		/// <param name="issuer"></param>
+		public static void BanPlayer(this ReferenceHub hub, int dur, string reason, string issuer = "Console") => PlayerManager.localPlayer.GetComponent<BanPlayer>().BanUser(hub.gameObject, dur, reason, issuer, false);
+
+		/// <summary>
+		/// Bans the player.
+		/// </summary>
+		/// <param name="obj"></param>
+		/// <param name="dur"></param>
+		/// <param name="reason"></param>
+		/// <param name="issuer"></param>
+		public static void BanPlayer(this GameObject obj, int dur, string reason, string issuer = "Console") => PlayerManager.localPlayer.GetComponent<BanPlayer>().BanUser(obj, dur, reason, issuer, false);
+
+		/// <summary>
+		/// Returns true if the player is handcuffed.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static bool IsHandCuffed(this ReferenceHub player) => player.handcuffs.CufferId != -1;
+
+		/// <summary>
+		/// Returns the handcuffer of the player, returns null if no cuffer.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static bool GetHandCuffer(this ReferenceHub player) => Player.GetPlayer(player.handcuffs.CufferId);
+		
+		/// <summary>
+		/// Returns the IP address of the player.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static string GetIpAddress(this ReferenceHub player) => player.queryProcessor._ipAddress;
     }
 }
