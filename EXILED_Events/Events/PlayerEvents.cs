@@ -12,8 +12,7 @@ namespace EXILED
 		public delegate void Scp079ExpGain(Scp079ExpGainEvent ev);
 		public static void InvokeScp079ExpGain(GameObject obj, ExpGainType type, ref bool allow, ref float amount)
 		{
-			Scp079ExpGain scp079ExpGain = Scp079ExpGainEvent;
-			if (scp079ExpGain == null)
+			if (Scp079ExpGainEvent == null)
 				return;
 			
 			Scp079ExpGainEvent ev = new Scp079ExpGainEvent()
@@ -24,7 +23,7 @@ namespace EXILED
 				Amount = amount
 			};
 			
-			scp079ExpGain.Invoke(ev);
+			Scp079ExpGainEvent.Invoke(ev);
 			allow = ev.Allow;
 			amount = ev.Amount;
 		}
@@ -35,8 +34,7 @@ namespace EXILED
 
 		public static void InvokeScp079LvlGain(GameObject obj, int oldLvl, ref int newLvl, ref bool allow)
 		{
-			Scp079LvlGain scp079LvlGain = Scp079LvlGainEvent;
-			if (scp079LvlGain == null)
+			if (Scp079LvlGainEvent == null)
 				return;
 			Scp079LvlGainEvent ev = new Scp079LvlGainEvent()
 			{
@@ -45,7 +43,7 @@ namespace EXILED
 				NewLvl = newLvl,
 				Allow = allow
 			};
-			scp079LvlGain.Invoke(ev);
+			Scp079LvlGainEvent.Invoke(ev);
 			allow = ev.Allow;
 			newLvl = ev.NewLvl;
 		}
@@ -56,8 +54,7 @@ namespace EXILED
 
 		public static void InvokeWarheadKeycardAccess(GameObject obj, ref bool allow, ref string permission)
 		{
-			WarheadKeycardAccess warheadKeycardAccess = WarheadKeycardAccessEvent;
-			if (warheadKeycardAccess == null)
+			if (WarheadKeycardAccessEvent == null)
 				return;
 			WarheadKeycardAccessEvent ev = new WarheadKeycardAccessEvent()
 			{
@@ -65,7 +62,7 @@ namespace EXILED
 				Allow = allow,
 				RequiredPerms = permission
 			};
-			warheadKeycardAccess.Invoke(ev);
+			WarheadKeycardAccessEvent.Invoke(ev);
 			allow = ev.Allow;
 			permission = ev.RequiredPerms;
 		}
@@ -75,8 +72,7 @@ namespace EXILED
 
 		public static void InvokeUseMedicalItem(GameObject obj, ItemType type, ref bool allow)
 		{
-			UseMedicalItem useMedicalItem = UseMedicalItemEvent;
-			if (useMedicalItem == null)
+			if (UseMedicalItemEvent == null)
 				return;
 
 			MedicalItemEvent ev = new MedicalItemEvent()
@@ -85,7 +81,7 @@ namespace EXILED
 				Item = type,
 				Allow = allow
 			};
-			useMedicalItem?.Invoke(ev);
+			UseMedicalItemEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -94,8 +90,7 @@ namespace EXILED
 
 		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
 		{
-			Scp096Enrage scp096Enrage = Scp096EnrageEvent;
-			if (scp096Enrage == null)
+			if (Scp096EnrageEvent == null)
 				return;
 			
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
@@ -104,7 +99,7 @@ namespace EXILED
 				Script = script,
 				Allow = allow
 			};
-			scp096Enrage?.Invoke(ref ev);
+			Scp096EnrageEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -113,8 +108,7 @@ namespace EXILED
 
 		public static void InvokeScp096Calm(Scp096PlayerScript script, ref bool allow)
 		{
-			Scp096Calm scp096Calm = Scp096CalmEvent;
-			if (scp096Calm == null)
+			if (Scp096CalmEvent == null)
 				return;
 			
 			Scp096CalmEvent ev = new Scp096CalmEvent()
@@ -123,7 +117,7 @@ namespace EXILED
 				Script = script,
 				Allow = allow
 			};
-			scp096Calm?.Invoke(ref ev);
+			Scp096CalmEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -131,37 +125,34 @@ namespace EXILED
 		public delegate void OnPlayerJoin(PlayerJoinEvent ev);
 		public static void InvokePlayerJoin(ReferenceHub hub)
 		{
-			OnPlayerJoin onPlayerJoin = PlayerJoinEvent;
-			if (onPlayerJoin == null)
+			if (PlayerJoinEvent == null)
 				return;
 			
 			PlayerJoinEvent ev = new PlayerJoinEvent()
 			{
 				Player = hub
 			};
-			onPlayerJoin?.Invoke(ev);
+			PlayerJoinEvent.Invoke(ev);
 		}
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
 		public delegate void OnPlayerLeave(PlayerLeaveEvent ev);
 		public static void InvokePlayerLeave(ReferenceHub hub, string userId, GameObject obj)
 		{
-			OnPlayerLeave onPlayerLeave = PlayerLeaveEvent;
-			if (onPlayerLeave == null)
+			if (PlayerLeaveEvent == null)
 				return;
 			
 			PlayerLeaveEvent ev = new PlayerLeaveEvent()
 			{
 				Player = hub
 			};
-			onPlayerLeave?.Invoke(ev);
+			PlayerLeaveEvent.Invoke(ev);
 		}
 		public static event OnConsoleCommand ConsoleCommandEvent;
 		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
 		public static void InvokeConsoleCommand(GameObject obj, string command, bool encrypted, out string returnMessage, out string color)
 		{
-			OnConsoleCommand onConsoleCommand = ConsoleCommandEvent;
-			if (onConsoleCommand == null)
+			if (ConsoleCommandEvent == null)
 			{
 				returnMessage = "Command not found.";
 				color = "red";
@@ -176,7 +167,7 @@ namespace EXILED
 				ReturnMessage = "Command not found.",
 				Color = "red"
 			};
-			onConsoleCommand?.Invoke(ev);
+			ConsoleCommandEvent.Invoke(ev);
 			returnMessage = ev.ReturnMessage;
 			color = ev.Color;
 		}
@@ -185,8 +176,7 @@ namespace EXILED
 		public delegate void PlayerHurt(ref PlayerHurtEvent ev);
 		public static void InvokePlayerHurt(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj, int pid = 0)
 		{
-			PlayerHurt playerHurt = PlayerHurtEvent;
-			if (playerHurt == null)
+			if (PlayerHurtEvent == null)
 				return;
 			
 			PlayerHurtEvent ev = new PlayerHurtEvent
@@ -198,7 +188,7 @@ namespace EXILED
 
 			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
 				return;
-			playerHurt.Invoke(ref ev);
+			PlayerHurtEvent.Invoke(ref ev);
 			info = ev.Info;
 		}
 		
@@ -206,8 +196,7 @@ namespace EXILED
 		public delegate void PlayerDeath(ref PlayerDeathEvent ev); 
 		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj, int pid = 0)
 		{
-			PlayerDeath playerDeath = PlayerDeathEvent;
-			if (playerDeath == null)
+			if (PlayerDeathEvent == null)
 				return;
 			
 			PlayerDeathEvent ev = new PlayerDeathEvent()
@@ -216,10 +205,10 @@ namespace EXILED
 				Player = obj.GetPlayer(),
 				Info = info
 			};
-			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+			if (string.IsNullOrEmpty(ev.Player.characterClassManager.UserId) || ev.Player.GetRole() == RoleType.Spectator)
 				return;
 			
-			playerDeath?.Invoke(ref ev);
+			PlayerDeathEvent.Invoke(ref ev);
 			info = ev.Info;
 		}
 		
@@ -227,8 +216,7 @@ namespace EXILED
 		public delegate void SetClass(SetClassEvent ev);
 		public static void InvokeSetClass(CharacterClassManager ccm, RoleType id)
 		{
-			SetClass setClass = SetClassEvent;
-			if (setClass == null)
+			if (SetClassEvent == null)
 				return;
 			
 			SetClassEvent ev = new SetClassEvent()
@@ -236,15 +224,14 @@ namespace EXILED
 				Player = ccm.gameObject.GetPlayer(),
 				Role = id
 			};
-			setClass?.Invoke(ev);
+			SetClassEvent.Invoke(ev);
 		}
 
         public static event StartItems StartItemsEvent;
         public delegate void StartItems(StartItemsEvent ev);
         public static void InvokeStartItems(GameObject obj, RoleType id, ref List<ItemType> startItems)
         {
-            StartItems sT = StartItemsEvent;
-            if (sT == null)
+	        if (StartItemsEvent == null)
                 return;
 
             StartItemsEvent ev = new StartItemsEvent()
@@ -253,7 +240,7 @@ namespace EXILED
                 Role = id,
                 StartItems = startItems
             };
-            sT?.Invoke(ev);
+            StartItemsEvent.Invoke(ev);
             startItems = ev.StartItems;
         }
 
@@ -261,8 +248,7 @@ namespace EXILED
 		public delegate void GrenadeThrown(ref GrenadeThrownEvent ev);
 		public static void InvokeGrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow)
 		{
-			GrenadeThrown grenadeThrown = GrenadeThrownEvent;
-			if (grenadeThrown == null)
+			if (GrenadeThrownEvent == null)
 				return;
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
 			{   
@@ -273,7 +259,7 @@ namespace EXILED
 				Slow = slow,
 				Fuse = fuse
 			};
-			grenadeThrown?.Invoke(ref ev);
+			GrenadeThrownEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			id = ev.Id;
 			gm = ev.Gm;
@@ -286,8 +272,7 @@ namespace EXILED
 
 		public static void InvokeDropItem(GameObject player, ref Inventory.SyncItemInfo item, ref bool allow)
 		{
-			DropItem dropItem = DropItemEvent;
-			if (dropItem == null)
+			if (DropItemEvent == null)
 				return;
 			DropItemEvent ev = new DropItemEvent()
 			{
@@ -296,7 +281,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			dropItem.Invoke(ref ev);
+			DropItemEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			item = ev.Item;
 		}
@@ -321,8 +306,7 @@ namespace EXILED
 
 		public static void InvokePickupItem(GameObject player, ref Pickup item, ref bool allow)
 		{
-			PickupItem pickupItem = PickupItemEvent;
-			if (pickupItem == null)
+			if (PickupItemEvent == null)
 				return;
 			PickupItemEvent ev = new PickupItemEvent()
 			{
@@ -331,7 +315,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			pickupItem.Invoke(ref ev);
+			PickupItemEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			item = ev.Item;
 		}
@@ -341,8 +325,7 @@ namespace EXILED
 
 		public static void InvokePlayerHandcuff(GameObject player, GameObject target, ref bool allow)
 		{
-			HandcuffCuffed handcuffCuffed = PlayerHandcuffedEvent;
-			if (handcuffCuffed == null)
+			if (PlayerHandcuffedEvent == null)
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
@@ -350,7 +333,7 @@ namespace EXILED
 				Target = target.GetPlayer(),
 				Allow = allow
 			};
-			handcuffCuffed.Invoke(ref ev);
+			PlayerHandcuffedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -359,8 +342,7 @@ namespace EXILED
 
 		public static void InvokePlayerHandcuffFree(GameObject player, GameObject target, ref bool allow)
 		{
-			HandcuffFreed handcuffFreed = PlayerHandcuffFreedEvent;
-			if (handcuffFreed == null)
+			if (PlayerHandcuffFreedEvent == null)
 				return;
 			HandcuffEvent ev = new HandcuffEvent()
 			{
@@ -368,7 +350,7 @@ namespace EXILED
 				Target = target.GetPlayer(),
 				Allow = allow
 			};
-			handcuffFreed.Invoke(ref ev);
+			PlayerHandcuffFreedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -376,8 +358,7 @@ namespace EXILED
 		public delegate void Scp079TriggerTesla(ref Scp079TriggerTeslaEvent ev);
 		public static void InvokeScp079TriggerTesla(GameObject player, ref bool allow)
 		{
-			Scp079TriggerTesla scp079TriggerTesla = Scp079TriggerTeslaEvent;
-			if (scp079TriggerTesla == null)
+			if (Scp079TriggerTeslaEvent == null)
 				return;
 			
 			Scp079TriggerTeslaEvent ev = new Scp079TriggerTeslaEvent
@@ -386,7 +367,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			scp079TriggerTesla.Invoke(ref ev);
+			Scp079TriggerTeslaEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -396,8 +377,7 @@ namespace EXILED
 
 		public static void InvokeCheckEscape(GameObject ply, ref bool allow)
 		{
-			CheckEscape checkEscape = CheckEscapeEvent;
-			if (checkEscape == null)
+			if (CheckEscapeEvent == null)
 				return;
 			
 			CheckEscapeEvent ev = new CheckEscapeEvent
@@ -406,7 +386,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			checkEscape.Invoke(ref ev);
+			CheckEscapeEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -416,8 +396,7 @@ namespace EXILED
 
 		public static void InvokeIntercomSpeak(GameObject player, ref bool allow)
 		{
-			IntercomSpeak intercomSpeak = IntercomSpeakEvent;
-			if (intercomSpeak == null)
+			if (IntercomSpeakEvent == null)
 				return;
 			
 			IntercomSpeakEvent ev = new IntercomSpeakEvent
@@ -426,7 +405,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			intercomSpeak.Invoke(ref ev);
+			IntercomSpeakEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
     
@@ -435,8 +414,7 @@ namespace EXILED
 
 		public static void InvokeOnLateShoot(ReferenceHub shooter, GameObject target, float damage, float distance, ref bool allow)
 		{
-			OnLateShoot onLateShoot = LateShootEvent;
-			if (onLateShoot == null)
+			if (LateShootEvent == null)
 				return;
 			
 			LateShootEvent ev = new LateShootEvent()
@@ -447,7 +425,7 @@ namespace EXILED
 				Distance = distance,
 				Allow = allow
 			};
-			onLateShoot.Invoke(ref ev);
+			LateShootEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -457,8 +435,7 @@ namespace EXILED
 
 		public static void InvokeOnShoot(ReferenceHub shooter, GameObject target, ref bool allow, ref Vector3 targetPos)
 		{
-			OnShoot onShoot = ShootEvent;
-			if (onShoot == null)
+			if (ShootEvent == null)
 				return;
 			ShootEvent ev = new ShootEvent
 			{
@@ -467,7 +444,7 @@ namespace EXILED
 				Target = target,
 				TargetPos = targetPos
 			};
-			onShoot.Invoke(ref ev);
+			ShootEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			targetPos = ev.TargetPos;
 		}
@@ -477,8 +454,7 @@ namespace EXILED
 
 		public static void InvokeScp106Teleport(GameObject Gplayer, Vector3 PortalPos, ref bool allow)
 		{
-			Scp106Teleport scp106Teleport = Scp106TeleportEvent;
-			if (scp106Teleport == null)
+			if (Scp106TeleportEvent == null)
 				return;
 			
 			Scp106TeleportEvent ev = new Scp106TeleportEvent()
@@ -487,7 +463,7 @@ namespace EXILED
 				PortalPosition = PortalPos,
 				Allow = allow
 			};
-			scp106Teleport.Invoke(ev);
+			Scp106TeleportEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -496,8 +472,7 @@ namespace EXILED
 
 		public static void InvokePocketDimDamage(GameObject Gplayer, ref bool allow)
 		{
-			PocketDimDamage pocketDimDamage = PocketDimDamageEvent;
-			if (pocketDimDamage == null)
+			if (PocketDimDamageEvent == null)
 				return;
 
 			ReferenceHub player = Gplayer.GetPlayer();
@@ -506,7 +481,7 @@ namespace EXILED
 				Player = player,
 				Allow = allow
 			};
-			PocketDimDamageEvent?.Invoke(ev);
+			PocketDimDamageEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -515,8 +490,7 @@ namespace EXILED
 
 		public static void InvokePocketDimEnter(GameObject Gplayer, ref bool allow)
 		{
-			PocketDimEnter pocketDimEnter = PocketDimEnterEvent;
-			if (pocketDimEnter == null)
+			if (PocketDimEnterEvent == null)
 				return;
 
 			ReferenceHub player = Gplayer.GetPlayer();
@@ -525,7 +499,7 @@ namespace EXILED
 				Player = player,
 				Allow = allow
 			};
-			PocketDimEnterEvent?.Invoke(ev);
+			PocketDimEnterEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -534,8 +508,7 @@ namespace EXILED
 
 		public static void InvokePocketDimEscaped(GameObject Gplayer, ref bool allow)
 		{
-			PocketDimEscaped pocketDimEscaped = PocketDimEscapedEvent;
-			if (pocketDimEscaped == null)
+			if (PocketDimEscapedEvent == null)
 				return;
 
 			ReferenceHub player = Gplayer.GetPlayer();
@@ -544,7 +517,7 @@ namespace EXILED
 				Player = player,
 				Allow = allow
 			};
-			PocketDimEscapedEvent?.Invoke(ev);
+			PocketDimEscapedEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -553,8 +526,7 @@ namespace EXILED
 
 		public static void InvokePocketDimDeath(GameObject Gplayer, ref bool allow)
 		{
-			PocketDimDeath pocketDimDeath = PocketDimDeathEvent;
-			if (pocketDimDeath == null)
+			if (PocketDimDeathEvent == null)
 				return;
 
 			ReferenceHub player = Gplayer.GetPlayer();
@@ -563,7 +535,7 @@ namespace EXILED
 				Player = player,
 				Allow = allow
 			};
-			PocketDimDeathEvent?.Invoke(ev);
+			PocketDimDeathEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -573,8 +545,7 @@ namespace EXILED
 
 		public static void InvokePlayerReload(GameObject player, ref bool allow)
 		{
-			PlayerReload playerReload = PlayerReloadEvent;
-			if (playerReload == null)
+			if (PlayerReloadEvent == null)
 				return;
 			
 			PlayerReloadEvent ev = new PlayerReloadEvent
@@ -583,7 +554,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			playerReload.Invoke(ref ev);
+			PlayerReloadEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -591,8 +562,7 @@ namespace EXILED
 		public delegate void PlayerSpawn(PlayerSpawnEvent ev);
 		public static void InvokePlayerSpawn(CharacterClassManager ccm, RoleType role, ref Vector3 spawnPoint, ref float rotY)
 		{
-			PlayerSpawn playerSpawn = PlayerSpawnEvent;
-			if (playerSpawn == null)
+			if (PlayerSpawnEvent == null)
 				return; 
 			PlayerSpawnEvent ev = new PlayerSpawnEvent
 			{
@@ -601,7 +571,7 @@ namespace EXILED
                 Spawnpoint = spawnPoint,
                 RotationY = rotY
 			};
-			playerSpawn.Invoke(ev);
+			PlayerSpawnEvent.Invoke(ev);
             spawnPoint = ev.Spawnpoint;
             rotY = ev.RotationY;
 		}
@@ -610,15 +580,14 @@ namespace EXILED
 		public delegate void Scp106Contain(Scp106ContainEvent ev);
 		public static void InvokeScp106ContainEvent(GameObject player, ref bool allow)
 		{
-			Scp106Contain scp106Contain = Scp106ContainEvent;
-			if (scp106Contain == null)
+			if (Scp106ContainEvent == null)
 				return;
 			Scp106ContainEvent ev = new Scp106ContainEvent
 			{
 				Player = player.GetPlayer(),
 				Allow = allow
 			};
-			scp106Contain?.Invoke(ev);
+			Scp106ContainEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 		
@@ -626,8 +595,7 @@ namespace EXILED
 		public delegate void Scp914Activation(ref Scp914ActivationEvent ev);
 		public static void InvokeScp914Activation(GameObject obj, ref bool allow, ref double time)
 		{
-			Scp914Activation scp914Activation = Scp914ActivationEvent;
-			if (scp914Activation == null)
+			if (Scp914ActivationEvent == null)
 				return;
 			ReferenceHub player = obj.GetPlayer();
 			Scp914ActivationEvent ev = new Scp914ActivationEvent
@@ -636,7 +604,7 @@ namespace EXILED
 				Allow = allow,
 				Time = time
 			};
-			scp914Activation.Invoke(ref ev);
+			Scp914ActivationEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			time = ev.Time;
 		}
@@ -647,8 +615,7 @@ namespace EXILED
 
 		public static void InvokeScp914KnobChange(GameObject player, ref bool allow, ref Scp914Knob knobSetting)
 		{
-			Scp914KnobChange scp914KnobChange = Scp914KnobChangeEvent;
-			if (scp914KnobChange == null)
+			if (Scp914KnobChangeEvent == null)
 				return;
 			ReferenceHub hub = player.GetPlayer();
 			Scp914KnobChangeEvent ev = new Scp914KnobChangeEvent
@@ -657,7 +624,7 @@ namespace EXILED
 				Allow = allow,
 				KnobSetting = knobSetting
 			};
-			scp914KnobChange.Invoke(ref ev);
+			Scp914KnobChangeEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			knobSetting = ev.KnobSetting;
 		}
@@ -666,15 +633,14 @@ namespace EXILED
 		public delegate void FemurEnter(FemurEnterEvent ev);
 		public static void InvokeFemurEnterEvent(GameObject player, ref bool allow)
 		{
-			FemurEnter femurEnter = FemurEnterEvent;
-			if (femurEnter == null)
+			if (FemurEnterEvent == null)
 				return;
 			FemurEnterEvent ev = new FemurEnterEvent
 			{
 				Player = player.GetPlayer(),
 				Allow = allow
 			};
-			femurEnter?.Invoke(ev);
+			FemurEnterEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -682,8 +648,7 @@ namespace EXILED
         public delegate void SyncData (ref SyncDataEvent ev);
         public static void InvokeSyncData(GameObject player, ref int state, ref Vector2 v2, ref bool allow)
         {
-            SyncData syncdata = SyncDataEvent;
-            if (syncdata == null)
+	        if (SyncDataEvent == null)
                 return;
 
             SyncDataEvent ev = new SyncDataEvent
@@ -694,7 +659,7 @@ namespace EXILED
                 Allow = allow
             };
 
-            syncdata.Invoke(ref ev);
+            SyncDataEvent.Invoke(ref ev);
             allow = ev.Allow;
         }
     }
