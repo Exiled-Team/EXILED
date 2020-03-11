@@ -560,4 +560,11 @@ namespace EXILED
     {
 	    public bool Allow;
     }
+
+    public class ItemChangedEvent : EventArgs
+    {
+        public ReferenceHub Player;
+        public Inventory.SyncItemInfo OldItem;
+        public Inventory.SyncItemInfo NewItem;
+    }
 }

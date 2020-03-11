@@ -188,6 +188,7 @@
     <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerEventOverride.cs" />
     <Compile Include="Patches\Scp079Events.cs" />
+    <Compile Include="Patches\CallCmdSetUnicOverride.cs" />
     <Compile Include="Patches\SyncDataEvent.cs" />
     <Compile Include="Patches\DecontaminationEvent.cs" />
     <Compile Include="Patches\DoorInteractionEvent.cs" />

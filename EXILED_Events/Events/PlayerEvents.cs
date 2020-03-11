@@ -8,6 +8,26 @@ namespace EXILED
 {
 	public partial class Events
 	{
+        public static event ItemChanged ItemChangedEvent;
+        public delegate void ItemChanged(ItemChangedEvent ev);
+
+        public static void InvokeItemChanged(GameObject obj, ref Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
+        {
+            if (ItemChangedEvent == null)
+                return;
+
+            ItemChangedEvent ev = new ItemChangedEvent()
+            {
+                Player = obj.GetPlayer(),
+                OldItem = oldItem,
+                NewItem = newItem
+            };
+
+            ItemChangedEvent.Invoke(ev);
+
+            oldItem = ev.OldItem;
+        }
+
 		public static event Scp079ExpGain Scp079ExpGainEvent;
 		public delegate void Scp079ExpGain(Scp079ExpGainEvent ev);
 		public static void InvokeScp079ExpGain(GameObject obj, ExpGainType type, ref bool allow, ref float amount)
