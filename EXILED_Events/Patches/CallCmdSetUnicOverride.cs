@@ -22,7 +22,9 @@ namespace EXILED.Patches
 
             Inventory.SyncItemInfo newItem = i == - 1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.items[j];
 
-            Events.InvokeItemChanged(__instance.gameObject, oldItem, newItem);
+            Events.InvokeItemChanged(__instance.gameObject, ref oldItem, newItem);
+
+            if (oldItemIndex != -1) __instance.items[oldItemIndex] = oldItem;
 
             return true;
         }
