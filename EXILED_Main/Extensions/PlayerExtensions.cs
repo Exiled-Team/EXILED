@@ -371,13 +371,66 @@ namespace EXILED.Extensions
 	            Transform = transform
             };
         }
-		
-		/// <summary>
-		/// Gets the health of a <see cref="ReferenceHub">player</see>.
-		/// </summary>
-		/// <param name="rh">Player</param>
-		/// <returns></returns>
-		public static float GetHealth(this ReferenceHub rh) => rh.playerStats.health;
+
+        /// <summary>
+        /// Mutes a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static void Mute(this ReferenceHub rh) => rh.characterClassManager.NetworkMuted = true;
+
+        /// <summary>
+        /// Unmutes a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static void Unmute(this ReferenceHub rh) => rh.characterClassManager.NetworkMuted = false;
+
+        /// <summary>
+        /// Gets a <see cref="ReferenceHub">player</see> mute status.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns>True if muted, false if not</returns>
+        public static bool IsMuted(this ReferenceHub rh) => rh.characterClassManager.NetworkMuted;
+
+        /// <summary>
+        /// Intercom mutes a <see cref="ReferenceHub">player</see> mute status.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static void IntercomMute(this ReferenceHub rh) => rh.characterClassManager.NetworkIntercomMuted = true;
+
+        /// <summary>
+        /// Intercom unmutes a <see cref="ReferenceHub">player</see> mute status.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns>True if intercom muted, false if not</returns>
+        public static void IntercomUnmute(this ReferenceHub rh) => rh.characterClassManager.NetworkIntercomMuted = false;
+
+        /// <summary>
+        /// Gets a <see cref="ReferenceHub">player</see> intercom mute status.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns></returns>
+        public static bool IsIntercomMuted(this ReferenceHub rh) => rh.characterClassManager.NetworkIntercomMuted;
+
+        /// <summary>
+        /// Gets the GodMode status of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newStatus"></param>
+        public static bool GetGodMode(this ReferenceHub rh) => rh.characterClassManager.GodMode;
+
+        /// <summary>
+        /// Sets the GodMode status of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="newStatus"></param>
+        public static void SetGodMode(this ReferenceHub rh, bool newStatus) => rh.characterClassManager.GodMode = newStatus;
+
+        /// <summary>
+        /// Gets the health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh">Player</param>
+        /// <returns></returns>
+        public static float GetHealth(this ReferenceHub rh) => rh.playerStats.health;
 
 		/// <summary>
 		/// Sets the health of a <see cref="ReferenceHub">player</see>.
@@ -386,11 +439,53 @@ namespace EXILED.Extensions
 		/// <param name="amount">Health amount</param>
 		public static void SetHealth(this ReferenceHub rh, float amount) => rh.playerStats.health = amount;
 
+        /// <summary>
+        /// Adds the specified amount of health to a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="amount"></param>
+        public static void AddHealth(this ReferenceHub rh, float amount) => rh.playerStats.health += amount;
+
+        /// <summary>
+        /// Gets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns>float</returns>
+        public static float GetMaxHealth(this ReferenceHub rh) => rh.playerStats.maxHP;
+
+        /// <summary>
+        /// Gets the adrenaline health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns></returns>
+        public static byte GetAdrenalineHealth(this ReferenceHub rh) => rh.playerStats.syncArtificialHealth;
+
+        /// <summary>
+        /// Sets the adrenaline health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns></returns>
+        public static void SetAdrenalinelHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth = amount;
+
+        /// <summary>
+        /// Adds the specified amount of adrenaline health to a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="amount"></param>
+        public static void AddArtificialHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth += amount;
+
+        /// <summary>
+        /// Gets the maximum amount of adrenaline health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns></returns>
+        public static float GetMaxAdrenalineHealth(this ReferenceHub rh) => rh.playerStats.maxArtificialHealth;
+
 		/// <summary>
-		/// Get the item in the player's hand, can return null.
+		/// Get the item in the player's hand, returns the default value if empty.
 		/// </summary>
 		/// <param name="rh"></param>
-		/// <returns>SyncItemInfo or null</returns>
+		/// <returns>SyncItemInfo or default(SyncItemInfo)</returns>
 		public static Inventory.SyncItemInfo GetCurrentItem(this ReferenceHub rh) => rh.inventory.GetItemInHand();
 		/// <summary>
 		/// Get a list of all items in a player's inventory. Can be empty.
@@ -438,30 +533,73 @@ namespace EXILED.Extensions
 
 		public static void ClearInventory(this ReferenceHub rh) => rh.inventory.items.Clear();
 
-		/// <summary>
-		/// Bans the player.
-		/// </summary>
-		/// <param name="hub"></param>
-		/// <param name="dur"></param>
-		/// <param name="reason"></param>
-		/// <param name="issuer"></param>
-		public static void BanPlayer(this ReferenceHub hub, int dur, string reason, string issuer = "Console") => PlayerManager.localPlayer.GetComponent<BanPlayer>().BanUser(hub.gameObject, dur, reason, issuer, false);
+        /// <summary>
+        /// Gets the reloading status of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static bool IsReloading(this ReferenceHub rh) => rh.weaponManager.IsReloading();
 
-		/// <summary>
-		/// Bans the player.
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <param name="dur"></param>
-		/// <param name="reason"></param>
-		/// <param name="issuer"></param>
-		public static void BanPlayer(this GameObject obj, int dur, string reason, string issuer = "Console") => PlayerManager.localPlayer.GetComponent<BanPlayer>().BanUser(obj, dur, reason, issuer, false);
+        /// <summary>
+        /// Gets the zooming status of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        public static bool IsZooming(this ReferenceHub rh) => rh.weaponManager.ZoomInProgress();
 
-		/// <summary>
-		/// Returns true if the player is handcuffed.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <returns></returns>
-		public static bool IsHandCuffed(this ReferenceHub player) => player.handcuffs.CufferId != -1;
+        /// <summary>
+        /// Sets the amount of a specified <see cref="AmmoType">ammo type</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="ammoType"></param>
+        /// <param name="amount"></param>
+        public static void SetAmmo(this ReferenceHub rh, AmmoType ammoType, int amount) => rh.ammoBox.SetOneAmount((int)ammoType, amount.ToString());
+
+        /// <summary>
+        /// Gets the amount of a specified <see cref="AmmoType">ammo type</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="ammoType"></param>
+        public static int GetAmmo(this ReferenceHub rh, AmmoType ammoType) => rh.ammoBox.GetAmmo((int)ammoType);
+
+        /// <summary>
+        /// Bans a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="hub"></param>
+        /// <param name="dur"></param>
+        /// <param name="reason"></param>
+        /// <param name="issuer"></param>
+        public static void BanPlayer(this ReferenceHub hub, int dur, string reason, string issuer = "Console") => hub.gameObject.BanPlayer(dur, reason, issuer);
+
+        /// <summary>
+        /// Bans a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="dur"></param>
+        /// <param name="reason"></param>
+        /// <param name="issuer"></param>
+        public static void BanPlayer(this GameObject obj, int dur, string reason, string issuer = "Console") => PlayerManager.localPlayer.GetComponent<BanPlayer>().BanUser(obj, dur, reason, issuer, false);
+
+        /// <summary>
+        /// Kicks a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="hub"></param>
+        /// <param name="reason"></param>
+        /// <param name="issuer"></param>
+        public static void KickPlayer(this ReferenceHub hub, string reason, string issuer = "Console") => hub.BanPlayer(0, reason, issuer);
+
+        /// <summary>
+        /// Kicks a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="reason"></param>
+        /// <param name="issuer"></param>
+        public static void KickPlayer(this GameObject obj, string reason, string issuer = "Console") => obj.BanPlayer(0, reason, issuer);
+
+        /// <summary>
+        /// Returns true if the player is handcuffed.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static bool IsHandCuffed(this ReferenceHub player) => player.handcuffs.CufferId != -1;
 
 		/// <summary>
 		/// Returns the handcuffer of the player, returns null if no cuffer.
