@@ -11,7 +11,7 @@ namespace EXILED
         public static event ItemChanged ItemChangedEvent;
         public delegate void ItemChanged(ItemChangedEvent ev);
 
-        public static void InvokeItemChanged(GameObject obj, ref Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
+        public static void InvokeItemChanged(GameObject obj, Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
         {
             if (ItemChangedEvent == null)
                 return;
@@ -24,8 +24,6 @@ namespace EXILED
             };
 
             ItemChangedEvent.Invoke(ev);
-
-            oldItem = ev.OldItem;
         }
 
 		public static event Scp079ExpGain Scp079ExpGainEvent;

@@ -5,7 +5,7 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
     public class CallCmdSetUnicOverride
     {
-        public static bool Prefix(Inventory __instance, ref int i)
+        public static bool Prefix(Inventory __instance, int i)
         {
             int oldItemIndex = __instance.GetItemIndex();
 
@@ -22,9 +22,7 @@ namespace EXILED.Patches
 
             Inventory.SyncItemInfo newItem = i == - 1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.items[j];
 
-            Events.InvokeItemChanged(__instance.gameObject, ref oldItem, newItem);
-
-            if (oldItemIndex != -1) __instance.items[oldItemIndex] = oldItem;
+            Events.InvokeItemChanged(__instance.gameObject, oldItem, newItem);
 
             return true;
         }
