@@ -15,8 +15,7 @@ namespace EXILED
 		public delegate void OnWarheadDetonation();
 		public static void InvokeWarheadDetonation()
 		{
-			OnWarheadDetonation warheadDetonationEvent = WarheadDetonationEvent;
-			warheadDetonationEvent?.Invoke();
+			WarheadDetonationEvent?.Invoke();
 		}
 
 		public static event OnDoorInteract DoorInteractEvent;
@@ -24,8 +23,7 @@ namespace EXILED
 
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
-			OnDoorInteract onDoorInteract = DoorInteractEvent;
-			if (onDoorInteract == null)
+			if (DoorInteractEvent == null)
 				return;
 			
 			DoorInteractionEvent ev = new DoorInteractionEvent()
@@ -34,7 +32,7 @@ namespace EXILED
 				Allow = allow,
 				Door = door
 			};
-			onDoorInteract?.Invoke(ref ev);
+			DoorInteractEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -75,14 +73,13 @@ namespace EXILED
 
 		internal static void InvokeLockerInteract(GameObject gameObject, Locker locker, int lockerid, ref bool allow)
 		{
-			OnLockerInteract onLockerInteract = LockerInteractEvent;
-			if (onLockerInteract == null)
+			if (LockerInteractEvent == null)
 				return;
 			LockerInteractionEvent ev = new LockerInteractionEvent(gameObject.GetPlayer(), locker, lockerid)
 			{
 				Allow = allow,
 			};
-			onLockerInteract?.Invoke(ev);
+			LockerInteractEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 
@@ -90,8 +87,7 @@ namespace EXILED
 		public delegate void TriggerTesla(ref TriggerTeslaEvent ev);
 		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
 		{
-			TriggerTesla triggerTesla = TriggerTeslaEvent;
-			if (triggerTesla == null)
+			if (TriggerTeslaEvent == null)
 				return;
 			
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
@@ -99,7 +95,7 @@ namespace EXILED
 				Player = obj.GetPlayer(),
 				Triggerable = triggerable
 			};
-			triggerTesla?.Invoke(ref ev);
+			TriggerTeslaEvent.Invoke(ref ev);
 			triggerable = ev.Triggerable;
 		}
 		
@@ -107,8 +103,7 @@ namespace EXILED
 		public delegate void Scp914Upgrade(ref SCP914UpgradeEvent ev);
 		public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
 		{
-			Scp914Upgrade activated = Scp914UpgradeEvent;
-			if (activated == null)
+			if (Scp914UpgradeEvent == null)
 				return;
 			List<ReferenceHub> players = new List<ReferenceHub>();
 			foreach (CharacterClassManager ccm in ccms)
@@ -124,7 +119,8 @@ namespace EXILED
 				Items = pickups,
 				KnobSetting = knobSetting
 			};
-			activated?.Invoke(ref ev);
+			
+			Scp914UpgradeEvent.Invoke(ref ev);
 			pickups = ev.Items;
 			allow = ev.Allow;
 		}
@@ -133,8 +129,7 @@ namespace EXILED
 		public delegate void GeneratorUnlock(ref GeneratorUnlockEvent ev);
 		internal static void InvokeGeneratorUnlock(GameObject person, Generator079 generator, ref bool allow)
 		{
-			GeneratorUnlock generatorUnlock = GeneratorUnlockEvent;
-			if (generatorUnlock == null)
+			if (GeneratorUnlockEvent == null)
 				return;
 			GeneratorUnlockEvent ev = new GeneratorUnlockEvent()
 			{
@@ -142,7 +137,7 @@ namespace EXILED
 				Generator = generator,
 				Player = person.GetPlayer()
 			};
-			generatorUnlock.Invoke(ref ev);
+			GeneratorUnlockEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -150,8 +145,7 @@ namespace EXILED
 		public delegate void GeneratorOpen(ref GeneratorOpenEvent ev);
 		public static void InvokeGeneratorOpen(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorOpen generatorOpen = GeneratorOpenedEvent;
-			if (generatorOpen == null)
+			if (GeneratorOpenedEvent == null)
 				return;
 			GeneratorOpenEvent ev = new GeneratorOpenEvent()
 			{
@@ -159,7 +153,7 @@ namespace EXILED
 				Generator = generator,
 				Allow = allow
 			};
-			generatorOpen.Invoke(ref ev);
+			GeneratorOpenedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -167,8 +161,7 @@ namespace EXILED
 		public delegate void GeneratorClose(ref GeneratorCloseEvent ev);
 		public static void InvokeGeneratorClose(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorClose generatorClose = GeneratorClosedEvent;
-			if (generatorClose == null)
+			if (GeneratorClosedEvent == null)
 				return;
 			GeneratorCloseEvent ev = new GeneratorCloseEvent()
 			{
@@ -176,7 +169,7 @@ namespace EXILED
 				Generator = generator,
 				Allow = allow
 			};
-			generatorClose.Invoke(ref ev);
+			GeneratorClosedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -184,8 +177,7 @@ namespace EXILED
 		public delegate void GeneratorInsert(ref GeneratorInsertTabletEvent ev);
 		public static void InvokeGeneratorInsert(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorInsert generatorInsert = GeneratorInsertedEvent;
-			if (generatorInsert == null)
+			if (GeneratorInsertedEvent == null)
 				return;
 			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
 			{
@@ -193,7 +185,7 @@ namespace EXILED
 				Generator = generator,
 				Allow = allow
 			};
-			generatorInsert.Invoke(ref ev);
+			GeneratorInsertedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -201,8 +193,7 @@ namespace EXILED
 		public delegate void GeneratorEject(ref GeneratorEjectTabletEvent ev);
 		public static void InvokeGeneratorEject(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorEject generatorEject = GeneratorEjectedEvent;
-			if (generatorEject == null)
+			if (GeneratorEjectedEvent == null)
 				return;
 			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
 			{
@@ -210,7 +201,7 @@ namespace EXILED
 				Generator = generator,
 				Allow = allow
 			};
-			generatorEject.Invoke(ref ev);
+			GeneratorEjectedEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 		
@@ -218,14 +209,13 @@ namespace EXILED
 		public delegate void GeneratorFinish(ref GeneratorFinishEvent ev);
 		public static void InvokeGeneratorFinish(Generator079 generator)
 		{
-			GeneratorFinish generatorFinish = GeneratorFinishedEvent;
-			if (generatorFinish == null)
+			if (GeneratorFinishedEvent == null)
 				return;
 			GeneratorFinishEvent ev = new GeneratorFinishEvent()
 			{
 				Generator = generator,
 			};
-			generatorFinish.Invoke(ref ev);
+			GeneratorFinishedEvent.Invoke(ref ev);
 		}
 
 		public static event Decontamination DecontaminationEvent;
@@ -234,15 +224,14 @@ namespace EXILED
 
 		public static void InvokeDecontamination(ref bool allow)
 		{
-			Decontamination decontamination = DecontaminationEvent;
-			if (decontamination == null)
+			if (DecontaminationEvent == null)
 				return;
 			DecontaminationEvent ev = new DecontaminationEvent
 			{
 				Allow = allow
 			};
 			
-			decontamination.Invoke(ref ev);
+			DecontaminationEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
 
@@ -252,8 +241,7 @@ namespace EXILED
 
 		public static void InvokeCheckRoundEnd(ref bool force, ref bool allow, ref RoundSummary.LeadingTeam team, ref bool teamChanged)
 		{
-			CheckRoundEnd checkRoundEnd = CheckRoundEndEvent;
-			if (checkRoundEnd == null)
+			if (CheckRoundEndEvent == null)
 				return;
 			
 			CheckRoundEndEvent ev = new CheckRoundEndEvent
@@ -263,7 +251,7 @@ namespace EXILED
 				Allow = allow
 			};
 			
-			checkRoundEnd.Invoke(ref ev);
+			CheckRoundEndEvent.Invoke(ref ev);
 			if (team != ev.LeadingTeam)
 				teamChanged = true;
 			team = ev.LeadingTeam;
