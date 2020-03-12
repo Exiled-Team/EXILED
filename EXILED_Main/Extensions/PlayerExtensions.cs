@@ -465,7 +465,7 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="rh"></param>
         /// <returns></returns>
-        public static void SetAdrenalinelHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth = amount;
+        public static void SetAdrenalineHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth = amount;
 
         /// <summary>
         /// Adds the specified amount of adrenaline health to a <see cref="ReferenceHub">player</see>.
