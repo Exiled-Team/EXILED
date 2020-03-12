@@ -5,7 +5,7 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
     public class CallCmdSetUnicOverride
     {
-        public static bool Prefix(Inventory __instance, ref int i)
+        public static bool Prefix(Inventory __instance, int i)
         {
             int oldItemIndex = __instance.GetItemIndex();
 
