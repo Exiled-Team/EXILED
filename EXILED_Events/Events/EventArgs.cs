@@ -182,6 +182,14 @@ namespace EXILED
 		public Door Door { get; set; }
 		public bool Allow { get; set; }
 	}
+	
+	public class ElevatorInteractionEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public Lift.Elevator Elevator { get; set; }
+		public bool Allow { get; set; }
+	}
+	
 	public class LockerInteractionEvent : EventArgs
 	{
 		public readonly ReferenceHub Player;

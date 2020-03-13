@@ -66,6 +66,7 @@ namespace EXILED
         public static bool GrenadeExplosionEventDisabled;
         public static bool WarheadKeycardAccessEventDisable;
         public static bool Scp079ExpGainEventDisable;
+        public static bool ElevatorInteractionEventDisable;
 
 
         private EventHandlers handlers;
