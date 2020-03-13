@@ -10,6 +10,19 @@ namespace EXILED.Extensions
 {
     public static class Player
     {
+        private static MethodInfo sendSpawnMessage;
+        public static MethodInfo SendSpawnMessage
+        {
+            get
+            {
+                if (sendSpawnMessage == null)
+                    sendSpawnMessage = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.Instance | BindingFlags.InvokeMethod
+                        | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public);
+
+                return sendSpawnMessage;
+            }
+        }
+
         public static Dictionary<int, ReferenceHub> IdHubs = new Dictionary<int, ReferenceHub>();
         public static Dictionary<string, ReferenceHub> StrHubs = new Dictionary<string, ReferenceHub>();
         
@@ -654,13 +667,8 @@ namespace EXILED.Extensions
             {
                 player.transform.localScale = new Vector3(x, y, z);
 
-                foreach (GameObject target in PlayerManager.players)
-                {
-                    MethodInfo sendSpawnMessage = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.Instance
-                        | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public);
-
-                    sendSpawnMessage?.Invoke(null, new object[] { player.GetComponent<NetworkIdentity>(), target.GetComponent<NetworkIdentity>().connectionToClient });
-                }
+                foreach (ReferenceHub target in GetHubs())
+                    SendSpawnMessage?.Invoke(null, new object[] { player.GetComponent<NetworkIdentity>(), target.GetConnection() });
             }
             catch (Exception exception)
             {
@@ -676,14 +684,16 @@ namespace EXILED.Extensions
         public static Vector3 GetScale(this ReferenceHub player) => player.transform.localScale;
 
         /// <summary>
+        /// Gets the <see cref="NetworkConnection">connection</see> of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        public static NetworkConnection GetConnection(this ReferenceHub player) => player.scp079PlayerScript.connectionToClient;
+
+        /// <summary>
         /// Disconnects a <see cref="ReferenceHub">player</see>.
         /// </summary>
         /// <param name="player"></param>
-        public static void Disconnect(this ReferenceHub player)
-        {
-            player.scp079PlayerScript.connectionToClient.Disconnect();
-            player.scp079PlayerScript.connectionToClient.Dispose();
-        }
+        public static void Disconnect(this ReferenceHub player, string reason = null) => ServerConsole.Disconnect(player.gameObject, string.IsNullOrEmpty(reason) ? "" : reason);
 
         /// <summary>
         /// Kills a <see cref="ReferenceHub">player</see>.
@@ -696,11 +706,11 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="team"></param>
         /// <returns></returns>
-        public static List<ReferenceHub> GetPlayers(this Team team)
+        public static IEnumerable<ReferenceHub> GetHubs(this Team team)
         {
             List<ReferenceHub> playersByTeam = new List<ReferenceHub>();
 
-            foreach (var player in GetHubs())
+            foreach (ReferenceHub player in GetHubs())
             {
                 if (player.GetTeam() == team)
                     playersByTeam.Add(player);
@@ -714,11 +724,11 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="role"></param>
         /// <returns></returns>
-        public static IEnumerable<ReferenceHub> GetPlayers(this RoleType role)
+        public static IEnumerable<ReferenceHub> GetHubs(this RoleType role)
         {
             List<ReferenceHub> playersByRole = new List<ReferenceHub>();
 
-            foreach (var player in GetHubs())
+            foreach (ReferenceHub player in GetHubs())
             {
                 if (player.GetRole() == role)
                     playersByRole.Add(player);
@@ -726,5 +736,12 @@ namespace EXILED.Extensions
 
             return playersByRole;
         }
+
+        /// <summary>
+        /// Gets the group name of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static string GetGroupName(this ReferenceHub player) => ServerStatic.PermissionsHandler._members[player.GetUserId()];
     }
 }
