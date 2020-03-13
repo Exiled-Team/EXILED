@@ -567,4 +567,11 @@ namespace EXILED
         public Inventory.SyncItemInfo OldItem;
         public Inventory.SyncItemInfo NewItem;
     }
+
+    public class Scp106CreatedPortalEvent : EventArgs
+    {
+        public ReferenceHub Player;
+        public bool Allow;
+        public Vector3 PortalPosition;
+    }
 }

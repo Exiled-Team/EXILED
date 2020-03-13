@@ -154,9 +154,14 @@ namespace EXILED.Extensions
 		/// </summary>
 		public static bool IsNukeDetonated => AlphaWarheadController.detonated;
 
-		/// <summary>
-		/// Gets the LCZ decontamination status.
+        /// <summary>
+		/// Gets the nuke detonation status.
 		/// </summary>
-		public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
+		public static bool IsNukeInProgress => AlphaWarheadController.inProgress;
+
+        /// <summary>
+        /// Gets the LCZ decontamination status.
+        /// </summary>
+        public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
 	}
 }
