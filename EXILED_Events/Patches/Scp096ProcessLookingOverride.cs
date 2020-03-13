@@ -20,7 +20,7 @@ namespace EXILED.Patches
 					return false;
 				bool allow = true;
 				Events.InvokeScp096Enrage(__instance, ref allow);
-				if (allow == false)
+				if (!allow)
 					return false;
 				__instance.Networkenraged = Scp096PlayerScript.RageState.Panic;
 				__instance._rageProgress = 15f;

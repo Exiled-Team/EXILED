@@ -8,6 +8,9 @@ namespace EXILED.Patches
     {
         public static bool Prefix(Scp106PlayerScript __instance)
         {
+            if (EventPlugin.Scp106CreatedPortalEventDisable)
+                return true;
+
             if (!__instance._interactRateLimit.CanExecute(true))
                 return false;
 
