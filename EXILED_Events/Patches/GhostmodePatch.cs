@@ -82,11 +82,11 @@ namespace EXILED.Patches
 						}
 					}
 
-					if (EventPlugin.TargetGhost.ContainsKey(Player.GetPlayer(gameObject)))
+					if (EventPlugin.TargetGhost.ContainsKey(gameObject.GetPlayer()))
 					{
 						for (int i = 0; i < __instance.usedData; i++)
 						{
-							if (EventPlugin.TargetGhost[Player.GetPlayer(gameObject)]
+							if (EventPlugin.TargetGhost[gameObject.GetPlayer()]
 								.Contains(__instance.transmitBuffer[i].playerID))
 								__instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[i].playerID);
 						}

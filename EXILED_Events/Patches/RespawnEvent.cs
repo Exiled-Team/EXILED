@@ -25,7 +25,7 @@ namespace EXILED.Patches
         foreach (GameObject player in players.ToArray())
           if (player.GetComponent<ServerRoles>().OverwatchEnabled || player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
           {
-            Log.Debug($"Removing {Player.GetPlayer(player)} -- Overwatch true");
+            Log.Debug($"Removing {player.GetPlayer()} -- Overwatch true");
             players.Remove(player);
           }
 

@@ -16,6 +16,7 @@ namespace EXILED.Patches
 			try
 			{
 				Events.InvokeRoundRestart();
+				Events.InvokeRoundEnd();
 			}
 			catch (Exception e)
 			{

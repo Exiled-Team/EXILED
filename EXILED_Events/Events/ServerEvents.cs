@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using EXILED.Extensions;
 using LiteNetLib;
 using UnityEngine;
@@ -64,6 +66,13 @@ namespace EXILED
 			query = ev.Command;
 			sender = ev.Sender;
 			allow = ev.Allow;
+
+			string fileName = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), $"{ServerConsole.Port}-RA_log.txt");
+			
+			if (!File.Exists(fileName))
+				File.Create(fileName).Close();
+			
+			File.AppendAllText(fileName, $"{sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}");
 		}
 		
 		public static event OnCheaterReport CheaterReportEvent;

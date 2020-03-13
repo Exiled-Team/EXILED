@@ -24,7 +24,7 @@ namespace EXILED
 		{
 			Major = 1,
 			Minor = 8,
-			Patch = 10
+			Patch = 11
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -83,11 +83,11 @@ namespace EXILED
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status..");
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
-			if (IsUpdateAvailible())
+			if (Config.GetBool("exiled_auto_update", true))
 			{
-				Log.Info("There is an new version of EXILED available.");
-				if (Config.GetBool("exiled_auto_update", true))
+				if (IsUpdateAvailible())
 				{
+					Log.Info("There is an new version of EXILED available.");
 					AutoUpdate();
 				}
 			}

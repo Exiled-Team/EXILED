@@ -21,7 +21,7 @@ namespace EXILED.Patches
 				__instance._allowMove = true;
 				foreach (GameObject player in PlayerManager.players)
 				{
-					ReferenceHub hub = Player.GetPlayer(player);
+					ReferenceHub hub = player.GetPlayer();
 					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
 					{
 						
