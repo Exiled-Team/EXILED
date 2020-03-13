@@ -453,7 +453,7 @@ namespace EXILED
 		public static event OnLateShoot LateShootEvent;
 		public delegate void OnLateShoot(ref LateShootEvent ev);
 
-		public static void InvokeOnLateShoot(ReferenceHub shooter, GameObject target, float damage, float distance, ref bool allow)
+		public static void InvokeOnLateShoot(ReferenceHub shooter, GameObject target, ref float damage, float distance, ref bool allow)
 		{
 			if (LateShootEvent == null)
 				return;
@@ -468,6 +468,7 @@ namespace EXILED
 			};
 			LateShootEvent.Invoke(ref ev);
 			allow = ev.Allow;
+			damage = ev.Damage;
 		}
 
 		public static event OnShoot ShootEvent;
