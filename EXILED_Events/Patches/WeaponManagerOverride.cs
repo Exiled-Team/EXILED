@@ -131,7 +131,7 @@ namespace EXILED.Patches
 
                 bool allow = true;
                 Log.Debug("Invoking late shoot.");
-                Events.InvokeOnLateShoot(__instance.hub, target, num2, num1, ref allow);
+                Events.InvokeOnLateShoot(__instance.hub, target, ref num2, num1, ref allow);
                 if (!allow)
                   return false;
 

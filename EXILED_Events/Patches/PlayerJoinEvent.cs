@@ -27,7 +27,7 @@ namespace EXILED.Patches
                     }
                 });
 
-                ReferenceHub hub = Player.GetPlayer(__instance.gameObject);
+                ReferenceHub hub = __instance.gameObject.GetPlayer();
                 if (!string.IsNullOrEmpty(hub.characterClassManager.UserId))
                     Events.InvokePlayerJoin(hub);
             }
