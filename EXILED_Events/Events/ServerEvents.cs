@@ -72,7 +72,7 @@ namespace EXILED
 			if (!File.Exists(fileName))
 				File.Create(fileName).Close();
 			
-			File.AppendAllText(fileName, $"{sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}");
+			File.AppendAllText(fileName, $"{sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}{Environment.NewLine}");
 		}
 		
 		public static event OnCheaterReport CheaterReportEvent;
