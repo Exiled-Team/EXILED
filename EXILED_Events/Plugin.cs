@@ -23,8 +23,8 @@ namespace EXILED
 		public static ExiledVersion Version = new ExiledVersion
 		{
 			Major = 1,
-			Minor = 8,
-			Patch = 12
+			Minor = 9,
+			Patch = 0
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -92,9 +92,7 @@ namespace EXILED
 				}
 			}
 
-			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
-			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
-			NameTracking = Config.GetBool("exiled_name_tracking", true);
+			ReloadConfigs();
 			Log.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
@@ -119,6 +117,13 @@ namespace EXILED
 
 			Log.Debug("Patching complete. c:");
 			ServerConsole.ReloadServerName();
+		}
+
+		public static void ReloadConfigs()
+		{
+			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
+			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
+			NameTracking = Config.GetBool("exiled_name_tracking", true);
 		}
 
 		private void AutoUpdate()
