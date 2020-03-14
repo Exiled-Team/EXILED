@@ -255,7 +255,7 @@ namespace EXILED
 			}
 
 
-			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
+			VersionUpdateUrl = $"{url.Replace("latest/","")}download/{version}/EXILED.tar.gz";
 			if (major > Version.Major)
 			{
 				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
