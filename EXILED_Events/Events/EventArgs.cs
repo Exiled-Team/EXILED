@@ -185,8 +185,8 @@ namespace EXILED
 	
 	public class ElevatorInteractionEvent : EventArgs
 	{
-		public ReferenceHub Player { get; set; }
-		public Lift.Elevator Elevator { get; set; }
+		public ReferenceHub Player { get; internal set; }
+		public Lift.Elevator Elevator { get; internal set; }
 		public bool Allow { get; set; }
 	}
 	
