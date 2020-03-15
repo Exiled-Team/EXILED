@@ -56,7 +56,7 @@ namespace EXILED.Patches
 				EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
 		}
 
-		public void OnPlayerDeath(ref PlayerDeathEvent ev)
+		public void OnPlayerDeath(PlayerDeathEvent ev)
 		{
 			if (ev.Player == null || ev.Player.characterClassManager.IsHost ||
 			    string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))

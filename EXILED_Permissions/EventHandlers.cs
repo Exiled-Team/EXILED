@@ -4,12 +4,12 @@ namespace EXILED
 {
     public class EventHandlers
     {
-        public static void RemoteAdminCommandEvent(ref RACommandEvent ev)
+        public static void RemoteAdminCommandEvent(RaCommandEvent ev)
         {
             if (ev.Command.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
                 return;
             string[] args = ev.Command.Split(' ');
-            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? Player.GetPlayer(PlayerManager.localPlayer) : Player.GetPlayer(ev.Sender.SenderId);
+            ReferenceHub sender = ev.Sender.SenderId == "SERVER CONSOLE" || ev.Sender.SenderId == "GAME CONSOLE" ? PlayerManager.localPlayer.GetPlayer() : Player.GetPlayer(ev.Sender.SenderId);
 
             switch(args[0].ToLower())
             {
@@ -51,12 +51,12 @@ namespace EXILED
                                 if (args.Length > 2)
                                 {
                                     PermissionPlugin.ReloadPermissions();
-                                    if (PermissionPlugin.permissionsconfig.groups.ContainsKey(args[2]))
+                                    if (PermissionPlugin.Permissionsconfig.groups.ContainsKey(args[2]))
                                     {
                                         ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " already exists.", true, true, string.Empty);
                                         return;
                                     }
-                                    PermissionPlugin.permissionsconfig.groups.Add(args[2], new PermissionPlugin.Group());
+                                    PermissionPlugin.Permissionsconfig.groups.Add(args[2], new PermissionPlugin.Group());
                                     PermissionPlugin.SavePermissions();
                                     ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " has been added.", true, true, string.Empty);
                                 }
@@ -74,12 +74,12 @@ namespace EXILED
                                 if (args.Length > 2)
                                 {
                                     PermissionPlugin.ReloadPermissions();
-                                    if (!PermissionPlugin.permissionsconfig.groups.ContainsKey(args[2]))
+                                    if (!PermissionPlugin.Permissionsconfig.groups.ContainsKey(args[2]))
                                     {
                                         ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " does not exist.", true, true, string.Empty);
                                         return;
                                     }
-                                    PermissionPlugin.permissionsconfig.groups.Remove(args[2]);
+                                    PermissionPlugin.Permissionsconfig.groups.Remove(args[2]);
                                     PermissionPlugin.SavePermissions();
                                     ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " removed.", true, true, string.Empty);
                                 }
@@ -110,14 +110,20 @@ namespace EXILED
                                                 return;
                                             }
                                             PermissionPlugin.ReloadPermissions();
-                                            if (!PermissionPlugin.permissionsconfig.groups.ContainsKey(args[2]))
+                                            if (!PermissionPlugin.Permissionsconfig.groups.ContainsKey(args[2]))
                                             {
                                                 ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " does not exist.", true, true, string.Empty);
                                                 return;
                                             }
-                                            PermissionPlugin.permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val);
-                                            if (!val.permissions.Contains(args[4]))
-                                                val.permissions.Add(args[4]);
+                                            PermissionPlugin.Permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val);
+                                            if (val == null)
+                                            {
+                                                Log.Error("Permission group not found.");
+                                                ev.Sender.RAMessage("Permission group not found.");
+                                                break;
+                                            }
+                                            if (!val.Permissions.Contains(args[4]))
+                                                val.Permissions.Add(args[4]);
                                             PermissionPlugin.SavePermissions();
                                             ev.Sender.RaReply("ExiledPermissions#Permission " + args[4] + " for group " + args[2] + " added.", true, true, string.Empty);
                                             return;
@@ -133,14 +139,20 @@ namespace EXILED
                                                 return;
                                             }
                                             PermissionPlugin.ReloadPermissions();
-                                            if (!PermissionPlugin.permissionsconfig.groups.ContainsKey(args[2]))
+                                            if (!PermissionPlugin.Permissionsconfig.groups.ContainsKey(args[2]))
                                             {
                                                 ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " does not exist.", true, true, string.Empty);
                                                 return;
                                             }
-                                            PermissionPlugin.permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val2);
-                                            if (val2.permissions.Contains(args[4]))
-                                                val2.permissions.Remove(args[4]);
+                                            PermissionPlugin.Permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val2);
+                                            if (val2 == null)
+                                            {
+                                                Log.Error("Permission group not found.");
+                                                ev.Sender.RAMessage("Permission group not found.");
+                                                break;
+                                            }
+                                            if (val2.Permissions.Contains(args[4]))
+                                                val2.Permissions.Remove(args[4]);
                                             PermissionPlugin.SavePermissions();
                                             ev.Sender.RaReply("ExiledPermissions#Permission " + args[4] + " for group " + args[2] + " removed.", true, true, string.Empty);
                                             return;
@@ -148,26 +160,26 @@ namespace EXILED
                                 }
                                 else if (args.Length > 2)
                                 {
-                                    if (!PermissionPlugin.permissionsconfig.groups.ContainsKey(args[2]))
+                                    if (!PermissionPlugin.Permissionsconfig.groups.ContainsKey(args[2]))
                                     {
                                         ev.Sender.RaReply("ExiledPermissions#Group " + args[2] + " does not exist.", true, true, string.Empty);
                                         return;
                                     }
-                                    PermissionPlugin.permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val2);
+                                    PermissionPlugin.Permissionsconfig.groups.TryGetValue(args[2], out PermissionPlugin.Group val2);
                                     ev.Sender.RaReply("ExiledPermissions#Group: " + args[2], true, true, string.Empty);
                                     ev.Sender.RaReply("ExiledPermissions# Default: " + val2.Default, true, true, string.Empty);
-                                    if (val2.inheritance.Count != 0)
+                                    if (val2.Inheritance.Count != 0)
                                     {
                                         ev.Sender.RaReply("ExiledPermissions# Inheritance: ", true, true, string.Empty);
-                                        foreach (string per in val2.inheritance)
+                                        foreach (string per in val2.Inheritance)
                                         {
                                             ev.Sender.RaReply("ExiledPermissions# - " + per, true, true, string.Empty);
                                         }
                                     }
-                                    if (val2.permissions.Count != 0)
+                                    if (val2.Permissions.Count != 0)
                                     {
                                         ev.Sender.RaReply("ExiledPermissions# Permissions: ", true, true, string.Empty);
-                                        foreach (string per in val2.permissions)
+                                        foreach (string per in val2.Permissions)
                                         {
                                             ev.Sender.RaReply("ExiledPermissions# - " + per, true, true, string.Empty);
                                         }

@@ -235,7 +235,7 @@
     <Compile Include="Patches\WeaponManagerOverride.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReloadCommandHandler.cs" />
+    <Compile Include="CommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EXILED_Main\EXILED_Main.csproj">

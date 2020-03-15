@@ -11,22 +11,25 @@ namespace EXILED
 {
     public class PermissionPlugin : Plugin
     {
-        public static YML permissionsconfig;
-        public static string pluginDir;
+        public static YML Permissionsconfig;
+        public static string PluginDir;
+        public override string GetName { get; } = "EXILED Permissions";
+        public override string ConfigPrefix { get; } = "exiled_";
+
         public override void OnEnable()
         {
             string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            pluginDir = Path.Combine(appData, "Plugins", "Exiled Permissions");
-            if (!Directory.Exists(pluginDir))
+            PluginDir = Path.Combine(appData, "Plugins", "Exiled Permissions");
+            if (!Directory.Exists(PluginDir))
             {
                 Log.Warn("Permissions directory missing, creating.");
-                Directory.CreateDirectory(pluginDir);
+                Directory.CreateDirectory(PluginDir);
             }
 
-            if (!File.Exists(Path.Combine(pluginDir, "permissions.yml")))
+            if (!File.Exists(Path.Combine(PluginDir, "permissions.yml")))
             {
                 Log.Warn("Permissions file missing, creating.");
-                File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"),
+                File.WriteAllText(Path.Combine(PluginDir, "permissions.yml"),
                     Encoding.UTF8.GetString(Resources.permissions));
             }
 
@@ -36,11 +39,11 @@ namespace EXILED
 
         public static void ReloadPermissions()
         {
-            string yml = File.ReadAllText(Path.Combine(pluginDir, "permissions.yml"));
+            string yml = File.ReadAllText(Path.Combine(PluginDir, "permissions.yml"));
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
-            permissionsconfig = deserializer.Deserialize<YML>(yml);
+            Permissionsconfig = deserializer.Deserialize<YML>(yml);
         }
 
         public static void SavePermissions()
@@ -48,12 +51,12 @@ namespace EXILED
             var serializer = new SerializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
-            File.WriteAllText(Path.Combine(pluginDir, "permissions.yml"), serializer.Serialize(permissionsconfig));
+            File.WriteAllText(Path.Combine(PluginDir, "permissions.yml"), serializer.Serialize(Permissionsconfig));
         }
 
         public static Group GetDefaultGroup()
         {
-            foreach(KeyValuePair<string, Group> gr in permissionsconfig.groups)
+            foreach(KeyValuePair<string, Group> gr in Permissionsconfig.groups)
             {
                 if (gr.Value.Default)
                     return gr.Value;
@@ -84,19 +87,19 @@ namespace EXILED
                 Log.Debug($"UserGroup: {userGroup.BadgeText}");
                 string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == hub.serverRoles.Group).Key;
                 Log.Debug($"GroupName: {groupName}");
-                if (permissionsconfig == null)
+                if (Permissionsconfig == null)
                 {
                     Log.Error("Permissions config is null.");
                     return false;
                 }
 
-                if (!permissionsconfig.groups.Any())
+                if (!Permissionsconfig.groups.Any())
                 {
                     Log.Error("No permissionconfig groups.");
                     return false;
                 }
 
-                if (!permissionsconfig.groups.TryGetValue(groupName, out group))
+                if (!Permissionsconfig.groups.TryGetValue(groupName, out group))
                 {
                     Log.Error("Could not get permission value.");
                     return false;
@@ -115,19 +118,19 @@ namespace EXILED
                 if (permission.Contains("."))
                 {
                     Log.Debug("Group contains perm seperator");
-                    if (group.permissions.Any(s => s == ".*"))
+                    if (group.Permissions.Any(s => s == ".*"))
                     {
                         Log.Debug("All perms granted for all nodes.");
                         return true;
                     }
-                    if (group.permissions.Contains(permission.Split('.')[0] + ".*"))
+                    if (group.Permissions.Contains(permission.Split('.')[0] + ".*"))
                     {
                         Log.Debug("Check 1: True, returning.");
                         return true;
                     }
                 }
 
-                if (group.permissions.Contains(permission) || group.permissions.Contains("*"))
+                if (group.Permissions.Contains(permission) || group.Permissions.Contains("*"))
                 {
                     Log.Debug("Check 2: True, returning.");
                     return true;
@@ -151,12 +154,15 @@ namespace EXILED
         {
             [YamlMember(Alias = "default")]
             public bool Default { get; set; } = false;
-            public List<string> inheritance { get; set; } = new List<string>();
-            public List<string> permissions { get; set; } = new List<string>();
+            public List<string> Inheritance { get; set; } = new List<string>();
+            public List<string> Permissions { get; set; } = new List<string>();
         }
 
         public override void OnDisable() { }
         public override void OnReload() { }
-        public override string getName { get; }
+        public override void ReloadConfig()
+        {
+            
+        }
     }
 }

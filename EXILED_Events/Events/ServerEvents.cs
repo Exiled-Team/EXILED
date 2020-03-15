@@ -18,19 +18,19 @@ namespace EXILED
 		}
 
 		public static event OnPreAuth PreAuthEvent;
-		public delegate void OnPreAuth(ref PreauthEvent ev);
+		public delegate void OnPreAuth(PreAuthEvent ev);
 		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
 			if (PreAuthEvent == null)
 				return;
 			
-			PreauthEvent ev = new PreauthEvent()
+			PreAuthEvent ev = new PreAuthEvent()
 			{
 				Allow = allow,
 				Request = request,
 				UserId = userid
 			};
-			PreAuthEvent.Invoke(ref ev);
+			PreAuthEvent.Invoke(ev);
 			allow = ev.Allow;
 			userid = ev.UserId;
 		}
@@ -50,19 +50,19 @@ namespace EXILED
 		}
 		
 		public static event OnCommand RemoteAdminCommandEvent;
-		public delegate void OnCommand(ref RACommandEvent ev);
+		public delegate void OnCommand(RaCommandEvent ev);
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			if (RemoteAdminCommandEvent == null)
 				return;
 			
-			RACommandEvent ev = new RACommandEvent()
+			RaCommandEvent ev = new RaCommandEvent()
 			{
 				Allow = allow,
 				Command = query,
 				Sender = sender
 			};
-			RemoteAdminCommandEvent.Invoke(ref ev);
+			RemoteAdminCommandEvent.Invoke(ev);
 			query = ev.Command;
 			sender = ev.Sender;
 			allow = ev.Allow;
@@ -76,7 +76,7 @@ namespace EXILED
 		}
 		
 		public static event OnCheaterReport CheaterReportEvent;
-		public delegate void OnCheaterReport(ref CheaterReportEvent ev);
+		public delegate void OnCheaterReport(CheaterReportEvent ev);
 
 		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow)
 		{
@@ -91,7 +91,7 @@ namespace EXILED
 				ReportedIp = reportedIp,
 				ReporterId = reporterId
 			};
-			CheaterReportEvent.Invoke(ref ev);
+			CheaterReportEvent.Invoke(ev);
 			allow = ev.Allow;
 		}
 		
@@ -103,7 +103,7 @@ namespace EXILED
 		}
 		
 		public static event TeamRespawn TeamRespawnEvent;
-		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
+		public delegate void TeamRespawn(TeamRespawnEvent ev);
 
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn)
 		{
@@ -119,7 +119,7 @@ namespace EXILED
 				MaxRespawnAmt = maxRespawn,
 				ToRespawn = respawn
 			};
-			TeamRespawnEvent.Invoke(ref ev);
+			TeamRespawnEvent.Invoke(ev);
 			maxRespawn = ev.MaxRespawnAmt;
 			toRespawn = new List<GameObject>();
 			foreach (ReferenceHub hub in ev.ToRespawn)

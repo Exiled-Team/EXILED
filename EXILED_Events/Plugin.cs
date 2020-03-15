@@ -20,10 +20,12 @@ namespace EXILED
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
+		public bool TestingEnabled;
+		public bool AutoUpdateEnabled;
 		public static ExiledVersion Version = new ExiledVersion
 		{
-			Major = 1,
-			Minor = 9,
+			Major = 2,
+			Minor = 0,
 			Patch = 0
 		};
 		
@@ -69,8 +71,10 @@ namespace EXILED
 
 
         private EventHandlers handlers;
+
+        private CommandHandler commands;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
-		private static int patchFixer;
+		private static int _patchFixer;
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
 		public static bool NameTracking;
@@ -78,12 +82,14 @@ namespace EXILED
 		public static List<GameObject> DeadPlayers = new List<GameObject>();
 
 		//The below method gets called when the plugin is enabled by the EXILED loader.
+		public override string GetName { get; } = "EXILED Events";
+		public override string ConfigPrefix { get; } = "exiled_";
+
 		public override void OnEnable()
 		{
-			Log.Info("Enabled.");
 			Log.Info($"Checking version status..");
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
-			if (Config.GetBool("exiled_auto_update", true))
+			if (AutoUpdateEnabled)
 			{
 				if (IsUpdateAvailible())
 				{
@@ -91,13 +97,13 @@ namespace EXILED
 					AutoUpdate();
 				}
 			}
-
-			ReloadConfigs();
+			
 			Log.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
+			commands = new CommandHandler(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
-			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
+			Events.RemoteAdminCommandEvent += commands.OnRaCommand;
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
@@ -106,8 +112,8 @@ namespace EXILED
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
-				patchFixer++;
-				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
+				_patchFixer++;
+				instance = HarmonyInstance.Create($"exiled.patches{_patchFixer}");
 				instance.PatchAll();
 			}
 			catch (Exception e)
@@ -117,13 +123,6 @@ namespace EXILED
 
 			Log.Debug("Patching complete. c:");
 			ServerConsole.ReloadServerName();
-		}
-
-		public static void ReloadConfigs()
-		{
-			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
-			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
-			NameTracking = Config.GetBool("exiled_name_tracking", true);
 		}
 
 		private void AutoUpdate()
@@ -175,10 +174,10 @@ namespace EXILED
 			}
 		}
 		
-		public static void DeleteDirectory(string target_dir)
+		public static void DeleteDirectory(string targetDir)
 		{
-			string[] files = Directory.GetFiles(target_dir);
-			string[] dirs = Directory.GetDirectories(target_dir);
+			string[] files = Directory.GetFiles(targetDir);
+			string[] dirs = Directory.GetDirectories(targetDir);
 
 			foreach (string file in files)
 			{
@@ -191,7 +190,7 @@ namespace EXILED
 				DeleteDirectory(dir);
 			}
 
-			Directory.Delete(target_dir, false);
+			Directory.Delete(targetDir, false);
 		}
 
 		//The below method gets called when the plugin is disabled by the EXILED loader.
@@ -202,10 +201,11 @@ namespace EXILED
 			Log.Debug("Removing Event Handlers..");
 			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
-			Events.RemoteAdminCommandEvent -= ReloadCommandHandler.CommandHandler;
+			Events.RemoteAdminCommandEvent -= commands.OnRaCommand;
 			Events.PlayerLeaveEvent -= handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent -= handlers.OnPlayerDeath;
 			handlers = null;
+			commands = null;
 			Log.Debug("Unpatching..");
 			instance.UnpatchAll();
 			Log.Debug("Unpatching complete. Goodbye. :c");
@@ -213,15 +213,21 @@ namespace EXILED
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
 		public override void OnReload() {}
-
-		public override string getName { get; }
+		public override void ReloadConfig()
+		{
+			TestingEnabled = Config.GetBool($"{ConfigPrefix}testing");
+			AutoUpdateEnabled = Config.GetBool("exiled_auto_update", true);
+			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
+			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
+			NameTracking = Config.GetBool("exiled_name_tracking", true);
+		}
 
 		public static double GetRoundDuration() => Math.Abs((RoundTime - DateTime.Now).TotalSeconds);
 
 		public bool IsUpdateAvailible()
 		{
 			string url = "https://github.com/galaxy119/EXILED/releases/";
-			url += Config.GetBool("exiled_testing") ? "" : "latest/";
+			url += TestingEnabled ? "" : "latest/";
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
 			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 			Stream stream = response.GetResponseStream();

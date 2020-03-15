@@ -148,7 +148,7 @@ namespace EXILED
 					}
 
 					_plugins.Add(p);
-					Log.Info($"Successfully loaded {p.getName}");
+					Log.Info($"Successfully loaded {p.GetName}");
 				}
 			}
 			catch (Exception e)
@@ -163,11 +163,12 @@ namespace EXILED
 			{
 				try
 				{
+					plugin.ReloadConfig();
 					plugin.OnEnable();
 				}
 				catch (Exception e)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while enabling {e}");
+					Log.Error($"Plugin {plugin.GetName} threw an exception while enabling {e}");
 				}
 			}
 		}
@@ -182,7 +183,7 @@ namespace EXILED
 				}
 				catch (Exception e)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while reloading {e}");
+					Log.Error($"Plugin {plugin.GetName} threw an exception while reloading {e}");
 				}
 			}
 		}
@@ -197,7 +198,7 @@ namespace EXILED
 				}
 				catch (Exception e)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while disabling {e}");
+					Log.Error($"Plugin {plugin.GetName} threw an exception while disabling {e}");
 				}
 			}
 		}
