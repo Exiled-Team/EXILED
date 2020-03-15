@@ -23,6 +23,8 @@ namespace EXILED.Patches
 			string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 			CharacterClassManager characterClassManager = null;
 			ReferenceHub userHub = Extensions.Player.GetPlayer(user);
+			ReferenceHub issuerHub = Extensions.Player.GetPlayer(issuer);
+			if (issuerHub == null) issuerHub = Extensions.Player.GetPlayer(PlayerManager.localPlayer);
 			try
 			{
 				if (ConfigFile.ServerConfig.GetBool("online_mode", false))
@@ -44,7 +46,7 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
-				Events.InvokePlayerBan(ref userHub, ref userId, ref duration, ref allow, ref message, ref reason);
+				Events.InvokePlayerBan(ref userHub, ref userId, ref duration, ref allow, ref message, ref reason, ref issuerHub);
 
 				if (!allow)
 					return false;
