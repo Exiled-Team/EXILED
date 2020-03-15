@@ -93,9 +93,6 @@
     <Reference Include="UnityEngine.InputModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\UnityEngine.InputModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\UnityEngine.Networking.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\UnityEngine.ParticleSystemModule.dll</HintPath>
     </Reference>
