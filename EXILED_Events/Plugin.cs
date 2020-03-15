@@ -20,13 +20,8 @@ namespace EXILED
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion
-		{
-			Major = 1,
-			Minor = 9,
-			Patch = 1
-		};
-		
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 1 };
+
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		public static bool AntiFlyPatchDisable;
 		public static bool CheaterReportPatchDisable;
@@ -39,8 +34,8 @@ namespace EXILED
 		public static bool TriggerTeslaPatchDisable;
 		public static bool UseMedicalPatchDisable;
 		public static bool WaitingForPlayersPatchDisable;
-    public static bool PlayerSpawnEventPatchDisable;
-    public static bool SetRandomRolesPatchDisable;
+		public static bool PlayerSpawnEventPatchDisable;
+		public static bool SetRandomRolesPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		public static bool NineFourteenMachinePatchDisable;
@@ -54,7 +49,7 @@ namespace EXILED
 		public static bool DoorInteractionEventPatchDisable;
 		public static bool PlayerJoinEventPatchDisable;
 		public static bool PlayerLeaveEventPatchDisable;
-    public static bool StartItemsEventPatchDisable;
+		public static bool StartItemsEventPatchDisable;
 		public static bool DropItemEventPatchDisable;
 		public static bool PickupItemEventPatchDisable;
 		public static bool Generator079EventPatchDisable;
@@ -62,15 +57,15 @@ namespace EXILED
 		public static bool Scp106ContainEventDisable;
 		public static bool SetGroupEventDisable;
 		public static bool FemurEnterEventDisable;
-    public static bool CmdSyncDataEventDisable;
-    public static bool GrenadeExplosionEventDisabled;
-    public static bool WarheadKeycardAccessEventDisable;
-    public static bool Scp079ExpGainEventDisable;
-    public static bool ElevatorInteractionEventDisable;
-    public static bool Scp106CreatedPortalEventDisable;
+		public static bool CmdSyncDataEventDisable;
+		public static bool GrenadeExplosionEventDisabled;
+		public static bool WarheadKeycardAccessEventDisable;
+		public static bool Scp079ExpGainEventDisable;
+		public static bool ElevatorInteractionEventDisable;
+		public static bool Scp106CreatedPortalEventDisable;
 
+		private EventHandlers handlers;
 
-    private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
 		public static bool Scp173Fix;
@@ -86,13 +81,11 @@ namespace EXILED
 			Log.Info($"Checking version status..");
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
 			if (Config.GetBool("exiled_auto_update", true))
-			{
 				if (IsUpdateAvailible())
 				{
 					Log.Info("There is an new version of EXILED available.");
 					AutoUpdate();
 				}
-			}
 
 			ReloadConfigs();
 			Log.Debug("Adding Event Handlers..");
@@ -103,8 +96,8 @@ namespace EXILED
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
-            Events.SetClassEvent += handlers.OnSetClass;
-            Log.Debug("Patching..");
+			Events.SetClassEvent += handlers.OnSetClass;
+			Log.Debug("Patching..");
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
@@ -143,11 +136,12 @@ namespace EXILED
 				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
 				Log.Info($"Creating temporary directory: {tempPath}..");
 
-				if (!Directory.Exists(tempPath))
-					Directory.CreateDirectory(tempPath);
+				if (!Directory.Exists(tempPath)) Directory.CreateDirectory(tempPath);
 				string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
 				using (WebClient client = new WebClient())
+				{
 					client.DownloadFile(VersionUpdateUrl, exiledTemp);
+				}
 
 				Log.Info("Download successful, extracting contents..");
 				ExtractTarGz(exiledTemp, tempPath);
@@ -176,7 +170,7 @@ namespace EXILED
 				Log.Error($"Auto-update Error: {e}");
 			}
 		}
-		
+
 		public static void DeleteDirectory(string target_dir)
 		{
 			string[] files = Directory.GetFiles(target_dir);
@@ -188,10 +182,7 @@ namespace EXILED
 				File.Delete(file);
 			}
 
-			foreach (string dir in dirs)
-			{
-				DeleteDirectory(dir);
-			}
+			foreach (string dir in dirs) DeleteDirectory(dir);
 
 			Directory.Delete(target_dir, false);
 		}
@@ -214,7 +205,9 @@ namespace EXILED
 		}
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
-		public override void OnReload() {}
+		public override void OnReload()
+		{
+		}
 
 		public override string getName { get; }
 
@@ -228,9 +221,7 @@ namespace EXILED
 			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
 			Stream stream = response.GetResponseStream();
 			if (stream == null)
-			{
 				throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
-			}
 			StreamReader reader = new StreamReader(stream);
 			string read = reader.ReadToEnd();
 			string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -256,8 +247,7 @@ namespace EXILED
 				return false;
 			}
 
-
-			VersionUpdateUrl = $"{url.Replace("latest/","")}download/{version}/EXILED.tar.gz";
+			VersionUpdateUrl = $"{url.Replace("latest/", "")}download/{version}/EXILED.tar.gz";
 			if (major > Version.Major)
 			{
 				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
@@ -278,14 +268,15 @@ namespace EXILED
 
 			return false;
 		}
-		
-		private static string Between(string str , string firstString, string lastString)
+
+		private static string Between(string str, string firstString, string lastString)
 		{
 			int pos1 = str.IndexOf(firstString, StringComparison.Ordinal) + firstString.Length;
 			int pos2 = str.IndexOf(lastString, StringComparison.Ordinal);
 			string finalString = str.Substring(pos1, pos2 - pos1);
 			return finalString;
 		}
+
 		private static void ExtractTarGz(string filename, string outputDir)
 		{
 			using (FileStream stream = File.OpenRead(filename))
@@ -293,7 +284,6 @@ namespace EXILED
 				ExtractTarGz(stream, outputDir);
 			}
 		}
-
 
 		private static void ExtractTarGz(Stream stream, string outputDir)
 		{
@@ -320,13 +310,11 @@ namespace EXILED
 		{
 			byte[] buffer = new byte[100];
 			while (true)
-			{
 				try
 				{
 					stream.Read(buffer, 0, 100);
 					string name = Encoding.ASCII.GetString(buffer).Trim('\0');
-					if (string.IsNullOrWhiteSpace(name))
-						break;
+					if (string.IsNullOrWhiteSpace(name)) break;
 					stream.Seek(24, SeekOrigin.Current);
 					stream.Read(buffer, 0, 12);
 					long size = Convert.ToInt64(Encoding.UTF8.GetString(buffer, 0, 12).Trim('\0').Trim(), 8);
@@ -337,20 +325,17 @@ namespace EXILED
 					if (!Directory.Exists(Path.GetDirectoryName(output)))
 						Directory.CreateDirectory(Path.GetDirectoryName(output));
 					if (!name.Equals("./", StringComparison.InvariantCulture))
-					{
 						using (FileStream str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
 						{
 							byte[] buf = new byte[size];
 							stream.Read(buf, 0, buf.Length);
 							str.Write(buf, 0, buf.Length);
 						}
-					}
 
 					long pos = stream.Position;
 
-					long offset = 512 - (pos % 512);
-					if (offset == 512)
-						offset = 0;
+					long offset = 512 - pos % 512;
+					if (offset == 512) offset = 0;
 
 					stream.Seek(offset, SeekOrigin.Current);
 				}
@@ -358,7 +343,6 @@ namespace EXILED
 				{
 					// ignored
 				}
-			}
 		}
 	}
 }
