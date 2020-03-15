@@ -43,7 +43,7 @@ namespace EXILED.Patches
 						{
 							Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
 
-							if (allow == false)
+							if (!allow)
 							{
 								__instance.RpcDenied(doorId);
 								return false;
@@ -69,7 +69,7 @@ namespace EXILED.Patches
 						{
 							Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
 
-							if (allow == false)
+							if (!allow)
 							{
 								__instance.RpcDenied(doorId);
 								return false;
@@ -99,7 +99,7 @@ namespace EXILED.Patches
 							{
 								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
 
-								if (allow == false)
+								if (!allow)
 								{
 									__instance.RpcDenied(doorId);
 									return false;
@@ -127,7 +127,7 @@ namespace EXILED.Patches
 								{
 									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
 
-									if (allow == false)
+									if (!allow)
 									{
 										__instance.RpcDenied(doorId);
 										return false;
@@ -157,7 +157,7 @@ namespace EXILED.Patches
 								{
 									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
 
-									if (allow == false)
+									if (!allow)
 									{
 										__instance.RpcDenied(doorId);
 										return false;

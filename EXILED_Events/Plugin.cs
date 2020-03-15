@@ -23,8 +23,8 @@ namespace EXILED
 		public static ExiledVersion Version = new ExiledVersion
 		{
 			Major = 1,
-			Minor = 8,
-			Patch = 11
+			Minor = 9,
+			Patch = 0
 		};
 		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
@@ -39,8 +39,8 @@ namespace EXILED
 		public static bool TriggerTeslaPatchDisable;
 		public static bool UseMedicalPatchDisable;
 		public static bool WaitingForPlayersPatchDisable;
-        public static bool PlayerSpawnEventPatchDisable;
-        public static bool SetRandomRolesPatchDisable;
+    public static bool PlayerSpawnEventPatchDisable;
+    public static bool SetRandomRolesPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		public static bool NineFourteenMachinePatchDisable;
@@ -54,7 +54,7 @@ namespace EXILED
 		public static bool DoorInteractionEventPatchDisable;
 		public static bool PlayerJoinEventPatchDisable;
 		public static bool PlayerLeaveEventPatchDisable;
-        public static bool StartItemsEventPatchDisable;
+    public static bool StartItemsEventPatchDisable;
 		public static bool DropItemEventPatchDisable;
 		public static bool PickupItemEventPatchDisable;
 		public static bool Generator079EventPatchDisable;
@@ -62,14 +62,15 @@ namespace EXILED
 		public static bool Scp106ContainEventDisable;
 		public static bool SetGroupEventDisable;
 		public static bool FemurEnterEventDisable;
-        public static bool CmdSyncDataEventDisable;
-        public static bool GrenadeExplosionEventDisabled;
-        public static bool WarheadKeycardAccessEventDisable;
-        public static bool Scp079ExpGainEventDisable;
-        public static bool ElevatorInteractionEventDisable;
+    public static bool CmdSyncDataEventDisable;
+    public static bool GrenadeExplosionEventDisabled;
+    public static bool WarheadKeycardAccessEventDisable;
+    public static bool Scp079ExpGainEventDisable;
+    public static bool ElevatorInteractionEventDisable;
+    public static bool Scp106CreatedPortalEventDisable;
 
 
-        private EventHandlers handlers;
+    private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
 		public static bool Scp173Fix;
@@ -93,9 +94,7 @@ namespace EXILED
 				}
 			}
 
-			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
-			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
-			NameTracking = Config.GetBool("exiled_name_tracking", true);
+			ReloadConfigs();
 			Log.Debug("Adding Event Handlers..");
 			handlers = new EventHandlers(this);
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
@@ -120,6 +119,13 @@ namespace EXILED
 
 			Log.Debug("Patching complete. c:");
 			ServerConsole.ReloadServerName();
+		}
+
+		public static void ReloadConfigs()
+		{
+			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
+			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
+			NameTracking = Config.GetBool("exiled_name_tracking", true);
 		}
 
 		private void AutoUpdate()
@@ -251,7 +257,7 @@ namespace EXILED
 			}
 
 
-			VersionUpdateUrl = $"{url}download/{version}/EXILED.tar.gz";
+			VersionUpdateUrl = $"{url.Replace("latest/","")}download/{version}/EXILED.tar.gz";
 			if (major > Version.Major)
 			{
 				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");

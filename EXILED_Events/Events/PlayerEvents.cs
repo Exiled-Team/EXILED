@@ -8,6 +8,27 @@ namespace EXILED
 {
 	public partial class Events
 	{
+        public static event Scp106CreatedPortal Scp106CreatedPortalEvent;
+        public delegate void Scp106CreatedPortal(Scp106CreatedPortalEvent ev);
+
+        public static void InvokeScp106CreatedPortal(GameObject obj, ref bool allow, ref Vector3 portalPosition)
+        {
+            if (Scp106CreatedPortalEvent == null)
+                return;
+
+            Scp106CreatedPortalEvent ev = new Scp106CreatedPortalEvent()
+            {
+                Player = obj.GetPlayer(),
+                Allow = allow,
+                PortalPosition = portalPosition
+            };
+
+            Scp106CreatedPortalEvent.Invoke(ev);
+
+            allow = ev.Allow;
+            portalPosition = ev.PortalPosition;
+        }
+
         public static event ItemChanged ItemChangedEvent;
         public delegate void ItemChanged(ItemChangedEvent ev);
 

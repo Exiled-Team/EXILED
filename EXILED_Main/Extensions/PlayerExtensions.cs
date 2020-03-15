@@ -3,12 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EXILED.ApiObjects;
+using Mirror;
 using UnityEngine;
 
 namespace EXILED.Extensions
 {
     public static class Player
     {
+        private static MethodInfo sendSpawnMessage;
+        public static MethodInfo SendSpawnMessage
+        {
+            get
+            {
+                if (sendSpawnMessage == null)
+                    sendSpawnMessage = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.Instance | BindingFlags.InvokeMethod
+                        | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public);
+
+                return sendSpawnMessage;
+            }
+        }
+
         public static Dictionary<int, ReferenceHub> IdHubs = new Dictionary<int, ReferenceHub>();
         public static Dictionary<string, ReferenceHub> StrHubs = new Dictionary<string, ReferenceHub>();
         
@@ -257,12 +271,12 @@ namespace EXILED.Extensions
 			return null;
 		}
 
-		/// <summary>
-		/// Gets the reference hub belonging to the player who's name most closely matches the string given, if any.
-		/// </summary>
-		/// <param name="args">Player's Name</param>
-		/// <returns>ReferenceHub or null</returns>
-		public static ReferenceHub GetPlayer(string args)
+        /// <summary>
+        /// Gets the reference hub belonging to the player who's name most closely matches the string given, if any.
+        /// </summary>
+        /// <param name="args">Player's Name</param>
+        /// <returns>ReferenceHub or null</returns>
+        public static ReferenceHub GetPlayer(string args)
 		{
 			try
 			{
@@ -454,6 +468,13 @@ namespace EXILED.Extensions
         public static float GetMaxHealth(this ReferenceHub rh) => rh.playerStats.maxHP;
 
         /// <summary>
+        /// Sets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <returns>float</returns>
+        public static void SetMaxHealth(this ReferenceHub rh, float amount) => rh.playerStats.maxHP = (int)amount;
+
+        /// <summary>
         /// Gets the adrenaline health of a <see cref="ReferenceHub">player</see>.
         /// </summary>
         /// <param name="rh"></param>
@@ -472,7 +493,16 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="rh"></param>
         /// <param name="amount"></param>
-        public static void AddArtificialHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth += amount;
+        /// 
+        [Obsolete("Use AddAdrenalineHealth instead.", true)]
+        public static void AddArtificialHealth(this ReferenceHub rh, byte amount) => AddAdrenalineHealth(rh, amount);
+
+        /// <summary>
+        /// Adds the specified amount of adrenaline health to a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="amount"></param>
+        public static void AddAdrenalineHealth(this ReferenceHub rh, byte amount) => rh.playerStats.syncArtificialHealth += amount;
 
         /// <summary>
         /// Gets the maximum amount of adrenaline health of a <see cref="ReferenceHub">player</see>.
@@ -606,7 +636,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static bool GetHandCuffer(this ReferenceHub player) => Player.GetPlayer(player.handcuffs.CufferId);
+		public static bool GetHandCuffer(this ReferenceHub player) => GetPlayer(player.handcuffs.CufferId);
 		
 		/// <summary>
 		/// Returns the IP address of the player.
@@ -614,5 +644,104 @@ namespace EXILED.Extensions
 		/// <param name="player"></param>
 		/// <returns></returns>
 		public static string GetIpAddress(this ReferenceHub player) => player.queryProcessor._ipAddress;
+
+        /// <summary>
+        /// Sets the <see cref="ReferenceHub">player</see>'s scale.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void SetScale(this ReferenceHub player, float scale) => player.SetScale(Vector3.one * scale);
+
+        /// <summary>
+        /// Sets the <see cref="ReferenceHub">player</see>'s scale.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void SetScale(this ReferenceHub player, Vector3 scale) => player.SetScale(scale.x, scale.y, scale.z);
+
+        /// <summary>
+        /// Sets the <see cref="ReferenceHub">player</see>'s scale.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void SetScale(this ReferenceHub player, float x, float y, float z)
+        {
+            try
+            {
+                player.transform.localScale = new Vector3(x, y, z);
+
+                foreach (ReferenceHub target in GetHubs())
+                    SendSpawnMessage?.Invoke(null, new object[] { player.GetComponent<NetworkIdentity>(), target.GetConnection() });
+            }
+            catch (Exception exception)
+            {
+                Log.Info($"Set Scale error: {exception}");
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ReferenceHub">player</see>'s scale.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static Vector3 GetScale(this ReferenceHub player) => player.transform.localScale;
+
+        /// <summary>
+        /// Gets the <see cref="NetworkConnection">connection</see> of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        public static NetworkConnection GetConnection(this ReferenceHub player) => player.scp079PlayerScript.connectionToClient;
+
+        /// <summary>
+        /// Disconnects a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void Disconnect(this ReferenceHub player, string reason = null) => ServerConsole.Disconnect(player.gameObject, string.IsNullOrEmpty(reason) ? "" : reason);
+
+        /// <summary>
+        /// Kills a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        public static void Kill(this ReferenceHub player, DamageTypes.DamageType damageType = default) => player.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, "WORLD", damageType, 0), player.gameObject);
+
+        /// <summary>
+        /// Gets a list of <see cref="ReferenceHub">player</see>s, filtered by <see cref="Team">team</see>.
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public static IEnumerable<ReferenceHub> GetHubs(this Team team)
+        {
+            List<ReferenceHub> playersByTeam = new List<ReferenceHub>();
+
+            foreach (ReferenceHub player in GetHubs())
+            {
+                if (player.GetTeam() == team)
+                    playersByTeam.Add(player);
+            }
+
+            return playersByTeam;
+        }
+
+        /// <summary>
+        /// Gets a list of <see cref="ReferenceHub">player</see>s, filtered by <see cref="RoleType">team</see>.
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        public static IEnumerable<ReferenceHub> GetHubs(this RoleType role)
+        {
+            List<ReferenceHub> playersByRole = new List<ReferenceHub>();
+
+            foreach (ReferenceHub player in GetHubs())
+            {
+                if (player.GetRole() == role)
+                    playersByRole.Add(player);
+            }
+
+            return playersByRole;
+        }
+
+        /// <summary>
+        /// Gets the group name of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static string GetGroupName(this ReferenceHub player) => ServerStatic.PermissionsHandler._members[player.GetUserId()];
     }
 }

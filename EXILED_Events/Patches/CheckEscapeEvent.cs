@@ -14,7 +14,7 @@ namespace EXILED.Patches
 				if (EventPlugin.CheckEscapeEventPatchDisable)
 					return true;
 
-				if (!__instance._interactRateLimit.CanExecute(true) ||
+				if (!__instance._interactRateLimit.CanExecute(false) ||
 				    (double) Vector3.Distance(__instance.transform.position,
 					    __instance.GetComponent<Escape>().worldPosition) >= (double) (Escape.radius * 2))
 					return false;
