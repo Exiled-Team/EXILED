@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
@@ -7,26 +8,36 @@ namespace EXILED.Patches
     {
         public static bool Prefix(Inventory __instance, int i)
         {
-            int oldItemIndex = __instance.GetItemIndex();
+            try
+            {
+                if (__instance.itemUniq == i)
+                    return true;
 
-            if (__instance.itemUniq == i || (oldItemIndex == -1 && i == -1))
+                int oldItemIndex = __instance.GetItemIndex();
+
+                if (oldItemIndex == -1 && i == -1)
+                    return true;
+
+                Inventory.SyncItemInfo oldItem = oldItemIndex == -1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.GetItemInHand();
+                Inventory.SyncItemInfo newItem = new Inventory.SyncItemInfo() { id = ItemType.None };
+
+                foreach (Inventory.SyncItemInfo item in __instance.items)
+                    if (item.uniq == i)
+                        newItem = item;
+
+                Events.InvokeItemChanged(__instance.gameObject, ref oldItem, newItem);
+
+                oldItemIndex = __instance.GetItemIndex();
+
+                if (oldItemIndex != -1) __instance.items[oldItemIndex] = oldItem;
+
                 return true;
-
-            Inventory.SyncItemInfo oldItem = oldItemIndex == -1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.GetItemInHand();
-
-            int j = 0;
-
-            for (; j < __instance.items.Count; j++)
-                if (__instance.items[j].uniq == i)
-                    break;
-
-            Inventory.SyncItemInfo newItem = i == - 1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.items[j];
-
-            Events.InvokeItemChanged(__instance.gameObject, ref oldItem, newItem);
-
-            if (oldItemIndex != -1) __instance.items[oldItemIndex] = oldItem;
-
-            return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"ItemChanged error {exception}");
+                return true;
+            }
         }
     }
 }
