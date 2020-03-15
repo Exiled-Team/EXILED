@@ -35,6 +35,24 @@ namespace EXILED
 			DoorInteractEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
+		
+		public static event OnElevatorInteract ElevatorInteractEvent;
+		public delegate void OnElevatorInteract(ref ElevatorInteractionEvent ev);
+
+		public static void InvokeElevatorInteract(GameObject player, Lift.Elevator elevator, ref bool allow)
+		{
+			if (ElevatorInteractEvent == null)
+				return;
+			
+			ElevatorInteractionEvent ev = new ElevatorInteractionEvent()
+			{
+				Player = player.GetPlayer(),
+				Elevator = elevator,
+				Allow = allow
+			};
+			ElevatorInteractEvent.Invoke(ref ev);
+			allow = ev.Allow;
+		}
 
 		public static event WarheadCancelled WarheadCancelledEvent;
 		public delegate void WarheadCancelled(WarheadCancelEvent ev);

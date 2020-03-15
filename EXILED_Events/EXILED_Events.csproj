@@ -186,6 +186,7 @@
     <Compile Include="Patches\CheaterReportOverride.cs" />
     <Compile Include="Patches\CheckEscapeEvent.cs" />
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
+    <Compile Include="Patches\ElevatorInteractionEvent.cs" />
     <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerEventOverride.cs" />
     <Compile Include="Patches\Scp079Events.cs" />
