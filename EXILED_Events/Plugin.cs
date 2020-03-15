@@ -39,8 +39,8 @@ namespace EXILED
 		public static bool TriggerTeslaPatchDisable;
 		public static bool UseMedicalPatchDisable;
 		public static bool WaitingForPlayersPatchDisable;
-        public static bool PlayerSpawnEventPatchDisable;
-        public static bool SetRandomRolesPatchDisable;
+    public static bool PlayerSpawnEventPatchDisable;
+    public static bool SetRandomRolesPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
 		public static bool NineFourteenMachinePatchDisable;
@@ -54,7 +54,7 @@ namespace EXILED
 		public static bool DoorInteractionEventPatchDisable;
 		public static bool PlayerJoinEventPatchDisable;
 		public static bool PlayerLeaveEventPatchDisable;
-        public static bool StartItemsEventPatchDisable;
+    public static bool StartItemsEventPatchDisable;
 		public static bool DropItemEventPatchDisable;
 		public static bool PickupItemEventPatchDisable;
 		public static bool Generator079EventPatchDisable;
@@ -62,14 +62,15 @@ namespace EXILED
 		public static bool Scp106ContainEventDisable;
 		public static bool SetGroupEventDisable;
 		public static bool FemurEnterEventDisable;
-        public static bool CmdSyncDataEventDisable;
-        public static bool GrenadeExplosionEventDisabled;
-        public static bool WarheadKeycardAccessEventDisable;
-        public static bool Scp079ExpGainEventDisable;
-        public static bool Scp106CreatedPortalEventDisable;
+    public static bool CmdSyncDataEventDisable;
+    public static bool GrenadeExplosionEventDisabled;
+    public static bool WarheadKeycardAccessEventDisable;
+    public static bool Scp079ExpGainEventDisable;
+    public static bool ElevatorInteractionEventDisable;
+    public static bool Scp106CreatedPortalEventDisable;
 
 
-        private EventHandlers handlers;
+    private EventHandlers handlers;
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
 		public static bool Scp173Fix;
