@@ -570,8 +570,8 @@ namespace EXILED
 
     public class Scp106CreatedPortalEvent : EventArgs
     {
-        public ReferenceHub Player;
-        public bool Allow;
-        public Vector3 PortalPosition;
+        public ReferenceHub Player { get; internal set; }
+        public bool Allow { get; set; }
+        public Vector3 PortalPosition { get; set; }
     }
 }
