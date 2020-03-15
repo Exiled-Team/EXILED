@@ -27,7 +27,7 @@ namespace EXILED.Patches
         
         bool allow = true;
         Events.InvokePickupItem(__instance.gameObject, ref component, ref allow);
-        if (allow == false)
+        if (!allow)
           return false;
         
         Item itemById1 = __instance.hub.inventory.GetItemByID(component.info.itemId);
