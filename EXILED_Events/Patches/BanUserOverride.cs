@@ -24,6 +24,7 @@ namespace EXILED.Patches
 			CharacterClassManager characterClassManager = null;
 			ReferenceHub userHub = Extensions.Player.GetPlayer(user);
 			ReferenceHub issuerHub = Extensions.Player.GetPlayer(issuer);
+			if (issuerHub == null) issuerHub = Extensions.Player.GetPlayer(PlayerManager.localPlayer);
 			try
 			{
 				if (ConfigFile.ServerConfig.GetBool("online_mode", false))
