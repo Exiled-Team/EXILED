@@ -12,7 +12,7 @@ namespace EXILED.Patches
         {
 	        try
 	        {
-		        if (!__instance._interactRateLimit.CanExecute(true))
+		        if (!__instance._interactRateLimit.CanExecute(false))
 			        return false;
 		        if (!__instance.GetComponent<FallDamage>().isGrounded)
 			        return false;

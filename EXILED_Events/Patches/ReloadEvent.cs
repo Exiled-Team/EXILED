@@ -8,7 +8,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(WeaponManager __instance, bool animationOnly)
 		{
-			if (!__instance._iawRateLimit.CanExecute(true))
+			if (!__instance._iawRateLimit.CanExecute(false))
 				return false;
 			try
 			{
@@ -16,7 +16,7 @@ namespace EXILED.Patches
 				if (itemIndex < 0 || itemIndex >= __instance.hub.inventory.items.Count ||
 				    (__instance.curWeapon < 0 || __instance.hub.inventory.curItem !=
 				     __instance.weapons[__instance.curWeapon].inventoryID) ||
-				    (double) __instance.hub.inventory.items[itemIndex].durability >=
+				    __instance.hub.inventory.items[itemIndex].durability >=
 				    (double) __instance.weapons[__instance.curWeapon].maxAmmo)
 					return false;
 

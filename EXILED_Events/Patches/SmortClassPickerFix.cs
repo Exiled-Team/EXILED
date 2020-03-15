@@ -26,6 +26,7 @@ namespace EXILED.Patches
 				int num = 0;
 				float[] array2 = new float[] { 0f, 0.4f, 0.6f, 0.5f };
 				__instance.laterJoinNextIndex = 0;
+				int r = EventPlugin.Gen.Next(1, 100);
 				
 				for (int i = 0; i < array.Length; i++)
 				{
@@ -37,6 +38,9 @@ namespace EXILED.Patches
 					{
 						roleType = forcedClass;
 					}
+
+					if (r <= __instance.CiPercentage && roleType == RoleType.FacilityGuard)
+						roleType = RoleType.ChaosInsurgency;
 
 					switch (__instance.Classes.SafeGet(roleType).team)
 					{
