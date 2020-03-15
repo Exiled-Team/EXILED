@@ -672,7 +672,7 @@ namespace EXILED.Extensions
             }
             catch (Exception exception)
             {
-                Log.Info($"Set Scale error: {exception}");
+                Log.Error($"Set Scale error: {exception}");
             }
         }
 
