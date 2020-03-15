@@ -35,9 +35,11 @@
     </PropertyGroup>
     <ItemGroup>
         <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-          <HintPath>..\..\References\Assembly-CSharp_publicized.dll</HintPath>
+          <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
         </Reference>
-        <Reference Include="Mono.WebBrowser" />
+        <Reference Include="Mono.WebBrowser, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756">
+          <HintPath>..\References\Mono.WebBrowser.dll</HintPath>
+        </Reference>
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
