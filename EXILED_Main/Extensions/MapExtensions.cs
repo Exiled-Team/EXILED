@@ -163,5 +163,9 @@ namespace EXILED.Extensions
         /// Gets the LCZ decontamination status.
         /// </summary>
         public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
-	}
+        /// <summary>
+        /// Starts the Decontamination process.
+        /// </summary>
+        public static void StartDecontamination(bool isAnnouncementGlobal = true) => DecontaminationLCZ.RpcPlayAnnouncement(5, isAnnouncementGlobal);
+    }
 }
