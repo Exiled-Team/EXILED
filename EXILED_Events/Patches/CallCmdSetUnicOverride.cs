@@ -10,9 +10,12 @@ namespace EXILED.Patches
         {
             try
             {
+                if (__instance.itemUniq == i)
+                    return true;
+
                 int oldItemIndex = __instance.GetItemIndex();
 
-                if (__instance.itemUniq == i || (oldItemIndex == -1 && i == -1))
+                if (oldItemIndex == -1 && i == -1)
                     return true;
 
                 Inventory.SyncItemInfo oldItem = oldItemIndex == -1 ? new Inventory.SyncItemInfo() { id = ItemType.None } : __instance.GetItemInHand();
