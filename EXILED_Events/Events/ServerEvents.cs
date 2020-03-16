@@ -144,13 +144,13 @@ namespace EXILED
 		public static event PlayerBan PlayerBanEvent;
 		public delegate void PlayerBan(PlayerBanEvent ev);
 
-		public static void InvokePlayerBan(ref ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason)
+		public static void InvokePlayerBan(ref ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason, ref ReferenceHub issuer)
 		{
 			if (PlayerBanEvent == null)
 				return;
 			// ev.Allow is already set to true in the constructor
 			// Private field values set in the constructor to avoid triggering the logs
-			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), user, reason, userId, duration)
+			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), user, reason, userId, duration, issuer)
 			{
 				FullMessage = message,
 				Reason = reason
@@ -163,6 +163,7 @@ namespace EXILED
 			message = ev.FullMessage;
 			reason = ev.Reason;
 			user = ev.BannedPlayer;
+			issuer = ev.Issuer;
 		}
 
 		public static event SetGroup SetGroupEvent;

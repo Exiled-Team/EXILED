@@ -355,17 +355,19 @@ namespace EXILED
 		private string userId;
 		private int duration;
 		private ReferenceHub bannedPlayer;
+		private ReferenceHub issuer;
 		private bool allow = true;
 
 		public string Reason;
 		public string FullMessage;
 
-		public PlayerBanEvent(bool log, ReferenceHub bannedPlayer, string reason, string userId, int duration)
+		public PlayerBanEvent(bool log, ReferenceHub bannedPlayer, string reason, string userId, int duration, ReferenceHub issuer)
 		{
 			this.log = log;
 			this.userId = userId;
 			this.duration = duration;
 			this.bannedPlayer = bannedPlayer;
+			this.issuer = issuer;
 			Reason = reason;
 
 			// Set to true in the constructor to avoid triggering the logs.
@@ -434,7 +436,18 @@ namespace EXILED
 			}
 			get => bannedPlayer;
 		}
-
+		public ReferenceHub Issuer
+		{
+			set
+			{
+				if (value == null || issuer == value) return;
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					             + $" changed the ban issuer from user {issuer.nicknameSync.Network_myNickSync} ({issuer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
+				issuer = value;
+			}
+            get => issuer;
+		}
 		private void LogBanChange(string msg)
 		{
 			string time = TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz");
