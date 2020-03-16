@@ -17,7 +17,7 @@ namespace EXILED_Installer
 			if (args.Length < 1)
 				args = new[] { "/home/scp/scp_server" };
 			
-			Console.WriteLine("Getting latest download URL..");
+			Console.WriteLine("Getting latest download URL...");
 			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url+"latest");
 			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 			Stream stream = response.GetResponseStream();
@@ -28,16 +28,16 @@ namespace EXILED_Installer
 			string sub = Between(thing, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
 			string path = $"{url}download/{sub}/EXILED.tar.gz";
 			
-			Console.WriteLine($"GitHub download URL found: {path}, downloading..");
+			Console.WriteLine($"GitHub download URL found: {path}, downloading...");
 			using (WebClient client = new WebClient())
 			{
 				client.DownloadFile(path, "EXILED.tar.gz");
 			}
 			
-			Console.WriteLine("Latest version downloaded, extracting..");
+			Console.WriteLine("Latest version downloaded, extracting...");
 			ExtractTarGz("EXILED.tar.gz", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
 			
-			Console.WriteLine("Extraction complete, moving files..");
+			Console.WriteLine("Extraction complete, moving files...");
 			string installPath = Path.Combine(args[0], "SCPSL_Data");
 			string path2 = Path.Combine(installPath, "Managed");
 			string fileName = Path.Combine(path2, "Assembly-CSharp.dll");

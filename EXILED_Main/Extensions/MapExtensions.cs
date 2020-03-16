@@ -14,37 +14,37 @@ namespace EXILED.Extensions
 		private static Broadcast _broadcast;
 		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
 		private static DecontaminationLCZ _decontaminationLCZ;
-		
-		public static Inventory HostInventory
+        private static List<Room> _rooms;
+
+        public static Inventory HostInventory
 		{
 			get
 			{
 				if (_hostInventory == null)
-				{
 					_hostInventory = Player.GetPlayer(PlayerManager.localPlayer).inventory;
-				}
+
 				return _hostInventory;
 			}
 		}
+
 		public static AlphaWarheadController AlphaWarheadController
 		{
 			get
 			{
 				if (_alphaWarheadController == null)
-				{
 					_alphaWarheadController = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
-				}
+
 				return _alphaWarheadController;
 			}
 		}
+
 		internal static Broadcast BroadcastComponent
 		{
 			get
 			{
 				if(_broadcast == null)
-				{
 					_broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
-				}
+
 				return _broadcast;
 			}
 		}
@@ -70,6 +70,17 @@ namespace EXILED.Extensions
 				return _decontaminationLCZ;
 			}
 		}
+
+        public static List<Room> Rooms
+        {
+            get
+            {
+                if (_rooms?.Count == 0)
+                    _rooms = Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
+
+                return _rooms;
+            }
+        }
 		
 		/// <summary>
 		/// Spawns an item of type <paramref name="itemType"/> in a desired <paramref name="position"/>.
@@ -84,7 +95,8 @@ namespace EXILED.Extensions
 		/// <returns>The <see cref="Pickup"/></returns>
 		public static Pickup SpawnItem(ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
 			=> HostInventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
-		/// <summary>
+		
+        /// <summary>
 		/// Broadcasts a message to all players.
 		/// </summary>
 		/// <param name="message">What will be broadcasted (supports Unity Rich Text formatting)</param>
@@ -92,23 +104,28 @@ namespace EXILED.Extensions
 		/// <param name="monospace">If the message should be in monospace</param>
 		public static void Broadcast(string message, uint duration, bool monospace = false)
 			=> BroadcastComponent.RpcAddElement(message, duration, monospace);
-		public static void ClearBroadcasts() => BroadcastComponent.RpcClearElements();
+
+        /// <summary>
+        /// Clears all players' broadcasts.
+        /// </summary>
+        public static void ClearBroadcasts() => BroadcastComponent.RpcClearElements();
+
 		/// <summary>
 		/// Starts the warhead.
 		/// </summary>
-		[Obsolete("Use StartNuke")]
+		[Obsolete("Use StartNuke.")]
 		public static void StartWarhead() => AlphaWarheadController.StartDetonation();
 		
 		/// <summary>
 		/// Stops the warhead.
 		/// </summary>
-		[Obsolete("Use StopNuke")]
+		[Obsolete("Use StopNuke.")]
 		public static void StopWarhead() => AlphaWarheadController.CancelDetonation();
 		
 		/// <summary>
 		/// Detonates the warhead.
 		/// </summary>
-		[Obsolete("Use DetonateNuke")]
+		[Obsolete("Use DetonateNuke.")]
 		public static void DetonateWarhead() => AlphaWarheadController.Detonate();
 
 		/// <summary>
@@ -138,11 +155,15 @@ namespace EXILED.Extensions
 			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
 		}
 
-		/// <summary>
-		/// Enable/Disable the nuke lever or gets its status.
-		/// </summary>
-		public static IEnumerable<Room> GetRooms() => Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj });
+        /// <summary>
+        /// Enable/Disable the nuke lever or gets its status.
+        /// </summary>
+        [Obsolete("Use Rooms property instead.", true)]
+        public static IEnumerable<Room> GetRooms() => Rooms;
 		
+        /// <summary>
+        /// Gets the nuke lever status.
+        /// </summary>
 		public static bool IsNukeLeverEnabled
 		{
 			get => AlphaWarheadNukesitePanel.Networkenabled;
@@ -163,6 +184,7 @@ namespace EXILED.Extensions
         /// Gets the LCZ decontamination status.
         /// </summary>
         public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
+
         /// <summary>
         /// Starts the Decontamination process.
         /// </summary>

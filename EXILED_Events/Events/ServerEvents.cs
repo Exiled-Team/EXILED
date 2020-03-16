@@ -12,13 +12,12 @@ namespace EXILED
 	{
 		public static event OnRoundStart RoundStartEvent;
 		public delegate void OnRoundStart();
-		public static void InvokeRoundStart()
-		{
-			RoundStartEvent?.Invoke();
-		}
 
-		public static event OnPreAuth PreAuthEvent;
+		public static void InvokeRoundStart() => RoundStartEvent?.Invoke();
+
+        public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
+
 		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
 			if (PreAuthEvent == null)
@@ -30,27 +29,26 @@ namespace EXILED
 				Request = request,
 				UserId = userid
 			};
+
 			PreAuthEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 			userid = ev.UserId;
 		}
 
 		public static event OnRoundEnd RoundEndEvent;
 		public delegate void OnRoundEnd();
-		public static void InvokeRoundEnd()
-		{
-			RoundEndEvent?.Invoke();
-		}
 
-		public static event OnRoundRestart RoundRestartEvent;
+        public static void InvokeRoundEnd() => RoundEndEvent?.Invoke();
+
+        public static event OnRoundRestart RoundRestartEvent;
 		public delegate void OnRoundRestart();
-		public static void InvokeRoundRestart()
-		{
-			RoundRestartEvent?.Invoke();
-		}
-		
-		public static event OnCommand RemoteAdminCommandEvent;
+
+		public static void InvokeRoundRestart() => RoundRestartEvent?.Invoke();
+
+        public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref RACommandEvent ev);
+
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			if (RemoteAdminCommandEvent == null)
@@ -62,7 +60,9 @@ namespace EXILED
 				Command = query,
 				Sender = sender
 			};
+
 			RemoteAdminCommandEvent.Invoke(ref ev);
+
 			query = ev.Command;
 			sender = ev.Sender;
 			allow = ev.Allow;
@@ -91,39 +91,36 @@ namespace EXILED
 				ReportedIp = reportedIp,
 				ReporterId = reporterId
 			};
+
 			CheaterReportEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
 		
 		public static event WaitingForPlayers WaitingForPlayersEvent;
 		public delegate void WaitingForPlayers();
-		public static void InvokeWaitingForPlayers()
-		{
-			WaitingForPlayersEvent?.Invoke();
-		}
-		
-		public static event TeamRespawn TeamRespawnEvent;
+
+		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent?.Invoke();
+
+        public static event TeamRespawn TeamRespawnEvent;
 		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
 
-		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<GameObject> toRespawn)
+		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<ReferenceHub> toRespawn)
 		{
 			if (TeamRespawnEvent == null)
 				return;
-			
-			List<ReferenceHub> respawn = new List<ReferenceHub>();
-			foreach (GameObject obj in toRespawn)
-				respawn.Add(obj.GetPlayer());
+
 			TeamRespawnEvent ev = new TeamRespawnEvent()
 			{
 				IsChaos = isChaos,
 				MaxRespawnAmt = maxRespawn,
-				ToRespawn = respawn
+				ToRespawn = toRespawn
 			};
+
 			TeamRespawnEvent.Invoke(ref ev);
+
 			maxRespawn = ev.MaxRespawnAmt;
-			toRespawn = new List<GameObject>();
-			foreach (ReferenceHub hub in ev.ToRespawn)
-				toRespawn.Add(hub.gameObject);
+            toRespawn = ev.ToRespawn;
 		}
 
 
@@ -140,6 +137,7 @@ namespace EXILED
 				Details = details,
 				Type = type
 			};
+
 			PlayerBannedEvent.Invoke(ev);
 		}
 
@@ -181,6 +179,7 @@ namespace EXILED
 				Group = group,
 				Allow = allow
 			};
+
 			SetGroupEvent.Invoke(ev);
 			allow = ev.Allow;
 			group = ev.Group;
