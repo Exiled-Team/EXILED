@@ -84,7 +84,7 @@ namespace EXILED
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
             if (Config.GetBool("exiled_auto_update", true))
             {
-                if (IsUpdateAvailible())
+                if (IsUpdateAvailable())
                 {
                     Log.Info("There is an new version of EXILED available.");
                     AutoUpdate();
@@ -223,61 +223,69 @@ namespace EXILED
 
 		public static double GetRoundDuration() => Math.Abs((RoundTime - DateTime.Now).TotalSeconds);
 
-		public bool IsUpdateAvailible()
+		public bool IsUpdateAvailable()
 		{
-			string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.GetBool("exiled_testing") ? "" : "latest/");
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
-			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-			Stream stream = response.GetResponseStream();
+            try
+            {
+			    string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.GetBool("exiled_testing") ? "" : "latest/");
+			    HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
+			    HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+			    Stream stream = response.GetResponseStream();
 
-			if (stream == null)
-				throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
+			    if (stream == null)
+				    throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
 
-			StreamReader reader = new StreamReader(stream);
-			string read = reader.ReadToEnd();
-			string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-			string line = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
-			string version = Between(line, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
-			string[] versionArray = version.Split('.');
+			    StreamReader reader = new StreamReader(stream);
+			    string read = reader.ReadToEnd();
+			    string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			    string line = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
+			    string version = Between(line, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
+			    string[] versionArray = version.Split('.');
 
-			if (!int.TryParse(versionArray[0], out int major))
-			{
-				Log.Error($"Unable to parse EXILED major version.");
-				return false;
-			}
+			    if (!int.TryParse(versionArray[0], out int major))
+			    {
+			    	Log.Error($"Unable to parse EXILED major version.");
+			    	return false;
+			    }
 
-			if (!int.TryParse(versionArray[1], out int minor))
-			{
-				Log.Error($"Unable to parse EXILED minor version.");
-				return false;
-			}
+			    if (!int.TryParse(versionArray[1], out int minor))
+			    {
+			    	Log.Error($"Unable to parse EXILED minor version.");
+				    return false;
+			    }
 
-			if (!int.TryParse(versionArray[2], out int patch))
-			{
-				Log.Error($"Unable to parse EXILED patch version.");
-				return false;
-			}
+			    if (!int.TryParse(versionArray[2], out int patch))
+			    {
+				    Log.Error($"Unable to parse EXILED patch version.");
+				    return false;
+			    }
 
-			VersionUpdateUrl = $"{url.Replace("latest/", "")}download/{version}/EXILED.tar.gz";
-			if (major > Version.Major)
-			{
-				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
-				return true;
-			}
+			    VersionUpdateUrl = $"{url.Replace("latest/", "")}download/{version}/EXILED.tar.gz";
+			    if (major > Version.Major)
+			    {
+				    Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
+				    return true;
+			    }
 
-			if (minor > Version.Minor && major == Version.Major)
-			{
-				Log.Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
-				return true;
-			}
+			    if (minor > Version.Minor && major == Version.Major)
+			    {
+				    Log.Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
+				    return true;
+			    }
 
-			if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
-			{
-				Log.Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
-				return true;
-			}
+			    if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
+			    {
+				    Log.Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
+				    return true;
+			    }
 
-			return false;
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"Updating error: {exception}");
+                }
+
+            return false;
 		}
 
 		private static string Between(string str, string firstString, string lastString)
