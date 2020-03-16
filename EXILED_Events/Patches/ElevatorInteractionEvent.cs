@@ -7,7 +7,7 @@ namespace EXILED.Patches
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
     public class ElevatorUseEvent
     {
-        public static bool Prefix(PlayerInteract _instance, GameObject elevator)
+        public static bool Prefix(PlayerInteract __instance, GameObject elevator)
         {
             if (EventPlugin.ElevatorInteractionEventDisable)
                 return true;
@@ -15,8 +15,8 @@ namespace EXILED.Patches
             try
             {
                 bool allow = true;
-                if (!_instance._playerInteractRateLimit.CanExecute(true) || 
-                    (_instance._hc.CufferId > 0 && !_instance.CanDisarmedInteract) || elevator == null) 
+                if (!__instance._playerInteractRateLimit.CanExecute(true) || 
+                    (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) || elevator == null) 
                     return false;
                     
                 Lift component = elevator.GetComponent<Lift>();
@@ -25,15 +25,15 @@ namespace EXILED.Patches
 
                 foreach (Lift.Elevator elevator2 in component.elevators)
                 {
-                    if (_instance.ChckDis(elevator2.door.transform.position))
+                    if (__instance.ChckDis(elevator2.door.transform.position))
                     {
-                        Events.InvokeElevatorInteract(_instance.gameObject, elevator2, ref allow);
+                        Events.InvokeElevatorInteract(__instance.gameObject, elevator2, ref allow);
 
                         if (!allow)
                             return false;
 
                         elevator.GetComponent<Lift>().UseLift();
-                        _instance.OnInteract();
+                        __instance.OnInteract();
                     }
                 }
 
