@@ -14,7 +14,7 @@ namespace EXILED.Extensions
 		private static Broadcast _broadcast;
 		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
 		private static DecontaminationLCZ _decontaminationLCZ;
-        private static List<Room> _rooms;
+        private static List<Room> _rooms = new List<Room>();
 
         public static Inventory HostInventory
 		{
