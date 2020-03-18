@@ -186,6 +186,7 @@
     <Compile Include="Patches\ElevatorInteractionEvent.cs" />
     <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerEventOverride.cs" />
+    <Compile Include="Patches\MuteHandlerPatch.cs" />
     <Compile Include="Patches\Scp079Events.cs" />
     <Compile Include="Patches\CallCmdSetUnicOverride.cs" />
     <Compile Include="Patches\SyncDataEvent.cs" />
