@@ -95,7 +95,7 @@
     <Compile Include="Extensions\CassieExtensions.cs" />
     <Compile Include="Extensions\MapExtensions.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
-    <Compile Include="Extensions\SCP914Extensions.cs" />
+    <Compile Include="Extensions\Scp914Extensions.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MainLoader.cs" />

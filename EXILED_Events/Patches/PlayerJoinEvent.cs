@@ -19,12 +19,10 @@ namespace EXILED.Patches
 
             try
             {
-                Timing.CallDelayed(0.25f, () => { 
+                Timing.CallDelayed(0.25f, () => {
                     foreach(ReferenceHub player in Player.GetHubs())
-                    {
                         if(player.characterClassManager.NetworkMuted)
                             player.characterClassManager.SetDirtyBit(1ul);
-                    }
                 });
 
                 ReferenceHub hub = __instance.gameObject.GetPlayer();
