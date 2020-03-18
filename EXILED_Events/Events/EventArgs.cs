@@ -53,56 +53,38 @@ namespace EXILED
 		public ReferenceHub Attacker { get; set; }
 		private DamageTypes.DamageType damageType = DamageTypes.None;
 
-		public int Time
-		{
-			get
-			{
-				return info.Time;
-			}
-		}
-		/// <summary>
-		/// The DamageType as a <see cref="DamageTypes.DamageType"/>
-		/// </summary>
-		public DamageTypes.DamageType DamageType
+		public int Time => info.Time;
+
+        /// <summary>
+        /// The DamageType as a <see cref="DamageTypes.DamageType"/>
+        /// </summary>
+        public DamageTypes.DamageType DamageType
 		{
 			get 
 			{
 				if (damageType == DamageTypes.None)
 					damageType = DamageTypes.FromIndex(info.Tool);
+
 				return damageType;
 			}
 		}
 		/// <summary>
 		/// The DamageType's <see cref="int"/> value
 		/// </summary>
-		public int Tool
-		{
-			get 
-			{
-				return info.Tool;
-			}
-		}
+		public int Tool => info.Tool;
+
 		/// <summary>
 		/// The amount of damage to be dealt
 		/// </summary>
 		public float Amount
 		{
-			get 
-			{
-				return info.Amount;
-			}
-			set 
-			{
-				info.Amount = value;
-			}
+			get => info.Amount;
+			set => info.Amount = value;
 		}
 
 		public PlayerStats.HitInfo Info
 		{ 
-			get
-			{
-				return info;
-			}
+			get => info;
 			set
 			{
 				damageType = DamageTypes.None;
@@ -214,12 +196,14 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public ReferenceHub Player { get; set; }
 	}
+
 	public class ConsoleCommandEvent : EventArgs
 	{
 		public ConsoleCommandEvent(bool encrypted)
 		{
 			Encrypted = encrypted;
 		}
+
 		public ReferenceHub Player { get; set; }
 		public string Command { get; set; }
 		public string ReturnMessage { get; set; }
@@ -402,11 +386,10 @@ namespace EXILED
 
 				duration = value;
 			}
-			get 
-			{
-				return duration;
-			}
+
+			get => duration;
 		}
+
 		public string UserId
 		{
 			set
@@ -421,11 +404,10 @@ namespace EXILED
 
 				userId = value;
 			}
-			get
-			{
-				return userId;
-			}
+
+			get => userId;
 		}
+
 		public bool Allow
 		{
 			set
@@ -438,11 +420,10 @@ namespace EXILED
 
 				allow = value;
 			}
-			get 
-			{
-				return allow;
-			}
+
+			get => allow;
 		}
+
 		public ReferenceHub BannedPlayer
 		{
 			set
@@ -453,10 +434,7 @@ namespace EXILED
 					+ $" changed the banned player from user {bannedPlayer.nicknameSync.Network_myNickSync} ({bannedPlayer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
 				bannedPlayer = value;
 			}
-			get
-			{
-				return bannedPlayer;
-			}
+			get => bannedPlayer;
 		}
 		public ReferenceHub Issuer
 		{
@@ -468,19 +446,18 @@ namespace EXILED
 					             + $" changed the ban issuer from user {issuer.nicknameSync.Network_myNickSync} ({issuer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
 				issuer = value;
 			}
-			get
-			{
-				return issuer;
-			}
+            get => issuer;
 		}
 		private void LogBanChange(string msg)
 		{
 			string time = TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz");
 			object lockObject = ServerLogs.LockObject;
+
 			lock (lockObject)
 			{
 				ServerLogs.Queue.Enqueue(new ServerLogs.ServerLog(msg, "AntiBackdoor", "EXILED-Ban", time));
 			}
+
 			ServerLogs._write = true;
 		}
 	}

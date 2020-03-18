@@ -17,13 +17,16 @@ namespace EXILED
 		public static IEnumerator<float> LoadPlugins()
 		{
 			yield return Timing.WaitForSeconds(0.5f);
+
 			string path = Path.Combine(AppData, "Plugins");
 			string exiled = Path.Combine(AppData, "EXILED");
 			string deps = Path.Combine(exiled, "dependencies");
+
 			try
 			{
 				if (Directory.Exists(deps))
 					Directory.Move(deps, Path.Combine(path, "dependencies"));
+
 				LoadDeps();
 			}
 			catch (Exception e)
@@ -41,6 +44,7 @@ namespace EXILED
 			}
 
 			List<string> mods = Directory.GetFiles(path).Where(p => !p.EndsWith("overrides.txt")).ToList();
+
 			if (File.Exists($"{path}/overrides.txt"))
 				_typeOverrides = File.ReadAllText($"{path}/overrides.txt");
 
@@ -55,6 +59,7 @@ namespace EXILED
 			if (eventsInstalled)
 			{
 				string eventsPlugin = mods.FirstOrDefault(m => m.Contains("EXILED_Events.dll"));
+
 				LoadPlugin(eventsPlugin);
 				mods.Remove(eventsPlugin);
 			}
@@ -64,6 +69,7 @@ namespace EXILED
 			if (permsInstalled)
 			{
 				string permsPlugin = mods.FirstOrDefault(m => m.Contains("EXILED_Permissions.dll"));
+
 				LoadPlugin(permsPlugin);
 				mods.Remove(permsPlugin);
 			}
@@ -72,6 +78,7 @@ namespace EXILED
 			{
 				if (mod.EndsWith("EXILED.dll"))
 					continue;
+
 				LoadPlugin(mod);
 			}
 			
@@ -86,18 +93,23 @@ namespace EXILED
 			string pl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plugins");
 			string folder = Path.Combine(pl, "dependencies");
 			Log.Debug("Searching Directory '" + folder + "'");
+
 			if (!Directory.Exists(folder))
 				Directory.CreateDirectory(folder);
+
 			string[] depends = Directory.GetFiles(folder);
+
 			foreach (string dll in depends)
 			{
 				if (!dll.EndsWith(".dll"))
 					continue;
+
 				if (IsLoaded(dll))
 					return;
-				Assembly a = Assembly.LoadFrom(dll);
-				localLoaded.Add(a);
-				Log.Info("Loaded dependency " + a.FullName);
+
+				Assembly assembly = Assembly.LoadFrom(dll);
+				localLoaded.Add(assembly);
+				Log.Info("Loaded dependency " + assembly.FullName);
 			}
 			Log.Debug("Complete!");
 		}
@@ -109,6 +121,7 @@ namespace EXILED
 				if (asm.Location == a)
 					return true;
 			}
+
 			return false;
 		}
 
@@ -138,9 +151,11 @@ namespace EXILED
 						Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.");
 						continue;
 					}
+
 					Log.Info($"Loading type {type.FullName}");
 					object plugin = Activator.CreateInstance(type);
 					Log.Info($"Instantiated type {type.FullName}");
+
 					if (!(plugin is Plugin p))
 					{
 						Log.Error($"not plugin error! {type.FullName}");
@@ -206,7 +221,7 @@ namespace EXILED
 		{
 			try
 			{
-				Log.Info($"Reloading Plugins..");
+				Log.Info($"Reloading Plugins...");
 				OnDisable();
 				OnReload();
 				_plugins.Clear();

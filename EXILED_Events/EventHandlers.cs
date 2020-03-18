@@ -16,10 +16,12 @@ namespace EXILED.Patches
 		public void OnWaitingForPlayers()
 		{
 			EventPlugin.GhostedIds.Clear();
+            Map.Rooms.Clear();
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
 			EventPlugin.DeadPlayers.Clear();
+
 			RoundStarted = false;
 		}
 
@@ -27,12 +29,15 @@ namespace EXILED.Patches
 		{
 			Timing.KillCoroutines("resetroundtime");
 			RoundStarted = true;
-			foreach (ReferenceHub hub in Player.GetHubs())
-				if (hub.serverRoles.OverwatchEnabled)
-				{
-					hub.serverRoles.SetOverwatchStatus(false);
-					Timing.CallDelayed(1f, () => hub.serverRoles.SetOverwatchStatus(true));
-				}
+
+            foreach (ReferenceHub hub in Player.GetHubs())
+            {
+                if (hub.GetOverwatch())
+                {
+                    hub.SetOverwatch(false);
+                    Timing.CallDelayed(1f, () => hub.SetOverwatch(true));
+                }
+            }
 		}
 
 		public IEnumerator<float> ResetRoundTime()
@@ -46,51 +51,50 @@ namespace EXILED.Patches
 
 		public void OnPlayerLeave(EXILED.PlayerLeaveEvent ev)
 		{
-			if (Player.IdHubs.ContainsKey(ev.Player.queryProcessor.PlayerId))
-				Player.IdHubs.Remove(ev.Player.queryProcessor.PlayerId);
+			if (Player.IdHubs.ContainsKey(ev.Player.GetPlayerId()))
+				Player.IdHubs.Remove(ev.Player.GetPlayerId());
 
 			foreach (KeyValuePair<string, ReferenceHub> entry in Player.StrHubs.Where(s => s.Value == ev.Player).ToList())
 				Player.StrHubs.Remove(entry.Key);
 
-			if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
-				EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
+			if (EventPlugin.DeadPlayers.Contains(ev.Player))
+				EventPlugin.DeadPlayers.Remove(ev.Player);
 		}
 
 		public void OnPlayerDeath(ref PlayerDeathEvent ev)
 		{
-			if (ev.Player == null || ev.Player.characterClassManager.IsHost ||
-			    string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
 				return;
 			
-			if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
-				EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
+			if (!EventPlugin.DeadPlayers.Contains(ev.Player))
+				EventPlugin.DeadPlayers.Add(ev.Player);
 		}
 
 		public void OnPlayerJoin(EXILED.PlayerJoinEvent ev)
 		{
-			if (ev.Player == null || ev.Player.characterClassManager.IsHost ||
-			    string.IsNullOrEmpty(ev.Player.characterClassManager.UserId) || !RoundStarted)
+            if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()) || !RoundStarted)
 				return;
 			
-			if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject)) 
-				EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
+			if (!EventPlugin.DeadPlayers.Contains(ev.Player)) 
+				EventPlugin.DeadPlayers.Add(ev.Player);
 		}
 
         public void OnSetClass(EXILED.SetClassEvent ev)
         {
-	        if (ev.Player == null || ev.Player.characterClassManager.IsHost || string.IsNullOrEmpty(ev.Player.characterClassManager.UserId))
+	        if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
 		        return;
 	        
 	        if (ev.Role == RoleType.Spectator)
 	        {
-		        if (!EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
-			        EventPlugin.DeadPlayers.Add(ev.Player.gameObject);
+		        if (!EventPlugin.DeadPlayers.Contains(ev.Player))
+			        EventPlugin.DeadPlayers.Add(ev.Player);
+
 		        ev.Player.inventory.ServerDropAll();
 	        }
 	        else
             {
-                if (EventPlugin.DeadPlayers.Contains(ev.Player.gameObject))
-                    EventPlugin.DeadPlayers.Remove(ev.Player.gameObject);
+                if (EventPlugin.DeadPlayers.Contains(ev.Player))
+                    EventPlugin.DeadPlayers.Remove(ev.Player);
             }
         }
 	}

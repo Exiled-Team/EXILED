@@ -15,7 +15,7 @@ namespace EXILED
 				case "reloadplugins":
 					ev.Allow = false;
 					PluginManager.ReloadPlugins();
-					ev.Sender.RAMessage("Reloading ploogins..");
+					ev.Sender.RAMessage("Reloading ploogins...");
 					break;
 				case "reconnectrs":
 					ev.Allow = false;

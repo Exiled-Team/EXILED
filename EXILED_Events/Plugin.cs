@@ -22,8 +22,9 @@ namespace EXILED
 		public static string VersionUpdateUrl = "none";
 		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 1 };
 
-		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
-		public static bool AntiFlyPatchDisable;
+        //The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
+        #region Patch Disable
+        public static bool AntiFlyPatchDisable;
 		public static bool CheaterReportPatchDisable;
 		public static bool GhostmodePatchDisable;
 		public static bool PlayerHurtPatchDisable;
@@ -63,8 +64,9 @@ namespace EXILED
 		public static bool Scp079ExpGainEventDisable;
 		public static bool ElevatorInteractionEventDisable;
 		public static bool Scp106CreatedPortalEventDisable;
+        #endregion
 
-		private EventHandlers handlers;
+        private EventHandlers handlers;
 
 		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
@@ -72,24 +74,27 @@ namespace EXILED
 		public static bool Scp096Fix;
 		public static bool NameTracking;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
-		public static List<GameObject> DeadPlayers = new List<GameObject>();
+		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
 			Log.Info("Enabled.");
-			Log.Info($"Checking version status..");
+			Log.Info($"Checking version status...");
 			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
-			if (Config.GetBool("exiled_auto_update", true))
-				if (IsUpdateAvailible())
-				{
-					Log.Info("There is an new version of EXILED available.");
-					AutoUpdate();
-				}
+            if (Config.GetBool("exiled_auto_update", true))
+            {
+                if (IsUpdateAvailable())
+                {
+                    Log.Info("There is an new version of EXILED available.");
+                    AutoUpdate();
+                }
+            }
 
 			ReloadConfigs();
-			Log.Debug("Adding Event Handlers..");
+			Log.Debug("Adding Event Handlers...");
 			handlers = new EventHandlers(this);
+
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
@@ -97,7 +102,8 @@ namespace EXILED
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
 			Events.SetClassEvent += handlers.OnSetClass;
-			Log.Debug("Patching..");
+
+			Log.Debug("Patching...");
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
@@ -125,7 +131,7 @@ namespace EXILED
 		{
 			try
 			{
-				Log.Info($"Attempting auto-update..");
+				Log.Info($"Attempting auto-update...");
 				Log.Info($"URL: {VersionUpdateUrl}");
 				if (VersionUpdateUrl == "none")
 				{
@@ -134,21 +140,26 @@ namespace EXILED
 				}
 
 				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-				Log.Info($"Creating temporary directory: {tempPath}..");
+				Log.Info($"Creating temporary directory: {tempPath}...");
 
-				if (!Directory.Exists(tempPath)) Directory.CreateDirectory(tempPath);
+				if (!Directory.Exists(tempPath))
+                    Directory.CreateDirectory(tempPath);
+
 				string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
+
 				using (WebClient client = new WebClient())
 				{
 					client.DownloadFile(VersionUpdateUrl, exiledTemp);
 				}
 
-				Log.Info("Download successful, extracting contents..");
+				Log.Info("Download successful, extracting contents...");
 				ExtractTarGz(exiledTemp, tempPath);
-				Log.Info($"Extraction complete, moving files..");
+				Log.Info($"Extraction complete, moving files...");
+
 				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
 				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
 				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
 				File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
 				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
 				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
@@ -156,13 +167,13 @@ namespace EXILED
 				File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
 				File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
 				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Permissions.dll"),
-					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
+				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
 				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
-					Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
-				Log.Info($"Files moved, cleaning up..");
+				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
+				Log.Info($"Files moved, cleaning up...");
 				DeleteDirectory(tempPath);
 
-				Log.Info("Auto-update complete, restarting server..");
+				Log.Info("Auto-update complete, restarting server...");
 				Application.Quit();
 			}
 			catch (Exception e)
@@ -191,82 +202,90 @@ namespace EXILED
 		public override void OnDisable()
 		{
 			Log.Info("Disabled.");
-			//You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
-			Log.Debug("Removing Event Handlers..");
-			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
+            Log.Debug("Removing Event Handlers...");
+            //You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
+            Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
 			Events.RemoteAdminCommandEvent -= ReloadCommandHandler.CommandHandler;
 			Events.PlayerLeaveEvent -= handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent -= handlers.OnPlayerDeath;
+
 			handlers = null;
-			Log.Debug("Unpatching..");
+			Log.Debug("Unpatching...");
 			instance.UnpatchAll();
 			Log.Debug("Unpatching complete. Goodbye. :c");
 		}
 
-		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
-		public override void OnReload()
-		{
-		}
+        //The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
+        public override void OnReload() => Log.Info("Reloading.");
 
 		public override string getName { get; }
 
 		public static double GetRoundDuration() => Math.Abs((RoundTime - DateTime.Now).TotalSeconds);
 
-		public bool IsUpdateAvailible()
+		public bool IsUpdateAvailable()
 		{
-			string url = "https://github.com/galaxy119/EXILED/releases/";
-			url += Config.GetBool("exiled_testing") ? "" : "latest/";
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
-			HttpWebResponse response = (HttpWebResponse) request.GetResponse();
-			Stream stream = response.GetResponseStream();
-			if (stream == null)
-				throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
-			StreamReader reader = new StreamReader(stream);
-			string read = reader.ReadToEnd();
-			string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-			string line = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
-			string version = Between(line, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
-			string[] versionArray = version.Split('.');
+            try
+            {
+			    string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.GetBool("exiled_testing") ? "" : "latest/");
+			    HttpWebRequest request = (HttpWebRequest) WebRequest.Create($"{url}");
+			    HttpWebResponse response = (HttpWebResponse) request.GetResponse();
+			    Stream stream = response.GetResponseStream();
 
-			if (!int.TryParse(versionArray[0], out int major))
-			{
-				Log.Error($"Unable to parse EXILED major version.");
-				return false;
-			}
+			    if (stream == null)
+				    throw new InvalidOperationException("No response from Github. This shouldn't happen, yell at Joker.");
 
-			if (!int.TryParse(versionArray[1], out int minor))
-			{
-				Log.Error($"Unable to parse EXILED minor version.");
-				return false;
-			}
+			    StreamReader reader = new StreamReader(stream);
+			    string read = reader.ReadToEnd();
+			    string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			    string line = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
+			    string version = Between(line, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
+			    string[] versionArray = version.Split('.');
 
-			if (!int.TryParse(versionArray[2], out int patch))
-			{
-				Log.Error($"Unable to parse EXILED patch version.");
-				return false;
-			}
+			    if (!int.TryParse(versionArray[0], out int major))
+			    {
+			    	Log.Error($"Unable to parse EXILED major version.");
+			    	return false;
+			    }
 
-			VersionUpdateUrl = $"{url.Replace("latest/", "")}download/{version}/EXILED.tar.gz";
-			if (major > Version.Major)
-			{
-				Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
-				return true;
-			}
+			    if (!int.TryParse(versionArray[1], out int minor))
+			    {
+			    	Log.Error($"Unable to parse EXILED minor version.");
+				    return false;
+			    }
 
-			if (minor > Version.Minor && major == Version.Major)
-			{
-				Log.Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
-				return true;
-			}
+			    if (!int.TryParse(versionArray[2], out int patch))
+			    {
+				    Log.Error($"Unable to parse EXILED patch version.");
+				    return false;
+			    }
 
-			if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
-			{
-				Log.Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
-				return true;
-			}
+			    VersionUpdateUrl = $"{url.Replace("latest/", "")}download/{version}/EXILED.tar.gz";
+			    if (major > Version.Major)
+			    {
+				    Log.Info($"Major version outdated: Current {Version.Major}. New: {major}");
+				    return true;
+			    }
 
-			return false;
+			    if (minor > Version.Minor && major == Version.Major)
+			    {
+				    Log.Info($"Minor version outdated: Current {Version.Minor}. New: {minor}");
+				    return true;
+			    }
+
+			    if (patch > Version.Patch && major == Version.Major && minor == Version.Minor)
+			    {
+				    Log.Info($"Patch version outdated: Current {Version.Patch}. New: {patch}");
+				    return true;
+			    }
+
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"Updating error: {exception}");
+                }
+
+            return false;
 		}
 
 		private static string Between(string str, string firstString, string lastString)
@@ -298,7 +317,8 @@ namespace EXILED
 					{
 						read = gzip.Read(buffer, 0, chunk);
 						memStr.Write(buffer, 0, read);
-					} while (read == chunk);
+					}
+                    while (read == chunk);
 
 					memStr.Seek(0, SeekOrigin.Begin);
 					ExtractTar(memStr, outputDir);
@@ -324,13 +344,16 @@ namespace EXILED
 					string output = Path.Combine(outputDir, name);
 					if (!Directory.Exists(Path.GetDirectoryName(output)))
 						Directory.CreateDirectory(Path.GetDirectoryName(output));
-					if (!name.Equals("./", StringComparison.InvariantCulture))
-						using (FileStream str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
-						{
-							byte[] buf = new byte[size];
-							stream.Read(buf, 0, buf.Length);
-							str.Write(buf, 0, buf.Length);
-						}
+
+                    if (!name.Equals("./", StringComparison.InvariantCulture))
+                    {
+                        using (FileStream str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
+                        {
+                            byte[] buf = new byte[size];
+                            stream.Read(buf, 0, buf.Length);
+                            str.Write(buf, 0, buf.Length);
+                        }
+                    }
 
 					long pos = stream.Position;
 

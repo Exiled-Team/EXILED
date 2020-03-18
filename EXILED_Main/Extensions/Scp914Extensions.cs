@@ -1,6 +1,7 @@
 ﻿using Mirror;
 using Scp914;
 using System.Collections.Generic;
+using UnityEngine;
 using Utils.ConfigHandler;
 
 namespace EXILED.Extensions
@@ -52,5 +53,17 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="configs"></param>
         public static void SetConfig(ConfigEntry<Scp914Mode> config) => Scp914Machine.singleton.configMode = config;
+
+        /// <summary>
+        /// Gets the intake booth <see cref="Transform">trasform</see>
+        /// </summary>
+        /// <returns></returns>
+        public static Transform GetIntakeBooth() => Scp914Machine.singleton.intake;
+
+        /// <summary>
+        ///  Gets the output booth<see cref="Transform">trasform</see>
+        /// </summary>
+        /// <returns></returns>
+        public static Transform GetOutputBooth() => Scp914Machine.singleton.output;
     }
 }
