@@ -10,7 +10,7 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.WarheadKeycardAccessEventDisable)
 				return true;
-			
+
 			if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract))
 				return false;
 

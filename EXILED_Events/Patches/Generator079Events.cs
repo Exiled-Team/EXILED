@@ -1,6 +1,6 @@
+using Harmony;
 using System;
 using System.Collections.Generic;
-using Harmony;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -12,13 +12,13 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.Generator079EventPatchDisable)
 				return true;
-			
+
 			try
 			{
 				if (command.StartsWith("EPS_TABLET"))
 				{
 					if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance.localTime <= 0.0 ||
-					    Generator079.mainGenerator.forcedOvercharge)
+						Generator079.mainGenerator.forcedOvercharge)
 						return false;
 					Inventory component = person.GetComponent<Inventory>();
 					foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
@@ -60,7 +60,7 @@ namespace EXILED.Patches
 									allow = true;
 							}
 						}
-						
+
 						Events.InvokeGeneratorUnlock(person, __instance, ref allow);
 
 						if (allow)
@@ -78,7 +78,7 @@ namespace EXILED.Patches
 							Events.InvokeGeneratorOpen(person, __instance, ref allow);
 						else
 							Events.InvokeGeneratorClose(person, __instance, ref allow);
-						
+
 						if (!allow)
 						{
 							__instance.RpcDenied();

@@ -1,8 +1,8 @@
+using EXILED.Extensions;
+using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EXILED.Extensions;
-using MEC;
 
 namespace EXILED.Patches
 {
@@ -12,11 +12,11 @@ namespace EXILED.Patches
 		public EventHandlers(EventPlugin plugin) => this.plugin = plugin;
 
 		public bool RoundStarted;
-		
+
 		public void OnWaitingForPlayers()
 		{
 			EventPlugin.GhostedIds.Clear();
-            Map.Rooms.Clear();
+			Map.Rooms.Clear();
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
@@ -30,19 +30,19 @@ namespace EXILED.Patches
 			Timing.KillCoroutines("resetroundtime");
 			RoundStarted = true;
 
-            foreach (ReferenceHub hub in Player.GetHubs())
-            {
-                if (hub.GetOverwatch())
-                {
-                    hub.SetOverwatch(false);
-                    Timing.CallDelayed(1f, () => hub.SetOverwatch(true));
-                }
-            }
+			foreach (ReferenceHub hub in Player.GetHubs())
+			{
+				if (hub.GetOverwatch())
+				{
+					hub.SetOverwatch(false);
+					Timing.CallDelayed(1f, () => hub.SetOverwatch(true));
+				}
+			}
 		}
 
 		public IEnumerator<float> ResetRoundTime()
 		{
-			for (;;)
+			for (; ; )
 			{
 				EventPlugin.RoundTime = DateTime.Now;
 				yield return Timing.WaitForSeconds(1f);
@@ -65,37 +65,37 @@ namespace EXILED.Patches
 		{
 			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
 				return;
-			
+
 			if (!EventPlugin.DeadPlayers.Contains(ev.Player))
 				EventPlugin.DeadPlayers.Add(ev.Player);
 		}
 
 		public void OnPlayerJoin(EXILED.PlayerJoinEvent ev)
 		{
-            if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()) || !RoundStarted)
+			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()) || !RoundStarted)
 				return;
-			
-			if (!EventPlugin.DeadPlayers.Contains(ev.Player)) 
+
+			if (!EventPlugin.DeadPlayers.Contains(ev.Player))
 				EventPlugin.DeadPlayers.Add(ev.Player);
 		}
 
-        public void OnSetClass(EXILED.SetClassEvent ev)
-        {
-	        if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
-		        return;
-	        
-	        if (ev.Role == RoleType.Spectator)
-	        {
-		        if (!EventPlugin.DeadPlayers.Contains(ev.Player))
-			        EventPlugin.DeadPlayers.Add(ev.Player);
+		public void OnSetClass(EXILED.SetClassEvent ev)
+		{
+			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
+				return;
 
-		        ev.Player.inventory.ServerDropAll();
-	        }
-	        else
-            {
-                if (EventPlugin.DeadPlayers.Contains(ev.Player))
-                    EventPlugin.DeadPlayers.Remove(ev.Player);
-            }
-        }
+			if (ev.Role == RoleType.Spectator)
+			{
+				if (!EventPlugin.DeadPlayers.Contains(ev.Player))
+					EventPlugin.DeadPlayers.Add(ev.Player);
+
+				ev.Player.inventory.ServerDropAll();
+			}
+			else
+			{
+				if (EventPlugin.DeadPlayers.Contains(ev.Player))
+					EventPlugin.DeadPlayers.Remove(ev.Player);
+			}
+		}
 	}
 }

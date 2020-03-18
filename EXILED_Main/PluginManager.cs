@@ -1,10 +1,10 @@
+using Loader;
+using MEC;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Loader;
-using MEC;
 
 namespace EXILED
 {
@@ -13,7 +13,7 @@ namespace EXILED
 		public static readonly List<Plugin> _plugins = new List<Plugin>();
 		private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 		private static string _typeOverrides = "";
-		
+
 		public static IEnumerator<float> LoadPlugins()
 		{
 			yield return Timing.WaitForSeconds(0.5f);
@@ -81,7 +81,7 @@ namespace EXILED
 
 				LoadPlugin(mod);
 			}
-			
+
 			OnEnable();
 		}
 
@@ -113,10 +113,10 @@ namespace EXILED
 			}
 			Log.Debug("Complete!");
 		}
-		
+
 		private static bool IsLoaded(string a)
 		{
-			foreach(Assembly asm in localLoaded)
+			foreach (Assembly asm in localLoaded)
 			{
 				if (asm.Location == a)
 					return true;
@@ -133,7 +133,7 @@ namespace EXILED
 			{
 				byte[] file = ModLoader.ReadFile(mod);
 				Assembly assembly = Assembly.Load(file);
-				
+
 				foreach (Type type in assembly.GetTypes())
 				{
 					if (type.IsAbstract)

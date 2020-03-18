@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Reflection;
 using GameCore;
 using Harmony;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -15,14 +15,14 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.CheckRoundEndEventPatchDisable)
 				yield break;
-			
+
 			foreach (CodeInstruction instruction in instr)
 			{
 				if (instruction.opcode == OpCodes.Call)
 				{
-					if (instruction.operand != null 
-					    && instruction.operand is MethodBase methodBase 
-					    && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)) // could get the MethodInfo like I did with CustomProcess but nah
+					if (instruction.operand != null
+						&& instruction.operand is MethodBase methodBase
+						&& methodBase.Name != nameof(RoundSummary._ProcessServerSideCode)) // could get the MethodInfo like I did with CustomProcess but nah
 					{
 						yield return instruction;
 					}
@@ -129,7 +129,7 @@ namespace EXILED.Patches
 					GameCore.Console.AddLog(str, Color.gray, false);
 					ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);
 					byte i1;
-					for (i1 = (byte)0; i1 < (byte)75; ++i1)
+					for (i1 = 0; i1 < 75; ++i1)
 						yield return 0.0f;
 					int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 					if (roundSummary != null)
@@ -137,7 +137,7 @@ namespace EXILED.Patches
 					for (int i2 = 0; i2 < 50 * (timeToRoundRestart - 1); ++i2)
 						yield return 0.0f;
 					roundSummary.RpcDimScreen();
-					for (i1 = (byte)0; i1 < (byte)50; ++i1)
+					for (i1 = 0; i1 < 50; ++i1)
 						yield return 0.0f;
 					PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
 					yield break;

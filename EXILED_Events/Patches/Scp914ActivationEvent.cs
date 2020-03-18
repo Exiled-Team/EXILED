@@ -1,7 +1,7 @@
-using System;
 using Harmony;
 using Mirror;
 using Scp914;
+using System;
 
 namespace EXILED.Patches
 {
@@ -13,8 +13,8 @@ namespace EXILED.Patches
 			try
 			{
 				if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-				    __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
-				    (Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.button.position)))
+					__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
+					(Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.button.position)))
 					return false;
 
 				bool allow = true;

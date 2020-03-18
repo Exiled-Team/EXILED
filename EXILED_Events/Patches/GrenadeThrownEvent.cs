@@ -1,6 +1,6 @@
-using System;
 using Grenades;
 using Harmony;
+using System;
 
 namespace EXILED.Patches
 {

@@ -1,6 +1,6 @@
-using System;
 using EXILED.Extensions;
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -24,12 +24,12 @@ namespace EXILED.Patches
 					ReferenceHub hub = player.GetPlayer();
 					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
 					{
-						
+
 						continue;
 					}
 					Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
 					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) &&
-					    __instance.LookFor173(component.gameObject, false))
+						__instance.LookFor173(component.gameObject, false))
 					{
 						__instance._allowMove = false;
 						break;

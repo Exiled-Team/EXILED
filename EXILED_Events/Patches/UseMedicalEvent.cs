@@ -1,6 +1,6 @@
-using System;
 using Harmony;
 using MEC;
+using System;
 
 namespace EXILED.Patches
 {

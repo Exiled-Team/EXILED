@@ -39,13 +39,13 @@ namespace EXILED.Patches
 			Events.InvokeLockerInteract(__instance.gameObject, singleton.lockers[lockerId], lockerId, ref allow);
 			if (allow)
 			{
-				bool flag = ((int)singleton.openLockers[lockerId] & 1 << chamberNumber) != 1 << chamberNumber;
+				bool flag = (singleton.openLockers[lockerId] & 1 << chamberNumber) != 1 << chamberNumber;
 				singleton.ModifyOpen(lockerId, chamberNumber, flag);
 				singleton.RpcDoSound(lockerId, chamberNumber, flag);
 				bool state = true;
 				for (int i = 0; i < singleton.lockers[lockerId].chambers.Length; i++)
 				{
-					if (((int)singleton.openLockers[lockerId] & 1 << i) == 1 << i)
+					if ((singleton.openLockers[lockerId] & 1 << i) == 1 << i)
 					{
 						state = false;
 						break;

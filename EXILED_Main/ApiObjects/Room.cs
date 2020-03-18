@@ -15,9 +15,9 @@ namespace EXILED.ApiObjects
 			{
 				if (zone != ZoneType.Unspecified)
 					return zone;
-				
+
 				zone = ZoneType.Unspecified;
-				
+
 				if (Position.y == -1997f)
 					zone = ZoneType.Unspecified;
 				else if (Position.y >= 0f && Position.y < 500f)
@@ -28,7 +28,7 @@ namespace EXILED.ApiObjects
 					zone = ZoneType.Entrance;
 				else if (Position.y >= 5)
 					zone = ZoneType.Surface;
-				
+
 				return zone;
 			}
 		}

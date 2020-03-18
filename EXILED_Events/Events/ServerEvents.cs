@@ -1,8 +1,8 @@
+using EXILED.Extensions;
+using LiteNetLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using EXILED.Extensions;
-using LiteNetLib;
 using UnityEngine;
 using static BanHandler;
 
@@ -15,14 +15,14 @@ namespace EXILED
 
 		public static void InvokeRoundStart() => RoundStartEvent?.Invoke();
 
-        public static event OnPreAuth PreAuthEvent;
+		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
 
 		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
 		{
 			if (PreAuthEvent == null)
 				return;
-			
+
 			PreauthEvent ev = new PreauthEvent()
 			{
 				Allow = allow,
@@ -39,21 +39,21 @@ namespace EXILED
 		public static event OnRoundEnd RoundEndEvent;
 		public delegate void OnRoundEnd();
 
-        public static void InvokeRoundEnd() => RoundEndEvent?.Invoke();
+		public static void InvokeRoundEnd() => RoundEndEvent?.Invoke();
 
-        public static event OnRoundRestart RoundRestartEvent;
+		public static event OnRoundRestart RoundRestartEvent;
 		public delegate void OnRoundRestart();
 
 		public static void InvokeRoundRestart() => RoundRestartEvent?.Invoke();
 
-        public static event OnCommand RemoteAdminCommandEvent;
+		public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref RACommandEvent ev);
 
 		public static void InvokeCommand(ref string query, ref CommandSender sender, ref bool allow)
 		{
 			if (RemoteAdminCommandEvent == null)
 				return;
-			
+
 			RACommandEvent ev = new RACommandEvent()
 			{
 				Allow = allow,
@@ -68,13 +68,13 @@ namespace EXILED
 			allow = ev.Allow;
 
 			string fileName = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), $"{ServerConsole.Port}-RA_log.txt");
-			
+
 			if (!File.Exists(fileName))
 				File.Create(fileName).Close();
-			
+
 			File.AppendAllText(fileName, $"{sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}" + Environment.NewLine);
 		}
-		
+
 		public static event OnCheaterReport CheaterReportEvent;
 		public delegate void OnCheaterReport(ref CheaterReportEvent ev);
 
@@ -82,7 +82,7 @@ namespace EXILED
 		{
 			if (CheaterReportEvent == null)
 				return;
-			
+
 			CheaterReportEvent ev = new CheaterReportEvent()
 			{
 				Allow = allow,
@@ -96,13 +96,13 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event WaitingForPlayers WaitingForPlayersEvent;
 		public delegate void WaitingForPlayers();
 
 		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent?.Invoke();
 
-        public static event TeamRespawn TeamRespawnEvent;
+		public static event TeamRespawn TeamRespawnEvent;
 		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
 
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<ReferenceHub> toRespawn)
@@ -120,7 +120,7 @@ namespace EXILED
 			TeamRespawnEvent.Invoke(ref ev);
 
 			maxRespawn = ev.MaxRespawnAmt;
-            toRespawn = ev.ToRespawn;
+			toRespawn = ev.ToRespawn;
 		}
 
 

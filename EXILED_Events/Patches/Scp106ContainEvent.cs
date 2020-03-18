@@ -1,5 +1,5 @@
-﻿using System;
-using Harmony;
+﻿using Harmony;
+using System;
 
 namespace EXILED.Patches
 {

@@ -8,46 +8,46 @@ namespace EXILED
 {
 	public partial class Events
 	{
-        public static event Scp106CreatedPortal Scp106CreatedPortalEvent;
-        public delegate void Scp106CreatedPortal(Scp106CreatedPortalEvent ev);
+		public static event Scp106CreatedPortal Scp106CreatedPortalEvent;
+		public delegate void Scp106CreatedPortal(Scp106CreatedPortalEvent ev);
 
-        public static void InvokeScp106CreatedPortal(GameObject obj, ref bool allow, ref Vector3 portalPosition)
-        {
-            if (Scp106CreatedPortalEvent == null)
-                return;
+		public static void InvokeScp106CreatedPortal(GameObject obj, ref bool allow, ref Vector3 portalPosition)
+		{
+			if (Scp106CreatedPortalEvent == null)
+				return;
 
-            Scp106CreatedPortalEvent ev = new Scp106CreatedPortalEvent()
-            {
-                Player = obj.GetPlayer(),
-                Allow = allow,
-                PortalPosition = portalPosition
-            };
+			Scp106CreatedPortalEvent ev = new Scp106CreatedPortalEvent()
+			{
+				Player = obj.GetPlayer(),
+				Allow = allow,
+				PortalPosition = portalPosition
+			};
 
-            Scp106CreatedPortalEvent.Invoke(ev);
+			Scp106CreatedPortalEvent.Invoke(ev);
 
-            allow = ev.Allow;
-            portalPosition = ev.PortalPosition;
-        }
+			allow = ev.Allow;
+			portalPosition = ev.PortalPosition;
+		}
 
-        public static event ItemChanged ItemChangedEvent;
-        public delegate void ItemChanged(ItemChangedEvent ev);
+		public static event ItemChanged ItemChangedEvent;
+		public delegate void ItemChanged(ItemChangedEvent ev);
 
-        public static void InvokeItemChanged(GameObject obj, ref Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
-        {
-            if (ItemChangedEvent == null)
-                return;
+		public static void InvokeItemChanged(GameObject obj, ref Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
+		{
+			if (ItemChangedEvent == null)
+				return;
 
-            ItemChangedEvent ev = new ItemChangedEvent()
-            {
-                Player = obj.GetPlayer(),
-                OldItem = oldItem,
-                NewItem = newItem
-            };
+			ItemChangedEvent ev = new ItemChangedEvent()
+			{
+				Player = obj.GetPlayer(),
+				OldItem = oldItem,
+				NewItem = newItem
+			};
 
-            ItemChangedEvent.Invoke(ev);
+			ItemChangedEvent.Invoke(ev);
 
-            oldItem = ev.OldItem;
-        }
+			oldItem = ev.OldItem;
+		}
 
 		public static event Scp079ExpGain Scp079ExpGainEvent;
 		public delegate void Scp079ExpGain(Scp079ExpGainEvent ev);
@@ -56,7 +56,7 @@ namespace EXILED
 		{
 			if (Scp079ExpGainEvent == null)
 				return;
-			
+
 			Scp079ExpGainEvent ev = new Scp079ExpGainEvent()
 			{
 				Player = obj.GetPlayer(),
@@ -64,7 +64,7 @@ namespace EXILED
 				Allow = allow,
 				Amount = amount
 			};
-			
+
 			Scp079ExpGainEvent.Invoke(ev);
 
 			allow = ev.Allow;
@@ -141,7 +141,7 @@ namespace EXILED
 		{
 			if (Scp096EnrageEvent == null)
 				return;
-			
+
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
 			{
 				Player = script.gameObject.GetPlayer(),
@@ -161,7 +161,7 @@ namespace EXILED
 		{
 			if (Scp096CalmEvent == null)
 				return;
-			
+
 			Scp096CalmEvent ev = new Scp096CalmEvent()
 			{
 				Player = script.gameObject.GetPlayer(),
@@ -173,18 +173,18 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event OnPlayerJoin PlayerJoinEvent;
 		public delegate void OnPlayerJoin(PlayerJoinEvent ev);
 
-		public static void InvokePlayerJoin(ReferenceHub hub) => PlayerJoinEvent?.Invoke(new PlayerJoinEvent() { Player = hub});
+		public static void InvokePlayerJoin(ReferenceHub hub) => PlayerJoinEvent?.Invoke(new PlayerJoinEvent() { Player = hub });
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
 		public delegate void OnPlayerLeave(PlayerLeaveEvent ev);
 
 		public static void InvokePlayerLeave(ReferenceHub hub, string userId, GameObject obj)
 		{
-			PlayerLeaveEvent?.Invoke(new PlayerLeaveEvent() { Player = hub});
+			PlayerLeaveEvent?.Invoke(new PlayerLeaveEvent() { Player = hub });
 		}
 
 		public static event OnConsoleCommand ConsoleCommandEvent;
@@ -212,7 +212,7 @@ namespace EXILED
 			returnMessage = ev.ReturnMessage;
 			color = ev.Color;
 		}
-		
+
 		public static event PlayerHurt PlayerHurtEvent;
 		public delegate void PlayerHurt(ref PlayerHurtEvent ev);
 
@@ -220,7 +220,7 @@ namespace EXILED
 		{
 			if (PlayerHurtEvent == null)
 				return;
-			
+
 			PlayerHurtEvent ev = new PlayerHurtEvent
 			{
 				Attacker = pid == 0 ? stats.gameObject.GetPlayer() : Player.GetPlayer(pid),
@@ -235,15 +235,15 @@ namespace EXILED
 
 			info = ev.Info;
 		}
-		
+
 		public static event PlayerDeath PlayerDeathEvent;
-		public delegate void PlayerDeath(ref PlayerDeathEvent ev); 
+		public delegate void PlayerDeath(ref PlayerDeathEvent ev);
 
 		public static void InvokePlayerDeath(PlayerStats stats, ref PlayerStats.HitInfo info, GameObject obj, int pid = 0)
 		{
 			if (PlayerDeathEvent == null)
 				return;
-			
+
 			PlayerDeathEvent ev = new PlayerDeathEvent()
 			{
 				Killer = pid == 0 ? stats.gameObject.GetPlayer() : Player.GetPlayer(pid),
@@ -253,12 +253,12 @@ namespace EXILED
 
 			if (string.IsNullOrEmpty(ev.Player.GetUserId()) || ev.Player.GetRole() == RoleType.Spectator)
 				return;
-			
+
 			PlayerDeathEvent.Invoke(ref ev);
 
 			info = ev.Info;
 		}
-		
+
 		public static event SetClass SetClassEvent;
 		public delegate void SetClass(SetClassEvent ev);
 
@@ -266,7 +266,7 @@ namespace EXILED
 		{
 			if (SetClassEvent == null)
 				return;
-			
+
 			SetClassEvent ev = new SetClassEvent()
 			{
 				Player = ccm.gameObject.GetPlayer(),
@@ -276,27 +276,27 @@ namespace EXILED
 			SetClassEvent.Invoke(ev);
 		}
 
-        public static event StartItems StartItemsEvent;
-        public delegate void StartItems(StartItemsEvent ev);
+		public static event StartItems StartItemsEvent;
+		public delegate void StartItems(StartItemsEvent ev);
 
-        public static void InvokeStartItems(GameObject obj, RoleType id, ref List<ItemType> startItems)
-        {
-	        if (StartItemsEvent == null)
-                return;
+		public static void InvokeStartItems(GameObject obj, RoleType id, ref List<ItemType> startItems)
+		{
+			if (StartItemsEvent == null)
+				return;
 
-            StartItemsEvent ev = new StartItemsEvent()
-            {
-                Player = obj.GetPlayer(),
-                Role = id,
-                StartItems = startItems
-            };
+			StartItemsEvent ev = new StartItemsEvent()
+			{
+				Player = obj.GetPlayer(),
+				Role = id,
+				StartItems = startItems
+			};
 
-            StartItemsEvent.Invoke(ev);
+			StartItemsEvent.Invoke(ev);
 
-            startItems = ev.StartItems;
-        }
+			startItems = ev.StartItems;
+		}
 
-        public static event GrenadeThrown GrenadeThrownEvent;
+		public static event GrenadeThrown GrenadeThrownEvent;
 		public delegate void GrenadeThrown(ref GrenadeThrownEvent ev);
 
 		public static void InvokeGrenadeThrown(ref GrenadeManager gm, ref int id, ref bool slow, ref double fuse, ref bool allow)
@@ -305,7 +305,7 @@ namespace EXILED
 				return;
 
 			GrenadeThrownEvent ev = new GrenadeThrownEvent()
-			{   
+			{
 				Player = gm.gameObject.GetPlayer(),
 				Gm = gm,
 				Id = id,
@@ -375,7 +375,7 @@ namespace EXILED
 				Item = item,
 				Allow = allow
 			};
-			
+
 			PickupItemEvent.Invoke(ref ev);
 			allow = ev.Allow;
 			item = ev.Item;
@@ -400,7 +400,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event HandcuffFreed PlayerHandcuffFreedEvent;
 		public delegate void HandcuffFreed(ref HandcuffEvent ev);
 
@@ -428,13 +428,13 @@ namespace EXILED
 		{
 			if (Scp079TriggerTeslaEvent == null)
 				return;
-			
+
 			Scp079TriggerTeslaEvent ev = new Scp079TriggerTeslaEvent
 			{
 				Player = player.GetPlayer(),
 				Allow = allow
 			};
-			
+
 			Scp079TriggerTeslaEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
@@ -447,13 +447,13 @@ namespace EXILED
 		{
 			if (CheckEscapeEvent == null)
 				return;
-			
+
 			CheckEscapeEvent ev = new CheckEscapeEvent
 			{
 				Player = ply.GetPlayer(),
 				Allow = allow
 			};
-			
+
 			CheckEscapeEvent.Invoke(ref ev);
 			allow = ev.Allow;
 		}
@@ -465,18 +465,18 @@ namespace EXILED
 		{
 			if (IntercomSpeakEvent == null)
 				return;
-			
+
 			IntercomSpeakEvent ev = new IntercomSpeakEvent
 			{
 				Player = player.GetPlayer(),
 				Allow = allow
 			};
-			
+
 			IntercomSpeakEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
 		}
-    
+
 		public static event OnLateShoot LateShootEvent;
 		public delegate void OnLateShoot(ref LateShootEvent ev);
 
@@ -484,7 +484,7 @@ namespace EXILED
 		{
 			if (LateShootEvent == null)
 				return;
-			
+
 			LateShootEvent ev = new LateShootEvent()
 			{
 				Shooter = shooter,
@@ -529,7 +529,7 @@ namespace EXILED
 		{
 			if (Scp106TeleportEvent == null)
 				return;
-			
+
 			Scp106TeleportEvent ev = new Scp106TeleportEvent()
 			{
 				Player = Gplayer.GetPlayer(),
@@ -625,13 +625,13 @@ namespace EXILED
 		{
 			if (PlayerReloadEvent == null)
 				return;
-			
+
 			PlayerReloadEvent ev = new PlayerReloadEvent
 			{
 				Player = player.GetPlayer(),
 				Allow = allow
 			};
-			
+
 			PlayerReloadEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
@@ -643,20 +643,20 @@ namespace EXILED
 		public static void InvokePlayerSpawn(CharacterClassManager ccm, RoleType role, ref Vector3 spawnPoint, ref float rotY)
 		{
 			if (PlayerSpawnEvent == null)
-				return; 
+				return;
 
 			PlayerSpawnEvent ev = new PlayerSpawnEvent
 			{
 				Player = ccm.gameObject.GetPlayer(),
 				Role = role,
-                Spawnpoint = spawnPoint,
-                RotationY = rotY
+				Spawnpoint = spawnPoint,
+				RotationY = rotY
 			};
 
 			PlayerSpawnEvent.Invoke(ev);
 
-            spawnPoint = ev.Spawnpoint;
-            rotY = ev.RotationY;
+			spawnPoint = ev.Spawnpoint;
+			rotY = ev.RotationY;
 		}
 
 		public static event Scp106Contain Scp106ContainEvent;
@@ -677,7 +677,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event Scp914Activation Scp914ActivationEvent;
 		public delegate void Scp914Activation(ref Scp914ActivationEvent ev);
 
@@ -739,25 +739,25 @@ namespace EXILED
 			allow = ev.Allow;
 		}
 
-        public static event SyncData SyncDataEvent;
-        public delegate void SyncData (ref SyncDataEvent ev);
+		public static event SyncData SyncDataEvent;
+		public delegate void SyncData(ref SyncDataEvent ev);
 
-        public static void InvokeSyncData(GameObject player, ref int state, ref Vector2 v2, ref bool allow)
-        {
-	        if (SyncDataEvent == null)
-                return;
+		public static void InvokeSyncData(GameObject player, ref int state, ref Vector2 v2, ref bool allow)
+		{
+			if (SyncDataEvent == null)
+				return;
 
-            SyncDataEvent ev = new SyncDataEvent
-            {
-                Player = player.GetPlayer(),
-                State = state,
-                v2 = v2,
-                Allow = allow
-            };
+			SyncDataEvent ev = new SyncDataEvent
+			{
+				Player = player.GetPlayer(),
+				State = state,
+				v2 = v2,
+				Allow = allow
+			};
 
-            SyncDataEvent.Invoke(ref ev);
+			SyncDataEvent.Invoke(ref ev);
 
-            allow = ev.Allow;
-        }
-    }
+			allow = ev.Allow;
+		}
+	}
 }

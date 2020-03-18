@@ -1,6 +1,6 @@
-using System;
 using GameCore;
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -16,13 +16,13 @@ namespace EXILED.Patches
 			try
 			{
 				if (!__instance._interactRateLimit.CanExecute() || target == null ||
-				    Vector3.Distance(target.transform.position, __instance.transform.position) >
-				    __instance.raycastDistance * 1.10000002384186)
+					Vector3.Distance(target.transform.position, __instance.transform.position) >
+					__instance.raycastDistance * 1.10000002384186)
 					return false;
 				Handcuffs handcuffs = ReferenceHub.GetHub(target).handcuffs;
 				if (handcuffs == null || __instance.MyReferenceHub.inventory.curItem != ItemType.Disarmer ||
-				    (__instance.MyReferenceHub.characterClassManager.CurClass < RoleType.Scp173 ||
-				     handcuffs.CufferId >= 0) || handcuffs.MyReferenceHub.inventory.curItem != ItemType.None)
+					(__instance.MyReferenceHub.characterClassManager.CurClass < RoleType.Scp173 ||
+					 handcuffs.CufferId >= 0) || handcuffs.MyReferenceHub.inventory.curItem != ItemType.None)
 					return false;
 				Team team1 = __instance.MyReferenceHub.characterClassManager.Classes
 					.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team;
@@ -97,9 +97,9 @@ namespace EXILED.Patches
 			try
 			{
 				if (!__instance._interactRateLimit.CanExecute(true) || target == null ||
-				    (Vector3.Distance(target.transform.position, __instance.transform.position) >
-				     __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager
-					     .Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
+					(Vector3.Distance(target.transform.position, __instance.transform.position) >
+					 __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager
+						 .Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
 					return false;
 				bool allow = true;
 				Events.InvokePlayerHandcuffFree(__instance.gameObject, target, ref allow);

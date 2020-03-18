@@ -1,5 +1,5 @@
-using System;
 using Harmony;
+using System;
 using UnityEngine;
 using Console = GameCore.Console;
 
@@ -32,7 +32,7 @@ namespace EXILED.Patches
 				if (s != "TESLA")
 					return true;
 				float manaFromLabel2 = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-				if (manaFromLabel2 > (double) __instance.curMana)
+				if (manaFromLabel2 > (double)__instance.curMana)
 				{
 					__instance.RpcNotEnoughMana(manaFromLabel2, __instance.curMana);
 					return false;

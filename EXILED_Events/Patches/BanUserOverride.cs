@@ -3,18 +3,15 @@ using Harmony;
 using Mirror;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new []{typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool)})]
-    public class BanUserOverride
-    {
-        public static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
-        {
+	[HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool) })]
+	public class BanUserOverride
+	{
+		public static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
+		{
 			if (isGlobalBan && ConfigFile.ServerConfig.GetBool("gban_ban_ip", false))
 			{
 				duration = int.MaxValue;
@@ -128,6 +125,6 @@ namespace EXILED.Patches
 				ServerConsole.Disconnect(player, message);
 			}
 			return false;
-        }
-    }
+		}
+	}
 }
