@@ -1,5 +1,5 @@
-using System;
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -15,8 +15,8 @@ namespace EXILED.Patches
 					return true;
 
 				if (!__instance._interactRateLimit.CanExecute(false) ||
-				    (double) Vector3.Distance(__instance.transform.position,
-					    __instance.GetComponent<Escape>().worldPosition) >= (double) (Escape.radius * 2))
+					 Vector3.Distance(__instance.transform.position,
+						__instance.GetComponent<Escape>().worldPosition) >= (double)(Escape.radius * 2))
 					return false;
 
 				bool allow = true;

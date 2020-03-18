@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EXILED;
+using System;
 using System.Threading;
-using EXILED;
 using UnityEngine;
 using Exception = Mono.WebBrowser.Exception;
 
@@ -14,7 +14,7 @@ namespace EXILED_Idler
 
 		public static bool WasLastCheckIdle;
 		public static bool IdleSent;
-		
+
 		public override void OnEnable()
 		{
 			_thread = new Thread(DoIdleCheck);
@@ -37,7 +37,7 @@ namespace EXILED_Idler
 
 		public override void OnReload()
 		{
-			
+
 		}
 
 		public override string getName => "EXILED_Idler";
@@ -46,7 +46,7 @@ namespace EXILED_Idler
 
 		public static void DoIdleCheck()
 		{
-			while(_thread != null)
+			while (_thread != null)
 			{
 				try
 				{
@@ -91,7 +91,7 @@ namespace EXILED_Idler
 
 		public static bool IsServerIdle()
 		{
-			lock(PlayerManager.players)
+			lock (PlayerManager.players)
 			{
 				if (PlayerManager.players.Count == 0)
 					return true;

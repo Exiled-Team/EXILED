@@ -1,6 +1,6 @@
-﻿using System;
-using Harmony;
+﻿using Harmony;
 using Mirror;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -19,7 +19,7 @@ namespace EXILED.Patches
 					return false;
 				foreach (GameObject player in PlayerManager.players)
 				{
-					if ((double)Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) < 1.97000002861023)
+					if (Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) < 1.97000002861023)
 					{
 						CharacterClassManager component1 = player.GetComponent<CharacterClassManager>();
 						PlayerStats component2 = player.GetComponent<PlayerStats>();

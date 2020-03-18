@@ -1,6 +1,6 @@
+using Harmony;
 using System;
 using System.Linq;
-using Harmony;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -17,18 +17,18 @@ namespace EXILED.Patches
 			{
 				bool allow = true;
 				if (!__instance._playerInteractRateLimit.CanExecute() ||
-				    __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
-				    (doorId == null || __instance._ccm.CurClass == RoleType.None ||
-				     __instance._ccm.CurClass == RoleType.Spectator))
+					__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
+					(doorId == null || __instance._ccm.CurClass == RoleType.None ||
+					 __instance._ccm.CurClass == RoleType.Spectator))
 					return false;
 				Door component1 = doorId.GetComponent<Door>();
 				if (component1 == null || (component1.buttons.Count == 0
-					    ? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
-					    : (component1.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
+						? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
+						: (component1.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
 					return false;
 				Scp096PlayerScript component2 = __instance.GetComponent<Scp096PlayerScript>();
 				if (component1.destroyedPrefab != null && (!component1.isOpen || component1.curCooldown > 0.0) &&
-				    (component2.iAm096 && component2.enraged == Scp096PlayerScript.RageState.Enraged))
+					(component2.iAm096 && component2.enraged == Scp096PlayerScript.RageState.Enraged))
 				{
 					if (!__instance._096DestroyLockedDoors && component1.locked && !__instance._sr.BypassMode)
 						return false;
@@ -61,9 +61,9 @@ namespace EXILED.Patches
 						}
 					}
 					else if (string.Equals(component1.permissionLevel, "CHCKPOINT_ACC",
-						         StringComparison.OrdinalIgnoreCase) && __instance.GetComponent<CharacterClassManager>()
-						         .Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team ==
-					         Team.SCP)
+								 StringComparison.OrdinalIgnoreCase) && __instance.GetComponent<CharacterClassManager>()
+								 .Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team ==
+							 Team.SCP)
 					{
 						try
 						{

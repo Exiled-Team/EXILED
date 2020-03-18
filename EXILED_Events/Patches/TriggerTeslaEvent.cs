@@ -1,6 +1,6 @@
+using Harmony;
 using System;
 using System.Collections.Generic;
-using Harmony;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -25,8 +25,8 @@ namespace EXILED.Patches
 				{
 					bool triggerable = true;
 					if (Vector3.Distance(__instance.transform.position, player.transform.position) <
-					    __instance.sizeOfTrigger &&
-					    player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
+						__instance.sizeOfTrigger &&
+						player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
 					{
 						Events.InvokeTriggerTesla(player, hurtRange, ref triggerable);
 						if (triggerable)

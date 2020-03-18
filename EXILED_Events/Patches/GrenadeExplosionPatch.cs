@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Grenades;
 using Harmony;
 using MEC;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -13,7 +13,7 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.GrenadeExplosionEventDisabled)
 				return;
-			
+
 			foreach (GameObject obj in PlayerManager.players)
 			{
 				if (Vector3.Distance(obj.transform.position, __instance.gameObject.transform.position) > 45f)

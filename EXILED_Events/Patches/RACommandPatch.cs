@@ -1,10 +1,10 @@
-using System;
 using Harmony;
 using RemoteAdmin;
+using System;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (CommandProcessor), nameof(CommandProcessor.ProcessQuery), typeof (string), typeof (CommandSender))]
+	[HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery), typeof(string), typeof(CommandSender))]
 	public class OnCommandPatch
 	{
 		public static bool Prefix(ref string q, ref CommandSender sender)
@@ -13,7 +13,7 @@ namespace EXILED.Patches
 			{
 				QueryProcessor queryProcessor = sender is PlayerCommandSender playerCommandSender ? playerCommandSender.Processor : null;
 				bool allow = true;
-				
+
 				if (q.ToLower().StartsWith("gban-kick"))
 				{
 					if (queryProcessor == null || !queryProcessor._sender.SR.RaEverywhere)
@@ -27,9 +27,9 @@ namespace EXILED.Patches
 					}
 				}
 
-				if (q.Contains("REQUEST_DATA PLAYER_LIST SILENT")) 
+				if (q.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
 					return true;
-				
+
 				Events.InvokeCommand(ref q, ref sender, ref allow);
 				return allow;
 

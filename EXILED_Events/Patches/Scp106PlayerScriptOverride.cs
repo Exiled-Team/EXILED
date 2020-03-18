@@ -5,34 +5,34 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdUsePortal))]
-    public class Scp106PlayerScriptOverride
-    {
-        public static bool Prefix(Scp106PlayerScript __instance)
-        {
-	        try
-	        {
-		        if (!__instance._interactRateLimit.CanExecute(false))
-			        return false;
-		        if (!__instance.GetComponent<FallDamage>().isGrounded)
-			        return false;
+	[HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdUsePortal))]
+	public class Scp106PlayerScriptOverride
+	{
+		public static bool Prefix(Scp106PlayerScript __instance)
+		{
+			try
+			{
+				if (!__instance._interactRateLimit.CanExecute(false))
+					return false;
+				if (!__instance.GetComponent<FallDamage>().isGrounded)
+					return false;
 
-		        bool allow = true;
+				bool allow = true;
 
-		        Events.InvokeScp106Teleport(__instance.gameObject, __instance.portalPosition, ref allow);
+				Events.InvokeScp106Teleport(__instance.gameObject, __instance.portalPosition, ref allow);
 
-		        if (!allow)
-			        return false;
+				if (!allow)
+					return false;
 
-		        if (__instance.iAm106 && __instance.portalPosition != Vector3.zero && !__instance.goingViaThePortal)
-			        Timing.RunCoroutine(__instance._DoTeleportAnimation(), Segment.Update);
-		        return true;
-	        }
-	        catch (Exception e)
-	        {
-		        Log.Error($"SCP106Portal Error: {e}");
-		        return true;
-	        }
-        }
-    }
+				if (__instance.iAm106 && __instance.portalPosition != Vector3.zero && !__instance.goingViaThePortal)
+					Timing.RunCoroutine(__instance._DoTeleportAnimation(), Segment.Update);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Log.Error($"SCP106Portal Error: {e}");
+				return true;
+			}
+		}
+	}
 }

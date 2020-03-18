@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using EXILED.Extensions;
 using Harmony;
 using Mirror;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -14,7 +14,7 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.GhostmodePatchDisable)
 				return true;
-			
+
 			try
 			{
 				List<GameObject> players = PlayerManager.players;
@@ -25,7 +25,7 @@ namespace EXILED.Patches
 					__instance.receivedData[index] = new PlayerPositionData(players[index]);
 				if (__instance.transmitBuffer == null || __instance.transmitBuffer.Length < __instance.usedData)
 					__instance.transmitBuffer = new PlayerPositionData[__instance.usedData * 2];
-				
+
 				foreach (GameObject gameObject in players)
 				{
 					CharacterClassManager component1 = gameObject.GetComponent<CharacterClassManager>();
@@ -45,7 +45,7 @@ namespace EXILED.Patches
 							float angle = Vector3.Angle(fwd, (pos - position).normalized);
 							Vector3 dir = (pos - position).normalized;
 							Quaternion rot = Quaternion.LookRotation(dir);
-							
+
 							if (angle >= 100f)
 							{
 								float newAngle = Vector3.Angle(new Vector3(fwd.x, fwd.y + 180f, fwd.z),
@@ -64,9 +64,9 @@ namespace EXILED.Patches
 							{
 								CharacterClassManager component2 = players[index].GetComponent<CharacterClassManager>();
 								if (component2.Classes.SafeGet(component2.CurClass).team != Team.SCP &&
-								    component2.Classes.SafeGet(component2.CurClass).team != Team.RIP && !players[index]
-									    .GetComponent<Scp939_VisionController>()
-									    .CanSee(component1.GetComponent<Scp939PlayerScript>()))
+									component2.Classes.SafeGet(component2.CurClass).team != Team.RIP && !players[index]
+										.GetComponent<Scp939_VisionController>()
+										.CanSee(component1.GetComponent<Scp939PlayerScript>()))
 									__instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f,
 										__instance.transmitBuffer[index].playerID);
 							}
@@ -99,16 +99,16 @@ namespace EXILED.Patches
 					{
 						networkConnection.Send(
 							new PlayerPositionManager.PositionMessage(__instance.transmitBuffer,
-								(byte) __instance.usedData, 0), 1);
+								(byte)__instance.usedData, 0), 1);
 					}
 					else
 					{
 						byte part;
-						for (part = (byte) 0; (int) part < __instance.usedData / 20; ++part)
+						for (part = 0; part < __instance.usedData / 20; ++part)
 							networkConnection.Send(
 								new PlayerPositionManager.PositionMessage(__instance.transmitBuffer, 20, part),
 								1);
-						byte count = (byte) (__instance.usedData % (part * 20));
+						byte count = (byte)(__instance.usedData % (part * 20));
 						if (count > 0)
 							networkConnection.Send(
 								new PlayerPositionManager.PositionMessage(__instance.transmitBuffer, count, part), 1);

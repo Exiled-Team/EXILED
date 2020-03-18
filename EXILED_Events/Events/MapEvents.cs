@@ -1,7 +1,6 @@
+using EXILED.Extensions;
 using System;
 using System.Collections.Generic;
-using EXILED.Extensions;
-using EXILED.Patches;
 using UnityEngine;
 
 namespace EXILED
@@ -16,14 +15,14 @@ namespace EXILED
 
 		public static void InvokeWarheadDetonation() => WarheadDetonationEvent?.Invoke();
 
-        public static event OnDoorInteract DoorInteractEvent;
+		public static event OnDoorInteract DoorInteractEvent;
 		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
 
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
 			if (DoorInteractEvent == null)
 				return;
-			
+
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
 				Player = player.GetPlayer(),
@@ -35,7 +34,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event OnElevatorInteract ElevatorInteractEvent;
 		public delegate void OnElevatorInteract(ref ElevatorInteractionEvent ev);
 
@@ -43,7 +42,7 @@ namespace EXILED
 		{
 			if (ElevatorInteractEvent == null)
 				return;
-			
+
 			ElevatorInteractionEvent ev = new ElevatorInteractionEvent()
 			{
 				Player = player.GetPlayer(),
@@ -63,7 +62,7 @@ namespace EXILED
 		{
 			if (WarheadCancelledEvent == null)
 				return;
-			
+
 			WarheadCancelEvent ev = new WarheadCancelEvent
 			{
 				Allow = allow,
@@ -82,12 +81,12 @@ namespace EXILED
 		{
 			if (WarheadStartEvent == null)
 				return;
-			
+
 			WarheadStartEvent ev = new WarheadStartEvent
 			{
 				Allow = allow
 			};
-			
+
 			WarheadStartEvent.Invoke(ev);
 
 			allow = ev.Allow;
@@ -118,7 +117,7 @@ namespace EXILED
 		{
 			if (TriggerTeslaEvent == null)
 				return;
-			
+
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
 				Player = obj.GetPlayer(),
@@ -129,7 +128,7 @@ namespace EXILED
 
 			triggerable = ev.Triggerable;
 		}
-		
+
 		public static event Scp914Upgrade Scp914UpgradeEvent;
 		public delegate void Scp914Upgrade(ref SCP914UpgradeEvent ev);
 
@@ -151,7 +150,7 @@ namespace EXILED
 				Items = pickups,
 				KnobSetting = knobSetting
 			};
-			
+
 			Scp914UpgradeEvent.Invoke(ref ev);
 
 			pickups = ev.Items;
@@ -168,9 +167,9 @@ namespace EXILED
 
 			GeneratorUnlockEvent ev = new GeneratorUnlockEvent()
 			{
-                Player = person.GetPlayer(),
-                Generator = generator,
-                Allow = allow				
+				Player = person.GetPlayer(),
+				Generator = generator,
+				Allow = allow
 			};
 
 			GeneratorUnlockEvent.Invoke(ref ev);
@@ -197,7 +196,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorClose GeneratorClosedEvent;
 		public delegate void GeneratorClose(ref GeneratorCloseEvent ev);
 
@@ -217,7 +216,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorInsert GeneratorInsertedEvent;
 		public delegate void GeneratorInsert(ref GeneratorInsertTabletEvent ev);
 
@@ -237,7 +236,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorEject GeneratorEjectedEvent;
 		public delegate void GeneratorEject(ref GeneratorEjectTabletEvent ev);
 
@@ -257,7 +256,7 @@ namespace EXILED
 
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorFinish GeneratorFinishedEvent;
 		public delegate void GeneratorFinish(ref GeneratorFinishEvent ev);
 
@@ -286,7 +285,7 @@ namespace EXILED
 			{
 				Allow = allow
 			};
-			
+
 			DecontaminationEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
@@ -299,14 +298,14 @@ namespace EXILED
 		{
 			if (CheckRoundEndEvent == null)
 				return;
-			
+
 			CheckRoundEndEvent ev = new CheckRoundEndEvent
 			{
 				LeadingTeam = team,
 				ForceEnd = force,
 				Allow = allow
 			};
-			
+
 			CheckRoundEndEvent.Invoke(ref ev);
 
 			teamChanged = team != ev.LeadingTeam;

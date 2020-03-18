@@ -1,9 +1,9 @@
-using System;
 using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (ServerConsole), nameof(ServerConsole.AddLog))]
+	[HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.AddLog))]
 	public class WaitingForPlayersEvent
 	{
 		public static void Prefix(ref string q)
@@ -13,12 +13,12 @@ namespace EXILED.Patches
 
 			try
 			{
-                if (q == "Waiting for players..")
-                {
-                    q += ".";
+				if (q == "Waiting for players..")
+				{
+					q += ".";
 
-                    Events.InvokeWaitingForPlayers();
-                }
+					Events.InvokeWaitingForPlayers();
+				}
 			}
 			catch (Exception e)
 			{

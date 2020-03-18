@@ -1,7 +1,6 @@
+using Harmony;
 using System;
 using System.Collections.Generic;
-using EXILED.Extensions;
-using Harmony;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -22,14 +21,14 @@ namespace EXILED.Patches
 					Events.InvokePocketDimDamage(__instance.gameObject, ref allow);
 					if (!allow)
 						info.Amount = 0f;
-					
+
 					if (info.Amount >= go.GetComponent<PlayerStats>().health)
 						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
 					if (!allow)
 						info.Amount = 0f;
 				}
 
-				if(info.GetDamageType() == DamageTypes.Grenade)
+				if (info.GetDamageType() == DamageTypes.Grenade)
 					Events.InvokePlayerHurt(__instance, ref info, go, info.PlyId);
 				else
 					Events.InvokePlayerHurt(__instance, ref info, go);
@@ -44,7 +43,7 @@ namespace EXILED.Patches
 						DeathStuff.Add(ccm.UserId);
 					}
 
-					if(info.GetDamageType() == DamageTypes.Grenade)
+					if (info.GetDamageType() == DamageTypes.Grenade)
 						Events.InvokePlayerDeath(__instance, ref info, go, info.PlyId);
 					else
 						Events.InvokePlayerDeath(__instance, ref info, go);

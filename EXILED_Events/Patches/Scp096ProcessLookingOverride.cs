@@ -1,5 +1,5 @@
-using System;
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -13,10 +13,10 @@ namespace EXILED.Patches
 			{
 				if (EventPlugin.Scp096PatchDisable)
 					return true;
-				
+
 				__instance._rageProgress += amount;
 				if (__instance._rageProgress <
-				    (double) __instance.rageCurve.Evaluate(Mathf.Min(PlayerManager.players.Count, 20)))
+					(double)__instance.rageCurve.Evaluate(Mathf.Min(PlayerManager.players.Count, 20)))
 					return false;
 				bool allow = true;
 				Events.InvokeScp096Enrage(__instance, ref allow);
@@ -36,25 +36,25 @@ namespace EXILED.Patches
 		}
 	}
 
-		[HarmonyPatch(typeof(Scp096PlayerScript), "DeductRage")]
-		public class Scp096EndRage
+	[HarmonyPatch(typeof(Scp096PlayerScript), "DeductRage")]
+	public class Scp096EndRage
+	{
+		public static bool Prefix(Scp096PlayerScript __instance)
 		{
-			public static bool Prefix(Scp096PlayerScript __instance)
+			try
 			{
-				try
-				{
-					if (EventPlugin.Scp096PatchDisable)
-						return true;
-					
-					bool allow = true;
-					Events.InvokeScp096Calm(__instance, ref allow);
-					return allow;
-				}
-				catch (Exception e)
-				{
-					Log.Error($"SCP-096 Calm event: {e}");
+				if (EventPlugin.Scp096PatchDisable)
 					return true;
-				}
+
+				bool allow = true;
+				Events.InvokeScp096Calm(__instance, ref allow);
+				return allow;
 			}
-		} 
+			catch (Exception e)
+			{
+				Log.Error($"SCP-096 Calm event: {e}");
+				return true;
+			}
+		}
+	}
 }

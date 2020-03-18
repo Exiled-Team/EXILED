@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using GameCore;
 using Harmony;
 using Mirror;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Console = GameCore.Console;
 using Object = UnityEngine.Object;
@@ -27,12 +26,12 @@ namespace EXILED.Patches
 				float[] array2 = new float[] { 0f, 0.4f, 0.6f, 0.5f };
 				__instance.laterJoinNextIndex = 0;
 				int r = EventPlugin.Gen.Next(1, 100);
-				
+
 				for (int i = 0; i < array.Length; i++)
 				{
-					RoleType roleType = (RoleType) ((__instance.ForceClass < RoleType.Scp173)
+					RoleType roleType = (RoleType)((__instance.ForceClass < RoleType.Scp173)
 						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i])
-						: ((int) __instance.ForceClass));
+						: ((int)__instance.ForceClass));
 					__instance.laterJoinNextIndex++;
 					if (__instance.Classes.CheckBounds(forcedClass))
 					{
@@ -96,8 +95,8 @@ namespace EXILED.Patches
 					}
 				}
 
-				Object.FindObjectOfType<PlayerList>().NetworkRoundStartTime = (int) Time.realtimeSinceStartup;
-				startClassList.time = (int) Time.realtimeSinceStartup;
+				Object.FindObjectOfType<PlayerList>().NetworkRoundStartTime = (int)Time.realtimeSinceStartup;
+				startClassList.time = (int)Time.realtimeSinceStartup;
 				startClassList.warhead_kills = -1;
 				Object.FindObjectOfType<RoundSummary>().SetStartClassList(startClassList);
 				if (ConfigFile.ServerConfig.GetBool("smart_class_picker", true))
