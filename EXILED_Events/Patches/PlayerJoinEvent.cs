@@ -19,13 +19,10 @@ namespace EXILED.Patches
 
             try
             {
-                MuteHandler.Mutes.Clear();
-                MuteHandler.Reload();
-                Timing.CallDelayed(1f, () => {
-                    if (MuteHandler.QueryPersistantMute(__instance._ccm.UserId))
-                        __instance._ccm.SetMuted(true);
-                    else
-                        __instance._ccm.SetMuted(false);
+                Timing.CallDelayed(0.25f, () => {
+                    foreach(ReferenceHub player in Player.GetHubs())
+                        if(player.characterClassManager.NetworkMuted)
+                            player.characterClassManager.SetDirtyBit(1ul);
                 });
 
                 ReferenceHub hub = __instance.gameObject.GetPlayer();
