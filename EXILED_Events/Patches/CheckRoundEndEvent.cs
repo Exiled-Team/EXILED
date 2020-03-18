@@ -39,6 +39,7 @@ namespace EXILED.Patches
 			{
 				while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || PlayerManager.players.Count < 2)
 					yield return 0.0f;
+				yield return 0.0f;
 				RoundSummary.SumInfo_ClassList newList = new RoundSummary.SumInfo_ClassList();
 				foreach (GameObject player in PlayerManager.players)
 				{
@@ -139,6 +140,7 @@ namespace EXILED.Patches
 					for (i1 = (byte)0; i1 < (byte)50; ++i1)
 						yield return 0.0f;
 					PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
+					yield break;
 				}
 			}
 		}
