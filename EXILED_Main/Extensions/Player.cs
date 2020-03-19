@@ -721,7 +721,7 @@ namespace EXILED.Extensions
 			}
 			catch (Exception exception)
 			{
-				Log.Error($"SetScale Error: {exception}");
+				Log.Error($"SetScale error: {exception}");
 			}
 		}
 

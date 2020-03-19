@@ -187,7 +187,7 @@ namespace EXILED
 			}
 			catch (Exception e)
 			{
-				Log.Error($"Auto-update Error: {e}");
+				Log.Error($"Auto-update error: {e}");
 			}
 		}
 
