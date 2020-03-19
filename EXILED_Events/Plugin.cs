@@ -120,9 +120,9 @@ namespace EXILED
 				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
 				instance.PatchAll();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Patching failed! {e}");
+				Log.Error($"Patching failed! {exception}");
 			}
 
 			Log.Debug("Patching complete. c:");
@@ -185,9 +185,9 @@ namespace EXILED
 				Log.Info("Auto-update complete, restarting server...");
 				Application.Quit();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Auto-update error: {e}");
+				Log.Error($"Auto-update error: {exception}");
 			}
 		}
 
