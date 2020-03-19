@@ -12,9 +12,9 @@ namespace EXILED.Patches
 			{
 				Events.InvokeRoundStart();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Round end event error: {e}");
+				Log.Error($"RoundStartEvent error: {exception}");
 			}
 		}
 	}

@@ -15,12 +15,14 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
+
 				Events.InvokeGrenadeThrown(ref __instance, ref id, ref slowThrow, ref time, ref allow);
+
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Grenade thrown patch error: {e}");
+				Log.Error($"GrenadeThrownEvent error: {exception}");
 				return true;
 			}
 		}

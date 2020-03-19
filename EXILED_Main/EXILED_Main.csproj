@@ -92,10 +92,11 @@
     <Compile Include="ApiObjects\Room.cs" />
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
-    <Compile Include="Extensions\CassieExtensions.cs" />
-    <Compile Include="Extensions\MapExtensions.cs" />
-    <Compile Include="Extensions\PlayerExtensions.cs" />
-    <Compile Include="Extensions\Scp914Extensions.cs" />
+    <Compile Include="Extensions\Cassie.cs" />
+    <Compile Include="Extensions\Map.cs" />
+    <Compile Include="Extensions\Player.cs" />
+    <Compile Include="Extensions\Scp079.cs" />
+    <Compile Include="Extensions\Scp914.cs" />
     <Compile Include="LevenshteinDistance.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="MainLoader.cs" />

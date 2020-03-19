@@ -4,7 +4,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdContain106))]
-	class Scp106ContainEvent
+	public class Scp106ContainEvent
 	{
 		public static bool Prefix(CharacterClassManager __instance)
 		{
@@ -14,12 +14,14 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
+
 				Events.InvokeScp106ContainEvent(__instance.gameObject, ref allow);
+
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP106Contain Error: {e}");
+				Log.Error($"Scp106ContainEvent error: {exception}");
 				return true;
 			}
 		}

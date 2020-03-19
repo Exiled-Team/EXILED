@@ -186,7 +186,7 @@
     <Compile Include="Patches\ElevatorInteractionEvent.cs" />
     <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerEventOverride.cs" />
-    <Compile Include="Patches\MuteHandlerPatch.cs" />
+    <Compile Include="Patches\MuteHandlerFix.cs" />
     <Compile Include="Patches\Scp079Events.cs" />
     <Compile Include="Patches\CallCmdSetUnicOverride.cs" />
     <Compile Include="Patches\SyncDataEvent.cs" />
@@ -225,7 +225,7 @@
     <Compile Include="Patches\SetClassEvent.cs" />
     <Compile Include="Patches\SetGroupEvent.cs" />
     <Compile Include="Patches\SetRandomRolesPatch.cs" />
-    <Compile Include="Patches\SmortClassPickerFix.cs" />
+    <Compile Include="Patches\SmartClassPickerFix.cs" />
     <Compile Include="Patches\StartItemsEvent.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
     <Compile Include="Patches\UseMedicalEvent.cs" />

@@ -15,11 +15,11 @@ namespace EXILED.Patches
 
 			try
 			{
-				Events.InvokePlayerLeave(__instance, __instance.characterClassManager.UserId, __instance.gameObject);
+				Events.InvokePlayerLeave(__instance);
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Error in PlayerLeave Event: {e}");
+				Log.Error($"PlayerLeaveEvent error: {exception}");
 			}
 		}
 	}

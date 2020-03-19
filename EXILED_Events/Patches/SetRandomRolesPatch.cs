@@ -16,18 +16,16 @@ namespace EXILED.Patches
 			try
 			{
 				if (__instance.isLocalPlayer && __instance.isServer)
-				{
 					__instance.RunSmartClassPicker();
-				}
+
 				if (NetworkServer.active)
-				{
 					Timing.RunCoroutine(__instance.MakeSureToSetHP(), Segment.FixedUpdate);
-				}
+
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SetRandomRoles error: {e}");
+				Log.Error($"SetRandomRolesPatch error: {exception}");
 				return true;
 			}
 		}

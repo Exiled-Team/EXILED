@@ -25,7 +25,9 @@ namespace EXILED.Patches
 					return false;
 
 				bool allow = true;
+
 				Events.InvokePickupItem(__instance.gameObject, ref component, ref allow);
+
 				if (!allow)
 					return false;
 
@@ -92,9 +94,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Item Pickup error: {e}");
+				Log.Error($"PickupItemEvent error: {exception}");
 				return true;
 			}
 		}

@@ -19,6 +19,7 @@ namespace EXILED_Idler
 		{
 			_thread = new Thread(DoIdleCheck);
 			_thread.Start();
+
 			Events.PreAuthEvent += OnPreAuthEvent;
 		}
 
@@ -26,14 +27,12 @@ namespace EXILED_Idler
 		{
 			if (WasLastCheckIdle)
 				Log.Info("Server process resuming..");
+
 			WasLastCheckIdle = false;
 			LastActive = DateTime.UtcNow;
 		}
 
-		public override void OnDisable()
-		{
-			_thread = null;
-		}
+		public override void OnDisable() => _thread = null;
 
 		public override void OnReload()
 		{
@@ -41,8 +40,6 @@ namespace EXILED_Idler
 		}
 
 		public override string getName => "EXILED_Idler";
-
-
 
 		public static void DoIdleCheck()
 		{
@@ -84,6 +81,7 @@ namespace EXILED_Idler
 				{
 					Log.Error(e.ToString());
 				}
+
 				Thread.Sleep(5000);
 			}
 		}

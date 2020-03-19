@@ -15,9 +15,9 @@ namespace EXILED.Patches
 			{
 				Events.InvokeSetClass(__instance, id);
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SetClass event error: {e}");
+				Log.Error($"SetClassEvent error: {exception}");
 			}
 		}
 	}

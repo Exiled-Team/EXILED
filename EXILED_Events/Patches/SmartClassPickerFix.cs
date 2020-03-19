@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RunSmartClassPicker))]
-	public class SmortClassPickerFix
+	public class SmartClassPickerFix
 	{
 		public static bool Prefix(CharacterClassManager __instance)
 		{
@@ -160,8 +160,8 @@ namespace EXILED.Patches
 									else
 									{
 										str = "Updating Player \"" + text + "\" in smBalancedPicker";
-										int[] value;
-										if (dictionary.TryGetValue(text, out value))
+
+										if (dictionary.TryGetValue(text, out int[] value))
 										{
 											ConfigFile.smBalancedPicker.Add(text, value);
 										}
@@ -303,9 +303,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"StupidClassPicker: {e}");
+				Log.Error($"SmartClassPickerFix error: {exception}");
 				return true;
 			}
 		}

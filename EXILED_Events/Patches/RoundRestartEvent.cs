@@ -11,16 +11,16 @@ namespace EXILED.Patches
 			if (EventPlugin.RoundRestartEventPatchDisable)
 				return;
 
-			Log.Info("Round restarting");
+			Log.Info("Round restarting...");
 
 			try
 			{
 				Events.InvokeRoundRestart();
 				Events.InvokeRoundEnd();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"RoundRestart Error: {e}");
+				Log.Error($"RoundRestartEvent/RoundEndEvent error: {exception}");
 			}
 		}
 	}

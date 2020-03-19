@@ -8,21 +8,24 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, ref bool encrypted)
 		{
+			if (EventPlugin.PlayerConsoleCommandPatchDisable)
+				return true;
+
 			try
 			{
-				if (EventPlugin.PlayerConsoleCommandPatchDisable)
-					return true;
-
 				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color);
+
 				if (string.IsNullOrEmpty(color))
 					color = "white";
+
 				if (!string.IsNullOrEmpty(returnMessage))
 					__instance.GCT.SendToClient(__instance.connectionToClient, returnMessage, color);
+
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Console Command event error: {e}");
+				Log.Error($"ConsoleCommandEvent error: {exception}");
 				return true;
 			}
 		}

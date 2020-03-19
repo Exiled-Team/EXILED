@@ -14,6 +14,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(PocketDimensionTeleport __instance, Collider other)
 		{
+			if (EventPlugin.PocketDimensionEscapedEventPatchDisabled)
+				return true;
+
 			try
 			{
 				NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
@@ -78,9 +81,9 @@ namespace EXILED.Patches
 				ImageGenerator.pocketDimensionGenerator.GenerateRandom();
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP106PocketEscape Error {e}");
+				Log.Error($"PocketDimEscapedEvent error {exception}");
 				return true;
 			}
 		}

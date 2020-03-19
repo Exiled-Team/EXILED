@@ -14,25 +14,26 @@ namespace EXILED.Patches
 				return;
 
 			Log.Info($"Player connect: ");
+
 			if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-				Log.Info($"Server full");
+				Log.Info($"Server full!");
 
 			try
 			{
+				ReferenceHub player = __instance.gameObject.GetPlayer();
+
 				Timing.CallDelayed(0.25f, () =>
 				{
-					foreach (ReferenceHub player in Player.GetHubs())
-						if (player.characterClassManager.NetworkMuted)
-							player.characterClassManager.SetDirtyBit(1ul);
+					if (player != null && player.IsMuted())
+						player.characterClassManager.SetDirtyBit(1UL);
 				});
 
-				ReferenceHub hub = __instance.gameObject.GetPlayer();
-				if (!string.IsNullOrEmpty(hub.characterClassManager.UserId))
-					Events.InvokePlayerJoin(hub);
+				if (!string.IsNullOrEmpty(player.characterClassManager.UserId))
+					Events.InvokePlayerJoin(player);
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"PlayerJoin Event error: {e}");
+				Log.Error($"PlayerJoinEvent error: {exception}");
 			}
 		}
 	}

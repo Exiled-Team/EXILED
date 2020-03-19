@@ -11,6 +11,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
 		{
+			if (EventPlugin.Scp106PocketDimensionDamageEventPatchDisable)
+				return true;
+
 			try
 			{
 				if (!__instance._iawRateLimit.CanExecute(true))
@@ -110,9 +113,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP106Pocket Error: {e}");
+				Log.Error($"PocketDimDamageEvent error: {exception}");
 				return true;
 			}
 		}

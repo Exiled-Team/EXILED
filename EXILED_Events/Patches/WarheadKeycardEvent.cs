@@ -1,4 +1,5 @@
 using Harmony;
+using System;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -11,26 +12,34 @@ namespace EXILED.Patches
 			if (EventPlugin.WarheadKeycardAccessEventDisable)
 				return true;
 
-			if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract))
-				return false;
-
-			GameObject gameObject = GameObject.Find("OutsitePanelScript");
-
-			if (!__instance.ChckDis(gameObject.transform.position))
-				return false;
-
-			bool allow = true;
-			string requiredPerms = "CONT_LVL_3";
-
-			Events.InvokeWarheadKeycardAccess(__instance.gameObject, ref allow, ref requiredPerms);
-
-			if (allow && __instance._inv.GetItemByID(__instance._inv.curItem).permissions.Contains(requiredPerms))
+			try
 			{
-				gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
-				__instance.OnInteract();
-			}
+				if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract))
+					return false;
 
-			return false;
+				GameObject gameObject = GameObject.Find("OutsitePanelScript");
+
+				if (!__instance.ChckDis(gameObject.transform.position))
+					return false;
+
+				bool allow = true;
+				string requiredPermission = "CONT_LVL_3";
+
+				Events.InvokeWarheadKeycardAccess(__instance.gameObject, ref allow, ref requiredPermission);
+
+				if (allow && __instance._inv.GetItemByID(__instance._inv.curItem).permissions.Contains(requiredPermission))
+				{
+					gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
+					__instance.OnInteract();
+				}
+
+				return false;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"WarheadKeycardAccessEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }

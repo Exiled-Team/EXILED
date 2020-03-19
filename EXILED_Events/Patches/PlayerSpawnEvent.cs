@@ -108,11 +108,12 @@ namespace EXILED.Patches
 				__instance.Scp173.iAm173 = (__instance.CurClass == RoleType.Scp173);
 				__instance.Scp939.iAm939 = __instance.CurClass.Is939();
 				__instance.RefreshPlyModel();
+
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"PlayerSpawn error: {e}");
+				Log.Error($"PlayerSpawnEvent error: {exception}");
 				return true;
 			}
 		}

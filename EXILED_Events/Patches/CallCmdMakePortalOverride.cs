@@ -9,15 +9,12 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp106PlayerScript __instance)
 		{
+			if (EventPlugin.Scp106CreatedPortalEventDisable)
+				return true;
+
 			try
 			{
-				if (EventPlugin.Scp106CreatedPortalEventDisable)
-					return true;
-
-				if (!__instance._interactRateLimit.CanExecute(true))
-					return false;
-
-				if (!__instance.GetComponent<FallDamage>().isGrounded)
+				if (!__instance._interactRateLimit.CanExecute(true) || !__instance.GetComponent<FallDamage>().isGrounded)
 					return false;
 
 				bool rayCastHit = Physics.Raycast(new Ray(__instance.transform.position, -__instance.transform.up), out RaycastHit raycastHit, 10f, __instance.teleportPlacementMask);
@@ -36,7 +33,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception exception)
 			{
-				Log.Error($"Scp106CreatedPortal error: {exception}");
+				Log.Error($"Scp106CreatedPortalEvent error: {exception}");
 				return true;
 			}
 

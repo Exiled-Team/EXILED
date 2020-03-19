@@ -19,9 +19,9 @@ namespace EXILED.Patches
 				HandleConnection(request);
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Preauth event error: {e}");
+				Log.Error($"PreAuthEvent error: {exception}");
 				return true;
 			}
 		}
@@ -195,9 +195,9 @@ namespace EXILED.Patches
 										}
 									}
 								}
-								catch (Exception ex)
+								catch (Exception exception)
 								{
-									ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, ex.Message));
+									ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, exception.Message));
 									rejectData.Reset();
 									rejectData.Put(2);
 									request.Reject(rejectData);
@@ -207,9 +207,9 @@ namespace EXILED.Patches
 					}
 				}
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
-				ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, ex.Message));
+				ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, exception.Message));
 				rejectData.Reset();
 				rejectData.Put(4);
 				request.Reject(rejectData);

@@ -21,13 +21,14 @@ namespace EXILED.Patches
 
 				int serverId = ServerConsole.Port;
 				bool allow = true;
+
 				Events.InvokeCheaterReport(reporterSteamId, reportedSteamId, reportedIp, reason, serverId, ref allow);
 
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Cheater Report Patch error: {e}");
+				Log.Error($"CheaterReportEvent error: {exception}");
 				return true;
 			}
 		}

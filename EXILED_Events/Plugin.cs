@@ -39,7 +39,7 @@ namespace EXILED
 		public static bool SetRandomRolesPatchDisable;
 		public static bool WarheadLockPatchDisable;
 		public static bool GrenadeThrownPatchDisable;
-		public static bool NineFourteenMachinePatchDisable;
+		public static bool Scp914UpgradeEventPatchDisable;
 		public static bool PlayerConsoleCommandPatchDisable;
 		public static bool Scp079TriggerTeslaPatchDisable;
 		public static bool CheckEscapeEventPatchDisable;
@@ -64,6 +64,15 @@ namespace EXILED
 		public static bool Scp079ExpGainEventDisable;
 		public static bool ElevatorInteractionEventDisable;
 		public static bool Scp106CreatedPortalEventDisable;
+		public static bool LockerInteractEventPatchDisable;
+		public static bool Scp106PocketDimensionDamageEventPatchDisable;
+		public static bool Scp106TeleportEventPatchDisable;
+		public static bool PocketDimensionEscapedEventPatchDisabled;
+		public static bool Scp914ActivationEventPatchDisabled;
+		public static bool Scp914KnobChangeEventPatchDisable;
+		public static bool WarheadStartEventPatchDisable;
+		public static bool LateShootEventPatchDisable;
+		public static bool GeneratorFinishedEventPatchDisable;
 		#endregion
 
 		private EventHandlers handlers;

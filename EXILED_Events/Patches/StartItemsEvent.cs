@@ -99,9 +99,9 @@ namespace EXILED.Patches
 				}
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"StartItems error: {e}");
+				Log.Error($"StartItemsEvent error: {exception}");
 				return true;
 			}
 		}

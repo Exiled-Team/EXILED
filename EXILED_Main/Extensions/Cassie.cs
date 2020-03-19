@@ -20,10 +20,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Plays a cassie message.
 		/// </summary>
-		public static void CassieMessage(string msg, bool makeHold, bool makeNoise)
-		{
-			mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise);
-		}
+		public static void CassieMessage(string msg, bool makeHold, bool makeNoise) => mtfRespawn.RpcPlayCustomAnnouncement(msg, makeHold, makeNoise);
 
 		/// <summary>
 		/// Plays a cassie message with a delay.

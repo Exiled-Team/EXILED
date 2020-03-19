@@ -13,178 +13,80 @@ namespace EXILED.Patches
 			if (EventPlugin.DoorInteractionEventPatchDisable)
 				return true;
 
+			bool allow = true;
+			Door door = doorId.GetComponent<Door>();
+
 			try
 			{
-				bool allow = true;
 				if (!__instance._playerInteractRateLimit.CanExecute() ||
 					__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
 					(doorId == null || __instance._ccm.CurClass == RoleType.None ||
 					 __instance._ccm.CurClass == RoleType.Spectator))
 					return false;
-				Door component1 = doorId.GetComponent<Door>();
-				if (component1 == null || (component1.buttons.Count == 0
+
+				if (door == null || (door.buttons.Count == 0
 						? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
-						: (component1.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
+						: (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
 					return false;
+
 				Scp096PlayerScript component2 = __instance.GetComponent<Scp096PlayerScript>();
-				if (component1.destroyedPrefab != null && (!component1.isOpen || component1.curCooldown > 0.0) &&
+
+				if (door.destroyedPrefab != null && (!door.isOpen || door.curCooldown > 0.0) &&
 					(component2.iAm096 && component2.enraged == Scp096PlayerScript.RageState.Enraged))
 				{
-					if (!__instance._096DestroyLockedDoors && component1.locked && !__instance._sr.BypassMode)
+					if (!__instance._096DestroyLockedDoors && door.locked && !__instance._sr.BypassMode)
 						return false;
-					component1.DestroyDoor(true);
+
+					door.DestroyDoor(true);
 				}
 				else
 				{
 					__instance.OnInteract();
 					if (__instance._sr.BypassMode)
 					{
-						try
-						{
-							Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-							if (!allow)
-							{
-								__instance.RpcDenied(doorId);
-								return false;
-							}
-
-							component1.ChangeState();
-						}
-						catch (Exception e)
-						{
-							Log.Error($"Door interaction error: {e}");
-
-							if (allow) component1.ChangeState();
-							else __instance.RpcDenied(doorId);
-							return false;
-						}
+						allow = true;
 					}
-					else if (string.Equals(component1.permissionLevel, "CHCKPOINT_ACC",
-								 StringComparison.OrdinalIgnoreCase) && __instance.GetComponent<CharacterClassManager>()
-								 .Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team ==
-							 Team.SCP)
+					else if (string.Equals(door.permissionLevel, "CHCKPOINT_ACC", StringComparison.OrdinalIgnoreCase) && 
+						__instance.GetComponent<CharacterClassManager>().Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team == Team.SCP)
 					{
-						try
-						{
-							Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-							if (!allow)
-							{
-								__instance.RpcDenied(doorId);
-								return false;
-							}
-
-							component1.ChangeState();
-						}
-						catch (Exception e)
-						{
-							Log.Error($"Door interaction error: {e}");
-
-							if (allow) component1.ChangeState();
-							else __instance.RpcDenied(doorId);
-						}
+						allow = true;
 					}
 					else
 					{
-						if (string.IsNullOrEmpty(component1.permissionLevel))
-						{
-							if (component1.locked)
-							{
-								__instance.RpcDenied(doorId);
-								return false;
-							}
-
-							try
-							{
-								Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-								if (!allow)
-								{
-									__instance.RpcDenied(doorId);
-									return false;
-								}
-
-								component1.ChangeState();
-								return false;
-							}
-							catch (Exception e)
-							{
-								Log.Error($"Door interaction error: {e}");
-
-								if (allow) component1.ChangeState();
-								else __instance.RpcDenied(doorId);
-								return false;
-							}
-						}
-
 						Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
-						if (item != null && item.permissions.Contains(component1.permissionLevel))
+						if (string.IsNullOrEmpty(door.permissionLevel))
 						{
-							if (!component1.locked)
-							{
-								try
-								{
-									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-									if (!allow)
-									{
-										__instance.RpcDenied(doorId);
-										return false;
-									}
-
-									component1.ChangeState();
-								}
-								catch (Exception e)
-								{
-									Log.Error($"Door interaction error: {e}");
-
-									if (allow) component1.ChangeState();
-									else __instance.RpcDenied(doorId);
-								}
-							}
-							else
-								__instance.RpcDenied(doorId);
+							allow = !door.locked;
+						}
+						else if (item != null && item.permissions.Contains(door.permissionLevel))
+						{
+							allow = !door.locked;
 						}
 						else
-						{
-							// Let the plugins decide in case the default options to open the door weren't met
-							if (!component1.locked)
-							{
-								// Instead of passing allow as true, pass it as false
-								allow = false;
-								try
-								{
-									Events.InvokeDoorInteract(__instance.gameObject, component1, ref allow);
-
-									if (!allow)
-									{
-										__instance.RpcDenied(doorId);
-										return false;
-									}
-
-									component1.ChangeState();
-								}
-								catch (Exception e)
-								{
-									Log.Error($"Door interaction error: {e}");
-
-									if (allow) component1.ChangeState();
-									else __instance.RpcDenied(doorId);
-								}
-							}
-							else
-								__instance.RpcDenied(doorId);
-						}
+							allow = false;
 					}
+
+					Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
+
+					if (!allow)
+					{
+						__instance.RpcDenied(doorId);
+						return false;
+					}
+
+					door.ChangeState();
 				}
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"DoorInteraction Error: {e}");
-				return true;
+				Log.Error($"DoorInteractionEvent error: {exception}");
+
+				if (allow) door.ChangeState();
+				else __instance.RpcDenied(doorId);
+
+				return false;
 			}
 		}
 	}
