@@ -84,7 +84,11 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void SetMaxEnergy(this ReferenceHub player, float amount) => player.scp079PlayerScript.NetworkmaxMana = amount;
+		public static void SetMaxEnergy(this ReferenceHub player, float amount)
+		{
+			player.scp079PlayerScript.NetworkmaxMana = amount;
+			player.scp079PlayerScript.levels[player.GetLevel()].maxMana = amount;
+		}
 
 		/// <summary>
 		/// Gets the locked doors <see cref="SyncListString"/>.
@@ -163,5 +167,33 @@ namespace EXILED.Extensions
 		/// <param name="cameraId"></param>
 		/// <param name="lookAtRotation"></param>
 		public static void SetCamera(this ReferenceHub player, ushort cameraId, bool lookAtRotation = false) => player.scp079PlayerScript.RpcSwitchCamera(cameraId, lookAtRotation);
+
+		/// <summary>
+		/// Gets the levels of SCP-079.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static Scp079PlayerScript.Level079[] GetLevels(this ReferenceHub player) => player.scp079PlayerScript.levels;
+
+		/// <summary>
+		/// Sets the levels of SCP-079.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="levels"></param>
+		public static void SetLevels(this ReferenceHub player, Scp079PlayerScript.Level079[] levels) => player.scp079PlayerScript.levels = levels;
+
+		/// <summary>
+		/// Gets the abilities of SCP-079.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static Scp079PlayerScript.Ability079[] GetAbilities(this ReferenceHub player) => player.scp079PlayerScript.abilities;
+
+		/// <summary>
+		/// Sets the abilities of SCP-079.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="abilities"></param>
+		public static void SetAbilities(this ReferenceHub player, Scp079PlayerScript.Ability079[] abilities) => player.scp079PlayerScript.abilities = abilities;
 	}
 }
