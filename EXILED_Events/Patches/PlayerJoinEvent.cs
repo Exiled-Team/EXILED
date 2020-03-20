@@ -22,8 +22,16 @@ namespace EXILED.Patches
 				Timing.CallDelayed(0.25f, () =>
 				{
 					foreach (ReferenceHub player in Player.GetHubs())
-						if (player.characterClassManager.NetworkMuted)
+					{
+						if (MuteHandler.QueryPersistantMute(player.GetUserId()))
+						{
+							player.characterClassManager.SetMuted(true);
 							player.characterClassManager.SetDirtyBit(1ul);
+						}
+
+						if (MuteHandler.QueryPersistantMute("ICOM-" + player.GetUserId()))
+							player.characterClassManager.IntercomMuted = true;
+					}
 				});
 
 				ReferenceHub hub = __instance.gameObject.GetPlayer();
