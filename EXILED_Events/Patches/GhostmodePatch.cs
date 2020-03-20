@@ -117,9 +117,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"TransmitData Error: {e}");
+				Log.Error($"GhostmodePatch error: {exception}");
 				return true;
 			}
 		}

@@ -14,9 +14,9 @@ namespace EXILED.Patches
 			{
 				Events.InvokeWarheadDetonation();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Warhead Detonation event error: {e}");
+				Log.Error($"WarheadDetonationEvent error: {exception}");
 			}
 		}
 	}
@@ -26,17 +26,27 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(AlphaWarheadController __instance, GameObject disabler)
 		{
-			ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Detonation cancelled.", ServerLogs.ServerLogType.GameEvent);
-			if (!__instance.inProgress || __instance.timeToDetonation <= 10.0)
-				return false;
-			if (__instance.timeToDetonation <= 15.0 && disabler != null)
-				__instance.GetComponent<PlayerStats>().TargetAchieve(disabler.GetComponent<NetworkIdentity>().connectionToClient, "thatwasclose");
+			try
+			{
+				ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Detonation cancelled.", ServerLogs.ServerLogType.GameEvent);
 
-			bool allow = true;
+				if (!__instance.inProgress || __instance.timeToDetonation <= 10.0)
+					return false;
 
-			Events.InvokeWarheadCancel(disabler, ref allow);
+				if (__instance.timeToDetonation <= 15.0 && disabler != null)
+					__instance.GetComponent<PlayerStats>().TargetAchieve(disabler.GetComponent<NetworkIdentity>().connectionToClient, "thatwasclose");
 
-			return allow && !EventPlugin.WarheadLocked;
+				bool allow = true;
+
+				Events.InvokeWarheadCancel(disabler, ref allow);
+
+				return allow && !EventPlugin.WarheadLocked;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"WarheadCancelledEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 
@@ -45,17 +55,35 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(AlphaWarheadController __instance)
 		{
-			if (Recontainer079.isLocked)
+			if (EventPlugin.WarheadStartEventPatchDisable)
+				return true;
+
+			try
+			{
+				if (Recontainer079.isLocked)
+					return false;
+
+				__instance.doorsOpen = false;
+
+				ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Countdown started.", ServerLogs.ServerLogType.GameEvent);
+
+				if ((AlphaWarheadController._resumeScenario != -1 || __instance.scenarios_start[AlphaWarheadController._startScenario].SumTime() != (double)__instance.timeToDetonation) && (AlphaWarheadController._resumeScenario == -1 || __instance.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() != (double)__instance.timeToDetonation))
+					return false;
+
+				bool allow = true;
+
+				Events.InvokeWarheadStart(ref allow);
+
+				if (allow)
+					__instance.NetworkinProgress = true;
+
 				return false;
-			__instance.doorsOpen = false;
-			ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Countdown started.", ServerLogs.ServerLogType.GameEvent);
-			if ((AlphaWarheadController._resumeScenario != -1 || __instance.scenarios_start[AlphaWarheadController._startScenario].SumTime() != (double)__instance.timeToDetonation) && (AlphaWarheadController._resumeScenario == -1 || __instance.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() != (double)__instance.timeToDetonation))
-				return false;
-			bool allow = true;
-			Events.InvokeWarheadStart(ref allow);
-			if (allow)
-				__instance.NetworkinProgress = true;
-			return false;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"WarheadStartEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }

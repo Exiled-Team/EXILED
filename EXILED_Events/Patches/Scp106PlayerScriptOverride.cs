@@ -10,11 +10,12 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp106PlayerScript __instance)
 		{
+			if (EventPlugin.Scp106TeleportEventPatchDisable)
+				return true;
+
 			try
 			{
-				if (!__instance._interactRateLimit.CanExecute(false))
-					return false;
-				if (!__instance.GetComponent<FallDamage>().isGrounded)
+				if (!__instance._interactRateLimit.CanExecute(false) || !__instance.GetComponent<FallDamage>().isGrounded)
 					return false;
 
 				bool allow = true;
@@ -26,11 +27,12 @@ namespace EXILED.Patches
 
 				if (__instance.iAm106 && __instance.portalPosition != Vector3.zero && !__instance.goingViaThePortal)
 					Timing.RunCoroutine(__instance._DoTeleportAnimation(), Segment.Update);
+
 				return true;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP106Portal Error: {e}");
+				Log.Error($"Scp106TeleportEvent error: {exception}");
 				return true;
 			}
 		}

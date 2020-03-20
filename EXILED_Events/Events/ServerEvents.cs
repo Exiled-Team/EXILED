@@ -18,7 +18,7 @@ namespace EXILED
 		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
 
-		public static void InvokePreAuth(ref string userid, ConnectionRequest request, ref bool allow)
+		public static void InvokePreAuth(ref string userId, ConnectionRequest request, ref bool allow)
 		{
 			if (PreAuthEvent == null)
 				return;
@@ -27,13 +27,13 @@ namespace EXILED
 			{
 				Allow = allow,
 				Request = request,
-				UserId = userid
+				UserId = userId
 			};
 
 			PreAuthEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
-			userid = ev.UserId;
+			userId = ev.UserId;
 		}
 
 		public static event OnRoundEnd RoundEndEvent;
@@ -105,7 +105,7 @@ namespace EXILED
 		public static event TeamRespawn TeamRespawnEvent;
 		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
 
-		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<ReferenceHub> toRespawn)
+		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<ReferenceHub> playersToRespawn)
 		{
 			if (TeamRespawnEvent == null)
 				return;
@@ -114,28 +114,28 @@ namespace EXILED
 			{
 				IsChaos = isChaos,
 				MaxRespawnAmt = maxRespawn,
-				ToRespawn = toRespawn
+				ToRespawn = playersToRespawn
 			};
 
 			TeamRespawnEvent.Invoke(ref ev);
 
 			maxRespawn = ev.MaxRespawnAmt;
-			toRespawn = ev.ToRespawn;
+			playersToRespawn = ev.ToRespawn;
 		}
 
 
 		public static event PlayerBanned PlayerBannedEvent;
 		public delegate void PlayerBanned(PlayerBannedEvent ev);
 
-		public static void InvokePlayerBanned(BanDetails details, BanType type)
+		public static void InvokePlayerBanned(BanDetails banDetails, BanType banType)
 		{
 			if (PlayerBannedEvent == null)
 				return;
 
 			PlayerBannedEvent ev = new PlayerBannedEvent()
 			{
-				Details = details,
-				Type = type
+				Details = banDetails,
+				Type = banType
 			};
 
 			PlayerBannedEvent.Invoke(ev);
@@ -144,13 +144,13 @@ namespace EXILED
 		public static event PlayerBan PlayerBanEvent;
 		public delegate void PlayerBan(PlayerBanEvent ev);
 
-		public static void InvokePlayerBan(ref ReferenceHub user, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason, ref ReferenceHub issuer)
+		public static void InvokePlayerBan(ref ReferenceHub player, ref string userId, ref int duration, ref bool allow, ref string message, ref string reason, ref ReferenceHub issuer)
 		{
 			if (PlayerBanEvent == null)
 				return;
 			// ev.Allow is already set to true in the constructor
 			// Private field values set in the constructor to avoid triggering the logs
-			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), user, reason, userId, duration, issuer)
+			PlayerBanEvent ev = new PlayerBanEvent(Plugin.Config.GetBool("exiled_log_ban_event", true), player, reason, userId, duration, issuer)
 			{
 				FullMessage = message,
 				Reason = reason
@@ -162,7 +162,7 @@ namespace EXILED
 			duration = ev.Duration;
 			message = ev.FullMessage;
 			reason = ev.Reason;
-			user = ev.BannedPlayer;
+			player = ev.BannedPlayer;
 			issuer = ev.Issuer;
 		}
 

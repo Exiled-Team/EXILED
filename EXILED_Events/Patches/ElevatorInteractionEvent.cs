@@ -39,9 +39,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Elevator Use Error: {e}");
+				Log.Error($"ElevatorUseEvent error: {exception}");
 				return true;
 			}
 		}

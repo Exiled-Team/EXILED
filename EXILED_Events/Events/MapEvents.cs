@@ -58,7 +58,7 @@ namespace EXILED
 		public static event WarheadCancelled WarheadCancelledEvent;
 		public delegate void WarheadCancelled(WarheadCancelEvent ev);
 
-		public static void InvokeWarheadCancel(GameObject obj, ref bool allow)
+		public static void InvokeWarheadCancel(GameObject player, ref bool allow)
 		{
 			if (WarheadCancelledEvent == null)
 				return;
@@ -66,7 +66,7 @@ namespace EXILED
 			WarheadCancelEvent ev = new WarheadCancelEvent
 			{
 				Allow = allow,
-				Player = obj ? obj.GetPlayer() : null
+				Player = player ? player.GetPlayer() : null
 			};
 
 			WarheadCancelledEvent.Invoke(ev);
@@ -95,12 +95,12 @@ namespace EXILED
 		public static event OnLockerInteract LockerInteractEvent;
 		public delegate void OnLockerInteract(LockerInteractionEvent ev);
 
-		internal static void InvokeLockerInteract(GameObject gameObject, Locker locker, int lockerid, ref bool allow)
+		internal static void InvokeLockerInteract(GameObject player, Locker locker, int lockerId, ref bool allow)
 		{
 			if (LockerInteractEvent == null)
 				return;
 
-			LockerInteractionEvent ev = new LockerInteractionEvent(gameObject.GetPlayer(), locker, lockerid)
+			LockerInteractionEvent ev = new LockerInteractionEvent(player.GetPlayer(), locker, lockerId)
 			{
 				Allow = allow,
 			};
@@ -113,34 +113,35 @@ namespace EXILED
 		public static event TriggerTesla TriggerTeslaEvent;
 		public delegate void TriggerTesla(ref TriggerTeslaEvent ev);
 
-		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
+		public static void InvokeTriggerTesla(GameObject player, bool isInHurtingRange, ref bool isTriggerable)
 		{
 			if (TriggerTeslaEvent == null)
 				return;
 
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
-				Player = obj.GetPlayer(),
-				Triggerable = triggerable
+				Player = player.GetPlayer(),
+				IsInHurtingRange = isInHurtingRange,
+				Triggerable = isTriggerable
 			};
 
 			TriggerTeslaEvent.Invoke(ref ev);
 
-			triggerable = ev.Triggerable;
+			isTriggerable = ev.Triggerable;
 		}
 
 		public static event Scp914Upgrade Scp914UpgradeEvent;
 		public delegate void Scp914Upgrade(ref SCP914UpgradeEvent ev);
 
-		public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
+		public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> characterClassManagers, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
 		{
 			if (Scp914UpgradeEvent == null)
 				return;
 
 			List<ReferenceHub> players = new List<ReferenceHub>();
 
-			foreach (CharacterClassManager ccm in ccms)
-				players.Add(ccm.gameObject.GetPlayer());
+			foreach (CharacterClassManager characterClassManager in characterClassManagers)
+				players.Add(characterClassManager.gameObject.GetPlayer());
 
 			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
 			{
@@ -160,14 +161,14 @@ namespace EXILED
 		public static event GeneratorUnlock GeneratorUnlockEvent;
 		public delegate void GeneratorUnlock(ref GeneratorUnlockEvent ev);
 
-		internal static void InvokeGeneratorUnlock(GameObject person, Generator079 generator, ref bool allow)
+		internal static void InvokeGeneratorUnlock(GameObject player, Generator079 generator, ref bool allow)
 		{
 			if (GeneratorUnlockEvent == null)
 				return;
 
 			GeneratorUnlockEvent ev = new GeneratorUnlockEvent()
 			{
-				Player = person.GetPlayer(),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
@@ -294,24 +295,24 @@ namespace EXILED
 		public static event CheckRoundEnd CheckRoundEndEvent;
 		public delegate void CheckRoundEnd(ref CheckRoundEndEvent ev);
 
-		public static void InvokeCheckRoundEnd(ref bool force, ref bool allow, ref RoundSummary.LeadingTeam team, ref bool teamChanged)
+		public static void InvokeCheckRoundEnd(ref bool forceEnd, ref bool allow, ref RoundSummary.LeadingTeam leadingTeam, ref bool teamChanged)
 		{
 			if (CheckRoundEndEvent == null)
 				return;
 
 			CheckRoundEndEvent ev = new CheckRoundEndEvent
 			{
-				LeadingTeam = team,
-				ForceEnd = force,
+				LeadingTeam = leadingTeam,
+				ForceEnd = forceEnd,
 				Allow = allow
 			};
 
 			CheckRoundEndEvent.Invoke(ref ev);
 
-			teamChanged = team != ev.LeadingTeam;
-			team = ev.LeadingTeam;
+			teamChanged = leadingTeam != ev.LeadingTeam;
+			leadingTeam = ev.LeadingTeam;
 			allow = ev.Allow;
-			force = ev.ForceEnd;
+			forceEnd = ev.ForceEnd;
 		}
 	}
 }

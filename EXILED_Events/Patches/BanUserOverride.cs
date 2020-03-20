@@ -40,6 +40,7 @@ namespace EXILED.Patches
 			{
 				message = message + "Reason: " + reason;
 			}
+
 			try
 			{
 				bool allow = true;
@@ -48,9 +49,9 @@ namespace EXILED.Patches
 				if (!allow)
 					return false;
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
-				Log.Error($"Error in OnBanPlayer event: {ex.ToString()}");
+				Log.Error($"BanUserEvent error: {exception}");
 			}
 
 			if (duration > 0 && (!ServerStatic.PermissionsHandler.IsVerified || !userHub.serverRoles.BypassStaff))

@@ -16,13 +16,16 @@ namespace EXILED.Patches
 			{
 				if (!__instance._mSyncRateLimit.CanExecute(false))
 					return false;
+
 				bool allow = true;
+
 				Events.InvokeSyncData(__instance.gameObject, ref state, ref v2, ref allow);
+
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"CmdSyncDataEvent Error: {e}");
+				Log.Error($"SyncDataEvent error: {exception}");
 				return true;
 			}
 		}

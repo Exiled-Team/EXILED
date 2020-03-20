@@ -31,12 +31,13 @@ namespace EXILED.Patches
 					return true;
 
 				Events.InvokeCommand(ref q, ref sender, ref allow);
+
 				return allow;
 
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"RA Command event error: {e}");
+				Log.Error($"RemoteAdminCommandEvent error: {exception}");
 				return true;
 			}
 		}

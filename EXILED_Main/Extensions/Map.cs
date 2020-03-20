@@ -146,11 +146,11 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets the random spawn point of the indicated role.
 		/// </summary>
-		/// <param name="role">RoleType</param>
+		/// <param name="roleType">RoleType</param>
 		/// <returns>Vector3 spawnPoint</returns>
-		public static Vector3 GetRandomSpawnPoint(RoleType role)
+		public static Vector3 GetRandomSpawnPoint(RoleType roleType)
 		{
-			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(role);
+			GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(roleType);
 
 			return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
 		}

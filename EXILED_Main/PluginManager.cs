@@ -166,9 +166,9 @@ namespace EXILED
 					Log.Info($"Successfully loaded {p.getName}");
 				}
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Error while initalizing {mod}! {e}");
+				Log.Error($"Error while initalizing {mod}! {exception}");
 			}
 		}
 
@@ -180,9 +180,9 @@ namespace EXILED
 				{
 					plugin.OnEnable();
 				}
-				catch (Exception e)
+				catch (Exception exception)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while enabling {e}");
+					Log.Error($"Plugin {plugin.getName} threw an exception while enabling {exception}");
 				}
 			}
 		}
@@ -195,9 +195,9 @@ namespace EXILED
 				{
 					plugin.OnReload();
 				}
-				catch (Exception e)
+				catch (Exception exception)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while reloading {e}");
+					Log.Error($"Plugin {plugin.getName} threw an exception while reloading {exception}");
 				}
 			}
 		}
@@ -210,9 +210,9 @@ namespace EXILED
 				{
 					plugin.OnDisable();
 				}
-				catch (Exception e)
+				catch (Exception exception)
 				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while disabling {e}");
+					Log.Error($"Plugin {plugin.getName} threw an exception while disabling {exception}");
 				}
 			}
 		}
@@ -228,9 +228,9 @@ namespace EXILED
 
 				Timing.RunCoroutine(LoadPlugins());
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"There was an error while reloading. {e}");
+				Log.Error($"There was an error while reloading. {exception}");
 			}
 		}
 	}

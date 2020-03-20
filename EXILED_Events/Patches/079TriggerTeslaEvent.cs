@@ -10,11 +10,11 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
 		{
+			if (EventPlugin.Scp079TriggerTeslaPatchDisable)
+				return true;
+
 			try
 			{
-				if (EventPlugin.Scp079TriggerTeslaPatchDisable)
-					return true;
-
 				if (!__instance._interactRateLimit.CanExecute() || !__instance.iAm079)
 					return false;
 				Console.AddDebugLog("SCP079", "Command received from a client: " + command,
@@ -52,9 +52,9 @@ namespace EXILED.Patches
 				__instance.Mana -= manaFromLabel2;
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"079Tesla Error: {e}");
+				Log.Error($"Scp079TriggerTeslaEvent error: {exception}");
 				return true;
 			}
 		}

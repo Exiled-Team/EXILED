@@ -4,13 +4,14 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	// joker kinda cute uwu
 	[HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
 	public class WeaponManagerOverride
 	{
-		public static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir,
-		  Vector3 sourcePos, Vector3 targetPos)
+		public static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
 		{
+			if (EventPlugin.LateShootEventPatchDisable)
+				return true;
+
 			try
 			{
 				if (!__instance._iawRateLimit.CanExecute(true))
@@ -49,8 +50,7 @@ namespace EXILED.Patches
 					bool flag = target != null;
 					if (targetPos == Vector3.zero)
 					{
-						RaycastHit raycastHit;
-						if (Physics.Raycast(sourcePos, dir, out raycastHit, 500f, __instance.raycastMask))
+						if (Physics.Raycast(sourcePos, dir, out RaycastHit raycastHit, 500f, __instance.raycastMask))
 						{
 							HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
 							if (component != null)
@@ -68,8 +68,7 @@ namespace EXILED.Patches
 					}
 					else
 					{
-						RaycastHit raycastHit;
-						if (Physics.Linecast(sourcePos, targetPos, out raycastHit, __instance.raycastMask))
+						if (Physics.Linecast(sourcePos, targetPos, out RaycastHit raycastHit, __instance.raycastMask))
 						{
 							HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
 							if (component != null)
@@ -130,8 +129,10 @@ namespace EXILED.Patches
 								num2 *= 4f;
 
 							bool allow = true;
+
 							Log.Debug("Invoking late shoot.");
-							Events.InvokeOnLateShoot(__instance.hub, target, ref num2, num1, ref allow);
+							Events.InvokeOnLateShoot(__instance.hub, target, ref num2, num1, upper, ref allow);
+
 							if (!allow)
 								return false;
 
@@ -162,9 +163,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"OnShoot: {e}");
+				Log.Error($"LateShootEvent error: {exception}");
 				return true;
 			}
 		}

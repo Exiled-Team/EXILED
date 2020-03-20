@@ -11,7 +11,7 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Scp914.Scp914Machine __instance)
 		{
-			if (EventPlugin.NineFourteenMachinePatchDisable)
+			if (EventPlugin.Scp914UpgradeEventPatchDisable)
 				return true;
 
 			try
@@ -39,18 +39,18 @@ namespace EXILED.Patches
 				List<Pickup> pickups = __instance.items;
 				bool allowUpgrade = true;
 
-				Events.InvokeScp914Upgrade(__instance, __instance.players, ref pickups, __instance.knobState,
-					ref allowUpgrade);
+				Events.InvokeScp914Upgrade(__instance, __instance.players, ref pickups, __instance.knobState, ref allowUpgrade);
 
 				__instance.MoveObjects(pickups, __instance.players);
+
 				if (allowUpgrade)
 					__instance.UpgradeObjects(pickups, __instance.players);
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP914 Upgrade Error: {e}");
+				Log.Error($"SCP914UpgradeEvent error: {exception}");
 				return true;
 			}
 		}

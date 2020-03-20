@@ -8,18 +8,20 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(DecontaminationLCZ __instance)
 		{
+			if (EventPlugin.DecontaminationEventPatchDisable)
+				return true;
+
 			try
 			{
-				if (EventPlugin.DecontaminationEventPatchDisable)
-					return true;
-
 				bool allow = true;
+
 				Events.InvokeDecontamination(ref allow);
+
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"DeconEvent Error: {e}");
+				Log.Error($"DecontaminationEvent error: {exception}");
 				return true;
 			}
 		}

@@ -24,8 +24,8 @@ namespace EXILED.Patches
 
 				FlashEffect effect = obj.GetComponent<FlashEffect>();
 				WeaponManager manager = obj.GetComponent<WeaponManager>();
-				if (!effect.Flashable(__instance.NetworkthrowerGameObject, __instance.gameObject.transform.position,
-					manager.raycastServerMask))
+
+				if (!effect.Flashable(__instance.NetworkthrowerGameObject, __instance.gameObject.transform.position, manager.raycastServerMask))
 					Timing.RunCoroutine(SetBlind(effect));
 			}
 		}

@@ -78,15 +78,15 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Handcuffed Error: {e}");
+				Log.Error($"PlayerHandcuffedEvent error: {exception}");
 				return true;
 			}
 		}
 	}
 
-	[HarmonyPatch(typeof(Handcuffs), "CallCmdFreeTeammate")]
+	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdFreeTeammate))]
 	public class UncuffTeammate
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)
@@ -101,22 +101,27 @@ namespace EXILED.Patches
 					 __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager
 						 .Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
 					return false;
+
 				bool allow = true;
+
 				Events.InvokePlayerHandcuffFree(__instance.gameObject, target, ref allow);
+
 				if (!allow)
 					return false;
+
 				ReferenceHub.GetHub(target).handcuffs.NetworkCufferId = -1;
+
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"HandcuffFreeTeammate Error: {e}");
+				Log.Error($"PlayerHandcuffFreedEvent error: {exception}");
 				return true;
 			}
 		}
 	}
 
-	[HarmonyPatch(typeof(Handcuffs), "ClearTarget")]
+	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.ClearTarget))]
 	public class ClearTargets
 	{
 		public static bool Prefix(Handcuffs __instance)
@@ -129,21 +134,25 @@ namespace EXILED.Patches
 				foreach (GameObject player in PlayerManager.players)
 				{
 					Handcuffs handcuffs = ReferenceHub.GetHub(player).handcuffs;
+
 					if (handcuffs.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
 					{
 						bool allow = true;
+
 						Events.InvokePlayerHandcuffFree(__instance.gameObject, player, ref allow);
+
 						if (allow)
 							handcuffs.NetworkCufferId = -1;
+
 						break;
 					}
 				}
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"HandcuffFree Error: {e}");
+				Log.Error($"PlayerHandcuffFreedEvent error: {exception}");
 				return true;
 			}
 		}

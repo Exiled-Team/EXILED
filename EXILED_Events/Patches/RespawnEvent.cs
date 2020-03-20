@@ -36,25 +36,31 @@ namespace EXILED.Patches
 				bool isChaos = __instance.nextWaveIsCI;
 				int maxRespawn = isChaos ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;
 
-				List<ReferenceHub> toRespawn = players.Take(maxRespawn).ToList();
-				Log.Debug($"Respawn: pre-vent list: {toRespawn.Count}");
-				Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref toRespawn);
+				List<ReferenceHub> playersToRespawn = players.Take(maxRespawn).ToList();
+				Log.Debug($"Respawn: pre-vent list: {playersToRespawn.Count}");
+				Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref playersToRespawn);
 
-				foreach (ReferenceHub ply in toRespawn)
+				if (maxRespawn <= 0 || playersToRespawn?.Count == 0)
+					return false;
+
+				foreach (ReferenceHub player in playersToRespawn)
 				{
-					if (!(ply == null))
+					if (num >= maxRespawn)
+						break;
+
+					if (player != null)
 					{
 						++num;
 						if (isChaos)
 						{
-							__instance.GetComponent<CharacterClassManager>().SetPlayersClass(RoleType.ChaosInsurgency, ply.gameObject);
-							ServerLogs.AddLog(ServerLogs.Modules.ClassChange, ply.GetNickname() + " (" + ply.GetUserId() +
+							__instance.GetComponent<CharacterClassManager>().SetPlayersClass(RoleType.ChaosInsurgency, player.gameObject);
+							ServerLogs.AddLog(ServerLogs.Modules.ClassChange, player.GetNickname() + " (" + player.GetUserId() +
 							  ") respawned as Chaos Insurgency agent.", ServerLogs.ServerLogType.GameEvent);
 						}
 						else
-							__instance.playersToNTF.Add(ply.gameObject);
+							__instance.playersToNTF.Add(player.gameObject);
 
-						EventPlugin.DeadPlayers.Remove(ply);
+						EventPlugin.DeadPlayers.Remove(player);
 					}
 				}
 
@@ -69,9 +75,9 @@ namespace EXILED.Patches
 				__instance.SummonNTF();
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Respawn Event error: {e}");
+				Log.Error($"RespawnEvent error: {exception}");
 				return true;
 			}
 		}

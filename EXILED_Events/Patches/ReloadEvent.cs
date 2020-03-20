@@ -13,6 +13,7 @@ namespace EXILED.Patches
 			try
 			{
 				int itemIndex = __instance.hub.inventory.GetItemIndex();
+
 				if (itemIndex < 0 || itemIndex >= __instance.hub.inventory.items.Count ||
 					(__instance.curWeapon < 0 || __instance.hub.inventory.curItem !=
 					 __instance.weapons[__instance.curWeapon].inventoryID) ||
@@ -21,12 +22,14 @@ namespace EXILED.Patches
 					return false;
 
 				bool allow = true;
+
 				Events.InvokePlayerReload(__instance.gameObject, ref allow);
+
 				return allow;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Reload Error: {e}");
+				Log.Error($"PlayerReloadEvent error: {exception}");
 				return true;
 			}
 		}

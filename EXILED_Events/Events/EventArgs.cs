@@ -103,6 +103,7 @@ namespace EXILED
 	public class TriggerTeslaEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
+		public bool IsInHurtingRange { get; internal set; }
 		public bool Triggerable { get; set; }
 	}
 
@@ -177,9 +178,10 @@ namespace EXILED
 		public readonly ReferenceHub Player;
 		public readonly Locker Locker;
 		public readonly int LockerId;
-		public LockerInteractionEvent(ReferenceHub rh, Locker locker, int lockerId)
+		//Shoud be put as a properties and not in the constructor
+		public LockerInteractionEvent(ReferenceHub player, Locker locker, int lockerId)
 		{
-			Player = rh;
+			Player = player;
 			Locker = locker;
 			LockerId = lockerId;
 		}
@@ -313,6 +315,7 @@ namespace EXILED
 		public ReferenceHub Shooter;
 		public float Damage;
 		public bool Allow;
+		public string HitboxType { get; internal set; }
 		public float Distance;
 	}
 

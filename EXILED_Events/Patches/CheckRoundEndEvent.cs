@@ -1,5 +1,6 @@
 using GameCore;
 using Harmony;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -91,11 +92,23 @@ namespace EXILED.Patches
 				bool forceEnd = false;
 				bool teamChanged = false;
 				RoundSummary.LeadingTeam team = RoundSummary.LeadingTeam.Draw;
-				Events.InvokeCheckRoundEnd(ref forceEnd, ref allow, ref team, ref teamChanged);
+
+				try
+				{
+					Events.InvokeCheckRoundEnd(ref forceEnd, ref allow, ref team, ref teamChanged);
+				}
+				catch(Exception exception)
+				{
+					Log.Error($"CheckRoundEndEvent error {exception}");
+					continue;
+				}
+				
 				if (forceEnd)
 					roundSummary.roundEnded = true;
+
 				if (!allow)
 					continue;
+
 				if (newList.class_ds == 0 && num1 == 0)
 				{
 					roundSummary.roundEnded = true;

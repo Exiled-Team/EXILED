@@ -20,9 +20,9 @@ namespace EXILED.Patches
 					Events.InvokeWaitingForPlayers();
 				}
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"WaitingForPlayers event error: {e}");
+				Log.Error($"WaitingForPlayersEvent error: {exception}");
 			}
 		}
 	}

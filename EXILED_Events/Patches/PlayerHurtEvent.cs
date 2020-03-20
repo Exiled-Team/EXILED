@@ -13,17 +13,21 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.PlayerHurtPatchDisable)
 				return;
+
 			try
 			{
 				if (info.GetDamageType() == DamageTypes.Pocket)
 				{
 					bool allow = true;
+
 					Events.InvokePocketDimDamage(__instance.gameObject, ref allow);
+
 					if (!allow)
 						info.Amount = 0f;
 
 					if (info.Amount >= go.GetComponent<PlayerStats>().health)
 						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
+
 					if (!allow)
 						info.Amount = 0f;
 				}
@@ -36,10 +40,12 @@ namespace EXILED.Patches
 				if (info.Amount >= go.GetComponent<PlayerStats>().health || (go.GetComponent<PlayerStats>().health - info.Amount) <= 1f)
 				{
 					CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
+
 					if (ccm != null)
 					{
 						if (DeathStuff.Contains(ccm.UserId))
 							return;
+
 						DeathStuff.Add(ccm.UserId);
 					}
 
@@ -49,9 +55,9 @@ namespace EXILED.Patches
 						Events.InvokePlayerDeath(__instance, ref info, go);
 				}
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"Player hurt/death event error: {e}");
+				Log.Error($"PocketDimDamageEvent/PocketDimDeathEvent/PlayerHurtEvent error: {exception}");
 			}
 		}
 	}
@@ -62,6 +68,7 @@ namespace EXILED.Patches
 		public static void Postfix(PlayerStats __instance, PlayerStats.HitInfo info, GameObject go)
 		{
 			CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
+
 			if (ccm != null)
 				if (PlayerHurtEvent.DeathStuff.Contains(ccm.UserId))
 					PlayerHurtEvent.DeathStuff.Remove(ccm.UserId);

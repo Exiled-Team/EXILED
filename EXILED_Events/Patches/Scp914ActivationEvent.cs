@@ -10,6 +10,9 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(PlayerInteract __instance)
 		{
+			if (EventPlugin.Scp914ActivationEventPatchDisabled)
+				return true;
+
 			try
 			{
 				if (!__instance._playerInteractRateLimit.CanExecute(true) ||
@@ -19,6 +22,7 @@ namespace EXILED.Patches
 
 				bool allow = true;
 				double time = 0;
+
 				Events.InvokeScp914Activation(__instance.gameObject, ref allow, ref time);
 
 				Scp914Machine.singleton.RpcActivate(NetworkTime.time + time);
@@ -26,9 +30,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP914Activation Error: {e}");
+				Log.Error($"Scp914ActivationEvent error: {exception}");
 				return true;
 			}
 		}

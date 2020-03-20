@@ -16,20 +16,22 @@ namespace EXILED.Patches
 			try
 			{
 				__instance.DoBlinkingSequence();
+
 				if (!__instance.iAm173)
 					return false;
+
 				__instance._allowMove = true;
+
 				foreach (GameObject player in PlayerManager.players)
 				{
 					ReferenceHub hub = player.GetPlayer();
-					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
-					{
 
+					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
 						continue;
-					}
+
 					Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
-					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) &&
-						__instance.LookFor173(component.gameObject, false))
+
+					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) && __instance.LookFor173(component.gameObject, false))
 					{
 						__instance._allowMove = false;
 						break;
@@ -38,9 +40,9 @@ namespace EXILED.Patches
 
 				return false;
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error($"SCP173 patch error: {e}");
+				Log.Error($"Scp173Override error: {exception}");
 				return true;
 			}
 		}
