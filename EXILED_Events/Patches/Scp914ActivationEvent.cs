@@ -25,8 +25,11 @@ namespace EXILED.Patches
 
 				Events.InvokeScp914Activation(__instance.gameObject, ref allow, ref time);
 
-				Scp914Machine.singleton.RpcActivate(NetworkTime.time + time);
-				__instance.OnInteract();
+				if (allow)
+				{
+					Scp914Machine.singleton.RpcActivate(NetworkTime.time + time);
+					__instance.OnInteract();
+				}
 
 				return false;
 			}
