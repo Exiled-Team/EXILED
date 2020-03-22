@@ -5,7 +5,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdUseMedicalItem))]
-	public class UseMedicalEvent
+	public class UseMedicalItemEvent
 	{
 		public static bool Prefix(ConsumableAndWearableItems __instance)
 		{

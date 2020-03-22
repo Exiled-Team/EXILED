@@ -4,7 +4,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.CmdStartRound))]
-	public class RoundStartPatch
+	public class RoundStartEvent
 	{
 		public static void Prefix()
 		{

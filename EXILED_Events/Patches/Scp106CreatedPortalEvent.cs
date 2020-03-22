@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMakePortal))]
-	public class CallCmdMakePortalOverride
+	public class Scp106CreatedPortalEvent
 	{
 		public static bool Prefix(Scp106PlayerScript __instance)
 		{

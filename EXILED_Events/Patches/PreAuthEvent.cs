@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest), typeof(ConnectionRequest))]
-	public class PreAuthPatch
+	public class PreAuthEvent
 	{
 		public static bool Prefix(ref ConnectionRequest request)
 		{

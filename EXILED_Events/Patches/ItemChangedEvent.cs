@@ -4,7 +4,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
-	public class CallCmdSetUnicOverride
+	public class ItemChangedEvent
 	{
 		public static void Prefix(Inventory __instance, int i)
 		{

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp096PlayerScript), nameof(Scp096PlayerScript.IncreaseRage))]
-	public class Scp096ProcessLookingOverride
+	public class Scp096EnrageEvent
 	{
 		public static bool Prefix(Scp096PlayerScript __instance, float amount)
 		{
@@ -42,7 +42,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(Scp096PlayerScript), nameof(Scp096PlayerScript.DeductRage))]
-	public class Scp096EndRage
+	public class Scp096CalmEvent
 	{
 		public static bool Prefix(Scp096PlayerScript __instance)
 		{

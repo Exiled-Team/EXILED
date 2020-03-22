@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.TargetLevelChanged))]
-	public class Scp079LevelEvent
+	public class Scp079LvlGainEvent
 	{
 		public static bool Prefix(Scp079PlayerScript __instance, NetworkConnection conn, int newLvl)
 		{
@@ -27,7 +27,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallRpcGainExp))]
-	public class Scp079Events
+	public class Scp079ExpGainEvent
 	{
 		public static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
 		{

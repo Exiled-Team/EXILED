@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
-	public class Generator079Tablet
+	public class GeneratorInsertedEvent
 	{
 		public static bool Prefix(Generator079 __instance, GameObject person, string command)
 		{
@@ -26,9 +26,12 @@ namespace EXILED.Patches
 						if (syncItemInfo.id == ItemType.WeaponManagerTablet)
 						{
 							bool allow = true;
+
 							Events.InvokeGeneratorInsert(person, __instance, ref allow);
+
 							if (!allow)
 								return false;
+
 							component.items.Remove(syncItemInfo);
 							__instance.NetworkisTabletConnected = true;
 							break;
@@ -102,7 +105,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(Generator079), nameof(Generator079.CheckFinish))]
-	public class Generator079Finish
+	public class GeneratorFinishedEvent
 	{
 		public static List<Generator079> FinishedGenerators = new List<Generator079>();
 		public static bool Prefix(Generator079 __instance)

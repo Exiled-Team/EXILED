@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
-	public class ElevatorUseEvent
+	public class ElevatorInteractEvent
 	{
 		public static bool Prefix(PlayerInteract __instance, GameObject elevator)
 		{

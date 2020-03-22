@@ -4,7 +4,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdReload))]
-	public class ReloadEvent
+	public class PlayerReloadEvent
 	{
 		public static bool Prefix(WeaponManager __instance, bool animationOnly)
 		{
