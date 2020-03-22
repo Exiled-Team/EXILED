@@ -10,6 +10,76 @@ namespace EXILED
 		[Obsolete("Use WarheadCancelEvent instead.", true)]
 		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
 
+		public static event AnnounceDecontamination AnnounceDecontaminationEvent;
+		public delegate void AnnounceDecontamination(AnnounceDecontaminationEvent ev);
+
+		public static void InvokeAnnounceDecontamination(ref int announcementId, ref bool isAnnouncementGlobal, ref bool allow)
+		{
+			if (AnnounceDecontaminationEvent == null)
+				return;
+
+			AnnounceDecontaminationEvent ev = new AnnounceDecontaminationEvent()
+			{
+				AnnouncementId = announcementId,
+				IsAnnouncementGlobal = isAnnouncementGlobal,
+				Allow = allow
+			};
+
+			AnnounceDecontaminationEvent.Invoke(ev);
+
+			announcementId = ev.AnnouncementId;
+			isAnnouncementGlobal = ev.IsAnnouncementGlobal;
+			allow = ev.Allow;
+		}
+
+		public static event AnnounceScpTermination AnnounceScpTerminationEvent;
+		public delegate void AnnounceScpTermination(AnnounceScpTerminationEvent ev);
+
+		public static void InvokeAnnounceScpTermination(Role role, ref PlayerStats.HitInfo hitInfo, ref string terminationCause, ref bool allow)
+		{
+			if (AnnounceScpTerminationEvent == null)
+				return;
+
+			AnnounceScpTerminationEvent ev = new AnnounceScpTerminationEvent()
+			{
+				Killer = hitInfo.PlyId == 0 ? null : Player.GetPlayer(hitInfo.PlyId),
+				Role = role,
+				HitInfo = hitInfo,
+				TerminationCause = terminationCause,
+				Allow = allow
+			};
+
+			AnnounceScpTerminationEvent.Invoke(ev);
+
+			hitInfo = ev.HitInfo;
+			terminationCause = ev.TerminationCause;
+			allow = ev.Allow;
+		}
+
+		public static event AnnounceNtfEntrance AnnounceNtfEntranceEvent;
+		public delegate void AnnounceNtfEntrance(AnnounceNtfEntranceEvent ev);
+
+		public static void InvokeAnnounceNtfEntrance(ref int scpsLeft, ref int ntfNumber, ref char ntfLetter, ref bool allow)
+		{
+			if (AnnounceNtfEntranceEvent == null)
+				return;
+
+			AnnounceNtfEntranceEvent ev = new AnnounceNtfEntranceEvent()
+			{
+				ScpsLeft = scpsLeft,
+				NtfNumber = ntfNumber,
+				NtfLetter = ntfLetter,
+				Allow = allow
+			};
+
+			AnnounceNtfEntranceEvent.Invoke(ev);
+
+			scpsLeft = ev.ScpsLeft;
+			ntfNumber = ev.NtfNumber;
+			ntfLetter = ev.NtfLetter;
+			allow = ev.Allow;
+		}
+
 		public static event OnWarheadDetonation WarheadDetonationEvent;
 		public delegate void OnWarheadDetonation();
 

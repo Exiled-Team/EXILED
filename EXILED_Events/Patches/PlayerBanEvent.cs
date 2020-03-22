@@ -8,7 +8,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool) })]
-	public class BanUserOverride
+	public class PlayerBanEvent
 	{
 		public static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
 		{
@@ -44,6 +44,7 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
+
 				Events.InvokePlayerBan(ref userHub, ref userId, ref duration, ref allow, ref message, ref reason, ref issuerHub);
 
 				if (!allow)

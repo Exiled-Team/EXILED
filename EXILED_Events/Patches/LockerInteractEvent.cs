@@ -4,7 +4,7 @@ using System;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
-	public class LockerEventOverride
+	public class LockerInteractEvent
 	{
 		public static bool Prefix(PlayerInteract __instance, int lockerId, int chamberNumber)
 		{

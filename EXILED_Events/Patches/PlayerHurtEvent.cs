@@ -63,7 +63,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-	public class DeathFix
+	public class PlayerDeathFix
 	{
 		public static void Postfix(PlayerStats __instance, PlayerStats.HitInfo info, GameObject go)
 		{

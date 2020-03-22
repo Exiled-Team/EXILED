@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
-	public class Scp173Override
+	public class Scp173Patch
 	{
 		public static bool Prefix(Scp173PlayerScript __instance)
 		{
@@ -42,7 +42,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception exception)
 			{
-				Log.Error($"Scp173Override error: {exception}");
+				Log.Error($"Scp173Patch error: {exception}");
 				return true;
 			}
 		}

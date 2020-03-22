@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdCuffTarget))]
-	public class HandcuffEvent
+	public class PlayerHandcuffedEvent
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)
 		{
@@ -87,7 +87,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdFreeTeammate))]
-	public class UncuffTeammate
+	public class PlayerHandcuffFreedEvent
 	{
 		public static bool Prefix(Handcuffs __instance, GameObject target)
 		{
@@ -122,7 +122,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.ClearTarget))]
-	public class ClearTargets
+	public class PlayersHandcuffFreedEvent
 	{
 		public static bool Prefix(Handcuffs __instance)
 		{

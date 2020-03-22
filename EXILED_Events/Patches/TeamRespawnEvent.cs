@@ -7,7 +7,7 @@ using System.Linq;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(MTFRespawn), nameof(MTFRespawn.RespawnDeadPlayers))]
-	public class RespawnEvent
+	public class TeamRespawnEvent
 	{
 		public static bool Prefix(MTFRespawn __instance)
 		{

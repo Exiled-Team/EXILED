@@ -8,6 +8,42 @@ namespace EXILED
 {
 	public partial class Events
 	{
+		public static event SpawnRagdoll SpawnRagdollEvent;
+		public delegate void SpawnRagdoll(SpawnRagdollEvent ev);
+
+		public static void InvokeSpawnRagdoll(GameObject player, ref Vector3 position, ref Quaternion rotation, ref int roleType, ref PlayerStats.HitInfo hitInfo, ref bool allowRecall, ref string ragdollUserId, ref string ragdollPlayerName, ref int ragdollPlayerId, ref bool allow)
+		{
+			if (SpawnRagdollEvent == null)
+				return;
+
+			SpawnRagdollEvent ev = new SpawnRagdollEvent()
+			{
+				Killer = hitInfo.PlyId == 0 ? null : Player.GetPlayer(hitInfo.PlyId),
+				Player = player.GetPlayer(),
+				Position = position,
+				Rotation = rotation,
+				RoleType = (RoleType)roleType,
+				HitInfo = hitInfo,
+				AllowRecall = allowRecall,
+				RagdollDissonanceId = ragdollUserId,
+				RagdollPlayerName = ragdollPlayerName,
+				RagdollPlayerId = ragdollPlayerId,
+				Allow = allow
+			};
+
+			SpawnRagdollEvent.Invoke(ev);
+			
+			position = ev.Position;
+			rotation = ev.Rotation;
+			roleType = (int)ev.RoleType;
+			hitInfo = ev.HitInfo;
+			allowRecall = ev.AllowRecall;
+			ragdollUserId = ev.RagdollDissonanceId;
+			ragdollPlayerName = ev.RagdollPlayerName;
+			ragdollPlayerId = ev.RagdollPlayerId;
+			allow = ev.Allow;
+		}
+
 		public static event Scp106CreatedPortal Scp106CreatedPortalEvent;
 		public delegate void Scp106CreatedPortal(Scp106CreatedPortalEvent ev);
 

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdSwitchAWButton))]
-	public class WarheadKeycardEvent
+	public class WarheadKeycardAccessEvent
 	{
 		public static bool Prefix(PlayerInteract __instance)
 		{

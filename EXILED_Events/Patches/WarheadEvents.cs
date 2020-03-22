@@ -6,7 +6,7 @@ using UnityEngine;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
-	public class WarheadDetonationPatch
+	public class WarheadDetonationEvent
 	{
 		public static void Prefix(AlphaWarheadController __instance)
 		{
@@ -22,7 +22,7 @@ namespace EXILED.Patches
 	}
 
 	[HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), new Type[] { typeof(GameObject) })]
-	public class WarheadCancelEvent
+	public class WarheadCancelledEvent
 	{
 		public static bool Prefix(AlphaWarheadController __instance, GameObject disabler)
 		{

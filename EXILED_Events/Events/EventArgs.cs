@@ -579,4 +579,61 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public Vector3 PortalPosition { get; set; }
 	}
+
+	public class AnnounceNtfEntranceEvent : EventArgs
+	{
+		public int ScpsLeft { get; set; }
+		public int NtfNumber { get; set; }
+		public char NtfLetter { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class AnnounceScpTerminationEvent : EventArgs
+	{
+		public ReferenceHub Killer { get; internal set; }
+		public Role Role { get; internal set; }
+		public PlayerStats.HitInfo HitInfo { get; set; }
+		public string TerminationCause { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class AnnounceDecontaminationEvent : EventArgs
+	{
+		private int announcementId;
+
+		public int AnnouncementId
+		{
+			get => announcementId;
+			set => announcementId = Mathf.Clamp(value, 0, 5);
+		}
+		public bool IsAnnouncementGlobal { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class SpawnRagdollEvent : EventArgs
+	{
+		private int ragdollPlayerId;
+
+		public ReferenceHub Killer { get; internal set; }
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public Quaternion Rotation { get; set; }
+		public RoleType RoleType { get; set; }
+		public PlayerStats.HitInfo HitInfo { get; set; }
+		public bool AllowRecall { get; set; }
+		public string RagdollDissonanceId { get; set; }
+		public string RagdollPlayerName { get; set; }
+		public int RagdollPlayerId
+		{
+			get => ragdollPlayerId;
+			set
+			{
+				if (Extensions.Player.GetPlayer(value) == null)
+					return;
+
+				ragdollPlayerId = value;
+			}
+		}
+		public bool Allow { get; set; }
+	}
 }
