@@ -599,13 +599,21 @@ namespace EXILED
 
 	public class AnnounceDecontaminationEvent : EventArgs
 	{
-		public int AnnouncementId { get; set; }
+		private int announcementId;
+
+		public int AnnouncementId
+		{
+			get => announcementId;
+			set => announcementId = Mathf.Clamp(value, 0, 5);
+		}
 		public bool IsAnnouncementGlobal { get; set; }
 		public bool Allow { get; set; }
 	}
 
 	public class SpawnRagdollEvent : EventArgs
 	{
+		private int ragdollPlayerId;
+
 		public ReferenceHub Killer { get; internal set; }
 		public ReferenceHub Player { get; internal set; }
 		public Vector3 Position { get; set; }
@@ -613,9 +621,19 @@ namespace EXILED
 		public RoleType RoleType { get; set; }
 		public PlayerStats.HitInfo HitInfo { get; set; }
 		public bool AllowRecall { get; set; }
-		public string RagdollUserId { get; set; }
+		public string RagdollDissonanceId { get; set; }
 		public string RagdollPlayerName { get; set; }
-		public int RagdollPlayerId { get; set; }
+		public int RagdollPlayerId
+		{
+			get => ragdollPlayerId;
+			set
+			{
+				if (Extensions.Player.GetPlayer(value) == null)
+					return;
+
+				ragdollPlayerId = value;
+			}
+		}
 		public bool Allow { get; set; }
 	}
 }

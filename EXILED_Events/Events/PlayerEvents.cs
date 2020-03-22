@@ -25,7 +25,7 @@ namespace EXILED
 				RoleType = (RoleType)roleType,
 				HitInfo = hitInfo,
 				AllowRecall = allowRecall,
-				RagdollUserId = ragdollUserId,
+				RagdollDissonanceId = ragdollUserId,
 				RagdollPlayerName = ragdollPlayerName,
 				RagdollPlayerId = ragdollPlayerId,
 				Allow = allow
@@ -38,7 +38,7 @@ namespace EXILED
 			roleType = (int)ev.RoleType;
 			hitInfo = ev.HitInfo;
 			allowRecall = ev.AllowRecall;
-			ragdollUserId = ev.RagdollUserId;
+			ragdollUserId = ev.RagdollDissonanceId;
 			ragdollPlayerName = ev.RagdollPlayerName;
 			ragdollPlayerId = ev.RagdollPlayerId;
 			allow = ev.Allow;

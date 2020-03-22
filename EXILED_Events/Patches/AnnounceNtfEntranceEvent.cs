@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
@@ -7,11 +8,19 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(ref int _scpsLeft, ref int _mtfNumber, ref char _mtfLetter)
 		{
-			bool allow = true;
+			try
+			{
+				bool allow = true;
 
-			Events.InvokeAnnounceNtfEntrance(ref _scpsLeft, ref _mtfNumber, ref _mtfLetter, ref allow);
+				Events.InvokeAnnounceNtfEntrance(ref _scpsLeft, ref _mtfNumber, ref _mtfLetter, ref allow);
 
-			return allow;
+				return allow;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"AnnounceNtfEntranceEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }

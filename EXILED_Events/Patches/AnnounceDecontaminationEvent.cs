@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
@@ -7,11 +8,19 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(ref int id, ref bool global)
 		{
-			bool allow = true;
+			try
+			{
+				bool allow = true;
 
-			Events.InvokeAnnounceDecontamination(ref id, ref global, ref allow);
+				Events.InvokeAnnounceDecontamination(ref id, ref global, ref allow);
 
-			return allow;
+				return allow;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"AnnounceDecontaminationEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }

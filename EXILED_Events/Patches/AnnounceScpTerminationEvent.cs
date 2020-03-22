@@ -1,4 +1,5 @@
 ﻿using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
@@ -7,11 +8,19 @@ namespace EXILED.Patches
 	{
 		public static bool Prefix(Role scp, ref PlayerStats.HitInfo hit, ref string groupId)
 		{
-			bool allow = true;
+			try
+			{
+				bool allow = true;
 
-			Events.InvokeAnnounceScpTermination(scp, ref hit, ref groupId, ref allow);
+				Events.InvokeAnnounceScpTermination(scp, ref hit, ref groupId, ref allow);
 
-			return allow;
+				return allow;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"AnnounceScpTerminationEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }
