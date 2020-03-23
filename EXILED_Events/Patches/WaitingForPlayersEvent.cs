@@ -1,12 +1,12 @@
-using System;
 using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof (ServerConsole), "AddLog")]
+	[HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.AddLog))]
 	public class WaitingForPlayersEvent
 	{
-		public static void Prefix(string q)
+		public static void Prefix(ref string q)
 		{
 			if (EventPlugin.WaitingForPlayersPatchDisable)
 				return;
@@ -14,11 +14,15 @@ namespace EXILED.Patches
 			try
 			{
 				if (q == "Waiting for players..")
+				{
+					q += ".";
+
 					Events.InvokeWaitingForPlayers();
+				}
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Plugin.Error($"WaitingForPlayers event error: {e}");
+				Log.Error($"WaitingForPlayersEvent error: {exception}");
 			}
 		}
 	}

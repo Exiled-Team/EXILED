@@ -1,8 +1,9 @@
-using System;
-using System.Collections.Generic;
 using Grenades;
 using LiteNetLib;
 using Scp914;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using static BanHandler;
 
@@ -19,16 +20,18 @@ namespace EXILED
 		public GrenadeManager Gm { get; set; }
 		public int Id { get; set; }
 		public bool Allow { get; set; }
+		public bool Slow { get; set; }
+		public double Fuse { get; set; }
 	}
 
-    public class SCP914UpgradeEvent : EventArgs
-    {
-	    public bool Allow;
-        public Scp914.Scp914Machine Machine;
-        public List<ReferenceHub> Players;
-        public List<Pickup> Items;
-        public Scp914.Scp914Knob KnobSetting;
-    }
+	public class SCP914UpgradeEvent : EventArgs
+	{
+		public bool Allow;
+		public Scp914.Scp914Machine Machine;
+		public List<ReferenceHub> Players;
+		public List<Pickup> Items;
+		public Scp914.Scp914Knob KnobSetting;
+	}
 
 	public class SetClassEvent : EventArgs
 	{
@@ -36,11 +39,58 @@ namespace EXILED
 		public RoleType Role { get; set; }
 	}
 
-	public class PlayerHurtEvent : EventArgs
+	public class StartItemsEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
+		public RoleType Role { get; set; }
+		public List<ItemType> StartItems { get; set; }
+	}
+
+	public class PlayerHurtEvent : EventArgs
+	{
+		private PlayerStats.HitInfo info;
+		public ReferenceHub Player { get; set; }
 		public ReferenceHub Attacker { get; set; }
-		public PlayerStats.HitInfo Info { get; set; }
+		private DamageTypes.DamageType damageType = DamageTypes.None;
+
+		public int Time => info.Time;
+
+		/// <summary>
+		/// The DamageType as a <see cref="DamageTypes.DamageType"/>
+		/// </summary>
+		public DamageTypes.DamageType DamageType
+		{
+			get
+			{
+				if (damageType == DamageTypes.None)
+					damageType = DamageTypes.FromIndex(info.Tool);
+
+				return damageType;
+			}
+		}
+		/// <summary>
+		/// The DamageType's <see cref="int"/> value
+		/// </summary>
+		public int Tool => info.Tool;
+
+		/// <summary>
+		/// The amount of damage to be dealt
+		/// </summary>
+		public float Amount
+		{
+			get => info.Amount;
+			set => info.Amount = value;
+		}
+
+		public PlayerStats.HitInfo Info
+		{
+			get => info;
+			set
+			{
+				damageType = DamageTypes.None;
+				info = value;
+			}
+		}
 	}
 
 	public class PlayerDeathEvent : EventArgs
@@ -53,6 +103,7 @@ namespace EXILED
 	public class TriggerTeslaEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
+		public bool IsInHurtingRange { get; internal set; }
 		public bool Triggerable { get; set; }
 	}
 
@@ -67,6 +118,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public ItemType Item { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class Scp096EnrageEvent : EventArgs
@@ -114,6 +166,28 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
+	public class ElevatorInteractionEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public Lift.Elevator Elevator { get; internal set; }
+		public bool Allow { get; set; }
+	}
+
+	public class LockerInteractionEvent : EventArgs
+	{
+		public readonly ReferenceHub Player;
+		public readonly Locker Locker;
+		public readonly int LockerId;
+		//Shoud be put as a properties and not in the constructor
+		public LockerInteractionEvent(ReferenceHub player, Locker locker, int lockerId)
+		{
+			Player = player;
+			Locker = locker;
+			LockerId = lockerId;
+		}
+		public bool Allow { get; set; }
+	}
+
 	public class PlayerLeaveEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
@@ -124,12 +198,14 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public ReferenceHub Player { get; set; }
 	}
+
 	public class ConsoleCommandEvent : EventArgs
 	{
 		public ConsoleCommandEvent(bool encrypted)
 		{
 			Encrypted = encrypted;
 		}
+
 		public ReferenceHub Player { get; set; }
 		public string Command { get; set; }
 		public string ReturnMessage { get; set; }
@@ -142,6 +218,12 @@ namespace EXILED
 		public ReferenceHub Player { get; set; }
 		public Inventory.SyncItemInfo Item { get; set; }
 		public bool Allow { get; set; }
+	}
+
+	public class ItemDroppedEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public Pickup Item;
 	}
 
 	public class PickupItemEvent : EventArgs
@@ -170,28 +252,28 @@ namespace EXILED
 		public Generator079 Generator { get; set; }
 		public bool Allow { get; set; }
 	}
-	
+
 	public class GeneratorCloseEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
 		public Generator079 Generator { get; set; }
 		public bool Allow { get; set; }
 	}
-	
+
 	public class GeneratorInsertTabletEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
 		public Generator079 Generator { get; set; }
 		public bool Allow { get; set; }
 	}
-	
+
 	public class GeneratorEjectTabletEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
 		public Generator079 Generator { get; set; }
 		public bool Allow { get; set; }
 	}
-	
+
 	public class GeneratorFinishEvent : EventArgs
 	{
 		public Generator079 Generator { get; set; }
@@ -226,22 +308,24 @@ namespace EXILED
 		public bool ForceEnd { get; set; }
 		public RoundSummary.LeadingTeam LeadingTeam { get; set; }
 	}
-  
-  	public class LateShootEvent : EventArgs
+
+	public class LateShootEvent : EventArgs
 	{
 		public GameObject Target;
 		public ReferenceHub Shooter;
 		public float Damage;
 		public bool Allow;
+		public string HitboxType { get; internal set; }
 		public float Distance;
 	}
 
-    public class ShootEvent : EventArgs
-    {
-	    public ReferenceHub Shooter { get; set; }
-	    public GameObject Target { get; set; }
-	    public bool Allow { get; set; }
-    }
+	public class ShootEvent : EventArgs
+	{
+		public ReferenceHub Shooter { get; set; }
+		public GameObject Target { get; set; }
+		public bool Allow { get; set; }
+		public Vector3 TargetPos;
+	}
 
 	public class Scp106TeleportEvent : EventArgs
 	{
@@ -268,6 +352,119 @@ namespace EXILED
 		public BanType Type;
 	}
 
+	public class PlayerBanEvent : EventArgs
+	{
+		private readonly bool log;
+		private string userId;
+		private int duration;
+		private ReferenceHub bannedPlayer;
+		private ReferenceHub issuer;
+		private bool allow = true;
+
+		public string Reason;
+		public string FullMessage;
+
+		public PlayerBanEvent(bool log, ReferenceHub bannedPlayer, string reason, string userId, int duration, ReferenceHub issuer)
+		{
+			this.log = log;
+			this.userId = userId;
+			this.duration = duration;
+			this.bannedPlayer = bannedPlayer;
+			this.issuer = issuer;
+			Reason = reason;
+
+			// Set to true in the constructor to avoid triggering the logs.
+			allow = true;
+		}
+
+		public int Duration
+		{
+			set
+			{
+				if (duration == value) return;
+
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed duration: {duration} to {value} for ID: {userId}");
+
+				duration = value;
+			}
+
+			get => duration;
+		}
+
+		public string UserId
+		{
+			set
+			{
+				if (userId == value) return;
+
+				if (userId == null) userId = "(null)";
+
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed UserID from {userId} to {value}");
+
+				userId = value;
+			}
+
+			get => userId;
+		}
+
+		public bool Allow
+		{
+			set
+			{
+				if (allow == value) return;
+
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" {(value ? "allowed" : "denied")} banning user with ID: {UserId}");
+
+				allow = value;
+			}
+
+			get => allow;
+		}
+
+		public ReferenceHub BannedPlayer
+		{
+			set
+			{
+				if (value == null || BannedPlayer == value) return;
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+					+ $" changed the banned player from user {bannedPlayer.nicknameSync.Network_myNickSync} ({bannedPlayer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
+				bannedPlayer = value;
+			}
+			get => bannedPlayer;
+		}
+		public ReferenceHub Issuer
+		{
+			set
+			{
+				if (value == null || issuer == value) return;
+				if (log)
+					LogBanChange(Assembly.GetCallingAssembly().GetName().Name
+								 + $" changed the ban issuer from user {issuer.nicknameSync.Network_myNickSync} ({issuer.characterClassManager.UserId}) to {value.nicknameSync.Network_myNickSync} ({value.characterClassManager.UserId})");
+				issuer = value;
+			}
+			get => issuer;
+		}
+		private void LogBanChange(string msg)
+		{
+			string time = TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz");
+			object lockObject = ServerLogs.LockObject;
+
+			lock (lockObject)
+			{
+				ServerLogs.Queue.Enqueue(new ServerLogs.ServerLog(msg, "AntiBackdoor", "EXILED-Ban", time));
+			}
+
+			ServerLogs._write = true;
+		}
+	}
+
 	public class PocketDimEnterEvent : EventArgs
 	{
 		public ReferenceHub Player;
@@ -290,6 +487,8 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public RoleType Role { get; set; }
+		public Vector3 Spawnpoint { get; set; }
+		public float RotationY { get; set; }
 	}
 
 	public class Scp106ContainEvent : EventArgs
@@ -310,5 +509,131 @@ namespace EXILED
 		public bool Allow { get; set; }
 		public Scp914Knob KnobSetting { get; set; }
 		public ReferenceHub Player { get; set; }
+	}
+
+	public class SetGroupEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public UserGroup Group { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class FemurEnterEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class SyncDataEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public int State;
+		public Vector2 v2;
+		public bool Allow { get; set; }
+	}
+
+	public class WarheadKeycardAccessEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+		public string RequiredPerms;
+	}
+
+	public class Scp079ExpGainEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+		public ExpGainType GainType;
+		public float Amount;
+	}
+
+	public class Scp079LvlGainEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+		public int OldLvl;
+		public int NewLvl;
+	}
+
+	public class WarheadCancelEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public bool Allow;
+	}
+
+	public class WarheadStartEvent : EventArgs
+	{
+		public bool Allow;
+	}
+
+	public class ItemChangedEvent : EventArgs
+	{
+		public ReferenceHub Player;
+		public Inventory.SyncItemInfo OldItem;
+		public Inventory.SyncItemInfo NewItem;
+	}
+
+	public class Scp106CreatedPortalEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public bool Allow { get; set; }
+		public Vector3 PortalPosition { get; set; }
+	}
+
+	public class AnnounceNtfEntranceEvent : EventArgs
+	{
+		public int ScpsLeft { get; set; }
+		public int NtfNumber { get; set; }
+		public char NtfLetter { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class AnnounceScpTerminationEvent : EventArgs
+	{
+		public ReferenceHub Killer { get; internal set; }
+		public Role Role { get; internal set; }
+		public PlayerStats.HitInfo HitInfo { get; set; }
+		public string TerminationCause { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class AnnounceDecontaminationEvent : EventArgs
+	{
+		private int announcementId;
+
+		public int AnnouncementId
+		{
+			get => announcementId;
+			set => announcementId = Mathf.Clamp(value, 0, 5);
+		}
+		public bool IsAnnouncementGlobal { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class SpawnRagdollEvent : EventArgs
+	{
+		private int ragdollPlayerId;
+
+		public ReferenceHub Killer { get; internal set; }
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public Quaternion Rotation { get; set; }
+		public RoleType RoleType { get; set; }
+		public PlayerStats.HitInfo HitInfo { get; set; }
+		public bool AllowRecall { get; set; }
+		public string RagdollDissonanceId { get; set; }
+		public string RagdollPlayerName { get; set; }
+		public int RagdollPlayerId
+		{
+			get => ragdollPlayerId;
+			set
+			{
+				if (Extensions.Player.GetPlayer(value) == null)
+					return;
+
+				ragdollPlayerId = value;
+			}
+		}
+		public bool Allow { get; set; }
 	}
 }

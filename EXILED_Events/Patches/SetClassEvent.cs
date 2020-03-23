@@ -1,9 +1,9 @@
-using System;
 using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(CharacterClassManager), "SetClassID")]
+	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))]
 	public class SetClassEvent
 	{
 		public static void Postfix(CharacterClassManager __instance, RoleType id)
@@ -15,9 +15,9 @@ namespace EXILED.Patches
 			{
 				Events.InvokeSetClass(__instance, id);
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Plugin.Error($"SetClass event error: {e}");
+				Log.Error($"SetClassEvent error: {exception}");
 			}
 		}
 	}

@@ -4,6 +4,6 @@ namespace ModuleLoader.Attributes
 {
 	public class SkipAutoHarmonyAttribute : Attribute
 	{
-		
+
 	}
 }

@@ -1,4 +1,5 @@
 using Harmony;
+using System;
 
 namespace EXILED.Patches
 {
@@ -9,10 +10,20 @@ namespace EXILED.Patches
 		{
 			if (EventPlugin.DecontaminationEventPatchDisable)
 				return true;
-			
-			bool allow = true;
-			Events.InvokeDecontamination(ref allow);
-			return allow;
+
+			try
+			{
+				bool allow = true;
+
+				Events.InvokeDecontamination(ref allow);
+
+				return allow;
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"DecontaminationEvent error: {exception}");
+				return true;
+			}
 		}
 	}
 }

@@ -11,14 +11,14 @@ namespace EXILED_Installer
 	internal class Program
 	{
 		private const string url = "https://github.com/galaxy119/EXILED/releases/";
-		
+
 		public static void Main(string[] args)
 		{
 			if (args.Length < 1)
 				args = new[] { "/home/scp/scp_server" };
-			
-			Console.WriteLine("Getting latest download URL..");
-			HttpWebRequest request = (HttpWebRequest) WebRequest.Create(url+"latest");
+
+			Console.WriteLine("Getting latest download URL...");
+			HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url + "latest");
 			HttpWebResponse response = (HttpWebResponse)request.GetResponse();
 			Stream stream = response.GetResponseStream();
 			StreamReader reader = new StreamReader(stream);
@@ -27,17 +27,17 @@ namespace EXILED_Installer
 			string thing = readArray.FirstOrDefault(s => s.Contains("EXILED.tar.gz"));
 			string sub = Between(thing, "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
 			string path = $"{url}download/{sub}/EXILED.tar.gz";
-			
-			Console.WriteLine($"GitHub download URL found: {path}, downloading..");
+
+			Console.WriteLine($"GitHub download URL found: {path}, downloading...");
 			using (WebClient client = new WebClient())
 			{
 				client.DownloadFile(path, "EXILED.tar.gz");
 			}
-			
-			Console.WriteLine("Latest version downloaded, extracting..");
+
+			Console.WriteLine("Latest version downloaded, extracting...");
 			ExtractTarGz("EXILED.tar.gz", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-			
-			Console.WriteLine("Extraction complete, moving files..");
+
+			Console.WriteLine("Extraction complete, moving files...");
 			string installPath = Path.Combine(args[0], "SCPSL_Data");
 			string path2 = Path.Combine(installPath, "Managed");
 			string fileName = Path.Combine(path2, "Assembly-CSharp.dll");
@@ -45,11 +45,11 @@ namespace EXILED_Installer
 				throw new ArgumentException("The provided Managed folder does not exist.");
 			File.Delete(fileName);
 			File.Move(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Assembly-CSharp.dll"), fileName);
-			
+
 			Console.WriteLine("Installation complete.");
 		}
 
-		private static string Between(string str , string firstString, string lastString)
+		private static string Between(string str, string firstString, string lastString)
 		{
 			int pos1 = str.IndexOf(firstString, StringComparison.Ordinal) + firstString.Length;
 			int pos2 = str.IndexOf(lastString, StringComparison.Ordinal);

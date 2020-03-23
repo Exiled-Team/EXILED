@@ -1,3 +1,4 @@
+using EXILED.Extensions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,72 +7,211 @@ namespace EXILED
 {
 	public partial class Events
 	{
-		public static event OnWarheadCommand WarheadCommandEvent;
+		[Obsolete("Use WarheadCancelEvent instead.", true)]
 		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
 
-		public static void InvokeWarheadEvent(PlayerInteract interaction, ref string n, ref bool allow)
+		public static event AnnounceDecontamination AnnounceDecontaminationEvent;
+		public delegate void AnnounceDecontamination(AnnounceDecontaminationEvent ev);
+
+		public static void InvokeAnnounceDecontamination(ref int announcementId, ref bool isAnnouncementGlobal, ref bool allow)
 		{
-			OnWarheadCommand onWarheadCommand = WarheadCommandEvent;
-			if (onWarheadCommand == null)
+			if (AnnounceDecontaminationEvent == null)
 				return;
-			
-			WarheadLeverEvent ev = new WarheadLeverEvent()
+
+			AnnounceDecontaminationEvent ev = new AnnounceDecontaminationEvent()
 			{
-				Player = Plugin.GetPlayer(interaction.gameObject),
+				AnnouncementId = announcementId,
+				IsAnnouncementGlobal = isAnnouncementGlobal,
 				Allow = allow
 			};
-			onWarheadCommand?.Invoke(ref ev);
+
+			AnnounceDecontaminationEvent.Invoke(ev);
+
+			announcementId = ev.AnnouncementId;
+			isAnnouncementGlobal = ev.IsAnnouncementGlobal;
 			allow = ev.Allow;
 		}
+
+		public static event AnnounceScpTermination AnnounceScpTerminationEvent;
+		public delegate void AnnounceScpTermination(AnnounceScpTerminationEvent ev);
+
+		public static void InvokeAnnounceScpTermination(Role role, ref PlayerStats.HitInfo hitInfo, ref string terminationCause, ref bool allow)
+		{
+			if (AnnounceScpTerminationEvent == null)
+				return;
+
+			AnnounceScpTerminationEvent ev = new AnnounceScpTerminationEvent()
+			{
+				Killer = hitInfo.PlyId == 0 ? null : Player.GetPlayer(hitInfo.PlyId),
+				Role = role,
+				HitInfo = hitInfo,
+				TerminationCause = terminationCause,
+				Allow = allow
+			};
+
+			AnnounceScpTerminationEvent.Invoke(ev);
+
+			hitInfo = ev.HitInfo;
+			terminationCause = ev.TerminationCause;
+			allow = ev.Allow;
+		}
+
+		public static event AnnounceNtfEntrance AnnounceNtfEntranceEvent;
+		public delegate void AnnounceNtfEntrance(AnnounceNtfEntranceEvent ev);
+
+		public static void InvokeAnnounceNtfEntrance(ref int scpsLeft, ref int ntfNumber, ref char ntfLetter, ref bool allow)
+		{
+			if (AnnounceNtfEntranceEvent == null)
+				return;
+
+			AnnounceNtfEntranceEvent ev = new AnnounceNtfEntranceEvent()
+			{
+				ScpsLeft = scpsLeft,
+				NtfNumber = ntfNumber,
+				NtfLetter = ntfLetter,
+				Allow = allow
+			};
+
+			AnnounceNtfEntranceEvent.Invoke(ev);
+
+			scpsLeft = ev.ScpsLeft;
+			ntfNumber = ev.NtfNumber;
+			ntfLetter = ev.NtfLetter;
+			allow = ev.Allow;
+		}
+
+		public static event OnWarheadDetonation WarheadDetonationEvent;
+		public delegate void OnWarheadDetonation();
+
+		public static void InvokeWarheadDetonation() => WarheadDetonationEvent?.Invoke();
 
 		public static event OnDoorInteract DoorInteractEvent;
 		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
 
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
-			OnDoorInteract onDoorInteract = DoorInteractEvent;
-			if (onDoorInteract == null)
+			if (DoorInteractEvent == null)
 				return;
-			
+
 			DoorInteractionEvent ev = new DoorInteractionEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Allow = allow,
 				Door = door
 			};
-			onDoorInteract?.Invoke(ref ev);
+
+			DoorInteractEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
-		
+
+		public static event OnElevatorInteract ElevatorInteractEvent;
+		public delegate void OnElevatorInteract(ref ElevatorInteractionEvent ev);
+
+		public static void InvokeElevatorInteract(GameObject player, Lift.Elevator elevator, ref bool allow)
+		{
+			if (ElevatorInteractEvent == null)
+				return;
+
+			ElevatorInteractionEvent ev = new ElevatorInteractionEvent()
+			{
+				Player = player.GetPlayer(),
+				Elevator = elevator,
+				Allow = allow
+			};
+
+			ElevatorInteractEvent.Invoke(ref ev);
+
+			allow = ev.Allow;
+		}
+
+		public static event WarheadCancelled WarheadCancelledEvent;
+		public delegate void WarheadCancelled(WarheadCancelEvent ev);
+
+		public static void InvokeWarheadCancel(GameObject player, ref bool allow)
+		{
+			if (WarheadCancelledEvent == null)
+				return;
+
+			WarheadCancelEvent ev = new WarheadCancelEvent
+			{
+				Allow = allow,
+				Player = player ? player.GetPlayer() : null
+			};
+
+			WarheadCancelledEvent.Invoke(ev);
+
+			allow = ev.Allow;
+		}
+
+		public static event WarheadStart WarheadStartEvent;
+		public delegate void WarheadStart(WarheadStartEvent ev);
+
+		public static void InvokeWarheadStart(ref bool allow)
+		{
+			if (WarheadStartEvent == null)
+				return;
+
+			WarheadStartEvent ev = new WarheadStartEvent
+			{
+				Allow = allow
+			};
+
+			WarheadStartEvent.Invoke(ev);
+
+			allow = ev.Allow;
+		}
+
+		public static event OnLockerInteract LockerInteractEvent;
+		public delegate void OnLockerInteract(LockerInteractionEvent ev);
+
+		internal static void InvokeLockerInteract(GameObject player, Locker locker, int lockerId, ref bool allow)
+		{
+			if (LockerInteractEvent == null)
+				return;
+
+			LockerInteractionEvent ev = new LockerInteractionEvent(player.GetPlayer(), locker, lockerId)
+			{
+				Allow = allow,
+			};
+
+			LockerInteractEvent.Invoke(ev);
+
+			allow = ev.Allow;
+		}
+
 		public static event TriggerTesla TriggerTeslaEvent;
 		public delegate void TriggerTesla(ref TriggerTeslaEvent ev);
-		public static void InvokeTriggerTesla(GameObject obj, bool hurtRange, ref bool triggerable)
+
+		public static void InvokeTriggerTesla(GameObject player, bool isInHurtingRange, ref bool isTriggerable)
 		{
-			TriggerTesla triggerTesla = TriggerTeslaEvent;
-			if (triggerTesla == null)
+			if (TriggerTeslaEvent == null)
 				return;
-			
+
 			TriggerTeslaEvent ev = new TriggerTeslaEvent()
 			{
-				Player = Plugin.GetPlayer(obj),
-				Triggerable = triggerable
+				Player = player.GetPlayer(),
+				IsInHurtingRange = isInHurtingRange,
+				Triggerable = isTriggerable
 			};
-			triggerTesla?.Invoke(ref ev);
-			triggerable = ev.Triggerable;
+
+			TriggerTeslaEvent.Invoke(ref ev);
+
+			isTriggerable = ev.Triggerable;
 		}
-		
+
 		public static event Scp914Upgrade Scp914UpgradeEvent;
 		public delegate void Scp914Upgrade(ref SCP914UpgradeEvent ev);
-		public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> ccms, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
+
+		public static void InvokeScp914Upgrade(Scp914.Scp914Machine machine, List<CharacterClassManager> characterClassManagers, ref List<Pickup> pickups, Scp914.Scp914Knob knobSetting, ref bool allow)
 		{
-			Scp914Upgrade activated = Scp914UpgradeEvent;
-			if (activated == null)
+			if (Scp914UpgradeEvent == null)
 				return;
+
 			List<ReferenceHub> players = new List<ReferenceHub>();
-			foreach (CharacterClassManager ccm in ccms)
-			{
-				players.Add(Plugin.GetPlayer(ccm.gameObject));
-			}
+
+			foreach (CharacterClassManager characterClassManager in characterClassManagers)
+				players.Add(characterClassManager.gameObject.GetPlayer());
 
 			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
 			{
@@ -81,151 +221,168 @@ namespace EXILED
 				Items = pickups,
 				KnobSetting = knobSetting
 			};
-			activated?.Invoke(ref ev);
+
+			Scp914UpgradeEvent.Invoke(ref ev);
+
 			pickups = ev.Items;
 			allow = ev.Allow;
 		}
 
 		public static event GeneratorUnlock GeneratorUnlockEvent;
 		public delegate void GeneratorUnlock(ref GeneratorUnlockEvent ev);
-		internal static void InvokeGeneratorUnlock(GameObject person, Generator079 generator, ref bool allow)
+
+		internal static void InvokeGeneratorUnlock(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorUnlock generatorUnlock = GeneratorUnlockEvent;
-			if (generatorUnlock == null)
+			if (GeneratorUnlockEvent == null)
 				return;
+
 			GeneratorUnlockEvent ev = new GeneratorUnlockEvent()
 			{
-				Allow = allow,
+				Player = player.GetPlayer(),
 				Generator = generator,
-				Player = Plugin.GetPlayer(person)
+				Allow = allow
 			};
-			generatorUnlock.Invoke(ref ev);
+
+			GeneratorUnlockEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
 
 		public static event GeneratorOpen GeneratorOpenedEvent;
 		public delegate void GeneratorOpen(ref GeneratorOpenEvent ev);
+
 		public static void InvokeGeneratorOpen(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorOpen generatorOpen = GeneratorOpenedEvent;
-			if (generatorOpen == null)
+			if (GeneratorOpenedEvent == null)
 				return;
+
 			GeneratorOpenEvent ev = new GeneratorOpenEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
-			generatorOpen.Invoke(ref ev);
+
+			GeneratorOpenedEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorClose GeneratorClosedEvent;
 		public delegate void GeneratorClose(ref GeneratorCloseEvent ev);
+
 		public static void InvokeGeneratorClose(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorClose generatorClose = GeneratorClosedEvent;
-			if (generatorClose == null)
+			if (GeneratorClosedEvent == null)
 				return;
+
 			GeneratorCloseEvent ev = new GeneratorCloseEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
-			generatorClose.Invoke(ref ev);
+
+			GeneratorClosedEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorInsert GeneratorInsertedEvent;
 		public delegate void GeneratorInsert(ref GeneratorInsertTabletEvent ev);
+
 		public static void InvokeGeneratorInsert(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorInsert generatorInsert = GeneratorInsertedEvent;
-			if (generatorInsert == null)
+			if (GeneratorInsertedEvent == null)
 				return;
+
 			GeneratorInsertTabletEvent ev = new GeneratorInsertTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
-			generatorInsert.Invoke(ref ev);
+
+			GeneratorInsertedEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorEject GeneratorEjectedEvent;
 		public delegate void GeneratorEject(ref GeneratorEjectTabletEvent ev);
+
 		public static void InvokeGeneratorEject(GameObject player, Generator079 generator, ref bool allow)
 		{
-			GeneratorEject generatorEject = GeneratorEjectedEvent;
-			if (generatorEject == null)
+			if (GeneratorEjectedEvent == null)
 				return;
+
 			GeneratorEjectTabletEvent ev = new GeneratorEjectTabletEvent()
 			{
-				Player = Plugin.GetPlayer(player),
+				Player = player.GetPlayer(),
 				Generator = generator,
 				Allow = allow
 			};
-			generatorEject.Invoke(ref ev);
+
+			GeneratorEjectedEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
-		
+
 		public static event GeneratorFinish GeneratorFinishedEvent;
 		public delegate void GeneratorFinish(ref GeneratorFinishEvent ev);
+
 		public static void InvokeGeneratorFinish(Generator079 generator)
 		{
-			GeneratorFinish generatorFinish = GeneratorFinishedEvent;
-			if (generatorFinish == null)
+			if (GeneratorFinishedEvent == null)
 				return;
+
 			GeneratorFinishEvent ev = new GeneratorFinishEvent()
 			{
 				Generator = generator,
 			};
-			generatorFinish.Invoke(ref ev);
+
+			GeneratorFinishedEvent.Invoke(ref ev);
 		}
 
 		public static event Decontamination DecontaminationEvent;
-
 		public delegate void Decontamination(ref DecontaminationEvent ev);
 
 		public static void InvokeDecontamination(ref bool allow)
 		{
-			Decontamination decontamination = DecontaminationEvent;
-			if (decontamination == null)
+			if (DecontaminationEvent == null)
 				return;
+
 			DecontaminationEvent ev = new DecontaminationEvent
 			{
 				Allow = allow
 			};
-			
-			decontamination.Invoke(ref ev);
+
+			DecontaminationEvent.Invoke(ref ev);
+
 			allow = ev.Allow;
 		}
 
 		public static event CheckRoundEnd CheckRoundEndEvent;
-
 		public delegate void CheckRoundEnd(ref CheckRoundEndEvent ev);
 
-		public static void InvokeCheckRoundEnd(ref bool force, ref bool allow, ref RoundSummary.LeadingTeam team, ref bool teamChanged)
+		public static void InvokeCheckRoundEnd(ref bool forceEnd, ref bool allow, ref RoundSummary.LeadingTeam leadingTeam, ref bool teamChanged)
 		{
-			CheckRoundEnd checkRoundEnd = CheckRoundEndEvent;
-			if (checkRoundEnd == null)
+			if (CheckRoundEndEvent == null)
 				return;
-			
+
 			CheckRoundEndEvent ev = new CheckRoundEndEvent
 			{
-				LeadingTeam = team,
-				ForceEnd = force,
+				LeadingTeam = leadingTeam,
+				ForceEnd = forceEnd,
 				Allow = allow
 			};
-			
-			checkRoundEnd.Invoke(ref ev);
-			if (team != ev.LeadingTeam)
-				teamChanged = true;
-			team = ev.LeadingTeam;
+
+			CheckRoundEndEvent.Invoke(ref ev);
+
+			teamChanged = leadingTeam != ev.LeadingTeam;
+			leadingTeam = ev.LeadingTeam;
 			allow = ev.Allow;
-			force = ev.ForceEnd;
+			forceEnd = ev.ForceEnd;
 		}
 	}
 }
