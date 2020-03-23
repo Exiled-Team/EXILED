@@ -75,7 +75,7 @@ namespace EXILED.Extensions
 		/// <param name="rh"></param>
 		/// <param name="newStatus"></param>
 		/// <returns></returns>
-		public static void SetOverwatch(this ReferenceHub player, bool newStatus) => player.serverRoles.OverwatchEnabled = newStatus;
+		public static void SetOverwatch(this ReferenceHub player, bool newStatus) => player.serverRoles.SetOverwatchStatus(newStatus);
 
 		/// <summary>
 		/// Gets a player's Current Role.
