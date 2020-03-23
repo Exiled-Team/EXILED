@@ -180,6 +180,9 @@ namespace EXILED.Extensions
 		/// </summary>
 		public static bool IsNukeInProgress => AlphaWarheadController.inProgress;
 
+		/// <summary>
+		/// Gets/sets the nuke detonation timer.
+		/// </summary>
 		public static float NukeDetonationTimer
 		{
 			get => AlphaWarheadController.NetworktimeToDetonation;
