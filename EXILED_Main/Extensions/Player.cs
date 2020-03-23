@@ -89,7 +89,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="rh"></param>
 		/// <param name="newRole"></param>
-		public static void SetRole(this ReferenceHub player, RoleType newRole) => player.characterClassManager.SetClassID(newRole);
+		public static void SetRole(this ReferenceHub player, RoleType newRole) => player.characterClassManager.SetPlayersClass(newRole, player.gameObject);
 
 		/// <summary>
 		/// Gets the position of a <see cref="ReferenceHub">player</see>
