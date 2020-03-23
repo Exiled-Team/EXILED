@@ -161,6 +161,45 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
+		/// Sets the rank of a <see cref="ReferenceHub">player</see> by giving a <paramref name="name"/>, <paramref name="color"/>, and setting if it should be shown with <paramref name="show"/>, as well as the <paramref name="rankName"/>, the server should use for permissions.
+		/// </summary>
+		public static void SetRank(this ReferenceHub player, string name, string color, bool show, string rankName)
+		{
+			// Developer note: I bet I just needed to use the show once. But hey, better be safe than sorry.
+			if (ServerStatic.GetPermissionsHandler()._groups.ContainsKey(rankName))
+			{
+				ServerStatic.GetPermissionsHandler()._groups[rankName].BadgeColor = color;
+				ServerStatic.GetPermissionsHandler()._groups[rankName].BadgeText = name;
+				ServerStatic.GetPermissionsHandler()._groups[rankName].HiddenByDefault = !show;
+				ServerStatic.GetPermissionsHandler()._groups[rankName].Cover = show;
+
+				player.serverRoles.SetGroup(ServerStatic.GetPermissionsHandler()._groups[rankName], false, false, show);
+			}
+			else
+			{
+				UserGroup ug = new UserGroup()
+				{
+					BadgeColor = color,
+					BadgeText = name,
+					HiddenByDefault = !show,
+					Cover = show
+				};
+
+				ServerStatic.GetPermissionsHandler()._groups.Add(rankName, ug);
+				player.serverRoles.SetGroup(ug, false, false, show);
+			}
+
+			if (ServerStatic.GetPermissionsHandler()._members.ContainsKey(player.GetUserId()))
+			{
+				ServerStatic.GetPermissionsHandler()._members[player.GetUserId()] = rankName;
+			}
+			else
+			{
+				ServerStatic.GetPermissionsHandler()._members.Add(player.GetUserId(), rankName);
+			}
+		}
+
+		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
 		/// </summary>
 		public static void SetRank(this ReferenceHub player, UserGroup userGroup) => player.serverRoles.SetGroup(userGroup, false, false, false);
