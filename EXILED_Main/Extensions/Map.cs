@@ -15,6 +15,7 @@ namespace EXILED.Extensions
 		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
 		private static DecontaminationLCZ _decontaminationLCZ;
 		private static List<Room> _rooms = new List<Room>();
+		private static List<Door> _doors = new List<Door>();
 
 		public static Inventory HostInventory
 		{
@@ -79,6 +80,17 @@ namespace EXILED.Extensions
 					_rooms = Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
 
 				return _rooms;
+			}
+		}
+		
+		public static List<Door> Doors
+		{
+			get
+			{
+				if (_doors?.Count == 0)
+					_doors = Object.FindObjectsOfType<Door>().ToList();
+
+				return _doors;
 			}
 		}
 
