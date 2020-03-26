@@ -18,6 +18,8 @@ namespace EXILED.Patches
 			EventPlugin.GhostedIds.Clear();
 			Map.Rooms.Clear();
 			Map.Doors.Clear();
+			Map.Lifts.Clear();
+			Map.TeslaGates.Clear();
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");

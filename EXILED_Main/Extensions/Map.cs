@@ -16,6 +16,8 @@ namespace EXILED.Extensions
 		private static DecontaminationLCZ _decontaminationLCZ;
 		private static List<Room> _rooms = new List<Room>();
 		private static List<Door> _doors = new List<Door>();
+		private static List<Lift> _lifts = new List<Lift>();
+		private static List<TeslaGate> _teslas = new List<TeslaGate>();
 
 		public static Inventory HostInventory
 		{
@@ -91,6 +93,28 @@ namespace EXILED.Extensions
 					_doors = Object.FindObjectsOfType<Door>().ToList();
 
 				return _doors;
+			}
+		}
+
+		public static List<Lift> Lifts
+		{
+			get
+			{
+				if (_lifts?.Count == 0)
+					_lifts = Object.FindObjectsOfType<Lift>().ToList();
+
+				return _lifts;
+			}
+		}
+		
+		public static List<TeslaGate> TeslaGates
+		{
+			get
+			{
+				if (_teslas?.Count == 0)
+					_teslas = Object.FindObjectsOfType<TeslaGate>().ToList();
+
+				return _teslas;
 			}
 		}
 
