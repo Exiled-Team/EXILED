@@ -89,7 +89,7 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_doors?.Count == 0)
+				if (_doors == null || _doors.Count == 0)
 					_doors = Object.FindObjectsOfType<Door>().ToList();
 
 				return _doors;
@@ -100,7 +100,7 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_lifts?.Count == 0)
+				if (_lifts == null || _lifts.Count == 0)
 					_lifts = Object.FindObjectsOfType<Lift>().ToList();
 
 				return _lifts;
@@ -111,7 +111,7 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_teslas?.Count == 0)
+				if (_teslas == null || _teslas.Count == 0)
 					_teslas = Object.FindObjectsOfType<TeslaGate>().ToList();
 
 				return _teslas;
