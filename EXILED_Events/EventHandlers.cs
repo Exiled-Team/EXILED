@@ -17,6 +17,9 @@ namespace EXILED.Patches
 		{
 			EventPlugin.GhostedIds.Clear();
 			Map.Rooms.Clear();
+			Map.Doors.Clear();
+			Map.Lifts.Clear();
+			Map.TeslaGates.Clear();
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
@@ -35,7 +38,7 @@ namespace EXILED.Patches
 				if (hub.GetOverwatch())
 				{
 					hub.SetOverwatch(false);
-					Timing.CallDelayed(1f, () => hub.SetOverwatch(true));
+					Timing.CallDelayed(2f, () => hub.SetOverwatch(true));
 				}
 			}
 		}
