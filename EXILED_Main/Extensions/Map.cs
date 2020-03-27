@@ -15,6 +15,9 @@ namespace EXILED.Extensions
 		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
 		private static DecontaminationLCZ _decontaminationLCZ;
 		private static List<Room> _rooms = new List<Room>();
+		private static List<Door> _doors = new List<Door>();
+		private static List<Lift> _lifts = new List<Lift>();
+		private static List<TeslaGate> _teslas = new List<TeslaGate>();
 
 		public static Inventory HostInventory
 		{
@@ -79,6 +82,39 @@ namespace EXILED.Extensions
 					_rooms = Object.FindObjectsOfType<Transform>().Where(transform => transform.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
 
 				return _rooms;
+			}
+		}
+		
+		public static List<Door> Doors
+		{
+			get
+			{
+				if (_doors?.Count == 0)
+					_doors = Object.FindObjectsOfType<Door>().ToList();
+
+				return _doors;
+			}
+		}
+
+		public static List<Lift> Lifts
+		{
+			get
+			{
+				if (_lifts?.Count == 0)
+					_lifts = Object.FindObjectsOfType<Lift>().ToList();
+
+				return _lifts;
+			}
+		}
+		
+		public static List<TeslaGate> TeslaGates
+		{
+			get
+			{
+				if (_teslas?.Count == 0)
+					_teslas = Object.FindObjectsOfType<TeslaGate>().ToList();
+
+				return _teslas;
 			}
 		}
 
@@ -179,6 +215,15 @@ namespace EXILED.Extensions
 		/// Gets the nuke detonation status.
 		/// </summary>
 		public static bool IsNukeInProgress => AlphaWarheadController.inProgress;
+
+		/// <summary>
+		/// Gets/sets the nuke detonation timer.
+		/// </summary>
+		public static float NukeDetonationTimer
+		{
+			get => AlphaWarheadController.NetworktimeToDetonation;
+			set => AlphaWarheadController.NetworktimeToDetonation = value;
+		}
 
 		/// <summary>
 		/// Gets the LCZ decontamination status.
