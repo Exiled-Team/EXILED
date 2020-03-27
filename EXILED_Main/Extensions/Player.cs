@@ -35,14 +35,14 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets a player's UserID
 		/// </summary>
-		/// <param name="rh">Player</param>
+		/// <param name="player">Player</param>
 		/// <returns>string, can be empty.</returns>
 		public static string GetUserId(this ReferenceHub player) => player.characterClassManager.UserId;
 
 		/// <summary>
 		/// Sets a player's UserID
 		/// </summary>
-		/// <param name="rh"></param>
+		/// <param name="player"></param>
 		/// <param name="newId"></param>
 		/// <returns></returns>
 		public static void SetUserId(this ReferenceHub player, string newId) => player.characterClassManager.NetworkSyncedUserId = newId;
@@ -50,14 +50,14 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets a player's PlayerID
 		/// </summary>
-		/// <param name="rh">Player</param>
+		/// <param name="player">Player</param>
 		/// <returns>int PlayerID</returns>
 		public static int GetPlayerId(this ReferenceHub player) => player.queryProcessor.PlayerId;
 
 		/// <summary>
 		/// Sets a player's PlayerID
 		/// </summary>
-		/// <param name="rh"></param>
+		/// <param name="player"></param>
 		/// <param name="newId"></param>
 		/// <returns></returns>
 		public static void SetPlayerId(this ReferenceHub player, int newId) => player.queryProcessor.NetworkPlayerId = newId;
@@ -65,14 +65,14 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets a player's Overwatch status.
 		/// </summary>
-		/// <param name="rh">Player</param>
+		/// <param name="player">Player</param>
 		/// <returns>True if in overwatch.</returns>
 		public static bool GetOverwatch(this ReferenceHub player) => player.serverRoles.OverwatchEnabled;
 
 		/// <summary>
 		/// Sets a player's Overwatch status.
 		/// </summary>
-		/// <param name="rh"></param>
+		/// <param name="player"></param>
 		/// <param name="newStatus"></param>
 		/// <returns></returns>
 		public static void SetOverwatch(this ReferenceHub player, bool newStatus) => player.serverRoles.OverwatchEnabled = newStatus;
@@ -80,71 +80,71 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets a player's Current Role.
 		/// </summary>
-		/// <param name="rh">Player</param>
+		/// <param name="player">Player</param>
 		/// <returns>RoleType Player's role</returns>
 		public static RoleType GetRole(this ReferenceHub player) => player.characterClassManager.CurClass;
 
 		/// <summary>
 		/// Sets a player's role.
 		/// </summary>
-		/// <param name="rh"></param>
+		/// <param name="player"></param>
 		/// <param name="newRole"></param>
 		public static void SetRole(this ReferenceHub player, RoleType newRole) => player.characterClassManager.SetClassID(newRole);
 
 		/// <summary>
-		/// Gets the position of a <see cref="ReferenceHub">player</see>
+		/// Gets the position of a <see cref="ReferenceHub"/>
 		/// </summary>
 		public static Vector3 GetPosition(this ReferenceHub player) => player.plyMovementSync.GetRealPosition();
 
 		/// <summary>
-		/// Gets the rotations from a <see cref="ReferenceHub">player</see>
+		/// Gets the rotations from a <see cref="ReferenceHub"/>
 		/// </summary>
 		/// <returns>A <see cref="Vector2"/>, representing the directions he's looking at</returns>
 		public static Vector2 GetRotations(this ReferenceHub player) => player.plyMovementSync.NetworkRotations;
 
 		/// <summary>
-		/// Gets the rotation of a <see cref="ReferenceHub">player</see>.
+		/// Gets the rotation of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <returns>The direction he's looking at, useful for Raycasts</returns>
 		public static Vector3 GetRotationVector(this ReferenceHub player) => player.characterClassManager.Scp049.plyCam.transform.forward;
 
 		/// <summary>
-		/// Sets the position of a <see cref="ReferenceHub">player</see> using a <see cref="Vector3"/>.
+		/// Sets the position of a <see cref="ReferenceHub"/> using a <see cref="Vector3"/>.
 		/// </summary>
 		public static void SetPosition(this ReferenceHub player, Vector3 position) => player.SetPosition(position.x, position.y, position.z);
 
 		/// <summary>
-		/// Sets the position of a <see cref="ReferenceHub">player</see> using the x, y, and z of the destination position.
+		/// Sets the position of a <see cref="ReferenceHub"/> using the x, y, and z of the destination position.
 		/// </summary>
 		public static void SetPosition(this ReferenceHub player, float x, float y, float z) => player.plyMovementSync.OverridePosition(new Vector3(x, y, z), player.transform.rotation.eulerAngles.y);
 
 		/// <summary>
-		/// Sets the rotation of a <see cref="ReferenceHub">player</see> using a <see cref="Vector2"/>.
+		/// Sets the rotation of a <see cref="ReferenceHub"/> using a <see cref="Vector2"/>.
 		/// </summary>
 		public static void SetRotation(this ReferenceHub player, Vector2 rotations) => player.SetRotation(rotations.x, rotations.y);
 
 		/// <summary>
-		/// Sets the rotation of a <see cref="ReferenceHub">player</see> using the x and y values of the desired rotation.
+		/// Sets the rotation of a <see cref="ReferenceHub"/> using the x and y values of the desired rotation.
 		/// </summary>
 		public static void SetRotation(this ReferenceHub player, float x, float y) => player.plyMovementSync.NetworkRotations = new Vector2(x, y);
 
 		/// <summary>
-		/// Sets the rank of a <see cref="ReferenceHub">player</see> to a <see cref="UserGroup"/>.
+		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
 		/// </summary>
 		public static UserGroup GetRank(this ReferenceHub player) => player.serverRoles.Group;
 
 		/// <summary>
-		/// Sets the rank color of a <see cref="ReferenceHub">player</see> to a given color with a <see cref="string"/>.
+		/// Sets the rank color of a <see cref="ReferenceHub"/> to a given color with a <see cref="string"/>.
 		/// </summary>
 		public static void SetRankColor(this ReferenceHub player, string color) => player.serverRoles.SetColor(color);
 
 		/// <summary>
-		/// Sets the rank name of a <see cref="ReferenceHub">player</see> to a given <see cref="string"/>.
+		/// Sets the rank name of a <see cref="ReferenceHub"/> to a given <see cref="string"/>.
 		/// </summary>
 		public static void SetRankName(this ReferenceHub player, string name) => player.serverRoles.SetText(name);
 
 		/// <summary>
-		/// Sets the rank of a <see cref="ReferenceHub">player</see> by giving a <paramref name="name"/>, <paramref name="color"/>, and setting if it should be shown with <paramref name="show"/>.
+		/// Sets the rank of a <see cref="ReferenceHub"/> by giving a <paramref name="name"/>, <paramref name="color"/>, and setting if it should be shown with <paramref name="show"/>.
 		/// </summary>
 		public static void SetRank(this ReferenceHub player, string name, string color, bool show)
 		{
@@ -166,7 +166,7 @@ namespace EXILED.Extensions
 		public static void SetRank(this ReferenceHub player, UserGroup userGroup) => player.serverRoles.SetGroup(userGroup, false, false, false);
 
 		/// <summary>
-		/// Gets the nickname of a <see cref="ReferenceHub">player</see>
+		/// Gets the nickname of a <see cref="ReferenceHub"/>
 		/// </summary>
 		public static string GetNickname(this ReferenceHub player) => player.nicknameSync.Network_myNickSync;
 
@@ -191,20 +191,20 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
-		/// Hides the tag of a <see cref="ReferenceHub">player</see>.
+		/// Hides the tag of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="player"></param>
 		private static void HideTag(this ReferenceHub player) => player.characterClassManager.CallCmdRequestHideTag();
 
 		/// <summary>
-		/// Shows the tag of a <see cref="ReferenceHub">player</see>.
+		/// Shows the tag of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="isGlobal"></param>
 		private static void ShowTag(this ReferenceHub player, bool isGlobal = false) => player.characterClassManager.CallCmdRequestShowTag(isGlobal);
 
 		/// <summary>
-		/// Gives an item to the specified player.
+		/// Gives an item to the specified <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="itemType">Your <see cref="ItemType"/></param>
 		/// <param name="duration">The durability (most of the times ammo) of the item</param>
@@ -223,18 +223,18 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
-		/// A simple broadcast to a player. Doesn't get logged to the console and can be monospace.
+		/// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospace.
 		/// </summary>
 		public static void Broadcast(this ReferenceHub player, uint time, string message, bool monospace = false) => Map.BroadcastComponent.TargetAddElement(player.scp079PlayerScript.connectionToClient, message, time, monospace);
 
 		/// <summary>
-		/// A simple broadcast to a player. Doesn't get logged to the console.
+		/// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console.
 		/// </summary>
 		[Obsolete("Append ', false' to your broadcasts to use the new, updated method.", true)]
 		public static void Broadcast(this ReferenceHub player, uint time, string message) => Map.BroadcastComponent.TargetAddElement(player.scp079PlayerScript.connectionToClient, message, time, false);
 
 		/// <summary>
-		/// Clears the brodcast of a player. Doesn't get logged to the console.
+		/// Clears the brodcast of a <see cref="ReferenceHub"/>. Doesn't get logged to the console.
 		/// </summary>
 		/// <param name="player"></param>
 		public static void ClearBroadcasts(this ReferenceHub player) => Map.BroadcastComponent.TargetClearElements(player.scp079PlayerScript.connectionToClient);
@@ -601,6 +601,7 @@ namespace EXILED.Extensions
 		public static void SetInventory(this ReferenceHub player, List<Inventory.SyncItemInfo> items)
 		{
 			player.ClearInventory();
+
 			foreach (Inventory.SyncItemInfo item in items)
 				player.inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
 		}
@@ -787,10 +788,35 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
-		/// Gets the group name of a <see cref="ReferenceHub">player</see>.
+		/// Gets the group name of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
 		public static string GetGroupName(this ReferenceHub player) => ServerStatic.PermissionsHandler._members[player.GetUserId()];
+
+		/// <summary>
+		/// Gets the bypass mode status of a <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static bool GetBypassMode(this ReferenceHub player) => player.serverRoles.BypassMode;
+
+		/// <summary>
+		/// Sets the bypass mode status of a <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="isEnabled"></param>
+		public static void SetBypassMode(this ReferenceHub player, bool isEnabled) => player.serverRoles.BypassMode = isEnabled;
+
+		/// <summary>
+		/// Sends a console message to a <see cref="ReferenceHub"/>
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="message"></param>
+		/// <param name="color"></param>
+		public static void SendConsoleMessage(this ReferenceHub player, string message, string color)
+		{
+			player.characterClassManager.TargetConsolePrint(player.GetConnection(), message, color);
+		}
 	}
 }

@@ -75,8 +75,8 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_rooms?.Count == 0)
-					_rooms = Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
+				if (_rooms == null || _rooms.Count == 0)
+					_rooms = Object.FindObjectsOfType<Transform>().Where(transform => transform.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
 
 				return _rooms;
 			}
