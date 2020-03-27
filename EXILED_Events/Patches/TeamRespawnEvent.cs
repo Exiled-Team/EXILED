@@ -23,7 +23,7 @@ namespace EXILED.Patches
 
 				foreach (ReferenceHub player in players.ToArray())
 				{
-					if (player.GetOverwatch() || player.GetRole() != RoleType.Spectator)
+					if (player.GetOverwatch())
 					{
 						Log.Debug($"Removing {player.gameObject} -- Overwatch true");
 						players.Remove(player);
