@@ -18,29 +18,29 @@ namespace EXILED.Patches
 			{
 				int num = 0;
 				__instance.playersToNTF.Clear();
-				List<ReferenceHub> players = EventPlugin.DeadPlayers;
-				Log.Debug($"Respawn: Got players: {players.Count}");
 
-				foreach (ReferenceHub player in players.ToArray())
+				Log.Debug($"Respawn: Got players: {EventPlugin.DeadPlayers.Count}");
+
+				foreach (ReferenceHub player in EventPlugin.DeadPlayers.ToArray())
 				{
 					if (player.GetOverwatch() || player.GetRole() != RoleType.Spectator)
 					{
-						Log.Debug($"Removing {player.gameObject} -- Overwatch true");
-						players.Remove(player);
+						Log.Debug($"Removing {player.GetNickname()} -- Overwatch true");
+						EventPlugin.DeadPlayers.Remove(player);
 					}
 				}
 
 				if (Plugin.Config.GetBool("exiled_random_respawns"))
-					players.ShuffleList();
+					EventPlugin.DeadPlayers.ShuffleList();
 
 				bool isChaos = __instance.nextWaveIsCI;
 				int maxRespawn = isChaos ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;
 
-				List<ReferenceHub> playersToRespawn = players.Take(maxRespawn).ToList();
+				List<ReferenceHub> playersToRespawn = EventPlugin.DeadPlayers.Take(maxRespawn).ToList();
 				Log.Debug($"Respawn: pre-vent list: {playersToRespawn.Count}");
 				Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref playersToRespawn);
 
-				if (maxRespawn <= 0 || playersToRespawn?.Count == 0)
+				if (maxRespawn <= 0 || playersToRespawn == null || playersToRespawn.Count == 0)
 					return false;
 
 				foreach (ReferenceHub player in playersToRespawn)
