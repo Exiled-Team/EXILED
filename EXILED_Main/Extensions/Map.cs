@@ -150,7 +150,11 @@ namespace EXILED.Extensions
 		/// Starts the warhead.
 		/// </summary>
 		[Obsolete("Use StartNuke.")]
-		public static void StartWarhead() => AlphaWarheadController.StartDetonation();
+		public static void StartWarhead()
+		{
+			AlphaWarheadController.InstantPrepare();
+			AlphaWarheadController.StartDetonation();
+		}
 
 		/// <summary>
 		/// Stops the warhead.

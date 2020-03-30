@@ -19,13 +19,12 @@ namespace EXILED.Patches
 
 			try
 			{
-				NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
+				PlayerStats component1 = other.GetComponent<PlayerStats>();
 				if (component1 == null)
 					return false;
 				if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer ||
 					Object.FindObjectOfType<BlastDoor>().isClosed)
-					component1.GetComponent<PlayerStats>()
-					  .HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
+					component1.HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
 				else if (__instance.type == PocketDimensionTeleport.PDTeleportType.Exit)
 				{
 					__instance.tpPositions.Clear();

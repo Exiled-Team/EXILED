@@ -25,7 +25,7 @@ namespace EXILED.Patches
 				{
 					if (player.GetOverwatch() || player.GetRole() != RoleType.Spectator)
 					{
-						Log.Debug($"Removing {player.GetNickname()} -- Overwatch true");
+						Log.Debug($"Removing {player.GetNickname()} -- Overwatch true or not spectator");
 						EventPlugin.DeadPlayers.Remove(player);
 					}
 				}
