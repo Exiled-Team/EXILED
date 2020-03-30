@@ -3,10 +3,10 @@ using System;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))]
+	[HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
 	public class SetClassEvent
 	{
-		public static void Postfix(CharacterClassManager __instance, RoleType id)
+		public static void Prefix(CharacterClassManager __instance, RoleType id)
 		{
 			if (EventPlugin.SetClassPatchDisable)
 				return;
