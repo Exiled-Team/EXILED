@@ -16,6 +16,8 @@ namespace EXILED.Extensions
 		private static DecontaminationLCZ _decontaminationLCZ;
 		private static List<Room> _rooms = new List<Room>();
 		private static List<Door> _doors = new List<Door>();
+		private static List<Lift> _lifts = new List<Lift>();
+		private static List<TeslaGate> _teslas = new List<TeslaGate>();
 
 		public static Inventory HostInventory
 		{
@@ -76,8 +78,8 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_rooms?.Count == 0)
-					_rooms = Object.FindObjectsOfType<Transform>().Where(t => t.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
+				if (_rooms == null || _rooms.Count == 0)
+					_rooms = Object.FindObjectsOfType<Transform>().Where(transform => transform.CompareTag("Room")).Select(obj => new Room { Name = obj.name, Position = obj.position, Transform = obj }).ToList();
 
 				return _rooms;
 			}
@@ -87,10 +89,32 @@ namespace EXILED.Extensions
 		{
 			get
 			{
-				if (_doors?.Count == 0)
+				if (_doors == null || _doors.Count == 0)
 					_doors = Object.FindObjectsOfType<Door>().ToList();
 
 				return _doors;
+			}
+		}
+
+		public static List<Lift> Lifts
+		{
+			get
+			{
+				if (_lifts == null || _lifts.Count == 0)
+					_lifts = Object.FindObjectsOfType<Lift>().ToList();
+
+				return _lifts;
+			}
+		}
+		
+		public static List<TeslaGate> TeslaGates
+		{
+			get
+			{
+				if (_teslas == null || _teslas.Count == 0)
+					_teslas = Object.FindObjectsOfType<TeslaGate>().ToList();
+
+				return _teslas;
 			}
 		}
 
@@ -126,7 +150,11 @@ namespace EXILED.Extensions
 		/// Starts the warhead.
 		/// </summary>
 		[Obsolete("Use StartNuke.")]
-		public static void StartWarhead() => AlphaWarheadController.StartDetonation();
+		public static void StartWarhead()
+		{
+			AlphaWarheadController.InstantPrepare();
+			AlphaWarheadController.StartDetonation();
+		}
 
 		/// <summary>
 		/// Stops the warhead.
