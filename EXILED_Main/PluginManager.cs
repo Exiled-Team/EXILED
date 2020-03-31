@@ -223,7 +223,6 @@ namespace EXILED
 			{
 				Log.Info($"Reloading Plugins...");
 				OnDisable();
-				OnReload();
 				_plugins.Clear();
 
 				Timing.RunCoroutine(LoadPlugins());
