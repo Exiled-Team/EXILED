@@ -92,7 +92,7 @@ namespace EXILED
 		{
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
-			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
+			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
 			if (Config.GetBool("exiled_auto_update", true))
 			{
 				if (IsUpdateAvailable())
@@ -377,6 +377,12 @@ namespace EXILED
 				{
 					// ignored
 				}
+		}
+
+		//Used to Exiled2Multiadmin
+		internal static void ToMultiAdmin(string message)
+		{
+			ServerConsole.AddLog($"[EXILED2Multiadmin] {message} LOGTYPE02");
 		}
 	}
 }
