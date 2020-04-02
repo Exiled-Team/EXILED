@@ -22,7 +22,7 @@ namespace EXILED
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 9 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 12 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -85,6 +85,7 @@ namespace EXILED
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
 		public static bool NameTracking;
+		public static bool DropInventory;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
@@ -93,7 +94,7 @@ namespace EXILED
 		{
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
-			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
+			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
 			if (Config.GetBool("exiled_auto_update", true))
 			{
 				if (IsUpdateAvailable())
@@ -137,6 +138,7 @@ namespace EXILED
 			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
 			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
 			NameTracking = Config.GetBool("exiled_name_tracking", true);
+			DropInventory = Config.GetBool("exiled_drop_inventory", true);
 		}
 
 		private void AutoUpdate()
@@ -378,6 +380,12 @@ namespace EXILED
 				{
 					// ignored
 				}
+		}
+
+		//Used to Exiled2Multiadmin
+		internal static void ToMultiAdmin(string message)
+		{
+			ServerConsole.AddLog($"[EXILED2Multiadmin] {message} LOGTYPE02");
 		}
 	}
 }
