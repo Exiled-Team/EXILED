@@ -50,16 +50,16 @@
       <HintPath>..\References\Mono.Security.dll</HintPath>
     </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51">
-      <HintPath>..\References\netstandard.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\netstandard.dll</HintPath>
     </Reference>
     <Reference Include="System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\References\System.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.dll</HintPath>
     </Reference>
     <Reference Include="System.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\References\System.Configuration.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\References\System.Core.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.StackTrace, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -69,13 +69,13 @@
       <HintPath>..\References\System.Globalization.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\References\System.IO.Compression.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.IO.Compression.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\References\System.Runtime.Serialization.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.Runtime.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>..\References\System.Xml.dll</HintPath>
+      <HintPath>..\..\..\joker\dlls\System.Xml.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\UnityEngine.dll</HintPath>
@@ -89,7 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiObjects\AmmoType.cs" />
-    <Compile Include="ApiObjects\GlobalBadge.cs" />
     <Compile Include="ApiObjects\Room.cs" />
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
