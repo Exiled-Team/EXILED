@@ -43,7 +43,10 @@ namespace EXILED
 				Directory.CreateDirectory(path);
 			}
 
-			List<string> mods = Directory.GetFiles(path).Where(p => !p.EndsWith("overrides.txt")).ToList();
+			var files = Directory.GetFiles(path);
+			Array.Sort(files, string.Compare);
+
+			List<string> mods = files.Where(p => p.EndsWith(".dll")).ToList();
 
 			if (File.Exists($"{path}/overrides.txt"))
 				_typeOverrides = File.ReadAllText($"{path}/overrides.txt");
