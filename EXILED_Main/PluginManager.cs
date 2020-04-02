@@ -11,6 +11,7 @@ namespace EXILED
 	public class PluginManager
 	{
 		public static readonly List<Plugin> _plugins = new List<Plugin>();
+		public static readonly List<Plugin> _active = new List<Plugin>();
 		private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 		private static string _typeOverrides = "";
 
@@ -174,50 +175,68 @@ namespace EXILED
 
 		public static void OnEnable()
 		{
-			foreach (Plugin plugin in _plugins)
+			foreach (Plugin plugin in _plugins.Where(p => !_active.Contains(p)))
 			{
-				try
-				{
-					plugin.OnEnable();
-				}
-				catch (Exception exception)
-				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while enabling {exception}");
-				}
+				EnablePlugin(plugin);
 			}
 		}
 
 		public static void OnReload()
 		{
-			foreach (Plugin plugin in _plugins)
+			foreach (Plugin plugin in _active)
 			{
-				try
-				{
-					plugin.OnReload();
-				}
-				catch (Exception exception)
-				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while reloading {exception}");
-				}
+				ReloadPlugin(plugin);
 			}
 		}
 
 		public static void OnDisable()
 		{
-			foreach (Plugin plugin in _plugins)
+			foreach (Plugin plugin in _active)
 			{
-				try
-				{
-					plugin.OnDisable();
-				}
-				catch (Exception exception)
-				{
-					Log.Error($"Plugin {plugin.getName} threw an exception while disabling {exception}");
-				}
+				DisablePlugin(plugin);
 			}
 		}
 
-		public static void ReloadPlugins()
+		public static void EnablePlugin(Plugin plugin)
+		{
+			try
+			{
+				plugin.OnEnable();
+				_active.Add(plugin);
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"Plugin {plugin.getName} threw an exception while enabling {exception}");
+			}
+		}
+
+		public static void DisablePlugin(Plugin plugin)
+		{
+			try
+			{
+				plugin.OnDisable();
+				_active.Remove(plugin);
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"Plugin {plugin.getName} threw an exception while disabling {exception}");
+			}
+		}
+
+		public static void ReloadPlugin(Plugin plugin)
+		{
+			try
+			{
+				plugin.OnReload();
+				_active.Remove(plugin);
+			}
+			catch (Exception exception)
+			{
+				Log.Error($"Plugin {plugin.getName} threw an exception while reloading {exception}");
+			}
+		}
+
+		public static void ReloadAllPlugins()
 		{
 			try
 			{
