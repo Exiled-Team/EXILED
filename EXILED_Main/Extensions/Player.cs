@@ -130,6 +130,7 @@ namespace EXILED.Extensions
 
 		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
+		/// Can be null.
 		/// </summary>
 		public static UserGroup GetRank(this ReferenceHub player) => player.serverRoles.Group;
 
@@ -434,6 +435,35 @@ namespace EXILED.Extensions
 				return null;
 			}
 		}
+
+		/// <summary>
+		/// Get the global badge of the player.
+		/// </summary>
+		/// <param name="player">Player's ReferenceHub</param>
+		/// <returns>GlobalBadge or null</returns>
+		public static GlobalBadge GetGlobalBadge(this ReferenceHub player)
+		{
+      			string token = player.serverRoles.NetworkGlobalBadge;
+       			if (string.IsNullOrEmpty(token)) { return null; }
+            		Dictionary<string, string> dictionary = (from rwr in token.Split(new string[]
+           		{
+               			"<br>"
+          		}, StringSplitOptions.None)
+           		select rwr.Split(new string[]
+           		{
+               			": "
+           		}, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
+
+       			int BadgeType = 0;
+            		if(int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
+
+      			return new GlobalBadge
+       			{
+           			BadgeText = dictionary["Badge text"],
+                		BadgeColor = dictionary["Badge color"],
+           			Type = BadgeType
+       			};
+   		}
 
 		/// <summary>
 		/// Get the current room a player are in (from Smod2).
