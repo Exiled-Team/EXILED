@@ -22,16 +22,16 @@ namespace EXILED.Patches
 				if (__instance.cooldown > 0.0)
 					return false;
 
-				for (int mid = 0; mid < __instance.usableItems.Length; ++mid)
+				for (int i = 0; i < __instance.usableItems.Length; ++i)
 				{
-					if (__instance.usableItems[mid].inventoryID == __instance.inv.curItem && __instance.usableCooldowns[mid] <= 0.0)
+					if (__instance.usableItems[i].inventoryID == __instance.inv.curItem && __instance.usableCooldowns[i] <= 0.0)
 					{
 						bool allow = true;
 
-						Events.InvokeUseMedicalItem(__instance.gameObject, __instance.GetComponent<Inventory>().curItem, ref allow);
+						Events.InvokeUseMedicalItem(__instance.gameObject, __instance.inv.curItem, ref __instance.usableItems[i].animationDuration, ref allow);
 
 						if (allow)
-							Timing.RunCoroutine(__instance.UseMedicalItem(mid), Segment.FixedUpdate);
+							Timing.RunCoroutine(__instance.UseMedicalItem(i), Segment.FixedUpdate);
 					}
 				}
 

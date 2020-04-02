@@ -177,6 +177,9 @@
     <Compile Include="Patches\AnnounceDecontaminationEvent.cs" />
     <Compile Include="Patches\AnnounceNtfEntranceEvent.cs" />
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
+    <Compile Include="Patches\CancelMedicalItemEvent.cs" />
+    <Compile Include="Patches\DoubleSpawnEventFix.cs" />
+    <Compile Include="Patches\PlayerInteractEvent.cs" />
     <Compile Include="Patches\Scp079TriggerTeslaEvent.cs" />
     <Compile Include="Patches\SCP914UpgradeEvent.cs" />
     <Compile Include="Patches\AntiFlyPatch.cs" />
