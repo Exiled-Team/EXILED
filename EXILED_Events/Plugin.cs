@@ -84,6 +84,7 @@ namespace EXILED
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
 		public static bool NameTracking;
+		public static bool DropInventory;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
@@ -136,6 +137,7 @@ namespace EXILED
 			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
 			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
 			NameTracking = Config.GetBool("exiled_name_tracking", true);
+			DropInventory = Config.GetBool("exiled_drop_inventory", true);
 		}
 
 		private void AutoUpdate()
