@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiObjects\AmmoType.cs" />
+    <Compile Include="ApiObjects\GlobalBadge.cs" />
     <Compile Include="ApiObjects\Room.cs" />
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
