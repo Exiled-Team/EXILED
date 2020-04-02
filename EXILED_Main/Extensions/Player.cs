@@ -130,6 +130,7 @@ namespace EXILED.Extensions
 
 		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
+		/// Can be null.
 		/// </summary>
 		public static UserGroup GetRank(this ReferenceHub player) => player.serverRoles.Group;
 
