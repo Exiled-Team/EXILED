@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using EXILED.Extensions;
 using UnityEngine;
 
 namespace EXILED.ApiObjects
@@ -32,5 +35,11 @@ namespace EXILED.ApiObjects
 				return zone;
 			}
 		}
+
+		/// <summary>
+		/// Returns the list of players in this room.
+		/// </summary>
+		/// <returns>List of <see cref="ReferenceHub"/></returns>
+		public List<ReferenceHub> GetPlayers() => ReferenceHub.Hubs.Values.Where(h => !h.IsHost() && h.GetCurrentRoom().Name == Name).ToList();
 	}
 }
