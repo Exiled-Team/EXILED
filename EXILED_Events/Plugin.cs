@@ -75,6 +75,7 @@ namespace EXILED
 		public static bool WarheadStartEventPatchDisable;
 		public static bool LateShootEventPatchDisable;
 		public static bool GeneratorFinishedEventPatchDisable;
+		public static bool CancelMedicalEventPatchDisable;
 		#endregion
 
 		private EventHandlers handlers;

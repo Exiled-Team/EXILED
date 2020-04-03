@@ -147,13 +147,14 @@ namespace EXILED
 		public static event WarheadStart WarheadStartEvent;
 		public delegate void WarheadStart(WarheadStartEvent ev);
 
-		public static void InvokeWarheadStart(ref bool allow)
+		public static void InvokeWarheadStart(GameObject player, ref bool allow)
 		{
 			if (WarheadStartEvent == null)
 				return;
 
 			WarheadStartEvent ev = new WarheadStartEvent
 			{
+				Player = player == null ? null : player.GetPlayer(),
 				Allow = allow
 			};
 

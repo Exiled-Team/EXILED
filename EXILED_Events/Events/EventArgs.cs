@@ -118,6 +118,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public ItemType Item { get; set; }
+		public float Cooldown { get; set; }
 		public bool Allow { get; set; }
 	}
 
@@ -563,6 +564,7 @@ namespace EXILED
 
 	public class WarheadStartEvent : EventArgs
 	{
+		public ReferenceHub Player { get; internal set; }
 		public bool Allow;
 	}
 
@@ -635,5 +637,10 @@ namespace EXILED
 			}
 		}
 		public bool Allow { get; set; }
+	}
+
+	public class PlayerInteractEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
 	}
 }
