@@ -7,8 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using EXILED.Extensions;
-using MEC;
 using UnityEngine;
 using Random = System.Random;
 
@@ -153,39 +151,34 @@ namespace EXILED
 					return;
 				}
 
-				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-				Log.Info($"Creating temporary directory: {tempPath}...");
+				string tempDirectory = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+				Log.Info($"Creating temporary directory: {tempDirectory}...");
 
-				if (!Directory.Exists(tempPath))
-					Directory.CreateDirectory(tempPath);
+				if (!Directory.Exists(tempDirectory))
+					Directory.CreateDirectory(tempDirectory);
 
-				string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
+				string exiledTempPath = Path.Combine(tempDirectory, "EXILED.tar.gz");
 
-				using (WebClient client = new WebClient())
-				{
-					client.DownloadFile(VersionUpdateUrl, exiledTemp);
-				}
+				using (WebClient client = new WebClient()) client.DownloadFile(VersionUpdateUrl, exiledTempPath);
 
 				Log.Info("Download successful, extracting contents...");
-				ExtractTarGz(exiledTemp, tempPath);
+				ExtractTarGz(exiledTempPath, tempDirectory);
 				Log.Info($"Extraction complete, moving files...");
 
-				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
-				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
-				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+				string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "EXILED"), "EXILED.dll");
+				string tempPluginsDirectory = Path.Combine(tempDirectory, "Plugins");
+				string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "EXILED_Events.dll");
 
-				File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
-				File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-				File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Permissions.dll"),
-				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
-				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
-				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
+				File.Delete(Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Move(tempExiledMainPath, Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
+				File.Move(tempExiledEventsPath, Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
+				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Permissions.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
+				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Idler.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
 				Log.Info($"Files moved, cleaning up...");
-				DeleteDirectory(tempPath);
+				DeleteDirectory(tempDirectory);
 
 				Log.Info("Auto-update complete, restarting server...");
 				Application.Quit();

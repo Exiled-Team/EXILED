@@ -3,6 +3,7 @@ using LiteNetLib;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 using static BanHandler;
 
@@ -10,6 +11,8 @@ namespace EXILED
 {
 	public partial class Events
 	{
+		public static object lockObject = new object();
+
 		public static event OnRoundStart RoundStartEvent;
 		public delegate void OnRoundStart();
 
@@ -67,12 +70,10 @@ namespace EXILED
 			sender = ev.Sender;
 			allow = ev.Allow;
 
-			string fileName = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED"), $"{ServerConsole.Port}-RA_log.txt");
-
-			if (!File.Exists(fileName))
-				File.Create(fileName).Close();
-
-			File.AppendAllText(fileName, $"{sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}" + Environment.NewLine);
+			lock (lockObject)
+			{
+				File.AppendAllText(PluginManager.LogsPath, $"[{DateTime.Now}] {sender.Nickname} ({sender.SenderId}) ran command: {query}. Command Permitted: {allow}" + Environment.NewLine);
+			}
 		}
 
 		public static event OnCheaterReport CheaterReportEvent;

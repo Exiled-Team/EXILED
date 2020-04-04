@@ -11,48 +11,50 @@ namespace EXILED
 	public class PluginManager
 	{
 		public static readonly List<Plugin> _plugins = new List<Plugin>();
-		private static readonly string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		public static string AppDataDirectory { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+		public static string PluginsDirectory { get; private set; } = Path.Combine(AppDataDirectory, "Plugins");
+		public static string ExiledDirectory { get; private set; } = Path.Combine(AppDataDirectory, "EXILED");
+		public static string DependenciesDirectory { get; private set; } = Path.Combine(ExiledDirectory, "dependencies");
+		public static string LoadedDependenciesDirectory { get; private set; } = Path.Combine(PluginsDirectory, "dependencies");
+		public static string ConfigsPath { get; private set; } = Path.Combine(ExiledDirectory, $"{ServerStatic.ServerPort}-config.yml");
+		public static string LogsPath { get; private set; } = Path.Combine(ExiledDirectory, $"{ServerStatic.ServerPort}-RA_log.txt");
 		private static string _typeOverrides = "";
 
 		public static IEnumerator<float> LoadPlugins()
 		{
 			yield return Timing.WaitForSeconds(0.5f);
 
-			string path = Path.Combine(AppData, "Plugins");
-			string exiled = Path.Combine(AppData, "EXILED");
-			string deps = Path.Combine(exiled, "dependencies");
-
 			try
 			{
-				if (Directory.Exists(deps))
-					Directory.Move(deps, Path.Combine(path, "dependencies"));
+				if (Directory.Exists(DependenciesDirectory))
+					Directory.Move(DependenciesDirectory, Path.Combine(PluginsDirectory, "dependencies"));
 
-				LoadDeps();
+				LoadDependencies();
 			}
-			catch (Exception e)
+			catch (Exception exception)
 			{
-				Log.Error(e.ToString());
+				Log.Error(exception.ToString());
 			}
 
 			if (Environment.CurrentDirectory.ToLower().Contains("testing"))
-				path = Path.Combine(AppData, "Plugins_Testing");
+				PluginsDirectory = Path.Combine(AppDataDirectory, "Plugins_Testing");
 
-			if (!Directory.Exists(path))
+			if (!Directory.Exists(PluginsDirectory))
 			{
-				Log.Warn($"Plugin directory not found - creating: {path}");
-				Directory.CreateDirectory(path);
+				Log.Warn($"Plugin directory not found - creating: {PluginsDirectory}");
+				Directory.CreateDirectory(PluginsDirectory);
 			}
 
-			List<string> mods = Directory.GetFiles(path).Where(p => !p.EndsWith("overrides.txt")).ToList();
+			List<string> mods = Directory.GetFiles(PluginsDirectory).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
 
-			if (File.Exists($"{path}/overrides.txt"))
-				_typeOverrides = File.ReadAllText($"{path}/overrides.txt");
+			if (File.Exists($"{PluginsDirectory}/overrides.txt"))
+				_typeOverrides = File.ReadAllText($"{PluginsDirectory}/overrides.txt");
 
 			bool eventsInstalled = true;
-			if (mods.All(m => !m.Contains("EXILED_Events.dll")))
+
+			if (mods.All(mod => !mod.Contains("EXILED_Events.dll")))
 			{
-				Log.Warn(
-					"Events plugin not installed, plugins that do not handle their own events will not function and may cause errors.");
+				Log.Warn("Events plugin not installed, plugins that do not handle their own events will not function and may cause errors.");
 				eventsInstalled = false;
 			}
 
@@ -87,17 +89,15 @@ namespace EXILED
 
 		private static List<Assembly> localLoaded = new List<Assembly>();
 
-		private static void LoadDeps()
+		private static void LoadDependencies()
 		{
 			Log.Info("Loading dependencies...");
-			string pl = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Plugins");
-			string folder = Path.Combine(pl, "dependencies");
-			Log.Debug("Searching Directory '" + folder + "'");
+			Log.Debug($"Searching Directory \"{LoadedDependenciesDirectory}\"");
 
-			if (!Directory.Exists(folder))
-				Directory.CreateDirectory(folder);
+			if (!Directory.Exists(LoadedDependenciesDirectory))
+				Directory.CreateDirectory(LoadedDependenciesDirectory);
 
-			string[] depends = Directory.GetFiles(folder);
+			string[] depends = Directory.GetFiles(LoadedDependenciesDirectory);
 
 			foreach (string dll in depends)
 			{

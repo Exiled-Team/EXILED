@@ -372,10 +372,9 @@ namespace EXILED.Extensions
 				if (short.TryParse(args, out short playerId))
 					return GetPlayer(playerId);
 
-				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") ||
-					args.EndsWith("@patreon"))
+				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
 				{
-					Log.Debug("Trying to find by SID...");
+					Log.Debug("Trying to find by UserID...");
 
 					foreach (ReferenceHub player in GetHubs())
 					{
@@ -383,7 +382,7 @@ namespace EXILED.Extensions
 						{
 							playerFound = player;
 
-							Log.Debug("Found SID match.");
+							Log.Debug("Found UserID match.");
 						}
 					}
 				}
