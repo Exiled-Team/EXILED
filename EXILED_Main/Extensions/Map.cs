@@ -238,5 +238,11 @@ namespace EXILED.Extensions
 		/// Starts the Decontamination process.
 		/// </summary>
 		public static void StartDecontamination(bool isAnnouncementGlobal = true) => DecontaminationLCZ.RpcPlayAnnouncement(5, isAnnouncementGlobal);
+
+		/// <summary>
+		/// Returns the list of players in this room.
+		/// </summary>
+		/// <returns>List of <see cref="ReferenceHub"/></returns>
+		public static List<ReferenceHub> GetHubs(this Room room) =>ReferenceHub.Hubs.Values.Where(h => !h.IsHost() && h.GetCurrentRoom().Name == room.Name).ToList();
 	}
 }
