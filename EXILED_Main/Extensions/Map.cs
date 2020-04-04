@@ -244,5 +244,17 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <returns>List of <see cref="ReferenceHub"/></returns>
 		public static List<ReferenceHub> GetHubs(this Room room) =>ReferenceHub.Hubs.Values.Where(h => !h.IsHost() && h.GetCurrentRoom().Name == room.Name).ToList();
+
+		/// Gets the number of activated generators.
+		/// </summary>
+		/// <returns></returns>
+		public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
+
+		/// <summary>
+		/// Turns off all lights of the facility (except for the entrance zone).
+		/// </summary>
+		/// <param name="duration"></param>
+		/// <param name="onlyHeavy"></param>
+		public static void TurnOffAllLights(float duration, bool onlyHeavy = false) => Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, onlyHeavy);
 	}
 }

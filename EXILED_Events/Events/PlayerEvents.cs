@@ -8,6 +8,44 @@ namespace EXILED
 {
 	public partial class Events
 	{
+		public static event CancelMedicalItem CancelMedicalItemEvent;
+		public delegate void CancelMedicalItem(MedicalItemEvent ev);
+
+		public static void InvokeCancelMedicalItem(GameObject player, ItemType itemType, ref float cooldown, ref bool allow)
+		{
+			if (CancelMedicalItemEvent == null)
+				return;
+
+			MedicalItemEvent ev = new MedicalItemEvent()
+			{
+				Player = player.GetPlayer(),
+				Item = itemType,
+				Cooldown = cooldown,
+				Allow = allow
+			};
+
+			CancelMedicalItemEvent.Invoke(ev);
+
+			cooldown = ev.Cooldown;
+			allow = ev.Allow;
+		}
+
+		public static event PlayerInteract PlayerInteractEvent;
+		public delegate void PlayerInteract(PlayerInteractEvent ev);
+
+		public static void InvokePlayerInteract(GameObject player)
+		{
+			if (PlayerInteractEvent == null)
+				return;
+
+			PlayerInteractEvent ev = new PlayerInteractEvent()
+			{
+				Player = player.GetPlayer()
+			};
+
+			PlayerInteractEvent.Invoke(ev);
+		}
+
 		public static event SpawnRagdoll SpawnRagdollEvent;
 		public delegate void SpawnRagdoll(SpawnRagdollEvent ev);
 
@@ -153,7 +191,7 @@ namespace EXILED
 		public static event UseMedicalItem UseMedicalItemEvent;
 		public delegate void UseMedicalItem(MedicalItemEvent ev);
 
-		public static void InvokeUseMedicalItem(GameObject player, ItemType itemType, ref bool allow)
+		public static void InvokeUseMedicalItem(GameObject player, ItemType itemType, ref float cooldown, ref bool allow)
 		{
 			if (UseMedicalItemEvent == null)
 				return;
@@ -162,11 +200,13 @@ namespace EXILED
 			{
 				Player = player.GetPlayer(),
 				Item = itemType,
+				Cooldown = cooldown,
 				Allow = allow
 			};
 
 			UseMedicalItemEvent.Invoke(ev);
 
+			cooldown = ev.Cooldown;
 			allow = ev.Allow;
 		}
 
