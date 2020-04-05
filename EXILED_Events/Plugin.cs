@@ -20,7 +20,7 @@ namespace EXILED
 		internal static Random Gen = new Random();
 		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 12 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 14 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable

@@ -251,6 +251,7 @@ namespace EXILED.Extensions
 		/// <param name="sight">0 is no sight, 1 is the first sight in the Weapon Manager</param>
 		/// <param name="barrel">0 is no custom barrel, 1 is the first barrel in the Weapon Manager</param>
 		/// <param name="other">0 is no extra attachment, other numbers are the ammo counter, flashlight, etc.</param>
+		[Obsolete("Use AddItem instead.", true)]
 		public static void GiveItem(this ReferenceHub player, ItemType itemType, float duration = float.NegativeInfinity, int sight = 0, int barrel = 0, int other = 0) => player.inventory.AddNewItem(itemType, duration, sight, barrel, other);
 
 		// Adapted from https://github.com/galaxy119/SamplePlugin/blob/master/SamplePlugin/Extensions.cs
