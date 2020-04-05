@@ -372,10 +372,9 @@ namespace EXILED.Extensions
 				if (short.TryParse(args, out short playerId))
 					return GetPlayer(playerId);
 
-				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") ||
-					args.EndsWith("@patreon"))
+				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
 				{
-					Log.Debug("Trying to find by SID...");
+					Log.Debug("Trying to find by UserID...");
 
 					foreach (ReferenceHub player in GetHubs())
 					{
@@ -383,7 +382,7 @@ namespace EXILED.Extensions
 						{
 							playerFound = player;
 
-							Log.Debug("Found SID match.");
+							Log.Debug("Found UserID match.");
 						}
 					}
 				}
@@ -443,27 +442,27 @@ namespace EXILED.Extensions
 		/// <returns>GlobalBadge or null</returns>
 		public static GlobalBadge GetGlobalBadge(this ReferenceHub player)
 		{
-      			string token = player.serverRoles.NetworkGlobalBadge;
-       			if (string.IsNullOrEmpty(token)) { return null; }
-            		Dictionary<string, string> dictionary = (from rwr in token.Split(new string[]
-           		{
-               			"<br>"
-          		}, StringSplitOptions.None)
-           		select rwr.Split(new string[]
-           		{
-               			": "
-           		}, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
+			string token = player.serverRoles.NetworkGlobalBadge;
+			if (string.IsNullOrEmpty(token)) { return null; }
+			Dictionary<string, string> dictionary = (from rwr in token.Split(new string[]
+		   {
+						   "<br>"
+		  }, StringSplitOptions.None)
+													 select rwr.Split(new string[]
+													 {
+						   ": "
+													 }, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
 
-       			int BadgeType = 0;
-            		if(int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
+			int BadgeType = 0;
+			if (int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
 
-      			return new GlobalBadge
-       			{
-           			BadgeText = dictionary["Badge text"],
-                		BadgeColor = dictionary["Badge color"],
-           			Type = BadgeType
-       			};
-   		}
+			return new GlobalBadge
+			{
+				BadgeText = dictionary["Badge text"],
+				BadgeColor = dictionary["Badge color"],
+				Type = BadgeType
+			};
+		}
 
 		/// <summary>
 		/// Get the current room a player are in (from Smod2).
@@ -596,14 +595,14 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static byte GetAdrenalineHealth(this ReferenceHub player) => player.playerStats.syncArtificialHealth;
+		public static byte GetAdrenalineHealth(this ReferenceHub player) => (byte)player.playerStats.unsyncedArtificialHealth;
 
 		/// <summary>
 		/// Sets the adrenaline health of a <see cref="ReferenceHub">player</see>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static void SetAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.syncArtificialHealth = amount;
+		public static void SetAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.unsyncedArtificialHealth = amount;
 
 		/// <summary>
 		/// Adds the specified amount of adrenaline health to a <see cref="ReferenceHub">player</see>.
@@ -619,7 +618,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.syncArtificialHealth += amount;
+		public static void AddAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.unsyncedArtificialHealth += amount;
 
 		/// <summary>
 		/// Gets the maximum amount of adrenaline health of a <see cref="ReferenceHub">player</see>.

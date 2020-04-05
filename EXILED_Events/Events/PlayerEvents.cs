@@ -70,7 +70,7 @@ namespace EXILED
 			};
 
 			SpawnRagdollEvent.Invoke(ev);
-			
+
 			position = ev.Position;
 			rotation = ev.Rotation;
 			roleType = (int)ev.RoleType;

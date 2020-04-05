@@ -17,7 +17,6 @@ namespace EXILED
 		public abstract void OnDisable();
 		public abstract void OnReload();
 
-
 		[Obsolete("Use Log.Info")]
 		public static void Info(string message) => Log.Info(message);
 

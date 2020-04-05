@@ -84,7 +84,7 @@ namespace EXILED.Extensions
 				return _rooms;
 			}
 		}
-		
+
 		public static List<Door> Doors
 		{
 			get
@@ -106,7 +106,7 @@ namespace EXILED.Extensions
 				return _lifts;
 			}
 		}
-		
+
 		public static List<TeslaGate> TeslaGates
 		{
 			get
