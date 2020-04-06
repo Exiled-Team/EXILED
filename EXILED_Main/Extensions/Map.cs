@@ -243,7 +243,7 @@ namespace EXILED.Extensions
 		/// Returns the list of players in this room.
 		/// </summary>
 		/// <returns>List of <see cref="ReferenceHub"/></returns>
-		public static List<ReferenceHub> GetHubs(this Room room) =>ReferenceHub.Hubs.Values.Where(h => !h.IsHost() && h.GetCurrentRoom().Name == room.Name).ToList();
+		public static IEnumerable<ReferenceHub> GetHubs(this Room room) => ReferenceHub.Hubs.Values.Where(player => !player.IsHost() && player.GetCurrentRoom().Name == room.Name);
 
 		/// Gets the number of activated generators.
 		/// </summary>
