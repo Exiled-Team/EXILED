@@ -887,5 +887,14 @@ namespace EXILED.Extensions
 		{
 			player.characterClassManager.TargetConsolePrint(player.GetConnection(), message, color);
 		}
+
+		/// <summary>
+		/// Sets the players Friendly Fire value.
+		/// Note: This only allows them to DEAL FF damage, not TAKE FF damage.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="value"></param>
+		public static void SetFriendlyFire(this ReferenceHub player, bool value) =>
+			player.weaponManager.NetworkfriendlyFire = value;
 	}
 }
