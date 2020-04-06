@@ -643,4 +643,28 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; internal set; }
 	}
+
+	public class PlaceBloodEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public int BloodType { get; set; }
+		public float Multiplier { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class UsedMedicalItemEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public ItemType ItemType { get; internal set; }
+	}
+
+	public class PlaceDecalEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public Quaternion Rotation { get; set; }
+		public int Type { get; set; }
+		public bool Allow { get; set; }
+	}
 }

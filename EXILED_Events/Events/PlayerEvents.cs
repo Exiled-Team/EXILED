@@ -8,6 +8,23 @@ namespace EXILED
 {
 	public partial class Events
 	{
+		public static event UsedMedicalItem UsedMedicalItemEvent;
+		public delegate void UsedMedicalItem(UsedMedicalItemEvent ev);
+
+		public static void InvokeUsedMedicalItem(GameObject player, ItemType itemType)
+		{
+			if (UsedMedicalItemEvent == null)
+				return;
+
+			UsedMedicalItemEvent ev = new UsedMedicalItemEvent()
+			{
+				Player = player.GetPlayer(),
+				ItemType = itemType
+			};
+
+			UsedMedicalItemEvent.Invoke(ev);
+		}
+
 		public static event CancelMedicalItem CancelMedicalItemEvent;
 		public delegate void CancelMedicalItem(MedicalItemEvent ev);
 

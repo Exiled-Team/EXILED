@@ -18,7 +18,6 @@ namespace EXILED
 		public static List<int> GhostedIds = new List<int>();
 		internal static DateTime RoundTime;
 		internal static Random Gen = new Random();
-		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
 		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 12 };
 
@@ -80,10 +79,13 @@ namespace EXILED
 
 		//The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
+
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
+		public static bool WarheadLocked;
 		public static bool NameTracking;
 		public static bool DropInventory;
+		public static bool RemoveBloodPlacement;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
@@ -137,6 +139,7 @@ namespace EXILED
 			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
 			NameTracking = Config.GetBool("exiled_name_tracking", true);
 			DropInventory = Config.GetBool("exiled_drop_inventory", true);
+			RemoveBloodPlacement = Config.GetBool("exiled_remove_blood_placement");
 		}
 
 		private void AutoUpdate()
