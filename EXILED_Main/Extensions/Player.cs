@@ -825,36 +825,14 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public static IEnumerable<ReferenceHub> GetHubs(this Team team)
-		{
-			List<ReferenceHub> playersByTeam = new List<ReferenceHub>();
-
-			foreach (ReferenceHub player in GetHubs())
-			{
-				if (player.GetTeam() == team)
-					playersByTeam.Add(player);
-			}
-
-			return playersByTeam;
-		}
+		public static IEnumerable<ReferenceHub> GetHubs(this Team team) => GetHubs().Where(player => player.GetTeam() == team);
 
 		/// <summary>
 		/// Gets a list of <see cref="ReferenceHub">player</see>s, filtered by <see cref="RoleType">team</see>.
 		/// </summary>
 		/// <param name="role"></param>
 		/// <returns></returns>
-		public static IEnumerable<ReferenceHub> GetHubs(this RoleType role)
-		{
-			List<ReferenceHub> playersByRole = new List<ReferenceHub>();
-
-			foreach (ReferenceHub player in GetHubs())
-			{
-				if (player.GetRole() == role)
-					playersByRole.Add(player);
-			}
-
-			return playersByRole;
-		}
+		public static IEnumerable<ReferenceHub> GetHubs(this RoleType role) => GetHubs().Where(player => player.GetRole() == role);
 
 		/// <summary>
 		/// Gets the group name of a <see cref="ReferenceHub"/>.

@@ -179,6 +179,8 @@
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
     <Compile Include="Patches\CancelMedicalItemEvent.cs" />
     <Compile Include="Patches\DoubleSpawnEventFix.cs" />
+    <Compile Include="Patches\PlaceBloodEvent.cs" />
+    <Compile Include="Patches\PlaceDecalEvent.cs" />
     <Compile Include="Patches\PlayerInteractEvent.cs" />
     <Compile Include="Patches\Scp079TriggerTeslaEvent.cs" />
     <Compile Include="Patches\SCP914UpgradeEvent.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Patches\SmartClassPickerFix.cs" />
     <Compile Include="Patches\StartItemsEvent.cs" />
     <Compile Include="Patches\TriggerTeslaEvent.cs" />
+    <Compile Include="Patches\UsedMedicalItem.cs" />
     <Compile Include="Patches\UseMedicalItemEvent.cs" />
     <Compile Include="Patches\WaitingForPlayersEvent.cs" />
     <Compile Include="Patches\WarheadEvents.cs" />
