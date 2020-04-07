@@ -744,6 +744,28 @@ namespace EXILED.Extensions
 		public static void KickPlayer(this GameObject player, string reason, string issuer = "Console") => player.BanPlayer(0, reason, issuer);
 
 		/// <summary>
+		/// Handcuff a player by another player.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="target"></param>
+		public static void HandcuffPlayer(this ReferenceHub player, ReferenceHub target) {
+			Handcuffs handcuffs = target.handcuffs;
+
+			if (handcuffs == null) { return; }
+
+			if (handcuffs.CufferId < 0 && player.inventory.items.Any((Inventory.SyncItemInfo item) => item.id == ItemType.Disarmer))
+			{
+				handcuffs.NetworkCufferId = player.GetPlayerId();
+			}
+		}
+
+		/// <summary>
+		/// Uncuff the player.
+		/// </summary>
+		/// <param name="player"></param>
+		public static void UncuffPlayer(this ReferenceHub player) => player.handcuffs.ClearTarget();
+		
+		/// <summary>
 		/// Returns true if the player is handcuffed.
 		/// </summary>
 		/// <param name="player"></param>
