@@ -754,7 +754,7 @@ namespace EXILED.Extensions
 
 			if (handcuffs == null) { return; }
 
-			if (handcuffs.CufferId < 0 && player.inventory.items.Any((Inventory.SyncItemInfo item) => item.id == ItemType.Disarmer))
+			if (handcuffs.CufferId < 0 && player.inventory.items.Any((Inventory.SyncItemInfo item) => item.id == ItemType.Disarmer) && Vector3.Distance(player.transform.position, target.transform.position) <= 130f)
 			{
 				handcuffs.NetworkCufferId = player.GetPlayerId();
 			}
