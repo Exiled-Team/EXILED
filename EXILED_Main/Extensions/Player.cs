@@ -748,7 +748,8 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="target"></param>
-		public static void HandcuffPlayer(this ReferenceHub player, ReferenceHub target) {
+		public static void HandcuffPlayer(this ReferenceHub player, ReferenceHub target)
+		{
 			Handcuffs handcuffs = target.handcuffs;
 
 			if (handcuffs == null) { return; }
