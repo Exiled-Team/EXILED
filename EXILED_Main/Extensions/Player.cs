@@ -130,6 +130,7 @@ namespace EXILED.Extensions
 
 		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
+		/// Can be null.
 		/// </summary>
 		public static UserGroup GetRank(this ReferenceHub player) => player.serverRoles.Group;
 
@@ -250,6 +251,7 @@ namespace EXILED.Extensions
 		/// <param name="sight">0 is no sight, 1 is the first sight in the Weapon Manager</param>
 		/// <param name="barrel">0 is no custom barrel, 1 is the first barrel in the Weapon Manager</param>
 		/// <param name="other">0 is no extra attachment, other numbers are the ammo counter, flashlight, etc.</param>
+		[Obsolete("Use AddItem instead.", true)]
 		public static void GiveItem(this ReferenceHub player, ItemType itemType, float duration = float.NegativeInfinity, int sight = 0, int barrel = 0, int other = 0) => player.inventory.AddNewItem(itemType, duration, sight, barrel, other);
 
 		// Adapted from https://github.com/galaxy119/SamplePlugin/blob/master/SamplePlugin/Extensions.cs
@@ -371,10 +373,9 @@ namespace EXILED.Extensions
 				if (short.TryParse(args, out short playerId))
 					return GetPlayer(playerId);
 
-				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") ||
-					args.EndsWith("@patreon"))
+				if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
 				{
-					Log.Debug("Trying to find by SID...");
+					Log.Debug("Trying to find by UserID...");
 
 					foreach (ReferenceHub player in GetHubs())
 					{
@@ -382,7 +383,7 @@ namespace EXILED.Extensions
 						{
 							playerFound = player;
 
-							Log.Debug("Found SID match.");
+							Log.Debug("Found UserID match.");
 						}
 					}
 				}
@@ -442,27 +443,27 @@ namespace EXILED.Extensions
 		/// <returns>GlobalBadge or null</returns>
 		public static GlobalBadge GetGlobalBadge(this ReferenceHub player)
 		{
-      			string token = player.serverRoles.NetworkGlobalBadge;
-       			if (string.IsNullOrEmpty(token)) { return null; }
-            		Dictionary<string, string> dictionary = (from rwr in token.Split(new string[]
-           		{
-               			"<br>"
-          		}, StringSplitOptions.None)
-           		select rwr.Split(new string[]
-           		{
-               			": "
-           		}, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
+			string token = player.serverRoles.NetworkGlobalBadge;
+			if (string.IsNullOrEmpty(token)) { return null; }
+			Dictionary<string, string> dictionary = (from rwr in token.Split(new string[]
+		   {
+						   "<br>"
+		  }, StringSplitOptions.None)
+													 select rwr.Split(new string[]
+													 {
+						   ": "
+													 }, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
 
-       			int BadgeType = 0;
-            		if(int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
+			int BadgeType = 0;
+			if (int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
 
-      			return new GlobalBadge
-       			{
-           			BadgeText = dictionary["Badge text"],
-                		BadgeColor = dictionary["Badge color"],
-           			Type = BadgeType
-       			};
-   		}
+			return new GlobalBadge
+			{
+				BadgeText = dictionary["Badge text"],
+				BadgeColor = dictionary["Badge color"],
+				Type = BadgeType
+			};
+		}
 
 		/// <summary>
 		/// Get the current room a player are in (from Smod2).
@@ -595,14 +596,14 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static byte GetAdrenalineHealth(this ReferenceHub player) => player.playerStats.syncArtificialHealth;
+		public static byte GetAdrenalineHealth(this ReferenceHub player) => (byte)player.playerStats.unsyncedArtificialHealth;
 
 		/// <summary>
 		/// Sets the adrenaline health of a <see cref="ReferenceHub">player</see>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-		public static void SetAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.syncArtificialHealth = amount;
+		public static void SetAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.unsyncedArtificialHealth = amount;
 
 		/// <summary>
 		/// Adds the specified amount of adrenaline health to a <see cref="ReferenceHub">player</see>.
@@ -618,7 +619,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.syncArtificialHealth += amount;
+		public static void AddAdrenalineHealth(this ReferenceHub player, byte amount) => player.playerStats.unsyncedArtificialHealth += amount;
 
 		/// <summary>
 		/// Gets the maximum amount of adrenaline health of a <see cref="ReferenceHub">player</see>.
@@ -824,36 +825,14 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="team"></param>
 		/// <returns></returns>
-		public static IEnumerable<ReferenceHub> GetHubs(this Team team)
-		{
-			List<ReferenceHub> playersByTeam = new List<ReferenceHub>();
-
-			foreach (ReferenceHub player in GetHubs())
-			{
-				if (player.GetTeam() == team)
-					playersByTeam.Add(player);
-			}
-
-			return playersByTeam;
-		}
+		public static IEnumerable<ReferenceHub> GetHubs(this Team team) => GetHubs().Where(player => player.GetTeam() == team);
 
 		/// <summary>
 		/// Gets a list of <see cref="ReferenceHub">player</see>s, filtered by <see cref="RoleType">team</see>.
 		/// </summary>
 		/// <param name="role"></param>
 		/// <returns></returns>
-		public static IEnumerable<ReferenceHub> GetHubs(this RoleType role)
-		{
-			List<ReferenceHub> playersByRole = new List<ReferenceHub>();
-
-			foreach (ReferenceHub player in GetHubs())
-			{
-				if (player.GetRole() == role)
-					playersByRole.Add(player);
-			}
-
-			return playersByRole;
-		}
+		public static IEnumerable<ReferenceHub> GetHubs(this RoleType role) => GetHubs().Where(player => player.GetRole() == role);
 
 		/// <summary>
 		/// Gets the group name of a <see cref="ReferenceHub"/>.
@@ -886,5 +865,14 @@ namespace EXILED.Extensions
 		{
 			player.characterClassManager.TargetConsolePrint(player.GetConnection(), message, color);
 		}
+
+		/// <summary>
+		/// Sets the players Friendly Fire value.
+		/// Note: This only allows them to DEAL FF damage, not TAKE FF damage.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="value"></param>
+		public static void SetFriendlyFire(this ReferenceHub player, bool value) =>
+			player.weaponManager.NetworkfriendlyFire = value;
 	}
 }

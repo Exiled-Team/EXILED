@@ -97,12 +97,12 @@ namespace EXILED.Patches
 				{
 					Events.InvokeCheckRoundEnd(ref forceEnd, ref allow, ref team, ref teamChanged);
 				}
-				catch(Exception exception)
+				catch (Exception exception)
 				{
 					Log.Error($"CheckRoundEndEvent error {exception}");
 					continue;
 				}
-				
+
 				if (forceEnd)
 					roundSummary.roundEnded = true;
 

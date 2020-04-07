@@ -11,7 +11,7 @@ namespace EXILED.Patches
 			if (EventPlugin.RoundRestartEventPatchDisable)
 				return;
 
-			Log.Info("Round restarting...");
+			EventPlugin.ToMultiAdmin("Round restarting");
 
 			try
 			{

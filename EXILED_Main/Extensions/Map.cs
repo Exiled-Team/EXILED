@@ -84,7 +84,7 @@ namespace EXILED.Extensions
 				return _rooms;
 			}
 		}
-		
+
 		public static List<Door> Doors
 		{
 			get
@@ -106,7 +106,7 @@ namespace EXILED.Extensions
 				return _lifts;
 			}
 		}
-		
+
 		public static List<TeslaGate> TeslaGates
 		{
 			get
@@ -238,5 +238,23 @@ namespace EXILED.Extensions
 		/// Starts the Decontamination process.
 		/// </summary>
 		public static void StartDecontamination(bool isAnnouncementGlobal = true) => DecontaminationLCZ.RpcPlayAnnouncement(5, isAnnouncementGlobal);
+
+		/// <summary>
+		/// Returns the list of players in this room.
+		/// </summary>
+		/// <returns>List of <see cref="ReferenceHub"/></returns>
+		public static IEnumerable<ReferenceHub> GetHubs(this Room room) => ReferenceHub.Hubs.Values.Where(player => !player.IsHost() && player.GetCurrentRoom().Name == room.Name);
+
+		/// Gets the number of activated generators.
+		/// </summary>
+		/// <returns></returns>
+		public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
+
+		/// <summary>
+		/// Turns off all lights of the facility (except for the entrance zone).
+		/// </summary>
+		/// <param name="duration"></param>
+		/// <param name="onlyHeavy"></param>
+		public static void TurnOffAllLights(float duration, bool onlyHeavy = false) => Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, onlyHeavy);
 	}
 }

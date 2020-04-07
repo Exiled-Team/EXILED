@@ -7,8 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using EXILED.Extensions;
-using MEC;
 using UnityEngine;
 using Random = System.Random;
 
@@ -20,9 +18,8 @@ namespace EXILED
 		public static List<int> GhostedIds = new List<int>();
 		internal static DateTime RoundTime;
 		internal static Random Gen = new Random();
-		public static bool WarheadLocked;
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 10 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 15 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -75,15 +72,20 @@ namespace EXILED
 		public static bool WarheadStartEventPatchDisable;
 		public static bool LateShootEventPatchDisable;
 		public static bool GeneratorFinishedEventPatchDisable;
+		public static bool CancelMedicalEventPatchDisable;
 		#endregion
 
 		private EventHandlers handlers;
 
 		//The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
 		private static int patchFixer;
+
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
+		public static bool WarheadLocked;
 		public static bool NameTracking;
+		public static bool DropInventory;
+		public static bool RemoveBloodPlacement;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
@@ -92,7 +94,7 @@ namespace EXILED
 		{
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
-			Log.Info($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED");
+			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
 			if (Config.GetBool("exiled_auto_update", true))
 			{
 				if (IsUpdateAvailable())
@@ -136,6 +138,8 @@ namespace EXILED
 			Scp173Fix = Config.GetBool("exiled_tut_fix173", true);
 			Scp096Fix = Config.GetBool("exiled_tut_fix096", true);
 			NameTracking = Config.GetBool("exiled_name_tracking", true);
+			DropInventory = Config.GetBool("exiled_drop_inventory", true);
+			RemoveBloodPlacement = Config.GetBool("exiled_remove_blood_placement");
 		}
 
 		private void AutoUpdate()
@@ -150,39 +154,34 @@ namespace EXILED
 					return;
 				}
 
-				string tempPath = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-				Log.Info($"Creating temporary directory: {tempPath}...");
+				string tempDirectory = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+				Log.Info($"Creating temporary directory: {tempDirectory}...");
 
-				if (!Directory.Exists(tempPath))
-					Directory.CreateDirectory(tempPath);
+				if (!Directory.Exists(tempDirectory))
+					Directory.CreateDirectory(tempDirectory);
 
-				string exiledTemp = Path.Combine(tempPath, "EXILED.tar.gz");
+				string exiledTempPath = Path.Combine(tempDirectory, "EXILED.tar.gz");
 
-				using (WebClient client = new WebClient())
-				{
-					client.DownloadFile(VersionUpdateUrl, exiledTemp);
-				}
+				using (WebClient client = new WebClient()) client.DownloadFile(VersionUpdateUrl, exiledTempPath);
 
 				Log.Info("Download successful, extracting contents...");
-				ExtractTarGz(exiledTemp, tempPath);
+				ExtractTarGz(exiledTempPath, tempDirectory);
 				Log.Info($"Extraction complete, moving files...");
 
-				string tempExiledMain = Path.Combine(Path.Combine(tempPath, "EXILED"), "EXILED.dll");
-				string tempExiledEvents = Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Events.dll");
-				string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+				string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "EXILED"), "EXILED.dll");
+				string tempPluginsDirectory = Path.Combine(tempDirectory, "Plugins");
+				string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "EXILED_Events.dll");
 
-				File.Delete(Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
-				File.Delete(Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
-				File.Move(tempExiledMain, Path.Combine(Path.Combine(appData, "EXILED"), "EXILED.dll"));
-				File.Move(tempExiledEvents, Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Events.dll"));
-				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Permissions.dll"),
-				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Permissions.dll"));
-				File.Move(Path.Combine(Path.Combine(tempPath, "Plugins"), "EXILED_Idler.dll"),
-				Path.Combine(Path.Combine(appData, "Plugins"), "EXILED_Idler.dll"));
+				File.Delete(Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
+				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Move(tempExiledMainPath, Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
+				File.Move(tempExiledEventsPath, Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
+				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Permissions.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
+				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Idler.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
 				Log.Info($"Files moved, cleaning up...");
-				DeleteDirectory(tempPath);
+				DeleteDirectory(tempDirectory);
 
 				Log.Info("Auto-update complete, restarting server...");
 				Application.Quit();
@@ -377,6 +376,12 @@ namespace EXILED
 				{
 					// ignored
 				}
+		}
+
+		//Used to Exiled2Multiadmin
+		internal static void ToMultiAdmin(string message)
+		{
+			ServerConsole.AddLog($"[EXILED2Multiadmin] {message} LOGTYPE02");
 		}
 	}
 }

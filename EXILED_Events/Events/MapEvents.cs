@@ -10,6 +10,56 @@ namespace EXILED
 		[Obsolete("Use WarheadCancelEvent instead.", true)]
 		public delegate void OnWarheadCommand(ref WarheadLeverEvent ev);
 
+		public static event PlaceDecal PlaceDecalEvent;
+		public delegate void PlaceDecal(PlaceDecalEvent ev);
+
+		public static void InvokePlaceDecal(GameObject player, ref Vector3 position, ref Quaternion rotation, ref int type, ref bool allow)
+		{
+			if (PlaceDecalEvent == null)
+				return;
+
+			PlaceDecalEvent ev = new PlaceDecalEvent()
+			{
+				Player = player.GetPlayer(),
+				Position = position,
+				Rotation = rotation,
+				Type = type,
+				Allow = allow
+			};
+
+			PlaceDecalEvent.Invoke(ev);
+
+			position = ev.Position;
+			rotation = ev.Rotation;
+			type = ev.Type;
+			allow = ev.Allow;
+		}
+
+		public static event PlaceBlood PlaceBloodEvent;
+		public delegate void PlaceBlood(PlaceBloodEvent ev);
+
+		public static void InvokePlaceBlood(GameObject player, ref Vector3 position, ref int bloodType, ref float multiplier, ref bool allow)
+		{
+			if (PlaceBloodEvent == null)
+				return;
+
+			PlaceBloodEvent ev = new PlaceBloodEvent()
+			{
+				Player = player.GetPlayer(),
+				Position = position,
+				BloodType = bloodType,
+				Multiplier = multiplier,
+				Allow = allow
+			};
+
+			PlaceBloodEvent.Invoke(ev);
+
+			position = ev.Position;
+			bloodType = ev.BloodType;
+			multiplier = ev.Multiplier;
+			allow = ev.Allow;
+		}
+
 		public static event AnnounceDecontamination AnnounceDecontaminationEvent;
 		public delegate void AnnounceDecontamination(AnnounceDecontaminationEvent ev);
 
@@ -147,13 +197,14 @@ namespace EXILED
 		public static event WarheadStart WarheadStartEvent;
 		public delegate void WarheadStart(WarheadStartEvent ev);
 
-		public static void InvokeWarheadStart(ref bool allow)
+		public static void InvokeWarheadStart(GameObject player, ref bool allow)
 		{
 			if (WarheadStartEvent == null)
 				return;
 
 			WarheadStartEvent ev = new WarheadStartEvent
 			{
+				Player = player == null ? null : player.GetPlayer(),
 				Allow = allow
 			};
 

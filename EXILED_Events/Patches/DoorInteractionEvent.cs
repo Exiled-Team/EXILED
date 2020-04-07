@@ -46,7 +46,7 @@ namespace EXILED.Patches
 					{
 						allow = true;
 					}
-					else if (string.Equals(door.permissionLevel, "CHCKPOINT_ACC", StringComparison.OrdinalIgnoreCase) && 
+					else if (string.Equals(door.permissionLevel, "CHCKPOINT_ACC", StringComparison.OrdinalIgnoreCase) &&
 						__instance.GetComponent<CharacterClassManager>().Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team == Team.SCP)
 					{
 						allow = true;

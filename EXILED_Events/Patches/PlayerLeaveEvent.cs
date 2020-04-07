@@ -11,7 +11,7 @@ namespace EXILED.Patches
 			if (EventPlugin.PlayerLeaveEventPatchDisable)
 				return;
 
-			Log.Info("Player disconnect: ");
+			EventPlugin.ToMultiAdmin("Player disconnect: ");
 
 			try
 			{

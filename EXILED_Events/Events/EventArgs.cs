@@ -118,6 +118,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public ItemType Item { get; set; }
+		public float Cooldown { get; set; }
 		public bool Allow { get; set; }
 	}
 
@@ -563,6 +564,7 @@ namespace EXILED
 
 	public class WarheadStartEvent : EventArgs
 	{
+		public ReferenceHub Player { get; internal set; }
 		public bool Allow;
 	}
 
@@ -634,6 +636,35 @@ namespace EXILED
 				ragdollPlayerId = value;
 			}
 		}
+		public bool Allow { get; set; }
+	}
+
+	public class PlayerInteractEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+	}
+
+	public class PlaceBloodEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public int BloodType { get; set; }
+		public float Multiplier { get; set; }
+		public bool Allow { get; set; }
+	}
+
+	public class UsedMedicalItemEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public ItemType ItemType { get; internal set; }
+	}
+
+	public class PlaceDecalEvent : EventArgs
+	{
+		public ReferenceHub Player { get; internal set; }
+		public Vector3 Position { get; set; }
+		public Quaternion Rotation { get; set; }
+		public int Type { get; set; }
 		public bool Allow { get; set; }
 	}
 }

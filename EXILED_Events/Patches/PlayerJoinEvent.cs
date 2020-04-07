@@ -13,10 +13,10 @@ namespace EXILED.Patches
 			if (EventPlugin.PlayerJoinEventPatchDisable)
 				return;
 
-			Log.Info($"Player connect: ");
+			EventPlugin.ToMultiAdmin($"Player connect: ");
 
 			if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-				Log.Info($"Server full!");
+				EventPlugin.ToMultiAdmin($"Server full");
 
 			try
 			{
