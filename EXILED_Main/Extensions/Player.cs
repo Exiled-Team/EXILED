@@ -764,7 +764,7 @@ namespace EXILED.Extensions
 		/// Uncuff the player.
 		/// </summary>
 		/// <param name="player"></param>
-		public static void UncuffPlayer(this ReferenceHub player) => player.handcuffs.ClearTarget();
+		public static void UncuffPlayer(this ReferenceHub player) => player.handcuffs.NetworkCufferId = -1;
 		
 		/// <summary>
 		/// Returns true if the player is handcuffed.
