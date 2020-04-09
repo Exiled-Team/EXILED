@@ -63,10 +63,10 @@ namespace EXILED.Patches
 							if (__instance.transmitBuffer[index].position.y < 800.0)
 							{
 								CharacterClassManager component2 = players[index].GetComponent<CharacterClassManager>();
-								if (component2.Classes.SafeGet(component2.CurClass).team != Team.SCP &&
+								if (EventPlugin.GhostedIds.Contains(__instance.transmitBuffer[index].playerID) || (component2.Classes.SafeGet(component2.CurClass).team != Team.SCP &&
 									component2.Classes.SafeGet(component2.CurClass).team != Team.RIP && !players[index]
 										.GetComponent<Scp939_VisionController>()
-										.CanSee(component1.GetComponent<Scp939PlayerScript>()))
+										.CanSee(component1.GetComponent<Scp939PlayerScript>())))
 									__instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f,
 										__instance.transmitBuffer[index].playerID);
 							}
