@@ -19,7 +19,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		internal static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 15 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 16 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -86,6 +86,7 @@ namespace EXILED
 		public static bool NameTracking;
 		public static bool DropInventory;
 		public static bool RemoveBloodPlacement;
+		public static int AntiFlyThreashold;
 		public static Dictionary<ReferenceHub, List<int>> TargetGhost = new Dictionary<ReferenceHub, List<int>>();
 		public static List<ReferenceHub> DeadPlayers = new List<ReferenceHub>();
 
@@ -140,6 +141,7 @@ namespace EXILED
 			NameTracking = Config.GetBool("exiled_name_tracking", true);
 			DropInventory = Config.GetBool("exiled_drop_inventory", true);
 			RemoveBloodPlacement = Config.GetBool("exiled_remove_blood_placement");
+			AntiFlyThreashold = Config.GetInt("exiled_antifly_threashold", 5);
 		}
 
 		private void AutoUpdate()
