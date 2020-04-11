@@ -12,10 +12,21 @@ namespace EXILED.Patches
 	{
     public static Dictionary<string, int> AntiFlyCounter = new Dictionary<string,int>();
     public static Dictionary<string, CoroutineHandle> ResetCoroutines = new Dictionary<string, CoroutineHandle>();
-		public static bool Prefix(PlyMovementSync __instance, ref Vector3 pos)
+
+    public static bool Prefix(PlyMovementSync __instance, ref Vector3 pos) => false;
+
+    public static void AntiFly (PlyMovementSync __instance, ref Vector3 pos, bool wasChanged)
 		{
 			if (!NetworkServer.active || __instance.WhitelistPlayer || (__instance.NoclipWhitelisted || !__instance._successfullySpawned))
-        return false;
+        return;
+
+      if (wasChanged)
+      {
+        __instance._groundedY = ZabsNoclip.LastSafePosition[__instance].y;
+        __instance._flyTime = 0f;
+        return;
+      }
+      
       bool flag = __instance._hub.characterClassManager.CurClass == RoleType.Spectator || __instance._hub.characterClassManager.CurClass == RoleType.None || __instance._hub.characterClassManager.CurClass == RoleType.Scp079;
       __instance._isGrounded = __instance._hub.falldamage.isCloseToGround;
     
@@ -30,7 +41,7 @@ namespace EXILED.Patches
         {
           __instance._flyTime += Time.deltaTime;
           if (__instance._flyTime < 5.0)
-            return false;
+            return;
           __instance._noclipPrevWl = false;
         }
       }
@@ -52,11 +63,11 @@ namespace EXILED.Patches
           if (__instance._groundedY < pos.y - 4.0)
           {
             if (__instance._safeTime > 0.0)
-              return false;
+              return;
             //__instance.AntiCheatKillPlayer("Killed by the anti-cheat system for flying\n(debug code: 1.3 - vertical flying)");
-            __instance.OverridePosition(new Vector3(pos.x, __instance._groundedY, pos.z), __instance.NetworkRotations.y, true);
+            __instance.OverridePosition(pos, __instance.NetworkRotations.y, true);
             AntiFlyCounter[userId]++;
-            return false;
+            return;
           }
           if (__instance._groundedY > (double) pos.y)
             __instance._groundedY = pos.y;
@@ -69,7 +80,7 @@ namespace EXILED.Patches
           if (Physics.OverlapBoxNonAlloc(vector3, new Vector3(0.5f, 25f, 0.5f), PlyMovementSync.AntiFlyBuffer, new Quaternion(0.0f, 0.0f, 0.0f, 0.0f), __instance.CollidableSurfaces) == 0)
           {
             if (__instance._safeTime > 0.0)
-              return false;
+              return;
             __instance.AntiCheatKillPlayer("Killed by the anti-cheat system for flying\n(debug code: 1.2 - no surface detected underneath the player)");
             AntiFlyCounter[userId] = 0;
             if (ResetCoroutines.ContainsKey(userId))
@@ -78,12 +89,13 @@ namespace EXILED.Patches
               ResetCoroutines.Remove(userId);
             }
 
-            return false;
+            return;
           }
         }
-        if (__instance._flyTime < 2.20000004768372)
-          return false;
+        if (__instance._flyTime < 2.50000004768372)
+          return;
         //__instance.AntiCheatKillPlayer("Killed by the anti-cheat system for flying\n(debug code: 1.1 - flying time limit exceeded)");
+        __instance.OverridePosition(pos, __instance.NetworkRotations.y, true);
         AntiFlyCounter[userId]++;
       }
 
@@ -104,8 +116,6 @@ namespace EXILED.Patches
           }
         }
       }
-
-      return false;
     }
 
     public static IEnumerator<float> ResetCounter(ReferenceHub hub)
