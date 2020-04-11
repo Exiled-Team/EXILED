@@ -37,8 +37,7 @@ namespace EXILED.Components
 				NetworkServer.Spawn(obj);
 				sync = obj.GetComponent<PlyMovementSync>();
 				ident = obj.GetComponent<NetworkIdentity>();
-
-				Timing.RunCoroutine(Thing(), "thing");
+				MEC.Timing.RunCoroutine(Thing(), this.gameObject);
 			}
 			catch (Exception e)
 			{
@@ -48,7 +47,7 @@ namespace EXILED.Components
 
 		public void OnDestroy()
 		{
-			Timing.KillCoroutines("thing");
+			Timing.KillCoroutines(this.gameObject);
 		}
 
 		public IEnumerator<float> Thing()
