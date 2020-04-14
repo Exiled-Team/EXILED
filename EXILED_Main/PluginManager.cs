@@ -16,6 +16,7 @@ namespace EXILED
 		public static string ExiledDirectory { get; private set; } = Path.Combine(AppDataDirectory, "EXILED");
 		public static string DependenciesDirectory { get; private set; } = Path.Combine(ExiledDirectory, "dependencies");
 		public static string LoadedDependenciesDirectory { get; private set; } = Path.Combine(PluginsDirectory, "dependencies");
+		public static string ManagedAssembliesDirectory { get; private set; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
 		public static string ConfigsPath { get; private set; } = Path.Combine(ExiledDirectory, $"{ServerStatic.ServerPort}-config.yml");
 		public static string LogsPath { get; private set; } = Path.Combine(ExiledDirectory, $"{ServerStatic.ServerPort}-RA_log.txt");
 		private static string _typeOverrides = "";

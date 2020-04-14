@@ -7,7 +7,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using EXILED.Components;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using Random = System.Random;
 
 namespace EXILED
@@ -19,7 +21,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 17 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 19 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -73,6 +75,7 @@ namespace EXILED
 		public static bool LateShootEventPatchDisable;
 		public static bool GeneratorFinishedEventPatchDisable;
 		public static bool CancelMedicalEventPatchDisable;
+		public static bool PreAuthEventPatchDisable;
 		#endregion
 
 		private EventHandlers handlers;
@@ -96,6 +99,7 @@ namespace EXILED
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
+			Log.Info(Environment.CurrentDirectory);
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
 			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
@@ -179,15 +183,18 @@ namespace EXILED
 				string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "EXILED"), "EXILED.dll");
 				string tempPluginsDirectory = Path.Combine(tempDirectory, "Plugins");
 				string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "EXILED_Events.dll");
+				string tempAssemblyPath = Path.Combine(tempDirectory, "Assembly-CSharp.dll");
 
 				File.Delete(Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Delete(Path.Combine(PluginManager.ManagedAssembliesDirectory, "Assembly-CSharp.dll"));
 				File.Move(tempExiledMainPath, Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
 				File.Move(tempExiledEventsPath, Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
 				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Permissions.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
 				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Idler.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Move(tempAssemblyPath, Path.Combine(PluginManager.ManagedAssembliesDirectory, "Assembly-CSharp.dll"));
 				Log.Info($"Files moved, cleaning up...");
 				DeleteDirectory(tempDirectory);
 
@@ -232,6 +239,8 @@ namespace EXILED
 			Log.Debug("Unpatching...");
 			instance.UnpatchAll();
 			Log.Debug("Unpatching complete. Goodbye. :c");
+			if (ESPBreaker)
+				Object.Destroy(PlayerManager.localPlayer.GetComponent<AntiESP>());
 		}
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.

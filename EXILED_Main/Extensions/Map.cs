@@ -171,7 +171,11 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Starts the nuke.
 		/// </summary>
-		public static void StartNuke() => AlphaWarheadController.StartDetonation();
+		public static void StartNuke()
+		{
+			AlphaWarheadController.InstantPrepare();
+			AlphaWarheadController.StartDetonation();
+		}
 
 		/// <summary>
 		/// Stops the nuke.
