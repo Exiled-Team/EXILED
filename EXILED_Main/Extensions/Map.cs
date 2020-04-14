@@ -17,6 +17,7 @@ namespace EXILED.Extensions
 		private static List<Room> _rooms = new List<Room>();
 		private static List<Door> _doors = new List<Door>();
 		private static List<Lift> _lifts = new List<Lift>();
+		private static List<Lift.Elevator> _elevators = new List<Lift.Elevator>();
 		private static List<TeslaGate> _teslas = new List<TeslaGate>();
 
 		public static Inventory HostInventory
@@ -106,6 +107,17 @@ namespace EXILED.Extensions
 				return _lifts;
 			}
 		}
+		
+		public static List<Lift.Elevator> Elevators
+		{
+			get
+			{
+				if(_elevators == null || _elevators.Count == 0)
+					_elevators = Object.FindObjectsOfType<Lift.Elevator>().ToList();
+				
+				return _elevators;
+			}
+		}
 
 		public static List<TeslaGate> TeslaGates
 		{
@@ -171,7 +183,11 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Starts the nuke.
 		/// </summary>
-		public static void StartNuke() => AlphaWarheadController.StartDetonation();
+		public static void StartNuke() 
+		{
+			AlphaWarheadController.InstantPrepare();
+			AlphaWarheadController.StartDetonation();
+		}
 
 		/// <summary>
 		/// Stops the nuke.
@@ -196,7 +212,7 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
-		/// Enable/Disable the nuke lever or gets its status.
+		/// Enable/Disable the nuke lever or gets it	s status.
 		/// </summary>
 		[Obsolete("Use Rooms property instead.", true)]
 		public static IEnumerable<Room> GetRooms() => Rooms;
@@ -225,8 +241,8 @@ namespace EXILED.Extensions
 		/// </summary>
 		public static float NukeDetonationTimer
 		{
-			get => AlphaWarheadController.NetworktimeToDetonation;
-			set => AlphaWarheadController.NetworktimeToDetonation = value;
+			get => AlphaWarheadController.timeToDetonation;
+			set => AlphaWarheadController.timeToDetonation = value;
 		}
 
 		/// <summary>
