@@ -167,6 +167,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\AntiAimbot.cs" />
+    <Compile Include="Components\AntiESP.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Events\MapEvents.cs" />
@@ -179,6 +181,7 @@
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
     <Compile Include="Patches\CancelMedicalItemEvent.cs" />
     <Compile Include="Patches\DoubleSpawnEventFix.cs" />
+    <Compile Include="Patches\ZabsNoclip.cs" />
     <Compile Include="Patches\PlaceBloodEvent.cs" />
     <Compile Include="Patches\PlaceDecalEvent.cs" />
     <Compile Include="Patches\PlayerInteractEvent.cs" />
@@ -245,6 +248,7 @@
     <Compile Include="Patches\ShootEvents.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionExtensions.cs" />
     <Compile Include="ReloadCommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>

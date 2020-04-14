@@ -13,13 +13,13 @@ namespace EXILED.Patches
 			if (EventPlugin.PlayerJoinEventPatchDisable)
 				return;
 
-			EventPlugin.ToMultiAdmin($"Player connect: ");
-
-			if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-				EventPlugin.ToMultiAdmin($"Server full");
-
 			try
 			{
+				EventPlugin.ToMultiAdmin($"Player connect: ");
+
+				if (PlayerManager.players.Count >= CustomNetworkManager.slots)
+					EventPlugin.ToMultiAdmin($"Server full");
+			
 				ReferenceHub player = __instance.gameObject.GetPlayer();
 
 				Timing.CallDelayed(0.25f, () =>
