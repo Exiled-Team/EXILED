@@ -60,7 +60,6 @@ namespace EXILED.Components
 		{
 			for (;;)
 			{
-				Log.Error("Doing thingy thing.");
 				try
 				{
 					Vector3 pos = new Vector3(hub.GetPosition().x, hub.GetPosition().y + 2f, hub.GetPosition().z);
