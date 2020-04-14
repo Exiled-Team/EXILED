@@ -212,7 +212,7 @@ namespace EXILED.Extensions
 		}
 
 		/// <summary>
-		/// Enable/Disable the nuke lever or gets it	s status.
+		/// Enable/Disable the nuke lever or gets its status.
 		/// </summary>
 		[Obsolete("Use Rooms property instead.", true)]
 		public static IEnumerable<Room> GetRooms() => Rooms;
