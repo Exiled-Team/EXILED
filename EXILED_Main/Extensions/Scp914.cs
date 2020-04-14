@@ -12,13 +12,13 @@ namespace EXILED.Extensions
 		/// Sets SCP-914 knob state.
 		/// </summary>
 		/// <returns></returns>
-		public static void SetKnobStatus(Scp914Knob scp914Knob) => Scp914Machine.singleton.knobState = scp914Knob;
+		public static void SetKnobStatus(Scp914Knob scp914Knob) => Scp914Machine.singleton.NetworkknobState = scp914Knob;
 
 		/// <summary>
 		/// Gets SCP-914 knob state.
 		/// </summary>
 		/// <returns></returns>
-		public static Scp914Knob GetKnobStatus() => Scp914Machine.singleton.knobState;
+		public static Scp914Knob GetKnobStatus() => Scp914Machine.singleton.NetworkknobState;
 
 		/// <summary>
 		/// Starts SCP-914.

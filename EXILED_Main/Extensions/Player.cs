@@ -219,7 +219,7 @@ namespace EXILED.Extensions
 			MEC.Timing.RunCoroutine(BlinkTag(player));
 		}
 
-		private static IEnumerator<float> BlinkTag(ReferenceHub player)
+		public static IEnumerator<float> BlinkTag(ReferenceHub player)
 		{
 			yield return MEC.Timing.WaitForOneFrame;
 
@@ -234,14 +234,14 @@ namespace EXILED.Extensions
 		/// Hides the tag of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="player"></param>
-		private static void HideTag(this ReferenceHub player) => player.characterClassManager.CallCmdRequestHideTag();
+		public static void HideTag(this ReferenceHub player) => player.characterClassManager.CallCmdRequestHideTag();
 
 		/// <summary>
 		/// Shows the tag of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="isGlobal"></param>
-		private static void ShowTag(this ReferenceHub player, bool isGlobal = false) => player.characterClassManager.CallCmdRequestShowTag(isGlobal);
+		public static void ShowTag(this ReferenceHub player, bool isGlobal = false) => player.characterClassManager.CallCmdRequestShowTag(isGlobal);
 
 		/// <summary>
 		/// Gives an item to the specified <see cref="ReferenceHub"/>.
