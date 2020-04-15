@@ -21,7 +21,8 @@ namespace EXILED.Patches
         if (!NetworkServer.active || __instance.WhitelistPlayer || (__instance.NoclipWhitelisted || !__instance._successfullySpawned))
           return false;
         
-        AntiFlyCounter.Add(__instance._hub.characterClassManager.UserId, 0);
+        if (!AntiFlyCounter.ContainsKey(__instance._hub.characterClassManager.UserId))
+          AntiFlyCounter.Add(__instance._hub.characterClassManager.UserId, 0);
         if (!ResetCoroutines.ContainsKey(__instance._hub.characterClassManager.UserId))
           ResetCoroutines.Add(__instance._hub.characterClassManager.UserId,
             Timing.RunCoroutine(ResetCounter(__instance._hub)));
