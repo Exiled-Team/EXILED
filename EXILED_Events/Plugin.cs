@@ -7,7 +7,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using EXILED.Components;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = System.Random;
@@ -21,7 +20,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 20 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 21 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -149,9 +148,6 @@ namespace EXILED
 			DropInventory = Config.GetBool("exiled_drop_inventory", true);
 			RemoveBloodPlacement = Config.GetBool("exiled_remove_blood_placement");
 			AntiFlyThreashold = Config.GetInt("exiled_antifly_threashold", 5);
-			AimbotBreaker = Config.GetBool("exiled_anticheat_anti_aimbot");
-			RespawningESPBreaker = Config.GetBool("exiled_anticheat_respawn_espbreaker");
-			ESPBreaker = Config.GetBool("exiled_anticheat_espbreaker", true);
 		}
 
 		private void AutoUpdate()
@@ -239,8 +235,6 @@ namespace EXILED
 			Log.Debug("Unpatching...");
 			instance.UnpatchAll();
 			Log.Debug("Unpatching complete. Goodbye. :c");
-			if (ESPBreaker)
-				Object.Destroy(PlayerManager.localPlayer.GetComponent<AntiESP>());
 		}
 
 		//The below is called when the EXILED loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.

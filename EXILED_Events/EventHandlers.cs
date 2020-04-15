@@ -3,8 +3,6 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EXILED.Components;
-using Object = UnityEngine.Object;
 
 namespace EXILED.Patches
 {
@@ -28,13 +26,6 @@ namespace EXILED.Patches
 			EventPlugin.DeadPlayers.Clear();
 
 			RoundStarted = false;
-
-			if (EventPlugin.ESPBreaker)
-			{
-				AntiESP antiEsp = PlayerManager.localPlayer.GetComponent<AntiESP>();
-				if (antiEsp == null)
-					PlayerManager.localPlayer.AddComponent<AntiESP>();
-			}
 		}
 
 		public void OnRoundStart()
@@ -92,9 +83,6 @@ namespace EXILED.Patches
 
 			if (!EventPlugin.DeadPlayers.Contains(ev.Player))
 				EventPlugin.DeadPlayers.Add(ev.Player);
-
-			if (EventPlugin.AimbotBreaker)
-				ev.Player.gameObject.AddComponent<AntiAimbot>();
 		}
 
 		public void OnSetClass(EXILED.SetClassEvent ev)
