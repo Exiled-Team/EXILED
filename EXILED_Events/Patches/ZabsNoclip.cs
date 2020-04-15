@@ -143,11 +143,10 @@ namespace EXILED.Patches
 											if (__instance._scp207.Enabled) num1 *= 1.2f;
 										}
 
-										if (__instance._debugDistance > __instance.MaxLatency * (double) (num1 * 2.2f))
+										if (__instance._debugDistance > __instance.MaxLatency * (double) (num1 * 5.2f))
 										{
 											if (__instance._safeTime > 0.0) return false;
-											__instance.TargetForcePosition(__instance.connectionToClient,
-												__instance.RealModelPosition);
+											//__instance.TargetForcePosition(__instance.connectionToClient, __instance.RealModelPosition);
 											wasChanged = true;
 											return false;
 										}
@@ -166,20 +165,21 @@ namespace EXILED.Patches
 
 										Vector3 vector3_2 =
 											num1 * __instance.Tolerance * Time.deltaTime * vector3_1.normalized;
-										float num3 = __instance.RealModelPosition.y - __instance._lastSafePosition.y;
+											
+										/*float num3 = __instance.RealModelPosition.y - __instance._lastSafePosition.y;
 										float num4 = Vector3.Distance(__instance._lastSafePosition,
 											__instance.RealModelPosition);
 										int num5 =
 											(double) num4 < 10.0 && (double) Math.Abs(num3) < 3.0 ||
 											(double) num3 < 0.0 && (double) num3 > -30.0 && (double) num4 < 30.0
 												? Physics.RaycastNonAlloc(
-													new Ray(__instance.RealModelPosition + Vector3.up * 0.75f,
+													new Ray(__instance.RealModelPosition + Vector3.up * 1f,
 														__instance._receivedPosition - __instance.RealModelPosition),
 													__instance._hits,
 													(__instance._receivedPosition - __instance.RealModelPosition)
 													.magnitude, __instance.CollidableSurfaces)
 												: Physics.RaycastNonAlloc(
-													new Ray(__instance._lastSafePosition + Vector3.up * 0.75f,
+													new Ray(__instance._lastSafePosition + Vector3.up * 1f,
 														__instance._receivedPosition - __instance._lastSafePosition),
 													__instance._hits,
 													(__instance._receivedPosition - __instance._lastSafePosition)
@@ -192,13 +192,12 @@ namespace EXILED.Patches
 												     .curCooldown <= 0.0))
 											{
 												__instance.RealModelPosition = __instance._lastSafePosition;
-												++__instance._violationsS;
+												//++__instance._violationsS;
 												++__instance._violationsL;
-												__instance.TargetForcePosition(__instance.connectionToClient,
-													__instance._lastSafePosition);
+												__instance.TargetForcePosition(__instance.connectionToClient, __instance._lastSafePosition);
 												wasChanged = true;
 												return false;
-											}
+											}*/
 
 										__instance.RealModelPosition = __instance.TempAjustedPos;
 										if (FallDamage.CheckAnticheatSafe(__instance.RealModelPosition))
