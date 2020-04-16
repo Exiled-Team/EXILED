@@ -19,7 +19,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 23 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 24 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
