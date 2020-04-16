@@ -19,15 +19,16 @@ namespace EXILED.Patches
 
 				if (PlayerManager.players.Count >= CustomNetworkManager.slots)
 					EventPlugin.ToMultiAdmin($"Server full");
-			
-				ReferenceHub player = __instance.gameObject.GetPlayer();
 
+				//DO NOT Change this coroutine (Mutefixer)
 				Timing.CallDelayed(0.25f, () =>
 				{
-					if (player != null && player.IsMuted())
-						player.characterClassManager.SetDirtyBit(1UL);
+					foreach(ReferenceHub hub in Player.GetHubs())
+						if(hub.IsMuted())
+							hub.characterClassManager.SetDirtyBit(1ul);
 				});
 
+				ReferenceHub player = __instance.gameObject.GetPlayer();
 				if (!string.IsNullOrEmpty(player.characterClassManager.UserId))
 					Events.InvokePlayerJoin(player);
 			}
