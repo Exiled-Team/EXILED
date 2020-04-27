@@ -16,6 +16,8 @@ namespace EXILED.Patches
 		{
 			try
 			{
+				if (EventPlugin.PreAuthEventPatchDisable)
+					return true;
 				HandleConnection(request);
 				return false;
 			}

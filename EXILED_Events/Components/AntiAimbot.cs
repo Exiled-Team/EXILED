@@ -30,14 +30,20 @@ namespace EXILED.Components
 				CharacterClassManager ccm = obj.GetComponent<CharacterClassManager>();
 				ccm.CurClass = RoleType.ClassD;
 				ccm.RefreshPlyModel();
-				obj.GetComponent<NicknameSync>().Network_myNickSync = "No Aimbot for you!";
-				obj.GetComponent<QueryProcessor>().PlayerId = 75911;
+				List<ReferenceHub> players = Player.GetHubs().ToList();
+				int r = EventPlugin.Gen.Next(players.Count);
+				obj.GetComponent<NicknameSync>().Network_myNickSync = players[r].GetNickname();
+				obj.GetComponent<QueryProcessor>().PlayerId = players[r].GetPlayerId();
 				obj.transform.localScale *= 0.0000001f;
 				obj.transform.position = hub.GetPosition();
 				NetworkServer.Spawn(obj);
 				sync = obj.GetComponent<PlyMovementSync>();
 				ident = obj.GetComponent<NetworkIdentity>();
-				MEC.Timing.RunCoroutine(Thing(), this.gameObject);
+				ReferenceHub fakeHub = obj.GetComponent<ReferenceHub>();
+				if (fakeHub != null)
+					Destroy(hub);
+
+				Timing.RunCoroutine(RefreshAimbotLocation(), gameObject);
 			}
 			catch (Exception e)
 			{
@@ -47,14 +53,13 @@ namespace EXILED.Components
 
 		public void OnDestroy()
 		{
-			Timing.KillCoroutines(this.gameObject);
+			Timing.KillCoroutines(gameObject);
 		}
 
-		public IEnumerator<float> Thing()
+		public IEnumerator<float> RefreshAimbotLocation()
 		{
 			for (;;)
 			{
-				Log.Error("Doing thingy thing.");
 				try
 				{
 					Vector3 pos = new Vector3(hub.GetPosition().x, hub.GetPosition().y + 2f, hub.GetPosition().z);

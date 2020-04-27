@@ -19,7 +19,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 9, Patch = 17 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 10, Patch = 0 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -73,6 +73,7 @@ namespace EXILED
 		public static bool LateShootEventPatchDisable;
 		public static bool GeneratorFinishedEventPatchDisable;
 		public static bool CancelMedicalEventPatchDisable;
+		public static bool PreAuthEventPatchDisable;
 		#endregion
 
 		private EventHandlers handlers;
@@ -96,6 +97,7 @@ namespace EXILED
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
 		{
+			Log.Info(Environment.CurrentDirectory);
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
 			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
@@ -145,9 +147,6 @@ namespace EXILED
 			DropInventory = Config.GetBool("exiled_drop_inventory", true);
 			RemoveBloodPlacement = Config.GetBool("exiled_remove_blood_placement");
 			AntiFlyThreashold = Config.GetInt("exiled_antifly_threashold", 5);
-			AimbotBreaker = Config.GetBool("exiled_anticheat_anti_aimbot");
-			RespawningESPBreaker = Config.GetBool("exiled_anticheat_respawn_espbreaker");
-			ESPBreaker = Config.GetBool("exiled_anticheat_espbreaker", true);
 		}
 
 		private void AutoUpdate()
@@ -179,15 +178,18 @@ namespace EXILED
 				string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "EXILED"), "EXILED.dll");
 				string tempPluginsDirectory = Path.Combine(tempDirectory, "Plugins");
 				string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "EXILED_Events.dll");
+				string tempAssemblyPath = Path.Combine(tempDirectory, "Assembly-CSharp.dll");
 
 				File.Delete(Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
 				File.Delete(Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Delete(Path.Combine(PluginManager.ManagedAssembliesDirectory, "Assembly-CSharp.dll"));
 				File.Move(tempExiledMainPath, Path.Combine(PluginManager.ExiledDirectory, "EXILED.dll"));
 				File.Move(tempExiledEventsPath, Path.Combine(PluginManager.PluginsDirectory, "EXILED_Events.dll"));
 				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Permissions.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Permissions.dll"));
 				File.Move(Path.Combine(tempPluginsDirectory, "EXILED_Idler.dll"), Path.Combine(PluginManager.PluginsDirectory, "EXILED_Idler.dll"));
+				File.Move(tempAssemblyPath, Path.Combine(PluginManager.ManagedAssembliesDirectory, "Assembly-CSharp.dll"));
 				Log.Info($"Files moved, cleaning up...");
 				DeleteDirectory(tempDirectory);
 

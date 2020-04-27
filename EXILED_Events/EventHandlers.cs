@@ -3,8 +3,6 @@ using MEC;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EXILED.Components;
-using Object = UnityEngine.Object;
 
 namespace EXILED.Patches
 {
@@ -24,21 +22,10 @@ namespace EXILED.Patches
 			Map.TeslaGates.Clear();
 			Player.IdHubs.Clear();
 			Player.StrHubs.Clear();
-			ZabsNoclip.ResetL.Clear();
-			ZabsNoclip.ResetS.Clear();
-			ZabsNoclip.ViolationsL.Clear();
-			ZabsNoclip.ViolationsS.Clear();
-			ZabsNoclip.LastSafePosition.Clear();
 			Timing.RunCoroutine(ResetRoundTime(), "resetroundtime");
 			EventPlugin.DeadPlayers.Clear();
 
 			RoundStarted = false;
-
-			if (EventPlugin.ESPBreaker)
-				if (PlayerManager.localPlayer.GetComponent<AntiESP>() == null)
-				{
-					AntiESP antiEsp = PlayerManager.localPlayer.AddComponent<AntiESP>();
-				}
 		}
 
 		public void OnRoundStart()
@@ -90,8 +77,6 @@ namespace EXILED.Patches
 		{
 			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
 				return;
-			if (EventPlugin.AimbotBreaker)
-				Timing.CallDelayed(3f, () => ev.Player.gameObject.AddComponent<AntiAimbot>());
 
 			if (!RoundStarted)
 				return;

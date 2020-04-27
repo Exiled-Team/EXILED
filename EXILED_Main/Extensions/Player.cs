@@ -91,6 +91,17 @@ namespace EXILED.Extensions
 		/// <param name="newRole"></param>
 		public static void SetRole(this ReferenceHub player, RoleType newRole) => player.characterClassManager.SetPlayersClass(newRole, player.gameObject);
 
+		public static void SetRole(this ReferenceHub player, RoleType newRole, bool keepPosition)
+		{
+			if (keepPosition)
+			{
+				player.characterClassManager.NetworkCurClass = newRole;
+				player.playerStats.SetHPAmount(player.characterClassManager.Classes.SafeGet(player.GetRole()).maxHP);
+			}
+			else
+				SetRole(player, newRole);
+		}
+
 		/// <summary>
 		/// Gets the position of a <see cref="ReferenceHub"/>
 		/// </summary>

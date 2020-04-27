@@ -23,7 +23,7 @@ namespace EXILED.Components
 		public void Awake()
 		{
 			if (EventPlugin.RespawningESPBreaker)
-				Timing.RunCoroutine(DoStuff(), "antiesp");
+				Timing.RunCoroutine(MoveEspDummies(), "antiesp");
 			for (int i = 0; i < 35; i++)
 			{
 				try
@@ -60,7 +60,7 @@ namespace EXILED.Components
 			Timing.KillCoroutines("antiesp");
 		}
 
-		public IEnumerator<float> DoStuff()
+		public IEnumerator<float> MoveEspDummies()
 		{
 			for (;;)
 			{
@@ -79,8 +79,14 @@ namespace EXILED.Components
 					msg.netId = ident.netId;
 					obj.transform.position = Map.Rooms[EventPlugin.Gen.Next(Map.Rooms.Count)].Position;
 
-					NetworkServer.UnSpawn(obj);
-					NetworkServer.Spawn(obj);
+					foreach (ReferenceHub hub in Player.GetHubs())
+					{
+						NetworkConnection conn = hub.scp079PlayerScript.connectionToClient;
+						conn.Send(msg);
+				
+						object[] parameters = new object[]{ident, conn};
+						typeof(NetworkServer).InvokeStaticMethod("SendSpawnMessage", parameters);
+					}
 
 					yield return Timing.WaitForSeconds(1f);
 				}

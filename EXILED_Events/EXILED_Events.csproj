@@ -38,11 +38,11 @@
     <Reference Include="0Harmony, Version=1.2.0.1, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\0Harmony.dll</HintPath>
     </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\References\Assembly-CSharp_publicized.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
       <HintPath>..\References\BouncyCastle.Crypto.dll</HintPath>
@@ -58,7 +58,7 @@
       <HintPath>..\References\Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\UnityEngine.dll</HintPath>
+      <HintPath>..\..\References\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\UnityEngine.AIModule.dll</HintPath>
@@ -76,7 +76,7 @@
       <HintPath>..\References\UnityEngine.AudioModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\References\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.DirectorModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\UnityEngine.DirectorModule.dll</HintPath>
@@ -167,8 +167,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\AntiAimbot.cs" />
-    <Compile Include="Components\AntiESP.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Events\MapEvents.cs" />
@@ -181,7 +179,6 @@
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
     <Compile Include="Patches\CancelMedicalItemEvent.cs" />
     <Compile Include="Patches\DoubleSpawnEventFix.cs" />
-    <Compile Include="Patches\ZabsNoclip.cs" />
     <Compile Include="Patches\PlaceBloodEvent.cs" />
     <Compile Include="Patches\PlaceDecalEvent.cs" />
     <Compile Include="Patches\PlayerInteractEvent.cs" />
@@ -256,6 +253,9 @@
       <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
       <Name>EXILED_Main</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
