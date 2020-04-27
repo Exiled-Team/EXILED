@@ -149,8 +149,8 @@ namespace EXILED
 		{
 			[YamlMember(Alias = "default")]
 			public bool Default { get; set; } = false;
-			public List<string> inheritance { get; set; } = new List<string>();
-			public List<string> permissions { get; set; } = new List<string>();
+			public List<string> Inheritance { get; set; } = new List<string>();
+			public List<string> Permissions { get; set; } = new List<string>();
 		}
 
 		public override void OnDisable() { }

@@ -228,7 +228,7 @@ namespace EXILED
 		}
 
 		public static event Scp096Enrage Scp096EnrageEvent;
-		public delegate void Scp096Enrage(ref Scp096EnrageEvent ev);
+		public delegate void Scp096Enrage(Scp096EnrageEvent ev);
 
 		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
 		{
@@ -248,7 +248,7 @@ namespace EXILED
 		}
 
 		public static event Scp096Calm Scp096CalmEvent;
-		public delegate void Scp096Calm(ref Scp096CalmEvent ev);
+		public delegate void Scp096Calm(Scp096CalmEvent ev);
 
 		public static void InvokeScp096Calm(Scp096PlayerScript script, ref bool allow)
 		{
@@ -414,7 +414,7 @@ namespace EXILED
 		}
 
 		public static event DropItem DropItemEvent;
-		public delegate void DropItem(ref DropItemEvent ev);
+		public delegate void DropItem(DropItemEvent ev);
 
 		public static void InvokeDropItem(GameObject player, ref Inventory.SyncItemInfo item, ref bool allow)
 		{
@@ -472,7 +472,7 @@ namespace EXILED
 		}
 
 		public static event HandcuffCuffed PlayerHandcuffedEvent;
-		public delegate void HandcuffCuffed(ref HandcuffEvent ev);
+		public delegate void HandcuffCuffed(HandcuffEvent ev);
 
 		public static void InvokePlayerHandcuff(GameObject player, GameObject target, ref bool allow)
 		{
@@ -492,7 +492,7 @@ namespace EXILED
 		}
 
 		public static event HandcuffFreed PlayerHandcuffFreedEvent;
-		public delegate void HandcuffFreed(ref HandcuffEvent ev);
+		public delegate void HandcuffFreed(HandcuffEvent ev);
 
 		public static void InvokePlayerHandcuffFree(GameObject player, GameObject target, ref bool allow)
 		{
@@ -568,7 +568,7 @@ namespace EXILED
 		}
 
 		public static event OnLateShoot LateShootEvent;
-		public delegate void OnLateShoot(ref LateShootEvent ev);
+		public delegate void OnLateShoot(LateShootEvent ev);
 
 		public static void InvokeOnLateShoot(ReferenceHub shooter, GameObject target, ref float damage, float distance, string hitboxType, ref bool allow)
 		{

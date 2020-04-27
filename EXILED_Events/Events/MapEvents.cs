@@ -136,7 +136,7 @@ namespace EXILED
 		public static void InvokeWarheadDetonation() => WarheadDetonationEvent?.Invoke();
 
 		public static event OnDoorInteract DoorInteractEvent;
-		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
+		public delegate void OnDoorInteract(DoorInteractionEvent ev);
 
 		public static void InvokeDoorInteract(GameObject player, Door door, ref bool allow)
 		{
@@ -223,7 +223,10 @@ namespace EXILED
 
 			LockerInteractionEvent ev = new LockerInteractionEvent(player.GetPlayer(), locker, lockerId)
 			{
+				Locker = locker,
+				Player = gameObject.GetPlayer(),
 				Allow = allow,
+				LockerId = lockerid
 			};
 
 			LockerInteractEvent.Invoke(ev);
@@ -264,7 +267,7 @@ namespace EXILED
 			foreach (CharacterClassManager characterClassManager in characterClassManagers)
 				players.Add(characterClassManager.gameObject.GetPlayer());
 
-			SCP914UpgradeEvent ev = new SCP914UpgradeEvent()
+			Scp914UpgradeEvent ev = new Scp914UpgradeEvent()
 			{
 				Allow = allow,
 				Machine = machine,

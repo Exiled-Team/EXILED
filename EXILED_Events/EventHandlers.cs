@@ -64,7 +64,7 @@ namespace EXILED.Patches
 				EventPlugin.DeadPlayers.Remove(ev.Player);
 		}
 
-		public void OnPlayerDeath(ref PlayerDeathEvent ev)
+		public void OnPlayerDeath(PlayerDeathEvent ev)
 		{
 			if (ev.Player == null || ev.Player.IsHost() || string.IsNullOrEmpty(ev.Player.GetUserId()))
 				return;
