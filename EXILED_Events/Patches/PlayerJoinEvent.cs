@@ -19,7 +19,7 @@ namespace EXILED.Patches
 
 				if (PlayerManager.players.Count >= CustomNetworkManager.slots)
 					EventPlugin.ToMultiAdmin($"Server full");
-			
+
 				ReferenceHub player = __instance.gameObject.GetPlayer();
 
 				Timing.CallDelayed(0.25f, () =>
