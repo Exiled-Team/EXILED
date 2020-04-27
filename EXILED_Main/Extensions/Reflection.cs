@@ -1,9 +1,9 @@
 using System;
 using System.Reflection;
 
-namespace EXILED
+namespace EXILED.Extensions
 {
-	public static class ReflectionExtensions
+	public static class Reflection
 	{
 		public static void InvokeStaticMethod(this Type type, string methodName, object[] param)
 		{

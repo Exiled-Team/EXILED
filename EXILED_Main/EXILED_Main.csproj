@@ -41,7 +41,7 @@
       <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
+      <HintPath>..\References\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Mirror.dll</HintPath>
@@ -94,8 +94,10 @@
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
     <Compile Include="Extensions\Cassie.cs" />
+    <Compile Include="Extensions\Config.cs" />
     <Compile Include="Extensions\Map.cs" />
     <Compile Include="Extensions\Player.cs" />
+    <Compile Include="Extensions\Reflection.cs" />
     <Compile Include="Extensions\Scp079.cs" />
     <Compile Include="Extensions\Scp914.cs" />
     <Compile Include="LevenshteinDistance.cs" />
