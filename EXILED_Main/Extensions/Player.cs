@@ -571,6 +571,12 @@ namespace EXILED.Extensions
 		public static void SetHealth(this ReferenceHub player, float amount) => player.playerStats.health = amount;
 
 		/// <summary>
+		/// Sets health to its maximum for a <see cref="ReferenceHub">player</see>.
+		/// </summary>
+		/// <param name="player"></param>
+		public static void SetHealthToMax( this ReferenceHub rh ) => rh.SetHealth(rh.GetMaxHealth());
+		
+		/// <summary>
 		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see>.
 		/// </summary>
 		/// <param name="player"></param>
