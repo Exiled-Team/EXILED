@@ -19,8 +19,15 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 10, Patch = 0 };
-
+		public bool TestingEnabled;
+		public bool AutoUpdateEnabled;
+		public static ExiledVersion Version = new ExiledVersion
+		{
+			Major = 2,
+			Minor = 0,
+			Patch = 0
+		};
+		
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
 		public static bool AntiFlyPatchDisable;
@@ -76,11 +83,12 @@ namespace EXILED
 		public static bool PreAuthEventPatchDisable;
 		#endregion
 
-		private EventHandlers handlers;
 
-		//The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
-		private static int patchFixer;
+        private EventHandlers handlers;
 
+        private CommandHandler commands;
+		//The below variable is used to incriment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
+		private static int _patchFixer;
 		public static bool Scp173Fix;
 		public static bool Scp096Fix;
 		public static bool WarheadLocked;
@@ -95,6 +103,9 @@ namespace EXILED
 		public static bool ESPBreaker;
 
 		//The below method gets called when the plugin is enabled by the EXILED loader.
+		public override string GetName { get; } = "EXILED Events";
+		public override string ConfigPrefix { get; } = "exiled_";
+
 		public override void OnEnable()
 		{
 			Log.Info(Environment.CurrentDirectory);
@@ -116,7 +127,7 @@ namespace EXILED
 
 			Events.WaitingForPlayersEvent += handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent += handlers.OnRoundStart;
-			Events.RemoteAdminCommandEvent += ReloadCommandHandler.CommandHandler;
+			Events.RemoteAdminCommandEvent += commands.OnRaCommand;
 			Events.PlayerLeaveEvent += handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent += handlers.OnPlayerDeath;
 			Events.PlayerJoinEvent += handlers.OnPlayerJoin;
@@ -126,8 +137,8 @@ namespace EXILED
 			try
 			{
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
-				patchFixer++;
-				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
+				_patchFixer++;
+				instance = HarmonyInstance.Create($"exiled.patches{_patchFixer}");
 				instance.PatchAll();
 			}
 			catch (Exception exception)
@@ -201,11 +212,11 @@ namespace EXILED
 				Log.Error($"Auto-update error: {exception}");
 			}
 		}
-
-		public static void DeleteDirectory(string target_dir)
+		
+		public static void DeleteDirectory(string targetDir)
 		{
-			string[] files = Directory.GetFiles(target_dir);
-			string[] dirs = Directory.GetDirectories(target_dir);
+			string[] files = Directory.GetFiles(targetDir);
+			string[] dirs = Directory.GetDirectories(targetDir);
 
 			foreach (string file in files)
 			{
@@ -215,7 +226,7 @@ namespace EXILED
 
 			foreach (string dir in dirs) DeleteDirectory(dir);
 
-			Directory.Delete(target_dir, false);
+			Directory.Delete(targetDir, false);
 		}
 
 		//The below method gets called when the plugin is disabled by the EXILED loader.
@@ -226,7 +237,7 @@ namespace EXILED
 			//You should unhook any events you have hooked in the plugin when it is disabled, otherwise GAC will cause your server to have a meltdown.
 			Events.WaitingForPlayersEvent -= handlers.OnWaitingForPlayers;
 			Events.RoundStartEvent -= handlers.OnRoundStart;
-			Events.RemoteAdminCommandEvent -= ReloadCommandHandler.CommandHandler;
+			Events.RemoteAdminCommandEvent -= commands.OnRaCommand;
 			Events.PlayerLeaveEvent -= handlers.OnPlayerLeave;
 			Events.PlayerDeathEvent -= handlers.OnPlayerDeath;
 

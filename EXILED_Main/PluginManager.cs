@@ -164,7 +164,7 @@ namespace EXILED
 					}
 
 					_plugins.Add(p);
-					Log.Info($"Successfully loaded {p.getName}");
+					Log.Info($"Successfully loaded {p.GetName}");
 				}
 			}
 			catch (Exception exception)
@@ -179,6 +179,7 @@ namespace EXILED
 			{
 				try
 				{
+					plugin.ReloadConfig();
 					plugin.OnEnable();
 				}
 				catch (Exception exception)

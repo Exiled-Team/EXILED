@@ -8,7 +8,7 @@ namespace EXILED
 		//This method is called by the assembly's Loader class when the server starts.
 		public static void EntryPointForLoader()
 		{
-			Log.Info($"Initalizing Mod Loader");
+			Log.Info($"Initializing Mod Loader");
 
 			if (!File.Exists(PluginManager.ConfigsPath))
 				File.Create(PluginManager.ConfigsPath).Close();

@@ -15,6 +15,9 @@ namespace EXILED_Idler
 		public static bool WasLastCheckIdle;
 		public static bool IdleSent;
 
+		public override string GetName { get; } = "EXILED Idler";
+		public override string ConfigPrefix { get; } = "exiled_";
+
 		public override void OnEnable()
 		{
 			_thread = new Thread(DoIdleCheck);
@@ -23,7 +26,7 @@ namespace EXILED_Idler
 			Events.PreAuthEvent += OnPreAuthEvent;
 		}
 
-		private void OnPreAuthEvent(ref PreauthEvent ev)
+		private void OnPreAuthEvent(PreAuthEvent ev)
 		{
 			if (WasLastCheckIdle)
 				Log.Info("Server process resuming..");
@@ -39,7 +42,10 @@ namespace EXILED_Idler
 
 		}
 
-		public override string getName => "EXILED_Idler";
+		public override void ReloadConfig()
+		{
+			
+		}
 
 		public static void DoIdleCheck()
 		{

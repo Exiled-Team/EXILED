@@ -76,7 +76,7 @@ namespace EXILED
 		}
 
 		public static event OnCheaterReport CheaterReportEvent;
-		public delegate void OnCheaterReport(ref CheaterReportEvent ev);
+		public delegate void OnCheaterReport(CheaterReportEvent ev);
 
 		public static void InvokeCheaterReport(string reporterId, string reportedId, string reportedIp, string reason, int serverId, ref bool allow)
 		{
@@ -103,7 +103,7 @@ namespace EXILED
 		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent?.Invoke();
 
 		public static event TeamRespawn TeamRespawnEvent;
-		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
+		public delegate void TeamRespawn(TeamRespawnEvent ev);
 
 		public static void InvokeTeamRespawn(ref bool isChaos, ref int maxRespawn, ref List<ReferenceHub> playersToRespawn)
 		{
