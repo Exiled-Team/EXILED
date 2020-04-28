@@ -582,12 +582,24 @@ namespace EXILED.Extensions
 		public static void SetHealth(this ReferenceHub player, float amount) => player.playerStats.health = amount;
 
 		/// <summary>
-		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see>.
+		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see> without exceeding it's maximum health amount.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddHealth(this ReferenceHub player, float amount) => player.playerStats.health += amount;
-
+		public static void AddHealth(this ReferenceHub player, float amount) {
+			if(player.playerStats.health + amount > player.playerStats.maxHP) amount = player.playerStats.maxHP - player.playerStats.health;
+			player.playerStats.health += amount;
+		}
+		
+		/// <summary>
+		/// Set the current amount of health of a <see cref="ReferenceHub">player</see> to their maximum amount of health.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="amount"></param>
+		public static void Heal(this ReferenceHub player) {
+			player.playerStats.health = player.playerStats.maxHP;
+		}
+		
 		/// <summary>
 		/// Gets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
 		/// </summary>
