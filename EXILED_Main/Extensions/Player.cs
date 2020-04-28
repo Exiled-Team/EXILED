@@ -76,7 +76,24 @@ namespace EXILED.Extensions
 		/// <param name="newStatus"></param>
 		/// <returns></returns>
 		public static void SetOverwatch(this ReferenceHub player, bool newStatus) => player.serverRoles.SetOverwatchStatus(newStatus);
-
+		
+		/// <summary>
+		/// Check if a <see cref="RoleType">RoleType</see> is any SCP.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public static bool IsAnyScp( this RoleType type ) => 
+		type == RoleType.Scp173 ||type == RoleType.Scp049 || type == RoleType.Scp93989     
+		|| type == RoleType.Scp93953 || type == RoleType.Scp0492 || type == RoleType.Scp079 
+		|| type == RoleType.Scp106 || type == RoleType.Scp096;
+		
+		/// <summary>
+		/// Check if a <see cref="ReferenceHub">player</see> is any SCP.
+		/// </summary>
+		/// <param name="hub"></param>
+		/// <returns></returns>
+		public static bool IsScp(this ReferenceHub hub) => hub.characterClassManager.IsAnyScp();
+		
 		/// <summary>
 		/// Gets a player's Current Role.
 		/// </summary>
@@ -582,12 +599,22 @@ namespace EXILED.Extensions
 		public static void SetHealth(this ReferenceHub player, float amount) => player.playerStats.health = amount;
 
 		/// <summary>
-		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see>.
+		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see> without exceeding it's maximum health amount.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddHealth(this ReferenceHub player, float amount) => player.playerStats.health += amount;
-
+		public static void AddHealth( this ReferenceHub player, float amount ) =>
+			player.playerStats.health = Mathf.Clamp(amount, 1, player.playerStats.maxHP);
+		
+		/// <summary>
+		/// Set the current amount of health of a <see cref="ReferenceHub">player</see> to their maximum amount of health.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="amount"></param>
+		public static void Heal(this ReferenceHub player) {
+			player.playerStats.health = player.playerStats.maxHP;
+		}
+		
 		/// <summary>
 		/// Gets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
 		/// </summary>
