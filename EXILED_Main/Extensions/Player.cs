@@ -603,10 +603,8 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddHealth(this ReferenceHub player, float amount) {
-			if(player.playerStats.health + amount > player.playerStats.maxHP) amount = player.playerStats.maxHP - player.playerStats.health;
-			player.playerStats.health += amount;
-		}
+		public static void AddHealth( this ReferenceHub player, float amount ) =>
+			player.playerStats.health = Mathf.Clamp(amount, 1, player.playerStats.maxHP);
 		
 		/// <summary>
 		/// Set the current amount of health of a <see cref="ReferenceHub">player</see> to their maximum amount of health.
