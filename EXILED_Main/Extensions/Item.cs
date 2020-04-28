@@ -9,9 +9,9 @@ namespace EXILED.Extensions {
             item == ItemType.Ammo556 || item == ItemType.Ammo9mm || item == ItemType.Ammo762;
 
         public static bool IsWeapon( this ItemType type ) =>
-            (type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
+            type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
             || type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP
-            || type == ItemType.MicroHID);
+            || type == ItemType.MicroHID;
 
         public static bool IsSCP( this ItemType type ) =>
             type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207;
