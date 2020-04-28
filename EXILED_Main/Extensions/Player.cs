@@ -699,6 +699,24 @@ namespace EXILED.Extensions
 		/// <param name="player"></param>
 		/// <param name="item"></param>
 		public static void AddItem(this ReferenceHub player, Inventory.SyncItemInfo item) => player.inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+		
+		/// <summary>
+		/// Drop an item from the player's inventory.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="item"></param>
+		public static void DropItem(this ReferenceHub player, Inventory.SyncItemInfo item)
+		{
+			player.inventory.SetPickup(item.id, item.durability, player.GetPosition(), player.inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
+			player.inventory.items.Remove(item);
+		}
+
+		/// <summary>
+		/// Remove an item from the player's inventory.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <param name="item"></param>
+		public static void RemoveItem(this ReferenceHub player, Inventory.SyncItemInfo item) => player.inventory.items.Remove(item);
 
 		/// <summary>
 		/// Sets the player's inventory to the provided list of items, clearing any items they already possess.
