@@ -172,7 +172,7 @@ namespace EXILED
 
 		public void Reject(string reason)
 		{
-			if (reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
 			InternalReject(RejectionReason.Custom, reason);
 		}
 		
@@ -187,7 +187,7 @@ namespace EXILED
 
 		public void RejectForce(string reason)
 		{
-			if (reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
 			InternalReject(RejectionReason.Custom, reason, true);
 		}
 		
