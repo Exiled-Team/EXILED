@@ -35,6 +35,7 @@ namespace EXILED.Patches
 			{
 				byte result1;
 				byte result2;
+				int position = request.Data.Position;
 				if (!request.Data.TryGetByte(out result1) || !request.Data.TryGetByte(out result2) || result1 != CustomNetworkManager.Major || result2 != CustomNetworkManager.Minor)
 				{
 					rejectData.Reset();
@@ -180,12 +181,17 @@ namespace EXILED.Patches
 												else
 													CustomLiteNetLib4MirrorTransport.UserIds.Add(request.RemoteEndPoint, new PreauthItem(result3));
 												bool allow = true;
-												Events.InvokePreAuth(ref result3, request, ref allow);
+												Events.InvokePreAuth(result3, request, position, result5, result6, ref allow);
 												if (allow)
 												{
 													request.Accept();
 													ServerConsole.AddLog(string.Format("Player {0} preauthenticated from endpoint {1}.", result3, request.RemoteEndPoint));
 													ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("{0} preauthenticated from endpoint {1}.", result3, request.RemoteEndPoint), ServerLogs.ServerLogType.ConnectionUpdate);
+												}
+												else
+												{
+													ServerConsole.AddLog(string.Format("Player {0} tried to preauthenticate from endpoint {1}, but the request has been rejected by a plugin.", result3, request.RemoteEndPoint));
+													ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("{0} tried to preauthenticate from endpoint {1}, but the request has been rejected by a plugin.", result3, request.RemoteEndPoint), ServerLogs.ServerLogType.ConnectionUpdate);
 												}
 											}
 											else
