@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using LiteNetLib.Utils;
 using UnityEngine;
-using ZXing;
 using static BanHandler;
 
 namespace EXILED
