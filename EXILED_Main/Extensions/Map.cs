@@ -224,7 +224,7 @@ namespace EXILED.Extensions
        		public bool GetLobbyLock() => GameCore.RoundStart.LobbyLock;
 		
        		/// <summary>
-       		/// Returns the current Lobby-lock status.
+       		/// Returns the current Round-lock status.
        		/// </summary>
        		/// <returns></returns>
        		public bool GetRoundLock() => RoundSummary.RoundLock;
