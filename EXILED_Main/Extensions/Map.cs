@@ -204,7 +204,47 @@ namespace EXILED.Extensions
 		/// </summary>
 		[Obsolete("Use Rooms property instead.", true)]
 		public static IEnumerable<Room> GetRooms() => Rooms;
-
+		
+       		/// <summary>
+        	/// Assign any <see cref="bool">boolean</see> to the Round-lock.
+       		/// </summary>
+       		/// <param name="boolean"></param>
+       		public void SetRoundLock( bool boolean ) => RoundSummary.RoundLock = boolean;
+		
+       		/// <summary>
+       		/// Assign any <see cref="bool">boolean</see> to the Lobby-lock.
+       		/// </summary>
+       		/// <param name="boolean"></param>
+       		public void SetLobbyLock( bool boolean ) => GameCore.RoundStart.LobbyLock = false;
+		
+       		/// <summary>
+       		/// Returns the current Lobby-lock status.
+       		/// </summary>
+       		/// <returns></returns>
+       		public bool GetLobbyLock() => GameCore.RoundStart.LobbyLock;
+		
+       		/// <summary>
+       		/// Returns the current Lobby-lock status.
+       		/// </summary>
+       		/// <returns></returns>
+       		public bool GetRoundLock() => RoundSummary.RoundLock;
+       
+       		/// <summary>
+       		/// Set the friendly-fire value and update it for every <see cref="WeaponManager">Weapon Manager</see>.
+       		/// </summary>
+       		/// <returns></returns>
+		public static void SetFriendlyFire(bool boolean) {
+			ServerConsole.FriendlyFire = boolean;
+			foreach(WeaponManager manager in UnityEngine.Object.FindObjectsOfType<WeaponManager>())
+				manager.friendlyFire = boolean;
+		}
+		
+       		/// <summary>
+       		/// Returns the current Friendly-fire status.
+       		/// </summary>
+       		/// <returns></returns>
+       		public bool GetFriendlyFire() => ServerConsole.FriendlyFire;
+		
 		/// <summary>
 		/// Gets the nuke lever status.
 		/// </summary>
