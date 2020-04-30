@@ -953,5 +953,12 @@ namespace EXILED.Extensions
 		/// <param name="value"></param>
 		public static void SetFriendlyFire(this ReferenceHub player, bool value) =>
 			player.weaponManager.NetworkfriendlyFire = value;
+		
+		/// <summary>
+		/// Gets the badge name of a <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+        	public static string GetBadgeName(this ReferenceHub rh) => rh.serverRoles.Group.BadgeText;
 	}
 }
