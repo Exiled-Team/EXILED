@@ -148,11 +148,11 @@ namespace EXILED
 			Country = country;
 		}
 
-		public readonly string UserId;
+		public string UserId;
 		public readonly int ReaderStartPosition;
 		public readonly byte Flags;
 		public readonly string Country;
-		public readonly ConnectionRequest Request;
+		public ConnectionRequest Request;
 
 		private bool _allow = true;
 		
@@ -161,7 +161,11 @@ namespace EXILED
 			get => _allow;
 			set
 			{
-				if (value) throw new Exception("It's not possible to change this variable to true.");
+				if (value)
+				{
+					Log.Warn("Setting ev.Allow to true inside of the PreauthEvent is no longer allowed. This call will be ignored. Note: This should have no affect on how the plugin making this call functions. This is NOT AN ERROR!");
+					return;
+				}
 				_allow = false;
 			}
 		}

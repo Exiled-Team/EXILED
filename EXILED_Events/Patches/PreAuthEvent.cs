@@ -1,11 +1,12 @@
 using Cryptography;
 using GameCore;
-using Harmony;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Mirror.LiteNetLib4Mirror;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using Harmony;
 
 namespace EXILED.Patches
 {
@@ -40,7 +41,7 @@ namespace EXILED.Patches
 				{
 					rejectData.Reset();
 					rejectData.Put(3);
-					request.Reject(rejectData);
+					request.RejectForce(rejectData);
 				}
 				else
 				{
@@ -52,7 +53,7 @@ namespace EXILED.Patches
 							ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} rejected due to exceeding the rate limit.", request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
 							rejectData.Reset();
 							rejectData.Put(12);
-							request.Reject(rejectData);
+							request.RejectForce(rejectData);
 							return;
 						}
 						CustomLiteNetLib4MirrorTransport.IpRateLimit.Add(request.RemoteEndPoint.Address.ToString());
@@ -67,7 +68,7 @@ namespace EXILED.Patches
 							rejectData.Put(6);
 							rejectData.Put(keyValuePair.Value.Expires);
 							rejectData.Put(keyValuePair.Value?.Reason ?? string.Empty);
-							request.Reject(rejectData);
+							request.RejectForce(rejectData);
 						}
 						else
 							request.Accept();
@@ -79,7 +80,7 @@ namespace EXILED.Patches
 						{
 							rejectData.Reset();
 							rejectData.Put(5);
-							request.Reject(rejectData);
+							request.RejectForce(rejectData);
 						}
 						else
 						{
@@ -91,7 +92,7 @@ namespace EXILED.Patches
 							{
 								rejectData.Reset();
 								rejectData.Put(4);
-								request.Reject(rejectData);
+								request.RejectForce(rejectData);
 							}
 							else
 							{
@@ -103,7 +104,7 @@ namespace EXILED.Patches
 										ServerConsole.AddLog(string.Format("Player from endpoint {0} sent preauthentication token with invalid digital signature.", request.RemoteEndPoint));
 										rejectData.Reset();
 										rejectData.Put(2);
-										request.Reject(rejectData);
+										request.RejectForce(rejectData);
 									}
 									else if (TimeBehaviour.CurrentUnixTimestamp > result4)
 									{
@@ -111,7 +112,7 @@ namespace EXILED.Patches
 										ServerConsole.AddLog("Make sure that time and timezone set on server is correct. We recommend synchronizing the time.");
 										rejectData.Reset();
 										rejectData.Put(11);
-										request.Reject(rejectData);
+										request.RejectForce(rejectData);
 									}
 									else
 									{
@@ -123,7 +124,7 @@ namespace EXILED.Patches
 												ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} ({1}) rejected due to exceeding the rate limit.", result3, request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit);
 												rejectData.Reset();
 												rejectData.Put(12);
-												request.Reject(rejectData);
+												request.RejectForce(rejectData);
 												return;
 											}
 											CustomLiteNetLib4MirrorTransport.UserRateLimit.Add(result3);
@@ -165,7 +166,7 @@ namespace EXILED.Patches
 											ServerConsole.AddLog(string.Format("Player {0} ({1}) tried joined from blocked country {2}.", result3, request.RemoteEndPoint, result6.ToUpper()));
 											rejectData.Reset();
 											rejectData.Put(9);
-											request.Reject(rejectData);
+											request.RejectForce(rejectData);
 										}
 										else
 										{
@@ -205,10 +206,10 @@ namespace EXILED.Patches
 								}
 								catch (Exception exception)
 								{
-									ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, exception.Message));
+									Log.Error(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, exception.Message));
 									rejectData.Reset();
 									rejectData.Put(2);
-									request.Reject(rejectData);
+									request.RejectForce(rejectData);
 								}
 							}
 						}
@@ -217,10 +218,10 @@ namespace EXILED.Patches
 			}
 			catch (Exception exception)
 			{
-				ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, exception.Message));
+				Log.Error(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, exception.Message));
 				rejectData.Reset();
 				rejectData.Put(4);
-				request.Reject(rejectData);
+				request.RejectForce(rejectData);
 			}
 		}
 	}
