@@ -23,7 +23,7 @@ namespace EXILED.Patches
 
 				bool allow = true;
 
-				Events.InvokePlayerReload(__instance.gameObject, ref allow);
+				Events.InvokePlayerReload(__instance.gameObject, ref allow, animationOnly);
 
 				return allow;
 			}

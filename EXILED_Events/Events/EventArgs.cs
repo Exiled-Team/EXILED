@@ -556,6 +556,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
+		public bool AnimationOnly { get; internal set; }
 	}
 
 	public class PlayerSpawnEvent : EventArgs
