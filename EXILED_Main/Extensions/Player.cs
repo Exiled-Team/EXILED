@@ -95,6 +95,13 @@ namespace EXILED.Extensions
 		public static bool IsScp(this ReferenceHub hub) => hub.characterClassManager.IsAnyScp();
 		
 		/// <summary>
+		/// Checks if a player's role type is any NTF type <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+       		public static bool IsNTF(this ReferenceHub hub) => hub.GetRole() == RoleType.NtfCadet || hub.GetRole() == RoleType.NtfScientist || hub.GetRole() == RoleType.NtfLieutenant || hub.GetRole() == RoleType.NtfCommander;
+		
+		/// <summary>
 		/// Gets a player's Current Role.
 		/// </summary>
 		/// <param name="player">Player</param>
