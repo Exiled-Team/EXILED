@@ -712,7 +712,7 @@ namespace EXILED
 		public static event PlayerReload PlayerReloadEvent;
 		public delegate void PlayerReload(ref PlayerReloadEvent ev);
 
-		public static void InvokePlayerReload(GameObject player, ref bool allow)
+		public static void InvokePlayerReload(GameObject player, ref bool allow, bool animationOnly)
 		{
 			if (PlayerReloadEvent == null)
 				return;
@@ -720,7 +720,8 @@ namespace EXILED
 			PlayerReloadEvent ev = new PlayerReloadEvent
 			{
 				Player = player.GetPlayer(),
-				Allow = allow
+				Allow = allow,
+				AnimationOnly = animationOnly
 			};
 
 			PlayerReloadEvent.Invoke(ref ev);
