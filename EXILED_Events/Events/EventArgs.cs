@@ -148,11 +148,11 @@ namespace EXILED
 			Country = country;
 		}
 
-		public string UserId;
+		public string UserId { get; internal set; }
 		public readonly int ReaderStartPosition;
 		public readonly byte Flags;
 		public readonly string Country;
-		public ConnectionRequest Request;
+		public ConnectionRequest Request { get; internal set; }
 
 		private bool _allow = true;
 		
