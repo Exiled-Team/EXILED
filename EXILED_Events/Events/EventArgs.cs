@@ -4,6 +4,7 @@ using Scp914;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using LiteNetLib.Utils;
 using UnityEngine;
 using static BanHandler;
 
@@ -138,9 +139,78 @@ namespace EXILED
 
 	public class PreauthEvent : EventArgs
 	{
-		public string UserId { get; set; }
-		public ConnectionRequest Request { get; set; }
-		public bool Allow { get; set; }
+		public PreauthEvent(string UserId, ConnectionRequest request, int position, byte flags, string country)
+		{
+			this.UserId = UserId;
+			Request = request;
+			ReaderStartPosition = position;
+			Flags = flags;
+			Country = country;
+		}
+
+		public readonly string UserId;
+		public readonly int ReaderStartPosition;
+		public readonly byte Flags;
+		public readonly string Country;
+		public readonly ConnectionRequest Request;
+
+		private bool _allow = true;
+		
+		public bool Allow
+		{
+			get => _allow;
+			set
+			{
+				if (value) throw new Exception("It's not possible to change this variable to true.");
+				_allow = false;
+			}
+		}
+
+		public void Disallow() => _allow = false;
+
+		public void Reject(RejectionReason reason) => InternalReject(reason);
+
+		public void Reject(string reason)
+		{
+			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+			InternalReject(RejectionReason.Custom, reason);
+		}
+		
+		public void Reject(NetDataWriter writer)
+		{
+			if (!Allow) return;
+			Allow = false;
+			Request.Reject(writer);
+		}
+		
+		public void RejectForce(RejectionReason reason) => InternalReject(reason, null, true);
+
+		public void RejectForce(string reason)
+		{
+			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+			InternalReject(RejectionReason.Custom, reason, true);
+		}
+		
+		public void RejectForce(NetDataWriter writer)
+		{
+			if (!Allow) return;
+			Allow = false;
+			Request.RejectForce(writer);
+		}
+
+		private void InternalReject(RejectionReason reason, string customReason = null, bool force = false)
+		{
+			if (!Allow) return;
+			Allow = false;
+			NetDataWriter rejectData = new NetDataWriter();
+			rejectData.Put((byte)reason);
+			if (reason == RejectionReason.Custom)
+				rejectData.Put(customReason);
+			
+			if (force)
+				Request.RejectForce(rejectData);
+			else Request.Reject(rejectData);
+		}
 	}
 
 	public class RACommandEvent : EventArgs

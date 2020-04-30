@@ -20,22 +20,16 @@ namespace EXILED
 		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
 
-		public static void InvokePreAuth(ref string userId, ConnectionRequest request, ref bool allow)
+		public static void InvokePreAuth(string userId, ConnectionRequest request, int position, byte flags, string country, ref bool allow)
 		{
 			if (PreAuthEvent == null)
 				return;
 
-			PreauthEvent ev = new PreauthEvent()
-			{
-				Allow = allow,
-				Request = request,
-				UserId = userId
-			};
+			PreauthEvent ev = new PreauthEvent(userId, request, position, flags, country);
 
 			PreAuthEvent.Invoke(ref ev);
 
 			allow = ev.Allow;
-			userId = ev.UserId;
 		}
 
 		public static event OnRoundEnd RoundEndEvent;
