@@ -76,7 +76,7 @@ namespace EXILED.Extensions {
             || ItemType.KeycardScientistMajor == type || ItemType.KeycardSeniorGuard == type || ItemType.KeycardZoneManager == type;
         
         /// <summary>
-        /// Check if an <see cref="ItemType">picked up or dropped item</see> is a gun.
+        /// Check if an <see cref="Pickup">picked up or dropped item</see> is a gun.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
