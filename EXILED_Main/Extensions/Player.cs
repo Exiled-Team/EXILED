@@ -99,7 +99,19 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <returns></returns>
-       		public static bool IsNTF(this ReferenceHub hub) => hub.GetRole() == RoleType.NtfCadet || hub.GetRole() == RoleType.NtfScientist || hub.GetRole() == RoleType.NtfLieutenant || hub.GetRole() == RoleType.NtfCommander;
+       		public static bool IsNTF(this ReferenceHub hub)
+        	{
+            		switch (hub.GetRole())
+            		{
+                		case RoleType.NtfCadet:
+                		case RoleType.NtfScientist:
+                		case RoleType.NtfLieutenant:
+                		case RoleType.NtfCommander:
+                    			return true;
+                		default:
+                    			return false;
+            		}
+        	}
 		
 		/// <summary>
 		/// Gets a player's Current Role.
