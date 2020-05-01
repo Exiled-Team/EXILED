@@ -604,10 +604,9 @@ namespace EXILED.Extensions
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
 		public static void AddHealth(this ReferenceHub player, float amount, bool capAtMax = false) {
-			if(capAtMax) {
-				if(player.playerStats.health + amount > player.playerStats.maxHP) amount = player.playerStats.maxHP - player.playerStats.health;
-				player.playerStats.health += amount;
-			} else player.playerStats.health += amount;
+			if(capAtMax && player.playerStats.health + amount > player.playerStats.maxHP)
+				amount = player.playerStats.maxHP - player.playerStats.health;
+			player.playerStats.health += amount;
 		}
 		
 		/// <summary>
