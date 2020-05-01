@@ -94,6 +94,7 @@
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
     <Compile Include="Extensions\Cassie.cs" />
+    <Compile Include="Extensions\Item.cs" />
     <Compile Include="Extensions\Map.cs" />
     <Compile Include="Extensions\Player.cs" />
     <Compile Include="Extensions\Scp079.cs" />
