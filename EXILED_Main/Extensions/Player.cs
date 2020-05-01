@@ -603,9 +603,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddHealth(this ReferenceHub player, float amount) {
-			player.playerStats.health += amount;
-		}
+		public static void AddHealth(this ReferenceHub player, float amount) => player.playerStats.health += amount;
 		
 		/// <summary>
 		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see> without exceeding the maximum health value.
