@@ -27,10 +27,10 @@ namespace EXILED.Extensions {
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsWeapon( this ItemType type ) =>
+        public static bool IsWeapon( this ItemType type , bool checkMicro) =>
             type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
             || type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP
-            || type == ItemType.MicroHID;
+            || (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a SCP item.
@@ -74,25 +74,5 @@ namespace EXILED.Extensions {
             || ItemType.KeycardGuard == type || ItemType.KeycardJanitor == type || ItemType.KeycardNTFCommander == type
             || ItemType.KeycardNTFLieutenant == type || ItemType.KeycardO5 == type || ItemType.KeycardScientist == type
             || ItemType.KeycardScientistMajor == type || ItemType.KeycardSeniorGuard == type || ItemType.KeycardZoneManager == type;
-        
-        /// <summary>
-        /// Check if an <see cref="Pickup">picked up or dropped item</see> is a gun.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static bool IsGun(this Pickup item)
-        {
-            switch (item.ItemId) {
-                case ItemType.GunCOM15:
-                case ItemType.GunE11SR:
-                case ItemType.GunLogicer:
-                case ItemType.GunMP7:
-                case ItemType.GunProject90:
-                case ItemType.GunUSP:
-                    return true;
-                default:
-                    return false;
-            }
-        }
     }
 }
