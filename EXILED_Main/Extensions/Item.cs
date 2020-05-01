@@ -74,6 +74,25 @@ namespace EXILED.Extensions {
             || ItemType.KeycardGuard == type || ItemType.KeycardJanitor == type || ItemType.KeycardNTFCommander == type
             || ItemType.KeycardNTFLieutenant == type || ItemType.KeycardO5 == type || ItemType.KeycardScientist == type
             || ItemType.KeycardScientistMajor == type || ItemType.KeycardSeniorGuard == type || ItemType.KeycardZoneManager == type;
-
+        
+        /// <summary>
+        /// Check if an <see cref="ItemType">picked up or dropped item</see> is a gun.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsGun(this Pickup item)
+        {
+            switch (item.ItemId) {
+                case ItemType.GunCOM15:
+                case ItemType.GunE11SR:
+                case ItemType.GunLogicer:
+                case ItemType.GunMP7:
+                case ItemType.GunProject90:
+                case ItemType.GunUSP:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
