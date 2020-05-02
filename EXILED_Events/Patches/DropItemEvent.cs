@@ -34,7 +34,7 @@ namespace EXILED.Patches
 
 				__instance.items.RemoveAt(itemInventoryIndex);
 
-				Events.InvokeItemDropped(__instance.gameObject, dropped);
+				Events.InvokeItemDropped(__instance.gameObject, dropped, syncItemInfo);
 
 				return false;
 			}
