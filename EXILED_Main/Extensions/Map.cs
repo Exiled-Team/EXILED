@@ -30,7 +30,8 @@ namespace EXILED.Extensions
 			}
 		}
 		
-       	public static bool RoundLock {
+       	
+		public static bool RoundLock {
 			get {
 				return RoundSummary.RoundLock;
 			}
@@ -39,7 +40,8 @@ namespace EXILED.Extensions
 			}
 		}
 		
-       	public static bool LobbyLock {
+       	
+		public static bool LobbyLock {
 			get {
 				return GameCore.RoundStart.LobbyLock;
 			}
@@ -48,7 +50,8 @@ namespace EXILED.Extensions
 			}
 		}
 		
-       	public static bool FriendlyFire {
+       	
+		public static bool FriendlyFire {
 			get {
 				return ServerConsole.FriendlyFire;
 			}
