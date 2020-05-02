@@ -29,7 +29,39 @@ namespace EXILED.Extensions
 				return _hostInventory;
 			}
 		}
-
+		
+       	
+		public static bool RoundLock {
+			get {
+				return RoundSummary.RoundLock;
+			}
+			set {
+				RoundSummary.RoundLock = value;
+			}
+		}
+		
+       	
+		public static bool LobbyLock {
+			get {
+				return GameCore.RoundStart.LobbyLock;
+			}
+			set {
+				GameCore.RoundStart.LobbyLock = value;
+			}
+		}
+		
+       	
+		public static bool FriendlyFire {
+			get {
+				return ServerConsole.FriendlyFire;
+			}
+			set {
+				ServerConsole.FriendlyFire = value;
+				foreach(ReferenceHub hub in Player.GetHubs())
+				hub.SetFriendlyFire(value);
+			}
+		}
+		
 		public static AlphaWarheadController AlphaWarheadController
 		{
 			get
@@ -40,7 +72,7 @@ namespace EXILED.Extensions
 				return _alphaWarheadController;
 			}
 		}
-
+		
 		internal static Broadcast BroadcastComponent
 		{
 			get
@@ -204,7 +236,7 @@ namespace EXILED.Extensions
 		/// </summary>
 		[Obsolete("Use Rooms property instead.", true)]
 		public static IEnumerable<Room> GetRooms() => Rooms;
-
+		
 		/// <summary>
 		/// Gets the nuke lever status.
 		/// </summary>
