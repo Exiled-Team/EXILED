@@ -54,8 +54,8 @@ namespace EXILED.Extensions
 			}
 			set {
 				ServerConsole.FriendlyFire = value;
-				foreach(WeaponManager manager in UnityEngine.Object.FindObjectsOfType<WeaponManager>())
-				manager.friendlyFire = value;
+				foreach(ReferenceHub hub in Player.GetHubs())
+				hub.SetFriendlyFire(value);
 			}
 		}
 		
