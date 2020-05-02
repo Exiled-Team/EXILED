@@ -11,6 +11,9 @@ namespace EXILED.Patches
 		{
 			try
 			{
+				if (EventPlugin.RemoteAdminCommandPatchDisable)
+					return true;
+				
 				QueryProcessor queryProcessor = sender is PlayerCommandSender playerCommandSender ? playerCommandSender.Processor : null;
 				bool allow = true;
 
