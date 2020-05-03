@@ -320,10 +320,8 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="roleType"></param>
 		/// <returns></returns>
-		public static Team GetTeam(this RoleType roleType)
-		{
-			switch (roleType)
-			{
+		public static Team GetTeam( this RoleType roleType ) {
+			switch(roleType) {
 				case RoleType.ChaosInsurgency:
 					return Team.CHI;
 				case RoleType.Scientist:
@@ -353,6 +351,43 @@ namespace EXILED.Extensions
 					return Team.RIP;
 			}
 		}
+
+		/// <summary>
+		/// Gets the <see cref="ReferenceHub">player</see>'s <see cref="Side">side</see> they're currently in.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
+		public static Side GetSide( this RoleType type ) => type.GetTeam().GetSide();
+
+		/// <summary>
+		/// Gets the <see cref="ReferenceHub">player</see>'s <see cref="Side">side</see> they're currently in.
+		/// </summary>
+		/// <param name="team"></param>
+		/// <returns></returns>
+		public static Side GetSide( this Team team) 
+			{
+			switch(team) {
+				case Team.SCP:
+					return Side.SCP;
+				case Team.MTF:
+				case Team.RSC:
+					return Side.MTF;
+				case Team.CHI:
+				case Team.CDP:
+					return Side.CHAOS;
+				case Team.TUT:
+					return Side.NONE;
+				case Team.RIP:
+				default: return Side.NONE;
+			}
+		}
+
+		/// <summary>
+		/// Gets the <see cref="ReferenceHub">player</see>'s <see cref="Side">side</see> they're currently in.
+		/// </summary>
+		/// <param name="hub"></param>
+		/// <returns></returns>
+		public static Side GetSide( this ReferenceHub hub ) => hub.GetTeam().GetSide();
 
 		/// <summary>
 		/// Gets the Reference hub belonging to the GameObject, if any.

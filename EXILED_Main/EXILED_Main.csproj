@@ -40,8 +40,9 @@
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\Assembly-CSharp_publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp_public, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\Assembly-CSharp_public.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Mirror.dll</HintPath>
@@ -91,6 +92,7 @@
     <Compile Include="ApiObjects\AmmoType.cs" />
     <Compile Include="ApiObjects\GlobalBadge.cs" />
     <Compile Include="ApiObjects\Room.cs" />
+    <Compile Include="ApiObjects\Side.cs" />
     <Compile Include="ApiObjects\ZoneType.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
     <Compile Include="Extensions\Cassie.cs" />
