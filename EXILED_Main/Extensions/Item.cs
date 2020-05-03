@@ -33,7 +33,7 @@ namespace EXILED.Extensions
         /// <returns></returns>
 
         public static bool IsWeapon( this ItemType type , bool checkMicro) =>
-        type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
+            type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
             || type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP
             || (checkMicro && type == ItemType.MicroHID);
 
