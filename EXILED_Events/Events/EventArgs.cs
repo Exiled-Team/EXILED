@@ -299,6 +299,7 @@ namespace EXILED
 	{
 		public ReferenceHub Player;
 		public Pickup Item;
+		public Inventory.SyncItemInfo SyncItemInfo { get; set; }
 	}
 
 	public class PickupItemEvent : EventArgs

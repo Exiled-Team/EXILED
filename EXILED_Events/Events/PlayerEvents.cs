@@ -437,7 +437,7 @@ namespace EXILED
 		public static event ItemDropped ItemDroppedEvent;
 		public delegate void ItemDropped(ItemDroppedEvent ev);
 
-		public static void InvokeItemDropped(GameObject player, Pickup pickup)
+		public static void InvokeItemDropped(GameObject player, Pickup pickup, Inventory.SyncItemInfo syncItemInfo)
 		{
 			if (ItemDroppedEvent == null)
 				return;
@@ -446,6 +446,7 @@ namespace EXILED
 			{
 				Player = player.GetPlayer(),
 				Item = pickup,
+				SyncItemInfo = syncItemInfo
 			};
 
 			ItemDroppedEvent.Invoke(ev);
