@@ -320,8 +320,10 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="roleType"></param>
 		/// <returns></returns>
-		public static Team GetTeam( this RoleType roleType ) {
-			switch(roleType) {
+		public static Team GetTeam( this RoleType roleType ) 
+		{
+			switch(roleType) 
+			{
 				case RoleType.ChaosInsurgency:
 					return Team.CHI;
 				case RoleType.Scientist:
@@ -366,7 +368,8 @@ namespace EXILED.Extensions
 		/// <returns></returns>
 		public static Side GetSide( this Team team) 
 			{
-			switch(team) {
+			switch(team) 
+			{
 				case Team.SCP:
 					return Side.SCP;
 				case Team.MTF:
