@@ -48,7 +48,7 @@
       <HintPath>..\References\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\References\Mirror.dll</HintPath>
+      <HintPath>..\..\References\Mirror.dll</HintPath>
     </Reference>
     <Reference Include="Mirror.Authenticators, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\References\Mirror.Authenticators.dll</HintPath>
