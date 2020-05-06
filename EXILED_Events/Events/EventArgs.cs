@@ -179,7 +179,13 @@ namespace EXILED
 			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
 			InternalReject(RejectionReason.Custom, reason);
 		}
-		
+
+        public void RejectBanned(string reason, long expiration = 0)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason, false, expiration);
+        }
+
 		public void Reject(NetDataWriter writer)
 		{
 			if (!Allow) return;
@@ -194,7 +200,13 @@ namespace EXILED
 			if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
 			InternalReject(RejectionReason.Custom, reason, true);
 		}
-		
+
+        public void RejectBannedForce(string reason, long expiration = 0)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason, true, expiration);
+        }
+
 		public void RejectForce(NetDataWriter writer)
 		{
 			if (!Allow) return;
@@ -202,16 +214,26 @@ namespace EXILED
 			Request.RejectForce(writer);
 		}
 
-		private void InternalReject(RejectionReason reason, string customReason = null, bool force = false)
+		private void InternalReject(RejectionReason reason, string customReason = null, bool force = false, long expiration = 0)
 		{
 			if (!Allow) return;
 			Allow = false;
 			NetDataWriter rejectData = new NetDataWriter();
 			rejectData.Put((byte)reason);
-			if (reason == RejectionReason.Custom)
-				rejectData.Put(customReason);
-			
-			if (force)
+
+			switch (reason)
+            {
+                case RejectionReason.Banned:
+                    rejectData.Put(expiration);
+                    rejectData.Put(customReason);
+					break;
+
+                case RejectionReason.Custom:
+                    rejectData.Put(customReason);
+                    break;
+            }
+
+            if (force)
 				Request.RejectForce(rejectData);
 			else Request.Reject(rejectData);
 		}
