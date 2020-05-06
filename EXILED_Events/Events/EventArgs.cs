@@ -180,10 +180,22 @@ namespace EXILED
 			InternalReject(RejectionReason.Custom, reason);
 		}
 
-        public void RejectBanned(string reason, long expiration = 0)
+        public void RejectBanned(string reason)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason);
+        }
+
+		public void RejectBanned(string reason, long expiration)
         {
             if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
             InternalReject(RejectionReason.Banned, reason, false, expiration);
+        }
+
+        public void RejectBanned(string reason, DateTime expiration)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason, false, expiration.Ticks);
         }
 
 		public void Reject(NetDataWriter writer)
@@ -201,10 +213,22 @@ namespace EXILED
 			InternalReject(RejectionReason.Custom, reason, true);
 		}
 
-        public void RejectBannedForce(string reason, long expiration = 0)
+        public void RejectBannedForce(string reason)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason, true);
+        }
+
+		public void RejectBannedForce(string reason, long expiration)
         {
             if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
             InternalReject(RejectionReason.Banned, reason, true, expiration);
+        }
+
+        public void RejectBannedForce(string reason, DateTime expiration)
+        {
+            if (reason != null && reason.Length > 400) throw new Exception("Reason can't be longer than 400 characters.");
+            InternalReject(RejectionReason.Banned, reason, true, expiration.Ticks);
         }
 
 		public void RejectForce(NetDataWriter writer)
