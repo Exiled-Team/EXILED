@@ -184,6 +184,7 @@
     <Compile Include="Patches\AnnounceNtfEntranceEvent.cs" />
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
     <Compile Include="Patches\CancelMedicalItemEvent.cs" />
+    <Compile Include="Patches\CcmAnnoyingLoadFix.cs" />
     <Compile Include="Patches\DoubleSpawnEventFix.cs" />
     <Compile Include="Patches\PlaceBloodEvent.cs" />
     <Compile Include="Patches\PlaceDecalEvent.cs" />
@@ -261,7 +262,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Components" />
+    <Folder Include="Components\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
