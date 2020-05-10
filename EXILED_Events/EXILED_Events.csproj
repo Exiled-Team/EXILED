@@ -184,6 +184,7 @@
     <Compile Include="Patches\AnnounceNtfEntranceEvent.cs" />
     <Compile Include="Patches\AnnounceScpTerminationEvent.cs" />
     <Compile Include="Patches\CancelMedicalItemEvent.cs" />
+    <Compile Include="Patches\CcmAnnoyingLoadFix.cs" />
     <Compile Include="Patches\DoubleSpawnEventFix.cs" />
     <Compile Include="Patches\PlaceBloodEvent.cs" />
     <Compile Include="Patches\PlaceDecalEvent.cs" />
