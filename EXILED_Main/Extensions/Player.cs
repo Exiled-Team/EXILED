@@ -379,7 +379,7 @@ namespace EXILED.Extensions
 				case Team.CDP:
 					return Side.CHAOS;
 				case Team.TUT:
-					return Side.NONE;
+					return Side.TUTORIAL;
 				case Team.RIP:
 				default: return Side.NONE;
 			}
