@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <ItemGroup>
-    <PackageReference Include="Lib.Harmony">
-      <Version>1.2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="YamlDotNet">
-      <Version>8.1.1</Version>
-    </PackageReference>
+    <Reference Include="YamlDotNet.dll">
+	  <HintPath>$(EXILED_References)\YamlDotNet.dll</HintPath>
+      <Private>False</Private>
+	</Reference>
+	<Reference Include="0Harmony.dll">
+	  <HintPath>$(EXILED_References)\0Harmony.dll</HintPath>
+      <Private>False</Private>
+	</Reference>
     <Reference Include="Assembly-CSharp_publicized">
       <HintPath>$(EXILED_References)\Assembly-CSharp_publicized.dll</HintPath>
       <Private>False</Private>
