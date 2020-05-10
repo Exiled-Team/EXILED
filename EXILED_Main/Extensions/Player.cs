@@ -95,6 +95,25 @@ namespace EXILED.Extensions
 		public static bool IsScp(this ReferenceHub hub) => hub.characterClassManager.IsAnyScp();
 		
 		/// <summary>
+		/// Checks if a player's role type is any NTF type <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+       		public static bool IsNTF(this ReferenceHub hub)
+        	{
+            		switch (hub.GetRole())
+            		{
+                		case RoleType.NtfCadet:
+                		case RoleType.NtfScientist:
+                		case RoleType.NtfLieutenant:
+                		case RoleType.NtfCommander:
+                    			return true;
+                		default:
+                    			return false;
+            		}
+        	}
+		
+		/// <summary>
 		/// Gets a player's Current Role.
 		/// </summary>
 		/// <param name="player">Player</param>
@@ -995,5 +1014,12 @@ namespace EXILED.Extensions
 		/// <param name="value"></param>
 		public static void SetFriendlyFire(this ReferenceHub player, bool value) =>
 			player.weaponManager.NetworkfriendlyFire = value;
+		
+		/// <summary>
+		/// Gets the badge name of a <see cref="ReferenceHub"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+        	public static string GetBadgeName(this ReferenceHub rh) => rh.serverRoles.Group.BadgeText;
 	}
 }
