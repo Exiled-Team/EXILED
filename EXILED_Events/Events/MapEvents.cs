@@ -216,7 +216,7 @@ namespace EXILED
 		public static event OnLockerInteract LockerInteractEvent;
 		public delegate void OnLockerInteract(LockerInteractionEvent ev);
 
-		internal static void InvokeLockerInteract(GameObject player, Locker locker, int lockerId, ref bool allow)
+		public static void InvokeLockerInteract(GameObject player, Locker locker, int lockerId, ref bool allow)
 		{
 			if (LockerInteractEvent == null)
 				return;
@@ -282,7 +282,7 @@ namespace EXILED
 		public static event GeneratorUnlock GeneratorUnlockEvent;
 		public delegate void GeneratorUnlock(ref GeneratorUnlockEvent ev);
 
-		internal static void InvokeGeneratorUnlock(GameObject player, Generator079 generator, ref bool allow)
+		public static void InvokeGeneratorUnlock(GameObject player, Generator079 generator, ref bool allow)
 		{
 			if (GeneratorUnlockEvent == null)
 				return;
