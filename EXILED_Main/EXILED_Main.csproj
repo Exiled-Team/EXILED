@@ -50,6 +50,7 @@
     <Compile Include="ApiObjects\GlobalBadge.cs" />
     <Compile Include="ApiObjects\Room.cs" />
     <Compile Include="ApiObjects\ZoneType.cs" />
+    <Compile Include="ApiObjects\Side.cs" />
     <Compile Include="Attributes\SkipAutoHarmonyAttribute.cs" />
     <Compile Include="Extensions\Cassie.cs" />
     <Compile Include="Extensions\Item.cs" />
