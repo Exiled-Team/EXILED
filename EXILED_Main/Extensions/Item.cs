@@ -31,10 +31,11 @@ namespace EXILED.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsWeapon(this ItemType type) =>
+
+        public static bool IsWeapon( this ItemType type , bool checkMicro) =>
             type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer
             || type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP
-            || type == ItemType.MicroHID;
+            || (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a SCP item.
@@ -78,6 +79,6 @@ namespace EXILED.Extensions
             || ItemType.KeycardGuard == type || ItemType.KeycardJanitor == type || ItemType.KeycardNTFCommander == type
             || ItemType.KeycardNTFLieutenant == type || ItemType.KeycardO5 == type || ItemType.KeycardScientist == type
             || ItemType.KeycardScientistMajor == type || ItemType.KeycardSeniorGuard == type || ItemType.KeycardZoneManager == type;
-
     }
 }
+
