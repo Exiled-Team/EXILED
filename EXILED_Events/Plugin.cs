@@ -94,6 +94,7 @@ namespace EXILED
 		public static bool AimbotBreaker;
 		public static bool RespawningESPBreaker;
 		public static bool ESPBreaker;
+		public static List<DamageTypes.DamageType> damageTypes = new List<DamageTypes.DamageType>(DamageTypes.damageTypes);
 
 		//The below method gets called when the plugin is enabled by the EXILED loader.
 		public override void OnEnable()
@@ -393,6 +394,22 @@ namespace EXILED
 		internal static void ToMultiAdmin(string message)
 		{
 			ServerConsole.AddLog($"[EXILED2Multiadmin] {message} LOGTYPE02");
+		}
+		
+		public static int RegisterDamageType(DamageTypes.DamageType damageType)
+		{
+			damageTypes.Add(damageType);
+			return damageTypes.Count - 1;
+		}
+	}
+
+	public class DamageType : DamageTypes.DamageType
+	{
+		public readonly string cause;
+
+		public DamageType(string name, string cause, bool weapon = false, bool scp = false, int weaponId = -1) : base(name, weapon, scp, weaponId)
+		{
+			this.cause = cause;
 		}
 	}
 }
