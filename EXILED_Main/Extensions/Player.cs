@@ -927,7 +927,7 @@ namespace EXILED.Extensions
 				player.transform.localScale = new Vector3(x, y, z);
 
 				foreach (ReferenceHub target in GetHubs())
-					SendSpawnMessage?.Invoke(null, new object[] { player.GetComponent<NetworkIdentity>(), target.GetConnection() });
+					SendSpawnMessage?.InvokeSafely(null, new object[] { player.GetComponent<NetworkIdentity>(), target.GetConnection() });
 			}
 			catch (Exception exception)
 			{

@@ -69,7 +69,7 @@ namespace EXILED.Patches
 					ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
 					  (__instance.nextWaveIsCI ? "Chaos Insurgency" : "MTF") + " respawned!", ServerLogs.ServerLogType.GameEvent);
 					if (__instance.nextWaveIsCI)
-						__instance.Invoke("CmdDelayCIAnnounc", 1f);
+						__instance.InvokeSafely("CmdDelayCIAnnounc", 1f);
 				}
 
 				__instance.SummonNTF();

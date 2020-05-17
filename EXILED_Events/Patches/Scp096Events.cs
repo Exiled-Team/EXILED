@@ -29,7 +29,7 @@ namespace EXILED.Patches
 
 				__instance.Networkenraged = Scp096PlayerScript.RageState.Panic;
 				__instance._rageProgress = 15f;
-				__instance.Invoke("StartRage", 5f);
+				__instance.InvokeSafely("StartRage", 5f);
 
 				return false;
 			}

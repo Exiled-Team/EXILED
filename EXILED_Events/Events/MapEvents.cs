@@ -27,7 +27,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PlaceDecalEvent.Invoke(ev);
+			PlaceDecalEvent.InvokeSafely(ev);
 
 			position = ev.Position;
 			rotation = ev.Rotation;
@@ -52,7 +52,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PlaceBloodEvent.Invoke(ev);
+			PlaceBloodEvent.InvokeSafely(ev);
 
 			position = ev.Position;
 			bloodType = ev.BloodType;
@@ -75,7 +75,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			AnnounceDecontaminationEvent.Invoke(ev);
+			AnnounceDecontaminationEvent.InvokeSafely(ev);
 
 			announcementId = ev.AnnouncementId;
 			isAnnouncementGlobal = ev.IsAnnouncementGlobal;
@@ -99,7 +99,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			AnnounceScpTerminationEvent.Invoke(ev);
+			AnnounceScpTerminationEvent.InvokeSafely(ev);
 
 			hitInfo = ev.HitInfo;
 			terminationCause = ev.TerminationCause;
@@ -122,7 +122,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			AnnounceNtfEntranceEvent.Invoke(ev);
+			AnnounceNtfEntranceEvent.InvokeSafely(ev);
 
 			scpsLeft = ev.ScpsLeft;
 			ntfNumber = ev.NtfNumber;
@@ -133,7 +133,7 @@ namespace EXILED
 		public static event OnWarheadDetonation WarheadDetonationEvent;
 		public delegate void OnWarheadDetonation();
 
-		public static void InvokeWarheadDetonation() => WarheadDetonationEvent?.Invoke();
+		public static void InvokeWarheadDetonation() => WarheadDetonationEvent.InvokeSafely();
 
 		public static event OnDoorInteract DoorInteractEvent;
 		public delegate void OnDoorInteract(ref DoorInteractionEvent ev);
@@ -150,7 +150,7 @@ namespace EXILED
 				Door = door
 			};
 
-			DoorInteractEvent.Invoke(ref ev);
+			DoorInteractEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -170,7 +170,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			ElevatorInteractEvent.Invoke(ref ev);
+			ElevatorInteractEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -189,7 +189,7 @@ namespace EXILED
 				Player = player ? player.GetPlayer() : null
 			};
 
-			WarheadCancelledEvent.Invoke(ev);
+			WarheadCancelledEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -208,7 +208,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			WarheadStartEvent.Invoke(ev);
+			WarheadStartEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -226,7 +226,7 @@ namespace EXILED
 				Allow = allow,
 			};
 
-			LockerInteractEvent.Invoke(ev);
+			LockerInteractEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -246,7 +246,7 @@ namespace EXILED
 				Triggerable = isTriggerable
 			};
 
-			TriggerTeslaEvent.Invoke(ref ev);
+			TriggerTeslaEvent.InvokeSafely(ev);
 
 			isTriggerable = ev.Triggerable;
 		}
@@ -273,7 +273,7 @@ namespace EXILED
 				KnobSetting = knobSetting
 			};
 
-			Scp914UpgradeEvent.Invoke(ref ev);
+			Scp914UpgradeEvent.InvokeSafely(ev);
 
 			pickups = ev.Items;
 			allow = ev.Allow;
@@ -294,7 +294,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			GeneratorUnlockEvent.Invoke(ref ev);
+			GeneratorUnlockEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -314,7 +314,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			GeneratorOpenedEvent.Invoke(ref ev);
+			GeneratorOpenedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -334,7 +334,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			GeneratorClosedEvent.Invoke(ref ev);
+			GeneratorClosedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -354,7 +354,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			GeneratorInsertedEvent.Invoke(ref ev);
+			GeneratorInsertedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -374,7 +374,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			GeneratorEjectedEvent.Invoke(ref ev);
+			GeneratorEjectedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -392,7 +392,7 @@ namespace EXILED
 				Generator = generator,
 			};
 
-			GeneratorFinishedEvent.Invoke(ref ev);
+			GeneratorFinishedEvent.InvokeSafely(ev);
 		}
 
 		public static event Decontamination DecontaminationEvent;
@@ -408,7 +408,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			DecontaminationEvent.Invoke(ref ev);
+			DecontaminationEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -428,7 +428,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			CheckRoundEndEvent.Invoke(ref ev);
+			CheckRoundEndEvent.InvokeSafely(ev);
 
 			teamChanged = leadingTeam != ev.LeadingTeam;
 			leadingTeam = ev.LeadingTeam;

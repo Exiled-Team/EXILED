@@ -10,7 +10,7 @@ namespace EXILED
 			BindingFlags flags = BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic |
 			                     BindingFlags.Static | BindingFlags.Public;
 			MethodInfo info = type.GetMethod(methodName, flags);
-			info?.Invoke(null, param);
+			info?.InvokeSafely(null, param);
 		}
 	}
 }
