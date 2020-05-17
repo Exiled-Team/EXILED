@@ -27,7 +27,7 @@ namespace EXILED.Extensions
         {
             try
             {
-                action.InvokeSafely(null, args);
+                action.Invoke(null, args);
             }
             catch (Exception ex)
             {
