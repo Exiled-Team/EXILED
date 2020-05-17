@@ -270,12 +270,12 @@ namespace EXILED
 		public static event OnPlayerJoin PlayerJoinEvent;
 		public delegate void OnPlayerJoin(PlayerJoinEvent ev);
 
-		public static void InvokePlayerJoin(ReferenceHub player) => PlayerJoinEvent?.InvokeSafely(new PlayerJoinEvent() { Player = player });
+		public static void InvokePlayerJoin(ReferenceHub player) => PlayerJoinEvent.InvokeSafely(new PlayerJoinEvent() { Player = player });
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
 		public delegate void OnPlayerLeave(PlayerLeaveEvent ev);
 
-		public static void InvokePlayerLeave(ReferenceHub player) => PlayerLeaveEvent?.InvokeSafely(new PlayerLeaveEvent() { Player = player });
+		public static void InvokePlayerLeave(ReferenceHub player) => PlayerLeaveEvent.InvokeSafely(new PlayerLeaveEvent() { Player = player });
 
 		public static event OnConsoleCommand ConsoleCommandEvent;
 		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
