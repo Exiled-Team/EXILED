@@ -15,7 +15,7 @@ namespace EXILED
 		public static event OnRoundStart RoundStartEvent;
 		public delegate void OnRoundStart();
 
-		public static void InvokeRoundStart() => RoundStartEvent?.Invoke();
+		public static void InvokeRoundStart() => RoundStartEvent.InvokeSafely();
 
 		public static event OnPreAuth PreAuthEvent;
 		public delegate void OnPreAuth(ref PreauthEvent ev);
@@ -27,7 +27,8 @@ namespace EXILED
 
 			PreauthEvent ev = new PreauthEvent(userId, request, position, flags, country);
 
-			PreAuthEvent.Invoke(ref ev);
+			// ref should work optimally when using reflection
+			PreAuthEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -35,12 +36,12 @@ namespace EXILED
 		public static event OnRoundEnd RoundEndEvent;
 		public delegate void OnRoundEnd();
 
-		public static void InvokeRoundEnd() => RoundEndEvent?.Invoke();
+		public static void InvokeRoundEnd() => RoundEndEvent.InvokeSafely();
 
 		public static event OnRoundRestart RoundRestartEvent;
 		public delegate void OnRoundRestart();
 
-		public static void InvokeRoundRestart() => RoundRestartEvent?.Invoke();
+		public static void InvokeRoundRestart() => RoundRestartEvent.InvokeSafely();
 
 		public static event OnCommand RemoteAdminCommandEvent;
 		public delegate void OnCommand(ref RACommandEvent ev);
@@ -57,7 +58,7 @@ namespace EXILED
 				Sender = sender
 			};
 
-			RemoteAdminCommandEvent.Invoke(ref ev);
+			RemoteAdminCommandEvent.InvokeSafely(ev);
 
 			query = ev.Command;
 			sender = ev.Sender;
@@ -86,7 +87,7 @@ namespace EXILED
 				ReporterId = reporterId
 			};
 
-			CheaterReportEvent.Invoke(ref ev);
+			CheaterReportEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -94,7 +95,7 @@ namespace EXILED
 		public static event WaitingForPlayers WaitingForPlayersEvent;
 		public delegate void WaitingForPlayers();
 
-		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent?.Invoke();
+		public static void InvokeWaitingForPlayers() => WaitingForPlayersEvent.InvokeSafely();
 
 		public static event TeamRespawn TeamRespawnEvent;
 		public delegate void TeamRespawn(ref TeamRespawnEvent ev);
@@ -111,7 +112,7 @@ namespace EXILED
 				ToRespawn = playersToRespawn
 			};
 
-			TeamRespawnEvent.Invoke(ref ev);
+			TeamRespawnEvent.InvokeSafely(ev);
 
 			maxRespawn = ev.MaxRespawnAmt;
 			playersToRespawn = ev.ToRespawn;
@@ -132,7 +133,7 @@ namespace EXILED
 				Type = banType
 			};
 
-			PlayerBannedEvent.Invoke(ev);
+			PlayerBannedEvent.InvokeSafely(ev);
 		}
 
 		public static event PlayerBan PlayerBanEvent;
@@ -150,7 +151,7 @@ namespace EXILED
 				Reason = reason
 			};
 
-			PlayerBanEvent.Invoke(ev);
+			PlayerBanEvent.InvokeSafely(ev);
 			allow = ev.Allow;
 			userId = ev.UserId;
 			duration = ev.Duration;
@@ -175,7 +176,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			SetGroupEvent.Invoke(ev);
+			SetGroupEvent.InvokeSafely();
 			allow = ev.Allow;
 			group = ev.Group;
 		}
