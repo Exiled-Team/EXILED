@@ -75,6 +75,8 @@ namespace EXILED
 		public static bool CancelMedicalEventPatchDisable;
 		public static bool PreAuthEventPatchDisable;
 		public static bool RemoteAdminCommandPatchDisable;
+		public static bool DamageTypesPatchDisable;
+		public static bool RagdollManagerGetCausePatchDisable;
 		#endregion
 
 		private EventHandlers handlers;
