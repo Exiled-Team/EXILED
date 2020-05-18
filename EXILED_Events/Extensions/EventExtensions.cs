@@ -16,18 +16,22 @@ namespace EXILED.Extensions
 
             foreach (var handler in action.GetInvocationList())
             {
-                HandleSafely(handler.Method, args);
+                HandleSafely(handler.Method, handler.Target,  args);
             }
         }
 
         /// <summary>
         ///     Executes <see cref="MethodInfo"/> safely.
         /// </summary>
-        private static void HandleSafely(MethodInfo action, params object[] args)
+        /// <param name="instance">
+        ///     Instance of the delegate method object,
+        ///     null is used in the case of a static method.
+        /// </param>
+        private static void HandleSafely(MethodInfo action, object instance, params object[] args)
         {
             try
             {
-                action.Invoke(null, args);
+                action.Invoke(instance, args);
             }
             catch (Exception ex)
             {
