@@ -35,7 +35,7 @@ namespace EXILED.Extensions
             }
             catch (Exception ex)
             {
-                Log.Error($"Plugin: {instance} Caused an error when processing the event {action}: {ex.Message}");
+                Log.Error($"Plugin: {instance} Caused an error when processing the event {action}: {ex.InnerException} {ex.Message}");
                 Log.Error(ex.StackTrace);
             }
         }
