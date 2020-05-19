@@ -22,7 +22,7 @@ namespace EXILED
 				ItemType = itemType
 			};
 
-			UsedMedicalItemEvent.Invoke(ev);
+			UsedMedicalItemEvent.InvokeSafely(ev);
 		}
 
 		public static event CancelMedicalItem CancelMedicalItemEvent;
@@ -41,7 +41,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			CancelMedicalItemEvent.Invoke(ev);
+			CancelMedicalItemEvent.InvokeSafely(ev);
 
 			cooldown = ev.Cooldown;
 			allow = ev.Allow;
@@ -60,7 +60,7 @@ namespace EXILED
 				Player = player.GetPlayer()
 			};
 
-			PlayerInteractEvent.Invoke(ev);
+			PlayerInteractEvent.InvokeSafely(ev);
 		}
 
 		public static event SpawnRagdoll SpawnRagdollEvent;
@@ -86,7 +86,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			SpawnRagdollEvent.Invoke(ev);
+			SpawnRagdollEvent.InvokeSafely(ev);
 
 			position = ev.Position;
 			rotation = ev.Rotation;
@@ -114,7 +114,7 @@ namespace EXILED
 				PortalPosition = portalPosition
 			};
 
-			Scp106CreatedPortalEvent.Invoke(ev);
+			Scp106CreatedPortalEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			portalPosition = ev.PortalPosition;
@@ -135,7 +135,7 @@ namespace EXILED
 				NewItem = newItem
 			};
 
-			ItemChangedEvent.Invoke(ev);
+			ItemChangedEvent.InvokeSafely(ev);
 
 			oldItem = ev.OldItem;
 		}
@@ -156,7 +156,7 @@ namespace EXILED
 				Amount = amount
 			};
 
-			Scp079ExpGainEvent.Invoke(ev);
+			Scp079ExpGainEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			amount = ev.Amount;
@@ -178,7 +178,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp079LvlGainEvent.Invoke(ev);
+			Scp079LvlGainEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			newLevel = ev.NewLvl;
@@ -199,7 +199,7 @@ namespace EXILED
 				RequiredPerms = requiredPermission
 			};
 
-			WarheadKeycardAccessEvent.Invoke(ev);
+			WarheadKeycardAccessEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			requiredPermission = ev.RequiredPerms;
@@ -221,7 +221,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			UseMedicalItemEvent.Invoke(ev);
+			UseMedicalItemEvent.InvokeSafely(ev);
 
 			cooldown = ev.Cooldown;
 			allow = ev.Allow;
@@ -242,7 +242,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp096EnrageEvent.Invoke(ref ev);
+			Scp096EnrageEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -262,7 +262,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp096CalmEvent.Invoke(ref ev);
+			Scp096CalmEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -270,12 +270,12 @@ namespace EXILED
 		public static event OnPlayerJoin PlayerJoinEvent;
 		public delegate void OnPlayerJoin(PlayerJoinEvent ev);
 
-		public static void InvokePlayerJoin(ReferenceHub player) => PlayerJoinEvent?.Invoke(new PlayerJoinEvent() { Player = player });
+		public static void InvokePlayerJoin(ReferenceHub player) => PlayerJoinEvent.InvokeSafely(new PlayerJoinEvent() { Player = player });
 
 		public static event OnPlayerLeave PlayerLeaveEvent;
 		public delegate void OnPlayerLeave(PlayerLeaveEvent ev);
 
-		public static void InvokePlayerLeave(ReferenceHub player) => PlayerLeaveEvent?.Invoke(new PlayerLeaveEvent() { Player = player });
+		public static void InvokePlayerLeave(ReferenceHub player) => PlayerLeaveEvent.InvokeSafely(new PlayerLeaveEvent() { Player = player });
 
 		public static event OnConsoleCommand ConsoleCommandEvent;
 		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
@@ -297,7 +297,7 @@ namespace EXILED
 				Color = "red"
 			};
 
-			ConsoleCommandEvent.Invoke(ev);
+			ConsoleCommandEvent.InvokeSafely(ev);
 
 			returnMessage = ev.ReturnMessage;
 			color = ev.Color;
@@ -321,7 +321,7 @@ namespace EXILED
 			if (string.IsNullOrEmpty(ev.Player.GetUserId()))
 				return;
 
-			PlayerHurtEvent.Invoke(ref ev);
+			PlayerHurtEvent.InvokeSafely(ev);
 
 			hitInfo = ev.Info;
 		}
@@ -344,7 +344,7 @@ namespace EXILED
 			if (string.IsNullOrEmpty(ev.Player.GetUserId()) || ev.Player.GetRole() == RoleType.Spectator)
 				return;
 
-			PlayerDeathEvent.Invoke(ref ev);
+			PlayerDeathEvent.InvokeSafely(ev);
 
 			hitInfo = ev.Info;
 		}
@@ -363,7 +363,7 @@ namespace EXILED
 				Role = roleType
 			};
 
-			SetClassEvent.Invoke(ev);
+			SetClassEvent.InvokeSafely(ev);
 		}
 
 		public static event StartItems StartItemsEvent;
@@ -381,7 +381,7 @@ namespace EXILED
 				StartItems = startingItems
 			};
 
-			StartItemsEvent.Invoke(ev);
+			StartItemsEvent.InvokeSafely(ev);
 
 			startingItems = ev.StartItems;
 		}
@@ -404,7 +404,7 @@ namespace EXILED
 				Fuse = fuse
 			};
 
-			GrenadeThrownEvent.Invoke(ref ev);
+			GrenadeThrownEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			grenadeId = ev.Id;
@@ -428,7 +428,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			DropItemEvent.Invoke(ref ev);
+			DropItemEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			item = ev.Item;
@@ -449,7 +449,7 @@ namespace EXILED
 				SyncItemInfo = syncItemInfo
 			};
 
-			ItemDroppedEvent.Invoke(ev);
+			ItemDroppedEvent.InvokeSafely(ev);
 		}
 
 		public static event PickupItem PickupItemEvent;
@@ -467,7 +467,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PickupItemEvent.Invoke(ref ev);
+			PickupItemEvent.InvokeSafely(ev);
 			allow = ev.Allow;
 			pickup = ev.Item;
 		}
@@ -487,7 +487,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PlayerHandcuffedEvent.Invoke(ref ev);
+			PlayerHandcuffedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -507,7 +507,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PlayerHandcuffFreedEvent.Invoke(ref ev);
+			PlayerHandcuffFreedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -526,7 +526,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp079TriggerTeslaEvent.Invoke(ref ev);
+			Scp079TriggerTeslaEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -545,7 +545,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			CheckEscapeEvent.Invoke(ref ev);
+			CheckEscapeEvent.InvokeSafely(ev);
 			allow = ev.Allow;
 		}
 
@@ -563,7 +563,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			IntercomSpeakEvent.Invoke(ref ev);
+			IntercomSpeakEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -586,7 +586,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			LateShootEvent.Invoke(ref ev);
+			LateShootEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			damage = ev.Damage;
@@ -608,7 +608,7 @@ namespace EXILED
 				TargetPos = targetPosition
 			};
 
-			ShootEvent.Invoke(ref ev);
+			ShootEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			targetPosition = ev.TargetPos;
@@ -629,7 +629,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp106TeleportEvent.Invoke(ev);
+			Scp106TeleportEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -648,7 +648,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PocketDimDamageEvent.Invoke(ev);
+			PocketDimDamageEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -667,7 +667,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PocketDimEnterEvent.Invoke(ev);
+			PocketDimEnterEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -686,7 +686,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PocketDimEscapedEvent.Invoke(ev);
+			PocketDimEscapedEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -705,7 +705,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			PocketDimDeathEvent.Invoke(ev);
+			PocketDimDeathEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -725,7 +725,7 @@ namespace EXILED
 				AnimationOnly = animationOnly
 			};
 
-			PlayerReloadEvent.Invoke(ref ev);
+			PlayerReloadEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -746,7 +746,7 @@ namespace EXILED
 				RotationY = rotationY
 			};
 
-			PlayerSpawnEvent.Invoke(ev);
+			PlayerSpawnEvent.InvokeSafely(ev);
 
 			spawnPoint = ev.Spawnpoint;
 			rotationY = ev.RotationY;
@@ -766,7 +766,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			Scp106ContainEvent.Invoke(ev);
+			Scp106ContainEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -786,7 +786,7 @@ namespace EXILED
 				Time = time
 			};
 
-			Scp914ActivationEvent.Invoke(ref ev);
+			Scp914ActivationEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			time = ev.Time;
@@ -807,7 +807,7 @@ namespace EXILED
 				KnobSetting = knobSetting
 			};
 
-			Scp914KnobChangeEvent.Invoke(ref ev);
+			Scp914KnobChangeEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 			knobSetting = ev.KnobSetting;
@@ -827,7 +827,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			FemurEnterEvent.Invoke(ev);
+			FemurEnterEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
@@ -848,7 +848,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			SyncDataEvent.Invoke(ref ev);
+			SyncDataEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
