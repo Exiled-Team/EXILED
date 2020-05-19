@@ -176,7 +176,7 @@ namespace EXILED
 				Allow = allow
 			};
 
-			SetGroupEvent.InvokeSafely();
+			SetGroupEvent.InvokeSafely(ev);
 			allow = ev.Allow;
 			group = ev.Group;
 		}
