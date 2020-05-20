@@ -16,6 +16,11 @@ namespace EXILED.Patches
 
 			try
 			{
+				if (go == null) // As far as I remember, it's possible @iRebbok
+					return;
+
+				var goReferenceHub = ReferenceHub.Hubs[go];
+
 				if (info.GetDamageType() == DamageTypes.Pocket)
 				{
 					bool allow = true;
@@ -25,7 +30,7 @@ namespace EXILED.Patches
 					if (!allow)
 						info.Amount = 0f;
 
-					if (info.Amount >= go.GetComponent<PlayerStats>().health)
+					if (info.Amount >= goReferenceHub.playerStats.health)
 						Events.InvokePocketDimDeath(__instance.gameObject, ref allow);
 
 					if (!allow)
@@ -37,17 +42,21 @@ namespace EXILED.Patches
 				else
 					Events.InvokePlayerHurt(__instance, ref info, go);
 
-				if (info.Amount >= go.GetComponent<PlayerStats>().health || (go.GetComponent<PlayerStats>().health - info.Amount) <= 1f)
+				// GodMode players can't die
+				if (goReferenceHub.characterClassManager.GodMode)
+					return;
+
+				if (info.Amount >= goReferenceHub.playerStats.health || (goReferenceHub.playerStats.health - info.Amount) <= 1f)
 				{
-					CharacterClassManager ccm = go.GetComponent<CharacterClassManager>();
+					// I don't think that's possible
+					// ReferenceHub can't be without CharterClassManager
+					//if (goReferenceHub.characterClassManager != null)
+					//{
+					if (DeathStuff.Contains(goReferenceHub.characterClassManager.UserId))
+						return;
 
-					if (ccm != null)
-					{
-						if (DeathStuff.Contains(ccm.UserId))
-							return;
-
-						DeathStuff.Add(ccm.UserId);
-					}
+					DeathStuff.Add(goReferenceHub.characterClassManager.UserId);
+					//}
 
 					if (info.GetDamageType() == DamageTypes.Grenade)
 						Events.InvokePlayerDeath(__instance, ref info, go, info.PlyId);
