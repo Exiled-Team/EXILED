@@ -21,6 +21,7 @@ namespace EXILED.Patches
 
 				var goReferenceHub = ReferenceHub.Hubs[go];
 
+				// observe the order of calling the event, first there is damage to the player
 				if (info.GetDamageType() == DamageTypes.Grenade)
 					Events.InvokePlayerHurt(__instance, ref info, go, info.PlyId);
 				else
