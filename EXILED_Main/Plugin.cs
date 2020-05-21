@@ -47,7 +47,7 @@ namespace EXILED
                 	if (ActualPluginVersion != LV)
                 	{
 				Assembly assembly = Assembly.GetCallingAssembly();
-				ServerConsole.AddLog($"[INFO] [{assembly.GetName().Name}] {PluginName} has a new update! Download here: {LVDownload}");
+				ServerConsole.AddLog($"[INFO] [{assembly.GetName().Name}] {PluginName} has a new update! Download it here: {LVDownload}");
 				return;
                 	}
 		}
