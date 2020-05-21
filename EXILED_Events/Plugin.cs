@@ -130,9 +130,10 @@ namespace EXILED
 				patchFixer++;
 				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
 #if DEBUG
-				bool allowDisable = HarmonyInstance.DEBUG != true;
+				// If debugging was enabled before, don't touch it
+				var disabledStatus = HarmonyInstance.DEBUG == true;
 				HarmonyInstance.DEBUG = true;
-				HarmonyInstance.DEBUG = allowDisable;
+				HarmonyInstance.DEBUG = disabledStatus;
 #endif
 				instance.PatchAll();
 			}
