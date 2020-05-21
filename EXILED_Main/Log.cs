@@ -11,7 +11,7 @@ namespace EXILED
 			ServerConsole.AddLog($"[INFO] [{assembly.GetName().Name}] {message}");
 		}
 
-		//Used to send DEBUG level messages to the game console. Server must have EXILED_Debug enabled.
+		//Used to send DEBUG level messages to the game console. Server must have EXILED_Debug enabled (in the configuration).
 		public static void Debug(string message)
 		{
 			if (!debug)
