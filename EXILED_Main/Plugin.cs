@@ -2,8 +2,9 @@ using EXILED.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using System.Net;
+using System.Reflection;
+using UnityEngine;
 
 namespace EXILED
 {
@@ -37,7 +38,7 @@ namespace EXILED
 		public static Vector3 GetRandomSpawnPoint(RoleType role) => Map.GetRandomSpawnPoint(role);
 
 		public static void CheckUpdate(string LastVersionURL, string ActualPluginVersion, string LastVersionDownloadURL, string PluginName)
-        	{
+        {
 		try 
 		{
 			WebClient client = new WebClient();
