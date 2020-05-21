@@ -35,6 +35,27 @@ namespace EXILED
 		[Obsolete("Use Map.GetRandomSpawnPoint")]
 		public static Vector3 GetRandomSpawnPoint(RoleType role) => Map.GetRandomSpawnPoint(role);
 
+		public static void CheckUpdate(string LastVersionURL, string ActualPluginVersion, string LastVersionDownloadURL, string PluginName)
+        	{
+		try 
+		{
+			WebClient client = new WebClient();
+            		string LV = client.DownloadString(LastVersionURL);
+            		string LVDownload = client.DownloadString(LastVersionDownloadURL);
+                	if (ActualPluginVersion != LV)
+                	{
+				Assembly assembly = Assembly.GetCallingAssembly();
+				ServerConsole.AddLog($"[INFO] [{assembly.GetName().Name}] {PluginName} has a new update! Download here: {LVDownload}");
+				return;
+                	}
+		}
+		catch(Exception ex)
+		{
+			Assembly assembly = Assembly.GetCallingAssembly();
+			ServerConsole.AddLog($"[WARN] [{assembly.GetName().Name}] {PluginName} Tried to check the latest version of the plugin, but there was a problem: {ex} LOGTYPE14");
+		}
+        }
+		
 		[Obsolete("Use Player.GetTeam")]
 		public static Team GetTeam(RoleType role)
 		{
