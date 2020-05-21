@@ -129,6 +129,11 @@ namespace EXILED
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
 				patchFixer++;
 				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
+#if DEBUG
+				bool allowDisable = HarmonyInstance.DEBUG != true;
+				HarmonyInstance.DEBUG = true;
+				HarmonyInstance.DEBUG = allowDisable;
+#endif
 				instance.PatchAll();
 			}
 			catch (Exception exception)
