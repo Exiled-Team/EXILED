@@ -83,7 +83,7 @@ namespace EXILED.Extensions
 		/// <param name="type"></param>
 		/// <returns></returns>
 		public static bool IsAnyScp( this RoleType type ) => 
-		type == RoleType.Scp173 ||type == RoleType.Scp049 || type == RoleType.Scp93989     
+		type == RoleType.Scp173 || type == RoleType.Scp049 || type == RoleType.Scp93989     
 		|| type == RoleType.Scp93953 || type == RoleType.Scp0492 || type == RoleType.Scp079 
 		|| type == RoleType.Scp106 || type == RoleType.Scp096;
 		
@@ -137,6 +137,22 @@ namespace EXILED.Extensions
 			else
 				SetRole(player, newRole);
 		}
+
+		/// <summary>
+		/// Returns the <see cref="Color"/> of <see cref="ReferenceHub"/>'s <see cref="RoleType"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static Color GetRoleColor(this ReferenceHub player) =>
+			player == null ? Color.white : CharacterClassManager._staticClasses.Get(player.GetRole()).classColor;
+
+		/// <summary>
+		/// Returns the <see cref="Color"/> of a <see cref="RoleType"/>.
+		/// </summary>
+		/// <param name="player"></param>
+		/// <returns></returns>
+		public static Color GetColor(this RoleType role) =>
+			role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
 
 		/// <summary>
 		/// Gets the position of a <see cref="ReferenceHub"/>
