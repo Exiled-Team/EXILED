@@ -19,7 +19,7 @@ namespace EXILED.Patches
 					__instance.RunSmartClassPicker();
 
 				if (NetworkServer.active)
-					Timing.RunCoroutine(__instance.MakeSureToSetHP(), Segment.FixedUpdate);
+					Timing.RunCoroutine(__instance.MakeSureToSetHPAndStamina(), Segment.FixedUpdate);
 
 				return false;
 			}

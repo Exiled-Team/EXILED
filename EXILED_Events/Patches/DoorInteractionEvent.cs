@@ -1,6 +1,7 @@
 using Harmony;
 using System;
 using System.Linq;
+using PlayableScps;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -28,11 +29,11 @@ namespace EXILED.Patches
 						? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
 						: (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
 					return false;
-
-				Scp096PlayerScript component2 = __instance.GetComponent<Scp096PlayerScript>();
+				
+				Scp096 component2 = __instance.GetComponent<Scp096>();
 
 				if (door.destroyedPrefab != null && (!door.isOpen || door.curCooldown > 0.0) &&
-					(component2.iAm096 && component2.enraged == Scp096PlayerScript.RageState.Enraged))
+					(component2 != null && component2._role.roleId == RoleType.Scp096 && component2.Enraged))
 				{
 					if (!__instance._096DestroyLockedDoors && door.locked && !__instance._sr.BypassMode)
 						return false;

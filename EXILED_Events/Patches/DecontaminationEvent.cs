@@ -1,12 +1,13 @@
 using Harmony;
 using System;
+using LightContainmentZoneDecontamination;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(DecontaminationLCZ), nameof(DecontaminationLCZ._KillPlayersInLCZ))]
+	[HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
 	public class DecontaminationEvent
 	{
-		public static bool Prefix(DecontaminationLCZ __instance)
+		public static bool Prefix(DecontaminationController __instance)
 		{
 			if (EventPlugin.DecontaminationEventPatchDisable)
 				return true;

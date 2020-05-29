@@ -2,6 +2,8 @@
 using Harmony;
 using System;
 using System.Collections.Generic;
+using LightContainmentZoneDecontamination;
+using Mirror;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -18,27 +20,26 @@ namespace EXILED.Patches
 
 			try
 			{
-				PlayerStats component1 = other.GetComponent<PlayerStats>();
-				if (component1 == null)
+				NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
+				if (!((Object) component1 != (Object) null))
 					return false;
-				if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer ||
-					Object.FindObjectOfType<BlastDoor>().isClosed)
-					component1.HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
+				if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || BlastDoor.OneDoor.isClosed)
+					component1.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
 				else if (__instance.type == PocketDimensionTeleport.PDTeleportType.Exit)
 				{
 					__instance.tpPositions.Clear();
-					List<string> stringList = ConfigFile.ServerConfig.GetStringList(
-					  GameObject.Find("Host").GetComponent<DecontaminationLCZ>().GetCurAnnouncement() > 5
-						? "pd_random_exit_rids_after_decontamination"
-						: "pd_random_exit_rids");
+					bool flag = false;
+					DecontaminationController.DecontaminationPhase[] decontaminationPhases = DecontaminationController.Singleton.DecontaminationPhases;
+					if (DecontaminationController.GetServerTime > (double) decontaminationPhases[decontaminationPhases.Length - 2].TimeTrigger)
+						flag = true;
+					List<string> stringList = ConfigFile.ServerConfig.GetStringList(flag ? "pd_random_exit_rids_after_decontamination" : "pd_random_exit_rids");
 					if (stringList.Count > 0)
 					{
 						foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("RoomID"))
 						{
-							if (gameObject.GetComponent<Rid>() != null && stringList.Contains(gameObject.GetComponent<Rid>().id))
+							if ((Object) gameObject.GetComponent<Rid>() != (Object) null && stringList.Contains(gameObject.GetComponent<Rid>().id))
 								__instance.tpPositions.Add(gameObject.transform.position);
 						}
-
 						if (stringList.Contains("PORTAL"))
 						{
 							foreach (Scp106PlayerScript scp106PlayerScript in Object.FindObjectsOfType<Scp106PlayerScript>())
@@ -48,20 +49,16 @@ namespace EXILED.Patches
 							}
 						}
 					}
-
 					if (__instance.tpPositions == null || __instance.tpPositions.Count == 0)
 					{
 						foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("PD_EXIT"))
 							__instance.tpPositions.Add(gameObject.transform.position);
 					}
-
 					Vector3 tpPosition = __instance.tpPositions[Random.Range(0, __instance.tpPositions.Count)];
 					tpPosition.y += 2f;
-					PlyMovementSync component2 = other.GetComponent<PlyMovementSync>();
-					if (component2 == null)
-						return false;
+					PlayerMovementSync component2 = other.GetComponent<PlayerMovementSync>();
 					component2.SetSafeTime(2f);
-
+      
 					bool allowEscape = true;
 					Events.InvokePocketDimEscaped(component2.gameObject, ref allowEscape);
 
@@ -70,8 +67,12 @@ namespace EXILED.Patches
 						component2.OverridePosition(tpPosition, 0.0f, false);
 						__instance.RemoveCorrosionEffect(other.gameObject);
 						PlayerManager.localPlayer.GetComponent<PlayerStats>()
-						  .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
+							.TargetAchieve(component1.connectionToClient, "larryisyourfriend");
 					}
+      
+					component2.OverridePosition(tpPosition, 0.0f, false);
+					__instance.RemoveCorrosionEffect(other.gameObject);
+					PlayerManager.localPlayer.GetComponent<PlayerStats>().TargetAchieve(component1.connectionToClient, "larryisyourfriend");
 				}
 
 				if (!__instance.RefreshExit)

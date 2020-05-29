@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
+using Telepathy;
 using UnityEngine;
 using Random = System.Random;
 
@@ -19,7 +20,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 11, Patch = 0 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 12, Patch = 1 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -102,6 +103,7 @@ namespace EXILED
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
 			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
+			ServerConsole.AddLog("[WARN] [EXILED]: THIS IS AN EXPERIMENTAL BUILD OF EXILED SPECIFICALLY FOR THE SCOPOPHOBIA (SL-10.0.0) PUBLIC BETA! THERE MAY BE GAME-BREAKING BUGS PRESENT! LOGTYPE-8");
 			if (Config.GetBool("exiled_auto_update", true))
 			{
 				if (IsUpdateAvailable())

@@ -67,19 +67,17 @@ namespace EXILED.Patches
 							{
 								spawnPoint = randomPosition.transform.position;
 								rotY = randomPosition.transform.rotation.eulerAngles.y;
-								AmmoBox component2 = __instance.GetComponent<AmmoBox>();
+								AmmoBox component1 = __instance.GetComponent<AmmoBox>();
 								if (escape && __instance.KeepItemsAfterEscaping)
 								{
-									Inventory component3 = PlayerManager.localPlayer.GetComponent<Inventory>();
-									for (ushort num = 0; num < 3; num += 1)
+									Inventory component2 = PlayerManager.localPlayer.GetComponent<Inventory>();
+									for (ushort index = 0; index < (ushort) 3; ++index)
 									{
-										if (component2.GetAmmo(num) >= 15)
-										{
-											component3.SetPickup(component2.types[num].inventoryID, component2.GetAmmo(num), randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
-										}
+										if (component1[(int) index] >= 15U)
+											component2.SetPickup(component1.types[(int) index].inventoryID, (float) component1[(int) index], randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
 									}
 								}
-								component2.SetAmmoAmount();
+								component1.ResetAmmo();
 							}
 							else
 							{
@@ -101,11 +99,9 @@ namespace EXILED.Patches
 						__instance.GetComponent<PlayerStats>().maxHP = role.maxHP;
 					}
 				}
-				__instance.Scp049.iAm049 = (__instance.CurClass == RoleType.Scp049);
-				__instance.Scp0492.iAm049_2 = (__instance.CurClass == RoleType.Scp0492);
-				__instance.Scp096.iAm096 = (__instance.CurClass == RoleType.Scp096);
-				__instance.Scp106.iAm106 = (__instance.CurClass == RoleType.Scp106);
-				__instance.Scp173.iAm173 = (__instance.CurClass == RoleType.Scp173);
+				__instance.Scp0492.iAm049_2 = __instance.CurClass == RoleType.Scp0492;
+				__instance.Scp106.iAm106 = __instance.CurClass == RoleType.Scp106;
+				__instance.Scp173.iAm173 = __instance.CurClass == RoleType.Scp173;
 				__instance.Scp939.iAm939 = __instance.CurClass.Is939();
 				__instance.RefreshPlyModel();
 

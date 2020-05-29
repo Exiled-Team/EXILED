@@ -18,11 +18,11 @@ namespace EXILED.Patches
 
 				for (int i = 0; i < __instance.usableItems.Length; ++i)
 				{
-					if (__instance.usableItems[i].inventoryID == __instance.inv.curItem && __instance.usableItems[i].cancelableTime > 0f)
+					if (__instance.usableItems[i].inventoryID == __instance.hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
 					{
 						bool allow = true;
 
-						Events.InvokeCancelMedicalItem(__instance.gameObject, __instance.inv.curItem, ref __instance.usableItems[i].animationDuration, ref allow);
+						Events.InvokeCancelMedicalItem(__instance.gameObject, __instance.hub.inventory.curItem, ref __instance.usableItems[i].animationDuration, ref allow);
 
 						__instance.cancel = allow;
 					}

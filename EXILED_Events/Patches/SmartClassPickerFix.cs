@@ -72,27 +72,21 @@ namespace EXILED.Patches
 						num++;
 					}
 
-					if (TutorialManager.status)
+					
+					if (!roles.ContainsKey(array[i]))
 					{
-						__instance.SetPlayersClass(RoleType.Tutorial, __instance.gameObject);
+						roles.Add(array[i], roleType);
 					}
 					else
 					{
-						if (!roles.ContainsKey(array[i]))
-						{
-							roles.Add(array[i], roleType);
-						}
-						else
-						{
-							roles[array[i]] = roleType;
-						}
-
-						ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
-							string.Concat(array[i].GetComponent<NicknameSync>().MyNick, " (",
-								array[i].GetComponent<CharacterClassManager>().UserId, ") spawned as ",
-								__instance.Classes.SafeGet(roleType).fullName.Replace("\n", ""), "."),
-							ServerLogs.ServerLogType.GameEvent);
+						roles[array[i]] = roleType;
 					}
+
+					ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
+						string.Concat(array[i].GetComponent<NicknameSync>().MyNick, " (",
+							array[i].GetComponent<CharacterClassManager>().UserId, ") spawned as ",
+							__instance.Classes.SafeGet(roleType).fullName.Replace("\n", ""), "."),
+						ServerLogs.ServerLogType.GameEvent);
 				}
 
 				Object.FindObjectOfType<PlayerList>().NetworkRoundStartTime = (int)Time.realtimeSinceStartup;

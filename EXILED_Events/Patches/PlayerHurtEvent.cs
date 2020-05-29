@@ -23,7 +23,7 @@ namespace EXILED.Patches
 
 				// observe the order of calling the event, first there is damage to the player
 				if (info.GetDamageType() == DamageTypes.Grenade)
-					Events.InvokePlayerHurt(__instance, ref info, go, info.PlyId);
+					Events.InvokePlayerHurt(__instance, ref info, go, info.PlayerId);
 				else
 					Events.InvokePlayerHurt(__instance, ref info, go);
 
@@ -31,7 +31,7 @@ namespace EXILED.Patches
 				if (goReferenceHub.characterClassManager.GodMode)
 					return;
 
-				bool isDied = goReferenceHub.playerStats.health - info.Amount < 1f;
+				bool isDied = goReferenceHub.playerStats.Health - info.Amount < 1f;
 
 				// If the last attack was from the 'ARTIFICIALDEGEN', then hp not change
 				if (goReferenceHub.playerStats.unsyncedArtificialHealth > 0f && !goReferenceHub.playerStats.lastHitInfo.Attacker.Equals("ARTIFICIALDEGEN")) 
@@ -47,7 +47,7 @@ namespace EXILED.Patches
 						remainderDamage += Mathf.Abs(goReferenceHub.playerStats.unsyncedArtificialHealth);
 						goReferenceHub.playerStats.unsyncedArtificialHealth = 0f;
 					}
-					var finalHp = goReferenceHub.playerStats.health - remainderDamage;
+					var finalHp = goReferenceHub.playerStats.Health - remainderDamage;
 
 					// Don't use bitwise operations, 
 					// this is the hp that will remain after everything
@@ -87,7 +87,7 @@ namespace EXILED.Patches
 					//}
 
 					if (info.GetDamageType() == DamageTypes.Grenade)
-						Events.InvokePlayerDeath(__instance, ref info, go, info.PlyId);
+						Events.InvokePlayerDeath(__instance, ref info, go, info.PlayerId);
 					else
 						Events.InvokePlayerDeath(__instance, ref info, go);
 				}

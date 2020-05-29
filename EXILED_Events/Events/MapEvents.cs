@@ -92,7 +92,7 @@ namespace EXILED
 
 			AnnounceScpTerminationEvent ev = new AnnounceScpTerminationEvent()
 			{
-				Killer = hitInfo.PlyId == 0 ? null : Player.GetPlayer(hitInfo.PlyId),
+				Killer = hitInfo.PlayerId == 0 ? null : Player.GetPlayer(hitInfo.PlayerId),
 				Role = role,
 				HitInfo = hitInfo,
 				TerminationCause = terminationCause,

@@ -2,6 +2,7 @@ using EXILED.Extensions;
 using Grenades;
 using Scp914;
 using System.Collections.Generic;
+using PlayableScps;
 using UnityEngine;
 
 namespace EXILED
@@ -73,7 +74,7 @@ namespace EXILED
 
 			SpawnRagdollEvent ev = new SpawnRagdollEvent()
 			{
-				Killer = hitInfo.PlyId == 0 ? null : Player.GetPlayer(hitInfo.PlyId),
+				Killer = hitInfo.PlayerId == 0 ? null : Player.GetPlayer(hitInfo.PlayerId),
 				Player = player.GetPlayer(),
 				Position = position,
 				Rotation = rotation,
@@ -230,14 +231,14 @@ namespace EXILED
 		public static event Scp096Enrage Scp096EnrageEvent;
 		public delegate void Scp096Enrage(ref Scp096EnrageEvent ev);
 
-		public static void InvokeScp096Enrage(Scp096PlayerScript script, ref bool allow)
+		public static void InvokeScp096Enrage(Scp096 script, ref bool allow)
 		{
 			if (Scp096EnrageEvent == null)
 				return;
 
 			Scp096EnrageEvent ev = new Scp096EnrageEvent()
 			{
-				Player = script.gameObject.GetPlayer(),
+				Player = script.Hub,
 				Script = script,
 				Allow = allow
 			};
@@ -250,14 +251,14 @@ namespace EXILED
 		public static event Scp096Calm Scp096CalmEvent;
 		public delegate void Scp096Calm(ref Scp096CalmEvent ev);
 
-		public static void InvokeScp096Calm(Scp096PlayerScript script, ref bool allow)
+		public static void InvokeScp096Calm(Scp096 script, ref bool allow)
 		{
 			if (Scp096CalmEvent == null)
 				return;
 
 			Scp096CalmEvent ev = new Scp096CalmEvent()
 			{
-				Player = script.gameObject.GetPlayer(),
+				Player = script.Hub,
 				Script = script,
 				Allow = allow
 			};
@@ -455,21 +456,20 @@ namespace EXILED
 		public static event PickupItem PickupItemEvent;
 		public delegate void PickupItem(ref PickupItemEvent ev);
 
-		public static void InvokePickupItem(GameObject player, ref Pickup pickup, ref bool allow)
+		public static void InvokePickupItem(ReferenceHub player, Pickup pickup, ref bool allow)
 		{
 			if (PickupItemEvent == null)
 				return;
 
 			PickupItemEvent ev = new PickupItemEvent()
 			{
-				Player = player.GetPlayer(),
+				Player = player,
 				Item = pickup,
 				Allow = allow
 			};
 
 			PickupItemEvent.InvokeSafely(ev);
 			allow = ev.Allow;
-			pickup = ev.Item;
 		}
 
 		public static event HandcuffCuffed PlayerHandcuffedEvent;

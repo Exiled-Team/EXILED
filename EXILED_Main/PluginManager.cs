@@ -12,8 +12,8 @@ namespace EXILED
 	{
 		public static readonly List<Plugin> _plugins = new List<Plugin>();
 		public static string AppDataDirectory { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-		public static string PluginsDirectory { get; private set; } = Path.Combine(AppDataDirectory, "Plugins");
-		public static string ExiledDirectory { get; private set; } = Path.Combine(AppDataDirectory, "EXILED");
+		public static string PluginsDirectory { get; private set; } = Path.Combine(AppDataDirectory, "Plugins-PTB");
+		public static string ExiledDirectory { get; private set; } = Path.Combine(AppDataDirectory, "EXILED-PTB");
 		public static string DependenciesDirectory { get; private set; } = Path.Combine(ExiledDirectory, "dependencies");
 		public static string LoadedDependenciesDirectory { get; private set; } = Path.Combine(PluginsDirectory, "dependencies");
 		public static string ManagedAssembliesDirectory { get; private set; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
@@ -147,7 +147,7 @@ namespace EXILED
 					{
 						Log.Debug($"Overriding type check for {type.FullName}");
 					}
-					else if (!typeof(Plugin).IsAssignableFrom(type))
+					else if (type.BaseType != typeof(Plugin))
 					{
 						Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.");
 						continue;

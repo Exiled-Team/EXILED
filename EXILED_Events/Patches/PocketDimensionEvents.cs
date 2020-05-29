@@ -21,18 +21,18 @@ namespace EXILED.Patches
 				if (ply == null)
 					return false;
 
-				CharacterClassManager component = ply.GetComponent<CharacterClassManager>();
+				ReferenceHub hub = ReferenceHub.GetHub(ply);
+				CharacterClassManager component = hub.characterClassManager;
 				if (component == null)
 					return false;
 				if (!ServerTime.CheckSynchronization(t) || !__instance.iAm106 ||
-					Vector3.Distance(__instance.GetComponent<PlyMovementSync>().RealModelPosition,
+					Vector3.Distance(__instance.GetComponent<PlayerMovementSync>().RealModelPosition,
 						ply.transform.position) >= 3f || !component.IsHuman())
 					return false;
 
-				CharacterClassManager component2 = ply.GetComponent<CharacterClassManager>();
-				if (component2.GodMode)
+				if (component.GodMode)
 					return false;
-				if (component2.Classes.SafeGet(component2.CurClass).team == Team.SCP)
+				if (component.Classes.SafeGet(component.CurClass).team == Team.SCP)
 					return false;
 
 				__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
@@ -89,7 +89,7 @@ namespace EXILED.Patches
 					if (!allowEnter)
 						return false;
 
-					ply.GetComponent<PlyMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
+					ply.GetComponent<PlayerMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
 
 					// Invoke damage.
 
@@ -107,9 +107,9 @@ namespace EXILED.Patches
 
 				}
 
-				PlayerEffectsController componentInParent = ply.GetComponentInParent<PlayerEffectsController>();
-				componentInParent.GetEffect<Corroding>("Corroding").isInPd = true;
-				componentInParent.EnableEffect("Corroding");
+				PlayerEffectsController effectsController = hub.playerEffectsController;
+				effectsController.GetEffect<Corroding>().IsInPd = true;
+				effectsController.EnableEffect<Corroding>(0.0f, false);
 
 				return false;
 			}

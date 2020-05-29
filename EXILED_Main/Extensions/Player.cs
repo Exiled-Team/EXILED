@@ -1,9 +1,10 @@
-﻿using EXILED.ApiObjects;
-using Mirror;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EXILED.ApiObjects;
+using MEC;
+using Mirror;
 using UnityEngine;
 
 namespace EXILED.Extensions
@@ -141,19 +142,19 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets the position of a <see cref="ReferenceHub"/>
 		/// </summary>
-		public static Vector3 GetPosition(this ReferenceHub player) => player.plyMovementSync.GetRealPosition();
+		public static Vector3 GetPosition(this ReferenceHub player) => player.playerMovementSync.GetRealPosition();
 
 		/// <summary>
 		/// Gets the rotations from a <see cref="ReferenceHub"/>
 		/// </summary>
 		/// <returns>A <see cref="Vector2"/>, representing the directions he's looking at</returns>
-		public static Vector2 GetRotations(this ReferenceHub player) => player.plyMovementSync.NetworkRotations;
+		public static Vector2 GetRotations(this ReferenceHub player) => player.playerMovementSync.RotationSync;
 
 		/// <summary>
 		/// Gets the rotation of a <see cref="ReferenceHub"/>.
 		/// </summary>
 		/// <returns>The direction he's looking at, useful for Raycasts</returns>
-		public static Vector3 GetRotationVector(this ReferenceHub player) => player.characterClassManager.Scp049.plyCam.transform.forward;
+		public static Vector3 GetRotationVector(this ReferenceHub player) => player.characterClassManager._plyCam.transform.forward;
 
 		/// <summary>
 		/// Sets the position of a <see cref="ReferenceHub"/> using a <see cref="Vector3"/>.
@@ -163,7 +164,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Sets the position of a <see cref="ReferenceHub"/> using the x, y, and z of the destination position.
 		/// </summary>
-		public static void SetPosition(this ReferenceHub player, float x, float y, float z) => player.plyMovementSync.OverridePosition(new Vector3(x, y, z), player.transform.rotation.eulerAngles.y);
+		public static void SetPosition(this ReferenceHub player, float x, float y, float z) => player.playerMovementSync.OverridePosition(new Vector3(x, y, z), player.transform.rotation.eulerAngles.y);
 
 		/// <summary>
 		/// Sets the rotation of a <see cref="ReferenceHub"/> using a <see cref="Vector2"/>.
@@ -173,7 +174,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Sets the rotation of a <see cref="ReferenceHub"/> using the x and y values of the desired rotation.
 		/// </summary>
-		public static void SetRotation(this ReferenceHub player, float x, float y) => player.plyMovementSync.NetworkRotations = new Vector2(x, y);
+		public static void SetRotation(this ReferenceHub player, float x, float y) => player.playerMovementSync.RotationSync = new Vector2(x, y);
 
 		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
@@ -197,7 +198,7 @@ namespace EXILED.Extensions
 		public static void SetRank(this ReferenceHub player, string name, string color, bool show)
 		{
 			// Developer note: I bet I just needed to use the show once. But hey, better be safe than sorry.
-			UserGroup ug = new UserGroup()
+			UserGroup ug = new UserGroup
 			{
 				BadgeColor = color,
 				BadgeText = name,
@@ -225,7 +226,7 @@ namespace EXILED.Extensions
 			}
 			else
 			{
-				UserGroup ug = new UserGroup()
+				UserGroup ug = new UserGroup
 				{
 					BadgeColor = color,
 					BadgeText = name,
@@ -250,7 +251,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Sets the rank of a <see cref="ReferenceHub"/> to a <see cref="UserGroup"/>.
 		/// </summary>
-		public static void SetRank(this ReferenceHub player, UserGroup userGroup) => player.serverRoles.SetGroup(userGroup, false, false, false);
+		public static void SetRank(this ReferenceHub player, UserGroup userGroup) => player.serverRoles.SetGroup(userGroup, false);
 
 		/// <summary>
 		/// Gets the nickname of a <see cref="ReferenceHub"/>
@@ -263,16 +264,16 @@ namespace EXILED.Extensions
 		public static void SetNickname(this ReferenceHub player, string nickname)
 		{
 			player.nicknameSync.Network_myNickSync = nickname;
-			MEC.Timing.RunCoroutine(BlinkTag(player));
+			Timing.RunCoroutine(BlinkTag(player));
 		}
 
 		private static IEnumerator<float> BlinkTag(ReferenceHub player)
 		{
-			yield return MEC.Timing.WaitForOneFrame;
+			yield return Timing.WaitForOneFrame;
 
 			player.HideTag();
 
-			yield return MEC.Timing.WaitForOneFrame;
+			yield return Timing.WaitForOneFrame;
 
 			player.ShowTag();
 		}
@@ -313,13 +314,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospace.
 		/// </summary>
-		public static void Broadcast(this ReferenceHub player, uint time, string message, bool monospace = false) => Map.BroadcastComponent.TargetAddElement(player.scp079PlayerScript.connectionToClient, message, time, monospace);
-
-		/// <summary>
-		/// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console.
-		/// </summary>
-		[Obsolete("Append ', false' to your broadcasts to use the new, updated method.", true)]
-		public static void Broadcast(this ReferenceHub player, uint time, string message) => Map.BroadcastComponent.TargetAddElement(player.scp079PlayerScript.connectionToClient, message, time, false);
+		public static void Broadcast(this ReferenceHub player, ushort time, string message, bool monospace = false) => Map.BroadcastComponent.TargetAddElement(player.scp079PlayerScript.connectionToClient, message, time, monospace ? global::Broadcast.BroadcastFlags.Monospaced : global::Broadcast.BroadcastFlags.Normal);
 
 		/// <summary>
 		/// Clears the brodcast of a <see cref="ReferenceHub"/>. Doesn't get logged to the console.
@@ -537,7 +532,7 @@ namespace EXILED.Extensions
 													 select rwr.Split(new string[]
 													 {
 						   ": "
-													 }, StringSplitOptions.None)).ToDictionary((string[] split) => split[0], (string[] split) => split[1]);
+													 }, StringSplitOptions.None)).ToDictionary(split => split[0], split => split[1]);
 
 			int BadgeType = 0;
 			if (int.TryParse(dictionary["Badge type"], out int type)) { BadgeType = type; }
@@ -646,35 +641,35 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="player">Player</param>
 		/// <returns></returns>
-		public static float GetHealth(this ReferenceHub player) => player.playerStats.health;
+		public static float GetHealth(this ReferenceHub player) => player.playerStats.Health;
 
 		/// <summary>
 		/// Sets the health of a <see cref="ReferenceHub">player</see>.
 		/// </summary>
 		/// <param name="player">Player</param>
 		/// <param name="amount">Health amount</param>
-		public static void SetHealth(this ReferenceHub player, float amount) => player.playerStats.health = amount;
+		public static void SetHealth(this ReferenceHub player, float amount) => player.playerStats.Health = amount;
 
 		/// <summary>
 		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void AddHealth(this ReferenceHub player, float amount) => player.playerStats.health += amount;
+		public static void AddHealth(this ReferenceHub player, float amount) => player.playerStats.Health += amount;
 		
 		/// <summary>
 		/// Adds the specified amount of health to a <see cref="ReferenceHub">player</see> without exceeding the maximum health value.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void Heal(this ReferenceHub player, float amount) => player.playerStats.health = Mathf.Clamp(player.playerStats.health + amount, 1, player.playerStats.maxHP);
+		public static void Heal(this ReferenceHub player, float amount) => player.playerStats.Health = Mathf.Clamp(player.playerStats.Health + amount, 1, player.playerStats.maxHP);
 		
 		/// <summary>
 		/// Set the current amount of health of a <see cref="ReferenceHub">player</see> to their maximum amount of health.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="amount"></param>
-		public static void Heal(this ReferenceHub player) => player.playerStats.health = player.playerStats.maxHP;
+		public static void Heal(this ReferenceHub player) => player.playerStats.Health = player.playerStats.maxHP;
 		
 		/// <summary>
 		/// Gets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
@@ -817,14 +812,15 @@ namespace EXILED.Extensions
 		/// <param name="player"></param>
 		/// <param name="ammoType"></param>
 		/// <param name="amount"></param>
-		public static void SetAmmo(this ReferenceHub player, AmmoType ammoType, int amount) => player.ammoBox.SetOneAmount((int)ammoType, amount.ToString());
+		public static void SetAmmo(this ReferenceHub player, AmmoType ammoType, uint amount) =>
+			player.ammoBox.amount[(int) ammoType] = amount;
 
 		/// <summary>
 		/// Gets the amount of a specified <see cref="AmmoType">ammo type</see>.
 		/// </summary>
 		/// <param name="player"></param>
 		/// <param name="ammoType"></param>
-		public static int GetAmmo(this ReferenceHub player, AmmoType ammoType) => player.ammoBox.GetAmmo((int)ammoType);
+		public static uint GetAmmo(this ReferenceHub player, AmmoType ammoType) => player.ammoBox.amount[(int) ammoType];
 
 		/// <summary>
 		/// Bans a <see cref="ReferenceHub">player</see>.
@@ -871,7 +867,7 @@ namespace EXILED.Extensions
 
 			if (handcuffs == null) { return; }
 
-			if (handcuffs.CufferId < 0 && player.inventory.items.Any((Inventory.SyncItemInfo item) => item.id == ItemType.Disarmer) && Vector3.Distance(player.transform.position, target.transform.position) <= 130f)
+			if (handcuffs.CufferId < 0 && player.inventory.items.Any(item => item.id == ItemType.Disarmer) && Vector3.Distance(player.transform.position, target.transform.position) <= 130f)
 			{
 				handcuffs.NetworkCufferId = player.GetPlayerId();
 			}

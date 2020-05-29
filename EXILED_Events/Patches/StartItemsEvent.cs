@@ -55,12 +55,12 @@ namespace EXILED.Patches
 						{
 							Item itemByID = component.GetItemByID(syncItemInfo.id);
 							bool flag = false;
-							InventoryCategory[] categories = __instance._searching.categories;
+							InventoryCategory[] categories = __instance._search.categories;
 							int i = 0;
 							while (i < categories.Length)
 							{
 								InventoryCategory inventoryCategory = categories[i];
-								if (inventoryCategory.itemType == itemByID.itemCategory && (itemByID.itemCategory != ItemCategory.None || itemByID.itemCategory != ItemCategory.NoCategory))
+								if (inventoryCategory.itemType == itemByID.itemCategory && (itemByID.itemCategory != ItemCategory.None || itemByID.itemCategory != ItemCategory.None))
 								{
 									int num = 0;
 									foreach (Inventory.SyncItemInfo syncItemInfo2 in component.items)

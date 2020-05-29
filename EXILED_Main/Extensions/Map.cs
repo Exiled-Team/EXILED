@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LightContainmentZoneDecontamination;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -13,7 +14,7 @@ namespace EXILED.Extensions
 		private static AlphaWarheadController _alphaWarheadController;
 		private static Broadcast _broadcast;
 		private static AlphaWarheadNukesitePanel _alphaWarheadNukesitePanel;
-		private static DecontaminationLCZ _decontaminationLCZ;
+		private static DecontaminationController _decontaminationController;
 		private static List<Room> _rooms = new List<Room>();
 		private static List<Door> _doors = new List<Door>();
 		private static List<Lift> _lifts = new List<Lift>();
@@ -24,41 +25,35 @@ namespace EXILED.Extensions
 			get
 			{
 				if (_hostInventory == null)
-					_hostInventory = Player.GetPlayer(PlayerManager.localPlayer).inventory;
+					_hostInventory = PlayerManager.localPlayer.GetPlayer().inventory;
 
 				return _hostInventory;
 			}
 		}
 		
        	
-		public static bool RoundLock {
-			get {
-				return RoundSummary.RoundLock;
-			}
-			set {
-				RoundSummary.RoundLock = value;
-			}
+		public static bool RoundLock 
+		{
+			get => RoundSummary.RoundLock;
+			set => RoundSummary.RoundLock = value;
 		}
 		
        	
-		public static bool LobbyLock {
-			get {
-				return GameCore.RoundStart.LobbyLock;
-			}
-			set {
-				GameCore.RoundStart.LobbyLock = value;
-			}
+		public static bool LobbyLock 
+		{
+			get => GameCore.RoundStart.LobbyLock;
+			set => GameCore.RoundStart.LobbyLock = value;
 		}
 		
        	
-		public static bool FriendlyFire {
-			get {
-				return ServerConsole.FriendlyFire;
-			}
-			set {
+		public static bool FriendlyFire 
+		{
+			get => ServerConsole.FriendlyFire;
+			set 
+			{
 				ServerConsole.FriendlyFire = value;
 				foreach(ReferenceHub hub in Player.GetHubs())
-				hub.SetFriendlyFire(value);
+					hub.SetFriendlyFire(value);
 			}
 		}
 		
@@ -95,14 +90,14 @@ namespace EXILED.Extensions
 			}
 		}
 
-		internal static DecontaminationLCZ DecontaminationLCZ
+		internal static DecontaminationController DecontaminationController
 		{
 			get
 			{
-				if (_decontaminationLCZ == null)
-					_decontaminationLCZ = PlayerManager.localPlayer.GetComponent<DecontaminationLCZ>();
+				if (_decontaminationController == null)
+					_decontaminationController = DecontaminationController.Singleton;
 
-				return _decontaminationLCZ;
+				return _decontaminationController;
 			}
 		}
 
@@ -170,8 +165,13 @@ namespace EXILED.Extensions
 		/// <param name="message">What will be broadcasted (supports Unity Rich Text formatting)</param>
 		/// <param name="duration">The duration in seconds</param>
 		/// <param name="monospace">If the message should be in monospace</param>
-		public static void Broadcast(string message, uint duration, bool monospace = false)
-			=> BroadcastComponent.RpcAddElement(message, duration, monospace);
+		public static void Broadcast(string message, ushort duration, bool monospace = false)
+		{
+			BroadcastComponent.RpcAddElement(message, duration, monospace ? global::Broadcast.BroadcastFlags.Monospaced : global::Broadcast.BroadcastFlags.Normal);
+		}
+
+		public static void AdminBroadcast(string message, ushort duration) =>
+			BroadcastComponent.RpcAddElement(message, duration, global::Broadcast.BroadcastFlags.AdminChat);
 
 		/// <summary>
 		/// Clears all players' broadcasts.
@@ -268,12 +268,15 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets the LCZ decontamination status.
 		/// </summary>
-		public static bool IsLCZDecontaminated => DecontaminationLCZ.GetCurAnnouncement() > 5;
+		public static bool IsLCZDecontaminated => DecontaminationController.decontaminationBegun;
 
 		/// <summary>
 		/// Starts the Decontamination process.
 		/// </summary>
-		public static void StartDecontamination(bool isAnnouncementGlobal = true) => DecontaminationLCZ.RpcPlayAnnouncement(5, isAnnouncementGlobal);
+		public static void StartDecontamination()
+		{
+			DecontaminationController.FinishDecontamination();
+		}
 
 		/// <summary>
 		/// Returns the list of players in this room.

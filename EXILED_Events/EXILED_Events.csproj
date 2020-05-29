@@ -71,7 +71,6 @@
     <Compile Include="Patches\CheckEscapeEvent.cs" />
     <Compile Include="Patches\CheckRoundEndEvent.cs" />
     <Compile Include="Patches\ElevatorInteractEvent.cs" />
-    <Compile Include="Patches\GrenadeExplosionPatch.cs" />
     <Compile Include="Patches\LockerInteractEvent.cs" />
     <Compile Include="Patches\MuteHandlerFix.cs" />
     <Compile Include="Patches\Scp079Events.cs" />

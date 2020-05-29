@@ -1,25 +1,20 @@
 using Harmony;
 using System;
+using PlayableScps;
 using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(Scp096PlayerScript), nameof(Scp096PlayerScript.IncreaseRage))]
+	[HarmonyPatch(typeof(Scp096), nameof(Scp096.Enrage))]
 	public class Scp096EnrageEvent
 	{
-		public static bool Prefix(Scp096PlayerScript __instance, float amount)
+		public static bool Prefix(Scp096 __instance)
 		{
 			if (EventPlugin.Scp096PatchDisable)
 				return true;
 
 			try
 			{
-				__instance._rageProgress += amount;
-
-				if (__instance._rageProgress <
-					(double)__instance.rageCurve.Evaluate(Mathf.Min(PlayerManager.players.Count, 20)))
-					return false;
-
 				bool allow = true;
 
 				Events.InvokeScp096Enrage(__instance, ref allow);
@@ -27,9 +22,17 @@ namespace EXILED.Patches
 				if (!allow)
 					return false;
 
-				__instance.Networkenraged = Scp096PlayerScript.RageState.Panic;
-				__instance._rageProgress = 15f;
-				__instance.Invoke("StartRage", 5f);
+				if (__instance.Enraged)
+				{
+					__instance.AddReset();
+				}
+				else
+				{
+					__instance.SetMovementSpeed(12f);
+					__instance.SetJumpHeight(10f);
+					__instance.PlayerState = Scp096PlayerState.Enraged;
+					__instance.EnrageTimeLeft = __instance.EnrageTime;
+				}
 
 				return false;
 			}
@@ -41,10 +44,10 @@ namespace EXILED.Patches
 		}
 	}
 
-	[HarmonyPatch(typeof(Scp096PlayerScript), nameof(Scp096PlayerScript.DeductRage))]
+	[HarmonyPatch(typeof(Scp096), nameof(Scp096.EndEnrage))]
 	public class Scp096CalmEvent
 	{
-		public static bool Prefix(Scp096PlayerScript __instance)
+		public static bool Prefix(Scp096 __instance)
 		{
 			if (EventPlugin.Scp096PatchDisable)
 				return true;

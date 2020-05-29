@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using LiteNetLib.Utils;
+using PlayableScps;
 using UnityEngine;
 using static BanHandler;
 
@@ -125,14 +126,14 @@ namespace EXILED
 
 	public class Scp096EnrageEvent : EventArgs
 	{
-		public Scp096PlayerScript Script { get; set; }
+		public Scp096 Script { get; set; }
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
 	}
 
 	public class Scp096CalmEvent : EventArgs
 	{
-		public Scp096PlayerScript Script { get; set; }
+		public Scp096 Script { get; set; }
 		public ReferenceHub Player { get; set; }
 		public bool Allow { get; set; }
 	}
@@ -351,7 +352,7 @@ namespace EXILED
 	public class PickupItemEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }
-		public Pickup Item { get; set; }
+		public Pickup Item { get; internal set; }
 		public bool Allow { get; set; }
 	}
 
