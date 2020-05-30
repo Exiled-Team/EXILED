@@ -1,8 +1,10 @@
-using EXILED.Extensions;
-using Harmony;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using EXILED.Extensions;
+using GameCore;
+using Harmony;
+using UnityEngine;
 
 namespace EXILED.Patches
 {
@@ -16,22 +18,35 @@ namespace EXILED.Patches
 
 			try
 			{
-				int num = 0;
-				__instance.playersToNTF.Clear();
-
-				Log.Debug($"Respawn: Got players: {EventPlugin.DeadPlayers.Count}");
-
-				foreach (ReferenceHub player in EventPlugin.DeadPlayers.ToArray())
+				int num1 = 0;
+				IEnumerable<GameObject> source = PlayerManager.players.Where(item => item.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator && !item.GetComponent<ServerRoles>().OverwatchEnabled);
+				if (__instance.priorityMTFRespawn)
+					source = source.OrderBy(item => item.GetComponent<CharacterClassManager>().DeathTime);
+				int num2 = __instance.nextWaveIsCI ? __instance.maxCIRespawnAmount : __instance.maxMtfTimeToRespawn;
+				if (ConfigFile.ServerConfig.GetBool("respawn_tickets_enable", true))
 				{
-					if (player.GetOverwatch() || player.GetRole() != RoleType.Spectator)
+					if (__instance.NextWaveRespawnTickets == 0)
 					{
-						Log.Debug($"Removing {player.GetNickname()} -- Overwatch true or not spectator");
-						EventPlugin.DeadPlayers.Remove(player);
+						if (__instance.nextWaveIsCI)
+						{
+							__instance._ciDisabled = true;
+							return false;
+						}
+						RoundSummary.singleton.ForceEnd();
+						return false;
 					}
+					num2 = Mathf.Min(num2, __instance.NextWaveRespawnTickets);
 				}
+				List<GameObject> list = source.Take(num2).ToList();
+				__instance.NextWaveRespawnTickets -= num2 - list.Count;
 
 				if (Plugin.Config.GetBool("exiled_random_respawns"))
-					EventPlugin.DeadPlayers.ShuffleList();
+				{
+					if (ConfigFile.ServerConfig.GetBool("use_crypto_rng"))
+						list.ShuffleListSecure();
+					else
+						list.ShuffleList();
+				}
 
 				bool isChaos = __instance.nextWaveIsCI;
 				int maxRespawn = isChaos ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;
@@ -40,38 +55,32 @@ namespace EXILED.Patches
 				Log.Debug($"Respawn: pre-vent list: {playersToRespawn.Count}");
 				Events.InvokeTeamRespawn(ref isChaos, ref maxRespawn, ref playersToRespawn);
 
-				if (maxRespawn <= 0 || playersToRespawn == null || playersToRespawn.Count == 0)
-					return false;
-
-				foreach (ReferenceHub player in playersToRespawn)
+				__instance.playersToNTF.Clear();
+				if (__instance.nextWaveIsCI && AlphaWarheadController.Host.detonated)
+					__instance.nextWaveIsCI = false;
+				foreach (ReferenceHub ply in playersToRespawn)
 				{
-					if (num >= maxRespawn)
+					if (num1 >= maxRespawn)
 						break;
-
-					if (player != null)
+					
+					if (!(ply == null))
 					{
-						++num;
-						if (isChaos)
+						++num1;
+						if (__instance.nextWaveIsCI)
 						{
-							__instance.GetComponent<CharacterClassManager>().SetPlayersClass(RoleType.ChaosInsurgency, player.gameObject);
-							ServerLogs.AddLog(ServerLogs.Modules.ClassChange, player.GetNickname() + " (" + player.GetUserId() +
-							  ") respawned as Chaos Insurgency agent.", ServerLogs.ServerLogType.GameEvent);
+							__instance.GetComponent<CharacterClassManager>().SetPlayersClass(RoleType.ChaosInsurgency, ply.gameObject);
+							ServerLogs.AddLog(ServerLogs.Modules.ClassChange, ply.GetNickname() + " (" + ply.GetUserId() + ") respawned as Chaos Insurgency agent.", ServerLogs.ServerLogType.GameEvent);
 						}
 						else
-							__instance.playersToNTF.Add(player.gameObject);
-
-						EventPlugin.DeadPlayers.Remove(player);
+							__instance.playersToNTF.Add(ply.gameObject);
 					}
 				}
-
-				if (num > 0)
+				if (num1 > 0)
 				{
-					ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
-					  (__instance.nextWaveIsCI ? "Chaos Insurgency" : "MTF") + " respawned!", ServerLogs.ServerLogType.GameEvent);
+					ServerLogs.AddLog(ServerLogs.Modules.ClassChange, (__instance.nextWaveIsCI ? "Chaos Insurgency" : "MTF") + " respawned!", ServerLogs.ServerLogType.GameEvent);
 					if (__instance.nextWaveIsCI)
 						__instance.Invoke("CmdDelayCIAnnounc", 1f);
 				}
-
 				__instance.SummonNTF();
 				return false;
 			}

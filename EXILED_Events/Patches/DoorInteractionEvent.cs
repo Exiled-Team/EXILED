@@ -1,7 +1,6 @@
-using Harmony;
 using System;
 using System.Linq;
-using PlayableScps;
+using Harmony;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -19,63 +18,59 @@ namespace EXILED.Patches
 
 			try
 			{
-				if (!__instance._playerInteractRateLimit.CanExecute() ||
-					__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract ||
-					(doorId == null || __instance._ccm.CurClass == RoleType.None ||
-					 __instance._ccm.CurClass == RoleType.Spectator))
+				if (!__instance._playerInteractRateLimit.CanExecute() || __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract || (doorId == null || __instance._ccm.CurClass == RoleType.None || (__instance._ccm.CurClass == RoleType.Spectator || !doorId.TryGetComponent<Door>(out door))) || (door.buttons.Count == 0 ? (__instance.ChckDis(doorId.transform.position) ? 1 : 0) : (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
 					return false;
-
-				if (door == null || (door.buttons.Count == 0
-						? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
-						: (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
-					return false;
-				
-				Scp096 component2 = __instance.GetComponent<Scp096>();
-
-				if (door.destroyedPrefab != null && (!door.isOpen || door.curCooldown > 0.0) &&
-					(component2 != null && component2._role.roleId == RoleType.Scp096 && component2.Enraged))
+				__instance.OnInteract();
+				if (__instance._sr.BypassMode)
+					door.ChangeState(true);
+				else if (door.PermissionLevels.HasPermission(Door.AccessRequirements.Checkpoints) && __instance._ccm.CurRole.team == Team.SCP)
 				{
-					if (!__instance._096DestroyLockedDoors && door.locked && !__instance._sr.BypassMode)
-						return false;
-
-					door.DestroyDoor(true);
+					door.ChangeState();
 				}
 				else
 				{
-					__instance.OnInteract();
-					if (__instance._sr.BypassMode)
+					try
 					{
-						allow = true;
-					}
-					else if (string.Equals(door.permissionLevel, "CHCKPOINT_ACC", StringComparison.OrdinalIgnoreCase) &&
-						__instance.GetComponent<CharacterClassManager>().Classes.SafeGet(__instance.GetComponent<CharacterClassManager>().CurClass).team == Team.SCP)
-					{
-						allow = true;
-					}
-					else
-					{
-						Item item = __instance._inv.GetItemByID(__instance._inv.curItem);
-						if (string.IsNullOrEmpty(door.permissionLevel))
+						if (door.PermissionLevels == 0)
 						{
-							allow = !door.locked;
+							if (door.locked)
+								return false;
+							Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
+							
+							if (allow)
+								door.ChangeState();
+							else
+								__instance.RpcDenied(doorId);
 						}
-						else if (item != null && item.permissions.Contains(door.permissionLevel))
+						else if (!door.RequireAllPermissions)
 						{
-							allow = !door.locked;
+							foreach (string permission in __instance._inv.GetItemByID(__instance._inv.curItem).permissions)
+							{
+								Door.AccessRequirements flag;
+								if (door.backwardsCompatPermissions.TryGetValue(permission, out flag) && door.PermissionLevels.HasPermission(flag))
+								{
+									if (door.locked)
+										return false;
+									
+									Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
+							
+									if (allow)
+										door.ChangeState();
+									else
+										__instance.RpcDenied(doorId);
+									door.ChangeState();
+									return false;
+								}
+							}
+							__instance.RpcDenied(doorId);
 						}
 						else
-							allow = false;
+							__instance.RpcDenied(doorId);
 					}
-
-					Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
-
-					if (!allow)
+					catch
 					{
 						__instance.RpcDenied(doorId);
-						return false;
 					}
-
-					door.ChangeState();
 				}
 
 				return false;
