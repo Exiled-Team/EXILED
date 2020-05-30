@@ -238,8 +238,24 @@ namespace EXILED
 			Allow = false;
 			Request.RejectForce(writer);
 		}
+		
+		public void Delay(byte seconds)
+		{
+			if (seconds < 1 && seconds > 25) throw new Exception("Delay duration must be between 1 and 25 seconds.");
+			InternalReject(RejectionReason.Delay, string.Empty, false, 0, seconds);
+		}
+		
+		public void DelayForce(byte seconds)
+		{
+			if (seconds < 1 && seconds > 25) throw new Exception("Delay duration must be between 1 and 25 seconds.");
+			InternalReject(RejectionReason.Delay, string.Empty, true, 0, seconds);
+		}
+		
+		public void Redirect(ushort port) => InternalReject(RejectionReason.Redirect, string.Empty, false, 0, 0, port);
 
-		private void InternalReject(RejectionReason reason, string customReason = null, bool force = false, long expiration = 0)
+		public void RedirectForce(ushort port) => InternalReject(RejectionReason.Redirect, string.Empty, true, 0, 0, port);
+
+		private void InternalReject(RejectionReason reason, string customReason = null, bool force = false, long expiration = 0, byte seconds = 0, ushort port = 0)
 		{
 			if (!Allow) return;
 			Allow = false;
@@ -256,6 +272,14 @@ namespace EXILED
                 case RejectionReason.Custom:
                     rejectData.Put(customReason);
                     break;
+                
+                case RejectionReason.Delay:
+	                rejectData.Put(seconds);
+	                break;
+                
+                case RejectionReason.Redirect:
+	                rejectData.Put(port);
+	                break;
             }
 
             if (force)
