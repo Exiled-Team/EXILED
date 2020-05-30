@@ -13,10 +13,8 @@ namespace EXILED.Patches
 
 			try
 			{
-				if (q == "Waiting for players..")
+				if (q == "Waiting for players...")
 				{
-					q += ".";
-
 					Events.InvokeWaitingForPlayers();
 				}
 			}
