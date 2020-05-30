@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 
 namespace EXILED.Extensions
@@ -17,7 +16,7 @@ namespace EXILED.Extensions
 
             foreach (var handler in action.GetInvocationList())
             {
-                HandleSafely(action.GetType().FullName, handler.Method, handler.Target,  args);
+                HandleSafely(action.GetType().FullName, handler.Method, handler.Target, args);
             }
         }
 
