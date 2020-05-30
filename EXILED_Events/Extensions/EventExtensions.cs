@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 
 namespace EXILED.Extensions
@@ -16,7 +17,7 @@ namespace EXILED.Extensions
 
             foreach (var handler in action.GetInvocationList())
             {
-                HandleSafely(handler.Method, handler.Target,  args);
+                HandleSafely(action.GetType().FullName, handler.Method, handler.Target,  args);
             }
         }
 
@@ -27,7 +28,7 @@ namespace EXILED.Extensions
         ///     Instance of the delegate method object,
         ///     null is used in the case of a static method.
         /// </param>
-        private static void HandleSafely(MethodInfo action, object instance, params object[] args)
+        private static void HandleSafely(string eventName, MethodInfo action, object instance, params object[] args)
         {
             try
             {
@@ -35,7 +36,8 @@ namespace EXILED.Extensions
             }
             catch (Exception ex)
             {
-                Log.Error($"Plugin: {instance} Caused an error when processing the event {action}: {ex.InnerException} {ex.Message}");
+                // instance is null for static methods, we shouldn't use it
+                Log.Error($"Method '{action.Name}' of the class '{action.ReflectedType.FullName}' caused an error when processing the event '{eventName}': {ex.InnerException} {ex.Message}");
                 Log.Error(ex.StackTrace);
             }
         }
