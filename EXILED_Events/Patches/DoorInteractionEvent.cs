@@ -14,11 +14,18 @@ namespace EXILED.Patches
 				return true;
 
 			bool allow = true;
-			Door door = doorId.GetComponent<Door>();
+			Door door = null;
 
 			try
 			{
-				if (!__instance._playerInteractRateLimit.CanExecute() || __instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract || (doorId == null || __instance._ccm.CurClass == RoleType.None || (__instance._ccm.CurClass == RoleType.Spectator || !doorId.TryGetComponent<Door>(out door))) || (door.buttons.Count == 0 ? (__instance.ChckDis(doorId.transform.position) ? 1 : 0) : (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
+				if (!__instance._playerInteractRateLimit.CanExecute()
+					|| (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract)
+					|| doorId == null
+					|| !doorId.TryGetComponent(out door)
+					|| (__instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator)
+					|| (door.buttons.Count == 0 ?
+						(__instance.ChckDis(doorId.transform.position) ? 1 : 0) :
+						(door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
 					return false;
 
 				__instance.OnInteract();
@@ -50,15 +57,15 @@ namespace EXILED.Patches
 					{
 						allow = false;
 					}
-
-					Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
-
-					if (allow)
-						// Simply pass the force status as the presence of bypassMode on the player
-						door.ChangeState(__instance._sr.BypassMode);
-					else
-						__instance.RpcDenied(doorId);
 				}
+
+				Events.InvokeDoorInteract(__instance.gameObject, door, ref allow);
+
+				if (allow)
+					// Simply pass the force status as the presence of bypassMode on the player
+					door.ChangeState(__instance._sr.BypassMode);
+				else
+					__instance.RpcDenied(doorId);
 
 				return false;
 			}
@@ -67,7 +74,7 @@ namespace EXILED.Patches
 				Log.Error($"DoorInteractionEvent error: {exception}");
 
 				if (allow) 
-					door.ChangeState(__instance._sr.BypassMode);
+					door?.ChangeState(__instance._sr.BypassMode);
 				else
 					__instance.RpcDenied(doorId);
 
