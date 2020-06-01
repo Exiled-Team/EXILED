@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Harmony;
 using UnityEngine;
@@ -36,12 +36,12 @@ namespace EXILED.Patches
 						}
 						else if (!door.RequireAllPermissions)
 						{
-							foreach (string permission in __instance._inv.GetItemByID(__instance._inv.curItem).permissions)
-							{
-								Door.AccessRequirements flag;
-								if (door.backwardsCompatPermissions.TryGetValue(permission, out flag) && door.PermissionLevels.HasPermission(flag))
-									allow = !door.locked;
-							}
+							var itemPerms = __instance._inv.GetItemByID(__instance._inv.curItem).permissions;
+							// If the item’s expansion does not allow,
+							// then set it to false, cuz the item does not have permission ¯\_(ツ)_/¯
+							allow = itemPerms.Any(p =>
+							door.backwardsCompatPermissions.TryGetValue(p, out var flag) &&
+							door.PermissionLevels.HasPermission(flag)) || false;
 						}
 						else
 							allow = false;
