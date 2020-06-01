@@ -43,6 +43,8 @@ namespace EXILED.Patches
 									allow = !door.locked;
 							}
 						}
+						else
+							allow = false;
 					}
 					catch
 					{
