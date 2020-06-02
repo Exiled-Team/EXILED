@@ -11,8 +11,6 @@ namespace EXILED.Patches
 			if (EventPlugin.PlayerLeaveEventPatchDisable)
 				return;
 
-			EventPlugin.ToMultiAdmin("Player disconnect: ");
-
 			try
 			{
 				Events.InvokePlayerLeave(__instance);
