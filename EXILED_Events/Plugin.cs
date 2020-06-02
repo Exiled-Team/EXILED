@@ -104,8 +104,8 @@ namespace EXILED
 			Log.Info(Environment.CurrentDirectory);
 			Log.Info("Enabled.");
 			Log.Info($"Checking version status...");
-			ServerConsole.AddLog($"ServerMod - Version {Version.Major}.{Version.Minor}.{Version.Patch}-EXILED LOGTYPE-8");
-			ServerConsole.AddLog("[WARN] [EXILED]: THIS IS AN EXPERIMENTAL BUILD OF EXILED SPECIFICALLY FOR THE SCOPOPHOBIA (SL-10.0.0) PUBLIC BETA! THERE MAY BE GAME-BREAKING BUGS PRESENT! LOGTYPE-8");
+			ServerConsole.AddLog($"EXILED Version {Version.Major}.{Version.Minor}.{Version.Patch}", ConsoleColor.DarkRed);
+			ServerConsole.AddLog("[WARN] [EXILED]: THIS IS AN EXPERIMENTAL BUILD OF EXILED SPECIFICALLY FOR THE SCOPOPHOBIA (SL-10.0.0) PUBLIC BETA! THERE MAY BE GAME-BREAKING BUGS PRESENT!", ConsoleColor.DarkRed);
 			if (Config.GetBool("exiled_auto_update", true))
 			{
 				if (IsUpdateAvailable())
@@ -397,12 +397,6 @@ namespace EXILED
 				{
 					// ignored
 				}
-		}
-
-		//Used to Exiled2Multiadmin
-		internal static void ToMultiAdmin(string message)
-		{
-			ServerConsole.AddLog($"[EXILED2Multiadmin] {message} LOGTYPE02");
 		}
 	}
 }
