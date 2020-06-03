@@ -28,6 +28,18 @@ namespace Exiled.Events
         private Handlers.Round round;
 
         /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate.
+        /// </summary>
+        /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
+        /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
+        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev);
+
+        /// <summary>
+        /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
+        /// </summary>
+        public delegate void CustomEventHandler();
+
+        /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
         /// </summary>
         public Harmony Harmony { get; private set; }
