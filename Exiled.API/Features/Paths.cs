@@ -1,0 +1,58 @@
+﻿// -----------------------------------------------------------------------
+// <copyright file="Paths.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.API.Features
+{
+    using System;
+    using System.IO;
+
+    /// <summary>
+    /// A set of useful paths.
+    /// </summary>
+    public static class Paths
+    {
+        /// <summary>
+        /// Gets AppData path.
+        /// </summary>
+        public static string AppData { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+
+        /// <summary>
+        /// Gets or sets plugins path.
+        /// </summary>
+        public static string Plugins { get; set; } = Path.Combine(AppData, "Plugins");
+
+        /// <summary>
+        /// Gets exiled directory path.
+        /// </summary>
+        public static string Exiled { get; private set; } = Path.Combine(AppData, "EXILED");
+
+        /// <summary>
+        /// Gets Dependencies directory path.
+        /// </summary>
+        public static string Dependencies { get; private set; } = Path.Combine(Exiled, "dependencies");
+
+        /// <summary>
+        /// Gets loaded dependencies path.
+        /// </summary>
+        public static string LoadedDependencies { get; private set; } = Path.Combine(Plugins, "dependencies");
+
+        /// <summary>
+        /// Gets managed assemblies directory path.
+        /// </summary>
+        public static string ManagedAssemblies { get; private set; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
+
+        /// <summary>
+        /// Gets configs path.
+        /// </summary>
+        public static string Config { get; private set; } = Path.Combine(Exiled, $"{Server.Port}-config.yml");
+
+        /// <summary>
+        /// Gets logs path.
+        /// </summary>
+        public static string Log { get; private set; } = Path.Combine(Exiled, $"{Server.Port}-RA_log.txt");
+    }
+}
