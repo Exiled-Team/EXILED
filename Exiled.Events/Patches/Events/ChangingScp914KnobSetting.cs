@@ -34,14 +34,7 @@ namespace Exiled.Events.Patches.Events
                 Math.Abs(Scp914Machine.singleton.curKnobCooldown) > 0.001f)
                 return false;
 
-            Scp914Knob knobSetting = Scp914Machine.singleton.knobState;
-
-            if (knobSetting + 1 > Scp914Machine.knobStateMax)
-                knobSetting = Scp914Machine.knobStateMin;
-            else
-                knobSetting += 1;
-
-            var ev = new ChangingScp914KnobSettingEventArgs(API.Features.Player.Get(__instance.gameObject), knobSetting);
+            var ev = new ChangingScp914KnobSettingEventArgs(API.Features.Player.Get(__instance.gameObject), Scp914Machine.singleton.knobState + 1);
 
             Player.OnChangingScp914KnobSetting(ev);
 
