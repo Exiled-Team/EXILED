@@ -80,7 +80,6 @@ And then you have to reference the `EXILED_Events.dll` file for you to actually 
 
 To reference an event we will be using a new class we create; called "EventHandlers". This isn't in Exiled we have to make it ourself.
 
-
 We can reference it in the OnEnable and OnDisable void like this:
 ```csharp
 class PluginClass : Plugin<IConfig>
@@ -117,13 +116,15 @@ public class EventHandlers
 ```
 Now we have successfully hooked to a player join event which fires when ever a player joins!
 
-Now we can use the Exiled Extensions Class to Broadcast a message to the players!
+Now we can use the Exiled Player Class to Broadcast a message to the players!
 
 ```csharp
 public class EventHandlers
 {
 	public void PlayerJoined(PlayerJoinEvent ev)
 	{
+		// ev.Player is a class called Player, it has multiple properties that are very useful
+		// in plugin development!
 		ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
 	}
 }
