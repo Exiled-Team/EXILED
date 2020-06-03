@@ -22,6 +22,17 @@ namespace Exiled.Loader
         public static void EntryPointForLoader()
         {
             Log.Info($"Initializing Exiled at {Environment.CurrentDirectory}");
+            if (Environment.CurrentDirectory.ToLower().Contains("testing"))
+            {
+                Paths.Exiled = Path.Combine(Paths.AppData, "EXILED-Testing");
+                Paths.Plugins = Path.Combine(Paths.Exiled, "PluginsTesting");
+                Paths.Config = Path.Combine(Path.Combine(Paths.Exiled, "Configs"), $"{Server.Port}-config.yml");
+                Paths.Log = Path.Combine(Paths.Exiled, $"{Server.Port}-RA_log.txt");
+                Paths.Dependencies = Path.Combine(Paths.Plugins, "dependencies");
+            }
+
+            if (!Directory.Exists(Path.Combine(Paths.Exiled, "Configs")))
+                Directory.CreateDirectory(Path.Combine(Paths.Exiled, "Configs"));
 
             if (!File.Exists(Paths.Config))
                 File.Create(Paths.Config).Close();

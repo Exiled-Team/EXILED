@@ -23,7 +23,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets exiled directory path.
         /// </summary>
-        public static string Exiled { get; private set; } = Path.Combine(AppData, "EXILED");
+        public static string Exiled { get; set; } = Path.Combine(AppData, "EXILED");
 
         /// <summary>
         /// Gets or sets plugins path.
@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets Dependencies directory path.
         /// </summary>
-        public static string Dependencies { get; private set; } = Path.Combine(Plugins, "dependencies");
+        public static string Dependencies { get; set; } = Path.Combine(Plugins, "dependencies");
 
         /// <summary>
         /// Gets managed assemblies directory path.
@@ -43,11 +43,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets configs path.
         /// </summary>
-        public static string Config { get; private set; } = Path.Combine(Path.Combine(Exiled, "Configs"), $"{Server.Port}-config.yml");
+        public static string Config { get; set; } = Path.Combine(Path.Combine(Exiled, "Configs"), $"{Server.Port}-config.yml");
 
         /// <summary>
         /// Gets logs path.
         /// </summary>
-        public static string Log { get; private set; } = Path.Combine(Exiled, $"{Server.Port}-RA_log.txt");
+        public static string Log { get; set; } = Path.Combine(Exiled, $"{Server.Port}-RA_log.txt");
     }
 }

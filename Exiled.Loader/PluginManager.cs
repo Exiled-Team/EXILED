@@ -82,9 +82,6 @@ namespace Exiled.Loader
                 Log.Error($"An error has occurred while loading dependencies! {exception}");
             }
 
-            if (Environment.CurrentDirectory.ToLower().Contains("testing"))
-                Paths.Plugins = Path.Combine(Paths.AppData, "PluginsTesting");
-
             if (!Directory.Exists(Paths.Plugins))
             {
                 Log.Warn($"Plugin directory not found - creating: {Paths.Plugins}");
@@ -136,12 +133,10 @@ namespace Exiled.Loader
         /// <param name="path">The path to load the plugin from.</param>
         public static void Load(string path)
         {
-            Log.Info($"Loading {path}");
             try
             {
                 byte[] file = ModLoader.ReadFile(path);
                 Assembly assembly = Assembly.Load(file);
-
                 foreach (Type type in assembly.GetTypes())
                 {
                     if (type.IsAbstract)
@@ -156,9 +151,10 @@ namespace Exiled.Loader
                     }
                     else if (type.BaseType != typeof(Plugin<IConfig>))
                     {
-                        Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"{type.FullName}does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
                         continue;
                     }
+                    Log.Error("Checks passed.");
 
                     Log.Info($"Loading type {type.FullName}");
                     object instance = Activator.CreateInstance(type);
@@ -194,6 +190,8 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"Error while initializing {path}! {exception}");
+                Log.Error($"{exception.InnerException}");
+                Log.Error($"{exception.StackTrace}");
             }
         }
 
