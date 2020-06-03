@@ -27,25 +27,25 @@ The [Sample Plugin](https://github.com/galaxy119/SamplePlugin) which is a simple
 #### On Enable + On Disable Dyanmic Updates
 Exiled is a framework that has a **Reload** command which can be used to reload all the plugins and get new ones. This means you must make your plugins **Dynamicly Updatable.** What this means is assigning variables, events, and other stuff like cororutines. Must be dis-assigned and nulled in on disable. **On Enable** should enable it all, and **On Disable** should disable it all. But you might be wondering what about **On Reload**? That void is meant to carry over static variables, as in every static constant you make will not be wiped. So you could do something like this:
 ```csharp
-class PluginClass : Plugin
+class PluginClass : Plugin<IConfig>
 {
 	public static int StaticCount = 0; 
 	public int counter = 0; 
 
-	public override void OnEnable() 
+	public override void OnEnabled() 
 	{ 
 		counter = StaticCount; 
 		counter++; 
 		Info(counter); 
 	} 
 
-	public override void OnDisable() 
+	public override void OnDisabled() 
 	{ 
 		counter++; 
 		Info(counter); 
 	} 
 
-	public override void OnReload() 
+	public override void OnReloaded() 
 	{ 
 		StaticCount = counter; 
 	}
@@ -83,11 +83,11 @@ To reference an event we will be using a new class we create; called "EventHandl
 
 We can reference it in the OnEnable and OnDisable void like this:
 ```csharp
-class PluginClass : Plugin
+class PluginClass : Plugin<IConfig>
 {
 	public EventHandlers EventHandler;
 
-	public override OnEnable()
+	public override OnEnabled()
 	{
 		// Register the event handler class. And add the event,
 		// to the EXILED_Events event listener so we get the event.
@@ -95,7 +95,7 @@ class PluginClass : Plugin
 		Events.PlayerJoinEvent += EventHandler.PlayerJoined;
 	}
 
-	public override OnDisable()
+	public override OnDisabled()
 	{
 		// Make it dynamicly updatable.
 		// We do this by removing the listener for the event and then nulling the event handler.
