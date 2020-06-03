@@ -209,7 +209,8 @@ namespace Exiled.Loader
                     plugin.Config.IsEnabled = true;
                     plugin.Config.Reload();
 
-                    plugin.OnEnabled();
+                    if (plugin.Config.IsEnabled)
+                        plugin.OnEnabled();
                 }
                 catch (Exception exception)
                 {

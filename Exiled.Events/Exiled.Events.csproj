@@ -40,8 +40,8 @@
     <Reference Include="0Harmony">
       <HintPath>$(EXILED_REFERENCES)\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="Assembly-CSharp_publicized">
-    <HintPath>($EXILED_REFERENCES)\Assembly-CSharp-publicized.dll</HintPath>
+    <Reference Include="Assembly-CSharp-Publicized">
+    <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>

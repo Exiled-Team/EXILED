@@ -7,10 +7,57 @@
 
 namespace Exiled.Example
 {
+    using Exiled.API.Features;
+
     /// <summary>
     /// The example plugin.
     /// </summary>
-    public class Example
+    public class Example : Plugin<Config>
     {
+        private Handlers.Server server;
+
+        /// <inheritdoc/>
+        public override Config Config => new Config();
+
+        /// <inheritdoc/>
+        public override void OnEnabled()
+        {
+            RegisterEvents();
+
+            Log.Info($"{Name} has been enabled!");
+        }
+
+        /// <inheritdoc/>
+        public override void OnDisabled()
+        {
+            UnregisterEvents();
+
+            Log.Info($"{Name} has been disabled!");
+        }
+
+        /// <inheritdoc/>
+        public override void OnReloaded() => Log.Info($"{Name} has been reloaded!");
+
+        /// <summary>
+        /// Registers the plugin events.
+        /// </summary>
+        private void RegisterEvents()
+        {
+            server = new Handlers.Server();
+
+            Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
+            Events.Handlers.Server.EndingRound += server.OnEndingRound;
+        }
+
+        /// <summary>
+        /// Unregisters the plugin events.
+        /// </summary>
+        private void UnregisterEvents()
+        {
+            Events.Handlers.Server.WaitingForPlayers -= server.OnWaitingForPlayers;
+            Events.Handlers.Server.EndingRound -= server.OnEndingRound;
+
+            server = null;
+        }
     }
 }
