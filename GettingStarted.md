@@ -27,25 +27,28 @@ The [Sample Plugin](https://github.com/galaxy119/SamplePlugin) which is a simple
 #### On Enable + On Disable Dyanmic Updates
 Exiled is a framework that has a **Reload** command which can be used to reload all the plugins and get new ones. This means you must make your plugins **Dynamicly Updatable.** What this means is assigning variables, events, and other stuff like cororutines. Must be dis-assigned and nulled in on disable. **On Enable** should enable it all, and **On Disable** should disable it all. But you might be wondering what about **On Reload**? That void is meant to carry over static variables, as in every static constant you make will not be wiped. So you could do something like this:
 ```csharp
-public static int StaticCount = 0; 
-public int counter = 0; 
+class PluginClass : Plugin
+{
+	public static int StaticCount = 0; 
+	public int counter = 0; 
 
-public override void OnEnable() 
-{ 
-	counter = StaticCount; 
-	counter++; 
-	Info(counter); 
-} 
+	public override void OnEnable() 
+	{ 
+		counter = StaticCount; 
+		counter++; 
+		Info(counter); 
+	} 
 
-public override void OnDisable() 
-{ 
-	counter++; 
-	Info(counter); 
-} 
+	public override void OnDisable() 
+	{ 
+		counter++; 
+		Info(counter); 
+	} 
 
-public override void OnReload() 
-{ 
-	StaticCount = counter; 
+	public override void OnReload() 
+	{ 
+		StaticCount = counter; 
+	}
 }
 ``` 
 
@@ -80,23 +83,26 @@ To reference an event we will be using a new class we create; called "EventHandl
 
 We can reference it in the OnEnable and OnDisable void like this:
 ```csharp
-public EventHandlers EventHandler;
-
-public override OnEnable()
+class PluginClass : Plugin
 {
-	// Register the event handler class. And add the event,
-	// to the EXILED_Events event listener so we get the event.
-	EventHandler = new EventHandlers();
-	Events.PlayerJoinEvent += EventHandler.PlayerJoined;
-}
+	public EventHandlers EventHandler;
 
-public override OnDisable()
-{
-	// Make it dynamicly updatable.
-	// We do this by removing the listener for the event and then nulling the event handler.
-	// The more events the more times you have to do this for each one.
-	Events.PlayerJoinEvent -= EventHandler.PlayerJoined;
-	EventHandler = null;
+	public override OnEnable()
+	{
+		// Register the event handler class. And add the event,
+		// to the EXILED_Events event listener so we get the event.
+		EventHandler = new EventHandlers();
+		Events.PlayerJoinEvent += EventHandler.PlayerJoined;
+	}
+
+	public override OnDisable()
+	{
+		// Make it dynamicly updatable.
+		// We do this by removing the listener for the event and then nulling the event handler.
+		// The more events the more times you have to do this for each one.
+		Events.PlayerJoinEvent -= EventHandler.PlayerJoined;
+		EventHandler = null;
+	}
 }
 ```
 And in the EventHandlers class we would do:
@@ -111,18 +117,7 @@ public class EventHandlers
 ```
 Now we have successfully hooked to a player join event which fires when ever a player joins!
 
-This will allow us to broadcast a message to them, so why don't we?
-
-We are going to make another class called 'Extenstions' this will allow us to store some functions that would take up way to much space otherwise in classes.
-
-```csharp    
-public static class Extenstions
-{
-	public static void Broadcast(this ReferenceHub rh, uint time, string message) =>
-	    rh.GetComponent<Broadcast>().TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
-}
-```
-That will be our broadcast function we will use. Now lets add it to our event.
+Now we can use the Exiled Extensions Class to Broadcast a message to the players!
 
 ```csharp
 public class EventHandlers
@@ -139,6 +134,4 @@ And then congratulations! You have made your very first Exiled Plugin!
 ### What now?
 If you want more information you should join our [Discord!](https://discord.gg/SXnFZez)
 
-We have a #resources channel that you might find useful.
-
-Or you could read all the events that we have! If you want to check them out [here!](https://github.com/galaxy119/EXILED/blob/master/EXILED_Events/Events/EventArgs.cs)
+We have a [#resources](https://discord.com/channels/656673194693885975/668962626780397569) channel that you might find useful.
