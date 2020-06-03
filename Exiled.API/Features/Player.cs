@@ -50,7 +50,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform PlayerCamera => ReferenceHub.PlayerCameraReference; 
+        public Transform PlayerCamera => ReferenceHub.PlayerCameraReference;
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
@@ -140,7 +140,6 @@ namespace Exiled.API.Features
             get => ReferenceHub.serverRoles.OverwatchEnabled;
             set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
         }
-
 
         /// <summary>
         /// Gets or sets a value indicating the cuffer <see cref="Player"/> id.
@@ -276,16 +275,6 @@ namespace Exiled.API.Features
         {
             get => ReferenceHub.scp079PlayerScript.currentCamera;
             set => SetCamera(value.cameraId);
-        }
-
-        /// <summary>
-        /// Sets the 079 camera, if the player is SCP-079.
-        /// </summary>
-        /// <param name="id">Camera ID.</param>
-        public void SetCamera(ushort id)
-        {
-            if (ReferenceHub.scp079PlayerScript != null)
-                ReferenceHub.scp079PlayerScript.RpcSwitchCamera(id, false);
         }
 
         /// <summary>
@@ -446,7 +435,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.abilities : null;
+            get => ReferenceHub.scp079PlayerScript?.abilities;
             set
             {
                 if (ReferenceHub.scp079PlayerScript != null)
@@ -459,7 +448,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.levels : null;
+            get => ReferenceHub.scp079PlayerScript?.levels;
             set
             {
                 if (ReferenceHub.scp079PlayerScript != null)
@@ -472,7 +461,7 @@ namespace Exiled.API.Features
         /// </summary>
         public string Speaker
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Speaker : null;
+            get => ReferenceHub.scp079PlayerScript?.Speaker;
             set
             {
                 if (ReferenceHub.scp079PlayerScript != null)
@@ -485,7 +474,7 @@ namespace Exiled.API.Features
         /// </summary>
         public SyncListString LockedDoors
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.lockedDoors : null;
+            get => ReferenceHub.scp079PlayerScript?.lockedDoors;
             set
             {
                 if (ReferenceHub.scp079PlayerScript != null)
@@ -754,6 +743,12 @@ namespace Exiled.API.Features
                 return null;
             }
         }
+
+        /// <summary>
+        /// Sets the 079 camera, if the player is SCP-079.
+        /// </summary>
+        /// <param name="id">Camera ID.</param>
+        public void SetCamera(ushort id) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(id, false);
 
         /// <summary>
         /// Sets the player's rank.
