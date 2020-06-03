@@ -42,13 +42,7 @@ namespace Exiled.Events.Handlers.EventArgs
         public Scp914Knob KnobSetting
         {
             get => knobSetting;
-            set
-            {
-                if (value + 1 > Scp914Machine.knobStateMax)
-                    knobSetting = Scp914Machine.knobStateMin;
-                else
-                    knobSetting += 1;
-            }
+            set => knobSetting = value > Scp914Machine.knobStateMax ? Scp914Machine.knobStateMin : value;
         }
 
         /// <summary>
