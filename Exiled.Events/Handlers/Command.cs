@@ -18,12 +18,8 @@ namespace Exiled.Events.Handlers
     /// </summary>
     public class Command
     {
-        /// <summary>
-        /// Invoked when sending a command through the Remote Admin console.
-        /// </summary>
-        /// <param name="sender">Always null.</param>
-        /// <param name="ev">The event instance.</param>
-        public void OnSendingRemoteAdminCommand(object sender, SendingRemoteAdminCommandEventArgs ev)
+        /// <inheritdoc cref="Server.OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs)"/>
+        public void OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
         {
             switch (ev.Name)
             {

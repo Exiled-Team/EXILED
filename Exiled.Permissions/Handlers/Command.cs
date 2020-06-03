@@ -18,7 +18,7 @@ namespace Exiled.Permissions.Events
     public class Command
     {
         /// <inheritdoc cref="Server.OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs)"/>
-        public void OnSendingRemoteAdminCommand(object sender, SendingRemoteAdminCommandEventArgs ev)
+        public void OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
         {
             if (ev.Name.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
                 return;

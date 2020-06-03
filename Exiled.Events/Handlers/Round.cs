@@ -17,7 +17,7 @@ namespace Exiled.Events.Handlers
     public class Round
     {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
-        public void OnWaitingForPlayers(object sender, System.EventArgs ev)
+        public void OnWaitingForPlayers()
         {
             API.Features.Map.Rooms.Clear();
             API.Features.Map.Doors.Clear();
@@ -29,7 +29,7 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
-        public void OnRoundStarted(object sender, System.EventArgs ev)
+        public void OnRoundStarted()
         {
             foreach (API.Features.Player player in API.Features.Player.List.Values)
             {
@@ -42,7 +42,7 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Player.OnLeft(LeftEventArgs)"/>
-        public void OnPlayerLeft(object sender, LeftEventArgs ev)
+        public void OnPlayerLeft(LeftEventArgs ev)
         {
             if (API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
                 API.Features.Player.IdsCache.Remove(ev.Player.Id);
@@ -55,7 +55,7 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Player.OnJoined(JoinedEventArgs)"/>
-        public void OnPlayerJoined(object sender, JoinedEventArgs ev)
+        public void OnPlayerJoined(JoinedEventArgs ev)
         {
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
@@ -65,7 +65,7 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
-        public void OnChangingRole(object sender, ChangingRoleEventArgs ev)
+        public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;

@@ -12,6 +12,7 @@ namespace Exiled.Events.Handlers
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.Handlers.EventArgs;
+    using static Exiled.Events.Events;
 
     /// <summary>
     /// Server related events.
@@ -21,92 +22,92 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before waiting for players.
         /// </summary>
-        public static event EventHandler WaitingForPlayers;
+        public static event CustomEventHandler WaitingForPlayers;
 
         /// <summary>
         /// Invoked after the start of a new round.
         /// </summary>
-        public static event EventHandler RoundStarted;
+        public static event CustomEventHandler RoundStarted;
 
         /// <summary>
         /// Invoked before ending a round
         /// </summary>
-        public static event EventHandler<EndingRoundEventArgs> EndingRound;
+        public static event CustomEventHandler<EndingRoundEventArgs> EndingRound;
 
         /// <summary>
         /// Invoked after the end of a round.
         /// </summary>
-        public static event EventHandler<RoundEndedEventArgs> RoundEnded;
+        public static event CustomEventHandler<RoundEndedEventArgs> RoundEnded;
 
         /// <summary>
         /// Invoked before the restart of a round.
         /// </summary>
-        public static event EventHandler RestartingRound;
+        public static event CustomEventHandler RestartingRound;
 
         /// <summary>
         /// Invoked when a player reports a cheater.
         /// </summary>
-        public static event EventHandler<ReportingCheaterEventArgs> ReportingCheater;
+        public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
 
         /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
-        public static event EventHandler<RespawningTeamEventArgs> RespawningTeam;
+        public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
 
         /// <summary>
         /// Invoked when sending a command through the in-game console.
         /// </summary>
-        public static event EventHandler<SendingConsoleCommandEventArgs> SendingConsoleCommand;
+        public static event CustomEventHandler<SendingConsoleCommandEventArgs> SendingConsoleCommand;
 
         /// <summary>
         /// Invoked when sending a command through the Remote Admin console.
         /// </summary>
-        public static event EventHandler<SendingRemoteAdminCommandEventArgs> SendingRemoteAdminCommand;
+        public static event CustomEventHandler<SendingRemoteAdminCommandEventArgs> SendingRemoteAdminCommand;
 
         /// <summary>
         /// Called before waiting for players.
         /// </summary>
-        public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely(null, System.EventArgs.Empty);
+        public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
 
         /// <summary>
         /// Called after the start of a new round.
         /// </summary>
-        public static void OnRoundStarted() => RoundStarted.InvokeSafely(null, System.EventArgs.Empty);
+        public static void OnRoundStarted() => RoundStarted.InvokeSafely();
 
         /// <summary>
         /// Called before ending a round.
         /// </summary>
         /// <param name="ev">The <see cref="EndingRoundEventArgs"/> instance.</param>
-        public static void OnEndingRound(EndingRoundEventArgs ev) => EndingRound.InvokeSafely(null, ev);
+        public static void OnEndingRound(EndingRoundEventArgs ev) => EndingRound.InvokeSafely(ev);
 
         /// <summary>
         /// Called after the end of a round.
         /// </summary>
         /// <param name="ev">The <see cref="RoundEndedEventArgs"/> instance.</param>
-        public static void OnRoundEnded(RoundEndedEventArgs ev) => RoundEnded.InvokeSafely(null, ev);
+        public static void OnRoundEnded(RoundEndedEventArgs ev) => RoundEnded.InvokeSafely(ev);
 
         /// <summary>
         /// Called before restarting a round.
         /// </summary>
-        public static void OnRestartingRound() => RestartingRound.InvokeSafely(null, System.EventArgs.Empty);
+        public static void OnRestartingRound() => RestartingRound.InvokeSafely();
 
         /// <summary>
         /// Called when a player reports a cheater.
         /// </summary>
         /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
-        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(null, ev);
+        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
         /// Called before respawning a wave of Chaso Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
-        public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(null, ev);
+        public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
 
         /// <summary>
         /// Called when sending a command through in-game console.
         /// </summary>
         /// <param name="ev">The <see cref="SendingConsoleCommandEventArgs"/> instance.</param>
-        public static void OnSendingConsoleCommand(SendingConsoleCommandEventArgs ev) => SendingConsoleCommand.InvokeSafely(null, ev);
+        public static void OnSendingConsoleCommand(SendingConsoleCommandEventArgs ev) => SendingConsoleCommand.InvokeSafely(ev);
 
         /// <summary>
         /// Called when sending a command through the Remote Admin console.
@@ -114,7 +115,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="SendingRemoteAdminCommandEventArgs"/> instance.</param>
         public static void OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
         {
-            SendingRemoteAdminCommand.InvokeSafely(null, ev);
+            SendingRemoteAdminCommand.InvokeSafely(ev);
 
             lock (ServerLogs.LockObject)
             {
