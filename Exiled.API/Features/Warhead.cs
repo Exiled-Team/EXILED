@@ -46,7 +46,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
         /// </summary>
-        public static bool IsLeverEnabled
+        public static bool LeverStatus
         {
             get => SitePanel.Networkenabled;
             set => SitePanel.Networkenabled = value;
@@ -72,7 +72,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Starts the warhead.
+        /// Starts the warhead countdown.
         /// </summary>
         public static void Start()
         {
@@ -88,6 +88,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Detonates the warhead.
         /// </summary>
-        public static void Detonate() => Controller.Detonate();
+        public static void Detonate()
+        {
+            Controller.InstantPrepare();
+            Controller.Detonate();
+        }
     }
 }

@@ -75,9 +75,6 @@ namespace Exiled.Loader
 
             try
             {
-                if (Directory.Exists(Paths.Dependencies))
-                    Directory.Move(Paths.Dependencies, Path.Combine(Paths.Plugins, "dependencies"));
-
                 LoadAllDependencies();
             }
             catch (Exception exception)
@@ -119,13 +116,16 @@ namespace Exiled.Loader
                 pluginsList.Remove(exiledPermission);
             }
 
-            foreach (string plugin in pluginsList)
+            if (pluginsList.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
             {
-                if (plugin.EndsWith("EXILED.dll"))
-                    continue;
+                string exiledUpdater = pluginsList.FirstOrDefault(m => m.Contains("Exiled.Updater.dll"));
 
-                Load(plugin);
+                Load(exiledUpdater);
+                pluginsList.Remove(exiledUpdater);
             }
+
+            foreach (string plugin in pluginsList)
+                Load(plugin);
 
             EnableAll();
         }
@@ -172,7 +172,7 @@ namespace Exiled.Loader
 
                     if (plugin.RequiredExiledVersion > Version)
                     {
-                        if (Config.ShouldLoadOutdatedPlugins)
+                        if (!Config.ShouldLoadOutdatedPlugins)
                         {
                             Log.Error($"You're running an older version of Exiled ({Version.Major}.{Version.Minor}.{Version.Build})! This plugin won't be loaded!" +
                             $"Required version to load it: {plugin.RequiredExiledVersion.Major}.{plugin.RequiredExiledVersion.Minor}.{plugin.RequiredExiledVersion.Build}");
@@ -193,7 +193,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initalizing {path}! {exception}");
+                Log.Error($"Error while initializing {path}! {exception}");
             }
         }
 
@@ -229,8 +229,8 @@ namespace Exiled.Loader
                 {
                     plugin.Config.IsEnabled = false;
 
-                    plugin.OnDisabled();
                     plugin.OnReloaded();
+                    plugin.OnDisabled();
 
                     Plugins.Remove(plugin);
                 }
@@ -314,12 +314,12 @@ namespace Exiled.Loader
         private static void LoadAllDependencies()
         {
             Log.Info("Loading dependencies...");
-            Log.Debug($"Searching Directory \"{Paths.LoadedDependencies}\"", ShouldDebugBeShown);
+            Log.Debug($"Searching Directory \"{Paths.Dependencies}\"", ShouldDebugBeShown);
 
-            if (!Directory.Exists(Paths.LoadedDependencies))
-                Directory.CreateDirectory(Paths.LoadedDependencies);
+            if (!Directory.Exists(Paths.Dependencies))
+                Directory.CreateDirectory(Paths.Dependencies);
 
-            string[] dependencies = Directory.GetFiles(Paths.LoadedDependencies);
+            string[] dependencies = Directory.GetFiles(Paths.Dependencies);
 
             foreach (string dll in dependencies)
             {

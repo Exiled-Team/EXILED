@@ -19,7 +19,7 @@ namespace Exiled.API.Enums
 
         /// <summary>
         /// Mobile Task Forces team.
-        /// Contains <see cref="RoleType.FacilityGuard"/>, <see cref="RoleType.NtfCadet"/>, <see cref="RoleType.NtfLieutenant"/>,
+        /// Contains <see cref="RoleType.Scientist"/>, <see cref="RoleType.FacilityGuard"/>, <see cref="RoleType.NtfCadet"/>, <see cref="RoleType.NtfLieutenant"/>,
         /// <see cref="RoleType.NtfCommander"/> and <see cref="RoleType.NtfScientist"/>.
         /// </summary>
         Mtf,

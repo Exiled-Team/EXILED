@@ -48,6 +48,11 @@ namespace Exiled.API.Features
         public ReferenceHub ReferenceHub { get; private set; }
 
         /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// </summary>
+        public Transform PlayerCamera => ReferenceHub.PlayerCameraReference; 
+
+        /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject => ReferenceHub.gameObject;
@@ -89,7 +94,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                switch (UserId.Split('@')[0] ?? string.Empty)
+                if (string.IsNullOrEmpty(UserId))
+                    return AuthenticationType.Unknown;
+
+                switch (UserId.Split('@')[0])
                 {
                     case "steam":
                         return AuthenticationType.Steam;
@@ -132,6 +140,7 @@ namespace Exiled.API.Features
             get => ReferenceHub.serverRoles.OverwatchEnabled;
             set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
         }
+
 
         /// <summary>
         /// Gets or sets a value indicating the cuffer <see cref="Player"/> id.
@@ -205,6 +214,7 @@ namespace Exiled.API.Features
                         return Team.MTF;
                     case RoleType.Tutorial:
                         return Team.TUT;
+                    case RoleType.None:
                     default:
                         return Team.RIP;
                 }
@@ -212,9 +222,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="RoleType"/>.
+        /// Gets or sets the player's <see cref="RoleType"/>.
         /// </summary>
-        public RoleType Role => ReferenceHub.characterClassManager.CurClass;
+        public RoleType Role
+        {
+            get => ReferenceHub.characterClassManager.NetworkCurClass;
+            set => ReferenceHub.characterClassManager.SetPlayersClass(value, GameObject);
+        }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed or not.
@@ -232,14 +246,18 @@ namespace Exiled.API.Features
         public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
 
         /// <summary>
-        /// Gets the player's IP address.
+        /// Gets or sets the player's IP address.
         /// </summary>
-        public string IPAddress => ReferenceHub.queryProcessor._ipAddress;
+        public string IPAddress
+        {
+            get => ReferenceHub.queryProcessor._ipAddress;
+            set => ReferenceHub.queryProcessor._ipAddress = value;
+        }
 
         /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
         /// </summary>
-        public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
+        public NetworkConnection Connection => ReferenceHub.networkIdentity.connectionToClient;
 
         /// <summary>
         /// Gets a value indicating whether the player is the host or not.
@@ -252,14 +270,28 @@ namespace Exiled.API.Features
         public bool IsDead => Team == Team.RIP;
 
         /// <summary>
-        /// Gets the camera of SCP-079.
+        /// Gets or sets the camera of SCP-079.
         /// </summary>
-        public Camera079 Camera => ReferenceHub.scp079PlayerScript.currentCamera;
+        public Camera079 Camera
+        {
+            get => ReferenceHub.scp079PlayerScript.currentCamera;
+            set => SetCamera(value.cameraId);
+        }
+
+        /// <summary>
+        /// Sets the 079 camera, if the player is SCP-079.
+        /// </summary>
+        /// <param name="id">Camera ID.</param>
+        public void SetCamera(ushort id)
+        {
+            if (ReferenceHub.scp079PlayerScript != null)
+                ReferenceHub.scp079PlayerScript.RpcSwitchCamera(id, false);
+        }
 
         /// <summary>
         /// Gets a value indicating whether the player's role type is any NTF type <see cref="ReferenceHub"/>.
         /// </summary>
-        public bool IsNTF => Role.ToString().StartsWith("Ntf");
+        public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
@@ -280,7 +312,6 @@ namespace Exiled.API.Features
                         return Side.ChaosInsurgency;
                     case Team.TUT:
                         return Side.Tutorial;
-                    case Team.RIP:
                     default:
                         return Side.None;
                 }
@@ -289,7 +320,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
-        /// This only isAlloweds to deal friendly fire damage, not take friendly fire damage.
+        /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
         /// </summary>
         public bool IsFriendlyFireEnabled
         {
@@ -361,7 +392,12 @@ namespace Exiled.API.Features
         public float Health
         {
             get => ReferenceHub.playerStats.Health;
-            set => ReferenceHub.playerStats.Health = value;
+            set
+            {
+                ReferenceHub.playerStats.Health = value;
+                if (value > MaxHealth)
+                    MaxHealth = (int)value;
+            }
         }
 
         /// <summary>
@@ -379,7 +415,12 @@ namespace Exiled.API.Features
         public float AdrenalineHealth
         {
             get => ReferenceHub.playerStats.unsyncedArtificialHealth;
-            set => ReferenceHub.playerStats.unsyncedArtificialHealth = value;
+            set
+            {
+                ReferenceHub.playerStats.unsyncedArtificialHealth = value;
+                if (value > MaxAdrenalineHealth)
+                    MaxAdrenalineHealth = (int)value;
+            }
         }
 
         /// <summary>
@@ -401,39 +442,55 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the abilities of SCP-079.
+        /// Gets or sets the abilities of SCP-079. Can be null.
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
-            get => ReferenceHub.scp079PlayerScript.abilities;
-            set => ReferenceHub.scp079PlayerScript.abilities = value;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.abilities : null;
+            set
+            {
+                if (ReferenceHub.scp079PlayerScript != null)
+                    ReferenceHub.scp079PlayerScript.abilities = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the levels of SCP-079.
+        /// Gets or sets the levels of SCP-079. Can be null.
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
-            get => ReferenceHub.scp079PlayerScript.levels;
-            set => ReferenceHub.scp079PlayerScript.levels = value;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.levels : null;
+            set
+            {
+                if (ReferenceHub.scp079PlayerScript != null)
+                    ReferenceHub.scp079PlayerScript.levels = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the speaker of SCP-079.
+        /// Gets or sets the speaker of SCP-079. Can be null.
         /// </summary>
         public string Speaker
         {
-            get => ReferenceHub.scp079PlayerScript.Speaker;
-            set => ReferenceHub.scp079PlayerScript.Speaker = value;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Speaker : null;
+            set
+            {
+                if (ReferenceHub.scp079PlayerScript != null)
+                    ReferenceHub.scp079PlayerScript.Speaker = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the SCP-079 locked doors <see cref="SyncListString"/>.
+        /// Gets or sets the SCP-079 locked doors <see cref="SyncListString"/>. Can be null.
         /// </summary>
         public SyncListString LockedDoors
         {
-            get => ReferenceHub.scp079PlayerScript.lockedDoors;
-            set => ReferenceHub.scp079PlayerScript.lockedDoors = value;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.lockedDoors : null;
+            set
+            {
+                if (ReferenceHub.scp079PlayerScript != null)
+                    ReferenceHub.scp079PlayerScript.lockedDoors = value;
+            }
         }
 
         /// <summary>
@@ -441,9 +498,12 @@ namespace Exiled.API.Features
         /// </summary>
         public float Experience
         {
-            get => ReferenceHub.scp079PlayerScript.Exp;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Exp : float.NaN;
             set
             {
+                if (ReferenceHub.scp079PlayerScript == null)
+                    return;
+
                 ReferenceHub.scp079PlayerScript.Exp = value;
                 ReferenceHub.scp079PlayerScript.OnExpChange();
             }
@@ -454,10 +514,10 @@ namespace Exiled.API.Features
         /// </summary>
         public int Level
         {
-            get => ReferenceHub.scp079PlayerScript.Lvl;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : int.MinValue;
             set
             {
-                if (ReferenceHub.scp079PlayerScript.Lvl == value)
+                if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
                 ReferenceHub.scp079PlayerScript.Lvl = value;
@@ -471,9 +531,12 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxEnergy
         {
-            get => ReferenceHub.scp079PlayerScript.NetworkmaxMana;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
             set
             {
+                if (ReferenceHub.scp079PlayerScript == null)
+                    return;
+
                 ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
                 ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
             }
@@ -484,31 +547,27 @@ namespace Exiled.API.Features
         /// </summary>
         public float Energy
         {
-            get => ReferenceHub.scp079PlayerScript.Mana;
-            set => ReferenceHub.scp079PlayerScript.Mana = value;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Mana : float.NaN;
+            set
+            {
+                if (ReferenceHub.scp079PlayerScript == null)
+                    return;
+
+                ReferenceHub.scp079PlayerScript.Mana = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the staff bypass is enabled or not.
+        /// Gets a value indicating whether the staff bypass is enabled or not.
         /// </summary>
-        public bool IsStaffBypassEnabled
-        {
-            get => ReferenceHub.serverRoles.BypassStaff;
-            set => ReferenceHub.serverRoles.BypassStaff = value;
-        }
+        public bool IsStaffBypassEnabled => ReferenceHub.serverRoles.BypassStaff;
 
         /// <summary>
         /// Gets or sets the player's group name.
         /// </summary>
         public string GroupName
         {
-            get
-            {
-                if (ServerStatic.PermissionsHandler._members.TryGetValue(UserId, out string groupName))
-                    return groupName;
-
-                return null;
-            }
+            get => ServerStatic.PermissionsHandler._members.TryGetValue(UserId, out string groupName) ? groupName : null;
             set => ServerStatic.PermissionsHandler._members[UserId] = value;
         }
 
@@ -584,10 +643,7 @@ namespace Exiled.API.Features
                                                              new string[] { ": " },
                                                              StringSplitOptions.None)).ToDictionary(split => split[0], split => split[1]);
 
-                if (int.TryParse(dictionary["Badge type"], out int badgeType))
-                    return null;
-
-                return new Badge(dictionary["Badge text"], dictionary["Badge color"], badgeType, true);
+                return int.TryParse(dictionary["Badge type"], out int badgeType) ? null : new Badge(dictionary["Badge text"], dictionary["Badge color"], badgeType, true);
             }
         }
 
@@ -601,10 +657,7 @@ namespace Exiled.API.Features
             if (gameObject == null)
                 return null;
 
-            if (List.TryGetValue(gameObject, out Player player))
-                return player;
-
-            return null;
+            return List.TryGetValue(gameObject, out Player player) ? player : null;
         }
 
         /// <summary>
@@ -619,12 +672,12 @@ namespace Exiled.API.Features
 
             foreach (Player playerFound in List.Values)
             {
-                if (playerFound.Id == id)
-                {
-                    IdsCache[id] = playerFound;
+                if (playerFound.Id != id)
+                    continue;
 
-                    return playerFound;
-                }
+                IdsCache[id] = playerFound;
+
+                return playerFound;
             }
 
             return null;
@@ -732,18 +785,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Sets the camera of SCP-079.
+        /// Gets the camera with the given ID.
         /// </summary>
-        /// <param name="camera">The camera to be set.</param>
-        /// <param name="shouldLookAtRotation">Indicates whether or not the camera should take the rotation into account when switching it.</param>
-        public void SetCamera(Camera079 camera, bool shouldLookAtRotation = false) => SetCamera(camera.cameraId, shouldLookAtRotation);
+        /// <param name="cameraId">The camera id to be searched for.</param>
+        /// <returns><see cref="Camera079"/>.</returns>
+        public Camera079 GetCameraById(ushort cameraId)
+        {
+            Camera079[] cameras = UnityEngine.Object.FindObjectsOfType<Camera079>();
 
-        /// <summary>
-        /// Sets the camera of SCP-079.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be set.</param>
-        /// <param name="shouldLookAtRotation">Indicates whether or not the camera should take the rotation into account when switching it.</param>
-        public void SetCamera(ushort cameraId, bool shouldLookAtRotation = false) => ReferenceHub.scp079PlayerScript.RpcSwitchCamera(cameraId, shouldLookAtRotation);
+            foreach (Camera079 camera in cameras)
+            {
+                if (camera.cameraId == cameraId)
+                    return camera;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Handcuff the player.
@@ -755,7 +812,7 @@ namespace Exiled.API.Features
                 return;
 
             if (!IsCuffed &&
-                cuffer.Inventory.items.Any((Inventory.SyncItemInfo item) => item.id == ItemType.Disarmer) &&
+                cuffer.Inventory.items.Any(item => item.id == ItemType.Disarmer) &&
                 Vector3.Distance(Position, cuffer.Position) <= 130f)
             {
                 CufferId = cuffer.Id;
@@ -909,8 +966,11 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            foreach (Inventory.SyncItemInfo item in newItems)
-                Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+            if (newItems.Count > 0)
+            {
+                foreach (Inventory.SyncItemInfo item in newItems)
+                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+            }
         }
 
         /// <summary>

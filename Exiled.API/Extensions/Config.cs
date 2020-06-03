@@ -23,12 +23,9 @@ namespace Exiled.API.Extensions
         /// <returns>Returns a <see cref="Dictionary{TKey, TValue}"/> from the configs, or the default value if empty.</returns>
         public static Dictionary<string, string> GetStringDictionary(this YamlConfig config, string key, Dictionary<string, string> defaultValue)
         {
-            var dictionary = config.GetStringDictionary(key);
+            Dictionary<string, string> dictionary = config.GetStringDictionary(key);
 
-            if (dictionary?.Count == 0)
-                return defaultValue;
-
-            return dictionary;
+            return dictionary?.Count == 0 ? defaultValue : dictionary;
         }
 
         /// <summary>
@@ -40,12 +37,9 @@ namespace Exiled.API.Extensions
         /// <returns>Returns a <see cref="List{T}"/> from the configs, or the default value if empty.</returns>
         public static List<string> GetStringList(this YamlConfig config, string key, List<string> defaultValue)
         {
-            var list = config.GetStringList(key);
+            List<string> list = config.GetStringList(key);
 
-            if (list?.Count == 0)
-                return defaultValue;
-
-            return list;
+            return list?.Count == 0 ? defaultValue : list;
         }
     }
 }

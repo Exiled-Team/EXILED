@@ -26,10 +26,7 @@ namespace Exiled.API.Extensions
         /// <param name="barrel">The barrel of the weapon (0 is no custom barrel, 1 is the first barrel available, and so on).</param>
         /// <param name="other">Other attachments like flashlight, laser or ammo counter.</param>
         /// <returns>Returns the spawned <see cref="Pickup"/>.</returns>
-        public static Pickup Spawn(this ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
-        {
-            return Server.Host.Inventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
-        }
+        public static Pickup Spawn(this ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0) => Server.Host.Inventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
 
         /// <summary>
         /// Set the ammo of an <see cref="Inventory.SyncItemInfo">item</see>.
@@ -67,11 +64,9 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <param name="checkMicro">Indicates whether the MicroHID item should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a weapon or not.</returns>
-        public static bool IsWeapon(this ItemType type, bool checkMicro = true)
-        {
-            return type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer ||
-                   type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP || (checkMicro && type == ItemType.MicroHID);
-        }
+        public static bool IsWeapon(this ItemType type, bool checkMicro = true) =>
+            type == ItemType.GunCOM15 || type == ItemType.GunE11SR || type == ItemType.GunLogicer ||
+            type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP || (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
@@ -106,12 +101,10 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
-        public static bool IsKeycard(this ItemType type)
-        {
-            return type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
-                   type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
-                   type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
-                   type == ItemType.KeycardScientistMajor || type == ItemType.KeycardSeniorGuard || type == ItemType.KeycardZoneManager;
-        }
+        public static bool IsKeycard(this ItemType type) =>
+            type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
+            type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
+            type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
+            type == ItemType.KeycardScientistMajor || type == ItemType.KeycardSeniorGuard || type == ItemType.KeycardZoneManager;
     }
 }

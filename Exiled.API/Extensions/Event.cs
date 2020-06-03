@@ -27,7 +27,7 @@ namespace Exiled.API.Extensions
             if (ev == null)
                 return;
 
-            foreach (var handler in ev.GetInvocationList())
+            foreach (Delegate handler in ev.GetInvocationList())
                 HandleSafely(ev.GetType().FullName, handler.Method, handler.Target, args);
         }
 

@@ -21,24 +21,19 @@ namespace Exiled.API.Features
         public static string AppData { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
         /// <summary>
-        /// Gets or sets plugins path.
-        /// </summary>
-        public static string Plugins { get; set; } = Path.Combine(AppData, "Plugins");
-
-        /// <summary>
         /// Gets exiled directory path.
         /// </summary>
         public static string Exiled { get; private set; } = Path.Combine(AppData, "EXILED");
 
         /// <summary>
-        /// Gets Dependencies directory path.
+        /// Gets or sets plugins path.
         /// </summary>
-        public static string Dependencies { get; private set; } = Path.Combine(Exiled, "dependencies");
+        public static string Plugins { get; set; } = Path.Combine(Exiled, "Plugins");
 
         /// <summary>
-        /// Gets loaded dependencies path.
+        /// Gets Dependencies directory path.
         /// </summary>
-        public static string LoadedDependencies { get; private set; } = Path.Combine(Plugins, "dependencies");
+        public static string Dependencies { get; private set; } = Path.Combine(Plugins, "dependencies");
 
         /// <summary>
         /// Gets managed assemblies directory path.
@@ -48,7 +43,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets configs path.
         /// </summary>
-        public static string Config { get; private set; } = Path.Combine(Exiled, $"{Server.Port}-config.yml");
+        public static string Config { get; private set; } = Path.Combine(Path.Combine(Exiled, "Configs"), $"{Server.Port}-config.yml");
 
         /// <summary>
         /// Gets logs path.

@@ -42,7 +42,9 @@ namespace Exiled.Installer
             Console.WriteLine($"GitHub download URL found: {fullPath}, downloading...");
 
             using (WebClient client = new WebClient())
+            {
                 client.DownloadFile(fullPath, "EXILED.tar.gz");
+            }
 
             Console.WriteLine("Latest version downloaded, extracting...");
 

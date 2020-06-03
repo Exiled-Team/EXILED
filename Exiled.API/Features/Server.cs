@@ -23,19 +23,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's host of the server.
         /// </summary>
-        public static Player Host
-        {
-            get
-            {
-                if (host == null)
-                    host = new Player(ReferenceHub.Hubs[PlayerManager.localPlayer]);
-
-                return host;
-            }
-        }
+        public static Player Host => host ?? (host = new Player(ReferenceHub.Hubs[PlayerManager.localPlayer]));
 
         /// <summary>
-        /// Gets the cached <see cref="global::Broadcast"/> component.
+        /// Gets the cached <see cref="Broadcast"/> component.
         /// </summary>
         public static Broadcast Broadcast
         {
@@ -49,7 +40,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the cached <see cref="global::BanPlayer"/> component.
+        /// Gets the cached <see cref="BanPlayer"/> component.
         /// </summary>
         public static BanPlayer BanPlayer
         {
@@ -105,7 +96,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.
         /// </summary>
-        public static bool IsFriendlyFireEnabled
+        public static bool FriendlyFire
         {
             get => ServerConsole.FriendlyFire;
             set
@@ -113,7 +104,7 @@ namespace Exiled.API.Features
                 ServerConsole.FriendlyFire = value;
 
                 foreach (ReferenceHub player in ReferenceHub.Hubs.Values)
-                    player.weaponManager.NetworkfriendlyFire = true;
+                    player.weaponManager.NetworkfriendlyFire = value;
             }
         }
     }

@@ -80,21 +80,22 @@ namespace Exiled.Updater
                 Log.Info($"Extraction complete, moving files...");
 
                 string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "Exiled"), "Exiled.Loader.dll");
-                string tempPluginsDirectory = Path.Combine(tempDirectory, "Plugins");
+                string tempPluginsDirectory = Path.Combine(tempExiledMainPath, "Plugins");
                 string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "Exiled.Events.dll");
+                string tempPermissionsPath = Path.Combine(tempPluginsDirectory, "Exiled.Permissions.dll");
+                string tempUpdaterPath = Path.Combine(tempPluginsDirectory, "Exiled.Updater.dll");
                 string tempAssemblyPath = Path.Combine(tempDirectory, "Assembly-CSharp.dll");
 
                 File.Delete(Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
-                File.Delete(Path.Combine(Paths.Plugins, "Exiled.API.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Idler.dll"));
+                File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
                 File.Delete(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
                 File.Move(tempExiledMainPath, Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
                 File.Move(tempExiledEventsPath, Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
-                File.Move(Path.Combine(tempPluginsDirectory, "Exiled.Permissions.dll"), Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
-                File.Move(Path.Combine(tempPluginsDirectory, "Exiled.Idler.dll"), Path.Combine(Paths.Plugins, "Exiled.Idler.dll"));
-                File.Move(Path.Combine(tempPluginsDirectory, "Exiled.API.dll"), Path.Combine(Paths.Plugins, "Exiled.API.dll"));
+                File.Move(tempPermissionsPath, Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
+                File.Move(tempUpdaterPath, Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
                 File.Move(tempAssemblyPath, Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
                 Log.Info($"Files moved, cleaning up...");
                 Directory.Delete(tempDirectory, true);

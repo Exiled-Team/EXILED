@@ -23,7 +23,7 @@ namespace Exiled.API.Extensions
         /// <param name="param">The method parameters.</param>
         public static void InvokeStaticMethod(this Type type, string methodName, object[] param)
         {
-            BindingFlags flags = BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public;
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public;
 
             type.GetMethod(methodName, flags)?.Invoke(null, param);
         }
