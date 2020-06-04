@@ -28,6 +28,9 @@ namespace Exiled.Events.Patches.Events
         {
             API.Features.Player player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
 
+            if (player.IsHost)
+                return;
+
             API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
             if (PlayerManager.players.Count >= CustomNetworkManager.slots)
