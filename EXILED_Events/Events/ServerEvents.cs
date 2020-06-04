@@ -92,6 +92,26 @@ namespace EXILED
 			allow = ev.Allow;
 		}
 
+		public static event Action<LocalReportEvent> LocalReportEvent;
+
+		internal static void InvokeLocalReport(ReferenceHub issuer, ReferenceHub target, string reason, ref bool allow)
+		{
+			if (LocalReportEvent == null)
+				return;
+
+			var ev = new LocalReportEvent
+			{
+				Allow = allow,
+				Issuer = issuer,
+				Target = target,
+				Reason = reason
+			};
+
+			LocalReportEvent.InvokeSafely(ev);
+
+			allow = ev.Allow;
+		}
+
 		public static event WaitingForPlayers WaitingForPlayersEvent;
 		public delegate void WaitingForPlayers();
 
