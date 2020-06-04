@@ -27,18 +27,19 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Handcuffs __instance)
         {
-            foreach (GameObject player in PlayerManager.players)
+            foreach (API.Features.Player target in API.Features.Player.List.Values)
             {
-                var targetPlayer = API.Features.Player.Get(player);
+                if (target == null)
+                    continue;
 
-                if (targetPlayer.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
+                if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
                 {
-                    var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), targetPlayer);
+                    var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
 
                     Player.OnRemovingHandcuffs(ev);
 
                     if (ev.IsAllowed)
-                        targetPlayer.CufferId = -1;
+                        target.CufferId = -1;
 
                     break;
                 }
