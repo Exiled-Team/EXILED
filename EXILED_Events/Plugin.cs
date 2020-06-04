@@ -20,7 +20,7 @@ namespace EXILED
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 12, Patch = 8 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 12, Patch = 9 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable
@@ -133,19 +133,13 @@ namespace EXILED
 				//You must use an incrementer for the harmony instance name, otherwise the new instance will fail to be created if the plugin is reloaded.
 				patchFixer++;
 				instance = HarmonyInstance.Create($"exiled.patches{patchFixer}");
-#if DEBUG
-				// If debugging was enabled before, don't touch it
-				var disabledStatus = HarmonyInstance.DEBUG == true;
-				HarmonyInstance.DEBUG = true;
-#endif
 				instance.PatchAll();
-#if DEBUG
-				HarmonyInstance.DEBUG = disabledStatus;
-#endif
 			}
 			catch (Exception exception)
 			{
 				Log.Error($"Patching failed! {exception}");
+				Log.Error(exception.StackTrace);
+				Log.Error(exception.InnerException.ToString());
 			}
 
 			Log.Debug("Patching complete. c:");
