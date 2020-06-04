@@ -305,6 +305,25 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
+	public class LocalReportEvent : EventArgs
+    {
+		/// <summary>
+		///		The target of the report.
+		/// </summary>
+		public ReferenceHub Target { get; internal set; }
+		/// <summary>
+		///		The sender of the report.
+		/// </summary>
+		public ReferenceHub Issuer { get; internal set; }
+		public string Reason { get; internal set; }
+		/// <summary>
+		///		Determines whether the report
+		///		will be further processed and
+		///		sent to the webhook and console.
+		/// </summary>
+		public bool Allow { get; set; }
+    }
+
 	public class DoorInteractionEvent : EventArgs
 	{
 		public ReferenceHub Player { get; set; }

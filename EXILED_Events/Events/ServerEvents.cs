@@ -1,5 +1,6 @@
 using EXILED.Extensions;
 using LiteNetLib;
+using Steamworks.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,6 +89,26 @@ namespace EXILED
 			};
 
 			CheaterReportEvent.InvokeSafely(ev);
+
+			allow = ev.Allow;
+		}
+
+		public static event Action<LocalReportEvent> LocalReportEvent;
+
+		internal static void InvokeLocalReport(ReferenceHub issuer, ReferenceHub target, string reason, ref bool allow)
+		{
+			if (LocalReportEvent == null)
+				return;
+
+			var ev = new LocalReportEvent
+			{
+				Allow = allow,
+				Issuer = issuer,
+				Target = target,
+				Reason = reason
+			};
+
+			LocalReportEvent.InvokeSafely(ev);
 
 			allow = ev.Allow;
 		}
