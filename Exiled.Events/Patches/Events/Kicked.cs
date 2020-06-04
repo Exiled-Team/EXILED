@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events
     /// Patches <see cref="ServerConsole.Disconnect(GameObject, string)"/>.
     /// Adds the <see cref="Player.Kicked"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect))]
+    [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), new[] { typeof(GameObject), typeof(string) })]
     public class Kicked
     {
         /// <summary>

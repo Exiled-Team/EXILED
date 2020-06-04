@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events
         /// </summary>
         /// <param name="__instance">The <see cref="CheaterReport"/> instance.</param>
         /// <param name="reporter">The reporter.</param>
-        /// <param name="reporterSteamId"><inheritdoc cref="ReportingCheaterEventArgs.ReporterUserId"/></param>
-        /// <param name="reportedSteamId"><inheritdoc cref="ReportingCheaterEventArgs.ReportedUserId"/></param>
+        /// <param name="reporterUserId"><inheritdoc cref="ReportingCheaterEventArgs.ReporterUserId"/></param>
+        /// <param name="reportedUserId"><inheritdoc cref="ReportingCheaterEventArgs.ReportedUserId"/></param>
         /// <param name="reportedAuth"><inheritdoc cref="ReportingCheaterEventArgs.ReportedAuthentication"/></param>
         /// <param name="reportedIp"><inheritdoc cref="ReportingCheaterEventArgs.ReportedIPAddress"/></param>
         /// <param name="reporterAuth"><inheritdoc cref="ReportingCheaterEventArgs.ReporterAuthentication"/></param>
@@ -39,8 +39,8 @@ namespace Exiled.Events.Patches.Events
         public static bool Prefix(
             CheaterReport __instance,
             GameConsoleTransmission reporter,
-            string reporterSteamId,
-            string reportedSteamId,
+            string reporterUserId,
+            string reportedUserId,
             string reportedAuth,
             string reportedIp,
             string reporterAuth,
@@ -50,10 +50,10 @@ namespace Exiled.Events.Patches.Events
             string reporterPublicKey,
             int reportedId)
         {
-            if (reportedSteamId == reporterSteamId)
+            if (reportedUserId == reporterUserId)
                 reporter.SendToClient(__instance.connectionToClient, "You can't report yourself!" + Environment.NewLine, "yellow");
 
-            var ev = new ReportingCheaterEventArgs(reporterSteamId, reportedSteamId, reporterAuth, reportedAuth, reporterIp, reportedIp, ServerConsole.Port, reason);
+            var ev = new ReportingCheaterEventArgs(reporterUserId, reportedUserId, reporterAuth, reportedAuth, reporterIp, reportedIp, ServerConsole.Port, reason);
 
             Server.OnReportingCheater(ev);
 
