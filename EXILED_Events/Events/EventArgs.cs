@@ -306,7 +306,7 @@ namespace EXILED
 	}
 
 	public class LocalReportEvent : EventArgs
-    {
+	{
 		/// <summary>
 		///		The target of the report.
 		/// </summary>
@@ -322,7 +322,7 @@ namespace EXILED
 		///		sent to the webhook and console.
 		/// </summary>
 		public bool Allow { get; set; }
-    }
+	}
 
 	public class DoorInteractionEvent : EventArgs
 	{

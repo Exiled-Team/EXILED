@@ -143,7 +143,7 @@ namespace EXILED
 				HarmonyInstance.DEBUG = disabledStatus;
 #endif
 			}
-            catch (Exception exception)
+			catch (Exception exception)
 			{
 				Log.Error($"Patching failed! {exception}");
 			}
