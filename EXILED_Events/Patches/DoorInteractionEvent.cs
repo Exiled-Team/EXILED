@@ -44,11 +44,10 @@ namespace EXILED.Patches
 						else if (!door.RequireAllPermissions)
 						{
 							var itemPerms = __instance._inv.GetItemByID(__instance._inv.curItem).permissions;
-							// If the item’s expansion does not allow,
-							// then set it to false, cuz the item does not have permission ¯\_(ツ)_/¯
+							// If the item’s expansion does not allow, then it's set to false
 							allow = itemPerms.Any(p =>
 							door.backwardsCompatPermissions.TryGetValue(p, out var flag) &&
-							door.PermissionLevels.HasPermission(flag)) || false;
+							door.PermissionLevels.HasPermission(flag));
 						}
 						else
 							allow = false;
