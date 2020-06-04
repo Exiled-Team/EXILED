@@ -7,7 +7,6 @@
 
 namespace Exiled.Permissions
 {
-    using System;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Permissions.Events;
@@ -25,9 +24,6 @@ namespace Exiled.Permissions
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            if (!Config.IsEnabled)
-                return;
-
             command = new Command();
 
             Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += command.OnSendingRemoteAdminCommand;

@@ -255,7 +255,7 @@ namespace Exiled.Loader
         /// Reloads all plugin configs.
         /// </summary>
         /// <param name="onlyExiled">Returns whether Exiled configs must be reloaded or not.</param>
-        public static void ReloadAllConfigs(bool onlyExiled = false)
+        public static void ReloadPluginConfigs(bool onlyExiled = false)
         {
             YamlConfig.Reload();
 

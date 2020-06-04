@@ -44,11 +44,11 @@ namespace Exiled.Events.Handlers
                             ev.Sender.RemoteAdminMessage("Reloading ploogins...");
                             break;
                         case "pluginconfig":
-                            PluginManager.ReloadAllConfigs();
+                            PluginManager.ReloadPluginConfigs();
                             ev.Sender.RemoteAdminMessage("All plugin configs reloaded.");
                             break;
                         case "exiled":
-                            PluginManager.ReloadAllConfigs(true);
+                            PluginManager.ReloadPluginConfigs(true);
                             ev.Sender.RemoteAdminMessage("EXILED Configs reloaded.");
                             break;
                         case "gameplay":
