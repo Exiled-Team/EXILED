@@ -26,12 +26,12 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="NicknameSync"/> instance.</param>
         public static void Postfix(NicknameSync __instance)
         {
-            API.Features.Log.Debug($"Player connect: ");
+            API.Features.Player player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+
+            API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
             if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                 API.Features.Log.Debug($"Server is full!");
-
-            API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
 
             Timing.CallDelayed(0.25f, () =>
             {

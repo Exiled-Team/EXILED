@@ -44,9 +44,14 @@ namespace Exiled.Events.Patches.Generic
                     __instance.receivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
                 if (__instance.transmitBuffer == null || __instance.transmitBuffer.Length < __instance.usedData)
                     __instance.transmitBuffer = new PlayerPositionData[__instance.usedData * 2];
+
                 foreach (GameObject gameObject in players)
                 {
                     Player player = Player.Get(gameObject);
+
+                    if (player == null)
+                        continue;
+
                     Array.Copy(__instance.receivedData, __instance.transmitBuffer, __instance.usedData);
                     if (player.Role.Is939())
                     {

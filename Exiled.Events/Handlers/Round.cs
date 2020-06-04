@@ -27,6 +27,7 @@ namespace Exiled.Events.Handlers
 
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
+
             Log.Info("Wheee, waiting for players!");
         }
 

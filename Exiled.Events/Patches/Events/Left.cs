@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events
         {
             var ev = new LeftEventArgs(API.Features.Player.Get(__instance.gameObject));
 
-            API.Features.Log.Debug("Player disconnect: ");
+            API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
 
             Player.OnLeft(ev);
         }
