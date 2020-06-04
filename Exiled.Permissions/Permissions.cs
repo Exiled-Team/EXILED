@@ -9,12 +9,13 @@ namespace Exiled.Permissions
 {
     using System;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Permissions.Events;
 
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
     /// </summary>
-    public class Permissions : Plugin<Config>
+    public class Permissions : Plugin
     {
         private Command command;
 
@@ -25,7 +26,7 @@ namespace Exiled.Permissions
         public override Version RequiredExiledVersion => new Version(2, 0, 0);
 
         /// <inheritdoc/>
-        public override Config Config => new Config();
+        public override IConfig Config => new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

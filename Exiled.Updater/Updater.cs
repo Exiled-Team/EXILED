@@ -14,17 +14,18 @@ namespace Exiled.Updater
     using System.Net;
     using System.Text;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// Automatically updates Exiled to the latest version.
     /// </summary>
-    public class Updater : Plugin<Config>
+    public class Updater : Plugin
     {
         private string versionUpdateUrl;
 
         /// <inheritdoc/>
-        public override Config Config => new Config();
+        public override IConfig Config => new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -118,7 +119,7 @@ namespace Exiled.Updater
         {
             try
             {
-                string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.AllowTestingReleases ? string.Empty : "latest/");
+                string url = "https://github.com/galaxy119/EXILED/releases/" + (((Config)Config).AllowTestingReleases ? string.Empty : "latest/");
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{url}");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();

@@ -8,16 +8,17 @@
 namespace Exiled.Example
 {
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
 
     /// <summary>
     /// The example plugin.
     /// </summary>
-    public class Example : Plugin<Config>
+    public class Example : Plugin
     {
         private Handlers.Server server;
 
         /// <inheritdoc/>
-        public override Config Config => new Config();
+        public override IConfig Config => new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

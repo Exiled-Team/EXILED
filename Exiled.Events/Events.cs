@@ -10,6 +10,7 @@ namespace Exiled.Events
     using System;
     using System.Reflection;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
     using HarmonyLib;
@@ -17,7 +18,7 @@ namespace Exiled.Events
     /// <summary>
     /// Patch and unpatch events into the game.
     /// </summary>
-    public class Events : Plugin<Config>
+    public class Events : Plugin
     {
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
@@ -51,7 +52,7 @@ namespace Exiled.Events
         public override Version RequiredExiledVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <inheritdoc/>
-        public override Config Config => new Config();
+        public override IConfig Config => new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -75,7 +76,7 @@ namespace Exiled.Events
 
             Patch();
 
-            if (!Config.IsNameTrackingEnabled)
+            if (!Exiled.Events.Config.IsNameTrackingEnabled)
                 API.Features.Server.Name = $"{API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
             Log.Info($"EXILED version - {RequiredExiledVersion}");
         }

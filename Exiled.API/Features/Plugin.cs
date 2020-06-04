@@ -14,9 +14,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Expose how a plugin has to be made.
     /// </summary>
-    /// <typeparam name="T">The plugin configs.</typeparam>
-    public abstract class Plugin<T>
-        where T : IConfig
+    public abstract class Plugin
     {
         /// <summary>
         /// Gets the plugin name.
@@ -36,7 +34,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the plugin <see cref="IConfig"/>.
         /// </summary>
-        public abstract T Config { get; }
+        public abstract IConfig Config { get; }
 
         /// <summary>
         /// Fired after enabling the plugin.

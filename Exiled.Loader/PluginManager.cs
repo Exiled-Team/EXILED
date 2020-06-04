@@ -27,7 +27,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static List<Plugin<IConfig>> Plugins => new List<Plugin<IConfig>>();
+        public static List<Plugin> Plugins => new List<Plugin>();
 
         /// <summary>
         /// Gets the dependencies list.
@@ -136,7 +136,9 @@ namespace Exiled.Loader
             try
             {
                 byte[] file = ModLoader.ReadFile(path);
+
                 Assembly assembly = Assembly.Load(file);
+
                 foreach (Type type in assembly.GetTypes())
                 {
                     if (type.IsAbstract)
@@ -149,22 +151,19 @@ namespace Exiled.Loader
                     {
                         Log.Debug($"Overriding type check for {type.FullName}", ShouldDebugBeShown);
                     }
-                    else if (type.BaseType != typeof(Plugin<IConfig>))
+                    else if (type.BaseType != typeof(Plugin))
                     {
                         Log.Debug($"{type.FullName}does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
                         continue;
                     }
-                    Log.Error("Checks passed.");
+
+                    Log.Error($"Checks passed.");
 
                     Log.Info($"Loading type {type.FullName}");
-                    object instance = Activator.CreateInstance(type);
-                    Log.Info($"Instantiated type {type.FullName}");
 
-                    if (!(instance is Plugin<IConfig> plugin))
-                    {
-                        Log.Error($"not plugin error! {type.FullName}");
-                        continue;
-                    }
+                    Plugin plugin = (Plugin)Activator.CreateInstance(type);
+
+                    Log.Info($"Instantiated type {type.FullName}");
 
                     if (plugin.RequiredExiledVersion > Version)
                     {
@@ -200,7 +199,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void EnableAll()
         {
-            foreach (Plugin<IConfig> plugin in Plugins)
+            foreach (Plugin plugin in Plugins)
             {
                 try
                 {
@@ -222,7 +221,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void ReloadAll()
         {
-            foreach (Plugin<IConfig> plugin in Plugins)
+            foreach (Plugin plugin in Plugins)
             {
                 try
                 {
@@ -247,7 +246,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void DisableAll()
         {
-            foreach (Plugin<IConfig> plugin in Plugins)
+            foreach (Plugin plugin in Plugins)
             {
                 try
                 {
@@ -270,7 +269,7 @@ namespace Exiled.Loader
         {
             YamlConfig.Reload();
 
-            foreach (Plugin<IConfig> plugin in Plugins)
+            foreach (Plugin plugin in Plugins)
             {
                 if (onlyExiled && plugin.Name != "EXILED")
                     continue;

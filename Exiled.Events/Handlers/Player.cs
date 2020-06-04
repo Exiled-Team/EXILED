@@ -14,7 +14,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Player related events.
     /// </summary>
-    public class Player
+    public static class Player
     {
         /// <summary>
         /// Invoked before authenticating a player.
