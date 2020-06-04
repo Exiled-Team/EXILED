@@ -137,11 +137,13 @@ namespace EXILED
 				// If debugging was enabled before, don't touch it
 				var disabledStatus = HarmonyInstance.DEBUG == true;
 				HarmonyInstance.DEBUG = true;
-				HarmonyInstance.DEBUG = disabledStatus;
 #endif
 				instance.PatchAll();
+#if DEBUG
+				HarmonyInstance.DEBUG = disabledStatus;
+#endif
 			}
-			catch (Exception exception)
+            catch (Exception exception)
 			{
 				Log.Error($"Patching failed! {exception}");
 			}
