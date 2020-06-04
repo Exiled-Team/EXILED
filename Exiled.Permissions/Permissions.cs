@@ -20,13 +20,7 @@ namespace Exiled.Permissions
         private Command command;
 
         /// <inheritdoc/>
-        public override string Name => $"{base.Name} {Version.Major}.{Version.Minor}.{Version.Build}";
-
-        /// <inheritdoc/>
-        public override Version RequiredExiledVersion => new Version(2, 0, 0);
-
-        /// <inheritdoc/>
-        public override IConfig Config => new Config();
+        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

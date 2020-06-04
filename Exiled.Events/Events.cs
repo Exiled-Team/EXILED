@@ -8,7 +8,6 @@
 namespace Exiled.Events
 {
     using System;
-    using System.Reflection;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Events.Handlers;
@@ -46,13 +45,7 @@ namespace Exiled.Events
         public Harmony Harmony { get; private set; }
 
         /// <inheritdoc/>
-        public override string Name => "EXILED.Events";
-
-        /// <inheritdoc/>
-        public override Version RequiredExiledVersion => Assembly.GetExecutingAssembly().GetName().Version;
-
-        /// <inheritdoc/>
-        public override IConfig Config => new Config();
+        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

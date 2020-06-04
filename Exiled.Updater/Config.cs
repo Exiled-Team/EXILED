@@ -17,7 +17,7 @@ namespace Exiled.Updater
         public bool IsEnabled { get; set; }
 
         /// <inheritdoc/>
-        public string Prefix => "exiled_updater_";
+        public string Prefix { get; } = "exiled_updater_";
 
         /// <summary>
         /// Gets a value indicating whether testing releases have to be downloaded or not.

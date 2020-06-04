@@ -25,14 +25,11 @@ namespace Exiled.Updater
         private string versionUpdateUrl;
 
         /// <inheritdoc/>
-        public override IConfig Config => new Config();
+        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            if (!Config.IsEnabled)
-                return;
-
             if (IsUpdateAvailable())
                 Start();
         }

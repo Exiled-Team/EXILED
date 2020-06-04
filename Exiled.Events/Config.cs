@@ -67,7 +67,7 @@ namespace Exiled.Events
         public bool IsEnabled { get; set; }
 
         /// <inheritdoc/>
-        public string Prefix => "exiled_events_";
+        public string Prefix { get; } = "exiled_events_";
 
         /// <inheritdoc/>
         public void Reload()

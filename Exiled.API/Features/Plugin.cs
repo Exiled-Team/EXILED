@@ -19,17 +19,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the plugin name.
         /// </summary>
-        public virtual string Name => Assembly.GetExecutingAssembly().GetName().Name;
+        public virtual string Name { get; } = Assembly.GetCallingAssembly().GetName().Name;
 
         /// <summary>
         /// Gets the plugin version.
         /// </summary>
-        public virtual Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        public virtual Version Version { get; } = Assembly.GetCallingAssembly().GetName().Version;
 
         /// <summary>
         /// Gets the required version of EXILED to run the plugin without bugs or incompatibilities.
         /// </summary>
-        public virtual Version RequiredExiledVersion => new Version(2, 0, 0);
+        public virtual Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
 
         /// <summary>
         /// Gets the plugin <see cref="IConfig"/>.

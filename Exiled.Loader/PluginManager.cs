@@ -13,9 +13,7 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
     using global::Loader;
-    using MEC;
 
     /// <summary>
     /// Used to handle plugins.
@@ -27,32 +25,32 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static List<Plugin> Plugins => new List<Plugin>();
+        public static List<Plugin> Plugins { get; } = new List<Plugin>();
 
         /// <summary>
         /// Gets the dependencies list.
         /// </summary>
-        public static List<Assembly> Dependencies => new List<Assembly>();
+        public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
         /// Gets the initialized global random class.
         /// </summary>
-        public static Random Random => new Random();
+        public static Random Random { get; } = new Random();
 
         /// <summary>
         /// Gets the version of the assembly.
         /// </summary>
-        public static Version Version => Assembly.GetExecutingAssembly().GetName().Version;
+        public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
         /// Gets the global configs.
         /// </summary>
-        public static YamlConfig YamlConfig => new YamlConfig(Paths.Config);
+        public static YamlConfig YamlConfig { get; } = new YamlConfig(Paths.Config);
 
         /// <summary>
         /// Gets the configs of the plugin manager.
         /// </summary>
-        public static Config Config => new Config();
+        public static Config Config { get; } = new Config();
 
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
@@ -60,19 +58,10 @@ namespace Exiled.Loader
         public static bool ShouldDebugBeShown => Config.Environment == API.Enums.EnvironmentType.Testing || Config.Environment == API.Enums.EnvironmentType.Development;
 
         /// <summary>
-        /// Loads all plugins.
-        /// </summary>
-        /// <param name="eachTime">The interval between two loaded plugins.</param>
-        public static void LoadAll(float eachTime) => Timing.RunCoroutine(LoadAll());
-
-        /// <summary>
         /// The coroutine which loads all plugins.
         /// </summary>
-        /// <returns>Used to wait.</returns>
-        public static IEnumerator<float> LoadAll()
+        public static void LoadAll()
         {
-            yield return Timing.WaitForSeconds(0.5f);
-
             try
             {
                 LoadAllDependencies();
@@ -88,40 +77,40 @@ namespace Exiled.Loader
                 Directory.CreateDirectory(Paths.Plugins);
             }
 
-            List<string> pluginsList = Directory.GetFiles(Paths.Plugins).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
+            List<string> plugins = Directory.GetFiles(Paths.Plugins).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
 
             if (File.Exists($"{Paths.Plugins}/overrides.txt"))
                 typeOverrides = File.ReadAllText($"{Paths.Plugins}/overrides.txt");
 
-            if (pluginsList.All(plugin => !plugin.Contains("Exiled.Events.dll")))
+            if (plugins.All(plugin => !plugin.Contains("Exiled.Events.dll")))
             {
                 Log.Warn("Exiled.Events.dll is not installed! Plugins that do not handle their own events won't work and may cause errors.");
             }
             else
             {
-                string eventsPlugin = pluginsList.FirstOrDefault(plugin => plugin.Contains("Exiled.Events.dll"));
+                string eventsPlugin = plugins.FirstOrDefault(plugin => plugin.Contains("Exiled.Events.dll"));
 
                 Load(eventsPlugin);
-                pluginsList.Remove(eventsPlugin);
+                plugins.Remove(eventsPlugin);
             }
 
-            if (pluginsList.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
+            if (plugins.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
             {
-                string exiledPermission = pluginsList.FirstOrDefault(m => m.Contains("Exiled.Permissions.dll"));
+                string exiledPermission = plugins.FirstOrDefault(m => m.Contains("Exiled.Permissions.dll"));
 
                 Load(exiledPermission);
-                pluginsList.Remove(exiledPermission);
+                plugins.Remove(exiledPermission);
             }
 
-            if (pluginsList.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
+            if (plugins.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
             {
-                string exiledUpdater = pluginsList.FirstOrDefault(m => m.Contains("Exiled.Updater.dll"));
+                string exiledUpdater = plugins.FirstOrDefault(m => m.Contains("Exiled.Updater.dll"));
 
                 Load(exiledUpdater);
-                pluginsList.Remove(exiledUpdater);
+                plugins.Remove(exiledUpdater);
             }
 
-            foreach (string plugin in pluginsList)
+            foreach (string plugin in plugins)
                 Load(plugin);
 
             EnableAll();
@@ -153,7 +142,7 @@ namespace Exiled.Loader
                     }
                     else if (type.BaseType != typeof(Plugin))
                     {
-                        Log.Debug($"{type.FullName}does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
@@ -183,7 +172,8 @@ namespace Exiled.Loader
                     }
 
                     Plugins.Add(plugin);
-                    Log.Info($"Successfully loaded {plugin.Name}");
+
+                    Log.Info($"Successfully loaded {plugin.Name} v{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}");
                 }
             }
             catch (Exception exception)
@@ -238,7 +228,7 @@ namespace Exiled.Loader
                 }
             }
 
-            LoadAll(0.5f);
+            LoadAll();
         }
 
         /// <summary>

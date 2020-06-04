@@ -19,7 +19,7 @@ namespace Exiled.API.Features
         /// Sends a <see cref="LogLevel.Info"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Info(string message) => Send(message, LogLevel.Info, System.ConsoleColor.Cyan);
+        public static void Info(string message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Info, System.ConsoleColor.Cyan);
 
         /// <summary>
         /// Sends a <see cref="LogLevel.Debug"/> level messages to the game console.
@@ -30,14 +30,14 @@ namespace Exiled.API.Features
         public static void Debug(string message, bool canBeSent = true)
         {
             if (canBeSent)
-                Send(message, LogLevel.Debug, System.ConsoleColor.Green);
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Debug, System.ConsoleColor.Green);
         }
 
         /// <summary>
         /// Sends a <see cref="LogLevel.Warn"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Warn(string message) => Send(message, LogLevel.Warn, System.ConsoleColor.Magenta);
+        public static void Warn(string message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Warn, System.ConsoleColor.Magenta);
 
         /// <summary>
         /// Sends a <see cref="LogLevel.Error"/> level messages to the game console.
@@ -45,7 +45,7 @@ namespace Exiled.API.Features
         /// It's recommended to send any messages in the catch block of a try/catch as errors with the exception string.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Error(string message) => Send(message, LogLevel.Error, System.ConsoleColor.DarkRed);
+        public static void Error(string message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Error, System.ConsoleColor.DarkRed);
 
         /// <summary>
         /// Sends a log message to the game console.
@@ -55,7 +55,7 @@ namespace Exiled.API.Features
         /// <param name="color">The message color.</param>
         public static void Send(string message, LogLevel level, System.ConsoleColor color = System.ConsoleColor.Gray)
         {
-            ServerConsole.AddLog($"[{level.ToString().ToUpper()}] [{Assembly.GetCallingAssembly().GetName().Name}] {message}", color);
+            ServerConsole.AddLog($"[{level.ToString().ToUpper()}] {message}", color);
         }
     }
 }

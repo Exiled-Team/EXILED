@@ -10,6 +10,7 @@ namespace Exiled.Loader
     using System;
     using System.IO;
     using Exiled.API.Features;
+    using MEC;
 
     /// <summary>
     /// Entry point class.
@@ -42,7 +43,7 @@ namespace Exiled.Loader
             ServerConsole.AddLog($"Exiled - Version {PluginManager.Version.Major}.{PluginManager.Version.Minor}.{PluginManager.Version.Build}", ConsoleColor.DarkRed);
 
             PluginManager.Config.Reload();
-            PluginManager.LoadAll(0.5f);
+            Timing.CallDelayed(0.25f, PluginManager.LoadAll);
         }
     }
 }
