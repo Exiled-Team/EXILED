@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events
         public static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation animation, int mid)
         {
             if (animation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
-                Player.OnMedicalItemUsed(new UsedMedicalItemEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID));
+                Player.OnMedicalItemUsed(new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID));
         }
     }
 }

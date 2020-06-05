@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events
         /// <param name="banType"><inheritdoc cref="BannedEventArgs.Type"/></param>
         public static void Postfix(BanDetails ban, BanHandler.BanType banType)
         {
-            var ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : Core.API.Features.Player.Get(ban.Id), ban, banType);
+            var ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), ban, banType);
 
             Player.OnBanned(ev);
         }

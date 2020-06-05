@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events
             if (!__instance.ChckDis(gameObject.transform.position))
                 return false;
 
-            var ev = new ActivatingWarheadPanelEventArgs(Core.API.Features.Player.Get(__instance.gameObject), new List<string>() { "CONT_LVL_3" });
+            var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string>() { "CONT_LVL_3" });
 
             Player.OnActivatingWarheadPanel(ev);
 

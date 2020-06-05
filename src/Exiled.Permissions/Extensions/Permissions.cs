@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Permissions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,8 +12,8 @@ namespace Exiled.Permissions.Extensions
     using System.Linq;
     using System.Text;
 
+    using Exiled.API.Features;
     using Exiled.Core;
-    using Exiled.Core.API.Features;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
 

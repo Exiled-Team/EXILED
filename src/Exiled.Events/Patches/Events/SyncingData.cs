@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events
             if (!__instance._mSyncRateLimit.CanExecute(false))
                 return false;
 
-            var ev = new SyncingDataEventArgs(Core.API.Features.Player.Get(__instance.gameObject), v2, state);
+            var ev = new SyncingDataEventArgs(API.Features.Player.Get(__instance.gameObject), v2, state);
 
             Player.OnSyncingData(ev);
 

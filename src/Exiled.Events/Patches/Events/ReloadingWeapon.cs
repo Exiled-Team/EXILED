@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events
                 (double)__instance.weapons[__instance.curWeapon].maxAmmo)
                 return false;
 
-            var ev = new ReloadingWeaponEventArgs(Core.API.Features.Player.Get(__instance.gameObject), animationOnly);
+            var ev = new ReloadingWeaponEventArgs(API.Features.Player.Get(__instance.gameObject), animationOnly);
 
             Player.OnReloadingWeapon(ev);
 

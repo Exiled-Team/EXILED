@@ -9,8 +9,8 @@ namespace Exiled.Core
 {
     using System;
 
-    using Exiled.Core.API.Enums;
-    using Exiled.Core.API.Interfaces;
+    using Exiled.API.Enums;
+    using Exiled.API.Interfaces;
 
     /// <summary>
     /// The configs of the loader.

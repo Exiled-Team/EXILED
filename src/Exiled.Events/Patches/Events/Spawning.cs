@@ -108,7 +108,7 @@ namespace Exiled.Events.Patches.Events
                             rotY = 0f;
                         }
 
-                        var ev = new SpawningEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.CurClass, spawnPoint, rotY);
+                        var ev = new SpawningEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.CurClass, spawnPoint, rotY);
 
                         Player.OnSpawning(ev);
 

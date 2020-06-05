@@ -39,7 +39,7 @@ namespace Exiled.Patches
                 if (Vector3.Distance(__instance.transform.position, player.transform.position) < __instance.sizeOfTrigger &&
                     player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
                 {
-                    var ev = new TriggeringTeslaEventArgs(Core.API.Features.Player.Get(player), hurtRange);
+                    var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(player), hurtRange);
 
                     Player.OnTriggeringTesla(ev);
 

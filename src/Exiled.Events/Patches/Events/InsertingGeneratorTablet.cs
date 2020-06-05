@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events
                 {
                     if (syncItemInfo.id == ItemType.WeaponManagerTablet)
                     {
-                        var ev = new InsertingGeneratorTabletEventArgs(Core.API.Features.Player.Get(person), __instance);
+                        var ev = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
 
                         Player.OnInsertingGeneratorTablet(ev);
 
@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events
                 if (!__instance.isTabletConnected)
                     return false;
 
-                var ev = new EjectingGeneratorTabletEventArgs(Core.API.Features.Player.Get(person), __instance);
+                var ev = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
 
                 Player.OnEjectingGeneratorTablet(ev);
 
@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Events
                         }
                     }
 
-                    var ev = new UnlockingGeneratorEventArgs(Core.API.Features.Player.Get(person), __instance);
+                    var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
                     Player.OnUnlockingGenerator(ev);
 
@@ -103,13 +103,13 @@ namespace Exiled.Events.Patches.Events
 
                     if (!__instance.NetworkisDoorOpen)
                     {
-                        ev = new OpeningGeneratorEventArgs(Core.API.Features.Player.Get(person), __instance);
+                        ev = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
                         Player.OnOpeningGenerator(ev);
                     }
                     else
                     {
-                        ev = new ClosingGeneratorEventArgs(Core.API.Features.Player.Get(person), __instance);
+                        ev = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
                         Player.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
                     }

@@ -7,7 +7,7 @@
 
 namespace Exiled.Example.Handlers
 {
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
     using Exiled.Events.Handlers.EventArgs;
 
     /// <summary>

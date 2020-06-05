@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events
 
             __instance.ClearTarget();
 
-            var ev = new HandcuffingEventArgs(Core.API.Features.Player.Get(__instance.gameObject), Core.API.Features.Player.Get(target));
+            var ev = new HandcuffingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(target));
 
             Player.OnHandcuffing(ev);
 

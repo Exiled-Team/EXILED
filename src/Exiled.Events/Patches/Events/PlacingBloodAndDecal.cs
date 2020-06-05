@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events
             if (isBlood)
             {
                 var ev = new PlacingBloodEventArgs(
-                   Core.API.Features.Player.Get(__instance.gameObject),
+                   API.Features.Player.Get(__instance.gameObject),
                     pos,
                     __instance.hub.characterClassManager.Classes.SafeGet(__instance.hub.characterClassManager.CurClass).bloodType,
                     1);
@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events
             }
             else
             {
-                var ev = new PlacingDecalEventArgs(Core.API.Features.Player.Get(__instance.gameObject), pos, rot, type);
+                var ev = new PlacingDecalEventArgs(API.Features.Player.Get(__instance.gameObject), pos, rot, type);
 
                 Map.OnPlacingDecal(ev);
 

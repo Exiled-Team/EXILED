@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Extensions
+namespace Exiled.API.Extensions
 {
     using System;
     using System.Reflection;

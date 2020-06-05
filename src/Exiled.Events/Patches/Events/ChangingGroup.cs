@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(ServerRoles __instance, UserGroup group)
         {
-            var ev = new ChangingGroupEventArgs(Core.API.Features.Player.Get(__instance.gameObject), group);
+            var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
 
             Player.OnChangingGroup(ev);
 

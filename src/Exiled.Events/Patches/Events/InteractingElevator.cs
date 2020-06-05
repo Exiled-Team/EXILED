@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events
             {
                 if (__instance.ChckDis(elevator2.door.transform.position))
                 {
-                    var ev = new InteractingElevatorEventArgs(Core.API.Features.Player.Get(__instance.gameObject), elevator2);
+                    var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2);
 
                     Player.OnInteractingElevator(ev);
 

@@ -9,9 +9,9 @@ namespace Exiled.Events
 {
     using System;
 
+    using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Core;
-    using Exiled.Core.API.Features;
-    using Exiled.Core.API.Interfaces;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
@@ -68,7 +68,7 @@ namespace Exiled.Events
             Patch();
 
             if (!Exiled.Events.Config.IsNameTrackingEnabled)
-                Core.API.Features.Server.Name = $"{Core.API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
+                API.Features.Server.Name = $"{API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
         }
 
         /// <inheritdoc/>

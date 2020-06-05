@@ -21,19 +21,19 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
-            Core.API.Features.Map.Rooms.Clear();
-            Core.API.Features.Map.Doors.Clear();
-            Core.API.Features.Map.Lifts.Clear();
-            Core.API.Features.Map.TeslaGates.Clear();
+            API.Features.Map.Rooms.Clear();
+            API.Features.Map.Doors.Clear();
+            API.Features.Map.Lifts.Clear();
+            API.Features.Map.TeslaGates.Clear();
 
-            Core.API.Features.Player.IdsCache.Clear();
-            Core.API.Features.Player.UserIdsCache.Clear();
+            API.Features.Player.IdsCache.Clear();
+            API.Features.Player.UserIdsCache.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (Core.API.Features.Player player in Core.API.Features.Player.List)
+            foreach (API.Features.Player player in API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)
                 {
@@ -46,14 +46,14 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Player.OnLeft(LeftEventArgs)"/>
         public void OnPlayerLeft(LeftEventArgs ev)
         {
-            if (Core.API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
-                Core.API.Features.Player.IdsCache.Remove(ev.Player.Id);
+            if (API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
+                API.Features.Player.IdsCache.Remove(ev.Player.Id);
 
-            foreach (var entry in Core.API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
-                Core.API.Features.Player.UserIdsCache.Remove(entry.Key);
+            foreach (var entry in API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
+                API.Features.Player.UserIdsCache.Remove(entry.Key);
 
-            if (!Core.API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                Core.API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
+            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
         }
 
         /// <inheritdoc cref="Player.OnJoined(JoinedEventArgs)"/>
@@ -62,8 +62,8 @@ namespace Exiled.Events.Handlers
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
-            if (!Core.API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                Core.API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
+            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>

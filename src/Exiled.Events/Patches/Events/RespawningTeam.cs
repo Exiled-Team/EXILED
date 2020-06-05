@@ -11,7 +11,7 @@ namespace Exiled.Patches
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
     using Exiled.Events;
     using Exiled.Events.Handlers.EventArgs;
 

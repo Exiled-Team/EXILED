@@ -7,8 +7,8 @@
 
 namespace Exiled.Permissions
 {
-    using Exiled.Core.API.Features;
-    using Exiled.Core.API.Interfaces;
+    using Exiled.API.Features;
+    using Exiled.API.Interfaces;
     using Exiled.Permissions.Events;
 
     /// <summary>

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Features
+namespace Exiled.API.Features
 {
     /// <summary>
     /// A set of tools to work with the warhead code more easily.

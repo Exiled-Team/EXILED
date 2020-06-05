@@ -334,7 +334,7 @@ namespace Exiled.Events.Patches.Fixes
             }
             catch (Exception exception)
             {
-                Core.API.Features.Log.Error($"SmartClassPickerFix error: {exception}");
+                API.Features.Log.Error($"SmartClassPickerFix error: {exception}");
                 return true;
             }
         }

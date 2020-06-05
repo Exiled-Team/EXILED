@@ -10,7 +10,7 @@ namespace Exiled.Events.Handlers.EventArgs
     using System;
     using System.Collections.Generic;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before spawning a wave of <see cref="Team.CHI"/> or <see cref="Team.MTF"/>..

@@ -26,9 +26,9 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="ReferenceHub"/> instance.</param>
         public static void Prefix(ReferenceHub __instance)
         {
-            var ev = new LeftEventArgs(Core.API.Features.Player.Get(__instance.gameObject));
+            var ev = new LeftEventArgs(API.Features.Player.Get(__instance.gameObject));
 
-            Core.API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
+            API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
 
             Player.OnLeft(ev);
         }

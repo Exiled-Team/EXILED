@@ -13,7 +13,7 @@ namespace Exiled.Core
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     using global::Loader;
 
@@ -61,7 +61,7 @@ namespace Exiled.Core
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == Core.API.Enums.EnvironmentType.Testing || Config.Environment == Core.API.Enums.EnvironmentType.Development;
+        public static bool ShouldDebugBeShown => Config.Environment == API.Enums.EnvironmentType.Testing || Config.Environment == API.Enums.EnvironmentType.Development;
 
         /// <summary>
         /// The coroutine which loads all plugins.

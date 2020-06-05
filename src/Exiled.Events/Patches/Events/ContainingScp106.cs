@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(CharacterClassManager __instance)
         {
-            var ev = new ContainingScp106EventArgs(Core.API.Features.Player.Get(__instance.gameObject));
+            var ev = new ContainingScp106EventArgs(API.Features.Player.Get(__instance.gameObject));
 
             Player.OnContainingScp106(ev);
 

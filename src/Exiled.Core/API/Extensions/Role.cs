@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Extensions
+namespace Exiled.API.Extensions
 {
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.

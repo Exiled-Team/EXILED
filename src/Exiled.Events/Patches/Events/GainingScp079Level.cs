@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Scp079PlayerScript __instance, NetworkConnection conn, ref int newLvl)
         {
-            var ev = new GainingScp079LevelEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.curLvl, newLvl);
+            var ev = new GainingScp079LevelEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.curLvl, newLvl);
 
             Player.OnGainingScp079Level(ev);
 

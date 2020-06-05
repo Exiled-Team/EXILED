@@ -9,7 +9,7 @@ namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before announcing an SCP termination.

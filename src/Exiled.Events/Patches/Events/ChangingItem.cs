@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events
                     newItem = item;
             }
 
-            var ev = new ChangingItemEventArgs(Core.API.Features.Player.Get(__instance.gameObject), oldItem, newItem);
+            var ev = new ChangingItemEventArgs(API.Features.Player.Get(__instance.gameObject), oldItem, newItem);
 
             Player.OnChangingItem(ev);
 

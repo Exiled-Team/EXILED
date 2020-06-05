@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events
             if (!__instance._interactRateLimit.CanExecute(false) || !__instance.GetComponent<FallDamage>().isGrounded)
                 return false;
 
-            var ev = new TeleportingScp106EventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.portalPosition);
+            var ev = new TeleportingScp106EventArgs(API.Features.Player.Get(__instance.gameObject), __instance.portalPosition);
 
             Player.OnTeleportingScp106(ev);
 

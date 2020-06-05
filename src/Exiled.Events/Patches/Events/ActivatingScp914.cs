@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events
                     (Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.button.position)))
                 return false;
 
-            var ev = new ActivatingScp914EventArgs(Core.API.Features.Player.Get(__instance.gameObject), 0);
+            var ev = new ActivatingScp914EventArgs(API.Features.Player.Get(__instance.gameObject), 0);
 
             Player.OnActivatingScp914(ev);
 

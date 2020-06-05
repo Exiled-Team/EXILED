@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="PlayerStats"/> instance.</param>
         public static void Prefix(PlayerStats __instance)
         {
-            Core.API.Features.Log.Debug("Round restarting");
+            API.Features.Log.Debug("Round restarting");
 
             Server.OnRestartingRound();
         }

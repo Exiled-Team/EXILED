@@ -42,11 +42,11 @@ namespace Exiled.Events.Patches.Events
             if (__instance.timeToDetonation <= 15.0 && disabler != null)
                 __instance.GetComponent<PlayerStats>().TargetAchieve(disabler.GetComponent<NetworkIdentity>().connectionToClient, "thatwasclose");
 
-            var ev = new StoppingWarheadEventArgs(Core.API.Features.Player.Get(disabler));
+            var ev = new StoppingWarheadEventArgs(API.Features.Player.Get(disabler));
 
             Map.OnStoppingWarhead(ev);
 
-            return ev.IsAllowed && !Exiled.Core.API.Features.Warhead.IsWarheadLocked;
+            return ev.IsAllowed && !Exiled.API.Features.Warhead.IsWarheadLocked;
         }
     }
 }

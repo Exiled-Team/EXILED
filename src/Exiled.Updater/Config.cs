@@ -7,8 +7,8 @@
 
 namespace Exiled.Updater
 {
+    using Exiled.API.Interfaces;
     using Exiled.Core;
-    using Exiled.Core.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig

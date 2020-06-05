@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Features
+namespace Exiled.API.Features
 {
     /// <summary>
     /// Represents the in-game badge.

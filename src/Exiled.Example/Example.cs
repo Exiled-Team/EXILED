@@ -7,8 +7,8 @@
 
 namespace Exiled.Example
 {
-    using Exiled.Core.API.Features;
-    using Exiled.Core.API.Interfaces;
+    using Exiled.API.Features;
+    using Exiled.API.Interfaces;
 
     /// <summary>
     /// The example plugin.

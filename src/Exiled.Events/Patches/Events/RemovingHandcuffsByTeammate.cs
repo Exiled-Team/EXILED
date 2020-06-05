@@ -36,8 +36,8 @@ namespace Exiled.Events.Patches.Events
                      .Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
                 return false;
 
-            var targetPlayer = Core.API.Features.Player.Get(target);
-            var ev = new RemovingHandcuffsEventArgs(Core.API.Features.Player.Get(__instance.gameObject), targetPlayer);
+            var targetPlayer = API.Features.Player.Get(target);
+            var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), targetPlayer);
 
             Player.OnRemovingHandcuffs(ev);
 

@@ -7,8 +7,8 @@
 
 namespace Exiled.Example
 {
+    using Exiled.API.Interfaces;
     using Exiled.Core;
-    using Exiled.Core.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public class Config : IConfig

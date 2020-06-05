@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Generic
 
     using CustomPlayerEffects;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     using HarmonyLib;
 

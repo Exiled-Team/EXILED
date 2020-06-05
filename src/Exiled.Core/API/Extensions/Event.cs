@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Extensions
+namespace Exiled.API.Extensions
 {
     using System;
     using System.Reflection;
 
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     /// <summary>
     /// A set of tools to execute events safely and without breaking other plugins.

@@ -85,7 +85,7 @@ namespace Exiled.Events.Patches.Events
                 PlayerMovementSync component2 = other.GetComponent<PlayerMovementSync>();
                 component2.SetSafeTime(2f);
 
-                var ev = new EscapingPocketDimensionEventArgs(Core.API.Features.Player.Get(component2.gameObject), tpPosition);
+                var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(component2.gameObject), tpPosition);
 
                 Player.OnEscapingPocketDimension(ev);
 

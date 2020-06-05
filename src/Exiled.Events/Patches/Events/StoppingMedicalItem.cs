@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events
             {
                 if (__instance.usableItems[i].inventoryID == __instance.hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
                 {
-                    var ev = new StoppingMedicalItemEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+                    var ev = new StoppingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
 
                     Player.OnStoppingMedicalItem(ev);
 

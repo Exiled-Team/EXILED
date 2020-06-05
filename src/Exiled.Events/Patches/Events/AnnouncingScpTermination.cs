@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Role scp, ref PlayerStats.HitInfo hit, ref string groupId)
         {
-            var ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : Core.API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
+            var ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
 
             Map.OnAnnouncingScpTermination(ev);
 

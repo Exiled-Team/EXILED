@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Handlers.EventArgs
 {
-    using Exiled.Core.API.Features;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all player's information, after he leaves the server.

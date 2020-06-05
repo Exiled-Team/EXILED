@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Core.API.Enums
+namespace Exiled.API.Enums
 {
     /// <summary>
     /// In which side a certain <see cref="RoleType"/> belongs.
