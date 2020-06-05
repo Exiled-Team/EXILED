@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <!-- StyleCop Analyzers configuration -->
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json"/>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <LangVersion>7.1</LangVersion>
+    <NoWarn>$(NoWarn);CS1573;CS1591;SA1600</NoWarn>
+    <WarningsAsErrors>true</WarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- These attributes are assigned independently -->
+    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+
+	<RootNamespace>Exiled</RootNamespace>
+    <Copyright>Copyright © Exiled Team 2020</Copyright>
+    <RepositoryType>Git</RepositoryType>
+	<RepositoryUrl>git://github.com/galaxy119/EXILED</RepositoryUrl>
+  </PropertyGroup>
+		
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>True</Optimize>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DebugType>Portable</DebugType>
+ </PropertyGroup>
+
+  <!--
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
+  </ItemGroup> 
+  -->
+    
+</Project>

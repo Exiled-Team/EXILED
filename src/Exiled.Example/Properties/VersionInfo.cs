@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Exiled Team">
+// <copyright file="VersionInfo.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using Exiled.Loader;
 
-[assembly: Guid("10A8BFEC-B9E2-4119-BB21-2CF1EA820D19")]
-[assembly: AssemblyVersion(PluginManager._VERSION)]
-[assembly: AssemblyFileVersion(PluginManager._VERSION)]
-[assembly: AssemblyInformationalVersion(PluginManager._VERSION)]
+[assembly: Guid("4f183633-0a36-408c-a42e-6fba48751054")]
+[assembly: AssemblyVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0")]
+[assembly: AssemblyInformationalVersion("2.0.0")]

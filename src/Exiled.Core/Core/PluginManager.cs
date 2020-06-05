@@ -20,6 +20,10 @@ namespace Exiled.Loader
     /// </summary>
     public class PluginManager
     {
+#pragma warning disable SA1309 // Field names should not begin with underscore
+        internal const string _VERSION = "2.0.0";
+#pragma warning restore SA1309 // Field names should not begin with underscore
+
         private static string typeOverrides = string.Empty;
 
         /// <summary>
