@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events
             if ((AlphaWarheadController._resumeScenario != -1 || __instance.scenarios_start[AlphaWarheadController._startScenario].SumTime() != (double)__instance.timeToDetonation) && (AlphaWarheadController._resumeScenario == -1 || __instance.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() != (double)__instance.timeToDetonation))
                 return false;
 
-            var ev = new StartingWarheadEventArgs(null);
+            var ev = new StartingWarheadEventArgs(API.Features.Server.Host);
 
             Map.OnStartingWarhead(ev);
 

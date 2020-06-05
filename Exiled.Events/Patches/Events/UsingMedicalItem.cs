@@ -41,6 +41,8 @@ namespace Exiled.Events.Patches.Events
                 {
                     var ev = new UsingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
 
+                    Player.OnUsingMedicalItem(ev);
+
                     __instance.usableItems[i].animationDuration = ev.Cooldown;
 
                     if (ev.IsAllowed)

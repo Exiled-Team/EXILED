@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events
             if ((AlphaWarheadController._resumeScenario == -1 && AlphaWarheadController.Host.scenarios_start[AlphaWarheadController._startScenario].SumTime() == AlphaWarheadController.Host.timeToDetonation) ||
                 (AlphaWarheadController._resumeScenario != -1 && AlphaWarheadController.Host.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() == AlphaWarheadController.Host.timeToDetonation))
             {
-                var ev = new StartingWarheadEventArgs(API.Features.Player.Get(__instance.gameObject));
+                var ev = new StartingWarheadEventArgs(API.Features.Player.Get(__instance.gameObject) ?? API.Features.Server.Host);
 
                 Map.OnStartingWarhead(ev);
 

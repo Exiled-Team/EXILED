@@ -29,21 +29,17 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(PlayerInteract __instance, GameObject doorId)
         {
-            Door door = null;
-
-            var ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), door);
-
             if (!__instance._playerInteractRateLimit.CanExecute() ||
                 (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) ||
                 doorId == null ||
-                !doorId.TryGetComponent(out door) ||
+                !doorId.TryGetComponent(out Door door) ||
                 (__instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator) ||
                 (door.buttons.Count == 0 ?
                     (__instance.ChckDis(doorId.transform.position) ? 1 : 0) :
                     (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
                 return false;
 
-            ev.Door = door;
+            var ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), door);
 
             __instance.OnInteract();
 

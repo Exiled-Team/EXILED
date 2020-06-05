@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events
             QueryProcessor queryProcessor = sender is PlayerCommandSender playerCommandSender ? playerCommandSender.Processor : null;
 
             (string name, string[] arguments) = q.ExtractCommand();
-            var ev = new SendingRemoteAdminCommandEventArgs(string.IsNullOrEmpty(sender.SenderId) ? null : Player.Get(sender.SenderId), name, arguments.ToList());
+            var ev = new SendingRemoteAdminCommandEventArgs(string.IsNullOrEmpty(sender.SenderId) ? null : Player.Get(sender.SenderId) ?? Server.Host, name, arguments.ToList());
 
             if (q.ToLower().StartsWith("gban-kick"))
             {

@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
         public static bool Prefix(ref string cmd)
         {
             (string name, string[] arguments) = cmd.ExtractCommand();
-            var ev = new SendingRemoteAdminCommandEventArgs(API.Features.Player.Get(Console._ccs.SenderId), name, arguments.ToList());
+            var ev = new SendingRemoteAdminCommandEventArgs(API.Features.Player.Get(Console._ccs.SenderId) ?? API.Features.Server.Host, name, arguments.ToList());
 
             Server.OnSendingRemoteAdminCommand(ev);
 
