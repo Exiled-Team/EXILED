@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static List<Player> List { get; } = Dictionary.Values.ToList();
+        public static List<Player> List { get => Dictionary.Values.ToList(); }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.

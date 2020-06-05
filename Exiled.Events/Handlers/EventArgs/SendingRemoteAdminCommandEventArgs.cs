@@ -19,17 +19,24 @@ namespace Exiled.Events.Handlers.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="SendingRemoteAdminCommandEventArgs"/> class.
         /// </summary>
+        /// <param name="commandSender"><inheritdoc cref="CommandSender"/></param>
         /// <param name="sender"><inheritdoc cref="Sender"/></param>
         /// <param name="name"><inheritdoc cref="Name"/></param>
         /// <param name="arguments"><inheritdoc cref="Arguments"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SendingRemoteAdminCommandEventArgs(Player sender, string name, List<string> arguments, bool isAllowed = true)
+        public SendingRemoteAdminCommandEventArgs(CommandSender commandSender, Player sender, string name, List<string> arguments, bool isAllowed = true)
         {
+            CommandSender = commandSender;
             Sender = sender;
             Name = name;
             Arguments = arguments;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the <see cref="CommandSender"/> sending the command.
+        /// </summary>
+        public CommandSender CommandSender { get; private set; }
 
         /// <summary>
         /// Gets the player who's sending the command.
