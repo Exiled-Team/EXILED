@@ -8,11 +8,7 @@ namespace Loader
 {
   public class ModLoader
   {
-    public static bool loaded;
-
-    public static void InitMods()
-    {
-    }
+    public static bool Loaded;
 
     public static byte[] ReadFile(string path)
     {
@@ -34,12 +30,12 @@ namespace Loader
 
     public static void Loadxd()
     {
-      if (loaded)
+      if (Loaded)
         return;
-      ServerConsole.AddLog("Hello, yes, EXILED is loading..", ConsoleColor.Gray);
+      ServerConsole.AddLog("Hello, yes, EXILED is loading..");
       try
       {
-        loaded = true;
+        Loaded = true;
         string str = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-PTB");
         if (Environment.CurrentDirectory.ToLower().Contains("testing"))
           str = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
@@ -59,12 +55,12 @@ namespace Loader
         }
         catch (Exception ex)
         {
-          ServerConsole.AddLog($"EXILED load error: {(object) ex}", ConsoleColor.Gray);
+          ServerConsole.AddLog($"EXILED load error: {(object) ex}");
         }
       }
       catch (Exception ex)
       {
-        ServerConsole.AddLog(ex.ToString(), ConsoleColor.Gray);
+        ServerConsole.AddLog(ex.ToString());
       }
     }
   }
