@@ -221,6 +221,8 @@
     <Compile Include="Patches\Events\Joined.cs" />
     <Compile Include="Patches\Events\Kicked.cs" />
     <Compile Include="Patches\Events\Left.cs" />
+    <Compile Include="Patches\Events\LocalReporting.cs" />
+    <Compile Include="Patches\Events\LocalReportingEventArgs.cs" />
     <Compile Include="Patches\Events\PickingUpItem.cs" />
     <Compile Include="Patches\Events\PlacingBlood.cs" />
     <Compile Include="Patches\Events\PlacingBloodAndDecal.cs" />

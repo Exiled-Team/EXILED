@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\bin\Release\ModLoader.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\Exiled.Bootstrap.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-Publicized">
