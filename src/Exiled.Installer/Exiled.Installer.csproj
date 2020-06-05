@@ -1,10 +1,11 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="../../EXILED.targets" />
 
   <PropertyGroup>
     <AssemblyName>Exiled.Installer</AssemblyName>
     <TargetFramework>net472</TargetFramework>
-
+    <OutputType>Exe</OutputType>
+    
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -26,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exiled.Core\Exiled.Core.csproj" />
+    <ProjectReference Include="..\Exiled.Core\Exiled.Core.csproj">
+      <Private>false</Private>
+    </ProjectReference>
   </ItemGroup>
     
   <ItemGroup>
