@@ -65,6 +65,7 @@
     <Compile Include="Extensions\Config.cs" />
     <Compile Include="Extensions\Event.cs" />
     <Compile Include="Extensions\Item.cs" />
+    <Compile Include="Extensions\Role.cs" />
     <Compile Include="Features\Player.cs" />
     <Compile Include="Extensions\Reflection.cs" />
     <Compile Include="Extensions\String.cs" />

@@ -146,7 +146,6 @@ namespace Exiled.Loader
                         continue;
                     }
 
-
                     Log.Info($"Loading type {type.FullName}");
 
                     Plugin plugin = (Plugin)Activator.CreateInstance(type);
