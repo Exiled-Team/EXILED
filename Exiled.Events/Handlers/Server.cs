@@ -17,7 +17,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Server related events.
     /// </summary>
-    public class Server
+    public static class Server
     {
         /// <summary>
         /// Invoked before waiting for players.
@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         /// Invoked when a player reports a cheater.
         /// </summary>
         public static event CustomEventHandler<ReportingCheaterEventArgs> ReportingCheater;
+
+        /// <summary>
+        ///     Called when a complaint about a player is sent to the local server administrators.
+        /// </summary>
+        public static event CustomEventHandler<LocalReportEventArgs> LocalReport;
 
         /// <summary>
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
@@ -96,6 +101,8 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+
+        internal static void OnLocalReport(LocalReportEventArgs ev) => LocalReport.InvokeSafely(ev);
 
         /// <summary>
         /// Called before respawning a wave of Chaso Insurgency or NTF.
