@@ -63,8 +63,8 @@ namespace Exiled.Events
 
             Patch();
 
-            if (!Exiled.Events.Config.IsNameTrackingEnabled)
-                API.Features.Server.Name = $"{API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
+            if (Exiled.Events.Config.IsNameTrackingEnabled)
+                API.Features.Server.Name = $"{API.Features.Server.Name} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
         }
 
         /// <inheritdoc/>
