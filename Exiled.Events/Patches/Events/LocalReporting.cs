@@ -58,6 +58,7 @@ namespace Exiled.Events.Patches.Events
 
 #if DEBUG
             var lastNotifyGmInstruction = list[lastNotifyGm];
+            
             // Debugging for the developer
             // It's important that the method was used before calling the log to the console
             API.Features.Log.Error($"LocalReportEvent ->>>>>>>>>>> {lastNotifyGm}: {lastNotifyGmInstruction.opcode} - {lastNotifyGmInstruction.operand}");
@@ -79,8 +80,7 @@ namespace Exiled.Events.Patches.Events
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Ldarg_2),
-                new CodeInstruction(OpCodes.Ldind_Ref),
+                new CodeInstruction(OpCodes.Ldarga_S, 2),
                 new CodeInstruction(
                     OpCodes.Call,
                     AccessTools.Method(typeof(LocalReporting), nameof(InvokeLocalReport), new[] { typeof(CheaterReport), typeof(GameObject), typeof(string).MakeByRefType() })),
