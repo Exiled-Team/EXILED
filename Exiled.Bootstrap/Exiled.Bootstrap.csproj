@@ -7,8 +7,8 @@
     <ProjectGuid>{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ModLoader</RootNamespace>
-    <AssemblyName>ModLoader</AssemblyName>
+    <RootNamespace>Exiled.Bootstrap</RootNamespace>
+    <AssemblyName>Exiled.Bootstrap</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

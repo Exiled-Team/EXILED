@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Loader
+namespace Exiled.Boostrap
 {
     using System;
     using System.IO;
