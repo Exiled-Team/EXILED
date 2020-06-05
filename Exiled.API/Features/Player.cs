@@ -30,7 +30,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{GameObject, Player}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> List { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+
+        /// <summary>
+        /// Gets a list of all <see cref="Player"/>'s on the server.
+        /// </summary>
+        public static List<Player> List { get; } = Dictionary.Values.ToList();
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -329,7 +334,7 @@ namespace Exiled.API.Features
                 {
                     ReferenceHub.transform.localScale = value;
 
-                    foreach (Player target in List.Values)
+                    foreach (Player target in Dictionary.Values)
                         Server.SendSpawnMessage?.Invoke(null, new object[] { ReferenceHub.characterClassManager.netIdentity, target.Connection });
                 }
                 catch (Exception exception)
@@ -646,7 +651,7 @@ namespace Exiled.API.Features
             if (gameObject == null)
                 return null;
 
-            return List.TryGetValue(gameObject, out Player player) ? player : null;
+            return Dictionary.TryGetValue(gameObject, out Player player) ? player : null;
         }
 
         /// <summary>
@@ -659,7 +664,7 @@ namespace Exiled.API.Features
             if (IdsCache.TryGetValue(id, out Player player) && player != null)
                 return player;
 
-            foreach (Player playerFound in List.Values)
+            foreach (Player playerFound in Dictionary.Values)
             {
                 if (playerFound.Id != id)
                     continue;
@@ -689,7 +694,7 @@ namespace Exiled.API.Features
 
                 if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
                 {
-                    foreach (Player player in List.Values)
+                    foreach (Player player in Dictionary.Values)
                     {
                         if (player.UserId == args)
                         {
@@ -705,7 +710,7 @@ namespace Exiled.API.Features
                     int maxNameLength = 31, lastnameDifference = 31;
                     string firstString = args.ToLower();
 
-                    foreach (Player player in List.Values)
+                    foreach (Player player in Dictionary.Values)
                     {
                         if (!player.Nickname.ToLower().Contains(args.ToLower()))
                             continue;

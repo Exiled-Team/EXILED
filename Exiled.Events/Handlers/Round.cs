@@ -31,7 +31,7 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (API.Features.Player player in API.Features.Player.List.Values)
+            foreach (API.Features.Player player in API.Features.Player.Dictionary.Values)
             {
                 if (player.IsOverwatchEnabled)
                 {
@@ -50,8 +50,8 @@ namespace Exiled.Events.Handlers
             foreach (var entry in API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
                 API.Features.Player.UserIdsCache.Remove(entry.Key);
 
-            if (!API.Features.Player.List.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.List.Remove(ev.Player.GameObject);
+            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
         }
 
         /// <inheritdoc cref="Player.OnJoined(JoinedEventArgs)"/>
@@ -60,8 +60,8 @@ namespace Exiled.Events.Handlers
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
-            if (!API.Features.Player.List.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.List.Add(ev.Player.GameObject, ev.Player);
+            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
