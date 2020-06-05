@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Fixes
     #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
-    using Exiled.Loader;
+    using Exiled.Core;
     using GameCore;
     using HarmonyLib;
     using Mirror;
@@ -328,7 +328,7 @@ namespace Exiled.Events.Patches.Fixes
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"SmartClassPickerFix error: {exception}");
+               Core.API.Features.Log.Error($"SmartClassPickerFix error: {exception}");
                 return true;
             }
         }

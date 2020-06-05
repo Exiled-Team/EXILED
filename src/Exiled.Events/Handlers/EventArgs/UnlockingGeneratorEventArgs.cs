@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
 
     /// <summary>
     /// Contains all informations before the SCP-914 machine upgrades items inside it.

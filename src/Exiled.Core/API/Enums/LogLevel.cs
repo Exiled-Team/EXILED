@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
+namespace Exiled.Core.API.Enums
 {
     /// <summary>
     /// Importance levels of log messages.

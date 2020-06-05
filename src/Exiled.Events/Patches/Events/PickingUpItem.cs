@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(ItemSearchCompletor __instance)
         {
-            var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
+            var ev = new PickingUpItemEventArgs(Core.API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
 
             Player.OnPickingUpItem(ev);
 

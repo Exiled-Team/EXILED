@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Round.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -19,19 +19,19 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
-            API.Features.Map.Rooms.Clear();
-            API.Features.Map.Doors.Clear();
-            API.Features.Map.Lifts.Clear();
-            API.Features.Map.TeslaGates.Clear();
+            Core.API.Features.Map.Rooms.Clear();
+            Core.API.Features.Map.Doors.Clear();
+            Core.API.Features.Map.Lifts.Clear();
+            Core.API.Features.Map.TeslaGates.Clear();
 
-            API.Features.Player.IdsCache.Clear();
-            API.Features.Player.UserIdsCache.Clear();
+            Core.API.Features.Player.IdsCache.Clear();
+            Core.API.Features.Player.UserIdsCache.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (API.Features.Player player in API.Features.Player.List)
+            foreach (Core.API.Features.Player player in Core.API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)
                 {
@@ -44,14 +44,14 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Player.OnLeft(LeftEventArgs)"/>
         public void OnPlayerLeft(LeftEventArgs ev)
         {
-            if (API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
-                API.Features.Player.IdsCache.Remove(ev.Player.Id);
+            if (Core.API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
+                Core.API.Features.Player.IdsCache.Remove(ev.Player.Id);
 
-            foreach (var entry in API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
-                API.Features.Player.UserIdsCache.Remove(entry.Key);
+            foreach (var entry in Core.API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
+                Core.API.Features.Player.UserIdsCache.Remove(entry.Key);
 
-            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
+            if (!Core.API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                Core.API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
         }
 
         /// <inheritdoc cref="Player.OnJoined(JoinedEventArgs)"/>
@@ -60,8 +60,8 @@ namespace Exiled.Events.Handlers
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
-            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
+            if (!Core.API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
+                Core.API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>

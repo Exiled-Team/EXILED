@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AssemblyInfo.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,7 +8,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Exiled.Loader;
+using Exiled.Core;
 
 [assembly: Guid("1ABEC6CE-E209-4C38-AB45-2F3B7F6091CA")]
 [assembly: AssemblyVersion(PluginManager._VERSION)]

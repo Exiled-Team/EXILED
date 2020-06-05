@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events
             {
                 if (__instance.usableItems[i].inventoryID == __instance.hub.inventory.curItem && __instance.usableCooldowns[i] <= 0.0)
                 {
-                    var ev = new UsingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+                    var ev = new UsingMedicalItemEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
 
                     __instance.usableItems[i].animationDuration = ev.Cooldown;
 

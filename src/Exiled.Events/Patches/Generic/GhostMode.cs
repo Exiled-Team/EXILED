@@ -11,7 +11,7 @@ namespace Exiled.Events.Patches.Generic
     using System;
     using System.Collections.Generic;
     using CustomPlayerEffects;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using HarmonyLib;
     using Mirror;
     using PlayableScps;

@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader
+namespace Exiled.Core
 {
     using System;
     using System.IO;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using MEC;
 
     /// <summary>

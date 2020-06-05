@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
+namespace Exiled.Core.API.Extensions
 {
     using System;
     using System.Linq;

@@ -8,9 +8,9 @@
 namespace Exiled.Permissions
 {
     using System.IO;
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-    using Exiled.Loader;
+    using Exiled.Core.API.Features;
+    using Exiled.Core.API.Interfaces;
+    using Exiled.Core;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig

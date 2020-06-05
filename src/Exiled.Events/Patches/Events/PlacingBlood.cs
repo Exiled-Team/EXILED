@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(CharacterClassManager __instance, Vector3 pos, int type, float f)
         {
-            var ev = new PlacingBloodEventArgs(API.Features.Player.Get(__instance.gameObject), pos, type, f);
+            var ev = new PlacingBloodEventArgs(Core.API.Features.Player.Get(__instance.gameObject), pos, type, f);
 
             Map.OnPlacingBlood(ev);
 

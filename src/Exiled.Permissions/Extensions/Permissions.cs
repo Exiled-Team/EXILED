@@ -11,8 +11,8 @@ namespace Exiled.Permissions.Extensions
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Exiled.API.Features;
-    using Exiled.Loader;
+    using Exiled.Core.API.Features;
+    using Exiled.Core;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
     using YamlDotNet.Serialization;

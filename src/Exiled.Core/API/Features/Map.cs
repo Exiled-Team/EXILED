@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.Core.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;

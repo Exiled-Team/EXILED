@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.Handlers.EventArgs;
-    using Exiled.Loader;
+    using Exiled.Core;
     using MEC;
     using UnityEngine;
     using static GameCore.ConfigFile;

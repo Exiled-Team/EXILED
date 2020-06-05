@@ -10,7 +10,7 @@ namespace Exiled.Patches
     #pragma warning disable SA1313
     using System;
     using System.Linq;
-    using Exiled.API.Extensions;
+    using Exiled.Core.API.Extensions;
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
@@ -32,7 +32,7 @@ namespace Exiled.Patches
         public static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, ref bool encrypted)
         {
             (string name, string[] arguments) = query.ExtractCommand();
-            var ev = new SendingConsoleCommandEventArgs(API.Features.Player.Get(__instance.gameObject), name, arguments.ToList(), encrypted, string.Empty, "white");
+            var ev = new SendingConsoleCommandEventArgs(Core.API.Features.Player.Get(__instance.gameObject), name, arguments.ToList(), encrypted, string.Empty, "white");
 
             Server.OnSendingConsoleCommand(ev);
 

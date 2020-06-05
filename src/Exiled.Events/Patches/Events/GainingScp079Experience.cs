@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
         {
-            var ev = new GainingScp079ExperienceEventArgs(API.Features.Player.Get(__instance.gameObject), type, (float)details);
+            var ev = new GainingScp079ExperienceEventArgs(Core.API.Features.Player.Get(__instance.gameObject), type, (float)details);
 
             switch (type)
             {

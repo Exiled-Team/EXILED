@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events
             Item itemByID = __instance._inv.GetItemByID(__instance._inv.curItem);
 
             var ev = new InteractingLockerEventArgs(
-                API.Features.Player.Get(__instance.gameObject),
+               Core.API.Features.Player.Get(__instance.gameObject),
                 singleton.lockers[lockerId],
                 lockerId,
                 string.IsNullOrEmpty(accessToken) || (itemByID != null && itemByID.permissions.Contains(accessToken)) || __instance._sr.BypassMode);

@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Handlers.EventArgs
 {
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
 
     /// <summary>
     /// Contains all informations freeing a handcuffed player.

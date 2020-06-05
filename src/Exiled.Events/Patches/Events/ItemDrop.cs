@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events
             if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
                 return false;
 
-            var droppingItemEventArgs = new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo);
+            var droppingItemEventArgs = new DroppingItemEventArgs(Core.API.Features.Player.Get(__instance.gameObject), syncItemInfo);
 
             Player.OnDroppingItem(droppingItemEventArgs);
 
@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events
 
             __instance.items.RemoveAt(itemInventoryIndex);
 
-            var itemDroppedEventArgs = new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
+            var itemDroppedEventArgs = new ItemDroppedEventArgs(Core.API.Features.Player.Get(__instance.gameObject), droppedPickup);
 
             Player.OnItemDropped(itemDroppedEventArgs);
 

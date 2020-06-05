@@ -9,9 +9,9 @@ namespace Exiled.Events.Patches.Events
 {
     #pragma warning disable SA1313
     using System;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using Exiled.Events.Handlers.EventArgs;
-    using Exiled.Loader;
+    using Exiled.Core;
     using HarmonyLib;
     using UnityEngine;
 

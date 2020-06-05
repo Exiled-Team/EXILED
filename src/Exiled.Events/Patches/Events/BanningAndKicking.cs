@@ -42,8 +42,8 @@ namespace Exiled.Events.Patches.Events
             string userId = null;
             string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 
-            API.Features.Player targetPlayer = API.Features.Player.Get(user);
-            API.Features.Player issuerPlayer = API.Features.Player.Get(issuer) ?? API.Features.Server.Host;
+           Core.API.Features.Player targetPlayer =Core.API.Features.Player.Get(user);
+           Core.API.Features.Player issuerPlayer =Core.API.Features.Player.Get(issuer) ??Core.API.Features.Server.Host;
 
             try
             {

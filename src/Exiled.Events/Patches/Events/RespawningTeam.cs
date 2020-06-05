@@ -10,7 +10,7 @@ namespace Exiled.Patches
     #pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Linq;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using Exiled.Events;
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
@@ -33,7 +33,7 @@ namespace Exiled.Patches
             List<Player> deadPlayers = Player.List.Where(player => player.IsDead || player.IsOverwatchEnabled).ToList();
             __instance.playersToNTF.Clear();
 
-            Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Loader.PluginManager.ShouldDebugBeShown);
+            Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Core.PluginManager.ShouldDebugBeShown);
 
             if (Config.IsRespawnRandom)
                 deadPlayers.ShuffleList();

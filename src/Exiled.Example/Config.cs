@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Config.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,8 +7,8 @@
 
 namespace Exiled.Example
 {
-    using Exiled.API.Interfaces;
-    using Exiled.Loader;
+    using Exiled.Core;
+    using Exiled.Core.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>
     public class Config : IConfig

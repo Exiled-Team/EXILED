@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader
+namespace Exiled.Core
 {
     using System;
-    using Exiled.API.Enums;
-    using Exiled.API.Interfaces;
+    using Exiled.Core.API.Enums;
+    using Exiled.Core.API.Interfaces;
 
     /// <summary>
     /// The configs of the loader.

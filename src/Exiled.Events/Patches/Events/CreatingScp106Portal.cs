@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events
 
             bool rayCastHit = Physics.Raycast(new Ray(__instance.transform.position, -__instance.transform.up), out RaycastHit raycastHit, 10f, __instance.teleportPlacementMask);
 
-            var ev = new CreatingScp106PortalEventArgs(API.Features.Player.Get(__instance.gameObject), raycastHit.point - Vector3.up);
+            var ev = new CreatingScp106PortalEventArgs(Core.API.Features.Player.Get(__instance.gameObject), raycastHit.point - Vector3.up);
 
             Player.OnCreatingScp106Portal(ev);
 

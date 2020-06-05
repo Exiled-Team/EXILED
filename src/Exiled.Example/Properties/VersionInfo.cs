@@ -7,7 +7,7 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Exiled.Loader;
+using Exiled.Core;
 
 [assembly: Guid("4f183633-0a36-408c-a42e-6fba48751054")]
 [assembly: AssemblyVersion("2.0.0")]

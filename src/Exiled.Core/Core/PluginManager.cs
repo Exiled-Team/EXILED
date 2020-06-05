@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Loader
+namespace Exiled.Core
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using global::Loader;
 
     /// <summary>
@@ -59,7 +59,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == API.Enums.EnvironmentType.Testing || Config.Environment == API.Enums.EnvironmentType.Development;
+        public static bool ShouldDebugBeShown => Config.Environment ==Core.API.Enums.EnvironmentType.Testing || Config.Environment ==Core.API.Enums.EnvironmentType.Development;
 
         /// <summary>
         /// The coroutine which loads all plugins.

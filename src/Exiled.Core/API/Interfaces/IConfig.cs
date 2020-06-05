@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Interfaces
+namespace Exiled.Core.API.Interfaces
 {
     /// <summary>
     /// Define the contract for basic config features.

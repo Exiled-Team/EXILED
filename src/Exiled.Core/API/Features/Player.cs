@@ -5,14 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.Core.API.Features
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
+    using Exiled.Core.API.Enums;
+    using Exiled.Core.API.Extensions;
     using Mirror;
     using UnityEngine;
 

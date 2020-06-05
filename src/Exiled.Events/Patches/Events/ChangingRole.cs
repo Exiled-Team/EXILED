@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ChangingRole.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -44,13 +44,13 @@ namespace Exiled.Patches
                 return false;
             }
 
-            var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, __instance.Classes.SafeGet(classid).startItems.ToList(), lite, escape);
+            var changingRoleEventArgs = new ChangingRoleEventArgs(Core.API.Features.Player.Get(ply), classid, __instance.Classes.SafeGet(classid).startItems.ToList(), lite, escape);
 
             Player.OnChangingRole(changingRoleEventArgs);
 
             if (lite)
             {
-                var escapingEventArgs = new EscapingEventArgs(API.Features.Player.Get(ply), classid);
+                var escapingEventArgs = new EscapingEventArgs(Core.API.Features.Player.Get(ply), classid);
 
                 Player.OnEscaping(escapingEventArgs);
 

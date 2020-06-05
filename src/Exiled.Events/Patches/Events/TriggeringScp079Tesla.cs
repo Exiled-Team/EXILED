@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events
                 return false;
 
             var tesla = go1.GetComponent<TeslaGate>();
-            var ev = new TriggeringScp079TeslaEventArgs(API.Features.Player.Get(__instance.gameObject), tesla);
+            var ev = new TriggeringScp079TeslaEventArgs(Core.API.Features.Player.Get(__instance.gameObject), tesla);
 
             Player.OnTriggeringScp079Tesla(ev);
 

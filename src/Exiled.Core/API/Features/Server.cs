@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.Core.API.Features
 {
     using System.Reflection;
     using Mirror;

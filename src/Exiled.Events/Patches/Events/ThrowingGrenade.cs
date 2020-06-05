@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(ref GrenadeManager __instance, ref int id, ref bool slowThrow, ref double time)
         {
-            var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, id, slowThrow, time);
+            var ev = new ThrowingGrenadeEventArgs(Core.API.Features.Player.Get(__instance.gameObject), __instance, id, slowThrow, time);
 
             Player.OnThrowingGrenade(ev);
 

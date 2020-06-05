@@ -28,12 +28,12 @@ namespace Exiled.Events.Patches.Events
         /// <param name="go">The player's game object.</param>
         public static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
-            var target = API.Features.Player.Get(go);
+            var target =Core.API.Features.Player.Get(go);
 
             if (target?.IsGodModeEnabled ?? false)
                 return;
 
-            var ev = new DiedEventArgs(API.Features.Player.Get(__instance.gameObject), target, info);
+            var ev = new DiedEventArgs(Core.API.Features.Player.Get(__instance.gameObject), target, info);
 
             Player.OnDied(ev);
 

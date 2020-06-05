@@ -23,6 +23,6 @@ namespace Exiled.Events.Patches.Events
         /// Prefix of <see cref="PlayerInteract.OnInteract"/>.
         /// </summary>
         /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        public static void Prefix(PlayerInteract __instance) => Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(__instance.gameObject)));
+        public static void Prefix(PlayerInteract __instance) => Player.OnInteracted(new InteractedEventArgs(Core.API.Features.Player.Get(__instance.gameObject)));
     }
 }

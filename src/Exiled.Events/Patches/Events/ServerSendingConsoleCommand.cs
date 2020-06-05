@@ -10,7 +10,7 @@ namespace Exiled.Events.Patches.Events
     #pragma warning disable SA1313
     using System;
     using System.Linq;
-    using Exiled.API.Extensions;
+    using Exiled.Core.API.Extensions;
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
         public static bool Prefix(ref string cmd)
         {
             (string name, string[] arguments) = cmd.ExtractCommand();
-            var ev = new SendingRemoteAdminCommandEventArgs(API.Features.Player.Get(Console._ccs.SenderId), name, arguments.ToList());
+            var ev = new SendingRemoteAdminCommandEventArgs(Core.API.Features.Player.Get(Console._ccs.SenderId), name, arguments.ToList());
 
             Server.OnSendingRemoteAdminCommand(ev);
 

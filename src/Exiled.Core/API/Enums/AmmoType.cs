@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Enums
+namespace Exiled.Core.API.Enums
 {
     /// <summary>
     /// Ammo types present in the game.

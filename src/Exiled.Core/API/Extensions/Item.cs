@@ -5,9 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
+namespace Exiled.Core.API.Extensions
 {
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
     using UnityEngine;
 
     /// <summary>

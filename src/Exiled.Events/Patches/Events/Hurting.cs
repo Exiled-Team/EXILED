@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
             if (go == null)
                 return;
 
-            var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
+            var ev = new HurtingEventArgs(Core.API.Features.Player.Get(__instance.gameObject),Core.API.Features.Player.Get(go), info);
 
             Player.OnHurting(ev);
 

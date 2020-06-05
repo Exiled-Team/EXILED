@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
-    using Exiled.API.Features;
+    using Exiled.Core.API.Features;
 
     /// <summary>
     /// Contains all player's informations after he has interacted with something.

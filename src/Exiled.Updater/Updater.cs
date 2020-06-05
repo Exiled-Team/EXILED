@@ -13,8 +13,8 @@ namespace Exiled.Updater
     using System.Linq;
     using System.Net;
     using System.Text;
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
+    using Exiled.Core.API.Features;
+    using Exiled.Core.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
@@ -77,20 +77,20 @@ namespace Exiled.Updater
                 ExtractTarGz(exiledTempPath, tempDirectory);
                 Log.Info($"Extraction complete, moving files...");
 
-                string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "Exiled"), "Exiled.Loader.dll");
+                string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "Exiled"), "Exiled.Core.dll");
                 string tempPluginsDirectory = Path.Combine(tempExiledMainPath, "Plugins");
                 string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "Exiled.Events.dll");
                 string tempPermissionsPath = Path.Combine(tempPluginsDirectory, "Exiled.Permissions.dll");
                 string tempUpdaterPath = Path.Combine(tempPluginsDirectory, "Exiled.Updater.dll");
                 string tempAssemblyPath = Path.Combine(tempDirectory, "Assembly-CSharp.dll");
 
-                File.Delete(Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
+                File.Delete(Path.Combine(Paths.Exiled, "Exiled.Core.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Idler.dll"));
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
                 File.Delete(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
-                File.Move(tempExiledMainPath, Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
+                File.Move(tempExiledMainPath, Path.Combine(Paths.Exiled, "Exiled.Core.dll"));
                 File.Move(tempExiledEventsPath, Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
                 File.Move(tempPermissionsPath, Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
                 File.Move(tempUpdaterPath, Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));

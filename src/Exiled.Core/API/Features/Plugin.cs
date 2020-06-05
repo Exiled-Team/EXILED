@@ -5,11 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.Core.API.Features
 {
     using System;
     using System.Reflection;
-    using Exiled.API.Interfaces;
+    using Exiled.Core.API.Interfaces;
 
     /// <summary>
     /// Expose how a plugin has to be made.

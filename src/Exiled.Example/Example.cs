@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Example.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,8 +7,8 @@
 
 namespace Exiled.Example
 {
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
+    using Exiled.Core.API.Features;
+    using Exiled.Core.API.Interfaces;
 
     /// <summary>
     /// The example plugin.

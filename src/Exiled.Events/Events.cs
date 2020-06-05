@@ -8,10 +8,12 @@
 namespace Exiled.Events
 {
     using System;
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
+
+    using Exiled.Core;
+    using Exiled.Core.API.Features;
+    using Exiled.Core.API.Interfaces;
     using Exiled.Events.Handlers;
-    using Exiled.Loader;
+
     using HarmonyLib;
 
     /// <summary>
@@ -66,7 +68,7 @@ namespace Exiled.Events
             Patch();
 
             if (!Exiled.Events.Config.IsNameTrackingEnabled)
-                API.Features.Server.Name = $"{API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
+                Core.API.Features.Server.Name = $"{Core.API.Features.Server.Name.Replace("<size=1>SM119.0.0</size>", string.Empty)} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
         }
 
         /// <inheritdoc/>
@@ -104,12 +106,12 @@ namespace Exiled.Events
                 Harmony = new Harmony($"exiled.patches.{++patchesCounter}");
                 Harmony.PatchAll();
 
-                #if DEBUG
-				bool disabledStatus = Harmony.DEBUG;
+#if DEBUG
+                bool disabledStatus = Harmony.DEBUG;
 
-				Harmony.DEBUG = true;
-				Harmony.DEBUG = disabledStatus;
-                #endif
+                Harmony.DEBUG = true;
+                Harmony.DEBUG = disabledStatus;
+#endif
             }
             catch (Exception exception)
             {

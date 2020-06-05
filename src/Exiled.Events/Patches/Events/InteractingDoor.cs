@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
         {
             Door door = null;
 
-            var ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), door);
+            var ev = new InteractingDoorEventArgs(Core.API.Features.Player.Get(__instance.gameObject), door);
 
             if (!__instance._playerInteractRateLimit.CanExecute() ||
                 (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) ||
