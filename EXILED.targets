@@ -3,7 +3,7 @@
   <!-- StyleCop Analyzers configuration -->
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>$(SolutionDir)\Exiled.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +30,7 @@
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>git://github.com/galaxy119/EXILED</RepositoryUrl>
   </PropertyGroup>
-        
+
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <Optimize>True</Optimize>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
@@ -41,7 +41,7 @@
   <ItemGroup>
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
     <Analyzer Include="..\packages\StyleCop.Analyzers.1.1.118\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
-  </ItemGroup> 
+  </ItemGroup>
   -->
-    
+
 </Project>

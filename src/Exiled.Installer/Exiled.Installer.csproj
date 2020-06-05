@@ -22,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="packages.config" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Exiled.Core\Exiled.Core.csproj" />
   </ItemGroup>
     
