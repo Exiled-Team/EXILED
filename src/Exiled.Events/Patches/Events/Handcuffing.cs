@@ -7,11 +7,14 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>
@@ -84,7 +87,7 @@ namespace Exiled.Events.Patches.Events
 
             __instance.ClearTarget();
 
-            var ev = new HandcuffingEventArgs(Core.API.Features.Player.Get(__instance.gameObject),Core.API.Features.Player.Get(target));
+            var ev = new HandcuffingEventArgs(Core.API.Features.Player.Get(__instance.gameObject), Core.API.Features.Player.Get(target));
 
             Player.OnHandcuffing(ev);
 

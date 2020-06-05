@@ -7,11 +7,15 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System;
+
     using Exiled.Core.API.Features;
+
     using HarmonyLib;
+
     using MEC;
+
     using Mirror;
 
     /// <summary>

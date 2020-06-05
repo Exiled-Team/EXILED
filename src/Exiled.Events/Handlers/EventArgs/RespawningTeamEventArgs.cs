@@ -9,6 +9,7 @@ namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
     using System.Collections.Generic;
+
     using Exiled.Core.API.Features;
 
     /// <summary>

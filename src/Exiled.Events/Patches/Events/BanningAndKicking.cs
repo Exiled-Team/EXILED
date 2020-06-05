@@ -7,13 +7,18 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Collections.Generic;
+
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>
@@ -42,8 +47,8 @@ namespace Exiled.Events.Patches.Events
             string userId = null;
             string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 
-           Core.API.Features.Player targetPlayer =Core.API.Features.Player.Get(user);
-           Core.API.Features.Player issuerPlayer =Core.API.Features.Player.Get(issuer) ??Core.API.Features.Server.Host;
+            Core.API.Features.Player targetPlayer = Core.API.Features.Player.Get(user);
+            Core.API.Features.Player issuerPlayer = Core.API.Features.Player.Get(issuer) ?? Core.API.Features.Server.Host;
 
             try
             {

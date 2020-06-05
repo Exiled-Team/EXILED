@@ -11,9 +11,12 @@ namespace Exiled.Core.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Exiled.Core.API.Enums;
     using Exiled.Core.API.Extensions;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>

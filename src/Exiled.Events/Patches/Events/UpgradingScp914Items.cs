@@ -7,12 +7,16 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Linq;
+
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <summary>
@@ -49,7 +53,7 @@ namespace Exiled.Events.Patches.Events
                 }
             }
 
-            var ev = new UpgradingScp914ItemsEventArgs(__instance, __instance.players.Select(player =>Core.API.Features.Player.Get(player.gameObject)).ToList(), __instance.items, __instance.knobState);
+            var ev = new UpgradingScp914ItemsEventArgs(__instance, __instance.players.Select(player => Core.API.Features.Player.Get(player.gameObject)).ToList(), __instance.items, __instance.knobState);
 
             Map.OnUpgradingScp914Items(ev);
 

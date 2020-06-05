@@ -7,9 +7,10 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
 
     /// <summary>
@@ -27,7 +28,7 @@ namespace Exiled.Events.Patches.Events
         {
             var ev = new LeftEventArgs(Core.API.Features.Player.Get(__instance.gameObject));
 
-           Core.API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
+            Core.API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
 
             Player.OnLeft(ev);
         }

@@ -8,6 +8,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 using Exiled.Core;
 
 [assembly: Guid("1ABEC6CE-E209-4C38-AB45-2F3B7F6091CA")]

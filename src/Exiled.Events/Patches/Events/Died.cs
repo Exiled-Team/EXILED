@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>
@@ -28,7 +30,7 @@ namespace Exiled.Events.Patches.Events
         /// <param name="go">The player's game object.</param>
         public static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
-            var target =Core.API.Features.Player.Get(go);
+            var target = Core.API.Features.Player.Get(go);
 
             if (target?.IsGodModeEnabled ?? false)
                 return;

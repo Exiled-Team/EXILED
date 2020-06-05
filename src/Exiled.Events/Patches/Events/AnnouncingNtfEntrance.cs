@@ -7,9 +7,10 @@
 
 namespace Exiled.Patches
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
 
     /// <summary>

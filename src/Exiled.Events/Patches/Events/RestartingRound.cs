@@ -7,8 +7,9 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
 
     /// <summary>
@@ -24,7 +25,7 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="PlayerStats"/> instance.</param>
         public static void Prefix(PlayerStats __instance)
         {
-           Core.API.Features.Log.Debug("Round restarting");
+            Core.API.Features.Log.Debug("Round restarting");
 
             Server.OnRestartingRound();
         }

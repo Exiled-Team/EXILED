@@ -9,6 +9,7 @@ namespace Exiled.Core.API.Features
 {
     using System;
     using System.Reflection;
+
     using Exiled.Core.API.Interfaces;
 
     /// <summary>

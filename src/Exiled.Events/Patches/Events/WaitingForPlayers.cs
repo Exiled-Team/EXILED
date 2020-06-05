@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events
 {
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
 
     /// <summary>

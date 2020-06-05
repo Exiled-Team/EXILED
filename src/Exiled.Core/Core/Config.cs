@@ -8,6 +8,7 @@
 namespace Exiled.Core
 {
     using System;
+
     using Exiled.Core.API.Enums;
     using Exiled.Core.API.Interfaces;
 

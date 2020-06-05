@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events
             if (go == null)
                 return;
 
-            var ev = new HurtingEventArgs(Core.API.Features.Player.Get(__instance.gameObject),Core.API.Features.Player.Get(go), info);
+            var ev = new HurtingEventArgs(Core.API.Features.Player.Get(__instance.gameObject), Core.API.Features.Player.Get(go), info);
 
             Player.OnHurting(ev);
 

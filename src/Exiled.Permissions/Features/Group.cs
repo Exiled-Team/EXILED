@@ -8,6 +8,7 @@
 namespace Exiled.Permissions.Features
 {
     using System.Collections.Generic;
+
     using YamlDotNet.Serialization;
 
     /// <summary>

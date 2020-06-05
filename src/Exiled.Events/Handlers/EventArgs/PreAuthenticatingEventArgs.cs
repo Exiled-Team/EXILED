@@ -8,6 +8,7 @@
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
+
     using LiteNetLib;
     using LiteNetLib.Utils;
 
@@ -144,10 +145,10 @@ namespace Exiled.Events.Handlers.EventArgs
             rejectData.Put(reason);
 
             if (rejectionType == RejectionReason.Delay)
-                    rejectData.Put(seconds);
+                rejectData.Put(seconds);
 
             if (rejectionType == RejectionReason.Redirect)
-                    rejectData.Put(port);
+                rejectData.Put(port);
 
             if (isForced)
                 Request.RejectForce(rejectData);

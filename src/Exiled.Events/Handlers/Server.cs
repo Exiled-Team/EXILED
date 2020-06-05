@@ -9,9 +9,11 @@ namespace Exiled.Events.Handlers
 {
     using System;
     using System.IO;
+
     using Exiled.Core.API.Extensions;
     using Exiled.Core.API.Features;
     using Exiled.Events.Handlers.EventArgs;
+
     using static Exiled.Events.Events;
 
     /// <summary>

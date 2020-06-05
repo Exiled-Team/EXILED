@@ -7,8 +7,9 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

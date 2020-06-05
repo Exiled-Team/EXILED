@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Shoot.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,12 +7,15 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System;
+
+    using Exiled.Core;
     using Exiled.Core.API.Features;
     using Exiled.Events.Handlers.EventArgs;
-    using Exiled.Core;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

@@ -8,6 +8,7 @@
 namespace Exiled.Core.API.Extensions
 {
     using Exiled.Core.API.Features;
+
     using UnityEngine;
 
     /// <summary>

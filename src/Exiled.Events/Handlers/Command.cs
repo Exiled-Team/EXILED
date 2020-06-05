@@ -7,10 +7,13 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.Handlers.EventArgs;
     using Exiled.Core;
+    using Exiled.Events.Handlers.EventArgs;
+
     using MEC;
+
     using UnityEngine;
+
     using static GameCore.ConfigFile;
 
     /// <summary>

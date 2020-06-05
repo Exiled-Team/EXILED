@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using PlayableScps;
 
     /// <summary>
@@ -27,7 +29,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Scp096 __instance)
         {
-            var ev = new CalmingDownScp096EventArgs(__instance,Core.API.Features.Player.Get(__instance.Hub.gameObject));
+            var ev = new CalmingDownScp096EventArgs(__instance, Core.API.Features.Player.Get(__instance.Hub.gameObject));
 
             Player.OnCalmingDownScp096(ev);
 

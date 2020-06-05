@@ -7,15 +7,22 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Collections.Generic;
+
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using LightContainmentZoneDecontamination;
+
     using Mirror;
+
     using UnityEngine;
+
     using Object = UnityEngine.Object;
     using Random = UnityEngine.Random;
 

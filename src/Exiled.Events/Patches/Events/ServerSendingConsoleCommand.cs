@@ -7,13 +7,16 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System;
     using System.Linq;
+
     using Exiled.Core.API.Extensions;
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using Console = GameCore.Console;
 
     /// <summary>

@@ -11,12 +11,15 @@ namespace Exiled.Permissions.Extensions
     using System.IO;
     using System.Linq;
     using System.Text;
-    using Exiled.Core.API.Features;
+
     using Exiled.Core;
+    using Exiled.Core.API.Features;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
+
     using static Exiled.Permissions.Config;
 
     /// <inheritdoc cref="Exiled.Permissions.Permissions"/>

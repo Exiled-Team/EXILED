@@ -9,7 +9,9 @@ namespace Exiled.Core.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.Core.API.Enums;
+
     using UnityEngine;
 
     /// <summary>

@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using MEC;
 
     /// <summary>
@@ -26,15 +28,15 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="NicknameSync"/> instance.</param>
         public static void Postfix(NicknameSync __instance)
         {
-           Core.API.Features.Player player = new Core.API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+            Core.API.Features.Player player = new Core.API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
 
             if (player.IsHost)
                 return;
 
-           Core.API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
+            Core.API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
             if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-               Core.API.Features.Log.Debug($"Server is full!");
+                Core.API.Features.Log.Debug($"Server is full!");
 
             Timing.CallDelayed(0.25f, () =>
             {

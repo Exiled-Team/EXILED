@@ -9,7 +9,9 @@ namespace Exiled.Core
 {
     using System;
     using System.IO;
+
     using Exiled.Core.API.Features;
+
     using MEC;
 
     /// <summary>

@@ -7,9 +7,10 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
 
     /// <summary>
@@ -30,7 +31,7 @@ namespace Exiled.Events.Patches.Events
             if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
                 return false;
 
-            var ev = new IntercomSpeakingEventArgs(player ?Core.API.Features.Player.Get(__instance.gameObject) : null);
+            var ev = new IntercomSpeakingEventArgs(player ? Core.API.Features.Player.Get(__instance.gameObject) : null);
 
             if (player)
             {

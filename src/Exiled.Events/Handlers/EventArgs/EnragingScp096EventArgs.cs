@@ -8,7 +8,9 @@
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
+
     using Exiled.Core.API.Features;
+
     using PlayableScps;
 
     /// <summary>

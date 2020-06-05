@@ -7,10 +7,12 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>
@@ -36,7 +38,7 @@ namespace Exiled.Events.Patches.Events
         public static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
         {
             var ev = new SpawningRagdollEventArgs(
-                ragdollInfo.PlayerId == 0 ? null :Core.API.Features.Player.Get(ragdollInfo.PlayerId),
+                ragdollInfo.PlayerId == 0 ? null : Core.API.Features.Player.Get(ragdollInfo.PlayerId),
                Core.API.Features.Player.Get(__instance.gameObject),
                 pos,
                 rot,

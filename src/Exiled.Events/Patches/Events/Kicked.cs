@@ -9,7 +9,9 @@ namespace Exiled.Events.Patches.Events
 {
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>
