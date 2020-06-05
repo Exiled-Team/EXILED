@@ -102,7 +102,11 @@ namespace Exiled.API.Features
                 if (string.IsNullOrEmpty(UserId))
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Split('@')[0])
+                int index = UserId.LastIndexOf('@');
+                if (index == -1)
+                    return AuthenticationType.Unknown;
+
+                switch (UserId.Substring(index))
                 {
                     case "steam":
                         return AuthenticationType.Steam;
