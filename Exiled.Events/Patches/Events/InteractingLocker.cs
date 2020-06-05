@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdUseLocker(int, int)"/>.
-    /// Adds the <see cref="Map.InteractingLocker"/> event.
+    /// Adds the <see cref="Player.InteractingLocker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
     public class InteractingLocker

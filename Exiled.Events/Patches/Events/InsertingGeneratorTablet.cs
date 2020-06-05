@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="Generator079.Interact(GameObject, string)"/>.
-    /// Adds the <see cref="Map.InsertingGeneratorTablet"/> event.
+    /// Adds the <see cref="Player.InsertingGeneratorTablet"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
     public class InsertingGeneratorTablet

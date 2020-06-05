@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdOpenDoor(GameObject)"/>.
-    /// Adds the <see cref="Map.InteractingDoor"/> event.
+    /// Adds the <see cref="Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
     public class InteractingDoor

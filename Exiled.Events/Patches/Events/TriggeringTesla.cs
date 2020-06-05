@@ -16,7 +16,7 @@ namespace Exiled.Patches
 
     /// <summary>
     /// Patches <see cref="TeslaGate.PlayersInRange(bool)"/>.
-    /// Adds the <see cref="Map.TriggeringTesla"/> event.
+    /// Adds the <see cref="Player.TriggeringTesla"/> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGate), nameof(TeslaGate.PlayersInRange))]
     public class TriggeringTesla
@@ -37,6 +37,8 @@ namespace Exiled.Patches
                     player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
                 {
                     var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(player), hurtRange);
+
+                    Player.OnTriggeringTesla(ev);
 
                     if (ev.IsTriggerable)
                         __result.Add(player.GetComponent<PlayerStats>());

@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdUseElevator(GameObject)"/>.
-    /// Adds the <see cref="Map.InteractingElevator"/> event.
+    /// Adds the <see cref="Player.InteractingElevator"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
     public class InteractingElevator
