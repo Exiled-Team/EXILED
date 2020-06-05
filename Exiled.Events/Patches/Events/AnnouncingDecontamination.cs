@@ -21,10 +21,10 @@ namespace Exiled.Events.Patches.Events
     public class AnnouncingDecontamination
     {
         /// <summary>
-        /// Stops the Announcement Event from triggering.
+        /// Gets or sets a value indicating whether stops the Announcement Event from triggering.
         /// Prevents an issue where the event is constantly called after Decon occurs.
         /// </summary>
-        public static bool StopAnnouncing;
+        public static bool StopAnnouncing { get; set; }
 
         /// <summary>
         /// Prefix of <see cref="DecontaminationController.UpdateSpeaker"/>.
