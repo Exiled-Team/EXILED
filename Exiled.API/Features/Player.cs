@@ -334,7 +334,7 @@ namespace Exiled.API.Features
                 {
                     ReferenceHub.transform.localScale = value;
 
-                    foreach (Player target in Dictionary.Values)
+                    foreach (Player target in List)
                         Server.SendSpawnMessage?.Invoke(null, new object[] { ReferenceHub.characterClassManager.netIdentity, target.Connection });
                 }
                 catch (Exception exception)

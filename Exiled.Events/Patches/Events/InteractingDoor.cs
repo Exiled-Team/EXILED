@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events
                 }
             }
 
-            Map.OnInteractingDoor(ev);
+            Player.OnInteractingDoor(ev);
 
             if (ev.IsAllowed)
                 ev.Door.ChangeState(__instance._sr.BypassMode);

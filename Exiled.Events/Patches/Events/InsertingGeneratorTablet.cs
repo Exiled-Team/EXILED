@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events
                     {
                         var ev = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
 
-                        Map.OnInsertingGeneratorTablet(ev);
+                        Player.OnInsertingGeneratorTablet(ev);
 
                         if (!ev.IsAllowed)
                             return false;
@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events
 
                 var ev = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
 
-                Map.OnEjectingGeneratorTablet(ev);
+                Player.OnEjectingGeneratorTablet(ev);
 
                 if (ev.IsAllowed)
                     __instance.EjectTablet();
@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Events
 
                     var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
-                    Map.OnUnlockingGenerator(ev);
+                    Player.OnUnlockingGenerator(ev);
 
                     if (ev.IsAllowed)
                     {
@@ -103,13 +103,13 @@ namespace Exiled.Events.Patches.Events
                     {
                         ev = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
-                        Map.OnOpeningGenerator(ev);
+                        Player.OnOpeningGenerator(ev);
                     }
                     else
                     {
                         ev = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
-                        Map.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
+                        Player.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
                     }
 
                     if (!ev.IsAllowed)

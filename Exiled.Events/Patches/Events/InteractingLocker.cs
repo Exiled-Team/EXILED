@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events
                 lockerId,
                 string.IsNullOrEmpty(accessToken) || (itemByID != null && itemByID.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
 
-            Map.OnInteractingLocker(ev);
+            Player.OnInteractingLocker(ev);
 
             if (ev.IsAllowed)
             {

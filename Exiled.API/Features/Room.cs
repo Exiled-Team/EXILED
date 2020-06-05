@@ -75,6 +75,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.Dictionary.Values.Where(player => player.CurrentRoom.Name == Name);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Name == Name);
     }
 }

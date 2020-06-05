@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Handcuffs __instance)
         {
-            foreach (API.Features.Player target in API.Features.Player.Dictionary.Values)
+            foreach (API.Features.Player target in API.Features.Player.List)
             {
                 if (target == null)
                     continue;

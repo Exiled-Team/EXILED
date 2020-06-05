@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events
                 {
                     var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2);
 
-                    Map.OnInteractingElevator(ev);
+                    Player.OnInteractingElevator(ev);
 
                     if (!ev.IsAllowed)
                         return false;

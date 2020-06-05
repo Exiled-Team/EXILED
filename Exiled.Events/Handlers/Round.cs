@@ -31,7 +31,7 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (API.Features.Player player in API.Features.Player.Dictionary.Values)
+            foreach (API.Features.Player player in API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)
                 {

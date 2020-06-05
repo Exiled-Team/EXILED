@@ -30,7 +30,7 @@ namespace Exiled.Patches
         public static bool Prefix(MTFRespawn __instance)
         {
             int num = 0;
-            List<Player> deadPlayers = Player.Dictionary.Values.Where(player => player.IsDead || player.IsOverwatchEnabled).ToList();
+            List<Player> deadPlayers = Player.List.Where(player => player.IsDead || player.IsOverwatchEnabled).ToList();
             __instance.playersToNTF.Clear();
 
             Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Loader.PluginManager.ShouldDebugBeShown);

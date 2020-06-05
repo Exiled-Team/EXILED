@@ -237,6 +237,51 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingGroupEventArgs> ChangingGroup;
 
         /// <summary>
+        /// Invoked before interacting with a door.
+        /// </summary>
+        public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
+
+        /// <summary>
+        /// Invoked before interacting with an elevator.
+        /// </summary>
+        public static event CustomEventHandler<InteractingElevatorEventArgs> InteractingElevator;
+
+        /// <summary>
+        /// Invoked before interacting with a locker.
+        /// </summary>
+        public static event CustomEventHandler<InteractingLockerEventArgs> InteractingLocker;
+
+        /// <summary>
+        /// Invoked before triggering a tesla.
+        /// </summary>
+        public static event CustomEventHandler<TriggeringTeslaEventArgs> TriggeringTesla;
+
+        /// <summary>
+        /// Invoked before unlocking a generator.
+        /// </summary>
+        public static event CustomEventHandler<UnlockingGeneratorEventArgs> UnlockingGenerator;
+
+        /// <summary>
+        /// Invoked before opening a generator.
+        /// </summary>
+        public static event CustomEventHandler<OpeningGeneratorEventArgs> OpeningGenerator;
+
+        /// <summary>
+        /// Invoked befroe closing a generator.
+        /// </summary>
+        public static event CustomEventHandler<ClosingGeneratorEventArgs> ClosingGenerator;
+
+        /// <summary>
+        /// Invoked before inserting a generator.
+        /// </summary>
+        public static event CustomEventHandler<InsertingGeneratorTabletEventArgs> InsertingGeneratorTablet;
+
+        /// <summary>
+        /// Invoked before ejecting a generator.
+        /// </summary>
+        public static event CustomEventHandler<EjectingGeneratorTabletEventArgs> EjectingGeneratorTablet;
+
+        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -499,5 +544,59 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingGroupEventArgs"/> instance.</param>
         public static void OnChangingGroup(ChangingGroupEventArgs ev) => ChangingGroup.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before interacting with a door.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before interacting with an elevator.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        public static void OnInteractingElevator(InteractingElevatorEventArgs ev) => InteractingElevator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before interacting with a locker.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        public static void OnInteractingLocker(InteractingLockerEventArgs ev) => InteractingLocker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before triggering a tesla.
+        /// </summary>
+        /// <param name="ev">The <see cref="TriggeringTeslaEventArgs"/> instance.</param>
+        public static void OnTriggeringTesla(TriggeringTeslaEventArgs ev) => TriggeringTesla.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before unlocking a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnlockingGeneratorEventArgs"/> instance.</param>
+        public static void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev) => UnlockingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before opening a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="OpeningGeneratorEventArgs"/> instance.</param>
+        public static void OnOpeningGenerator(OpeningGeneratorEventArgs ev) => OpeningGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before closing a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="ClosingGeneratorEventArgs"/> instance.</param>
+        public static void OnClosingGenerator(ClosingGeneratorEventArgs ev) => ClosingGenerator.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before inserting a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="InsertingGeneratorTabletEventArgs"/> instance.</param>
+        public static void OnInsertingGeneratorTablet(InsertingGeneratorTabletEventArgs ev) => InsertingGeneratorTablet.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before ejecting a generator.
+        /// </summary>
+        /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
+        public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
     }
 }
