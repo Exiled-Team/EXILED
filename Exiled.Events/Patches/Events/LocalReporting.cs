@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events
 
 #if DEBUG
             var lastNotifyGmInstruction = list[lastNotifyGm];
-            
+
             // Debugging for the developer
             // It's important that the method was used before calling the log to the console
             API.Features.Log.Error($"LocalReportEvent ->>>>>>>>>>> {lastNotifyGm}: {lastNotifyGmInstruction.opcode} - {lastNotifyGmInstruction.operand}");
@@ -106,7 +106,10 @@ namespace Exiled.Events.Patches.Events
 
             // If further processing isn't allowed
             // then send the success of sending the report
-            if (!ev.IsAllowed)
+            // --------------------------------------------------
+            // gameObjects is compared cuz there is no comparison overload for Player,
+            // it can be different objects
+            if (!ev.IsAllowed && reporter.gameObject != reportedTo.gameObject)
             {
                 reporter.GetComponent<GameConsoleTransmission>().SendToClient(
                     reporter.connectionToClient,
