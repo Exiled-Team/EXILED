@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.API", "Exiled.API\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Example", "Exiled.Example\Exiled.Example.csproj", "{4F183633-0A36-408C-A42E-6FBA48751054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLoader", "ModLoader\ModLoader.csproj", "{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Bootstrap", "Exiled.Bootstrap\Exiled.Bootstrap.csproj", "{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Patcher", "Exiled.Patcher\Exiled.Patcher.csproj", "{B92E9671-71E6-4DDE-B085-062065110D0A}"
 EndProject
