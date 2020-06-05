@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Reflection;
-
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using Exiled.API.Features;
 
     /// <summary>
