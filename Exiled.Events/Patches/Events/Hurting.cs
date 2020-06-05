@@ -33,6 +33,9 @@ namespace Exiled.Events.Patches.Events
 
             var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
+            if (ev.Target.IsHost)
+                return;
+
             Player.OnHurting(ev);
 
             info = ev.HitInformations;

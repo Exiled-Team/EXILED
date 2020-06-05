@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events
         {
             var target = API.Features.Player.Get(go);
 
-            if (target?.IsGodModeEnabled ?? false)
+            if (target != null && (target.IsGodModeEnabled || target.IsHost))
                 return;
 
             var ev = new DiedEventArgs(API.Features.Player.Get(__instance.gameObject), target, info);
