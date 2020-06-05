@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.Events.Handlers.EventArgs;
+
 namespace Exiled.Events.Patches.Events
 {
     #pragma warning disable SA1313
@@ -26,7 +28,10 @@ namespace Exiled.Events.Patches.Events
         {
             API.Features.Log.Debug("Round restarting");
 
+            var ev = new RoundEndedEventArgs(RoundSummary.LeadingTeam.Draw, default, 0);
+
             Server.OnRestartingRound();
+            Server.OnRoundEnded(ev);
         }
     }
 }
