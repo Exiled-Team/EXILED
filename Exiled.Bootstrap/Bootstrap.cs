@@ -23,27 +23,6 @@ namespace Loader
         public static bool IsLoaded { get; set; }
 
         /// <summary>
-        /// Reads a file and returns the memory stream as a <see cref="byte"/> array.
-        /// </summary>
-        /// <param name="path">Path to the file to read.</param>
-        /// <returns>A byte array of the file contents.</returns>
-        public static byte[] ReadFile(string path)
-        {
-            FileStream fileStream = File.Open(path, FileMode.Open);
-            byte[] array;
-
-            using (MemoryStream memoryStream = new MemoryStream())
-            {
-                fileStream.CopyTo(memoryStream);
-                array = memoryStream.ToArray();
-            }
-
-            fileStream.Close();
-
-            return array;
-        }
-
-        /// <summary>
         /// Internally called loading method.
         /// </summary>
         public static void Load()
@@ -69,9 +48,7 @@ namespace Loader
                 if (!File.Exists(Path.Combine(path, "Exiled.Loader.dll")))
                     return;
 
-                byte[] rawAssembly = ReadFile(Path.Combine(path, "Exiled.Loader.dll"));
-
-                MethodInfo methodInfo = Assembly.Load(rawAssembly).GetTypes().SelectMany(type => type.GetMethods()).FirstOrDefault(method => method.Name == "EntryPointForLoader");
+                MethodInfo methodInfo = Assembly.LoadFrom(Path.Combine(path, "Exiled.Loader.dll")).GetTypes().SelectMany(type => type.GetMethods()).FirstOrDefault(method => method.Name == "EntryPointForLoader");
 
                 methodInfo?.Invoke(null, null);
 
