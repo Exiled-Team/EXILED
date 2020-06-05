@@ -82,7 +82,11 @@ namespace Exiled.API.Features
         public string UserId
         {
             get => ReferenceHub.characterClassManager.UserId;
-            set => ReferenceHub.characterClassManager.UserId = value;
+            set
+            {
+                if (value != null)
+                    ReferenceHub.characterClassManager.UserId = value;
+            }
         }
 
         /// <summary>
