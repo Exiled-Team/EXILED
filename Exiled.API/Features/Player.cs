@@ -84,8 +84,9 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId;
             set
             {
-                if (value != null)
-                    ReferenceHub.characterClassManager.UserId = value;
+                if (value == null)
+                    throw new ArgumentNullException($"UserId cannot be set to null.");
+                ReferenceHub.characterClassManager.UserId = value;
             }
         }
 
