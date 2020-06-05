@@ -665,7 +665,6 @@ namespace Exiled.API.Features
             }
         }
 
-
         /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
         /// </summary>
