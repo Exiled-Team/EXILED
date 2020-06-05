@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace Exiled.Events.Handlers.EventArgs
 {
     using System;
@@ -16,6 +18,8 @@ namespace Exiled.Events.Handlers.EventArgs
     /// </summary>
     public class SendingRemoteAdminCommandEventArgs : EventArgs
     {
+        private string returnMessage;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SendingRemoteAdminCommandEventArgs"/> class.
         /// </summary>
@@ -52,6 +56,20 @@ namespace Exiled.Events.Handlers.EventArgs
         /// Gets or sets the command arguments.
         /// </summary>
         public List<string> Arguments { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message that will be returned back to the <see cref="CommandSender"/>.
+        /// </summary>
+        public string ReplyMessage
+        {
+            get => returnMessage;
+            set => returnMessage = $"{Assembly.GetCallingAssembly().GetName().Name}#{value}";
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether whether or not the command was a success.
+        /// </summary>
+        public bool Success { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

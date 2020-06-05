@@ -57,6 +57,8 @@ namespace Exiled.Events.Patches.Events
                 return true;
 
             Handlers.Server.OnSendingRemoteAdminCommand(ev);
+            if (!string.IsNullOrEmpty(ev.ReplyMessage))
+                sender.RaReply(ev.ReplyMessage, ev.Success, true, string.Empty);
 
             return ev.IsAllowed;
         }
