@@ -146,7 +146,6 @@ namespace Exiled.Loader
                         continue;
                     }
 
-                    Log.Error($"Checks passed.");
 
                     Log.Info($"Loading type {type.FullName}");
 

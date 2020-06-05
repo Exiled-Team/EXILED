@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
     using PlayableScps;
-    using UnityEngine;
 
     /// <summary>
     /// Patches <see cref="Scp096.Enrage"/>.
