@@ -46,6 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="dnlib" Version="3.3.2" />
+    <PackageReference Include="docfx.console">
+      <Version>2.54.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
