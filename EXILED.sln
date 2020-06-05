@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.API", "Exiled.API\Ex
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Example", "Exiled.Example\Exiled.Example.csproj", "{4F183633-0A36-408C-A42E-6FBA48751054}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModLoader", "ModLoader\ModLoader.csproj", "{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Patcher", "Exiled.Patcher\Exiled.Patcher.csproj", "{B92E9671-71E6-4DDE-B085-062065110D0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,14 @@ Global
 		{4F183633-0A36-408C-A42E-6FBA48751054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F183633-0A36-408C-A42E-6FBA48751054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F183633-0A36-408C-A42E-6FBA48751054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AB572FB-FBF2-4DC5-82CA-B04BB808AD03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B92E9671-71E6-4DDE-B085-062065110D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B92E9671-71E6-4DDE-B085-062065110D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B92E9671-71E6-4DDE-B085-062065110D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B92E9671-71E6-4DDE-B085-062065110D0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
