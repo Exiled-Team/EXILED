@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
@@ -77,7 +77,9 @@ namespace Exiled.Events.Patches.Events
                     if (!ev.IsAllowed)
                         return false;
 
-                    string originalName = string.IsNullOrEmpty(targetPlayer.Nickname) ? "(no nick)" : targetPlayer.Nickname;
+                    string originalName = string.IsNullOrEmpty(targetPlayer.Nickname)
+                        ? "(no nick)"
+                        : targetPlayer.Nickname;
                     long issuanceTime = TimeBehaviour.CurrentTimestamp();
                     long banExpieryTime = TimeBehaviour.GetBanExpieryTime((uint)duration);
                     try
@@ -152,20 +154,7 @@ namespace Exiled.Events.Patches.Events
                 }
             }
 
-            List<GameObject> playersToBan = new List<GameObject>();
-            foreach (GameObject gameObject in PlayerManager.players)
-            {
-                CharacterClassManager characterClassManager = gameObject.GetComponent<CharacterClassManager>();
-                if ((userId != null && characterClassManager.UserId == userId) || (address != null && characterClassManager.connectionToClient.address == address))
-                {
-                    playersToBan.Add(characterClassManager.gameObject);
-                }
-            }
-
-            foreach (GameObject player in playersToBan)
-            {
-                ServerConsole.Disconnect(player, message);
-            }
+            ServerConsole.Disconnect(targetPlayer.ReferenceHub.gameObject, message);
 
             return false;
         }

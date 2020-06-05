@@ -49,7 +49,7 @@ namespace Exiled.Events.Handlers.EventArgs
                 if (value == null || target == value)
                     return;
 
-                if (Config.ShouldLogBans)
+                if (Config.ShouldLogBans && target != null)
                 {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                     + $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
@@ -70,7 +70,7 @@ namespace Exiled.Events.Handlers.EventArgs
                 if (value == null || issuer == value)
                     return;
 
-                if (Config.ShouldLogBans)
+                if (Config.ShouldLogBans && issuer != null)
                 {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                                    + $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
@@ -102,7 +102,7 @@ namespace Exiled.Events.Handlers.EventArgs
                     return;
 
                 if (Config.ShouldLogBans)
-                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name + $" {(value ? "isAlloweded" : "denied")} banning user with ID: {Target.UserId}");
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name + $" {(value ? "allowed" : "denied")} banning user with ID: {Target.UserId}");
 
                 isAllowed = value;
             }

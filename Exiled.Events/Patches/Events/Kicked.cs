@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events
 
             message = ev.Reason;
 
-            return !ev.IsAllowed;
+            return ev.IsAllowed;
         }
     }
 }
