@@ -24,7 +24,10 @@ namespace Exiled.Events.Patches.Events
         public static void Prefix(ref string q)
         {
             if (q == "Waiting for players...")
+            {
+                AnnouncingDecontamination.StopAnnouncing = false;
                 Server.OnWaitingForPlayers();
+            }
         }
     }
 }

@@ -15,35 +15,37 @@ namespace Exiled.Patches
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="TeslaGate.PlayersInRange(bool)"/>.
+    /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
     /// Adds the <see cref="Player.TriggeringTesla"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(TeslaGate), nameof(TeslaGate.PlayersInRange))]
+    [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     public class TriggeringTesla
     {
         /// <summary>
         /// Postfix of <see cref="TeslaGate.PlayersInRange(bool)"/>.
         /// </summary>
-        /// <param name="__instance">The <see cref="TeslaGate"/> instance.</param>
-        /// <param name="hurtRange"><inheritdoc cref="TriggeringTeslaEventArgs.IsInHurtingRange"/></param>
-        /// <param name="__result">The list of players in the tesla hurting range.</param>
-        public static void Postfix(TeslaGate __instance, bool hurtRange, ref List<PlayerStats> __result)
+        /// <param name="__instance">The <see cref="TeslaGateController"/> instance.</param>
+        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
+        public static bool Prefix(TeslaGateController __instance)
         {
-            __result = new List<PlayerStats>();
-
-            foreach (GameObject player in PlayerManager.players)
+            foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
             {
-                if (Vector3.Distance(__instance.transform.position, player.transform.position) < __instance.sizeOfTrigger &&
-                    player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
+                if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
+                    continue;
+                foreach (TeslaGate teslaGate in __instance.TeslaGates)
                 {
-                    var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(player), hurtRange);
+                    if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
+                        continue;
 
+                    var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
                     Player.OnTriggeringTesla(ev);
 
                     if (ev.IsTriggerable)
-                        __result.Add(player.GetComponent<PlayerStats>());
+                        teslaGate.ServerSideCode();
                 }
             }
+
+            return false;
         }
     }
 }
