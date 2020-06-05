@@ -109,13 +109,13 @@ namespace Exiled.Patcher
                 body.Instructions.Add(OpCodes.Call.ToInstruction(call));
                 body.Instructions.Add(OpCodes.Ret.ToInstruction());
 
-                module.Write("Assembly-CSharp-EXILED.dll");
+                module.Write("Assembly-CSharp-Exiled.dll");
 
                 Console.WriteLine("[Exiled] Patching completed successfully!");
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Console.WriteLine(e.ToString());
+                Console.WriteLine(exception.ToString());
             }
 
             Console.Read();
