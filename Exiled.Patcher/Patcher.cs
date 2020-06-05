@@ -115,7 +115,7 @@ namespace Exiled.Patcher
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception.ToString());
+                Console.WriteLine($"[Exiled] An error has occurred while patching: {exception}");
             }
 
             Console.Read();

@@ -13,7 +13,6 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
     using Exiled.API.Features;
-    using global::Loader;
 
     /// <summary>
     /// Used to handle plugins.
