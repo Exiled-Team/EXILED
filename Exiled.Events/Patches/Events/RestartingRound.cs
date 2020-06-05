@@ -5,12 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.Events.Handlers.EventArgs;
 
 namespace Exiled.Events.Patches.Events
 {
     #pragma warning disable SA1313
     using Exiled.Events.Handlers;
+    using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
 
     /// <summary>
