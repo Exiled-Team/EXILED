@@ -137,6 +137,9 @@ namespace Exiled.Events.Patches.Events
                         var roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
+                        Exiled.API.Features.Player.Dictionary.Clear();
+                        Exiled.API.Features.Player.IdsCache.Clear();
+                        Exiled.API.Features.Player.UserIdsCache.Clear();
 
                         roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, roundEndedEventArgs.LeadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, roundEndedEventArgs.TimeToRestart);
                     }
