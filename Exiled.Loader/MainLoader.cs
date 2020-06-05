@@ -26,7 +26,7 @@ namespace Exiled.Loader
             if (Environment.CurrentDirectory.ToLower().Contains("testing"))
             {
                 Paths.Exiled = Path.Combine(Paths.AppData, "EXILED-Testing");
-                Paths.Plugins = Path.Combine(Paths.Exiled, "PluginsTesting");
+                Paths.Plugins = Path.Combine(Paths.Exiled, "Plugins");
                 Paths.Config = Path.Combine(Path.Combine(Paths.Exiled, "Configs"), $"{Server.Port}-config.yml");
                 Paths.Log = Path.Combine(Paths.Exiled, $"{Server.Port}-RA_log.txt");
                 Paths.Dependencies = Path.Combine(Paths.Plugins, "dependencies");

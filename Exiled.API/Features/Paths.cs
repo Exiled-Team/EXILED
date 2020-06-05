@@ -23,7 +23,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets exiled directory path.
         /// </summary>
-        public static string Exiled { get; set; } = Path.Combine(AppData, "EXILED");
+        public static string Exiled { get; set; } = Path.Combine(AppData, "EXILED-PTB");
 
         /// <summary>
         /// Gets or sets plugins path.
