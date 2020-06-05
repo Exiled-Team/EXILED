@@ -160,6 +160,7 @@
     <Compile Include="Handlers\EventArgs\KickedEventArgs.cs" />
     <Compile Include="Handlers\EventArgs\KickingEventArgs.cs" />
     <Compile Include="Handlers\EventArgs\LeftEventArgs.cs" />
+    <Compile Include="Handlers\EventArgs\LocalReportingEventArgs.cs" />
     <Compile Include="Handlers\EventArgs\OpeningGeneratorEventArgs.cs" />
     <Compile Include="Handlers\EventArgs\PickingUpItemEventArgs.cs" />
     <Compile Include="Handlers\EventArgs\PlacingBloodEventArgs.cs" />
@@ -227,7 +228,6 @@
     <Compile Include="Patches\Events\Kicked.cs" />
     <Compile Include="Patches\Events\Left.cs" />
     <Compile Include="Patches\Events\LocalReporting.cs" />
-    <Compile Include="Patches\Events\LocalReportingEventArgs.cs" />
     <Compile Include="Patches\Events\PickingUpItem.cs" />
     <Compile Include="Patches\Events\PlacingBlood.cs" />
     <Compile Include="Patches\Events\PlacingBloodAndDecal.cs" />

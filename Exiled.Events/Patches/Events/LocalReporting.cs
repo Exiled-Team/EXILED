@@ -80,9 +80,10 @@ namespace Exiled.Events.Patches.Events
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldind_Ref),
                 new CodeInstruction(
                     OpCodes.Call,
-                    AccessTools.Method(typeof(LocalReporting), nameof(InvokeLocalReport), new[] { typeof(CheaterReport), typeof(GameObject), typeof(string) })),
+                    AccessTools.Method(typeof(LocalReporting), nameof(InvokeLocalReport), new[] { typeof(CheaterReport), typeof(GameObject), typeof(string).MakeByRefType() })),
                 new CodeInstruction(OpCodes.Brtrue_S, retEnd),
                 new CodeInstruction(OpCodes.Ret),
             });
