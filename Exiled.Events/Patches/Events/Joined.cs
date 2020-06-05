@@ -27,6 +27,8 @@ namespace Exiled.Events.Patches.Events
         public static void Postfix(NicknameSync __instance)
         {
             API.Features.Player player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+            if (!API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
+                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
 
             if (player.IsHost)
                 return;

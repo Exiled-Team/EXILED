@@ -41,29 +41,6 @@ namespace Exiled.Events.Handlers
             }
         }
 
-        /// <inheritdoc cref="Player.OnLeft(LeftEventArgs)"/>
-        public void OnPlayerLeft(LeftEventArgs ev)
-        {
-            if (API.Features.Player.IdsCache.ContainsKey(ev.Player.Id))
-                API.Features.Player.IdsCache.Remove(ev.Player.Id);
-
-            foreach (var entry in API.Features.Player.UserIdsCache.Where(userId => userId.Value == ev.Player).ToList())
-                API.Features.Player.UserIdsCache.Remove(entry.Key);
-
-            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.Dictionary.Remove(ev.Player.GameObject);
-        }
-
-        /// <inheritdoc cref="Player.OnJoined(JoinedEventArgs)"/>
-        public void OnPlayerJoined(JoinedEventArgs ev)
-        {
-            if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
-                return;
-
-            if (!API.Features.Player.Dictionary.ContainsKey(ev.Player.GameObject))
-                API.Features.Player.Dictionary.Add(ev.Player.GameObject, ev.Player);
-        }
-
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {

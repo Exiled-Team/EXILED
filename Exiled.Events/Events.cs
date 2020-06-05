@@ -59,8 +59,6 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted += round.OnRoundStarted;
             Handlers.Server.SendingRemoteAdminCommand += command.OnSendingRemoteAdminCommand;
 
-            Handlers.Player.Left += round.OnPlayerLeft;
-            Handlers.Player.Joined += round.OnPlayerJoined;
             Handlers.Player.ChangingRole += round.OnChangingRole;
 
             Patch();
@@ -79,8 +77,6 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted -= round.OnRoundStarted;
             Handlers.Server.SendingRemoteAdminCommand -= command.OnSendingRemoteAdminCommand;
 
-            Handlers.Player.Left -= round.OnPlayerLeft;
-            Handlers.Player.Joined -= round.OnPlayerJoined;
             Handlers.Player.ChangingRole -= round.OnChangingRole;
 
             command = null;
