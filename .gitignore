@@ -264,3 +264,7 @@ __pycache__/
 
 # References
 References/
+
+# IDK what is it, but but it's annoying
+.refsignored
+

@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
-        <PrivateAssets>all</PrivateAssets>
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	</PackageReference>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json"/>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <AdditionalFiles Include="$(SolutionDir)\stylecop.json"/>
   </ItemGroup>
 
   <PropertyGroup>
@@ -26,12 +25,12 @@
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
 
-	<RootNamespace>Exiled</RootNamespace>
+    <RootNamespace>Exiled</RootNamespace>
     <Copyright>Copyright © Exiled Team 2020</Copyright>
     <RepositoryType>Git</RepositoryType>
-	<RepositoryUrl>git://github.com/galaxy119/EXILED</RepositoryUrl>
+    <RepositoryUrl>git://github.com/galaxy119/EXILED</RepositoryUrl>
   </PropertyGroup>
-		
+        
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <Optimize>True</Optimize>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
