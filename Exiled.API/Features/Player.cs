@@ -651,6 +651,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the player's badge is hidden.
+        /// </summary>
+        public bool BadgeHidden
+        {
+            get => string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
+            set
+            {
+                if (value)
+                    ReferenceHub.characterClassManager.CmdRequestHideTag();
+                else
+                    ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
+            }
+        }
+
+
+        /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
@@ -906,17 +922,6 @@ namespace Exiled.API.Features
         public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
 
         /// <summary>
-        /// Hides the player's tag.
-        /// </summary>
-        public void HideTag() => ReferenceHub.characterClassManager.CallCmdRequestHideTag();
-
-        /// <summary>
-        /// Shows the player's tag.
-        /// </summary>
-        /// <param name="isGlobal">Indicates whether or not the tag will be shown globally or not.</param>
-        public void ShowTag(bool isGlobal = false) => ReferenceHub.characterClassManager.CallCmdRequestShowTag(isGlobal);
-
-        /// <summary>
         /// Blink the player's tag.
         /// </summary>
         /// <returns>Used to wait.</returns>
@@ -924,11 +929,11 @@ namespace Exiled.API.Features
         {
             yield return MEC.Timing.WaitForOneFrame;
 
-            HideTag();
+            BadgeHidden = !BadgeHidden;
 
             yield return MEC.Timing.WaitForOneFrame;
 
-            ShowTag();
+            BadgeHidden = !BadgeHidden;
         }
 
         /// <summary>
