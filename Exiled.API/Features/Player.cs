@@ -832,11 +832,11 @@ namespace Exiled.API.Features
         /// Sets the player's <see cref="RoleType"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleType"/> to be set.</param>
-        /// <param name="shouldPreservePosition">Indicates whether it should preserve the position after changing the role or not.</param>
+        /// <param name="lite">Indicates whether it should preserve the position and inventory after changing the role or not.</param>
         /// <param name="isEscaped">Indicates whether the player is escaped or not.</param>
-        public void SetRole(RoleType newRole, bool shouldPreservePosition = false, bool isEscaped = false)
+        public void SetRole(RoleType newRole, bool lite = false, bool isEscaped = false)
         {
-            ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, shouldPreservePosition, isEscaped);
+            ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, lite, isEscaped);
         }
 
         /// <summary>
