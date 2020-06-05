@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events
 
             Map.OnStoppingWarhead(ev);
 
-            return ev.IsAllowed && !Config.IsWarheadLocked;
+            return ev.IsAllowed && !Exiled.API.Features.Warhead.IsWarheadLocked;
         }
     }
 }

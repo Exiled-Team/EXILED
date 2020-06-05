@@ -72,6 +72,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the warhead can be disabled or not.
+        /// </summary>
+        public static bool IsWarheadLocked { get; set; }
+
+        /// <summary>
         /// Starts the warhead countdown.
         /// </summary>
         public static void Start()

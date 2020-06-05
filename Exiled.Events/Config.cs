@@ -24,11 +24,6 @@ namespace Exiled.Events
         public static bool CanTutorialTriggerScp096 { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the warhead can be disabled or not.
-        /// </summary>
-        public static bool IsWarheadLocked { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the name tracking is enabled or not.
         /// </summary>
         public static bool IsNameTrackingEnabled { get; set; }
@@ -75,7 +70,6 @@ namespace Exiled.Events
             IsEnabled = PluginManager.YamlConfig.GetBool($"{Prefix}enabled", true);
             CanTutorialBlockScp173 = PluginManager.YamlConfig.GetBool($"{Prefix}tutorial_block_scp173", true);
             CanTutorialTriggerScp096 = PluginManager.YamlConfig.GetBool($"{Prefix}tutorial_trigger_scp096", true);
-            IsWarheadLocked = PluginManager.YamlConfig.GetBool($"{Prefix}warhead_locked");
             IsNameTrackingEnabled = PluginManager.YamlConfig.GetBool($"{Prefix}name_tracking_enabled", true);
             ShouldDropInventory = PluginManager.YamlConfig.GetBool($"{Prefix}drop_inventory", true);
             CanSpawnBlood = PluginManager.YamlConfig.GetBool($"{Prefix}spawn_blood", true);
