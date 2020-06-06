@@ -24,7 +24,7 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            Log.Info($"{ev.Player} is changing his role! The new role will be {ev.NewRole}!");
+            Log.Info($"{ev.Player.Nickname} is changing his role! The new role will be {ev.NewRole}!");
         }
     }
 }
