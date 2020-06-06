@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-using Exiled.API.Features;
-
 namespace Exiled.Events.Patches.Events
 {
     #pragma warning disable SA1313
+    using System;
+    using Exiled.API.Features;
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
@@ -47,7 +46,7 @@ namespace Exiled.Events.Patches.Events
                 if (ev.Target.IsHost)
                     return;
 
-                Player.OnHurting(ev);
+                Handlers.Player.OnHurting(ev);
 
                 info = ev.HitInformations;
             }
