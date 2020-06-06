@@ -4,14 +4,56 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Exiled.API.Extensions
 {
+    using Exiled.API.Enums;
+    using UnityEngine;
+
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
     public static class Role
     {
+        /// <summary>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
+        /// </summary>
+        /// <param name="role">The <see cref="RoleType"/> to get the color of.</param>
+        /// <returns>The <see cref="Color"/> of the role.</returns>
+        public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
+
+        /// <summary>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
+        /// </summary>
+        /// <param name="role">The <see cref="RoleType"/> to check the side of.</param>
+        /// <returns><see cref="Side"/>.</returns>
+        public static Side GetSide(this RoleType role) =>
+            role.GetTeam().GetSide();
+
+        /// <summary>
+        /// Get a <see cref="Team">team's</see> <see cref="Side"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
+        /// <returns><see cref="Side"/>.</returns>.
+        public static Side GetSide(this Team team)
+        {
+            switch (team)
+            {
+                case Team.SCP:
+                    return Side.Scp;
+                case Team.MTF:
+                case Team.RSC:
+                    return Side.Mtf;
+                case Team.CHI:
+                case Team.CDP:
+                    return Side.ChaosInsurgency;
+                case Team.TUT:
+                    return Side.Tutorial;
+                case Team.RIP:
+                default:
+                    return Side.None;
+            }
+        }
+
         /// <summary>
         /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
         /// </summary>
