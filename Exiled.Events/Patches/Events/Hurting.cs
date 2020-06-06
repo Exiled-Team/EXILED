@@ -5,6 +5,9 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+using Exiled.API.Features;
+
 namespace Exiled.Events.Patches.Events
 {
     #pragma warning disable SA1313
@@ -28,17 +31,30 @@ namespace Exiled.Events.Patches.Events
         /// <param name="go">The player's game object.</param>
         public static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
-            if (go == null)
-                return;
+            try
+            {
+                if (go == null)
+                    return;
 
-            var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
+                API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
+                API.Features.Player target = API.Features.Player.Get(go);
 
-            if (ev.Target.IsHost)
-                return;
+                if (attacker == null || target == null || attacker.IsHost || target.IsHost)
+                    return;
 
-            Player.OnHurting(ev);
+                var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
-            info = ev.HitInformations;
+                if (ev.Target.IsHost)
+                    return;
+
+                Player.OnHurting(ev);
+
+                info = ev.HitInformations;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Hurting: {e}");
+            }
         }
     }
 }
