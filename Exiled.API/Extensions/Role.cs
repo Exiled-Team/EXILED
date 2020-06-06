@@ -13,7 +13,8 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
-    public static class Role {
+    public static class Role 
+        {
 
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>
@@ -32,7 +33,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="team"></param>
         /// <returns></returns>
-        public static Side GetSide(this Team team) {
+        public static Side GetSide(this Team team) 
+            {
             switch(team) {
                 case Team.SCP:
                 return Side.Scp;
