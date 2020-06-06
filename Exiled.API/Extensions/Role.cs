@@ -16,9 +16,9 @@ namespace Exiled.API.Extensions
     {
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
-        /// <param name="role">The <see cref="RoleType"/> to get the color of</param>.
-        /// <returns><see cref="Color"/> of the role</returns>.
         /// </summary>
+        /// <param name="role">The <see cref="RoleType"/> to get the color of.</param>
+        /// <returns>The <see cref="Color"/> of the role.</returns>
         public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Exiled.API.Extensions
         /// Get a <see cref="Team">team's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
-        /// <returns><see cref="Side"/></returns>.
+        /// <returns><see cref="Side"/>.</returns>.
         public static Side GetSide(this Team team)
         {
             switch (team)
