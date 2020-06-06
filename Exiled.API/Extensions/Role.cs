@@ -5,13 +5,51 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Enums;
+using UnityEngine;
+
 namespace Exiled.API.Extensions
 {
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
-    public static class Role
-    {
+    public static class Role {
+
+        /// <summary>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>
+        /// </summary>
+        public static Color GetColor(this RoleType role) =>
+             role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
+
+        /// <summary>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>
+        /// </summary>
+        public static Side GetSide(this RoleType role) =>
+            role.GetTeam().GetSide();
+
+        /// <summary>
+        /// Get a <see cref="Team">team's</see> <see cref="Side"/>
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
+        public static Side GetSide(this Team team) {
+            switch(team) {
+                case Team.SCP:
+                return Side.Scp;
+                case Team.MTF:
+                case Team.RSC:
+                return Side.Mtf;
+                case Team.CHI:
+                case Team.CDP:
+                return Side.ChaosInsurgency;
+                case Team.TUT:
+                return Side.Tutorial;
+                case Team.RIP:
+                default:
+                return Side.None;
+            }
+        }
+
         /// <summary>
         /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
         /// </summary>
