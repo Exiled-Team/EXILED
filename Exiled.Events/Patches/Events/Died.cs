@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events
             API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
             API.Features.Player target = API.Features.Player.Get(go);
 
-            if ((target != null && (target.IsGodModeEnabled || target.IsHost)) || attacker == null)
+            if ((target != null && (target.Role != RoleType.Spectator || target.IsGodModeEnabled || target.IsHost)) || attacker == null)
                 return;
 
             var ev = new DiedEventArgs(API.Features.Player.Get(__instance.gameObject), target, info);

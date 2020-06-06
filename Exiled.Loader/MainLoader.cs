@@ -23,6 +23,7 @@ namespace Exiled.Loader
         public static void EntryPointForLoader()
         {
             Log.Info($"Initializing Exiled at {Environment.CurrentDirectory}");
+
             if (Environment.CurrentDirectory.ToLower().Contains("testing"))
             {
                 Paths.Exiled = Path.Combine(Paths.AppData, "EXILED-Testing");

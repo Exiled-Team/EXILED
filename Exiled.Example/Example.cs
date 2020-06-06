@@ -16,6 +16,7 @@ namespace Exiled.Example
     public class Example : Plugin
     {
         private Handlers.Server server;
+        private Handlers.Player player;
 
         /// <inheritdoc/>
         public override IConfig Config { get; } = new Config();
@@ -45,9 +46,13 @@ namespace Exiled.Example
         private void RegisterEvents()
         {
             server = new Handlers.Server();
+            player = new Handlers.Player();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound += server.OnEndingRound;
+
+            Events.Handlers.Player.Died += player.OnDied;
+            Events.Handlers.Player.ChangingRole += player.OnChangingRole;
         }
 
         /// <summary>
@@ -58,7 +63,11 @@ namespace Exiled.Example
             Events.Handlers.Server.WaitingForPlayers -= server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound -= server.OnEndingRound;
 
+            Events.Handlers.Player.Died -= player.OnDied;
+            Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
+
             server = null;
+            player = null;
         }
     }
 }

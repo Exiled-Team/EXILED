@@ -98,5 +98,10 @@ namespace Exiled.API.Features
             Controller.InstantPrepare();
             Controller.Detonate();
         }
+
+        /// <summary>
+        /// Shake all players, like if the warhead has been detonated.
+        /// </summary>
+        public static void Shake() => Controller.RpcShake(true);
     }
 }

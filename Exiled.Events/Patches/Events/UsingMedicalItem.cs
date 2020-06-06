@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events
     #pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
-    using GameCore;
     using HarmonyLib;
     using MEC;
 
@@ -47,25 +46,6 @@ namespace Exiled.Events.Patches.Events
 
                     if (ev.IsAllowed)
                         Timing.RunCoroutine(__instance.UseMedicalItem(i), Segment.FixedUpdate);
-
-                    switch (__instance.hub.characterClassManager.CurRole.team)
-                    {
-                        case Team.CHI:
-                        case Team.CDP:
-                            switch (__instance.usableItems[i].inventoryID)
-                            {
-                                case ItemType.SCP500:
-                                case ItemType.SCP207:
-                                case ItemType.SCP268:
-                                    PlayerManager.localPlayer.GetComponent<MTFRespawn>().ChaosRespawnTickets += ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scp_item_count", 1);
-                                    return false;
-                                default:
-                                    return false;
-                            }
-
-                        default:
-                            return false;
-                    }
                 }
             }
 

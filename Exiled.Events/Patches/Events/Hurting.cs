@@ -7,9 +7,7 @@
 
 namespace Exiled.Events.Patches.Events
 {
-    #pragma warning disable SA1313
-    using System;
-    using Exiled.API.Features;
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using Exiled.Events.Handlers.EventArgs;
     using HarmonyLib;
@@ -17,7 +15,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject)"/>.
-    /// Adds the <see cref="Exiled.Events.Handlers.Player.Hurting"/> event.
+    /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     public class Hurting
@@ -30,30 +28,23 @@ namespace Exiled.Events.Patches.Events
         /// <param name="go">The player's game object.</param>
         public static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
-            try
-            {
-                if (go == null)
-                    return;
+            if (go == null)
+                return;
 
-                API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
-                API.Features.Player target = API.Features.Player.Get(go);
+            API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
+            API.Features.Player target = API.Features.Player.Get(go);
 
-                if (attacker == null || target == null || attacker.IsHost || target.IsHost)
-                    return;
+            if (attacker == null || target == null || attacker.IsHost || target.IsHost)
+                return;
 
-                var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
+            var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
-                if (ev.Target.IsHost)
-                    return;
+            if (ev.Target.IsHost)
+                return;
 
-                Handlers.Player.OnHurting(ev);
+            Player.OnHurting(ev);
 
-                info = ev.HitInformations;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Hurting: {e}");
-            }
+            info = ev.HitInformations;
         }
     }
 }

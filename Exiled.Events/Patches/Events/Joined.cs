@@ -26,12 +26,15 @@ namespace Exiled.Events.Patches.Events
         /// <param name="__instance">The <see cref="NicknameSync"/> instance.</param>
         public static void Postfix(NicknameSync __instance)
         {
-            API.Features.Player player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
-            if (!API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
-                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
-
-            if (player.IsHost)
+            if (__instance.hub.characterClassManager.IsHost || string.IsNullOrEmpty(__instance.hub.characterClassManager.UserId))
                 return;
+
+            if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
+            {
+                player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+
+                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
+            }
 
             API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
@@ -46,8 +49,7 @@ namespace Exiled.Events.Patches.Events
 
             var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
 
-            if (!string.IsNullOrEmpty(ev.Player?.UserId))
-                Player.OnJoined(ev);
+            Player.OnJoined(ev);
         }
     }
 }
