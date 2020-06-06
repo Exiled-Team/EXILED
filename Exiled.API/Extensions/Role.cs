@@ -39,18 +39,18 @@ namespace Exiled.API.Extensions
             switch(team) 
             {
                 case Team.SCP:
-                return Side.Scp;
+                    return Side.Scp;
                 case Team.MTF:
                 case Team.RSC:
-                return Side.Mtf;
+                    return Side.Mtf;
                 case Team.CHI:
                 case Team.CDP:
-                return Side.ChaosInsurgency;
+                    return Side.ChaosInsurgency;
                 case Team.TUT:
-                return Side.Tutorial;
+                    return Side.Tutorial;
                 case Team.RIP:
                 default:
-                return Side.None;
+                    return Side.None;
             }
         }
 
