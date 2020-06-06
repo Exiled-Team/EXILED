@@ -244,12 +244,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>
+        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>.
         /// </summary>
-        public Color RoleColor 
-        {
-            get => Role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(Role).classColor;
-        }
+        public Color RoleColor => Role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(Role).classColor;
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed or not.

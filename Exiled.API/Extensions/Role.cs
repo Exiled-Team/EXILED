@@ -4,7 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-namespace Exiled.API.Extensions 
+namespace Exiled.API.Extensions
 {
     using Exiled.API.Enums;
     using UnityEngine;
@@ -12,31 +12,31 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
-    public static class Role 
+    public static class Role
     {
+        /// <summary>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>.
+        /// <param name="role">The <see cref="RoleType"/> to get the color of</param>.
+        /// <returns><see cref="Color"/> of the role</returns>.
+        /// </summary>
+        public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
 
         /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>
+        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
         /// </summary>
-        public static Color GetColor(this RoleType role) =>
-             role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
-
-        /// <summary>
-        /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>
-        /// </summary>
-        /// <param name="role"></param>
-        /// <returns><see cref="Side"/></returns>
+        /// <param name="role">The <see cref="RoleType"/> to check the side of.</param>
+        /// <returns><see cref="Side"/>.</returns>
         public static Side GetSide(this RoleType role) =>
             role.GetTeam().GetSide();
 
         /// <summary>
-        /// Get a <see cref="Team">team's</see> <see cref="Side"/>
+        /// Get a <see cref="Team">team's</see> <see cref="Side"/>.
         /// </summary>
-        /// <param name="team"></param>
-        /// <returns><see cref="Side"/></returns>
-        public static Side GetSide(this Team team) 
+        /// <param name="team">The <see cref="Team"/> to get the <see cref="Side"/> of.</param>
+        /// <returns><see cref="Side"/></returns>.
+        public static Side GetSide(this Team team)
         {
-            switch(team) 
+            switch (team)
             {
                 case Team.SCP:
                     return Side.Scp;
