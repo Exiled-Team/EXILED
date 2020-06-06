@@ -4,12 +4,11 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
-using Exiled.API.Enums;
-using UnityEngine;
-
-namespace Exiled.API.Extensions
+namespace Exiled.API.Extensions 
 {
+    using Exiled.API.Enums;
+    using UnityEngine;
+
     /// <summary>
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
@@ -25,6 +24,8 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>
         /// </summary>
+        /// <param name="role"></param>
+        /// <returns><see cref="Side"/></returns>
         public static Side GetSide(this RoleType role) =>
             role.GetTeam().GetSide();
 
@@ -32,10 +33,11 @@ namespace Exiled.API.Extensions
         /// Get a <see cref="Team">team's</see> <see cref="Side"/>
         /// </summary>
         /// <param name="team"></param>
-        /// <returns></returns>
+        /// <returns><see cref="Side"/></returns>
         public static Side GetSide(this Team team) 
+        {
+            switch(team) 
             {
-            switch(team) {
                 case Team.SCP:
                 return Side.Scp;
                 case Team.MTF:
