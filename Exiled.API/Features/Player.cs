@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Player.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -28,14 +28,20 @@ namespace Exiled.API.Features
         public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{GameObject, Player}"/> containing all <see cref="Player"/> on the server.
+        /// Initializes a new instance of the <see cref="Player"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
+        public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
+
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static List<Player> List { get => Dictionary.Values.ToList(); }
+        public static IEnumerable<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -84,9 +90,7 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException($"UserId cannot be set to null.");
-                ReferenceHub.characterClassManager.UserId = value;
+                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException($"UserId cannot be set to null.");
             }
         }
 
@@ -774,7 +778,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Sets the 079 camera, if the player is SCP-079.
+        /// Sets the SCP-079 camera, if the player is SCP-079.
         /// </summary>
         /// <param name="id">Camera ID.</param>
         public void SetCamera(ushort id) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(id, false);
@@ -1004,5 +1008,8 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Id} {Nickname} {UserId}";
     }
 }

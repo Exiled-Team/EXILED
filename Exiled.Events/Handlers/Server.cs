@@ -11,7 +11,7 @@ namespace Exiled.Events.Handlers
     using System.IO;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
     using static Exiled.Events.Events;
 
     /// <summary>

@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
     using Exiled.Loader;
     using MEC;
     using UnityEngine;
