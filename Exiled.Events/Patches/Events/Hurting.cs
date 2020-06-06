@@ -17,7 +17,7 @@ namespace Exiled.Events.Patches.Events
 
     /// <summary>
     /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject)"/>.
-    /// Adds the <see cref="Player.Hurting"/> event.
+    /// Adds the <see cref="Exiled.Events.Handlers.Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     public class Hurting
