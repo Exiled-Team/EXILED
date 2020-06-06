@@ -20,7 +20,7 @@ namespace Exiled.Loader
         public bool IsEnabled { get; set; } = true;
 
         /// <inheritdoc/>
-        public string Prefix => "exiled_";
+        public string Prefix => "exiled_loader_";
 
         /// <summary>
         /// Gets or sets a value indicating whether outdated plugins should be loaded or not.
