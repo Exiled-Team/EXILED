@@ -14,7 +14,7 @@ namespace Exiled.API.Extensions
     /// A set of extensions for <see cref="RoleType"/>.
     /// </summary>
     public static class Role 
-        {
+    {
 
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Color"/>
