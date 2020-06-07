@@ -43,7 +43,7 @@ jobs:
         location: $GITHUB_WORKSPACE
     
     - name: Extract Refs
-      run: 7zip.exe References.zip -oReferences -r -y
+      run: ./7zip.exe References.zip -oReferences -r -y
       
       
     - name: Build
