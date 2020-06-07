@@ -277,6 +277,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets whether or not the <see cref="Player"/> has No-clip enabled.
+        /// </summary>
+        /// <returns><see cref="bool"/> indicating status.</returns>
+        public bool NoclipEnabled
+        {
+            get => ReferenceHub.serverRoles.NoclipReady;
+            set => ReferenceHub.serverRoles.NoclipReady = value;
+        }
+
+        /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
         /// </summary>
         public NetworkConnection Connection => ReferenceHub.networkIdentity.connectionToClient;
