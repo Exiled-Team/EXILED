@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             var ev = new RespawningTeamEventArgs(deadPlayers.Take(maxRespawn).ToList(), maxRespawn, __instance.nextWaveIsCI);
 
-            Exiled.Events.Handlers.Server.OnRespawningTeam(ev);
+            Handlers.Server.OnRespawningTeam(ev);
 
             if (maxRespawn <= 0 || ev.Players == null || ev.Players.Count == 0)
                 return false;

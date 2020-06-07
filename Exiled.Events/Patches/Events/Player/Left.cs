@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
             if (API.Features.Player.UserIdsCache.ContainsKey(__instance.characterClassManager.UserId))
                 API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
 
-            if (!API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
+            if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
                 API.Features.Player.Dictionary.Remove(__instance.gameObject);
         }
     }
