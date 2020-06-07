@@ -40,9 +40,6 @@ jobs:
         file-url: 'https://www.exiled.host/7za.exe'
         file-name: '7zip.exe'
     
-    - name: im retarded give me info pls
-      run: cmd /r dir /s /b
-    
     - name: Extract Refs
       run: ./7zip.exe e References.zip -obin/Release -r -y
       
@@ -50,3 +47,9 @@ jobs:
       env: 
         EXILED_REFERENCES: ./References
       run: msbuild EXILED.sln -p:Configuration=release
+    
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: DLLs
+        path: bin/Release
