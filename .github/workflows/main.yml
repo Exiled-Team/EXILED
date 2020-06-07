@@ -45,10 +45,9 @@ jobs:
     - name: Extract Refs
       run: \"$GITHUB_WORKSPACE\\7zip.exe\" $GITHUB_WORKSPACE\\References.zip -o$GITHUB_WORKSPACE\\References -r -y
       
-    - name: Setup References
-      env: 
-        EXILED_REFERENCES: $GITHUB_WORKSPACE\\References
       
     - name: Build
+      env: 
+        EXILED_REFERENCES: $GITHUB_WORKSPACE\\References
       run: msbuild $GITHUB_WORKSPACE\\EXILED.sln -p:Configuration=release
       
