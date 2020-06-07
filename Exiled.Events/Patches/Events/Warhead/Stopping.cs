@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Warhead
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;

@@ -100,12 +100,12 @@ namespace Exiled.Events
                 Harmony = new Harmony($"exiled.patches.{++patchesCounter}");
                 Harmony.PatchAll();
 
-                #if DEBUG
+#if DEBUG
 				bool disabledStatus = Harmony.DEBUG;
 
 				Harmony.DEBUG = true;
 				Harmony.DEBUG = disabledStatus;
-                #endif
+#endif
             }
             catch (Exception exception)
             {

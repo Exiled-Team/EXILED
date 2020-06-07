@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Linq;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;

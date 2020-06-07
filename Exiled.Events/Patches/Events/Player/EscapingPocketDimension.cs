@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
         public static bool Prefix(PocketDimensionTeleport __instance, Collider other)
         {
             NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
-            if (!((Object)component1 != (Object)null))
+            if (!(component1 != null))
                 return false;
             if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || BlastDoor.OneDoor.isClosed)
             {
@@ -46,14 +46,14 @@ namespace Exiled.Events.Patches.Events.Player
                 __instance.tpPositions.Clear();
                 bool flag = false;
                 DecontaminationController.DecontaminationPhase[] decontaminationPhases = DecontaminationController.Singleton.DecontaminationPhases;
-                if (DecontaminationController.GetServerTime > (double)decontaminationPhases[decontaminationPhases.Length - 2].TimeTrigger)
+                if (DecontaminationController.GetServerTime > decontaminationPhases[decontaminationPhases.Length - 2].TimeTrigger)
                     flag = true;
                 List<string> stringList = ConfigFile.ServerConfig.GetStringList(flag ? "pd_random_exit_rids_after_decontamination" : "pd_random_exit_rids");
                 if (stringList.Count > 0)
                 {
                     foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("RoomID"))
                     {
-                        if (gameObject.GetComponent<Rid>() != (Object)null && stringList.Contains(gameObject.GetComponent<Rid>().id))
+                        if (gameObject.GetComponent<Rid>() != null && stringList.Contains(gameObject.GetComponent<Rid>().id))
                             __instance.tpPositions.Add(gameObject.transform.position);
                     }
 

@@ -144,10 +144,10 @@ namespace Exiled.Events.EventArgs
             rejectData.Put(reason);
 
             if (rejectionType == RejectionReason.Delay)
-                    rejectData.Put(seconds);
+                rejectData.Put(seconds);
 
             if (rejectionType == RejectionReason.Redirect)
-                    rejectData.Put(port);
+                rejectData.Put(port);
 
             if (isForced)
                 Request.RejectForce(rejectData);

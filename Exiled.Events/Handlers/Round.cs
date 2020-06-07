@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System.Linq;
     using Exiled.Events.EventArgs;
     using MEC;
 

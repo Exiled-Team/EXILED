@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    #pragma warning disable SA1313
+#pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -92,8 +92,8 @@ namespace Exiled.Events.Patches.Events.Player
                                 Inventory component2 = PlayerManager.localPlayer.GetComponent<Inventory>();
                                 for (ushort index = 0; index < 3; ++index)
                                 {
-                                    if (component1[(int)index] >= 15U)
-                                        component2.SetPickup(component1.types[(int)index].inventoryID, (float)component1[(int)index], randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
+                                    if (component1[index] >= 15U)
+                                        component2.SetPickup(component1.types[index].inventoryID, component1[index], randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
                                 }
                             }
 
