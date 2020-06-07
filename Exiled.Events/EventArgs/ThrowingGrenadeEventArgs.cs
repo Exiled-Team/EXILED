@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; private set; }
 
         /// <summary>
-        /// Gets the <see cref="global::Grenades.GrenadeManager"/> instance.
+        /// Gets the <see cref="Grenades.GrenadeManager"/> instance.
         /// </summary>
         public GrenadeManager GrenadeManager { get; private set; }
 
