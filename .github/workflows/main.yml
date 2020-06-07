@@ -23,7 +23,7 @@ jobs:
       uses: warrenbuckley/Setup-Nuget@v1
       
     - name: Restore Packages
-      run: nuget restore $GITHUB_WORKSPACE\EXILED.sln
+      run: nuget restore EXILED.sln
     
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
