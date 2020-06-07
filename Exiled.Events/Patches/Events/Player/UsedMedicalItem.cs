@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Player
     #pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
-    using GameCore;
     using HarmonyLib;
 
     /// <summary>
@@ -33,25 +32,6 @@ namespace Exiled.Events.Patches.Events.Player
                 var ev = new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
 
                 Player.OnMedicalItemUsed(ev);
-
-                switch (ev.Player.Team)
-                {
-                    case Team.CHI:
-                    case Team.CDP:
-                        switch (__instance.usableItems[mid].inventoryID)
-                        {
-                            case ItemType.SCP500:
-                            case ItemType.SCP207:
-                            case ItemType.SCP268:
-                                PlayerManager.localPlayer.GetComponent<MTFRespawn>().ChaosRespawnTickets += ConfigFile.ServerConfig.GetInt("respawn_tickets_ci_scp_item_count", 1);
-                                return;
-                            default:
-                                return;
-                        }
-
-                    default:
-                        return;
-                }
             }
         }
     }
