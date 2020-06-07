@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; private set; }
 
         /// <summary>
-        /// Gets the killed <see cref="global::Role"/>.
+        /// Gets the killed <see cref="Role"/>.
         /// </summary>
         public Role Role { get; private set; }
 
