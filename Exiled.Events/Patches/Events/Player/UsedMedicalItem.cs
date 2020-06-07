@@ -24,11 +24,11 @@ namespace Exiled.Events.Patches.Events.Player
         /// Prefix of <see cref="ConsumableAndWearableItems.SendRpc(ConsumableAndWearableItems.HealAnimation, int)"/>.
         /// </summary>
         /// <param name="__instance">The <see cref="ConsumableAndWearableItems"/> instance.</param>
-        /// <param name="animation">The heal animation.</param>
+        /// <param name="healAnimation">The heal animation.</param>
         /// <param name="mid">The medical item id.</param>
-        public static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation animation, int mid)
+        public static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
         {
-            if (animation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
+            if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
             {
                 var ev = new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
 

@@ -30,15 +30,15 @@ namespace Exiled.Events.Patches.Events.Player
             if (!__instance._interactRateLimit.CanExecute(true))
                 return false;
 
-            __instance.cancel = false;
+            __instance._cancel = false;
             if (__instance.cooldown > 0.0)
                 return false;
 
             for (int i = 0; i < __instance.usableItems.Length; ++i)
             {
-                if (__instance.usableItems[i].inventoryID == __instance.hub.inventory.curItem && __instance.usableCooldowns[i] <= 0.0)
+                if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableCooldowns[i] <= 0.0)
                 {
-                    var ev = new UsingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+                    var ev = new UsingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
 
                     Player.OnUsingMedicalItem(ev);
 
