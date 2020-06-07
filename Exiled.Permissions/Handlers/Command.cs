@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Command.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,8 +7,8 @@
 
 namespace Exiled.Permissions.Events
 {
+    using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
-    using Exiled.Events.Handlers.EventArgs;
     using Exiled.Permissions.Extensions;
     using Exiled.Permissions.Features;
 

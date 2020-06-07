@@ -11,7 +11,7 @@ namespace Exiled.Events.Handlers
     using System.IO;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
     using static Exiled.Events.Events;
 
     /// <summary>
@@ -63,6 +63,11 @@ namespace Exiled.Events.Handlers
         /// Invoked when sending a command through the Remote Admin console.
         /// </summary>
         public static event CustomEventHandler<SendingRemoteAdminCommandEventArgs> SendingRemoteAdminCommand;
+
+        /// <summary>
+        /// Invoked when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
 
         /// <summary>
         /// Called before waiting for players.
@@ -122,5 +127,11 @@ namespace Exiled.Events.Handlers
                 File.AppendAllText(Paths.Log, $"[{DateTime.Now}] {ev.Sender?.Nickname ?? "Server Console"} ({ev.Sender?.UserId ?? "Server Console"}) ran command: {ev?.Name ?? "Unknown"}. Command Permitted: {(ev.IsAllowed ? "[YES]" : "[NO]")}" + Environment.NewLine);
             }
         }
+
+        /// <summary>
+        /// Called when sending a complaint about a player to the local server administrators.
+        /// </summary>
+        /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
+        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
     }
 }

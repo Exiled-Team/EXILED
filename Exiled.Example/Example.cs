@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Example.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -16,6 +16,7 @@ namespace Exiled.Example
     public class Example : Plugin
     {
         private Handlers.Server server;
+        private Handlers.Player player;
 
         /// <inheritdoc/>
         public override IConfig Config { get; } = new Config();
@@ -45,9 +46,14 @@ namespace Exiled.Example
         private void RegisterEvents()
         {
             server = new Handlers.Server();
+            player = new Handlers.Player();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound += server.OnEndingRound;
+
+            Events.Handlers.Player.Died += player.OnDied;
+            Events.Handlers.Player.ChangingRole += player.OnChangingRole;
+            Events.Handlers.Player.ChangingItem += player.OnChangingItem;
         }
 
         /// <summary>
@@ -58,7 +64,12 @@ namespace Exiled.Example
             Events.Handlers.Server.WaitingForPlayers -= server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound -= server.OnEndingRound;
 
+            Events.Handlers.Player.Died -= player.OnDied;
+            Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
+            Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
+
             server = null;
+            player = null;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Player.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -28,14 +28,20 @@ namespace Exiled.API.Features
         public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{GameObject, Player}"/> containing all <see cref="Player"/> on the server.
+        /// Initializes a new instance of the <see cref="Player"/> class.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
+        public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
+
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
         /// </summary>
-        public static List<Player> List { get; } = Dictionary.Values.ToList();
+        public static IEnumerable<Player> List => Dictionary.Values;
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
@@ -48,7 +54,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
 
         /// <summary>
-        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub { get; }
 
@@ -84,9 +90,7 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId;
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException($"UserId cannot be set to null.");
-                ReferenceHub.characterClassManager.UserId = value;
+                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException($"UserId cannot be set to null.");
             }
         }
 
@@ -196,43 +200,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Team"/>.
         /// </summary>
-        public Team Team
-        {
-            get
-            {
-                switch (Role)
-                {
-                    case RoleType.ChaosInsurgency:
-                        return Team.CHI;
-                    case RoleType.Scientist:
-                        return Team.RSC;
-                    case RoleType.ClassD:
-                        return Team.CDP;
-                    case RoleType.Scp049:
-                    case RoleType.Scp93953:
-                    case RoleType.Scp93989:
-                    case RoleType.Scp0492:
-                    case RoleType.Scp079:
-                    case RoleType.Scp096:
-                    case RoleType.Scp106:
-                    case RoleType.Scp173:
-                        return Team.SCP;
-                    case RoleType.Spectator:
-                        return Team.RIP;
-                    case RoleType.FacilityGuard:
-                    case RoleType.NtfCadet:
-                    case RoleType.NtfLieutenant:
-                    case RoleType.NtfCommander:
-                    case RoleType.NtfScientist:
-                        return Team.MTF;
-                    case RoleType.Tutorial:
-                        return Team.TUT;
-                    case RoleType.None:
-                    default:
-                        return Team.RIP;
-                }
-            }
-        }
+        public Team Team => Role.GetTeam();
 
         /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
@@ -244,17 +212,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>
+        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>.
         /// </summary>
-        public Color RoleColor 
-        {
-            get => Role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(Role).classColor;
-        }
+        public Color RoleColor => Role.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed or not.
         /// </summary>
-        public bool IsCuffed => ReferenceHub.handcuffs.NetworkCufferId != -1;
+        public bool IsCuffed => CufferId != -1;
 
         /// <summary>
         /// Gets a value indicating whether the player is reloading or not.
@@ -273,6 +238,16 @@ namespace Exiled.API.Features
         {
             get => ReferenceHub.queryProcessor._ipAddress;
             set => ReferenceHub.queryProcessor._ipAddress = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the <see cref="Player"/> has No-clip enabled.
+        /// </summary>
+        /// <returns><see cref="bool"/> indicating status.</returns>
+        public bool NoClipEnabled
+        {
+            get => ReferenceHub.serverRoles.NoclipReady;
+            set => ReferenceHub.serverRoles.NoclipReady = value;
         }
 
         /// <summary>
@@ -307,27 +282,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
         /// </summary>
-        public Side Side
-        {
-            get
-            {
-                switch (Team)
-                {
-                    case Team.SCP:
-                        return Side.Scp;
-                    case Team.MTF:
-                    case Team.RSC:
-                        return Side.Mtf;
-                    case Team.CHI:
-                    case Team.CDP:
-                        return Side.ChaosInsurgency;
-                    case Team.TUT:
-                        return Side.Tutorial;
-                    default:
-                        return Side.None;
-                }
-            }
-        }
+        public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
@@ -659,6 +614,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not the player's badge is hidden.
+        /// </summary>
+        public bool BadgeHidden
+        {
+            get => string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
+            set
+            {
+                if (value)
+                    ReferenceHub.characterClassManager.CmdRequestHideTag();
+                else
+                    ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
+            }
+        }
+
+        /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
@@ -767,7 +737,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Sets the 079 camera, if the player is SCP-079.
+        /// Sets the SCP-079 camera, if the player is SCP-079.
         /// </summary>
         /// <param name="id">Camera ID.</param>
         public void SetCamera(ushort id) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(id, false);
@@ -914,17 +884,6 @@ namespace Exiled.API.Features
         public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
 
         /// <summary>
-        /// Hides the player's tag.
-        /// </summary>
-        public void HideTag() => ReferenceHub.characterClassManager.CallCmdRequestHideTag();
-
-        /// <summary>
-        /// Shows the player's tag.
-        /// </summary>
-        /// <param name="isGlobal">Indicates whether or not the tag will be shown globally or not.</param>
-        public void ShowTag(bool isGlobal = false) => ReferenceHub.characterClassManager.CallCmdRequestShowTag(isGlobal);
-
-        /// <summary>
         /// Blink the player's tag.
         /// </summary>
         /// <returns>Used to wait.</returns>
@@ -932,11 +891,11 @@ namespace Exiled.API.Features
         {
             yield return MEC.Timing.WaitForOneFrame;
 
-            HideTag();
+            BadgeHidden = !BadgeHidden;
 
             yield return MEC.Timing.WaitForOneFrame;
 
-            ShowTag();
+            BadgeHidden = !BadgeHidden;
         }
 
         /// <summary>
@@ -1008,5 +967,8 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Id} {Nickname} {UserId}";
     }
 }

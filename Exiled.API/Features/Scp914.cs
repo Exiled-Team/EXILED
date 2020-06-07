@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Scp914.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -16,7 +16,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to use the Scp914 machine more easily.
     /// </summary>
-    public class Scp914
+    public static class Scp914
     {
         /// <summary>
         /// Gets or sets SCP-914 <see cref="Scp914Knob"/>.

@@ -8,7 +8,7 @@
 namespace Exiled.Events.Handlers
 {
     using System.Linq;
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
     using MEC;
 
     /// <summary>
@@ -26,6 +26,7 @@ namespace Exiled.Events.Handlers
 
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
+            API.Features.Player.Dictionary.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>

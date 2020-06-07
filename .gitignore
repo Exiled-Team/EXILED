@@ -264,3 +264,9 @@ __pycache__/
 
 # References
 References/
+
+# ResolveUR
+.refsignored
+
+# DocFX
+log.txt

@@ -13,7 +13,6 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
     using Exiled.API.Features;
-    using global::Loader;
 
     /// <summary>
     /// Used to handle plugins.
@@ -124,9 +123,7 @@ namespace Exiled.Loader
         {
             try
             {
-                byte[] file = ModLoader.ReadFile(path);
-
-                Assembly assembly = Assembly.Load(file);
+                Assembly assembly = Assembly.LoadFrom(path);
 
                 foreach (Type type in assembly.GetTypes())
                 {

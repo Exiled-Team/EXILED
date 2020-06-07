@@ -8,7 +8,7 @@
 namespace Exiled.Example.Handlers
 {
     using Exiled.API.Features;
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
 
     /// <summary>
     /// Handles server-related events.

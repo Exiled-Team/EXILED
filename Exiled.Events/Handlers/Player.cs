@@ -7,8 +7,9 @@
 
 namespace Exiled.Events.Handlers
 {
+    using System;
     using Exiled.API.Extensions;
-    using Exiled.Events.Handlers.EventArgs;
+    using Exiled.Events.EventArgs;
     using static Exiled.Events.Events;
 
     /// <summary>
@@ -62,21 +63,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SpawningRagdollEventArgs> SpawningRagdoll;
 
         /// <summary>
-        /// Invoked before creating an SCP-106 portal.
-        /// </summary>
-        public static event CustomEventHandler<CreatingScp106PortalEventArgs> CreatingScp106Portal;
-
-        /// <summary>
-        /// Invoked before gaining experience with SCP-079
-        /// </summary>
-        public static event CustomEventHandler<GainingScp079ExperienceEventArgs> GainingScp079Experience;
-
-        /// <summary>
-        /// Invoked before gaining levels with SCP-079
-        /// </summary>
-        public static event CustomEventHandler<GainingScp079LevelEventArgs> GainingScp079Level;
-
-        /// <summary>
         /// Invoked before activating the warhead panel.
         /// </summary>
         public static event CustomEventHandler<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel;
@@ -85,16 +71,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before using a medical item.
         /// </summary>
         public static event CustomEventHandler<UsingMedicalItemEventArgs> UsingMedicalItem;
-
-        /// <summary>
-        /// Invoked before enraging with SCP-096.
-        /// </summary>
-        public static event CustomEventHandler<EnragingScp096EventArgs> EnragingScp096;
-
-        /// <summary>
-        /// Invoked before calming down with SCP-096.
-        /// </summary>
-        public static event CustomEventHandler<CalmingDownScp096EventArgs> CalmingDownScp096;
 
         /// <summary>
         /// Invoked after a player has joined the server.
@@ -152,11 +128,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<RemovingHandcuffsEventArgs> RemovingHandcuffs;
 
         /// <summary>
-        /// Invoked before triggering a tesla with SCP-079.
-        /// </summary>
-        public static event CustomEventHandler<TriggeringScp079TeslaEventArgs> TriggeringScp079Tesla;
-
-        /// <summary>
         /// Invoked before escaping from the facility.
         /// </summary>
         public static event CustomEventHandler<EscapingEventArgs> Escaping;
@@ -177,11 +148,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ShootingEventArgs> Shooting;
 
         /// <summary>
-        /// Invoked before teleporting with SCP-106.
-        /// </summary>
-        public static event CustomEventHandler<TeleportingScp106EventArgs> TeleportingScp106;
-
-        /// <summary>
         /// Invoked before entering the pocket dimension.
         /// </summary>
         public static event CustomEventHandler<EnteringPocketDimensionEventArgs> EnteringPocketDimension;
@@ -200,21 +166,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before spawning a player.
         /// </summary>
         public static event CustomEventHandler<SpawningEventArgs> Spawning;
-
-        /// <summary>
-        /// Invoked before containing SCP-106.
-        /// </summary>
-        public static event CustomEventHandler<ContainingScp106EventArgs> ContainingScp106;
-
-        /// <summary>
-        /// Invoked before activating the SCP-914 machine.
-        /// </summary>
-        public static event CustomEventHandler<ActivatingScp914EventArgs> ActivatingScp914;
-
-        /// <summary>
-        /// Invoked before changing the SCP-914 machine knob setting.
-        /// </summary>
-        public static event CustomEventHandler<ChangingScp914KnobSettingEventArgs> ChangingScp914KnobSetting;
 
         /// <summary>
         /// Invoked before entering the femur breaker
@@ -336,24 +287,6 @@ namespace Exiled.Events.Handlers
         public static void OnSpawningRagdoll(SpawningRagdollEventArgs ev) => SpawningRagdoll.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before creating an SCP-106 portal.
-        /// </summary>
-        /// <param name="ev">The <see cref="CreatingScp106PortalEventArgs"/> instance.</param>
-        public static void OnCreatingScp106Portal(CreatingScp106PortalEventArgs ev) => CreatingScp106Portal.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before gaining experience with SCP-079.
-        /// </summary>
-        /// <param name="ev">The <see cref="GainingScp079ExperienceEventArgs"/> instance.</param>
-        public static void OnGainingScp079Experience(GainingScp079ExperienceEventArgs ev) => GainingScp079Experience.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before gaining levels with SCP-079.
-        /// </summary>
-        /// <param name="ev">The <see cref="GainingScp079LevelEventArgs"/> instance.</param>
-        public static void OnGainingScp079Level(GainingScp079LevelEventArgs ev) => GainingScp079Level.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked before activating the warhead panel.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWarheadPanelEventArgs"/> instance.</param>
@@ -364,18 +297,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UsingMedicalItemEventArgs"/> instance.</param>
         public static void OnUsingMedicalItem(UsingMedicalItemEventArgs ev) => UsingMedicalItem.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before enraging with SCP-096.
-        /// </summary>
-        /// <param name="ev">The <see cref="EnragingScp096EventArgs"/> instance.</param>
-        public static void OnEnragingScp096(EnragingScp096EventArgs ev) => EnragingScp096.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before calming down with SCP-096.
-        /// </summary>
-        /// <param name="ev">The <see cref="CalmingDownScp096EventArgs"/> instance.</param>
-        public static void OnCalmingDownScp096(CalmingDownScp096EventArgs ev) => CalmingDownScp096.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked after a player has joined the server.
@@ -444,12 +365,6 @@ namespace Exiled.Events.Handlers
         public static void OnRemovingHandcuffs(RemovingHandcuffsEventArgs ev) => RemovingHandcuffs.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before triggering a tesla with SCP-079.
-        /// </summary>
-        /// <param name="ev">The <see cref="TriggeringScp079TeslaEventArgs"/> instance.</param>
-        public static void OnTriggeringScp079Tesla(TriggeringScp079TeslaEventArgs ev) => TriggeringScp079Tesla.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked before escaping from the facility.
         /// </summary>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
@@ -474,12 +389,6 @@ namespace Exiled.Events.Handlers
         public static void OnShooting(ShootingEventArgs ev) => Shooting.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before teleporting with SCP-106.
-        /// </summary>
-        /// <param name="ev">The <see cref="TeleportingScp106EventArgs"/> instance.</param>
-        public static void OnTeleportingScp106(TeleportingScp106EventArgs ev) => TeleportingScp106.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked before entering the pocket dimension.
         /// </summary>
         /// <param name="ev">The <see cref="EnteringPocketDimensionEventArgs"/> instance.</param>
@@ -502,24 +411,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawningEventArgs"/> instance.</param>
         public static void OnSpawning(SpawningEventArgs ev) => Spawning.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before containing SCP-106.
-        /// </summary>
-        /// <param name="ev">The <see cref="ContainingScp106EventArgs"/> instance.</param>
-        public static void OnContainingScp106(ContainingScp106EventArgs ev) => ContainingScp106.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before activating the SCP-914 machine.
-        /// </summary>
-        /// <param name="ev">The <see cref="ActivatingScp914EventArgs"/> instance.</param>
-        public static void OnActivatingScp914(ActivatingScp914EventArgs ev) => ActivatingScp914.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before changing the SCP-914 machine knob setting.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingScp914KnobSettingEventArgs"/> instance.</param>
-        public static void OnChangingScp914KnobSetting(ChangingScp914KnobSettingEventArgs ev) => ChangingScp914KnobSetting.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked before entering the femur breaker.
