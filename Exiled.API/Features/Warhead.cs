@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Warhead.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to work with the warhead code more easily.
     /// </summary>
-    public class Warhead
+    public static class Warhead
     {
         private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;

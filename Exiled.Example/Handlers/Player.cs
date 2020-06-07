@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Player.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -25,6 +25,12 @@ namespace Exiled.Example.Handlers
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             Log.Info($"{ev.Player.Nickname} is changing his role! The new role will be {ev.NewRole}!");
+        }
+
+        /// <inheritdoc cref="OnChangingItem(ChangingItemEventArgs)"/>
+        public void OnChangingItem(ChangingItemEventArgs ev)
+        {
+            Log.Info($"{ev.Player.Nickname} is changing his {ev.OldItem.id} item to {ev.NewItem.id}!");
         }
     }
 }

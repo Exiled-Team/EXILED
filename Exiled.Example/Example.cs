@@ -53,6 +53,7 @@ namespace Exiled.Example
 
             Events.Handlers.Player.Died += player.OnDied;
             Events.Handlers.Player.ChangingRole += player.OnChangingRole;
+            Events.Handlers.Player.ChangingItem += player.OnChangingItem;
         }
 
         /// <summary>
@@ -65,6 +66,7 @@ namespace Exiled.Example
 
             Events.Handlers.Player.Died -= player.OnDied;
             Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
+            Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
 
             server = null;
             player = null;

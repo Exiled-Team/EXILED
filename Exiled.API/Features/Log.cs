@@ -13,7 +13,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// A set of tools to print messages on the server console.
     /// </summary>
-    public class Log
+    public static class Log
     {
         /// <summary>
         /// Sends a <see cref="LogLevel.Info"/> level messages to the game console.
