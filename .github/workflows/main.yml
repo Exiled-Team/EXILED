@@ -42,9 +42,11 @@ jobs:
         file-name: '7zip.exe'
         location: $GITHUB_WORKSPACE
     
+    - name: im retarded give me info pls
+      run: dir /s
+    
     - name: Extract Refs
       run: ./7zip.exe References.zip -oReferences -r -y
-      
       
     - name: Build
       env: 
