@@ -33,14 +33,12 @@ jobs:
       with:
         file-url: 'https://www.exiled.host/build_deps/References.zip'
         file-name: 'References.zip'
-        location: $GITHUB_WORKSPACE
     
     - name: Download 7zip
       uses: carlosperate/download-file-action@v1.0.3
       with:
         file-url: 'https://www.7-zip.org/a/7z1900-extra.7z'
         file-name: '7zip.exe'
-        location: $GITHUB_WORKSPACE
     
     - name: im retarded give me info pls
       run: cmd /r dir /s /b
