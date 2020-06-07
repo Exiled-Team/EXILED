@@ -37,7 +37,7 @@ jobs:
     - name: Download 7zip
       uses: carlosperate/download-file-action@v1.0.3
       with:
-        file-url: 'https://www.7-zip.org/a/7z1900-extra.7z'
+        file-url: 'https://www.exiled.host/7za.exe'
         file-name: '7zip.exe'
     
     - name: im retarded give me info pls
@@ -48,6 +48,6 @@ jobs:
       
     - name: Build
       env: 
-        EXILED_REFERENCES: $GITHUB_WORKSPACE\\References
-      run: msbuild $GITHUB_WORKSPACE\\EXILED.sln -p:Configuration=release
+        EXILED_REFERENCES: ./References
+      run: msbuild EXILED.sln -p:Configuration=release
       
