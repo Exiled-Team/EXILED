@@ -51,6 +51,12 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        tag: latest
         name: Build Results
         path: bin/Release
+        
+    - name: Upload EXILED Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: EXILED DLLs
+        path: bin/Release/Exiled*.dll
+
