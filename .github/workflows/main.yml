@@ -43,7 +43,7 @@ jobs:
         location: $GITHUB_WORKSPACE
     
     - name: im retarded give me info pls
-      run: dir /s
+      run: cmd /r dir /s /b
     
     - name: Extract Refs
       run: ./7zip.exe References.zip -oReferences -r -y
