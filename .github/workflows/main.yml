@@ -44,7 +44,7 @@ jobs:
       run: cmd /r dir /s /b
     
     - name: Extract Refs
-      run: ./7zip.exe e References.zip -oReferences -r -y
+      run: ./7zip.exe e References.zip -o./bin/Release -r -y
       
     - name: Build
       env: 
