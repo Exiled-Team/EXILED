@@ -200,43 +200,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Team"/>.
         /// </summary>
-        public Team Team
-        {
-            get
-            {
-                switch (Role)
-                {
-                    case RoleType.ChaosInsurgency:
-                        return Team.CHI;
-                    case RoleType.Scientist:
-                        return Team.RSC;
-                    case RoleType.ClassD:
-                        return Team.CDP;
-                    case RoleType.Scp049:
-                    case RoleType.Scp93953:
-                    case RoleType.Scp93989:
-                    case RoleType.Scp0492:
-                    case RoleType.Scp079:
-                    case RoleType.Scp096:
-                    case RoleType.Scp106:
-                    case RoleType.Scp173:
-                        return Team.SCP;
-                    case RoleType.Spectator:
-                        return Team.RIP;
-                    case RoleType.FacilityGuard:
-                    case RoleType.NtfCadet:
-                    case RoleType.NtfLieutenant:
-                    case RoleType.NtfCommander:
-                    case RoleType.NtfScientist:
-                        return Team.MTF;
-                    case RoleType.Tutorial:
-                        return Team.TUT;
-                    case RoleType.None:
-                    default:
-                        return Team.RIP;
-                }
-            }
-        }
+        public Team Team => Role.GetTeam();
 
         /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
@@ -250,12 +214,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>.
         /// </summary>
-        public Color RoleColor => Role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(Role).classColor;
+        public Color RoleColor => Role.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed or not.
         /// </summary>
-        public bool IsCuffed => ReferenceHub.handcuffs.NetworkCufferId != -1;
+        public bool IsCuffed => CufferId != -1;
 
         /// <summary>
         /// Gets a value indicating whether the player is reloading or not.
@@ -318,27 +282,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
         /// </summary>
-        public Side Side
-        {
-            get
-            {
-                switch (Team)
-                {
-                    case Team.SCP:
-                        return Side.Scp;
-                    case Team.MTF:
-                    case Team.RSC:
-                        return Side.Mtf;
-                    case Team.CHI:
-                    case Team.CDP:
-                        return Side.ChaosInsurgency;
-                    case Team.TUT:
-                        return Side.Tutorial;
-                    default:
-                        return Side.None;
-                }
-            }
-        }
+        public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
