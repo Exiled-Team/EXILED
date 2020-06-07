@@ -51,5 +51,6 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
+        tag: latest
         name: Build Results
         path: bin/Release
