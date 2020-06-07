@@ -1,6 +1,7 @@
 # EXILED - EXtended In-runtime Library for External Development
 
 Join our [[Discord](https://discord.gg/PyUkWTg)]!
+
 ![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
 
 
