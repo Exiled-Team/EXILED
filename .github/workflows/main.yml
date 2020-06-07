@@ -51,5 +51,5 @@ jobs:
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: DLLs
+        name: Build Results
         path: bin/Release
