@@ -57,16 +57,16 @@ namespace Exiled.API.Features
                 if (zone != ZoneType.Unspecified)
                     return zone;
 
-                if (Position.y == -1997f)
-                    zone = ZoneType.Unspecified;
-                else if (Position.y >= 0f && Position.y < 500f)
-                    zone = ZoneType.LightContainment;
-                else if (Position.y < -100 && Position.y > -1000f)
+                if(Transform.parent.name == "HeavyRooms")
                     zone = ZoneType.HeavyContainment;
-                else if (Name.Contains("ENT") || Name.Contains("INTERCOM"))
+                else if(Transform.parent.name == "LightRooms")
+                    zone = ZoneType.LightContainment;
+                else if(Transform.parent.name == "EntranceRooms")
                     zone = ZoneType.Entrance;
-                else if (Position.y >= 5)
+                else if(Position.y >= 5)
                     zone = ZoneType.Surface;
+                else
+                    zone = ZoneType.Unspecified;
 
                 return zone;
             }
