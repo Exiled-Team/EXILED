@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project>	
-  <!-- StyleCop Analyzers configuration -->
-  <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+<Project>
+    <!-- StyleCop Analyzers configuration -->
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json"/>
-  </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="$(MSBuildThisFileDirectory)\stylecop.json"/>
+    </ItemGroup>
 </Project>

@@ -9,7 +9,6 @@ namespace Exiled.Events
 {
     using System;
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
     using HarmonyLib;
@@ -17,7 +16,7 @@ namespace Exiled.Events
     /// <summary>
     /// Patch and unpatch events into the game.
     /// </summary>
-    public class Events : Plugin
+    public class Events : Plugin<Config>
     {
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
@@ -43,9 +42,6 @@ namespace Exiled.Events
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
         /// </summary>
         public Harmony Harmony { get; private set; }
-
-        /// <inheritdoc/>
-        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

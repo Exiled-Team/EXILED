@@ -14,41 +14,29 @@ namespace Exiled.API.Features
     /// <summary>
     /// Expose how a plugin has to be made.
     /// </summary>
-    public abstract class Plugin
+    /// <typeparam name="T">The config type.</typeparam>
+    public abstract class Plugin<T> : IPlugin<T>
+        where T : IConfig, new()
     {
-        /// <summary>
-        /// Gets the plugin name.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual string Name { get; } = Assembly.GetCallingAssembly().GetName().Name;
 
-        /// <summary>
-        /// Gets the plugin version.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual Version Version { get; } = Assembly.GetCallingAssembly().GetName().Version;
 
-        /// <summary>
-        /// Gets the required version of EXILED to run the plugin without bugs or incompatibilities.
-        /// </summary>
+        /// <inheritdoc/>
         public virtual Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
 
-        /// <summary>
-        /// Gets the plugin <see cref="IConfig"/>.
-        /// </summary>
-        public abstract IConfig Config { get; }
+        /// <inheritdoc/>
+        public T Config { get; } = new T();
 
-        /// <summary>
-        /// Fired after enabling the plugin.
-        /// </summary>
-        public abstract void OnEnabled();
-
-        /// <summary>
-        /// Fired after disabling the plugin.
-        /// </summary>
+        /// <inheritdoc/>
         public abstract void OnDisabled();
 
-        /// <summary>
-        /// Fired after reloading the plugin.
-        /// </summary>
+        /// <inheritdoc/>
+        public abstract void OnEnabled();
+
+        /// <inheritdoc/>
         public abstract void OnReloaded();
     }
 }

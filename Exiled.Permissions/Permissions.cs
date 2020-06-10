@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Permissions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,18 +8,14 @@
 namespace Exiled.Permissions
 {
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
     using Exiled.Permissions.Events;
 
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
     /// </summary>
-    public class Permissions : Plugin
+    public class Permissions : Plugin<Config>
     {
         private Command command;
-
-        /// <inheritdoc/>
-        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()

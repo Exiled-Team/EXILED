@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Updater.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -14,18 +14,14 @@ namespace Exiled.Updater
     using System.Net;
     using System.Text;
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
     using UnityEngine;
 
     /// <summary>
     /// Automatically updates Exiled to the latest version.
     /// </summary>
-    public class Updater : Plugin
+    public class Updater : Plugin<Config>
     {
         private string versionUpdateUrl;
-
-        /// <inheritdoc/>
-        public override IConfig Config { get; } = new Config();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -116,7 +112,7 @@ namespace Exiled.Updater
         {
             try
             {
-                string url = "https://github.com/galaxy119/EXILED/releases/" + (((Config)Config).AllowTestingReleases ? string.Empty : "latest/");
+                string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.AllowTestingReleases ? string.Empty : "latest/");
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{url}");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
@@ -128,6 +124,10 @@ namespace Exiled.Updater
                 string read = reader.ReadToEnd();
                 string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 string line = readArray.FirstOrDefault(str => str.Contains("Exiled.tar.gz"));
+
+                if (string.IsNullOrEmpty(line))
+                    return false;
+
                 string version = Between(line, "/galaxy119/EXILED/releases/download/", "/Exiled.tar.gz");
                 string[] versionArray = version.Split('.');
 

@@ -13,6 +13,7 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
     using Exiled.API.Features;
+    using Exiled.API.Interfaces;
 
     /// <summary>
     /// Used to handle plugins.
@@ -24,7 +25,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static List<Plugin> Plugins { get; } = new List<Plugin>();
+        public static List<IPlugin<IConfig>> Plugins { get; } = new List<IPlugin<IConfig>>();
 
         /// <summary>
         /// Gets the dependencies list.
@@ -42,7 +43,7 @@ namespace Exiled.Loader
         public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
-        /// Gets the global configs.
+        /// Gets bla.
         /// </summary>
         public static YamlConfig YamlConfig { get; } = new YamlConfig(Paths.Config);
 
@@ -61,15 +62,6 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadAll()
         {
-            try
-            {
-                LoadAllDependencies();
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"An error has occurred while loading dependencies! {exception}");
-            }
-
             if (!Directory.Exists(Paths.Plugins))
             {
                 Log.Warn($"Plugin directory not found - creating: {Paths.Plugins}");
@@ -95,7 +87,7 @@ namespace Exiled.Loader
 
             if (plugins.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
             {
-                string exiledPermission = plugins.FirstOrDefault(m => m.Contains("Exiled.Permissions.dll"));
+                string exiledPermission = plugins.FirstOrDefault(name => name.Contains("Exiled.Permissions.dll"));
 
                 Load(exiledPermission);
                 plugins.Remove(exiledPermission);
@@ -137,7 +129,10 @@ namespace Exiled.Loader
                     {
                         Log.Debug($"Overriding type check for {type.FullName}", ShouldDebugBeShown);
                     }
-                    else if (type.BaseType != typeof(Plugin))
+                    else if (
+                        !type.BaseType.IsGenericType ||
+                        type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) ||
+                        type.BaseType.GetGenericArguments()?[0]?.GetInterface(nameof(IConfig)) != typeof(IConfig))
                     {
                         Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
                         continue;
@@ -145,7 +140,7 @@ namespace Exiled.Loader
 
                     Log.Info($"Loading type {type.FullName}");
 
-                    Plugin plugin = (Plugin)Activator.CreateInstance(type);
+                    IPlugin<IConfig> plugin = (IPlugin<IConfig>)Activator.CreateInstance(type);
 
                     Log.Info($"Instantiated type {type.FullName}");
 
@@ -184,7 +179,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void EnableAll()
         {
-            foreach (Plugin plugin in Plugins)
+            foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
                 {
@@ -206,7 +201,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void ReloadAll()
         {
-            foreach (Plugin plugin in Plugins)
+            foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
                 {
@@ -231,7 +226,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void DisableAll()
         {
-            foreach (Plugin plugin in Plugins)
+            foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
                 {
@@ -252,9 +247,7 @@ namespace Exiled.Loader
         /// <param name="onlyExiled">Returns whether Exiled configs must be reloaded or not.</param>
         public static void ReloadPluginConfigs(bool onlyExiled = false)
         {
-            YamlConfig.Reload();
-
-            foreach (Plugin plugin in Plugins)
+            foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 if (onlyExiled && plugin.Name != "EXILED")
                     continue;
@@ -294,30 +287,37 @@ namespace Exiled.Loader
         /// <summary>
         /// Loads all dependencies.
         /// </summary>
-        private static void LoadAllDependencies()
+        internal static void LoadAllDependencies()
         {
-            Log.Info("Loading dependencies...");
-            Log.Debug($"Searching Directory \"{Paths.Dependencies}\"", ShouldDebugBeShown);
-
-            if (!Directory.Exists(Paths.Dependencies))
-                Directory.CreateDirectory(Paths.Dependencies);
-
-            string[] dependencies = Directory.GetFiles(Paths.Dependencies);
-
-            foreach (string dll in dependencies)
+            try
             {
-                if (!dll.EndsWith(".dll"))
-                    continue;
+                Log.Info("Loading dependencies...");
+                Log.Debug($"Searching Directory \"{Paths.Dependencies}\"", ShouldDebugBeShown);
 
-                if (IsDependencyLoaded(dll))
-                    return;
+                if (!Directory.Exists(Paths.Dependencies))
+                    Directory.CreateDirectory(Paths.Dependencies);
 
-                Assembly assembly = Assembly.LoadFrom(dll);
-                Dependencies.Add(assembly);
-                Log.Info("Loaded dependency " + assembly.FullName);
+                string[] dependencies = Directory.GetFiles(Paths.Dependencies);
+
+                foreach (string dll in dependencies)
+                {
+                    if (!dll.EndsWith(".dll"))
+                        continue;
+
+                    if (IsDependencyLoaded(dll))
+                        return;
+
+                    Assembly assembly = Assembly.LoadFrom(dll);
+                    Dependencies.Add(assembly);
+                    Log.Info("Loaded dependency " + assembly.FullName);
+                }
+
+                Log.Debug("Complete!", ShouldDebugBeShown);
             }
-
-            Log.Debug("Complete!", ShouldDebugBeShown);
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while loading dependencies! {exception}");
+            }
         }
     }
 }

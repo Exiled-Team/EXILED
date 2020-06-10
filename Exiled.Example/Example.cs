@@ -8,23 +8,21 @@
 namespace Exiled.Example
 {
     using Exiled.API.Features;
-    using Exiled.API.Interfaces;
 
     /// <summary>
     /// The example plugin.
     /// </summary>
-    public class Example : Plugin
+    public class Example : Plugin<Config>
     {
         private Handlers.Server server;
         private Handlers.Player player;
 
         /// <inheritdoc/>
-        public override IConfig Config { get; } = new Config();
-
-        /// <inheritdoc/>
         public override void OnEnabled()
         {
             RegisterEvents();
+
+            Log.Warn($"I correctly read the Test config, its value is: {Config.Test}");
 
             Log.Info($"{Name} has been enabled!");
         }

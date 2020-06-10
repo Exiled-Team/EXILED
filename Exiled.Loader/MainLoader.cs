@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="MainLoader.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -44,7 +44,12 @@ namespace Exiled.Loader
             ServerConsole.AddLog($"Exiled - Version {PluginManager.Version.Major}.{PluginManager.Version.Minor}.{PluginManager.Version.Build}", ConsoleColor.DarkRed);
 
             PluginManager.Config.Reload();
-            Timing.CallDelayed(0.25f, PluginManager.LoadAll);
+
+            Timing.CallDelayed(0.25f, () =>
+            {
+                PluginManager.LoadAllDependencies();
+                PluginManager.LoadAll();
+            });
         }
     }
 }
