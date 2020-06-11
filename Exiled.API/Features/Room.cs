@@ -56,8 +56,9 @@ namespace Exiled.API.Features
             {
                 if (zone != ZoneType.Unspecified)
                     return zone;
-
-                if(Transform.parent.name == "HeavyRooms")
+                if(Transform.parent == null)
+                    zone = ZoneType.Unspecified;
+                else if(Transform.parent.name == "HeavyRooms")
                     zone = ZoneType.HeavyContainment;
                 else if(Transform.parent.name == "LightRooms")
                     zone = ZoneType.LightContainment;
