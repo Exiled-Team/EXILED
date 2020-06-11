@@ -772,7 +772,7 @@ namespace EXILED
 		public int AnnouncementId
 		{
 			get => announcementId;
-			set => announcementId = Mathf.Clamp(value, 0, 5);
+			set => announcementId = Mathf.Clamp(value, 0, 6);
 		}
 		public bool IsAnnouncementGlobal { get; set; }
 		public bool Allow { get; set; }
