@@ -56,18 +56,31 @@ namespace Exiled.API.Features
             {
                 if (zone != ZoneType.Unspecified)
                     return zone;
-                if(Transform.parent == null)
+
+                if (Transform.parent == null)
+                {
                     zone = ZoneType.Unspecified;
-                else if(Transform.parent.name == "HeavyRooms")
-                    zone = ZoneType.HeavyContainment;
-                else if(Transform.parent.name == "LightRooms")
-                    zone = ZoneType.LightContainment;
-                else if(Transform.parent.name == "EntranceRooms")
-                    zone = ZoneType.Entrance;
-                else if(Position.y >= 5)
-                    zone = ZoneType.Surface;
+                }
                 else
-                    zone = ZoneType.Unspecified;
+                {
+                    switch (Transform.parent.name)
+                    {
+                    case "HeavyRooms":
+                        zone = ZoneType.HeavyContainment;
+                        break;
+                    case "LightRooms":
+                        zone = ZoneType.LightContainment;
+                        break;
+                    case "EntranceRooms":
+                        zone = ZoneType.Entrance;
+                        break;
+                    default:
+                    {
+                        zone = Position.y >= 5 ? ZoneType.Surface : ZoneType.Unspecified;
+                        break;
+                    }
+                  }
+                }
 
                 return zone;
             }
