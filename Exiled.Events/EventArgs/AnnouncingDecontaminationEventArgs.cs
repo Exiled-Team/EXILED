@@ -31,12 +31,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the announcement id, from 0 to 5.
+        /// Gets or sets the announcement id, from 0 to 6.
         /// </summary>
         public int Id
         {
             get => id;
-            set => id = Mathf.Clamp(value, 0, 5);
+            set => id = Mathf.Clamp(value, 0, 6);
         }
 
         /// <summary>
