@@ -17,18 +17,18 @@ namespace EXILED.Patches
 				if (!__instance._interactRateLimit.CanExecute())
 					return false;
 
-				__instance.cancel = false;
+				__instance._cancel = false;
 
 				if (__instance.cooldown > 0.0)
 					return false;
 
 				for (int i = 0; i < __instance.usableItems.Length; ++i)
 				{
-					if (__instance.usableItems[i].inventoryID == __instance.hub.inventory.curItem && __instance.usableCooldowns[i] <= 0.0)
+					if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableCooldowns[i] <= 0.0)
 					{
 						bool allow = true;
 
-						Events.InvokeUseMedicalItem(__instance.gameObject, __instance.hub.inventory.curItem, ref __instance.usableItems[i].animationDuration, ref allow);
+						Events.InvokeUseMedicalItem(__instance.gameObject, __instance._hub.inventory.curItem, ref __instance.usableItems[i].animationDuration, ref allow);
 
 						if (allow)
 							Timing.RunCoroutine(__instance.UseMedicalItem(i), Segment.FixedUpdate);
