@@ -13,7 +13,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract))
+				if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
 					return false;
 
 				LockerManager singleton = LockerManager.singleton;

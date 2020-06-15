@@ -19,7 +19,7 @@ namespace EXILED.Patches
 			try
 			{
 				if (!__instance._playerInteractRateLimit.CanExecute()
-					|| (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract)
+					|| (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract)
 					|| doorId == null
 					|| !doorId.TryGetComponent(out door)
 					|| (__instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator)

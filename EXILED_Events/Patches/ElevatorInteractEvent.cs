@@ -16,7 +16,7 @@ namespace EXILED.Patches
 			{
 				bool allow = true;
 				if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-					(__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) || elevator == null)
+					(__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) || elevator == null)
 					return false;
 
 				Lift component = elevator.GetComponent<Lift>();
