@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
         public static bool Prefix(PlayerInteract __instance, GameObject doorId)
         {
             if (!__instance._playerInteractRateLimit.CanExecute() ||
-                (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) ||
+                (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||
                 doorId == null ||
                 !doorId.TryGetComponent(out Door door) ||
                 (__instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator) ||
