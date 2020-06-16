@@ -1,3 +1,4 @@
+using EXILED.Extensions;
 using GameCore;
 using Harmony;
 using System;
@@ -38,7 +39,7 @@ namespace EXILED.Patches
 			RoundSummary roundSummary = instance;
 			while (roundSummary != null)
 			{
-				while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || PlayerManager.players.Count < 2)
+				while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary.keepRoundOnOne && PlayerManager.players.Count < 2))
 					yield return 0.0f;
 				yield return 0.0f;
 				RoundSummary.SumInfo_ClassList newList = new RoundSummary.SumInfo_ClassList();
@@ -46,7 +47,6 @@ namespace EXILED.Patches
 				{
 					if (!(player == null))
 					{
-						Dictionary<GameObject, ReferenceHub> hubs = new Dictionary<GameObject, ReferenceHub>(20, new ReferenceHub.GameObjectComparer());
 						CharacterClassManager component = player.GetComponent<CharacterClassManager>();
 						if (component.Classes.CheckBounds(component.CurClass))
 						{
@@ -110,6 +110,10 @@ namespace EXILED.Patches
 					continue;
 
 				if (newList.class_ds == 0 && num1 == 0)
+				{
+					roundSummary.roundEnded = true;
+				}
+				else if(num1 == 0 && Cassie.mtfRespawn.MtfRespawnTickets == 0)
 				{
 					roundSummary.roundEnded = true;
 				}
