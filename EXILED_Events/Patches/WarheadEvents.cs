@@ -30,7 +30,7 @@ namespace EXILED.Patches
 			{
 				ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Detonation cancelled.", ServerLogs.ServerLogType.GameEvent);
 
-				if (!__instance.inProgress || __instance.timeToDetonation <= 10.0)
+				if (!__instance.inProgress || __instance.timeToDetonation <= 10.0 || __instance._isLocked)
 					return false;
 
 				if (__instance.timeToDetonation <= 15.0 && disabler != null)

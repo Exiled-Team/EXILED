@@ -5,32 +5,26 @@ using UnityEngine;
 
 namespace EXILED.Patches
 {
-	[HarmonyPatch(typeof(TeslaGate), nameof(TeslaGate.PlayersInRange))]
+	[HarmonyPatch(typeof(TeslaGate), nameof(TeslaGate.PlayerInRange))]
 	public class TriggerTeslaEvent
 	{
-		public static bool Prefix(TeslaGate __instance, bool hurtRange) => EventPlugin.TriggerTeslaPatchDisable;
+		public static bool Prefix(TeslaGate __instance) => EventPlugin.TriggerTeslaPatchDisable;
 
-		public static void Postfix(TeslaGate __instance, bool hurtRange, ref List<PlayerStats> __result)
+		public static void Postfix(TeslaGate __instance, ReferenceHub player, ref bool __result)
 		{
 			if (EventPlugin.TriggerTeslaPatchDisable)
 				return;
 
 			try
 			{
-				__result = new List<PlayerStats>();
+				bool triggerable = true;
 
-				foreach (GameObject player in PlayerManager.players)
+				if (Vector3.Distance(__instance.transform.position, player.playerMovementSync.RealModelPosition) < __instance.sizeOfTrigger)
 				{
-					bool triggerable = true;
+					//memo: isInHurtingRange is gone
+					Events.InvokeTriggerTesla(player.gameObject, true, ref triggerable);
 
-					if (Vector3.Distance(__instance.transform.position, player.transform.position) < __instance.sizeOfTrigger &&
-						player.GetComponent<CharacterClassManager>().CurClass != RoleType.Spectator)
-					{
-						Events.InvokeTriggerTesla(player, hurtRange, ref triggerable);
-
-						if (triggerable)
-							__result.Add(player.GetComponent<PlayerStats>());
-					}
+					__result = triggerable;
 				}
 			}
 			catch (Exception exception)
