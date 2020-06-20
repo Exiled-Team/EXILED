@@ -60,9 +60,7 @@ namespace EXILED.Patches
                   ReferenceHub hub2;
                   if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out hub2))
                   {
-                    if (EventPlugin.GhostedIds.Contains(__instance._transmitBuffer[index].playerID) ||
-                        hub1.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged &&
-                        (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP))
+                    if (EventPlugin.GhostedIds.Contains(__instance._transmitBuffer[index].playerID) || hub1.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP))
                       __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f,
                         __instance._transmitBuffer[index].playerID);
 
