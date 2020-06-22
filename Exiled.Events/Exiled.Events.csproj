@@ -224,7 +224,7 @@
     <Compile Include="Patches\Events\Player\InteractingDoor.cs" />
     <Compile Include="Patches\Events\Player\InteractingElevator.cs" />
     <Compile Include="Patches\Events\Player\InteractingLocker.cs" />
-    <Compile Include="Patches\Events\Scp079\InteractingTesla.cs" />
+    <Compile Include="Patches\Events\Scp079\Interacting.cs" />
     <Compile Include="Patches\Events\Player\IntercomSpeaking.cs" />
     <Compile Include="Patches\Events\Player\ItemDrop.cs" />
     <Compile Include="Patches\Events\Player\Joined.cs" />
