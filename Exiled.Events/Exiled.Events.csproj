@@ -187,12 +187,14 @@
     <Compile Include="EventArgs\UsedMedicalItemEventArgs.cs" />
     <Compile Include="EventArgs\UsingMedicalItemEventArgs.cs" />
 	<Compile Include="EventArgs\FailedEscapePocketDimensionEventArgs.cs" />
+	<Compile Include="EventArgs\InfectPlayerArgs.cs.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Round.cs" />
     <Compile Include="Handlers\Scp079.cs" />
     <Compile Include="Handlers\Scp096.cs" />
     <Compile Include="Handlers\Scp106.cs" />
+	<Compile Include="Handlers\Scp049.cs" />
     <Compile Include="Handlers\Scp914.cs" />
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Handlers\Warhead.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Patches\Events\Player\EscapingPocketDimension.cs" />
     <Compile Include="Patches\Events\Scp079\GainingExperience.cs" />
     <Compile Include="Patches\Events\Scp079\GainingLevel.cs" />
+	<Compile Include="Patches\Events\Scp049\Infect.cs" />
     <Compile Include="Patches\Events\Map\GeneratorActivated.cs" />
     <Compile Include="Patches\Events\Player\Handcuffing.cs" />
     <Compile Include="Patches\Events\Player\Hurting.cs" />
