@@ -186,6 +186,7 @@
     <Compile Include="EventArgs\UpgradingItemsEventArgs.cs" />
     <Compile Include="EventArgs\UsedMedicalItemEventArgs.cs" />
     <Compile Include="EventArgs\UsingMedicalItemEventArgs.cs" />
+	<Compile Include="EventArgs\FailedEscapePocketDimensionEventArgs.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Round.cs" />
