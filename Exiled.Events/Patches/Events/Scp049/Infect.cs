@@ -1,15 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Exiled.Events.EventArgs;
-using HarmonyLib;
-using Mirror;
-using UnityEngine;
+// -----------------------------------------------------------------------
+// <copyright file="Infect.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Scp049
 {
+    using Exiled.Events.EventArgs;
+    using HarmonyLib;
+    using Mirror;
+    using UnityEngine;
+
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
     /// Adds the <see cref="Scp049.InfectPlayer"/> event.

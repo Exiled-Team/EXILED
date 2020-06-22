@@ -146,6 +146,7 @@
     <Compile Include="EventArgs\GainingExperienceEventArgs.cs" />
     <Compile Include="EventArgs\GainingLevelEventArgs.cs" />
     <Compile Include="EventArgs\GeneratorActivatedEventArgs.cs" />
+	<Compile Include="EventArgs\GrenadeExplodeEventArgs.cs" />
     <Compile Include="EventArgs\HandcuffingEventArgs.cs" />
     <Compile Include="EventArgs\HurtingEventArgs.cs" />
     <Compile Include="EventArgs\InsertingGeneratorTabletEventArgs.cs" />
@@ -238,6 +239,8 @@
     <Compile Include="Patches\Events\Player\PickingUpItem.cs" />
     <Compile Include="Patches\Events\Map\PlacingBlood.cs" />
     <Compile Include="Patches\Events\Map\PlacingBloodAndDecal.cs" />
+	<Compile Include="Patches\Events\Map\FlashGrenadeExplode.cs" />
+	<Compile Include="Patches\Events\Map\FragGrenadeExplode.cs" />
     <Compile Include="Patches\Events\Player\PreAuthenticating.cs" />
     <Compile Include="Patches\Events\Player\ReloadingWeapon.cs" />
     <Compile Include="Patches\Events\Player\RemovingHandcuffs.cs" />
