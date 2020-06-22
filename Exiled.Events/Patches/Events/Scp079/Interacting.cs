@@ -111,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     if (!ev.IsAllowed)
                         return false;
 
-					if (allow && component.ChangeState079())
+					if (component.ChangeState079())
 					{
 						__instance.Mana -= manaFromLabel;
 						__instance.AddInteractionToHistory(target, s, true);
