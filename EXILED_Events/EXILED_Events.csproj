@@ -61,7 +61,7 @@
     <Compile Include="Patches\PlaceBloodEvent.cs" />
     <Compile Include="Patches\PlaceDecalEvent.cs" />
     <Compile Include="Patches\PlayerInteractEvent.cs" />
-    <Compile Include="Patches\Scp079TriggerTeslaEvent.cs" />
+    <Compile Include="Patches\Scp079TriggerEvent.cs" />
     <Compile Include="Patches\SCP914UpgradeEvent.cs" />
     <Compile Include="Patches\AntiFlyPatch.cs" />
     <Compile Include="Patches\PlayerBannedEvent.cs" />

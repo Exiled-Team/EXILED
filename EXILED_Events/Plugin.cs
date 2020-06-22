@@ -40,8 +40,7 @@ namespace EXILED
 		public static bool GrenadeThrownPatchDisable;
 		public static bool Scp914UpgradeEventPatchDisable;
 		public static bool PlayerConsoleCommandPatchDisable;
-		//I don't really know how to change this and I'm scared it'll fuck something up if I try
-		public static bool Scp079TriggerTeslaPatchDisable;
+		public static bool Scp079TriggerPatchDisable;
 		public static bool CheckEscapeEventPatchDisable;
 		public static bool CheckRoundEndEventPatchDisable;
 		public static bool DecontaminationEventPatchDisable;

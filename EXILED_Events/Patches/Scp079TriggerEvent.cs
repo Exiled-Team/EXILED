@@ -7,11 +7,11 @@ using Console = GameCore.Console;
 namespace EXILED.Patches
 {
 	[HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
-	public class Scp079TriggerTeslaEvent
+	public class Scp079TriggerEvent
 	{
 		public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
 		{
-			if (EventPlugin.Scp079TriggerTeslaPatchDisable)
+			if (EventPlugin.Scp079TriggerPatchDisable)
 				return true;
 
 			try
@@ -104,7 +104,7 @@ namespace EXILED.Patches
 			}
 			catch (Exception exception)
 			{
-				Log.Error($"Scp079TriggerTeslaEvent error: {exception}");
+				Log.Error($"Scp079TriggerEvent error: {exception}");
 				return true;
 			}
 		}
