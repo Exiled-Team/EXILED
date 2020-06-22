@@ -189,6 +189,7 @@
     <Compile Include="EventArgs\UsingMedicalItemEventArgs.cs" />
 	<Compile Include="EventArgs\FailedEscapePocketDimensionEventArgs.cs" />
 	<Compile Include="EventArgs\InfectPlayerArgs.cs.cs" />
+	<Compile Include="EventArgs\StartInfectPlayerArgs.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Round.cs" />

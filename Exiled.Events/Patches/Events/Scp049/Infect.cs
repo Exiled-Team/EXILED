@@ -99,6 +99,60 @@ namespace Exiled.Events.Patches.Events.Scp049
                 __instance._recallProgressServer = 0f;
                 return false;
             }
+            if(num == 1)
+            {
+                if (!__instance._interactRateLimit.CanExecute(true))
+                {
+                    return false;
+                }
+                if (go == null)
+                {
+                    return false;
+                }
+                Ragdoll component2 = go.GetComponent<Ragdoll>();
+                if (component2 == null)
+                {
+                    GameCore.Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object is not a dead body", MessageImportance.LessImportant, false);
+                    return false;
+                }
+                if (!component2.allowRecall)
+                {
+                    GameCore.Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object can't be recalled", MessageImportance.LessImportant, false);
+                    return false;
+                }
+                ReferenceHub referenceHub2 = null;
+                foreach (GameObject player2 in PlayerManager.players)
+                {
+                    ReferenceHub hub2 = ReferenceHub.GetHub(player2);
+                    if (hub2 != null && hub2.queryProcessor.PlayerId == component2.owner.PlayerId)
+                    {
+                        referenceHub2 = hub2;
+                        break;
+                    }
+                }
+                if (referenceHub2 == null)
+                {
+                    GameCore.Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; target not found", MessageImportance.LessImportant, false);
+                    return false;
+                }
+                if (Vector3.Distance(component2.transform.position, __instance.Hub.PlayerCameraReference.transform.position) >= PlayableScps.Scp049.ReviveDistance * 1.3f)
+                {
+                    return false;
+                }
+
+                var ev = new StartInfectPlayerArgs(API.Features.Player.Get(referenceHub2.gameObject));
+
+                Exiled.Events.Handlers.Scp049.OnStartInfectPlayer(ev);
+
+                if (!ev.IsAllowed)
+                    return false;
+
+                GameCore.Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' accepted", MessageImportance.LessImportant, false);
+                __instance._recallObjectServer = referenceHub2.gameObject;
+                __instance._recallProgressServer = 0f;
+                __instance._recallInProgressServer = true;
+                return false;
+            }
             return true;
         }
     }
