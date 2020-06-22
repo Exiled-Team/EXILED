@@ -56,7 +56,7 @@ namespace EXILED.Patches
 
 				if (s == "DOOR")
 				{
-					List<string> list = ConfigFile.ServerConfig.GetStringList("scp079_door_blacklist") ?? new List<string>();
+					List<string> list = GameCore.ConfigFile.ServerConfig.GetStringList("scp079_door_blacklist") ?? new List<string>();
 					if (AlphaWarheadController.Host.inProgress)
 					{
 						return false;
@@ -99,6 +99,7 @@ namespace EXILED.Patches
 					GameCore.Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant, false);
 					return false;
 				}
+				return false;
 
 			}
 			catch (Exception exception)
