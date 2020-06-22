@@ -531,6 +531,27 @@ namespace EXILED
 			allow = ev.Allow;
 		}
 
+		public static event Scp079TriggerDoor Scp079TriggerDoorEvent;
+		public delegate void Scp079TriggerDoor(ref Scp079TriggerDoorEvent ev);
+
+		public static void InvokeScp079TriggerDoor(GameObject player, ref bool allow, Door door, bool isopen)
+		{
+			if (Scp079TriggerDoorEvent == null)
+				return;
+
+			Scp079TriggerDoorEvent ev = new Scp079TriggerDoorEvent
+			{
+				Player = player.GetPlayer(),
+				Allow = allow,
+				Door = door,
+				isOpen = isopen
+			};
+
+			Scp079TriggerDoorEvent.InvokeSafely(ev);
+
+			allow = ev.Allow;
+		}
+
 		public static event CheckEscape CheckEscapeEvent;
 		public delegate void CheckEscape(ref CheckEscapeEvent ev);
 

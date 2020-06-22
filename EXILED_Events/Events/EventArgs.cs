@@ -407,6 +407,14 @@ namespace EXILED
 		public bool Allow { get; set; }
 	}
 
+	public class Scp079TriggerDoorEvent : EventArgs
+	{
+		public ReferenceHub Player { get; set; }
+		public bool Allow { get; set; }
+		public Door Door { get; set; }
+		public bool isOpen { get; set; }
+	}
+
 	public class DecontaminationEvent : EventArgs
 	{
 		public bool Allow { get; set; }
