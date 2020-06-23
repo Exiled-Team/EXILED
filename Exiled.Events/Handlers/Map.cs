@@ -52,6 +52,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DecontaminatingEventArgs> Decontaminating;
 
         /// <summary>
+        /// Invoked before a grenade explodes.
+        /// </summary>
+        public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
@@ -92,5 +97,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DecontaminatingEventArgs"/> instance.</param>
         public static void OnDecontaminating(DecontaminatingEventArgs ev) => Decontaminating.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a grenade explodes.
+        /// </summary>
+        /// <param name="ev">The <see cref="ExplodingGrenadeEventArgs"/> instance.</param>
+        public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) => ExplodingGrenade.InvokeSafely(ev);
     }
 }

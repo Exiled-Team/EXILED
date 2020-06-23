@@ -157,6 +157,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<EscapingPocketDimensionEventArgs> EscapingPocketDimension;
 
         /// <summary>
+        /// Invoked before escaping the pocket dimension.
+        /// </summary>
+        public static event CustomEventHandler<FailingEscapePocketDimensionEventArgs> FailingEscapePocketDimension;
+
+        /// <summary>
         /// Invoked before reloading a weapon.
         /// </summary>
         public static event CustomEventHandler<ReloadingWeaponEventArgs> ReloadingWeapon;
@@ -398,6 +403,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="EscapingPocketDimensionEventArgs"/> instance.</param>
         public static void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev) => EscapingPocketDimension.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before choosing the incorrect pocket dimension exit.
+        /// </summary>
+        /// <param name="ev">The <see cref="FailingEscapePocketDimensionEventArgs"/> instance.</param>
+        public static void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev) => FailingEscapePocketDimension.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked before reloading a weapon.
