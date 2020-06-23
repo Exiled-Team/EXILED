@@ -21,10 +21,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="StartInfectPlayerArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="Scp049"><inheritdoc cref="SCP049"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartInfectPlayerArgs(Player player, bool isAllowed = true)
+        public StartInfectPlayerArgs(Player player, Player Scp049, bool isAllowed = true)
         {
             Player = player;
+            SCP049 = Scp049;
             IsAllowed = isAllowed;
         }
 
@@ -32,6 +34,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's getting infected.
         /// </summary>
         public Player Player { get; private set; }
+
+        /// <summary>
+        /// Gets the player who is SCP049.
+        /// </summary>
+        public Player SCP049 { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

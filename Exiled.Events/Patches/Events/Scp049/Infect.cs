@@ -14,7 +14,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
-    /// Adds the <see cref="Scp049.InfectPlayer"/> event.
+    /// Adds the <see cref="Handlers.Scp049.InfectPlayer"/> and <see cref="Handlers.Scp049.StartInfectPlayer"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp049), nameof(PlayableScps.Scp049.BodyCmd_ByteAndGameObject))]
     public class Infect
@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     return false;
                 }
 
-                var ev = new InfectPlayerArgs(API.Features.Player.Get(referenceHub.gameObject));
+                var ev = new InfectPlayerArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
                 Exiled.Events.Handlers.Scp049.OnInfectPlayer(ev);
 
@@ -140,7 +140,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                     return false;
                 }
 
-                var ev = new StartInfectPlayerArgs(API.Features.Player.Get(referenceHub2.gameObject));
+                var ev = new StartInfectPlayerArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
                 Exiled.Events.Handlers.Scp049.OnStartInfectPlayer(ev);
 
