@@ -146,7 +146,7 @@
     <Compile Include="EventArgs\GainingExperienceEventArgs.cs" />
     <Compile Include="EventArgs\GainingLevelEventArgs.cs" />
     <Compile Include="EventArgs\GeneratorActivatedEventArgs.cs" />
-    <Compile Include="EventArgs\GrenadeExplodeEventArgs.cs" />
+    <Compile Include="EventArgs\ExplodingGrenadeEventArgs.cs" />
     <Compile Include="EventArgs\HandcuffingEventArgs.cs" />
     <Compile Include="EventArgs\HurtingEventArgs.cs" />
     <Compile Include="EventArgs\InsertingGeneratorTabletEventArgs.cs" />
@@ -188,8 +188,8 @@
     <Compile Include="EventArgs\UsedMedicalItemEventArgs.cs" />
     <Compile Include="EventArgs\UsingMedicalItemEventArgs.cs" />
     <Compile Include="EventArgs\FailingEscapePocketDimensionEventArgs.cs" />
-    <Compile Include="EventArgs\InfectPlayerArgs.cs.cs" />
-    <Compile Include="EventArgs\StartInfectPlayerArgs.cs" />
+    <Compile Include="EventArgs\StartingRecallEventArgs.cs" />
+    <Compile Include="EventArgs\FinishingRecallEventArgs.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Round.cs" />
