@@ -7,22 +7,23 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+    using System.Collections.Generic;
     using Exiled.API.Features;
     using UnityEngine;
 
     /// <summary>
     /// Contains all informations before a grenade explodes.
     /// </summary>
-    public class GrenadeExplodeEventArgs : EventArgs
+    public class ExplodingGrenadeEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GrenadeExplodeEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
         /// <param name="targets"><inheritdoc cref="Targets"/></param>
         /// <param name="isFrag"><inheritdoc cref="IsFrag"/></param>
         /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public GrenadeExplodeEventArgs(Player[] targets, bool isFrag, GameObject grenade, bool isAllowed = true)
+        public ExplodingGrenadeEventArgs(List<Player> targets, bool isFrag, GameObject grenade, bool isAllowed = true)
         {
             Targets = targets;
             IsFrag = isFrag;
@@ -33,7 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the players who will be affected by the grenade (if any).
         /// </summary>
-        public Player[] Targets { get; private set; }
+        public List<Player> Targets { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -12,30 +12,30 @@ namespace Exiled.Events.Handlers
     using static Exiled.Events.Events;
 
     /// <summary>
-    /// SCP-049 related events.
+    /// Scp049 related events.
     /// </summary>
     public class Scp049
     {
         /// <summary>
         /// Invoked before a player is infected.
         /// </summary>
-        public static event CustomEventHandler<InfectPlayerArgs> InfectPlayer;
+        public static event CustomEventHandler<FinishingRecallEventArgs> FinishingRecall;
 
         /// <summary>
-        /// Invoked before SCP049 starts to infect a player.
+        /// Invoked before Scp049 starts to infect a player.
         /// </summary>
-        public static event CustomEventHandler<StartInfectPlayerArgs> StartInfectPlayer;
+        public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
 
         /// <summary>
-        /// Invoked before a player is infected.
+        /// Invoked before a player is recalled.
         /// </summary>
-        /// <param name="ev">The <see cref="InfectPlayerArgs"/> instance.</param>
-        public static void OnInfectPlayer(InfectPlayerArgs ev) => InfectPlayer.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="FinishingRecallEventArgs"/> instance.</param>
+        public static void OnFinishingRecall(FinishingRecallEventArgs ev) => FinishingRecall.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before SCP049 starts to infect a player.
+        /// Invoked before Scp049 starts to recall a player.
         /// </summary>
-        /// <param name="ev">The <see cref="StartInfectPlayerArgs"/> instance.</param>
-        public static void OnStartInfectPlayer(StartInfectPlayerArgs ev) => StartInfectPlayer.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="StartingRecallEventArgs"/> instance.</param>
+        public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
     }
 }

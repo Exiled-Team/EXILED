@@ -54,7 +54,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a grenade explodes.
         /// </summary>
-        public static event CustomEventHandler<GrenadeExplodeEventArgs> GrenadeExplode;
+        public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
 
         /// <summary>
         /// Called before placing a decal.
@@ -101,7 +101,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a grenade explodes.
         /// </summary>
-        /// <param name="ev">The <see cref="GrenadeExplodeEventArgs"/> instance.</param>
-        public static void OnGrenadeExplode(GrenadeExplodeEventArgs ev) => GrenadeExplode.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ExplodingGrenadeEventArgs"/> instance.</param>
+        public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) => ExplodingGrenade.InvokeSafely(ev);
     }
 }

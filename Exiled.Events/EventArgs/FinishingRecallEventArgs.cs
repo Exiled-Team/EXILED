@@ -13,30 +13,30 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player is infected.
     /// </summary>
-    public class InfectPlayerArgs : EventArgs
+    public class FinishingRecallEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InfectPlayerArgs"/> class.
+        /// Initializes a new instance of the <see cref="FinishingRecallEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="Scp049"><inheritdoc cref="SCP049"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InfectPlayerArgs(Player player, Player Scp049, bool isAllowed = true)
+        public FinishingRecallEventArgs(Player target, Player scp049, bool isAllowed = true)
         {
-            Player = player;
-            SCP049 = Scp049;
+            Target = target;
+            Scp049 = scp049;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
         /// Gets the player who's getting infected.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Target { get; private set; }
 
         /// <summary>
         /// Gets the player who is SCP049.
         /// </summary>
-        public Player SCP049 { get; private set; }
+        public Player Scp049 { get; private set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

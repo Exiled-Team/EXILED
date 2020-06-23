@@ -14,15 +14,15 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player dies from walking through the incorrect exit in the pocket dimension.
     /// </summary>
-    public class FailedEscapePocketDimensionEventArgs : EventArgs
+    public class FailingEscapePocketDimensionEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FailedEscapePocketDimensionEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="FailingEscapePocketDimensionEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="teleporter"><inheritdoc cref="Teleporter"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public FailedEscapePocketDimensionEventArgs(Player player, PocketDimensionTeleport teleporter, bool isAllowed = true)
+        public FailingEscapePocketDimensionEventArgs(Player player, PocketDimensionTeleport teleporter, bool isAllowed = true)
         {
             Player = player;
             Teleporter = teleporter;

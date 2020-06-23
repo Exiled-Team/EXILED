@@ -41,9 +41,9 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 if(__instance.type == PocketDimensionTeleport.PDTeleportType.Killer)
                 {
-                    var ev = new FailedEscapePocketDimensionEventArgs(API.Features.Player.Get(other.GetComponent<PlayerMovementSync>().gameObject), __instance);
+                    var ev = new FailingEscapePocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), __instance);
 
-                    Player.OnFailedEscapePocketDimension(ev);
+                    Player.OnFailingEscapePocketDimension(ev);
 
                     if (!ev.IsAllowed)
                         return false;

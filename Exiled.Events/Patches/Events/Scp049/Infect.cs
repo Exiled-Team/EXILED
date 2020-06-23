@@ -78,9 +78,9 @@ namespace Exiled.Events.Patches.Events.Scp049
                     return false;
                 }
 
-                var ev = new InfectPlayerArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+                var ev = new FinishingRecallEventArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
-                Exiled.Events.Handlers.Scp049.OnInfectPlayer(ev);
+                Exiled.Events.Handlers.Scp049.OnFinishingRecall(ev);
 
                 if (!ev.IsAllowed)
                     return false;
@@ -140,9 +140,9 @@ namespace Exiled.Events.Patches.Events.Scp049
                     return false;
                 }
 
-                var ev = new StartInfectPlayerArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+                var ev = new StartingRecallEventArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
-                Exiled.Events.Handlers.Scp049.OnStartInfectPlayer(ev);
+                Exiled.Events.Handlers.Scp049.OnStartingRecall(ev);
 
                 if (!ev.IsAllowed)
                     return false;

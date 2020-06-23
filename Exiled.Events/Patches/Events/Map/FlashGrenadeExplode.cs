@@ -47,9 +47,9 @@ namespace Exiled.Events.Patches.Events.Map
                 }
             }
 
-            GrenadeExplodeEventArgs args = new GrenadeExplodeEventArgs(players.ToArray(), false, __instance.gameObject);
-            Exiled.Events.Handlers.Map.OnGrenadeExplode(args);
-            return args.IsAllowed;
+            ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, false, __instance.gameObject);
+            Exiled.Events.Handlers.Map.OnExplodingGrenade(ev);
+            return ev.IsAllowed;
         }
     }
 }
