@@ -28,6 +28,7 @@ namespace EXILED.Patches
 				List<ItemType> startItems = lite ? new List<ItemType>(0) : __instance.Classes.SafeGet(classid).startItems.ToList();
 				Events.InvokeStartItems(ply, classid, ref startItems);
 				ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
+				ply.GetComponent<FirstPersonController>().ModifyStamina(100f);
 				ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
 				if (lite)
 				{
