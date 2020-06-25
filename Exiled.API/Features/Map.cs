@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Map.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
         /// </summary>
-        public static bool IsLCZDecontaminated => DecontaminationController.Singleton.stopUpdating;
+        public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -100,7 +100,10 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
-        public static void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type) => Server.Broadcast.RpcAddElement(message, duration, type);
+        public static void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        {
+            Server.Broadcast.RpcAddElement(message, duration, type);
+        }
 
         /// <summary>
         /// Clears all players' broadcasts.
@@ -122,13 +125,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the Decontamination process.
         /// </summary>
-        public static void StartDecontamination() => DecontaminationController.Singleton.nextPhase = DecontaminationController.Singleton.DecontaminationPhases.Length - 1;
+        public static void StartDecontamination() => DecontaminationController.Singleton._nextPhase = DecontaminationController.Singleton.DecontaminationPhases.Length - 1;
 
         /// <summary>
         /// Turns off all lights of the facility (except for the entrance zone).
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
     }
 }

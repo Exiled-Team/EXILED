@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Command.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,16 +40,11 @@ namespace Exiled.Events.Handlers
                     switch (ev.Arguments[0].ToLower())
                     {
                         case "plugins":
+                            ev.Sender.RemoteAdminMessage("Reloading plugins...");
                             PluginManager.LoadAll();
-                            ev.Sender.RemoteAdminMessage("Reloading ploogins...");
                             break;
-                        case "pluginconfig":
-                            PluginManager.ReloadPluginConfigs();
-                            ev.Sender.RemoteAdminMessage("All plugin configs reloaded.");
-                            break;
-                        case "exiled":
-                            PluginManager.ReloadPluginConfigs(true);
-                            ev.Sender.RemoteAdminMessage("EXILED Configs reloaded.");
+                        case "configs":
+                            ConfigManager.Reload();
                             break;
                         case "gameplay":
                             ReloadGameConfigs();
@@ -57,7 +52,7 @@ namespace Exiled.Events.Handlers
                             break;
                         case "remoteadmin":
                         case "ra":
-                            PluginManager.ReloadRemoteAdminConfig();
+                            ConfigManager.ReloadRemoteAdmin();
                             ev.Sender.RemoteAdminMessage("Remote admin configs reloaded.");
                             break;
                     }

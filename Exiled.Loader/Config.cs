@@ -7,7 +7,7 @@
 
 namespace Exiled.Loader
 {
-    using System;
+    using System.ComponentModel;
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
 
@@ -17,26 +17,19 @@ namespace Exiled.Loader
     public sealed class Config : IConfig
     {
         /// <inheritdoc/>
+        [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
-
-        /// <inheritdoc/>
-        public string Prefix => "exiled_loader_";
 
         /// <summary>
         /// Gets or sets a value indicating whether outdated plugins should be loaded or not.
         /// </summary>
+        [Description("Indicates whether outdated plugins should be loaded or not")]
         public bool ShouldLoadOutdatedPlugins { get; set; }
 
         /// <summary>
         /// Gets or sets the environment type.
         /// </summary>
-        public EnvironmentType Environment { get; set; }
-
-        /// <inheritdoc/>
-        public void Reload()
-        {
-            ShouldLoadOutdatedPlugins = PluginManager.YamlConfig.GetBool($"{Prefix}should_load_outdated_plugins");
-            Environment = (EnvironmentType)Enum.Parse(typeof(EnvironmentType), PluginManager.YamlConfig.GetString($"{Prefix}environment", "Production"));
-        }
+        [Description("The working environment type")]
+        public EnvironmentType Environment { get; set; } = EnvironmentType.Production;
     }
 }

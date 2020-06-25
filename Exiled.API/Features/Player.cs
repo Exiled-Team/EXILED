@@ -103,6 +103,11 @@ namespace Exiled.API.Features
             set => ReferenceHub.characterClassManager.UserId2 = value;
         }
 
+        /// <summary>
+        /// Gets the player's authentication token.
+        /// </summary>
+        public string AuthenticationToken => ReferenceHub.characterClassManager.AuthToken;
+
         /// <inheritdoc cref="Enums.AuthenticationType"/>
         public AuthenticationType AuthenticationType
         {
@@ -112,6 +117,7 @@ namespace Exiled.API.Features
                     return AuthenticationType.Unknown;
 
                 int index = UserId.LastIndexOf('@');
+
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
@@ -251,6 +257,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the player's command sender instance.
+        /// </summary>
+        public CommandSender CommandSender => ReferenceHub.queryProcessor._sender;
+
+        /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
         /// </summary>
         public NetworkConnection Connection => ReferenceHub.networkIdentity.connectionToClient;
@@ -283,16 +294,6 @@ namespace Exiled.API.Features
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
         /// </summary>
         public Side Side => Team.GetSide();
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
-        /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
-        /// </summary>
-        public bool IsFriendlyFireEnabled
-        {
-            get => ReferenceHub.weaponManager.NetworkfriendlyFire;
-            set => ReferenceHub.weaponManager.NetworkfriendlyFire = value;
-        }
 
         /// <summary>
         /// Gets or sets the player's scale.
@@ -478,9 +479,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the level of SCP-079.
         /// </summary>
-        public int Level
+        public byte Level
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : int.MinValue;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
             set
             {
                 if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
@@ -629,9 +630,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the Player belonging to the ReferenceHub, if any.
+        /// </summary>
+        /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
+        /// <returns>Returns a player or null if not found.</returns>
+        public static Player Get(ReferenceHub referenceHub) => Get(referenceHub.gameObject);
+
+        /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
         /// </summary>
-        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
+        /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
         /// <returns>Returns a player or null if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
@@ -903,7 +911,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="success">Indicates whether the message should be highlighted as success or not.</param>
-        /// <param name="pluginName">The name of the plugin.</param>
+        /// <param name="pluginName">The plugin name.</param>
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
             ReferenceHub.queryProcessor._sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
@@ -915,7 +923,10 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        public void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type) => Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        public void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        {
+            Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        }
 
         /// <summary>
         /// Clears the player's brodcast. Doesn't get logged to the console.

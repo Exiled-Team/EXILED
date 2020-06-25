@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1313
+    using Exiled.Events;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -36,15 +37,15 @@ namespace Exiled.Events.Patches.Events.Map
                 var ev = new PlacingBloodEventArgs(
                     API.Features.Player.Get(__instance.gameObject),
                     pos,
-                    __instance.hub.characterClassManager.Classes.SafeGet(__instance.hub.characterClassManager.CurClass).bloodType,
+                    __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass).bloodType,
                     1);
 
                 pos = ev.Position;
-                __instance.hub.characterClassManager.Classes.SafeGet(__instance.hub.characterClassManager.CurClass).bloodType = ev.Type;
+                __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass).bloodType = ev.Type;
 
                 Map.OnPlacingBlood(ev);
 
-                return ev.IsAllowed && Config.CanSpawnBlood;
+                return ev.IsAllowed && Events.Instance.Config.CanSpawnBlood;
             }
             else
             {

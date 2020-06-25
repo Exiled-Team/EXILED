@@ -16,15 +16,5 @@ namespace Exiled.API.Interfaces
         /// Gets or sets a value indicating whether the plugin is enabled or not.
         /// </summary>
         bool IsEnabled { get; set; }
-
-        /// <summary>
-        /// Gets the plugin config prefix.
-        /// </summary>
-        string Prefix { get; }
-
-        /// <summary>
-        /// Reload the configs.
-        /// </summary>
-        void Reload();
     }
 }

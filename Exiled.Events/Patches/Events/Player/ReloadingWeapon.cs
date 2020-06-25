@@ -30,12 +30,12 @@ namespace Exiled.Events.Patches.Events.Player
             if (!__instance._iawRateLimit.CanExecute(false))
                 return false;
 
-            int itemIndex = __instance.hub.inventory.GetItemIndex();
+            int itemIndex = __instance._hub.inventory.GetItemIndex();
 
-            if (itemIndex < 0 || itemIndex >= __instance.hub.inventory.items.Count ||
-                (__instance.curWeapon < 0 || __instance.hub.inventory.curItem !=
+            if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count ||
+                (__instance.curWeapon < 0 || __instance._hub.inventory.curItem !=
                  __instance.weapons[__instance.curWeapon].inventoryID) ||
-                __instance.hub.inventory.items[itemIndex].durability >=
+                __instance._hub.inventory.items[itemIndex].durability >=
                 (double)__instance.weapons[__instance.curWeapon].maxAmmo)
                 return false;
 

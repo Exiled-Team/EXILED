@@ -9,17 +9,26 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Reflection;
+
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
 
     /// <summary>
     /// Expose how a plugin has to be made.
     /// </summary>
-    /// <typeparam name="T">The config type.</typeparam>
-    public abstract class Plugin<T> : IPlugin<T>
-        where T : IConfig, new()
+    /// <typeparam name="TConfig">The config type.</typeparam>
+    public abstract class Plugin<TConfig> : IPlugin<TConfig>
+        where TConfig : IConfig, new()
     {
         /// <inheritdoc/>
         public virtual string Name { get; } = Assembly.GetCallingAssembly().GetName().Name;
+
+        /// <inheritdoc/>
+        public virtual string Prefix { get; } = Assembly.GetCallingAssembly().GetName().Name.ToSnakeCase();
+
+        /// <inheritdoc/>
+        public virtual PluginPriority Priority { get; }
 
         /// <inheritdoc/>
         public virtual Version Version { get; } = Assembly.GetCallingAssembly().GetName().Version;
@@ -28,7 +37,7 @@ namespace Exiled.API.Features
         public virtual Version RequiredExiledVersion { get; } = new Version(2, 0, 0);
 
         /// <inheritdoc/>
-        public T Config { get; } = new T();
+        public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
         public abstract void OnDisabled();

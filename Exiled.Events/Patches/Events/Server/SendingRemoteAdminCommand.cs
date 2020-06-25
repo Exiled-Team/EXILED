@@ -34,6 +34,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             (string name, string[] arguments) = q.ExtractCommand();
             var ev = new SendingRemoteAdminCommandEventArgs(sender, string.IsNullOrEmpty(sender.SenderId) ? Server.Host : Player.Get(sender.SenderId) ?? Server.Host, name, arguments.ToList());
+
             IdleMode.PreauthStopwatch.Restart();
             IdleMode.SetIdleMode(false);
 
@@ -57,6 +58,7 @@ namespace Exiled.Events.Patches.Events.Server
                 return true;
 
             Handlers.Server.OnSendingRemoteAdminCommand(ev);
+
             if (!string.IsNullOrEmpty(ev.ReplyMessage))
                 sender.RaReply(ev.ReplyMessage, ev.Success, true, string.Empty);
 

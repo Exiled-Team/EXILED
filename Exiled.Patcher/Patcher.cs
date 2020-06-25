@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Patcher.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -20,13 +20,21 @@ namespace Exiled.Patcher
         {
             try
             {
+                string path;
+
                 if (args.Length != 1)
                 {
                     Console.WriteLine("Missing file location argument!");
-                    return;
+                    Console.WriteLine("Provide the location of Assembly-CSharp.dll:");
+
+                    path = Console.ReadLine();
+                }
+                else
+                {
+                    path = args[0];
                 }
 
-                ModuleDefMD module = ModuleDefMD.Load(args[0]);
+                ModuleDefMD module = ModuleDefMD.Load(path);
 
                 if (module == null)
                 {
@@ -40,13 +48,11 @@ namespace Exiled.Patcher
                 module.Assembly.PublicKey = null;
                 module.Assembly.HasPublicKey = false;
 
-                Console.WriteLine("[Exiled] Loaded " + module.Name);
+                Console.WriteLine("[Exiled.Patcher] Loaded " + module.Name);
 
-                Console.WriteLine("[Exiled-Assembly] Resolving References...");
+                Console.WriteLine("[Exiled.Patcher] Resolving References...");
 
-                ModuleContext modCtx = ModuleDef.CreateModuleContext();
-
-                module.Context = modCtx;
+                module.Context = ModuleDef.CreateModuleContext();
 
                 ((AssemblyResolver)module.Context.AssemblyResolver).AddToCache(module);
 
@@ -79,43 +85,35 @@ namespace Exiled.Patcher
 
                 if (call == null)
                 {
-                    Console.WriteLine($"Failed to get the \"{call.Name}\" method! Maybe we don't have permission?");
+                    Console.WriteLine($"Failed to get the \"{call.Name}\" method! Maybe you don't have permission?");
                     return;
                 }
 
                 Console.WriteLine("[Injection] Injected!");
 
-                Console.WriteLine("[Exiled] Injection completed!");
+                Console.WriteLine("[Exiled.Patcher] Injection completed!");
 
-                Console.WriteLine("[Exiled] Patching code...");
+                Console.WriteLine("[Exiled.Patcher] Patching code...");
 
-                TypeDef def = FindType(module.Assembly, "ServerConsoleSender");
+                TypeDef typeDef = FindType(module.Assembly, "ServerConsole");
 
-                MethodDef bctor = new MethodDefUser(".ctor", MethodSig.CreateInstance(module.CorLibTypes.Void), MethodImplAttributes.IL | MethodImplAttributes.Managed, MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
+                MethodDef start = FindMethod(typeDef, "Start");
 
-                if (FindMethod(def, ".ctor") != null)
+                if (start == null)
                 {
-                    bctor = FindMethod(def, ".ctor");
-                    Console.WriteLine("[Exiled] Re-using constructor.");
-                }
-                else
-                {
-                    def.Methods.Add(bctor);
+                    start = new MethodDefUser("Start", MethodSig.CreateInstance(module.CorLibTypes.Void), MethodImplAttributes.IL | MethodImplAttributes.Managed, MethodAttributes.Private | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
+                    typeDef.Methods.Add(start);
                 }
 
-                CilBody body;
-                bctor.Body = body = new CilBody();
-
-                body.Instructions.Add(OpCodes.Call.ToInstruction(call));
-                body.Instructions.Add(OpCodes.Ret.ToInstruction());
+                start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(call));
 
                 module.Write("Assembly-CSharp-Exiled.dll");
 
-                Console.WriteLine("[Exiled] Patching completed successfully!");
+                Console.WriteLine("[Exiled.Patcher] Patching completed successfully!");
             }
             catch (Exception exception)
             {
-                Console.WriteLine($"[Exiled] An error has occurred while patching: {exception}");
+                Console.WriteLine($"[Exiled.Patcher] An error has occurred while patching: {exception}");
             }
 
             Console.Read();

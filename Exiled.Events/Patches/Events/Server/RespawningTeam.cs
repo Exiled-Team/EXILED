@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Loader.PluginManager.ShouldDebugBeShown);
 
-            if (Config.IsRespawnRandom)
+            if (Events.Instance.Config.IsRespawnRandom)
                 deadPlayers.ShuffleList();
 
             int maxRespawn = __instance.nextWaveIsCI ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;

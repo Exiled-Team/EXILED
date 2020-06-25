@@ -29,9 +29,9 @@ namespace Exiled.Events.Patches.Events.Scp914
         public static bool Prefix(PlayerInteract __instance)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) ||
+                (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||
                 Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.knob.position) ||
-                Math.Abs(Scp914Machine.singleton.curKnobCooldown) > 0.001f)
+                Math.Abs(Scp914Machine.singleton._curKnobCooldown) > 0.001f)
                 return false;
 
             var ev = new ChangingKnobSettingEventArgs(API.Features.Player.Get(__instance.gameObject), Scp914Machine.singleton.knobState + 1);
@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             if (ev.IsAllowed)
             {
                 Scp914Machine.singleton.NetworkknobState = ev.KnobSetting;
-                Scp914Machine.singleton.curKnobCooldown = Scp914Machine.singleton.knobCooldown;
+                Scp914Machine.singleton._curKnobCooldown = Scp914Machine.singleton.knobCooldown;
                 __instance.OnInteract();
             }
 

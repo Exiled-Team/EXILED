@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Permissions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -17,13 +17,21 @@ namespace Exiled.Permissions.Extensions
     using Exiled.Permissions.Properties;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
-    using static Exiled.Permissions.Config;
+    using static Exiled.Permissions.Permissions;
 
     /// <inheritdoc cref="Exiled.Permissions.Permissions"/>
     public static class Permissions
     {
-        private static readonly IDeserializer Deserializer = new DeserializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
-        private static readonly ISerializer Serializer = new SerializerBuilder().WithNamingConvention(CamelCaseNamingConvention.Instance).Build();
+        private static readonly ISerializer Serializer = new SerializerBuilder()
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .Build();
+
+        private static readonly IDeserializer Deserializer = new DeserializerBuilder()
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Gets groups list.
@@ -52,28 +60,28 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Create()
         {
-            if (!Directory.Exists(Folder))
+            if (!Directory.Exists(Instance.Config.Folder))
             {
                 Log.Warn("Permissions directory missing, creating.");
-                Directory.CreateDirectory(Folder);
+                Directory.CreateDirectory(Instance.Config.Folder);
             }
 
-            if (!File.Exists(FullPath))
+            if (!File.Exists(Instance.Config.FullPath))
             {
                 Log.Warn("Permissions file missing, creating.");
-                File.WriteAllText(FullPath, Encoding.UTF8.GetString(Resources.permissions));
+                File.WriteAllText(Instance.Config.FullPath, Encoding.UTF8.GetString(Resources.permissions));
             }
         }
 
         /// <summary>
         /// Reloads permissions.
         /// </summary>
-        public static void Reload() => Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(FullPath));
+        public static void Reload() => Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
 
         /// <summary>
         /// Save permissions.
         /// </summary>
-        public static void Save() => File.WriteAllText(FullPath, Serializer.Serialize(Groups));
+        public static void Save() => File.WriteAllText(Instance.Config.FullPath, Serializer.Serialize(Groups));
 
         /// <summary>
         /// Checks a player's permission.

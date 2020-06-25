@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Round.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,6 +8,8 @@
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
+    using Exiled.Loader;
+
     using MEC;
 
     /// <summary>
@@ -18,6 +20,9 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
+            if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
+                ConfigManager.Reload();
+
             API.Features.Map.Rooms.Clear();
             API.Features.Map.Doors.Clear();
             API.Features.Map.Lifts.Clear();
@@ -47,7 +52,7 @@ namespace Exiled.Events.Handlers
             if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
-            if (ev.NewRole == RoleType.Spectator && Config.ShouldDropInventory)
+            if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)
                 ev.Player.Inventory.ServerDropAll();
         }
     }

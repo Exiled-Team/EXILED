@@ -18,9 +18,14 @@ namespace Exiled.Loader
     /// <summary>
     /// Used to handle plugins.
     /// </summary>
-    public class PluginManager
+    public static class PluginManager
     {
         private static string typeOverrides = string.Empty;
+
+        /// <summary>
+        /// Gets the app domain.
+        /// </summary>
+        public static AppDomain AppDomain { get; } = AppDomain.CreateDomain("Exiled");
 
         /// <summary>
         /// Gets the plugins list.
@@ -43,11 +48,6 @@ namespace Exiled.Loader
         public static Version Version { get; } = Assembly.GetExecutingAssembly().GetName().Version;
 
         /// <summary>
-        /// Gets bla.
-        /// </summary>
-        public static YamlConfig YamlConfig { get; } = new YamlConfig(Paths.Config);
-
-        /// <summary>
         /// Gets the configs of the plugin manager.
         /// </summary>
         public static Config Config { get; } = new Config();
@@ -68,41 +68,45 @@ namespace Exiled.Loader
                 Directory.CreateDirectory(Paths.Plugins);
             }
 
-            List<string> plugins = Directory.GetFiles(Paths.Plugins).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
+            List<string> pluginPaths = Directory.GetFiles(Paths.Plugins).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
 
             if (File.Exists($"{Paths.Plugins}/overrides.txt"))
                 typeOverrides = File.ReadAllText($"{Paths.Plugins}/overrides.txt");
 
-            if (plugins.All(plugin => !plugin.Contains("Exiled.Events.dll")))
+            if (pluginPaths.All(plugin => !plugin.Contains("Exiled.Events.dll")))
             {
                 Log.Warn("Exiled.Events.dll is not installed! Plugins that do not handle their own events won't work and may cause errors.");
             }
             else
             {
-                string eventsPlugin = plugins.FirstOrDefault(plugin => plugin.Contains("Exiled.Events.dll"));
+                string eventsPlugin = pluginPaths.FirstOrDefault(plugin => plugin.Contains("Exiled.Events.dll"));
 
                 Load(eventsPlugin);
-                plugins.Remove(eventsPlugin);
+                pluginPaths.Remove(eventsPlugin);
             }
 
-            if (plugins.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
+            if (pluginPaths.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
             {
-                string exiledPermission = plugins.FirstOrDefault(name => name.Contains("Exiled.Permissions.dll"));
+                string exiledPermission = pluginPaths.FirstOrDefault(name => name.Contains("Exiled.Permissions.dll"));
 
                 Load(exiledPermission);
-                plugins.Remove(exiledPermission);
+                pluginPaths.Remove(exiledPermission);
             }
 
-            if (plugins.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
+            if (pluginPaths.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
             {
-                string exiledUpdater = plugins.FirstOrDefault(m => m.Contains("Exiled.Updater.dll"));
+                string exiledUpdater = pluginPaths.FirstOrDefault(path => path.Contains("Exiled.Updater.dll"));
 
                 Load(exiledUpdater);
-                plugins.Remove(exiledUpdater);
+                pluginPaths.Remove(exiledUpdater);
             }
 
-            foreach (string plugin in plugins)
+            foreach (string plugin in pluginPaths)
                 Load(plugin);
+
+            Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
+
+            ConfigManager.Reload();
 
             EnableAll();
         }
@@ -121,26 +125,46 @@ namespace Exiled.Loader
                 {
                     if (type.IsAbstract)
                     {
-                        Log.Debug($"{type.FullName} is abstract, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"\"{type.FullName}\" is abstract, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
                     if (type.FullName != null && typeOverrides.Contains(type.FullName))
                     {
-                        Log.Debug($"Overriding type check for {type.FullName}", ShouldDebugBeShown);
+                        Log.Debug($"Overriding type check for \"{type.FullName}\"", ShouldDebugBeShown);
                     }
                     else if (
                         !type.BaseType.IsGenericType ||
                         type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) ||
                         type.BaseType.GetGenericArguments()?[0]?.GetInterface(nameof(IConfig)) != typeof(IConfig))
                     {
-                        Log.Debug($"{type.FullName} does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"\"{type.FullName}\" does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
                     Log.Info($"Loading type {type.FullName}");
 
-                    IPlugin<IConfig> plugin = (IPlugin<IConfig>)Activator.CreateInstance(type);
+                    IPlugin<IConfig> plugin;
+
+                    if (type.GetConstructor(Type.EmptyTypes) != null)
+                    {
+                        Log.Debug($"Public default constructor found, creating instance...", ShouldDebugBeShown);
+
+                        plugin = (IPlugin<IConfig>)Activator.CreateInstance(type);
+                    }
+                    else
+                    {
+                        Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
+
+                        plugin = (IPlugin<IConfig>)type.GetProperties().Where(property => property.PropertyType == type)?.FirstOrDefault()?.GetValue(null);
+                    }
+
+                    if (plugin == null)
+                    {
+                        Log.Error($"{type.FullName} cannot be loaded! It either doesn't have a public default constructor or a static property of the {type.FullName} type!");
+
+                        continue;
+                    }
 
                     Log.Info($"Instantiated type {type.FullName}");
 
@@ -163,6 +187,8 @@ namespace Exiled.Loader
 
                     Plugins.Add(plugin);
 
+                    ConfigManager.AddTag(plugin.Config);
+
                     Log.Info($"Successfully loaded {plugin.Name} v{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}");
                 }
             }
@@ -183,9 +209,6 @@ namespace Exiled.Loader
             {
                 try
                 {
-                    plugin.Config.IsEnabled = true;
-                    plugin.Config.Reload();
-
                     if (plugin.Config.IsEnabled)
                         plugin.OnEnabled();
                 }
@@ -205,16 +228,17 @@ namespace Exiled.Loader
             {
                 try
                 {
+                    plugin.OnReloaded();
+
                     plugin.Config.IsEnabled = false;
 
-                    plugin.OnReloaded();
                     plugin.OnDisabled();
 
                     Plugins.Remove(plugin);
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
 
@@ -230,42 +254,14 @@ namespace Exiled.Loader
             {
                 try
                 {
-                    plugin.OnDisabled();
-
                     plugin.Config.IsEnabled = false;
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin {plugin.Name} threw an exception while disabling {exception}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
                 }
             }
-        }
-
-        /// <summary>
-        /// Reloads all plugin configs.
-        /// </summary>
-        /// <param name="onlyExiled">Returns whether Exiled configs must be reloaded or not.</param>
-        public static void ReloadPluginConfigs(bool onlyExiled = false)
-        {
-            foreach (IPlugin<IConfig> plugin in Plugins)
-            {
-                if (onlyExiled && plugin.Name != "EXILED")
-                    continue;
-
-                plugin.Config.Reload();
-            }
-        }
-
-        /// <summary>
-        /// Reloads RemoteAdmin configs.
-        /// </summary>
-        public static void ReloadRemoteAdminConfig()
-        {
-            ServerStatic.RolesConfig = new YamlConfig(ServerStatic.RolesConfigPath);
-            ServerStatic.SharedGroupsConfig = (GameCore.ConfigSharing.Paths[4] == null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[4] + "shared_groups.txt");
-            ServerStatic.SharedGroupsMembersConfig = (GameCore.ConfigSharing.Paths[5] == null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
-            ServerStatic.PermissionsHandler = new PermissionsHandler(ref ServerStatic.RolesConfig, ref ServerStatic.SharedGroupsConfig, ref ServerStatic.SharedGroupsMembersConfig);
-            ServerStatic.GetPermissionsHandler().RefreshPermissions();
         }
 
         /// <summary>
@@ -273,16 +269,7 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="path">The path to check from.</param>
         /// <returns>Returns whether the dependency is loaded or not.</returns>
-        public static bool IsDependencyLoaded(string path)
-        {
-            foreach (Assembly assembly in Dependencies)
-            {
-                if (assembly.Location == path)
-                    return true;
-            }
-
-            return false;
-        }
+        public static bool IsDependencyLoaded(string path) => Dependencies.Exists(assembly => assembly.Location == path);
 
         /// <summary>
         /// Loads all dependencies.
@@ -299,17 +286,19 @@ namespace Exiled.Loader
 
                 string[] dependencies = Directory.GetFiles(Paths.Dependencies);
 
-                foreach (string dll in dependencies)
+                foreach (string dependency in dependencies)
                 {
-                    if (!dll.EndsWith(".dll"))
+                    if (!dependency.EndsWith(".dll"))
                         continue;
 
-                    if (IsDependencyLoaded(dll))
+                    if (IsDependencyLoaded(dependency))
                         return;
 
-                    Assembly assembly = Assembly.LoadFrom(dll);
+                    Assembly assembly = Assembly.LoadFrom(dependency);
+
                     Dependencies.Add(assembly);
-                    Log.Info("Loaded dependency " + assembly.FullName);
+
+                    Log.Info($"Loaded dependency {assembly.FullName}");
                 }
 
                 Log.Debug("Complete!", ShouldDebugBeShown);

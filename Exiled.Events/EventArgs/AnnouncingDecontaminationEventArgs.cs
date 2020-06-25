@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AnnouncingDecontaminationEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -31,12 +31,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the announcement id, from 0 to 5.
+        /// Gets or sets the announcement id, from 0 to 6.
         /// </summary>
         public int Id
         {
             get => id;
-            set => id = Mathf.Clamp(value, 0, 5);
+            set => id = Mathf.Clamp(value, 0, 6);
         }
 
         /// <summary>

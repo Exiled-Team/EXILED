@@ -28,10 +28,13 @@ namespace Exiled.Events.Patches.Events.Server
         /// </summary>
         /// <param name="cmd">The command sent to with the Remote Admin console.</param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ref string cmd)
+        public static bool Prefix(string cmd)
         {
             (string name, string[] arguments) = cmd.ExtractCommand();
-            var ev = new SendingRemoteAdminCommandEventArgs(new ServerConsoleSender(), API.Features.Player.Get(Console._ccs.SenderId) ?? API.Features.Server.Host, name, arguments.ToList());
+
+            API.Features.Player player = API.Features.Player.Get(Console._ccs.SenderId);
+
+            var ev = new SendingRemoteAdminCommandEventArgs(player?.CommandSender ?? API.Features.Server.Host.CommandSender, player ?? API.Features.Server.Host, name, arguments.ToList());
 
             Server.OnSendingRemoteAdminCommand(ev);
 

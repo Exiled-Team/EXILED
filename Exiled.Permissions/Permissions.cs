@@ -7,15 +7,26 @@
 
 namespace Exiled.Permissions
 {
+    using System;
     using Exiled.API.Features;
     using Exiled.Permissions.Events;
 
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
     /// </summary>
-    public class Permissions : Plugin<Config>
+    public sealed class Permissions : Plugin<Config>
     {
+        private static readonly Lazy<Permissions> LazyInstance = new Lazy<Permissions>(() => new Permissions());
         private Command command;
+
+        private Permissions()
+        {
+        }
+
+        /// <summary>
+        /// Gets the permissions instance.
+        /// </summary>
+        public static Permissions Instance => LazyInstance.Value;
 
         /// <inheritdoc/>
         public override void OnEnabled()

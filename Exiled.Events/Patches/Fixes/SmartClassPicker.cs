@@ -13,6 +13,9 @@ namespace Exiled.Events.Patches.Fixes
     using Exiled.Loader;
     using GameCore;
     using HarmonyLib;
+
+    using LightContainmentZoneDecontamination;
+
     using Mirror;
     using UnityEngine;
     using Console = GameCore.Console;
@@ -34,9 +37,9 @@ namespace Exiled.Events.Patches.Fixes
         {
             try
             {
-                Dictionary<GameObject, RoleType> roles = new Dictionary<GameObject, RoleType>();
+                Dictionary<ReferenceHub, RoleType> roles = new Dictionary<ReferenceHub, RoleType>();
                 RoleType forcedClass = NonFacilityCompatibility.currentSceneSettings.forcedClass;
-                GameObject[] array = __instance.GetShuffledPlayerList().ToArray();
+                ReferenceHub[] array = __instance.GetShuffledPlayerList().ToArray();
                 RoundSummary.SumInfo_ClassList startClassList = default;
                 bool flag = false;
                 int num = 0;
@@ -110,7 +113,7 @@ namespace Exiled.Events.Patches.Fixes
                         ServerLogs.ServerLogType.GameEvent);
                 }
 
-                Object.FindObjectOfType<PlayerList>().NetworkRoundStartTime = (int)Time.realtimeSinceStartup;
+                DecontaminationController.Singleton.NetworkRoundStartTime = (int)Time.realtimeSinceStartup;
                 startClassList.time = (int)Time.realtimeSinceStartup;
                 startClassList.warhead_kills = -1;
                 Object.FindObjectOfType<RoundSummary>().SetStartClassList(startClassList);
@@ -126,18 +129,18 @@ namespace Exiled.Events.Patches.Fixes
                         }
 
                         str = "Valid Players List Error";
-                        List<GameObject> shuffledPlayerList = __instance.GetShuffledPlayerList();
+                        List<ReferenceHub> shuffledPlayerList = __instance.GetShuffledPlayerList();
                         str = "Copying Balanced Picker List";
                         Dictionary<string, int[]> dictionary =
                             new Dictionary<string, int[]>(ConfigFile.smBalancedPicker);
                         str = "Clearing Balanced Picker List";
                         ConfigFile.smBalancedPicker.Clear();
                         str = "Re-building Balanced Picker List";
-                        foreach (GameObject gameObject in shuffledPlayerList)
+                        foreach (ReferenceHub referenceHub in shuffledPlayerList)
                         {
-                            if (!(gameObject == null))
+                            if (referenceHub != null)
                             {
-                                CharacterClassManager component = gameObject.GetComponent<CharacterClassManager>();
+                                CharacterClassManager component = referenceHub.GetComponent<CharacterClassManager>();
                                 NetworkConnection networkConnection = null;
                                 if (component != null)
                                 {
@@ -147,13 +150,13 @@ namespace Exiled.Events.Patches.Fixes
                                 str = "Getting Player ID";
                                 if (networkConnection == null && component == null)
                                 {
-                                    shuffledPlayerList.Remove(gameObject);
+                                    shuffledPlayerList.Remove(referenceHub);
                                     break;
                                 }
 
                                 if (__instance.SrvRoles.DoNotTrack)
                                 {
-                                    shuffledPlayerList.Remove(gameObject);
+                                    shuffledPlayerList.Remove(referenceHub);
                                 }
                                 else
                                 {
@@ -194,30 +197,30 @@ namespace Exiled.Events.Patches.Fixes
                             shuffledPlayerList.Remove(null);
                         }
 
-                        foreach (GameObject gameObject2 in shuffledPlayerList)
+                        foreach (ReferenceHub referenceHub in shuffledPlayerList)
                         {
-                            if (!(gameObject2 == null))
+                            if (referenceHub != null)
                             {
                                 RoleType rt = RoleType.None;
-                                roles.TryGetValue(gameObject2, out rt);
+                                roles.TryGetValue(referenceHub, out rt);
                                 if (rt != RoleType.None)
                                 {
                                     list.Add(rt);
                                 }
                                 else
                                 {
-                                    shuffledPlayerList.Remove(gameObject2);
+                                    shuffledPlayerList.Remove(referenceHub);
                                 }
                             }
                         }
 
-                        List<GameObject> list2 = new List<GameObject>();
+                        List<ReferenceHub> list2 = new List<ReferenceHub>();
                         str = "Setting Roles";
-                        foreach (GameObject gameObject3 in shuffledPlayerList)
+                        foreach (ReferenceHub referenceHub in shuffledPlayerList)
                         {
-                            if (!(gameObject3 == null))
+                            if (referenceHub != null)
                             {
-                                CharacterClassManager component2 = gameObject3.GetComponent<CharacterClassManager>();
+                                CharacterClassManager component2 = referenceHub.GetComponent<CharacterClassManager>();
                                 NetworkConnection networkConnection2 = null;
                                 if (component2 != null)
                                 {
@@ -227,7 +230,7 @@ namespace Exiled.Events.Patches.Fixes
 
                                 if (networkConnection2 == null && component2 == null)
                                 {
-                                    shuffledPlayerList.Remove(gameObject3);
+                                    shuffledPlayerList.Remove(referenceHub);
                                     break;
                                 }
 
@@ -238,21 +241,21 @@ namespace Exiled.Events.Patches.Fixes
                                 RoleType mostLikelyClass = __instance.GetMostLikelyClass(text2, list);
                                 if (mostLikelyClass != RoleType.None)
                                 {
-                                    if (!roles.ContainsKey(gameObject3))
+                                    if (!roles.ContainsKey(referenceHub))
                                     {
-                                        roles.Add(gameObject3, mostLikelyClass);
+                                        roles.Add(referenceHub, mostLikelyClass);
                                     }
                                     else
                                     {
-                                        roles[gameObject3] = mostLikelyClass;
+                                        roles[referenceHub] = mostLikelyClass;
                                     }
 
                                     ServerLogs.AddLog(
                                         ServerLogs.Modules.ClassChange,
                                         string.Concat(
-                                            gameObject3.GetComponent<NicknameSync>().MyNick,
+                                            referenceHub.GetComponent<NicknameSync>().MyNick,
                                             " (",
-                                            gameObject3.GetComponent<CharacterClassManager>().UserId,
+                                            referenceHub.GetComponent<CharacterClassManager>().UserId,
                                             ") class set to ",
                                             __instance.Classes.SafeGet(mostLikelyClass).fullName.Replace("\n", string.Empty),
                                             " by Smart Class Picker."), ServerLogs.ServerLogType.GameEvent);
@@ -260,7 +263,7 @@ namespace Exiled.Events.Patches.Fixes
                                 }
                                 else
                                 {
-                                    list2.Add(gameObject3);
+                                    list2.Add(referenceHub);
                                 }
                             }
                         }
@@ -268,28 +271,28 @@ namespace Exiled.Events.Patches.Fixes
                         str = "Reversing Additional Classes List";
                         list.Reverse();
                         str = "Setting Unknown Players Classes";
-                        foreach (GameObject gameObject4 in list2)
+                        foreach (ReferenceHub referenceHub in list2)
                         {
-                            if (gameObject4 == null)
+                            if (referenceHub == null)
                                 continue;
                             if (list.Count > 0)
                             {
                                 RoleType roleType2 = list[0];
-                                if (!roles.ContainsKey(gameObject4))
+                                if (!roles.ContainsKey(referenceHub))
                                 {
-                                    roles.Add(gameObject4, roleType2);
+                                    roles.Add(referenceHub, roleType2);
                                 }
                                 else
                                 {
-                                    roles[gameObject4] = roleType2;
+                                    roles[referenceHub] = roleType2;
                                 }
 
                                 ServerLogs.AddLog(
                                     ServerLogs.Modules.ClassChange,
                                     string.Concat(
-                                        gameObject4.GetComponent<NicknameSync>().MyNick,
+                                        referenceHub.GetComponent<NicknameSync>().MyNick,
                                         " (",
-                                        gameObject4.GetComponent<CharacterClassManager>().UserId,
+                                        referenceHub.GetComponent<CharacterClassManager>().UserId,
                                         ") class set to ",
                                         __instance.Classes.SafeGet(roleType2).fullName.Replace("\n", string.Empty),
                                         " by Smart Class Picker."), ServerLogs.ServerLogType.GameEvent);
@@ -297,10 +300,10 @@ namespace Exiled.Events.Patches.Fixes
                             }
                             else
                             {
-                                roles.Add(gameObject4, RoleType.Spectator);
+                                roles.Add(referenceHub, RoleType.Spectator);
                                 ServerLogs.AddLog(
                                     ServerLogs.Modules.ClassChange,
-                                    gameObject4.GetComponent<NicknameSync>().MyNick + " (" + gameObject4.GetComponent<CharacterClassManager>().UserId + ") class set to SPECTATOR by Smart Class Picker.",
+                                    referenceHub.GetComponent<NicknameSync>().MyNick + " (" + referenceHub.GetComponent<CharacterClassManager>().UserId + ") class set to SPECTATOR by Smart Class Picker.",
                                     ServerLogs.ServerLogType.GameEvent);
                             }
                         }
@@ -319,9 +322,9 @@ namespace Exiled.Events.Patches.Fixes
                     }
                 }
 
-                foreach (KeyValuePair<GameObject, RoleType> rtr in roles)
+                foreach (KeyValuePair<ReferenceHub, RoleType> rtr in roles)
                 {
-                    __instance.SetPlayersClass(rtr.Value, rtr.Key);
+                    __instance.SetPlayersClass(rtr.Value, rtr.Key.gameObject);
                 }
 
                 return false;

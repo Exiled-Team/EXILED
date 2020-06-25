@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
         public static bool Prefix(PlayerInteract __instance, GameObject elevator)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                (__instance._hc.CufferId > 0 && !__instance.CanDisarmedInteract) || elevator == null)
+                (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) || elevator == null)
                 return false;
 
             Lift component = elevator.GetComponent<Lift>();

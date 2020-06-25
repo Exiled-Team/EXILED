@@ -7,36 +7,37 @@
 
 namespace Exiled.Permissions
 {
+    using System.ComponentModel;
     using System.IO;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.Loader;
 
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
         /// <summary>
-        /// Gets the plugin folder path.
+        /// Initializes a new instance of the <see cref="Config"/> class.
         /// </summary>
-        public static string Folder { get; private set; }
+        public Config()
+        {
+            Folder = Path.Combine(Paths.Plugins, "Exiled Permissions");
+            FullPath = Path.Combine(Folder, "permissions.yml");
+        }
 
         /// <summary>
-        /// Gets the plugin full path.
+        /// Gets the permissions folder path.
         /// </summary>
-        public static string FullPath { get; private set; }
+        [Description("The permissions folder path")]
+        public string Folder { get; private set; }
+
+        /// <summary>
+        /// Gets the permissions full path.
+        /// </summary>
+        [Description("The permissions full path")]
+        public string FullPath { get; private set; }
 
         /// <inheritdoc/>
-        public bool IsEnabled { get; set; }
-
-        /// <inheritdoc/>
-        public string Prefix => "exiled_permissions_";
-
-        /// <inheritdoc/>
-        public void Reload()
-        {
-            IsEnabled = PluginManager.YamlConfig.GetBool($"{Prefix}enabled", true);
-            Folder = Path.Combine(Paths.Plugins, PluginManager.YamlConfig.GetString($"{Prefix}folder_name", "Exiled Permissions"));
-            FullPath = Path.Combine(Folder, PluginManager.YamlConfig.GetString($"{Prefix}file_name", "permissions.yml"));
-        }
+        [Description("Indicates whether the plugin is enabled or not")]
+        public bool IsEnabled { get; set; } = true;
     }
 }

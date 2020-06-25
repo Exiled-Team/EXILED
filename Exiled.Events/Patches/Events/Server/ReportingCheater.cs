@@ -14,46 +14,36 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int)"/>.
+    /// Patches <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int, string, string)"/>.
     /// Adds the <see cref="Server.ReportingCheater"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.IssueReport))]
     public class ReportingCheater
     {
         /// <summary>
-        /// Prefix of <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int)"/>.
+        /// Prefix of <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int, string, string)"/>.
         /// </summary>
         /// <param name="__instance">The <see cref="CheaterReport"/> instance.</param>
         /// <param name="reporter">The reporter.</param>
-        /// <param name="reporterUserId"><inheritdoc cref="ReportingCheaterEventArgs.ReporterUserId"/></param>
-        /// <param name="reportedUserId"><inheritdoc cref="ReportingCheaterEventArgs.ReportedUserId"/></param>
-        /// <param name="reportedAuth"><inheritdoc cref="ReportingCheaterEventArgs.ReportedAuthentication"/></param>
-        /// <param name="reportedIp"><inheritdoc cref="ReportingCheaterEventArgs.ReportedIPAddress"/></param>
-        /// <param name="reporterAuth"><inheritdoc cref="ReportingCheaterEventArgs.ReporterAuthentication"/></param>
-        /// <param name="reporterIp"><inheritdoc cref="ReportingCheaterEventArgs.ReporterIPAddress"/></param>
+        /// <param name="reporterUserId"><inheritdoc cref="ReportingCheaterEventArgs.Reporter"/></param>
+        /// <param name="reportedUserId"><inheritdoc cref="ReportingCheaterEventArgs.Reported"/></param>
         /// <param name="reason"><inheritdoc cref="ReportingCheaterEventArgs.Reason"/></param>
-        /// <param name="signature">The signature.</param>
-        /// <param name="reporterPublicKey">The reporter public key.</param>
-        /// <param name="reportedId">The reported player id.</param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(
             CheaterReport __instance,
             GameConsoleTransmission reporter,
             string reporterUserId,
             string reportedUserId,
-            string reportedAuth,
-            string reportedIp,
-            string reporterAuth,
-            string reporterIp,
-            ref string reason,
-            byte[] signature,
-            string reporterPublicKey,
-            int reportedId)
+            ref string reason)
         {
             if (reportedUserId == reporterUserId)
                 reporter.SendToClient(__instance.connectionToClient, "You can't report yourself!" + Environment.NewLine, "yellow");
 
-            var ev = new ReportingCheaterEventArgs(reporterUserId, reportedUserId, reporterAuth, reportedAuth, reporterIp, reportedIp, ServerConsole.Port, reason);
+            var ev = new ReportingCheaterEventArgs(
+                API.Features.Player.Get(reporterUserId),
+                API.Features.Player.Get(reportedUserId),
+                ServerConsole.Port,
+                reason);
 
             Server.OnReportingCheater(ev);
 

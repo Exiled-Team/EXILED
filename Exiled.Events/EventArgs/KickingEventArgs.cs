@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="KickingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs
                 if (value == null || target == value)
                     return;
 
-                if (Config.ShouldLogBans && target != null)
+                if (Events.Instance.Config.ShouldLogBans && target != null)
                 {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                     + $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
@@ -70,7 +70,7 @@ namespace Exiled.Events.EventArgs
                 if (value == null || issuer == value)
                     return;
 
-                if (Config.ShouldLogBans && issuer != null)
+                if (Events.Instance.Config.ShouldLogBans && issuer != null)
                 {
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name
                                    + $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
@@ -101,7 +101,7 @@ namespace Exiled.Events.EventArgs
                 if (isAllowed == value)
                     return;
 
-                if (Config.ShouldLogBans)
+                if (Events.Instance.Config.ShouldLogBans)
                     LogBanChange(Assembly.GetCallingAssembly().GetName().Name + $" {(value ? "allowed" : "denied")} banning user with ID: {Target.UserId}");
 
                 isAllowed = value;

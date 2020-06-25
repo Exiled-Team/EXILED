@@ -37,11 +37,11 @@ namespace Exiled.Events.Patches.Events.Map
             if (StopAnnouncing)
                 return true;
 
-            var ev = new AnnouncingDecontaminationEventArgs(__instance.nextPhase, hard);
+            var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
 
-            __instance.nextPhase = ev.Id;
+            __instance._nextPhase = ev.Id;
 
             if (ev.Id == 5)
                 StopAnnouncing = true;

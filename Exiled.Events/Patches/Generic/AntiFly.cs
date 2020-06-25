@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
+    using Exiled.Events;
     using HarmonyLib;
     using UnityEngine;
 
@@ -23,6 +24,6 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="__instance">The <see cref="PlayerMovementSync"/> instance.</param>
         /// <param name="pos">The player's position.</param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerMovementSync __instance, Vector3 pos) => Config.IsAntyFlyEnabled;
+        public static bool Prefix(PlayerMovementSync __instance, Vector3 pos) => Events.Instance.Config.IsAntyFlyEnabled;
     }
 }

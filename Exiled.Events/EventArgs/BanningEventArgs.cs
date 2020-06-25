@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="BanningEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
                 if (duration == value)
                     return;
 
-                if (Config.ShouldLogBans)
+                if (Events.Instance.Config.ShouldLogBans)
                     LogBanChange($" changed Ban duration: {duration} to {value} for ID: {Target.UserId}");
 
                 duration = value;

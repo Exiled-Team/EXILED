@@ -7,6 +7,7 @@
 
 namespace Exiled.Example
 {
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     /// <summary>
@@ -18,11 +19,16 @@ namespace Exiled.Example
         private Handlers.Player player;
 
         /// <inheritdoc/>
+        public override PluginPriority Priority => PluginPriority.Medium;
+
+        /// <inheritdoc/>
         public override void OnEnabled()
         {
             RegisterEvents();
 
-            Log.Warn($"I correctly read the Test config, its value is: {Config.Test}");
+            Log.Warn($"I correctly read the string config, its value is: {Config.String}");
+            Log.Warn($"I correctly read the int config, its value is: {Config.Int}");
+            Log.Warn($"I correctly read the float config, its value is: {Config.Float}");
 
             Log.Info($"{Name} has been enabled!");
         }

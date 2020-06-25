@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ReportingCheaterEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before reporting a cheater.
@@ -17,66 +18,34 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportingCheaterEventArgs"/> class.
         /// </summary>
-        /// <param name="reporterUserId"><inheritdoc cref="ReporterUserId"/></param>
-        /// <param name="reportedUserId"><inheritdoc cref="ReportedUserId"/></param>
-        /// <param name="reportedAuthentication"><inheritdoc cref="ReportedAuthentication"/></param>
-        /// <param name="reporterAuthentication"><inheritdoc cref="ReporterAuthentication"/></param>
-        /// <param name="reporterIPAddress"><inheritdoc cref="ReporterIPAddress"/></param>
-        /// <param name="reportedIPAddress"><inheritdoc cref="ReportedIPAddress"/></param>
+        /// <param name="reporter"><inheritdoc cref="Reporter"/></param>
+        /// <param name="reported"><inheritdoc cref="Reported"/></param>
         /// <param name="serverPort"><inheritdoc cref="ServerPort"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ReportingCheaterEventArgs(
-            string reporterUserId,
-            string reportedUserId,
-            string reporterAuthentication,
-            string reportedAuthentication,
-            string reporterIPAddress,
-            string reportedIPAddress,
+            Player reporter,
+            Player reported,
             int serverPort,
             string reason,
             bool isAllowed = true)
         {
-            ReporterUserId = reporterUserId;
-            ReportedUserId = reportedUserId;
-            ReporterAuthentication = reporterAuthentication;
-            ReportedAuthentication = reportedAuthentication;
-            ReporterIPAddress = reporterIPAddress;
-            ReportedIPAddress = reportedIPAddress;
+            Reporter = reporter;
+            Reported = reported;
             ServerPort = serverPort;
             Reason = reason;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the reporter user id.
+        /// Gets the reporter player.
         /// </summary>
-        public string ReporterUserId { get; private set; }
+        public Player Reporter { get; private set; }
 
         /// <summary>
-        /// Gets the reported user id.
+        /// Gets the reported player.
         /// </summary>
-        public string ReportedUserId { get; private set; }
-
-        /// <summary>
-        /// Gets the reporter authentication.
-        /// </summary>
-        public string ReporterAuthentication { get; private set; }
-
-        /// <summary>
-        /// Gets the reported authentication.
-        /// </summary>
-        public string ReportedAuthentication { get; private set; }
-
-        /// <summary>
-        /// Gets the reporter ip address.
-        /// </summary>
-        public string ReporterIPAddress { get; private set; }
-
-        /// <summary>
-        /// Gets the reported ip address.
-        /// </summary>
-        public string ReportedIPAddress { get; private set; }
+        public Player Reported { get; private set; }
 
         /// <summary>
         /// Gets the server id.

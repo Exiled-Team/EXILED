@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(Generator079 __instance)
         {
-            if (__instance.prevFinish || __instance.localTime > 0.0)
+            if (__instance.prevFinish || __instance._localTime > 0.0)
                 return false;
 
             var ev = new GeneratorActivatedEventArgs(__instance);
@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Map
             __instance.prevFinish = true;
             __instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
             __instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
-            __instance.asource.PlayOneShot(__instance.unlockSound);
+            __instance._asource.PlayOneShot(__instance.unlockSound);
 
             return false;
         }

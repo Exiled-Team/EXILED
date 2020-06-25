@@ -98,14 +98,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool FriendlyFire
         {
-            get => ServerConsole.FriendlyFire;
-            set
-            {
-                ServerConsole.FriendlyFire = value;
-
-                foreach (ReferenceHub player in ReferenceHub.Hubs.Values)
-                    player.weaponManager.NetworkfriendlyFire = value;
-            }
+            get => FriendlyFireConfig.RoundEnabled;
+            set => FriendlyFireConfig.RoundEnabled = value;
         }
     }
 }

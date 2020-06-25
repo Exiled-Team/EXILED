@@ -8,18 +8,30 @@
 namespace Exiled.API.Interfaces
 {
     using System;
+    using Exiled.API.Enums;
 
     /// <summary>
     /// Defines the contract for basic plugin features.
     /// </summary>
-    /// <typeparam name="T">The config type.</typeparam>
-    public interface IPlugin<out T>
-        where T : IConfig
+    /// <typeparam name="TConfig">The config type.</typeparam>
+    public interface IPlugin<out TConfig>
+        where TConfig : IConfig
     {
         /// <summary>
         /// Gets the plugin name.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the plugin prefix.
+        /// </summary>
+        string Prefix { get; }
+
+        /// <summary>
+        /// Gets the plugin priority.
+        /// Higher values mean higher priority and vice versa.
+        /// </summary>
+        PluginPriority Priority { get; }
 
         /// <summary>
         /// Gets the plugin version.
@@ -34,7 +46,7 @@ namespace Exiled.API.Interfaces
         /// <summary>
         /// Gets the plugin config.
         /// </summary>
-        T Config { get; }
+        TConfig Config { get; }
 
         /// <summary>
         /// Fired after enabling the plugin.

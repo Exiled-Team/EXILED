@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SendingConsoleCommandEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -25,8 +25,13 @@ namespace Exiled.Events.EventArgs
         /// <param name="isEncrypted"><inheritdoc cref="IsEncrypted"/></param>
         /// <param name="returnMessage"><inheritdoc cref="ReturnMessage"/></param>
         /// <param name="color"><inheritdoc cref="Color"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SendingConsoleCommandEventArgs(Player player, string name, List<string> arguments, bool isEncrypted, string returnMessage, string color, bool isAllowed = true)
+        public SendingConsoleCommandEventArgs(
+            Player player,
+            string name,
+            List<string> arguments,
+            bool isEncrypted,
+            string returnMessage = "Command not found.",
+            string color = "red")
         {
             Player = player;
             Name = name;
@@ -34,7 +39,6 @@ namespace Exiled.Events.EventArgs
             IsEncrypted = isEncrypted;
             ReturnMessage = returnMessage;
             Color = color;
-            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -66,10 +70,5 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the color of the return message.
         /// </summary>
         public string Color { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
-        /// </summary>
-        public bool IsAllowed { get; set; }
     }
 }

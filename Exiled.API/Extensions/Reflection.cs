@@ -9,6 +9,7 @@ namespace Exiled.API.Extensions
 {
     using System;
     using System.Reflection;
+    using LiteNetLib.Utils;
 
     /// <summary>
     /// A set of extensions for <see cref="Type"/>.
@@ -26,6 +27,22 @@ namespace Exiled.API.Extensions
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public;
 
             type.GetMethod(methodName, flags)?.Invoke(null, param);
+        }
+
+        /// <summary>
+        /// Copy all properties from the source class to the target one.
+        /// </summary>
+        /// <param name="target">The target object.</param>
+        /// <param name="source">The source object to copy properties from.</param>
+        public static void CopyProperties(this object target, object source)
+        {
+            Type type = target.GetType();
+
+            if (type != source.GetType())
+                throw new InvalidTypeException("Target and source type mismatch!");
+
+            foreach (var sourceProperty in type.GetProperties())
+                type.GetProperty(sourceProperty.Name)?.SetValue(target, sourceProperty.GetValue(source, null), null);
         }
     }
 }

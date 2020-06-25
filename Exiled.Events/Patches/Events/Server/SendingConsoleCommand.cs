@@ -29,10 +29,10 @@ namespace Exiled.Events.Patches.Events.Server
         /// <param name="query">The query to be executed.</param>
         /// <param name="encrypted"><inheritdoc cref="SendingConsoleCommandEventArgs.IsEncrypted"/></param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, ref bool encrypted)
+        public static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, bool encrypted)
         {
             (string name, string[] arguments) = query.ExtractCommand();
-            var ev = new SendingConsoleCommandEventArgs(API.Features.Player.Get(__instance.gameObject), name, arguments.ToList(), encrypted, string.Empty, "white");
+            var ev = new SendingConsoleCommandEventArgs(API.Features.Player.Get(__instance.gameObject), name, arguments.ToList(), encrypted);
 
             Server.OnSendingConsoleCommand(ev);
 

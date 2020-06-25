@@ -112,7 +112,7 @@ namespace Exiled.Updater
         {
             try
             {
-                string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.AllowTestingReleases ? string.Empty : "latest/");
+                string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.ShouldDownloadTestingReleases ? string.Empty : "latest/");
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{url}");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();

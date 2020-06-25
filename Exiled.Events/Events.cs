@@ -16,15 +16,20 @@ namespace Exiled.Events
     /// <summary>
     /// Patch and unpatch events into the game.
     /// </summary>
-    public class Events : Plugin<Config>
+    public sealed class Events : Plugin<Config>
     {
+        private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
+        private Command command;
+        private Handlers.Round round;
+
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
         /// </summary>
         private int patchesCounter;
 
-        private Command command;
-        private Handlers.Round round;
+        private Events()
+        {
+        }
 
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate.
@@ -37,6 +42,11 @@ namespace Exiled.Events
         /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
         /// </summary>
         public delegate void CustomEventHandler();
+
+        /// <summary>
+        /// Gets the plugin instance.
+        /// </summary>
+        public static Events Instance => LazyInstance.Value;
 
         /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
@@ -59,7 +69,7 @@ namespace Exiled.Events
 
             Patch();
 
-            if (Exiled.Events.Config.IsNameTrackingEnabled)
+            if (Config.IsNameTrackingEnabled)
                 API.Features.Server.Name = $"{API.Features.Server.Name} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
         }
 
@@ -93,9 +103,10 @@ namespace Exiled.Events
         {
             try
             {
-                Harmony = new Harmony($"exiled.patches.{++patchesCounter}");
+                Harmony = new Harmony($"exiled.events.{++patchesCounter}");
                 Harmony.PatchAll();
 
+                Log.Debug("Events patched successfully!", PluginManager.ShouldDebugBeShown);
 #if DEBUG
 				bool disabledStatus = Harmony.DEBUG;
 
@@ -107,8 +118,6 @@ namespace Exiled.Events
             {
                 Log.Error($"Patching failed! {exception}");
             }
-
-            Log.Debug("Events patched successfully!", PluginManager.ShouldDebugBeShown);
         }
 
         /// <summary>

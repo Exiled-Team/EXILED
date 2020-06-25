@@ -32,18 +32,18 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                ++__instance.frame;
-                if (__instance.frame != __instance.syncFrequency)
+                ++__instance._frame;
+                if (__instance._frame != __instance._syncFrequency)
                     return false;
-                __instance.frame = 0;
+                __instance._frame = 0;
                 List<GameObject> players = PlayerManager.players;
-                __instance.usedData = players.Count;
-                if (__instance.receivedData == null || __instance.receivedData.Length < __instance.usedData)
-                    __instance.receivedData = new PlayerPositionData[__instance.usedData * 2];
-                for (int index = 0; index < __instance.usedData; ++index)
-                    __instance.receivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
-                if (__instance.transmitBuffer == null || __instance.transmitBuffer.Length < __instance.usedData)
-                    __instance.transmitBuffer = new PlayerPositionData[__instance.usedData * 2];
+                __instance._usedData = players.Count;
+                if (__instance._receivedData == null || __instance._receivedData.Length < __instance._usedData)
+                    __instance._receivedData = new PlayerPositionData[__instance._usedData * 2];
+                for (int index = 0; index < __instance._usedData; ++index)
+                    __instance._receivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
+                if (__instance._transmitBuffer == null || __instance._transmitBuffer.Length < __instance._usedData)
+                    __instance._transmitBuffer = new PlayerPositionData[__instance._usedData * 2];
 
                 foreach (GameObject gameObject in players)
                 {
@@ -52,28 +52,27 @@ namespace Exiled.Events.Patches.Generic
                     if (player == null)
                         continue;
 
-                    Array.Copy(__instance.receivedData, __instance.transmitBuffer, __instance.usedData);
+                    Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
                     if (player.Role.Is939())
                     {
-                        for (int index = 0; index < __instance.usedData; ++index)
+                        for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            if (__instance.transmitBuffer[index].position.y < 800.0)
+                            if (__instance._transmitBuffer[index].position.y < 800.0)
                             {
                                 ReferenceHub hub2 = ReferenceHub.GetHub(players[index]);
                                 if (player.IsInvisible || (hub2.characterClassManager.CurRole.team != Team.SCP && hub2.characterClassManager.CurRole.team != Team.RIP && !players[index].GetComponent<Scp939_VisionController>().CanSee(player.ReferenceHub.characterClassManager.Scp939)))
-                                    __instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[index].playerID);
+                                    __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
                             }
                         }
                     }
                     else if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator)
                     {
-                        for (int index = 0; index < __instance.usedData; ++index)
+                        for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            ReferenceHub hub2;
-                            if (ReferenceHub.TryGetHub(__instance.transmitBuffer[index].playerID, out hub2))
+                            if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
                             {
                                 if (player.IsInvisible || (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP)))
-                                    __instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[index].playerID);
+                                    __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
 
                                 if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
                                 {
@@ -81,31 +80,31 @@ namespace Exiled.Events.Patches.Generic
                                     if (player.ReferenceHub.scpsController.CurrentScp is Scp096 curScp && curScp != null)
                                         flag = curScp.HasTarget(hub2);
                                     if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator && !flag)
-                                        __instance.transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[index].playerID);
+                                        __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
                                 }
                             }
                         }
                     }
 
-                    for (int i = 0; i < __instance.usedData; i++)
+                    for (int i = 0; i < __instance._usedData; i++)
                     {
-                        if (player.TargetGhosts.Contains(__instance.transmitBuffer[i].playerID))
-                            __instance.transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance.transmitBuffer[i].playerID);
+                        if (player.TargetGhosts.Contains(__instance._transmitBuffer[i].playerID))
+                            __instance._transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[i].playerID);
                     }
 
                     NetworkConnection networkConnection = player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer ? NetworkServer.localConnection : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
-                    if (__instance.usedData <= 20)
+                    if (__instance._usedData <= 20)
                     {
-                        networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance.transmitBuffer, (byte)__instance.usedData, 0), 1);
+                        networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
                     }
                     else
                     {
                         byte part;
-                        for (part = 0; part < __instance.usedData / 20; ++part)
-                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance.transmitBuffer, 20, part), 1);
-                        byte count = (byte)(__instance.usedData % (part * 20));
+                        for (part = 0; part < __instance._usedData / 20; ++part)
+                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, 20, part), 1);
+                        byte count = (byte)(__instance._usedData % (part * 20));
                         if (count > 0)
-                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance.transmitBuffer, count, part), 1);
+                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, count, part), 1);
                     }
                 }
 

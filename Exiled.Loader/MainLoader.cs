@@ -9,6 +9,7 @@ namespace Exiled.Loader
 {
     using System;
     using System.IO;
+    using System.Reflection;
     using Exiled.API.Features;
     using MEC;
 
@@ -18,9 +19,10 @@ namespace Exiled.Loader
     public class MainLoader
     {
         /// <summary>
-        /// Called by the assembly's Loader class when the server starts.
+        /// Called by Exiled.Bootstrap class when the server starts.
         /// </summary>
-        public static void EntryPointForLoader()
+        /// <param name="dependencies">The dependencies loaded by the bootstrapper.</param>
+        public static void Run(Assembly[] dependencies = null)
         {
             Log.Info($"Initializing Exiled at {Environment.CurrentDirectory}");
 
@@ -43,7 +45,8 @@ namespace Exiled.Loader
 
             ServerConsole.AddLog($"Exiled - Version {PluginManager.Version.Major}.{PluginManager.Version.Minor}.{PluginManager.Version.Build}", ConsoleColor.DarkRed);
 
-            PluginManager.Config.Reload();
+            if (dependencies != null && dependencies.Length > 0)
+                PluginManager.Dependencies.AddRange(dependencies);
 
             Timing.CallDelayed(0.25f, () =>
             {
