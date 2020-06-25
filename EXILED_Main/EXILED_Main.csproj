@@ -28,12 +28,12 @@
     <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>../bin/EXILED/</OutputPath>
+    <OutputPath>..\EXILED\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DocumentationFile>..\bin\EXILED\EXILED.xml</DocumentationFile>
+    <DocumentationFile>..\EXILED\EXILED.xml</DocumentationFile>
     <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <ItemGroup>
