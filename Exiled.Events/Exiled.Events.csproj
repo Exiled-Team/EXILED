@@ -266,6 +266,7 @@
     <Compile Include="Patches\Events\Warhead\Stopping.cs" />
     <Compile Include="Patches\Fixes\CharacterClassManagerLoadSpam.cs" />
     <Compile Include="Patches\Fixes\DoubleSpawn.cs" />
+    <Compile Include="Patches\Fixes\IndividualFriendlyFireFix.cs" />
     <Compile Include="Patches\Generic\AntiFly.cs" />
     <Compile Include="Patches\Fixes\MuteHandlerClear.cs" />
     <Compile Include="Patches\Events\Player\SyncingData.cs" />
@@ -273,7 +274,6 @@
     <Compile Include="Patches\Generic\GhostMode.cs" />
     <Compile Include="Patches\Generic\Scp173BeingLooked.cs" />
     <Compile Include="Patches\Generic\SetRandomRoles.cs" />
-    <Compile Include="Patches\Fixes\SmartClassPicker.cs" />
     <Compile Include="Patches\Events\Player\TriggeringTesla.cs" />
     <Compile Include="Patches\Events\Player\UsingMedicalItem.cs" />
     <Compile Include="Patches\Events\Server\WaitingForPlayers.cs" />

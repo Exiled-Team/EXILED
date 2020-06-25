@@ -14,14 +14,14 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int)"/>.
+    /// Patches <see cref="CheaterReport.IssueReport"/>.
     /// Adds the <see cref="Server.ReportingCheater"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.IssueReport))]
     public class ReportingCheater
     {
         /// <summary>
-        /// Prefix of <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int)"/>.
+        /// Prefix of <see cref="CheaterReport.IssueReport"/>.
         /// </summary>
         /// <param name="__instance">The <see cref="CheaterReport"/> instance.</param>
         /// <param name="reporter">The reporter.</param>
@@ -35,6 +35,8 @@ namespace Exiled.Events.Patches.Events.Server
         /// <param name="signature">The signature.</param>
         /// <param name="reporterPublicKey">The reporter public key.</param>
         /// <param name="reportedId">The reported player id.</param>
+        /// <param name="reporterNickname">The name of the reporting player.</param>
+        /// <param name="reportedNickname">The name of the reported player.</param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(
             CheaterReport __instance,
@@ -46,9 +48,11 @@ namespace Exiled.Events.Patches.Events.Server
             string reporterAuth,
             string reporterIp,
             ref string reason,
-            byte[] signature,
+            ref byte[] signature,
             string reporterPublicKey,
-            int reportedId)
+            int reportedId,
+            string reporterNickname,
+            string reportedNickname)
         {
             if (reportedUserId == reporterUserId)
                 reporter.SendToClient(__instance.connectionToClient, "You can't report yourself!" + Environment.NewLine, "yellow");

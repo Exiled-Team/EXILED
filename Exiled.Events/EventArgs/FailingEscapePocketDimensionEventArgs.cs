@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="EscapingPocketDimensionEventArgs.cs" company="Exiled Team">
+// <copyright file="FailingEscapePocketDimensionEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -9,7 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System;
     using Exiled.API.Features;
-    using UnityEngine;
 
     /// <summary>
     /// Contains all informations before a player dies from walking through the incorrect exit in the pocket dimension.

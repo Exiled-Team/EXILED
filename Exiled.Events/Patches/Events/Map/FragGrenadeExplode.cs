@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using Exiled.Events.EventArgs;
     using GameCore;
@@ -16,7 +17,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="FragGrenade.ServersideExplosion()"/>.
-    /// Adds the <see cref="Handlers.Map.GrenadeExplode"/> event.
+    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FragGrenade), nameof(FragGrenade.ServersideExplosion))]
     public class FragGrenadeExplode
@@ -35,14 +36,12 @@ namespace Exiled.Events.Patches.Events.Map
                 if (ServerConsole.FriendlyFire || !(gameObject != __instance.thrower.gameObject) || gameObject.GetComponent<WeaponManager>().GetShootPermission(__instance.throwerTeam, false))
                 {
                     PlayerStats component2 = gameObject.GetComponent<PlayerStats>();
-                    if (!(component2 == null) && component2.ccm.InWorld)
-                    {
-                        float num2 = __instance.damageOverDistance.Evaluate(Vector3.Distance(position, component2.transform.position)) * (component2.ccm.IsHuman() ? ConfigFile.ServerConfig.GetFloat("human_grenade_multiplier", 0.7f) : ConfigFile.ServerConfig.GetFloat("scp_grenade_multiplier", 1f));
-                        if (num2 > __instance.absoluteDamageFalloff)
-                        {
-                            players.Add(Exiled.API.Features.Player.Get(gameObject));
-                        }
-                    }
+                    if (component2 == null || !component2.ccm.InWorld)
+                        continue;
+
+                    float num2 = __instance.damageOverDistance.Evaluate(Vector3.Distance(position, component2.transform.position)) * (component2.ccm.IsHuman() ? ConfigFile.ServerConfig.GetFloat("human_grenade_multiplier", 0.7f) : ConfigFile.ServerConfig.GetFloat("scp_grenade_multiplier", 1f));
+                    if (num2 > __instance.absoluteDamageFalloff)
+                        players.Add(Exiled.API.Features.Player.Get(gameObject));
                 }
             }
 

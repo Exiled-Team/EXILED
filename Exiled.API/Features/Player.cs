@@ -288,11 +288,7 @@ namespace Exiled.API.Features
         /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
         /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
         /// </summary>
-        public bool IsFriendlyFireEnabled
-        {
-            get => ReferenceHub.weaponManager.NetworkfriendlyFire;
-            set => ReferenceHub.weaponManager.NetworkfriendlyFire = value;
-        }
+        public bool IsFriendlyFireEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the player's scale.
@@ -478,9 +474,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the level of SCP-079.
         /// </summary>
-        public int Level
+        public byte Level
         {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : int.MinValue;
+            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
             set
             {
                 if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)

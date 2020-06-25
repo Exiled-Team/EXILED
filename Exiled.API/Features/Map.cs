@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
         /// </summary>
-        public static bool IsLCZDecontaminated => DecontaminationController.Singleton.stopUpdating;
+        public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -122,13 +122,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the Decontamination process.
         /// </summary>
-        public static void StartDecontamination() => DecontaminationController.Singleton.nextPhase = DecontaminationController.Singleton.DecontaminationPhases.Length - 1;
+        public static void StartDecontamination() => DecontaminationController.Singleton._nextPhase = DecontaminationController.Singleton.DecontaminationPhases.Length - 1;
 
         /// <summary>
         /// Turns off all lights of the facility (except for the entrance zone).
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
     }
 }

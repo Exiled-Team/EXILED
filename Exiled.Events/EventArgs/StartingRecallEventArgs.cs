@@ -1,16 +1,14 @@
 // -----------------------------------------------------------------------
-// <copyright file="StartInfectPlayerArgs.cs" company="Exiled Team">
+// <copyright file="StartingRecallEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-
 namespace Exiled.Events.EventArgs
 {
     using System;
     using Exiled.API.Features;
-    using UnityEngine;
 
     /// <summary>
     /// Contains all informations before a player is infected.
@@ -23,7 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartingRecallEventArgs(Player player, Player scp049, bool isAllowed = true)
+        public StartingRecallEventArgs(Player target, Player scp049, bool isAllowed = true)
         {
             Target = target;
             Scp049 = scp049;

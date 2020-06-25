@@ -32,8 +32,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> Recipes
         {
-            get => Scp914Machine.singleton.recipesDict;
-            set => Scp914Machine.singleton.recipesDict = value;
+            get => Scp914Machine.singleton._recipesDict;
+            set => Scp914Machine.singleton._recipesDict = value;
         }
 
         /// <summary>
@@ -41,8 +41,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static ConfigEntry<Scp914Mode> ConfigMode
         {
-            get => Scp914Machine.singleton.configMode;
-            set => Scp914Machine.singleton.configMode = value;
+            get => Scp914Machine.singleton._configMode;
+            set => Scp914Machine.singleton._configMode = value;
         }
 
         /// <summary>

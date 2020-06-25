@@ -7,17 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using CustomPlayerEffects;
     using Exiled.Events.EventArgs;
-    using GameCore;
     using Grenades;
     using HarmonyLib;
     using UnityEngine;
 
     /// <summary>
     /// Patches <see cref="FlashGrenade.ServersideExplosion()"/>.
-    /// Adds the <see cref="Handlers.Map.GrenadeExplode"/> event.
+    /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashGrenade), nameof(FlashGrenade.ServersideExplosion))]
     public class FlashGrenadeExplode
@@ -36,14 +36,14 @@ namespace Exiled.Events.Patches.Events.Map
                 ReferenceHub hub = ReferenceHub.GetHub(gameObject);
                 Flashed effect = hub.playerEffectsController.GetEffect<Flashed>();
                 Deafened effect2 = hub.playerEffectsController.GetEffect<Deafened>();
-                if (effect != null && __instance.thrower != null && (__instance.friendlyFlash || effect.Flashable(ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance.viewLayerMask)))
+                if (effect == null || __instance.thrower == null || (!__instance.Network_friendlyFlash && !effect.Flashable(ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance.viewLayerMask)))
+                    continue;
+
+                float num = __instance.powerOverDistance.Evaluate(Vector3.Distance(gameObject.transform.position, position) / ((position.y > 900f) ? __instance.distanceMultiplierSurface : __instance.distanceMultiplierFacility)) * __instance.powerOverDot.Evaluate(Vector3.Dot(hub.PlayerCameraReference.forward, (hub.PlayerCameraReference.position - position).normalized));
+                byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
+                if (b >= effect.Intensity && num > 0f)
                 {
-                    float num = __instance.powerOverDistance.Evaluate(Vector3.Distance(gameObject.transform.position, position) / ((position.y > 900f) ? __instance.distanceMultiplierSurface : __instance.distanceMultiplierFacility)) * __instance.powerOverDot.Evaluate(Vector3.Dot(hub.PlayerCameraReference.forward, (hub.PlayerCameraReference.position - position).normalized));
-                    byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
-                    if (b >= effect.Intensity && num > 0f)
-                    {
-                        players.Add(Exiled.API.Features.Player.Get(gameObject));
-                    }
+                    players.Add(Exiled.API.Features.Player.Get(gameObject));
                 }
             }
 

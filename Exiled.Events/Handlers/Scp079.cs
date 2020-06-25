@@ -30,8 +30,8 @@ namespace Exiled.Events.Handlers
         /// Invoked before triggering a tesla with SCP-079.
         /// </summary>
         public static event CustomEventHandler<InteractingTeslaEventArgs> InteractingTesla;
-		
-		/// <summary>
+
+        /// <summary>
         /// Invoked before triggering a door with SCP-079.
         /// </summary>
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
@@ -53,8 +53,8 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingTeslaEventArgs"/> instance.</param>
         public static void OnInteractingTesla(InteractingTeslaEventArgs ev) => InteractingTesla.InvokeSafely(ev);
-		
-		/// <summary>
+
+        /// <summary>
         /// Invoked before interacting with a door with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
