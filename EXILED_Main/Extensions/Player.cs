@@ -732,8 +732,8 @@ namespace EXILED.Extensions
 		/// Get a list of all items in a player's inventory. Can be empty.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <returns>List<SyncItemInfo></returns>
-		public static List<Inventory.SyncItemInfo> GetAllItems(this ReferenceHub player) => player.inventory.items.ToList();
+		/// <returns>List<SyncItemInfo><returns/>
+        public static List<Inventory.SyncItemInfo> GetAllItems(this ReferenceHub player) => player.inventory.items.ToList();
 
 		/// <summary>
 		/// Sets the player's current item in their hand.
@@ -1002,20 +1002,21 @@ namespace EXILED.Extensions
 			player.characterClassManager.TargetConsolePrint(player.GetConnection(), message, color);
 		}
 
-		/// <summary>
-		/// Sets the players Friendly Fire value.
-		/// Note: This only allows them to DEAL FF damage, not TAKE FF damage.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <param name="value"></param>
-		public static void SetFriendlyFire(this ReferenceHub player, bool value) =>
-			player.weaponManager.NetworkfriendlyFire = value;
-		
-		/// <summary>
-		/// Gets the badge name of a <see cref="ReferenceHub"/>.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <returns></returns>
-        	public static string GetBadgeName(this ReferenceHub rh) => rh.serverRoles.Group.BadgeText;
+        /// <summary>
+        /// Sets the players Friendly Fire value.
+        /// Note: This only allows them to DEAL FF damage, not TAKE FF damage.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="value"></param>
+        [Obsolete("Removed in base-game.", true)]
+        public static void SetFriendlyFire(this ReferenceHub player, bool value)
+        { }
+
+        /// <summary>
+        /// Gets the badge name of a <see cref="ReferenceHub"/>.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
+        public static string GetBadgeName(this ReferenceHub player) => player.serverRoles.Group.BadgeText;
 	}
 }

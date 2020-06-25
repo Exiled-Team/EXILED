@@ -60,7 +60,7 @@ namespace EXILED.Patches
 						}
 						else
 						{
-							GameObject randomPosition = CharacterClassManager.SpawnpointManager.GetRandomPosition(__instance.CurClass);
+							GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(__instance.CurClass);
 							Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
 							float rotY = 0f;
 							if (randomPosition != null)

@@ -39,8 +39,9 @@ namespace EXILED.Patches
 			RoundSummary roundSummary = instance;
 			while (roundSummary != null)
 			{
-				while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary.keepRoundOnOne && PlayerManager.players.Count < 2))
+				while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
 					yield return 0.0f;
+
 				yield return 0.0f;
 				RoundSummary.SumInfo_ClassList newList = new RoundSummary.SumInfo_ClassList();
 				foreach (GameObject player in PlayerManager.players)
@@ -104,18 +105,18 @@ namespace EXILED.Patches
 				}
 
 				if (forceEnd)
-					roundSummary.roundEnded = true;
+					roundSummary._roundEnded = true;
 
 				if (!allow)
 					continue;
 
 				if (newList.class_ds == 0 && num1 == 0)
 				{
-					roundSummary.roundEnded = true;
+					roundSummary._roundEnded = true;
 				}
 				else if(num1 == 0 && Cassie.mtfRespawn.MtfRespawnTickets == 0)
 				{
-					roundSummary.roundEnded = true;
+					roundSummary._roundEnded = true;
 				}
 				else
 				{
@@ -127,9 +128,9 @@ namespace EXILED.Patches
 					if (num3 > 0)
 						++num6;
 					if (num6 <= 1)
-						roundSummary.roundEnded = true;
+						roundSummary._roundEnded = true;
 				}
-				if (roundSummary.roundEnded)
+				if (roundSummary._roundEnded)
 				{
 					RoundSummary.LeadingTeam leadingTeam = RoundSummary.LeadingTeam.Draw;
 					if (num1 > 0)

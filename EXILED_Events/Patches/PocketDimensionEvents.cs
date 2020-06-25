@@ -36,7 +36,7 @@ namespace EXILED.Patches
 					return false;
 
 				__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
-				if (Scp106PlayerScript.blastDoor.isClosed)
+				if (Scp106PlayerScript._blastDoor.isClosed)
 				{
 					__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
 					__instance.GetComponent<PlayerStats>().HurtPlayer(

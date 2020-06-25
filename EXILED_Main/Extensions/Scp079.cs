@@ -41,7 +41,7 @@ namespace EXILED.Extensions
 		/// <param name="player"></param>
 		/// <param name="level"></param>
 		/// <param name="notifyUser"></param>
-		public static void SetLevel(this ReferenceHub player, int level, bool notifyUser = true)
+		public static void SetLevel(this ReferenceHub player, byte level, bool notifyUser = true)
 		{
 			if (player.scp079PlayerScript.Lvl == level)
 				return;

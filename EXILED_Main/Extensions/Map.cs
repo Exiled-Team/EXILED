@@ -48,14 +48,9 @@ namespace EXILED.Extensions
        	
 		public static bool FriendlyFire 
 		{
-			get => ServerConsole.FriendlyFire;
-			set 
-			{
-				ServerConsole.FriendlyFire = value;
-				foreach(ReferenceHub hub in Player.GetHubs())
-					hub.SetFriendlyFire(value);
-			}
-		}
+			get => FriendlyFireConfig.RoundEnabled;
+            set => FriendlyFireConfig.RoundEnabled = value;
+        }
 		
 		public static AlphaWarheadController AlphaWarheadController
 		{
@@ -268,7 +263,7 @@ namespace EXILED.Extensions
 		/// <summary>
 		/// Gets the LCZ decontamination status.
 		/// </summary>
-		public static bool IsLCZDecontaminated => DecontaminationController.decontaminationBegun;
+		public static bool IsLCZDecontaminated => DecontaminationController._decontaminationBegun;
 
 		/// <summary>
 		/// Starts the Decontamination process.
@@ -294,6 +289,6 @@ namespace EXILED.Extensions
 		/// </summary>
 		/// <param name="duration"></param>
 		/// <param name="onlyHeavy"></param>
-		public static void TurnOffAllLights(float duration, bool onlyHeavy = false) => Generator079.generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, onlyHeavy);
+		public static void TurnOffAllLights(float duration, bool onlyHeavy = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, onlyHeavy);
 	}
 }

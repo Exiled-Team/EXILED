@@ -16,16 +16,16 @@ namespace EXILED.Patches
 			{
 				if (!__instance._iawRateLimit.CanExecute(true))
 					return false;
-				int itemIndex = __instance.hub.inventory.GetItemIndex();
-				if (itemIndex < 0 || itemIndex >= __instance.hub.inventory.items.Count || __instance.curWeapon < 0 ||
-					(__instance.reloadCooldown > 0.0 || __instance.fireCooldown > 0.0) && !__instance.isLocalPlayer ||
-					(__instance.hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID ||
-					 __instance.hub.inventory.items[itemIndex].durability <= 0.0))
+				int itemIndex = __instance._hub.inventory.GetItemIndex();
+				if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count || __instance.curWeapon < 0 ||
+					(__instance._reloadCooldown > 0.0 || __instance._fireCooldown > 0.0) && !__instance.isLocalPlayer ||
+					(__instance._hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID ||
+					 __instance._hub.inventory.items[itemIndex].durability <= 0.0))
 					return false;
 
 				Log.Debug("Invoking shoot event");
 				bool allowShot = true;
-				Events.InvokeOnShoot(__instance.hub, target, ref allowShot, ref targetPos);
+				Events.InvokeOnShoot(__instance._hub, target, ref allowShot, ref targetPos);
 				if (!allowShot)
 					return false;
 
@@ -37,10 +37,10 @@ namespace EXILED.Patches
 				}
 				else
 				{
-					__instance.hub.inventory.items.ModifyDuration(itemIndex,
-					  __instance.hub.inventory.items[itemIndex].durability - 1f);
+					__instance._hub.inventory.items.ModifyDuration(itemIndex,
+					  __instance._hub.inventory.items[itemIndex].durability - 1f);
 					__instance.scp268.ServerDisable();
-					__instance.fireCooldown =
+					__instance._fireCooldown =
 					  (float)(1.0 / (__instance.weapons[__instance.curWeapon].shotsPerSecond *
 									  (double)__instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier) *
 							   0.800000011920929);
@@ -131,17 +131,17 @@ namespace EXILED.Patches
 							bool allow = true;
 
 							Log.Debug("Invoking late shoot.");
-							Events.InvokeOnLateShoot(__instance.hub, target, ref num2, num1, upper, ref allow);
+							Events.InvokeOnLateShoot(__instance._hub, target, ref num2, num1, upper, ref allow);
 
 							if (!allow)
 								return false;
 
-							__instance.hub.playerStats.HurtPlayer(
+							__instance._hub.playerStats.HurtPlayer(
 							  new PlayerStats.HitInfo(
 								num2 * __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier *
 								__instance.overallDamagerFactor,
-								__instance.hub.nicknameSync.MyNick + " (" + __instance.hub.characterClassManager.UserId + ")",
-								DamageTypes.FromWeaponId(__instance.curWeapon), __instance.hub.queryProcessor.PlayerId),
+								__instance._hub.nicknameSync.MyNick + " (" + __instance._hub.characterClassManager.UserId + ")",
+								DamageTypes.FromWeaponId(__instance.curWeapon), __instance._hub.queryProcessor.PlayerId),
 							  c.gameObject);
 							__instance.RpcConfirmShot(true, __instance.curWeapon);
 							__instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)c.CurClass, num1);

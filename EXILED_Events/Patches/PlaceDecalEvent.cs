@@ -19,7 +19,7 @@ namespace EXILED.Patches
 					Events.InvokePlaceBlood(
 						__instance.gameObject, 
 						ref pos, 
-						ref __instance.hub.characterClassManager.Classes.SafeGet(__instance.hub.characterClassManager.CurClass).bloodType, 
+						ref __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass).bloodType, 
 						ref multiplier, 
 						ref allow
 					);

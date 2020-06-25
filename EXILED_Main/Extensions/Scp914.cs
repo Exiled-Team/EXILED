@@ -34,25 +34,25 @@ namespace EXILED.Extensions
 		/// Gets SCP-914 recipes.
 		/// </summary>
 		/// <param name="recipes"></param>
-		public static Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> GetRecipes() => Scp914Machine.singleton.recipesDict;
+		public static Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> GetRecipes() => Scp914Machine.singleton._recipesDict;
 
 		/// <summary>
 		/// Sets SCP-914 recipes.
 		/// </summary>
 		/// <param name="recipes"></param>
-		public static void SetRecipes(Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> recipes) => Scp914Machine.singleton.recipesDict = recipes;
+		public static void SetRecipes(Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> recipes) => Scp914Machine.singleton._recipesDict = recipes;
 
 		/// <summary>
 		/// Gets SCP-914 configs.
 		/// </summary>
 		/// <param name="configs"></param>
-		public static ConfigEntry<Scp914Mode> GetConfig() => Scp914Machine.singleton.configMode;
+		public static ConfigEntry<Scp914Mode> GetConfig() => Scp914Machine.singleton._configMode;
 
 		/// <summary>
 		/// Sets SCP-914 configs.
 		/// </summary>
 		/// <param name="configs"></param>
-		public static void SetConfig(ConfigEntry<Scp914Mode> config) => Scp914Machine.singleton.configMode = config;
+		public static void SetConfig(ConfigEntry<Scp914Mode> config) => Scp914Machine.singleton._configMode = config;
 
 		/// <summary>
 		/// Gets the intake booth <see cref="Transform">trasform</see>

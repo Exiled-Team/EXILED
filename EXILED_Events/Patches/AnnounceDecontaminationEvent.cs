@@ -12,11 +12,11 @@ namespace EXILED.Patches
 			try
 			{
 				bool allow = true;
-				int id = __instance.nextPhase;
+				int id = __instance._nextPhase;
 
 				Events.InvokeAnnounceDecontamination(ref id, ref hard, ref allow);
 
-				__instance.nextPhase = id;
+				__instance._nextPhase = id;
 				return allow;
 			}
 			catch (Exception exception)

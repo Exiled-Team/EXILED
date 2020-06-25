@@ -17,32 +17,12 @@
       <HintPath>$(EXILED_References)\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="AmplifyBloom">
-      <HintPath>$(EXILED_References)\AmplifyBloom.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="BouncyCastle.Crypto">
       <HintPath>$(EXILED_References)\BouncyCastle.Crypto.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ch.sycoforge.Decal">
-      <HintPath>$(EXILED_References)\ch.sycoforge.Decal.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ch.sycoforge.Logging">
-      <HintPath>$(EXILED_References)\ch.sycoforge.Logging.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ch.sycoforge.Unity.Runtime">
-      <HintPath>$(EXILED_References)\ch.sycoforge.Unity.Runtime.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="DissonanceVoip">
       <HintPath>$(EXILED_References)\DissonanceVoip.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Facepunch.Steamworks.Win64">
-      <HintPath>$(EXILED_References)\Facepunch.Steamworks.Win64.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mirror">
@@ -55,14 +35,6 @@
     </Reference>
     <Reference Include="Mirror.Components">
       <HintPath>$(EXILED_References)\Mirror.Components.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Novell.Directory.Ldap">
-      <HintPath>$(EXILED_References)\Novell.Directory.Ldap.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Telepathy">
-      <HintPath>$(EXILED_References)\Telepathy.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics">

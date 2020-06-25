@@ -7,20 +7,19 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Telepathy;
 using UnityEngine;
 using Random = System.Random;
 
 namespace EXILED
 {
-	public class EventPlugin : Plugin
+    public class EventPlugin : Plugin
 	{
 		private HarmonyInstance instance;
 		public static List<int> GhostedIds = new List<int>();
 		internal static DateTime RoundTime;
 		public static Random Gen = new Random();
 		public static string VersionUpdateUrl = "none";
-		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 12, Patch = 19 };
+		public static ExiledVersion Version = new ExiledVersion { Major = 1, Minor = 12, Patch = 20 };
 
 		//The below variables are used to disable the patch for any particular event, allowing devs to implement events themselves.
 		#region Patch Disable

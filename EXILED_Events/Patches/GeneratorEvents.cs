@@ -17,7 +17,7 @@ namespace EXILED.Patches
 			{
 				if (command.StartsWith("EPS_TABLET"))
 				{
-					if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance.localTime <= 0.0 ||
+					if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance._localTime <= 0.0 ||
 						Generator079.mainGenerator.forcedOvercharge)
 						return false;
 					Inventory component = person.GetComponent<Inventory>();
@@ -50,7 +50,7 @@ namespace EXILED.Patches
 				else if (command.StartsWith("EPS_DOOR"))
 				{
 					Inventory component = person.GetComponent<Inventory>();
-					if (component == null || __instance.doorAnimationCooldown > 0.0 || __instance.deniedCooldown > 0.0)
+					if (component == null || __instance._doorAnimationCooldown > 0.0 || __instance._deniedCooldown > 0.0)
 						return false;
 					if (!__instance.isDoorUnlocked)
 					{
@@ -69,7 +69,7 @@ namespace EXILED.Patches
 						if (allow)
 						{
 							__instance.NetworkisDoorUnlocked = true;
-							__instance.doorAnimationCooldown = 0.5f;
+							__instance._doorAnimationCooldown = 0.5f;
 						}
 						else
 							__instance.RpcDenied();
@@ -88,7 +88,7 @@ namespace EXILED.Patches
 							return false;
 						}
 
-						__instance.doorAnimationCooldown = 1.5f;
+						__instance._doorAnimationCooldown = 1.5f;
 						__instance.NetworkisDoorOpen = !__instance.isDoorOpen;
 						__instance.RpcDoSound(__instance.isDoorOpen);
 					}
@@ -113,7 +113,7 @@ namespace EXILED.Patches
 			if (EventPlugin.GeneratorFinishedEventPatchDisable)
 				return true;
 
-			if (__instance.prevFinish || __instance.localTime > 0.0)
+			if (__instance.prevFinish || __instance._localTime > 0.0)
 				return false;
 
 			try
@@ -123,7 +123,7 @@ namespace EXILED.Patches
 				__instance.prevFinish = true;
 				__instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
 				__instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
-				__instance.asource.PlayOneShot(__instance.unlockSound);
+				__instance._asource.PlayOneShot(__instance.unlockSound);
 
 				return false;
 			}
