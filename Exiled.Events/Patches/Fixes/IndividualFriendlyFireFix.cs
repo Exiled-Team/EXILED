@@ -8,13 +8,14 @@
 namespace Exiled.Events.Patches.Fixes
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.API.Features;
     using HarmonyLib;
 
     /// <summary>
     /// Patches <see cref="WeaponManager.GetShootPermission(CharacterClassManager,bool)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission))]
+    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission), new Type[] { typeof(CharacterClassManager), typeof(bool) })]
     public class IndividualFriendlyFireFix
     {
         /// <summary>
