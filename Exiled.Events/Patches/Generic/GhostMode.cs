@@ -69,18 +69,28 @@ namespace Exiled.Events.Patches.Generic
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
+                            if (Math.Abs(__instance._transmitBuffer[index].position.y - player.Position.y) > 35)
                             {
-                                if (player.IsInvisible || (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP)))
-                                    __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
-
-                                if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0f, __instance._transmitBuffer[index].playerID);
+                            }
+                            else
+                            {
+                                ReferenceHub hub2;
+                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out hub2))
                                 {
-                                    bool flag = false;
-                                    if (player.ReferenceHub.scpsController.CurrentScp is Scp096 curScp && curScp != null)
-                                        flag = curScp.HasTarget(hub2);
-                                    if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator && !flag)
+                                    if (player.IsInvisible || (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP)))
                                         __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
+
+                                    if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                    {
+                                        bool flag = false;
+                                        if (player.ReferenceHub.scpsController.CurrentScp is Scp096 curScp &&
+                                            curScp != null)
+                                            flag = curScp.HasTarget(hub2);
+                                        if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator &&
+                                            !flag)
+                                            __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
+                                    }
                                 }
                             }
                         }

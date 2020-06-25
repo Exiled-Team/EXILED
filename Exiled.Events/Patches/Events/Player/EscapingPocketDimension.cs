@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/>.
-    /// Adds the <see cref="Player.EscapingPocketDimension"/> event.
+    /// Adds the <see cref="Player.EscapingPocketDimension"/> and <see cref="Player.FailingEscapePocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     public class EscapingPocketDimension
@@ -39,6 +39,20 @@ namespace Exiled.Events.Patches.Events.Player
                 return false;
             if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || BlastDoor.OneDoor.isClosed)
             {
+                if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer)
+                {
+                    var ev = new FailingEscapePocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), __instance);
+
+                    Player.OnFailingEscapePocketDimension(ev);
+
+                    if (!ev.IsAllowed)
+                        return false;
+                }
+                else
+                {
+                    // warhead larry event goes here
+                }
+
                 component1.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
             }
             else if (__instance.type == PocketDimensionTeleport.PDTeleportType.Exit)

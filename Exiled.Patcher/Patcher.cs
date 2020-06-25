@@ -13,6 +13,7 @@ namespace Exiled.Patcher
 
     /// <summary>
     /// Takes a file path to your assembly as input, and will patch the assembly with the EXILED ModLoader class.
+    /// Original Patcher created by KadeDev.
     /// </summary>
     internal class Patcher
     {
@@ -42,13 +43,7 @@ namespace Exiled.Patcher
                     return;
                 }
 
-                module.IsILOnly = true;
-                module.VTableFixups = null;
-                module.IsStrongNameSigned = false;
-                module.Assembly.PublicKey = null;
-                module.Assembly.HasPublicKey = false;
-
-                Console.WriteLine("[Exiled.Patcher] Loaded " + module.Name);
+                Console.WriteLine($"[Exiled.Patcher] Loaded {module.Name}");
 
                 Console.WriteLine("[Exiled.Patcher] Resolving References...");
 

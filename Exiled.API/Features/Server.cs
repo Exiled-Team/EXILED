@@ -98,8 +98,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool FriendlyFire
         {
-            get => FriendlyFireConfig.RoundEnabled;
-            set => FriendlyFireConfig.RoundEnabled = value;
+            get => ServerConsole.FriendlyFire;
+            set => ServerConsole.FriendlyFire = value;
         }
     }
 }

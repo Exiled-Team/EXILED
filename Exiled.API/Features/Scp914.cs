@@ -46,7 +46,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the SCP-914 is working or not.
+        /// Gets a value indicating whether the SCP-914 was activated and is currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Machine.singleton.working;
 

@@ -296,6 +296,12 @@ namespace Exiled.API.Features
         public Side Side => Team.GetSide();
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
+        /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
+        /// </summary>
+        public bool IsFriendlyFireEnabled { get; set; }
+
+        /// <summary>
         /// Gets or sets the player's scale.
         /// </summary>
         public Vector3 Scale
