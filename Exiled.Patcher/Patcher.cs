@@ -53,7 +53,7 @@ namespace Exiled.Patcher
 
                 Console.WriteLine("[Injection] Injecting the Bootstrap Class.");
 
-                ModuleDefMD bootstrap = ModuleDefMD.Load("Exiled.Bootstrap.dll");
+                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "/Exiled.Bootstrap.dll");
 
                 Console.WriteLine("[Injection] Loaded " + bootstrap.Name);
 
