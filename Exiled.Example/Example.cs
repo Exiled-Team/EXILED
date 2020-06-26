@@ -19,7 +19,7 @@ namespace Exiled.Example
         private Handlers.Player player;
 
         /// <inheritdoc/>
-        public override PluginPriority Priority => PluginPriority.Medium;
+        public override PluginPriority Priority { get; } = PluginPriority.Medium;
 
         /// <inheritdoc/>
         public override void OnEnabled()
