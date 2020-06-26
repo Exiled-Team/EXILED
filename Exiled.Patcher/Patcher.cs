@@ -8,6 +8,7 @@
 namespace Exiled.Patcher
 {
     using System;
+    using System.IO;
     using dnlib.DotNet;
     using dnlib.DotNet.Emit;
 
@@ -53,7 +54,7 @@ namespace Exiled.Patcher
 
                 Console.WriteLine("[Injection] Injecting the Bootstrap Class.");
 
-                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Exiled.Bootstrap.dll"));
+                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Exiled.Bootstrap.dll"));
 
                 Console.WriteLine("[Injection] Loaded " + bootstrap.Name);
 
