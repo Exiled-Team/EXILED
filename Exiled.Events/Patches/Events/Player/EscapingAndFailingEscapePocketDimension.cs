@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="EscapingPocketDimension.cs" company="Exiled Team">
+// <copyright file="EscapingAndFailingEscapePocketDimension.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.EscapingPocketDimension"/> and <see cref="Player.FailingEscapePocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
-    public class EscapingPocketDimension
+    public class EscapingAndFailingEscapePocketDimension
     {
         /// <summary>
         /// Prefix of <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/>.

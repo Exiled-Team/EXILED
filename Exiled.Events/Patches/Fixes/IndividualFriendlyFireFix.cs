@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Fixes
         /// <param name="__instance">The WeaponManager instance of the player.</param>
         /// <param name="c">The CCM of the target player.</param>
         /// <param name="forceFriendlyFire">If FF should be forced or not.</param>
-        public static void Prefix(WeaponManager __instance, CharacterClassManager c, bool forceFriendlyFire = false)
+        public static void Prefix(WeaponManager __instance, CharacterClassManager c, ref bool forceFriendlyFire)
         {
             forceFriendlyFire = Player.Get(__instance.gameObject).IsFriendlyFireEnabled;
         }

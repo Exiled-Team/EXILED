@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Infect.cs" company="Exiled Team">
+// <copyright file="StartingAndFinishingRecall.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -16,10 +16,10 @@ namespace Exiled.Events.Patches.Events.Scp049
 
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
-    /// Adds the <see cref="Handlers.Scp049.OnStartingRecall"/> event.
+    /// Adds the <see cref="Handlers.Scp049.StartingRecall"/> and <see cref="Handlers.Scp049.FinishingRecall"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp049), nameof(PlayableScps.Scp049.BodyCmd_ByteAndGameObject))]
-    public class Infect
+    public class StartingAndFinishingRecall
     {
         /// <summary>
         /// Prefix of <see cref="PlayableScps.Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
