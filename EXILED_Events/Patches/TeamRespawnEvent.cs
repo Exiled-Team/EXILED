@@ -38,7 +38,7 @@ namespace EXILED.Patches
 					num2 = Mathf.Min(num2, __instance.NextWaveRespawnTickets);
 				}
 				List<GameObject> list = source.Take(num2).ToList();
-				__instance.NextWaveRespawnTickets -= num2 - list.Count;
+				__instance.NextWaveRespawnTickets = list.Count;
 
 				if (Plugin.Config.GetBool("exiled_random_respawns"))
 				{
