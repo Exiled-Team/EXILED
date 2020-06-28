@@ -18,14 +18,14 @@ namespace EXILED.Patches
 				if (!NetworkServer.active || !NonFacilityCompatibility.currentSceneSettings.enableStandardGamplayItems)
 					return false;
 
-				foreach (GameObject player in PlayerManager.players)
+				foreach (ReferenceHub referenceHub in ReferenceHub.GetAllHubs().Values)
 				{
-					if (Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) < 1.97000002861023)
+					if (!referenceHub.isDedicatedServer && referenceHub.isReady && Vector3.Distance(referenceHub.transform.position, __instance._lureSpj.transform.position) < 1.97000002861023)
 					{
-						CharacterClassManager component1 = player.GetComponent<CharacterClassManager>();
-						PlayerStats component2 = player.GetComponent<PlayerStats>();
+						CharacterClassManager component1 = referenceHub.characterClassManager;
+						PlayerStats component2 = referenceHub.playerStats;
 
-						if (component1.Classes.SafeGet(component1.CurClass).team != Team.SCP && component1.CurClass != RoleType.Spectator && !component1.GodMode)
+						if (component1.CurRole.team != Team.SCP && component1.CurClass != RoleType.Spectator && !component1.GodMode)
 						{
 							bool allow = true;
 
@@ -33,7 +33,7 @@ namespace EXILED.Patches
 
 							if (allow)
 							{
-								component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), player);
+								component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), referenceHub.gameObject);
 								__instance._lureSpj.SetState(true);
 							}
 						}

@@ -24,10 +24,8 @@ namespace EXILED.Patches
 					(__instance.MyReferenceHub.characterClassManager.CurClass < RoleType.Scp173 ||
 					 handcuffs.CufferId >= 0) || handcuffs.MyReferenceHub.inventory.curItem != ItemType.None)
 					return false;
-				Team team1 = __instance.MyReferenceHub.characterClassManager.Classes
-					.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team;
-				Team team2 = __instance.MyReferenceHub.characterClassManager.Classes
-					.SafeGet(handcuffs.MyReferenceHub.characterClassManager.CurClass).team;
+				Team team1 = __instance.MyReferenceHub.characterClassManager.CurRole.team;
+				Team team2 = handcuffs.MyReferenceHub.characterClassManager.CurRole.team;
 				bool flag = false;
 				switch (team1)
 				{
@@ -67,13 +65,16 @@ namespace EXILED.Patches
 
 				if (!flag)
 					return false;
-				__instance.ClearTarget();
-
+				
 				bool allow = true;
 				Events.InvokePlayerHandcuff(__instance.gameObject, target, ref allow);
 
 				if (!allow)
 					return false;
+
+				if(team1 == Team.CDP && team2 == Team.MTF)
+					__instance.MyReferenceHub.playerStats.TargetAchieve(__instance.MyReferenceHub.playerStats.connectionToClient, "tableshaveturned");
+				__instance.ClearTarget();
 				handcuffs.NetworkCufferId = __instance.MyReferenceHub.queryProcessor.PlayerId;
 
 				return false;
@@ -98,8 +99,7 @@ namespace EXILED.Patches
 			{
 				if (!__instance._interactRateLimit.CanExecute(true) || target == null ||
 					(Vector3.Distance(target.transform.position, __instance.transform.position) >
-					 __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager
-						 .Classes.SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team == Team.SCP))
+					 __instance.raycastDistance * 1.10000002384186 || __instance.MyReferenceHub.characterClassManager.CurRole.team == Team.SCP))
 					return false;
 
 				bool allow = true;

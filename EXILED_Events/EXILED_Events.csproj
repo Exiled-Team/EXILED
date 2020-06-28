@@ -96,7 +96,6 @@
     <Compile Include="Patches\RemoteAdminCommandEvent.cs" />
     <Compile Include="Patches\PlayerReloadEvent.cs" />
     <Compile Include="Patches\TeamRespawnEvent.cs" />
-    <Compile Include="Patches\RoundEndEvent.cs" />
     <Compile Include="Patches\RoundRestartEvent.cs" />
     <Compile Include="Patches\RoundStartEvent.cs" />
     <Compile Include="Patches\Scp096Events.cs" />

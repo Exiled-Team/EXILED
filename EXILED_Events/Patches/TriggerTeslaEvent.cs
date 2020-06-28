@@ -1,6 +1,5 @@
 using Harmony;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace EXILED.Patches
@@ -18,11 +17,12 @@ namespace EXILED.Patches
 			try
 			{
 				bool triggerable = true;
+				bool isInHurtingRange = true;
 
 				if (Vector3.Distance(__instance.transform.position, player.playerMovementSync.RealModelPosition) < __instance.sizeOfTrigger)
 				{
-					//memo: isInHurtingRange is gone
-					Events.InvokeTriggerTesla(player.gameObject, true, ref triggerable);
+					//memo: isInHurtingRange is not used after 10.0.0
+					Events.InvokeTriggerTesla(player.gameObject, isInHurtingRange, ref triggerable);
 
 					__result = triggerable;
 				}

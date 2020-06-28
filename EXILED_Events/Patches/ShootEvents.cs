@@ -110,6 +110,9 @@ namespace EXILED.Patches
 							__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient,
 							  "Shot rejected - Code 2.5 (collision on shot line detected)", "gray");
 						}
+						else if (c.gameObject == __instance.gameObject)
+							__instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient,
+							  "Shot rejected - Code 2.6 (target is itself)", "gray");
 						else
 						{
 							float num1 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);

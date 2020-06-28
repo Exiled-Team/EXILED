@@ -1,5 +1,4 @@
 using Harmony;
-using Hints;
 using System;
 using UnityEngine;
 
@@ -30,13 +29,11 @@ namespace EXILED.Patches
 
 				Item curItem = __instance._inv.GetItemByID(__instance._inv.curItem);
 
-				if (allow && curItem != null && curItem.permissions.Contains(requiredPermission))
+				if ((allow || __instance._sr.BypassMode) && curItem != null && curItem.permissions.Contains(requiredPermission))
 				{
 					gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
 					__instance.OnInteract();
 				}
-				else
-					__instance._hub.hints.Show(new Hints.TranslationHint(HintTranslations.WarheadDetonateCoverDenied, null, null, 3f));
 
 				return false;
 			}

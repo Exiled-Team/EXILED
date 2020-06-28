@@ -143,6 +143,16 @@ namespace EXILED.Patches
 
 					if (teamChanged)
 						leadingTeam = team;
+
+					try
+					{
+						Events.InvokeRoundEnd();
+					}
+					catch(Exception exception)
+					{
+						Log.Error($"RoundEndEvent error: {exception}");
+					}
+
 					string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
 					GameCore.Console.AddLog(str, Color.gray, false);
 					ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);

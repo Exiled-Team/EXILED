@@ -15,7 +15,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				ReferenceHub player = __instance.gameObject.GetPlayer();
+				ReferenceHub player = __instance.hub;
 
 				Timing.CallDelayed(0.25f, () =>
 				{

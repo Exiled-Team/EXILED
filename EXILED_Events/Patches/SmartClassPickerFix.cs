@@ -27,10 +27,13 @@ namespace EXILED.Patches
 				__instance.laterJoinNextIndex = 0;
 				int r = EventPlugin.Gen.Next(1, 100);
 
-				for (int i = 0; i < array.Length; i++)
+				int i = 0;
+				foreach(ReferenceHub hub in array)
 				{
+					if(hub.isDedicatedServer || !hub.isReady) continue;
+
 					RoleType roleType = (RoleType)((__instance.ForceClass < RoleType.Scp173)
-						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i])
+						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i++])
 						: ((int)__instance.ForceClass));
 					__instance.laterJoinNextIndex++;
 					if (__instance.Classes.CheckBounds(forcedClass))
@@ -72,24 +75,23 @@ namespace EXILED.Patches
 						num++;
 					}
 
-					
-					if (!roles.ContainsKey(array[i]))
+
+					if (!roles.ContainsKey(hub))
 					{
-						roles.Add(array[i], roleType);
+						roles.Add(hub, roleType);
 					}
 					else
 					{
-						roles[array[i]] = roleType;
+						roles[hub] = roleType;
 					}
 
 					ServerLogs.AddLog(ServerLogs.Modules.ClassChange,
-						string.Concat(array[i].GetComponent<NicknameSync>().MyNick, " (",
-							array[i].GetComponent<CharacterClassManager>().UserId, ") spawned as ",
+						string.Concat(hub.GetComponent<NicknameSync>().MyNick, " (",
+							hub.GetComponent<CharacterClassManager>().UserId, ") spawned as ",
 							__instance.Classes.SafeGet(roleType).fullName.Replace("\n", ""), "."),
 						ServerLogs.ServerLogType.GameEvent);
 				}
 
-				LightContainmentZoneDecontamination.DecontaminationController.Singleton.NetworkRoundStartTime = (int)Time.realtimeSinceStartup;
 				startClassList.time = (int)Time.realtimeSinceStartup;
 				startClassList.warhead_kills = -1;
 				Object.FindObjectOfType<RoundSummary>().SetStartClassList(startClassList);
@@ -124,7 +126,7 @@ namespace EXILED.Patches
 								}
 
 								str = "Getting Player ID";
-								if (networkConnection == null && component == null)
+								if (referenceHub.isDedicatedServer || !referenceHub.isReady || (networkConnection == null && component == null))
 								{
 									shuffledPlayerList.Remove(referenceHub);
 									break;
