@@ -22,7 +22,7 @@ namespace EXILED.Patches
 				IEnumerable<GameObject> source = PlayerManager.players.Where(item => item.GetComponent<CharacterClassManager>().CurClass == RoleType.Spectator && !item.GetComponent<ServerRoles>().OverwatchEnabled);
 				if (__instance.priorityMTFRespawn)
 					source = source.OrderBy(item => item.GetComponent<CharacterClassManager>().DeathTime);
-				int num2 = __instance.nextWaveIsCI ? __instance.maxCIRespawnAmount : __instance.maxMtfTimeToRespawn;
+				int num2 = __instance.nextWaveIsCI ? __instance.maxCIRespawnAmount : __instance.maxMTFRespawnAmount;
 				if (ConfigFile.ServerConfig.GetBool("respawn_tickets_enable", true))
 				{
 					if (__instance.NextWaveRespawnTickets == 0)
@@ -38,7 +38,7 @@ namespace EXILED.Patches
 					num2 = Mathf.Min(num2, __instance.NextWaveRespawnTickets);
 				}
 				List<GameObject> list = source.Take(num2).ToList();
-				__instance.NextWaveRespawnTickets -= num2 - list.Count;
+				__instance.NextWaveRespawnTickets = list.Count;
 
 				if (Plugin.Config.GetBool("exiled_random_respawns"))
 				{

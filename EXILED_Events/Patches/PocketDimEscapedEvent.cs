@@ -21,7 +21,8 @@ namespace EXILED.Patches
 			try
 			{
 				NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
-				if (!((Object) component1 != (Object) null))
+				CharacterClassManager ccm = other.GetComponent<CharacterClassManager>(); //bugfix to maingame
+				if (component1 == null || ccm == null)
 					return false;
 				if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || BlastDoor.OneDoor.isClosed)
 					component1.GetComponent<PlayerStats>().HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
@@ -37,7 +38,7 @@ namespace EXILED.Patches
 					{
 						foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("RoomID"))
 						{
-							if ((Object) gameObject.GetComponent<Rid>() != (Object) null && stringList.Contains(gameObject.GetComponent<Rid>().id))
+							if (gameObject.GetComponent<Rid>() != null && stringList.Contains(gameObject.GetComponent<Rid>().id))
 								__instance.tpPositions.Add(gameObject.transform.position);
 						}
 						if (stringList.Contains("PORTAL"))
@@ -57,22 +58,18 @@ namespace EXILED.Patches
 					Vector3 tpPosition = __instance.tpPositions[Random.Range(0, __instance.tpPositions.Count)];
 					tpPosition.y += 2f;
 					PlayerMovementSync component2 = other.GetComponent<PlayerMovementSync>();
-					component2.SetSafeTime(2f);
       
 					bool allowEscape = true;
 					Events.InvokePocketDimEscaped(component2.gameObject, ref allowEscape);
 
 					if (allowEscape)
 					{
+						component2.SetSafeTime(2f);
 						component2.OverridePosition(tpPosition, 0.0f, false);
 						__instance.RemoveCorrosionEffect(other.gameObject);
 						PlayerManager.localPlayer.GetComponent<PlayerStats>()
 							.TargetAchieve(component1.connectionToClient, "larryisyourfriend");
 					}
-      
-					component2.OverridePosition(tpPosition, 0.0f, false);
-					__instance.RemoveCorrosionEffect(other.gameObject);
-					PlayerManager.localPlayer.GetComponent<PlayerStats>().TargetAchieve(component1.connectionToClient, "larryisyourfriend");
 				}
 
 				if (!__instance.RefreshExit)

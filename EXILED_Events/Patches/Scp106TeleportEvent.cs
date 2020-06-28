@@ -15,7 +15,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				if (!__instance._interactRateLimit.CanExecute(false) || !__instance.GetComponent<FallDamage>().isGrounded)
+				if (!__instance._interactRateLimit.CanExecute(false) || !__instance.hub.falldamage.isGrounded)
 					return false;
 
 				bool allow = true;

@@ -1,4 +1,3 @@
-using EXILED.Extensions;
 using Harmony;
 using System;
 using UnityEngine;
@@ -24,12 +23,10 @@ namespace EXILED.Patches
 
 				foreach (GameObject player in PlayerManager.players)
 				{
-					ReferenceHub hub = player.GetPlayer();
-
-					if (hub.characterClassManager.CurClass == RoleType.Tutorial)
-						continue;
-
 					Scp173PlayerScript component = player.GetComponent<Scp173PlayerScript>();
+
+					if(component._publicCcm.CurClass == RoleType.Tutorial)
+						continue;
 
 					if (!component.SameClass && component.LookFor173(__instance.gameObject, true) && __instance.LookFor173(component.gameObject, false))
 					{

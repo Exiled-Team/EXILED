@@ -15,7 +15,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				Role role = __instance.Classes.SafeGet(__instance.CurClass);
+				Role role = __instance.CurRole;
 				if (!__instance._wasAnytimeAlive && __instance.CurClass != RoleType.Spectator && __instance.CurClass != RoleType.None)
 				{
 					__instance._wasAnytimeAlive = true;
@@ -35,17 +35,17 @@ namespace EXILED.Patches
 						__instance.EscapeStartTime = (int)Time.realtimeSinceStartup;
 						break;
 				}
-				__instance.GetComponent<Inventory>();
+				Inventory inventory = __instance._hub.inventory;
 				try
 				{
-					__instance.GetComponent<FootstepSync>().SetLoudness(role.team, role.roleId.Is939());
+					__instance._hub.footstepSync.SetLoudness(role.team, role.roleId.Is939());
 				}
 				catch
 				{
 				}
 				if (NetworkServer.active)
 				{
-					Handcuffs component = __instance.GetComponent<Handcuffs>();
+					Handcuffs component = __instance._hub.handcuffs;
 					component.ClearTarget();
 					component.NetworkCufferId = -1;
 				}
@@ -57,6 +57,7 @@ namespace EXILED.Patches
 						if (constantRespawnPoint != Vector3.zero)
 						{
 							__instance._pms.OnPlayerClassChange(constantRespawnPoint, 0f);
+							__instance._pms.IsAFK = true;
 						}
 						else
 						{
@@ -86,6 +87,7 @@ namespace EXILED.Patches
 							}
 							Events.InvokePlayerSpawn(__instance, __instance.CurClass, ref spawnPoint, ref rotY);
 							__instance._pms.OnPlayerClassChange(spawnPoint, rotY);
+							__instance._pms.IsAFK = true;
 						}
 						if (!__instance.SpawnProtected && __instance.EnableSP && __instance.SProtectedTeam.Contains((int)role.team))
 						{
@@ -96,7 +98,7 @@ namespace EXILED.Patches
 					}
 					if (!__instance.isLocalPlayer)
 					{
-						__instance.GetComponent<PlayerStats>().maxHP = role.maxHP;
+						__instance._hub.playerStats.maxHP = role.maxHP;
 					}
 				}
 				__instance.Scp0492.iAm049_2 = __instance.CurClass == RoleType.Scp0492;

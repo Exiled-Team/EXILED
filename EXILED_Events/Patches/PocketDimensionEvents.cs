@@ -23,31 +23,26 @@ namespace EXILED.Patches
 
 				ReferenceHub hub = ReferenceHub.GetHub(ply);
 				CharacterClassManager component = hub.characterClassManager;
-				if (component == null)
+				if (component == null || component.GodMode || component.IsAnyScp())
 					return false;
 				if (!ServerTime.CheckSynchronization(t) || !__instance.iAm106 ||
-					Vector3.Distance(__instance.GetComponent<PlayerMovementSync>().RealModelPosition,
+					Vector3.Distance(__instance.hub.playerMovementSync.RealModelPosition,
 						ply.transform.position) >= 3f || !component.IsHuman())
 					return false;
 
-				if (component.GodMode)
-					return false;
-				if (component.Classes.SafeGet(component.CurClass).team == Team.SCP)
-					return false;
-
-				__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
+				__instance.hub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+				__instance.TargetHitMarker(__instance.connectionToClient);
 				if (Scp106PlayerScript._blastDoor.isClosed)
 				{
-					__instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
-					__instance.GetComponent<PlayerStats>().HurtPlayer(
+					__instance.hub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+					__instance.hub.playerStats.HurtPlayer(
 						new PlayerStats.HitInfo(500f,
 							__instance.GetComponent<NicknameSync>().MyNick + " (" +
-							__instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106,
+							__instance.hub.characterClassManager.UserId + ")", DamageTypes.Scp106,
 							__instance.GetComponent<QueryProcessor>().PlayerId), ply);
 				}
 				else
 				{
-					CharacterClassManager component3 = ply.GetComponent<CharacterClassManager>();
 					// 079 shit
 					foreach (Scp079PlayerScript scp079PlayerScript in Scp079PlayerScript.instances)
 					{
@@ -76,7 +71,7 @@ namespace EXILED.Patches
 
 						if (flag)
 						{
-							scp079PlayerScript.RpcGainExp(ExpGainType.PocketAssist, component3.CurClass);
+							scp079PlayerScript.RpcGainExp(ExpGainType.PocketAssist, component.CurClass);
 						}
 					}
 
@@ -89,7 +84,7 @@ namespace EXILED.Patches
 					if (!allowEnter)
 						return false;
 
-					ply.GetComponent<PlayerMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
+					hub.playerMovementSync.OverridePosition(Vector3.down * 1998.5f, 0f, true);
 
 					// Invoke damage.
 
@@ -99,7 +94,7 @@ namespace EXILED.Patches
 					Events.InvokePocketDimDamage(ply, ref allowDamage);
 
 					if (allowDamage)
-						__instance.GetComponent<PlayerStats>().HurtPlayer(
+						__instance.hub.playerStats.HurtPlayer(
 							new PlayerStats.HitInfo(40f,
 								__instance.GetComponent<NicknameSync>().MyNick + " (" +
 								__instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106,

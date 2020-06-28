@@ -21,20 +21,25 @@ namespace EXILED.Patches
 				{
 					return false;
 				}
+
+				ReferenceHub hub = ReferenceHub.GetHub(ply);
+
 				if (!ply.GetComponent<CharacterClassManager>().IsVerified)
 				{
 					return false;
 				}
+
 				List<ItemType> startItems = lite ? new List<ItemType>(0) : __instance.Classes.SafeGet(classid).startItems.ToList();
 				Events.InvokeStartItems(ply, classid, ref startItems);
-				ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
+
+				hub.characterClassManager.SetClassIDAdv(classid, lite, escape);
 				ply.GetComponent<FirstPersonController>().ModifyStamina(100f);
-				ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
+				hub.playerStats.SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
 				if (lite)
 				{
 					return false;
 				}
-				Inventory component = ply.GetComponent<Inventory>();
+				Inventory component = hub.inventory;
 				List<Inventory.SyncItemInfo> list = new List<Inventory.SyncItemInfo>();
 				if (escape && __instance.KeepItemsAfterEscaping)
 				{
@@ -61,7 +66,7 @@ namespace EXILED.Patches
 							while (i < categories.Length)
 							{
 								InventoryCategory inventoryCategory = categories[i];
-								if (inventoryCategory.itemType == itemByID.itemCategory && (itemByID.itemCategory != ItemCategory.None || itemByID.itemCategory != ItemCategory.None))
+								if (inventoryCategory.itemType == itemByID.itemCategory && itemByID.itemCategory != ItemCategory.None)
 								{
 									int num = 0;
 									foreach (Inventory.SyncItemInfo syncItemInfo2 in component.items)

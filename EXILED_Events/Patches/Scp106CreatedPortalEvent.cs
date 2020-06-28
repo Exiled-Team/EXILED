@@ -14,7 +14,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				if (!__instance._interactRateLimit.CanExecute(true) || !__instance.GetComponent<FallDamage>().isGrounded)
+				if (!__instance._interactRateLimit.CanExecute(true) || !__instance.hub.falldamage.isGrounded)
 					return false;
 
 				bool rayCastHit = Physics.Raycast(new Ray(__instance.transform.position, -__instance.transform.up), out RaycastHit raycastHit, 10f, __instance.teleportPlacementMask);
@@ -23,8 +23,6 @@ namespace EXILED.Patches
 				Vector3 portalPosition = raycastHit.point - Vector3.up;
 
 				Events.InvokeScp106CreatedPortal(__instance.gameObject, ref allow, ref portalPosition);
-
-				Debug.DrawRay(__instance.transform.position, -__instance.transform.up, Color.red, 10f);
 
 				if (allow && __instance.iAm106 && !__instance.goingViaThePortal && rayCastHit)
 					__instance.SetPortalPosition(portalPosition);
