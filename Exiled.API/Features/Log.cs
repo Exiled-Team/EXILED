@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System.Diagnostics;
     using System.Reflection;
     using Discord;
 
@@ -55,7 +56,14 @@ namespace Exiled.API.Features
         /// <param name="color">The message color.</param>
         public static void Send(object message, LogLevel level, System.ConsoleColor color = System.ConsoleColor.Gray)
         {
-            ServerConsole.AddLog($"[{level.ToString().ToUpper()}] {message}", color);
+            SendRaw($"[{level.ToString().ToUpper()}] {message}", color);
         }
+
+        /// <summary>
+        /// Sends a raw log message to the game console.
+        /// </summary>
+        /// <param name="message">The message to be sent.</param>
+        /// <param name="color">The message color.</param>
+        public static void SendRaw(object message, System.ConsoleColor color) => ServerConsole.AddLog(message.ToString(), color);
     }
 }

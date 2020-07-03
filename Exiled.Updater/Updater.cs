@@ -26,18 +26,10 @@ namespace Exiled.Updater
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            base.OnEnabled();
+
             if (IsUpdateAvailable())
                 Start();
-        }
-
-        /// <inheritdoc/>
-        public override void OnDisabled()
-        {
-        }
-
-        /// <inheritdoc/>
-        public override void OnReloaded()
-        {
         }
 
         /// <summary>

@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(EXILED_REFERENCES)\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
     </Reference>
@@ -113,10 +117,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ReconnectRestart.cs" />
+    <Compile Include="Commands\Reload\GamePlay.cs" />
+    <Compile Include="Commands\Reload\Plugins.cs" />
+    <Compile Include="Commands\Reload\Reload.cs" />
+    <Compile Include="Commands\Reload\Configs.cs" />
+    <Compile Include="Commands\Reload\RemoteAdmin.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="EventArgs\StartingEventArgs.cs" />
     <Compile Include="EventArgs\StoppingEventArgs.cs" />
-    <Compile Include="Handlers\Command.cs" />
     <Compile Include="EventArgs\ActivatingEventArgs.cs" />
     <Compile Include="EventArgs\ActivatingWarheadPanelEventArgs.cs" />
     <Compile Include="EventArgs\AnnouncingDecontaminationEventArgs.cs" />
@@ -266,7 +275,7 @@
     <Compile Include="Patches\Events\Warhead\Stopping.cs" />
     <Compile Include="Patches\Fixes\CharacterClassManagerLoadSpam.cs" />
     <Compile Include="Patches\Fixes\DoubleSpawn.cs" />
-    <Compile Include="Patches\Fixes\IndividualFriendlyFireFix.cs" />
+    <Compile Include="Patches\Generic\IndividualFriendlyFire.cs" />
     <Compile Include="Patches\Generic\AntiFly.cs" />
     <Compile Include="Patches\Fixes\MuteHandlerClear.cs" />
     <Compile Include="Patches\Events\Player\SyncingData.cs" />
@@ -298,6 +307,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="docfx.console">
+      <Version>2.56.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.0.1</Version>
     </PackageReference>
@@ -310,9 +324,7 @@
       <Version>8.1.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
          Other similar extension points exist, see Microsoft.Common.targets.

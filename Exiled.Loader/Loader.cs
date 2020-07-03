@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="PluginManager.cs" company="Exiled Team">
+// <copyright file="Loader.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,30 +12,40 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
 
     /// <summary>
     /// Used to handle plugins.
     /// </summary>
-    public static class PluginManager
+    public static class Loader
     {
-        private static string typeOverrides = string.Empty;
+        static Loader()
+        {
+            Log.Info($"Initializing at {Environment.CurrentDirectory}");
+            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.Major}.{Version.Minor}.{Version.Build}", ConsoleColor.DarkRed);
 
-        /// <summary>
-        /// Gets the app domain.
-        /// </summary>
-        public static AppDomain AppDomain { get; } = AppDomain.CreateDomain("Exiled");
+            CustomNetworkManager.Modded = true;
+
+            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            if (Config.Environment != EnvironmentType.Production)
+                Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
+
+            if (!Directory.Exists(Paths.Configs))
+                Directory.CreateDirectory(Paths.Configs);
+
+            if (!Directory.Exists(Paths.Plugins))
+                Directory.CreateDirectory(Paths.Plugins);
+
+            if (!Directory.Exists(Paths.Dependencies))
+                Directory.CreateDirectory(Paths.Dependencies);
+        }
 
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
         public static List<IPlugin<IConfig>> Plugins { get; } = new List<IPlugin<IConfig>>();
-
-        /// <summary>
-        /// Gets the dependencies list.
-        /// </summary>
-        public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
         /// Gets the initialized global random class.
@@ -55,94 +65,95 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == API.Enums.EnvironmentType.Testing || Config.Environment == API.Enums.EnvironmentType.Development;
+        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development;
 
         /// <summary>
-        /// The coroutine which loads all plugins.
+        /// Gets plugin dependencies.
         /// </summary>
-        public static void LoadAll()
+        public static List<Assembly> Dependencies { get; } = new List<Assembly>();
+
+        /// <summary>
+        /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
+        /// </summary>
+        /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
+        public static void Run(Assembly[] dependencies = null)
         {
-            if (!Directory.Exists(Paths.Plugins))
-            {
-                Log.Warn($"Plugin directory not found - creating: {Paths.Plugins}");
-                Directory.CreateDirectory(Paths.Plugins);
-            }
+            if (dependencies != null && dependencies.Length > 0)
+                Dependencies.AddRange(dependencies);
 
-            List<string> pluginPaths = Directory.GetFiles(Paths.Plugins).Where(plugin => !plugin.EndsWith("overrides.txt")).ToList();
-
-            if (File.Exists($"{Paths.Plugins}/overrides.txt"))
-                typeOverrides = File.ReadAllText($"{Paths.Plugins}/overrides.txt");
-
-            if (pluginPaths.All(plugin => !plugin.Contains("Exiled.Events.dll")))
-            {
-                Log.Warn("Exiled.Events.dll is not installed! Plugins that do not handle their own events won't work and may cause errors.");
-            }
-            else
-            {
-                string eventsPlugin = pluginPaths.FirstOrDefault(plugin => plugin.Contains("Exiled.Events.dll"));
-
-                Load(eventsPlugin);
-                pluginPaths.Remove(eventsPlugin);
-            }
-
-            if (pluginPaths.Any(plugin => plugin.Contains("Exiled.Permissions.dll")))
-            {
-                string exiledPermission = pluginPaths.FirstOrDefault(name => name.Contains("Exiled.Permissions.dll"));
-
-                Load(exiledPermission);
-                pluginPaths.Remove(exiledPermission);
-            }
-
-            if (pluginPaths.Any(plugin => plugin.Contains("Exiled.Updater.dll")))
-            {
-                string exiledUpdater = pluginPaths.FirstOrDefault(path => path.Contains("Exiled.Updater.dll"));
-
-                Load(exiledUpdater);
-                pluginPaths.Remove(exiledUpdater);
-            }
-
-            foreach (string plugin in pluginPaths)
-                Load(plugin);
-
-            Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
+            LoadDependencies();
+            LoadPlugins();
 
             ConfigManager.Reload();
 
-            EnableAll();
+            EnablePlugins();
         }
 
         /// <summary>
-        /// Loads a single plugin.
+        /// Loads all plugins.
         /// </summary>
-        /// <param name="path">The path to load the plugin from.</param>
-        public static void Load(string path)
+        public static void LoadPlugins()
+        {
+            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins).Where(path => (path.EndsWith(".dll") || path.EndsWith(".exe")) && !IsAssemblyLoaded(path)))
+            {
+                Assembly assembly = LoadAssembly(pluginPath);
+
+                if (assembly == null)
+                    continue;
+
+                IPlugin<IConfig> plugin = CreatePlugin(assembly);
+
+                if (plugin == null)
+                    continue;
+
+                Plugins.Add(plugin);
+
+                ConfigManager.AddTag(plugin.Config);
+            }
+
+            Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
+        }
+
+        /// <summary>
+        /// Loads an assembly.
+        /// </summary>
+        /// <param name="path">The path to load the assembly from.</param>
+        /// <returns>Returns the loaded assembly or null.</returns>
+        public static Assembly LoadAssembly(string path)
         {
             try
             {
-                Assembly assembly = Assembly.LoadFrom(path);
+                return Assembly.LoadFrom(path);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Error while loading a plugin at {path}! {exception}");
+            }
 
-                foreach (Type type in assembly.GetTypes())
+            return null;
+        }
+
+        /// <summary>
+        /// Create a plugin instance.
+        /// </summary>
+        /// <param name="assembly">The plugin assembly.</param>
+        /// <returns>Returns the created plugin instance or null.</returns>
+        public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
+        {
+            try
+            {
+                foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
-                    if (type.IsAbstract)
-                    {
-                        Log.Debug($"\"{type.FullName}\" is abstract, skipping.", ShouldDebugBeShown);
-                        continue;
-                    }
-
-                    if (type.FullName != null && typeOverrides.Contains(type.FullName))
-                    {
-                        Log.Debug($"Overriding type check for \"{type.FullName}\"", ShouldDebugBeShown);
-                    }
-                    else if (
+                    if (
                         !type.BaseType.IsGenericType ||
                         type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) ||
                         type.BaseType.GetGenericArguments()?[0]?.GetInterface(nameof(IConfig)) != typeof(IConfig))
                     {
-                        Log.Debug($"\"{type.FullName}\" does not inherit from EXILED.Plugin, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"\"{type.FullName}\" does not inherit from Exiled.API.Plugin<IConfig>, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
-                    Log.Info($"Loading type {type.FullName}");
+                    Log.Debug($"Loading type {type.FullName}", ShouldDebugBeShown);
 
                     IPlugin<IConfig> plugin;
 
@@ -161,12 +172,12 @@ namespace Exiled.Loader
 
                     if (plugin == null)
                     {
-                        Log.Error($"{type.FullName} cannot be loaded! It either doesn't have a public default constructor or a static property of the {type.FullName} type!");
+                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor or a static property of the {type.FullName} type!");
 
                         continue;
                     }
 
-                    Log.Info($"Instantiated type {type.FullName}");
+                    Log.Debug($"Instantiated type {type.FullName}", ShouldDebugBeShown);
 
                     if (plugin.RequiredExiledVersion > Version)
                     {
@@ -185,32 +196,31 @@ namespace Exiled.Loader
                         }
                     }
 
-                    Plugins.Add(plugin);
-
-                    ConfigManager.AddTag(plugin.Config);
-
-                    Log.Info($"Successfully loaded {plugin.Name} v{plugin.Version.Major}.{plugin.Version.Minor}.{plugin.Version.Build}");
+                    return plugin;
                 }
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initializing {path}! {exception}");
-                Log.Error($"{exception.InnerException}");
-                Log.Error($"{exception.StackTrace}");
+                Log.Error($"Error while initializing plugin at {assembly.Location}! {exception}");
             }
+
+            return null;
         }
 
         /// <summary>
         /// Enables all plugins.
         /// </summary>
-        public static void EnableAll()
+        public static void EnablePlugins()
         {
             foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
                 {
                     if (plugin.Config.IsEnabled)
+                    {
                         plugin.OnEnabled();
+                        plugin.OnRegisteringCommands();
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -222,7 +232,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Reloads all plugins.
         /// </summary>
-        public static void ReloadAll()
+        public static void ReloadPlugins()
         {
             foreach (IPlugin<IConfig> plugin in Plugins)
             {
@@ -242,13 +252,14 @@ namespace Exiled.Loader
                 }
             }
 
-            LoadAll();
+            LoadPlugins();
+            EnablePlugins();
         }
 
         /// <summary>
         /// Disables all plugins.
         /// </summary>
-        public static void DisableAll()
+        public static void DisablePlugins()
         {
             foreach (IPlugin<IConfig> plugin in Plugins)
             {
@@ -256,6 +267,7 @@ namespace Exiled.Loader
                 {
                     plugin.Config.IsEnabled = false;
                     plugin.OnDisabled();
+                    plugin.OnUnregisteringCommands();
                 }
                 catch (Exception exception)
                 {
@@ -272,36 +284,34 @@ namespace Exiled.Loader
         public static bool IsDependencyLoaded(string path) => Dependencies.Exists(assembly => assembly.Location == path);
 
         /// <summary>
+        /// Check if an assembly is loaded.
+        /// </summary>
+        /// <param name="path">The path to check from.</param>
+        /// <returns>Returns whether the assembly is loaded or not.</returns>
+        public static bool IsAssemblyLoaded(string path) => Plugins.Any(plugin => plugin.Assembly.Location == path);
+
+        /// <summary>
         /// Loads all dependencies.
         /// </summary>
-        internal static void LoadAllDependencies()
+        private static void LoadDependencies()
         {
             try
             {
-                Log.Info("Loading dependencies...");
-                Log.Debug($"Searching Directory \"{Paths.Dependencies}\"", ShouldDebugBeShown);
+                Log.Info($"Loading dependencies at {Paths.Dependencies}");
 
-                if (!Directory.Exists(Paths.Dependencies))
-                    Directory.CreateDirectory(Paths.Dependencies);
-
-                string[] dependencies = Directory.GetFiles(Paths.Dependencies);
-
-                foreach (string dependency in dependencies)
+                foreach (string dependency in Directory.GetFiles(Paths.Dependencies).Where(path => path.EndsWith(".dll") && !IsDependencyLoaded(path)))
                 {
-                    if (!dependency.EndsWith(".dll"))
+                    Assembly assembly = LoadAssembly(dependency);
+
+                    if (assembly == null)
                         continue;
-
-                    if (IsDependencyLoaded(dependency))
-                        return;
-
-                    Assembly assembly = Assembly.LoadFrom(dependency);
 
                     Dependencies.Add(assembly);
 
                     Log.Info($"Loaded dependency {assembly.FullName}");
                 }
 
-                Log.Debug("Complete!", ShouldDebugBeShown);
+                Log.Info("Dependencies loaded successfully!");
             }
             catch (Exception exception)
             {

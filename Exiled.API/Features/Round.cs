@@ -27,7 +27,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
-        public static bool IsStarted => ElapsedTime > TimeSpan.Zero;
+        public static bool IsStarted => RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
@@ -46,5 +46,15 @@ namespace Exiled.API.Features
             get => GameCore.RoundStart.LobbyLock;
             set => GameCore.RoundStart.LobbyLock = value;
         }
+
+        /// <summary>
+        /// Restarts the round.
+        /// </summary>
+        public static void Restart() => Server.Host.ReferenceHub.playerStats.Roundrestart();
+
+        /// <summary>
+        /// Start the round.
+        /// </summary>
+        public static void Start() => CharacterClassManager.ForceRoundStart();
     }
 }

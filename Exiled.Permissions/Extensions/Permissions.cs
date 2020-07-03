@@ -11,12 +11,15 @@ namespace Exiled.Permissions.Extensions
     using System.IO;
     using System.Linq;
     using System.Text;
+
     using Exiled.API.Features;
     using Exiled.Loader;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
+
     using static Exiled.Permissions.Permissions;
 
     /// <inheritdoc cref="Exiled.Permissions.Permissions"/>
@@ -84,6 +87,22 @@ namespace Exiled.Permissions.Extensions
         public static void Save() => File.WriteAllText(Instance.Config.FullPath, Serializer.Serialize(Groups));
 
         /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this CommandSender sender, string permission)
+        {
+            Player player = Player.Get(sender.SenderId) ?? (sender is ServerConsoleSender ? Server.Host : null);
+
+            if (player == null)
+                return false;
+
+            return player.CheckPermission(permission);
+        }
+
+        /// <summary>
         /// Checks a player's permission.
         /// </summary>
         /// <param name="player">The player to be checked.</param>
@@ -97,26 +116,26 @@ namespace Exiled.Permissions.Extensions
             }
             else if (player == null)
             {
-                Log.Error("Reference hub was null, unable to check permissions.");
+                Log.Error("Player was null, unable to check permissions.");
                 return false;
             }
 
-            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", PluginManager.ShouldDebugBeShown);
+            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
             if (string.IsNullOrEmpty(permission))
             {
                 Log.Error("Permission checked was null.");
                 return false;
             }
 
-            Log.Debug($"Permission string: {permission}", PluginManager.ShouldDebugBeShown);
+            Log.Debug($"Permission string: {permission}", Loader.ShouldDebugBeShown);
             UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(player.UserId);
             Group group = null;
 
             if (userGroup != null)
             {
-                Log.Debug($"UserGroup: {userGroup.BadgeText}", PluginManager.ShouldDebugBeShown);
+                Log.Debug($"UserGroup: {userGroup.BadgeText}", Loader.ShouldDebugBeShown);
                 string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key;
-                Log.Debug($"GroupName: {groupName}", PluginManager.ShouldDebugBeShown);
+                Log.Debug($"GroupName: {groupName}", Loader.ShouldDebugBeShown);
                 if (Groups == null)
                 {
                     Log.Error("Permissions config is null.");
@@ -135,46 +154,46 @@ namespace Exiled.Permissions.Extensions
                     return false;
                 }
 
-                Log.Debug($"Got group.", PluginManager.ShouldDebugBeShown);
+                Log.Debug($"Got group.", Loader.ShouldDebugBeShown);
             }
             else
             {
-                Log.Debug("Player group is null, getting default..", PluginManager.ShouldDebugBeShown);
+                Log.Debug("Player group is null, getting default..", Loader.ShouldDebugBeShown);
                 group = DefaultGroup;
             }
 
             if (group != null)
             {
-                Log.Debug("Group is not null!", PluginManager.ShouldDebugBeShown);
+                Log.Debug("Group is not null!", Loader.ShouldDebugBeShown);
                 if (permission.Contains("."))
                 {
-                    Log.Debug("Group contains permission separator", PluginManager.ShouldDebugBeShown);
+                    Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
                     if (group.Permissions.Any(s => s == ".*"))
                     {
-                        Log.Debug("All permissions have been granted for all nodes.", PluginManager.ShouldDebugBeShown);
+                        Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);
                         return true;
                     }
 
                     if (group.Permissions.Contains(permission.Split('.')[0] + ".*"))
                     {
-                        Log.Debug("Check 1: True, returning.", PluginManager.ShouldDebugBeShown);
+                        Log.Debug("Check 1: True, returning.", Loader.ShouldDebugBeShown);
                         return true;
                     }
                 }
 
                 if (group.Permissions.Contains(permission) || group.Permissions.Contains("*"))
                 {
-                    Log.Debug("Check 2: True, returning.", PluginManager.ShouldDebugBeShown);
+                    Log.Debug("Check 2: True, returning.", Loader.ShouldDebugBeShown);
                     return true;
                 }
             }
             else
             {
-                Log.Debug("Group is null, returning false.", PluginManager.ShouldDebugBeShown);
+                Log.Debug("Group is null, returning false.", Loader.ShouldDebugBeShown);
                 return false;
             }
 
-            Log.Debug("No permissions found.", PluginManager.ShouldDebugBeShown);
+            Log.Debug("No permissions found.", Loader.ShouldDebugBeShown);
 
             return false;
         }

@@ -19,7 +19,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    public class CommentsObjectGraphVisitor : ChainedObjectGraphVisitor
+    internal sealed class CommentsObjectGraphVisitor : ChainedObjectGraphVisitor
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommentsObjectGraphVisitor"/> class.

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="EnvironmentType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -26,5 +26,10 @@ namespace Exiled.API.Enums
         /// The production environment, for the public.
         /// </summary>
         Production,
+
+        /// <summary>
+        /// The ptb environment, for Public Test Builds.
+        /// </summary>
+        Ptb,
     }
 }

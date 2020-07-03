@@ -35,9 +35,15 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Commands\Permissions\Add.cs" />
+    <Compile Include="Commands\Permissions\Group\Add.cs" />
+    <Compile Include="Commands\Permissions\Group\Group.cs" />
+    <Compile Include="Commands\Permissions\Permissions.cs" />
+    <Compile Include="Commands\Permissions\Reload.cs" />
+    <Compile Include="Commands\Permissions\Group\Remove.cs" />
+    <Compile Include="Commands\Permissions\Remove.cs" />
     <Compile Include="Features\Group.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="Handlers\Command.cs" />
     <Compile Include="Permissions.cs" />
     <Compile Include="Extensions\Permissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,12 +81,21 @@
     <Reference Include="Assembly-CSharp-Publicized">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
+    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="docfx.console">
+      <Version>2.56.0</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="StyleCop.Analyzers">
       <Version>1.1.118</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
@@ -90,5 +105,6 @@
       <Version>8.1.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

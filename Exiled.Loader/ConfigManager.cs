@@ -74,14 +74,14 @@ namespace Exiled.Loader
                 {
                     Log.Warn($"Exiled.Loader doesn't have default configs, generating...");
 
-                    deserializedConfigs.Add("exiled_loader", PluginManager.Config);
+                    deserializedConfigs.Add("exiled_loader", Loader.Config);
                 }
                 else
                 {
-                    PluginManager.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
+                    Loader.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
                 }
 
-                foreach (IPlugin<IConfig> plugin in PluginManager.Plugins)
+                foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
                     if (!deserializedConfigs.TryGetValue(plugin.Prefix, out deserializedConfig))
                     {
@@ -128,7 +128,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while saving configs to {Paths.Config} path: {exception}");
+                Log.Error($"An error has occurred while saving configs to {Paths.Config} path: {exception}");
 
                 return false;
             }
@@ -150,7 +150,7 @@ namespace Exiled.Loader
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"Error while serializing configs: {yamlException}");
+                Log.Error($"An error has occurred while serializing configs: {yamlException}");
 
                 return false;
             }
@@ -169,7 +169,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while reading configs from {Paths.Config} path: {exception}");
+                Log.Error($"An error has occurred while reading configs from {Paths.Config} path: {exception}");
             }
 
             return string.Empty;
@@ -205,8 +205,15 @@ namespace Exiled.Loader
         /// <param name="type">The tag type.</param>
         public static void AddTag(Type type)
         {
-            SerializerBuilder.WithTagMapping($"!{type.FullName}", type);
-            DeserializerBuilder.WithTagMapping($"!{type.FullName}", type);
+            try
+            {
+                SerializerBuilder.WithTagMapping($"!{type.FullName}", type);
+                DeserializerBuilder.WithTagMapping($"!{type.FullName}", type);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while trying to add a tag to the serializer/deserializer: {exception}");
+            }
         }
     }
 }

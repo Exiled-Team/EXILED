@@ -8,9 +8,11 @@
 namespace Exiled.Events
 {
     using System;
+
+    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Handlers;
     using Exiled.Loader;
+
     using HarmonyLib;
 
     /// <summary>
@@ -19,8 +21,7 @@ namespace Exiled.Events
     public sealed class Events : Plugin<Config>
     {
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
-        private Command command;
-        private Handlers.Round round;
+        private readonly Handlers.Round round = new Handlers.Round();
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
@@ -48,6 +49,9 @@ namespace Exiled.Events
         /// </summary>
         public static Events Instance => LazyInstance.Value;
 
+        /// <inheritdoc/>
+        public override PluginPriority Priority { get; } = PluginPriority.Last;
+
         /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.
         /// </summary>
@@ -56,45 +60,31 @@ namespace Exiled.Events
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            Log.Debug("Adding event handlers...", PluginManager.ShouldDebugBeShown);
-
-            command = new Command();
-            round = new Handlers.Round();
-
-            Handlers.Server.WaitingForPlayers += round.OnWaitingForPlayers;
-            Handlers.Server.RoundStarted += round.OnRoundStarted;
-            Handlers.Server.SendingRemoteAdminCommand += command.OnSendingRemoteAdminCommand;
-
-            Handlers.Player.ChangingRole += round.OnChangingRole;
+            base.OnEnabled();
 
             Patch();
 
+            Handlers.Server.WaitingForPlayers += round.OnWaitingForPlayers;
+            Handlers.Server.RoundStarted += round.OnRoundStarted;
+
+            Handlers.Player.ChangingRole += round.OnChangingRole;
+
             if (Config.IsNameTrackingEnabled)
-                API.Features.Server.Name = $"{API.Features.Server.Name} <color=#00000000><size=1>SM119.{RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build} (EXILED)</size></color>";
+                Server.Name = $"{Server.Name} <color=#00000000><size=1>Exiled {RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build}</size></color>";
         }
 
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            Log.Info("Disabled.");
-            Log.Debug("Removing Event Handlers...", PluginManager.ShouldDebugBeShown);
+            base.OnDisabled();
+
+            Unpatch();
 
             Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
             Handlers.Server.RoundStarted -= round.OnRoundStarted;
-            Handlers.Server.SendingRemoteAdminCommand -= command.OnSendingRemoteAdminCommand;
 
             Handlers.Player.ChangingRole -= round.OnChangingRole;
-
-            command = null;
-            round = null;
-
-            Unpatch();
         }
-
-        /// <summary>
-        /// The below is called when the Exiled loader reloads all plugins. The reloading process calls OnDisable, then OnReload, unloads the plugin and reloads the new version, then OnEnable.
-        /// </summary>
-        public override void OnReloaded() => Log.Info("Reloading events.");
 
         /// <summary>
         /// Patches all events.
@@ -106,12 +96,9 @@ namespace Exiled.Events
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
                 Harmony.PatchAll();
 
-                Log.Debug("Events patched successfully!", PluginManager.ShouldDebugBeShown);
+                Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
 #if DEBUG
-				bool disabledStatus = Harmony.DEBUG;
-
 				Harmony.DEBUG = true;
-				Harmony.DEBUG = disabledStatus;
 #endif
             }
             catch (Exception exception)
@@ -125,11 +112,11 @@ namespace Exiled.Events
         /// </summary>
         public void Unpatch()
         {
-            Log.Debug("Unpatching events...", PluginManager.ShouldDebugBeShown);
+            Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
             Harmony.UnpatchAll();
 
-            Log.Debug("All events have been unpatched complete. Goodbye!", PluginManager.ShouldDebugBeShown);
+            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
         }
     }
 }

@@ -20,6 +20,9 @@ namespace Exiled.API.Enums
         /// <inheritdoc cref="First"/>
         Lowest = First,
 
+        /// <inheritdoc cref="Lower"/>
+        Default = Lower,
+
         /// <summary>
         /// Default plugin priority.
         /// </summary>

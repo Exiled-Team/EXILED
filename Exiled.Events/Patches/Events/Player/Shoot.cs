@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
                  __instance._hub.inventory.items[itemIndex].durability <= 0.0))
                 return false;
 
-            Log.Debug("Invoking shoot event", PluginManager.ShouldDebugBeShown);
+            Log.Debug("Invoking shoot event", Loader.ShouldDebugBeShown);
 
             var shootingEventArgs = new ShootingEventArgs(Player.Get(__instance.gameObject), target, targetPos);
 
@@ -172,7 +172,7 @@ namespace Exiled.Events.Patches.Events.Player
                             num2 *= 4f;
                         }
 
-                        Log.Debug("Invoking late shoot.", PluginManager.ShouldDebugBeShown);
+                        Log.Debug("Invoking late shoot.", Loader.ShouldDebugBeShown);
 
                         var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num1, num2);
 

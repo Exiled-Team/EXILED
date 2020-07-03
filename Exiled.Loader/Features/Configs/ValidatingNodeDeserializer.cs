@@ -9,17 +9,13 @@ namespace Exiled.Loader.Features.Configs
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-
-    using Exiled.API.Features;
-    using Exiled.API.Interfaces;
-
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
 
     /// <summary>
     /// Basic configs validation.
     /// </summary>
-    public class ValidatingNodeDeserializer : INodeDeserializer
+    internal sealed class ValidatingNodeDeserializer : INodeDeserializer
     {
         private readonly INodeDeserializer nodeDeserializer;
 

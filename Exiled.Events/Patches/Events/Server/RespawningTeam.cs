@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Server
             List<Player> deadPlayers = Player.List.Where(player => player.IsDead || player.IsOverwatchEnabled).ToList();
             __instance.playersToNTF.Clear();
 
-            Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Loader.PluginManager.ShouldDebugBeShown);
+            Log.Debug($"Respawn: Got players: {deadPlayers.Count}", Exiled.Loader.Loader.ShouldDebugBeShown);
 
             if (Events.Instance.Config.IsRespawnRandom)
                 deadPlayers.ShuffleList();

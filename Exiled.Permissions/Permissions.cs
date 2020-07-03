@@ -9,7 +9,6 @@ namespace Exiled.Permissions
 {
     using System;
     using Exiled.API.Features;
-    using Exiled.Permissions.Events;
 
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
@@ -17,7 +16,6 @@ namespace Exiled.Permissions
     public sealed class Permissions : Plugin<Config>
     {
         private static readonly Lazy<Permissions> LazyInstance = new Lazy<Permissions>(() => new Permissions());
-        private Command command;
 
         private Permissions()
         {
@@ -31,9 +29,7 @@ namespace Exiled.Permissions
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            command = new Command();
-
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += command.OnSendingRemoteAdminCommand;
+            base.OnEnabled();
 
             Extensions.Permissions.Create();
             Extensions.Permissions.Reload();
@@ -42,16 +38,9 @@ namespace Exiled.Permissions
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            base.OnDisabled();
+
             Extensions.Permissions.Groups.Clear();
-
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand -= command.OnSendingRemoteAdminCommand;
-
-            command = null;
-        }
-
-        /// <inheritdoc/>
-        public override void OnReloaded()
-        {
         }
     }
 }

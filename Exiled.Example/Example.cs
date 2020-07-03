@@ -24,25 +24,22 @@ namespace Exiled.Example
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            base.OnEnabled();
+
             RegisterEvents();
 
             Log.Warn($"I correctly read the string config, its value is: {Config.String}");
             Log.Warn($"I correctly read the int config, its value is: {Config.Int}");
             Log.Warn($"I correctly read the float config, its value is: {Config.Float}");
-
-            Log.Info($"{Name} has been enabled!");
         }
 
         /// <inheritdoc/>
         public override void OnDisabled()
         {
+            base.OnDisabled();
+
             UnregisterEvents();
-
-            Log.Info($"{Name} has been disabled!");
         }
-
-        /// <inheritdoc/>
-        public override void OnReloaded() => Log.Info($"{Name} has been reloaded!");
 
         /// <summary>
         /// Registers the plugin events.

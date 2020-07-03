@@ -8,6 +8,11 @@
 namespace Exiled.API.Interfaces
 {
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+
+    using CommandSystem;
+
     using Exiled.API.Enums;
 
     /// <summary>
@@ -18,6 +23,11 @@ namespace Exiled.API.Interfaces
         where TConfig : IConfig
     {
         /// <summary>
+        /// Gets the plugin assembly.
+        /// </summary>
+        Assembly Assembly { get; }
+
+        /// <summary>
         /// Gets the plugin name.
         /// </summary>
         string Name { get; }
@@ -26,6 +36,16 @@ namespace Exiled.API.Interfaces
         /// Gets the plugin prefix.
         /// </summary>
         string Prefix { get; }
+
+        /// <summary>
+        /// Gets the plugin author.
+        /// </summary>
+        string Author { get; }
+
+        /// <summary>
+        /// Gets the plugin commands.
+        /// </summary>
+        Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; }
 
         /// <summary>
         /// Gets the plugin priority.
@@ -62,5 +82,15 @@ namespace Exiled.API.Interfaces
         /// Fired after reloading the plugin.
         /// </summary>
         void OnReloaded();
+
+        /// <summary>
+        /// Fired before registering commands.
+        /// </summary>
+        void OnRegisteringCommands();
+
+        /// <summary>
+        /// Fired before unregistering configs.
+        /// </summary>
+        void OnUnregisteringCommands();
     }
 }
