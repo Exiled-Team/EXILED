@@ -134,6 +134,8 @@ namespace Exiled.Events.Patches.Events.Server
 
                     if (roundSummary != null)
                     {
+                        newList.scps_except_zombies -= newList.zombies;
+                        
                         var roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
