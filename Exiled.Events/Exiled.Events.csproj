@@ -282,7 +282,6 @@
     <Compile Include="Patches\Events\Server\RespawningTeam.cs" />
     <Compile Include="Patches\Generic\GhostMode.cs" />
     <Compile Include="Patches\Generic\Scp173BeingLooked.cs" />
-    <Compile Include="Patches\Generic\SetRandomRoles.cs" />
     <Compile Include="Patches\Events\Player\TriggeringTesla.cs" />
     <Compile Include="Patches\Events\Player\UsingMedicalItem.cs" />
     <Compile Include="Patches\Events\Server\WaitingForPlayers.cs" />
