@@ -668,7 +668,6 @@ namespace EXILED.Extensions
 		/// Set the current amount of health of a <see cref="ReferenceHub">player</see> to their maximum amount of health.
 		/// </summary>
 		/// <param name="player"></param>
-		/// <param name="amount"></param>
 		public static void Heal(this ReferenceHub player) => player.playerStats.Health = player.playerStats.maxHP;
 		
 		/// <summary>
@@ -678,12 +677,13 @@ namespace EXILED.Extensions
 		/// <returns>float</returns>
 		public static float GetMaxHealth(this ReferenceHub player) => player.playerStats.maxHP;
 
-		/// <summary>
-		/// Sets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
-		/// </summary>
-		/// <param name="player"></param>
-		/// <returns>float</returns>
-		public static void SetMaxHealth(this ReferenceHub player, float amount) => player.playerStats.maxHP = (int)amount;
+        /// <summary>
+        /// Sets the maximum amount of health of a <see cref="ReferenceHub">player</see>.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="amount"></param>
+        /// <returns>float</returns>
+        public static void SetMaxHealth(this ReferenceHub player, float amount) => player.playerStats.maxHP = (int)amount;
 
 		/// <summary>
 		/// Gets the adrenaline health of a <see cref="ReferenceHub">player</see>.

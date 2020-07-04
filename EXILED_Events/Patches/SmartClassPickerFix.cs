@@ -24,7 +24,7 @@ namespace EXILED.Patches
 				bool flag = false;
 				int num = 0;
 				float[] array2 = new float[] { 0f, 0.4f, 0.6f, 0.5f };
-				__instance.laterJoinNextIndex = 0;
+				__instance._laterJoinNextIndex = 0;
 				int r = EventPlugin.Gen.Next(1, 100);
 
 				int i = 0;
@@ -35,7 +35,7 @@ namespace EXILED.Patches
 					RoleType roleType = (RoleType)((__instance.ForceClass < RoleType.Scp173)
 						? __instance.FindRandomIdUsingDefinedTeam(__instance.ClassTeamQueue[i++])
 						: ((int)__instance.ForceClass));
-					__instance.laterJoinNextIndex++;
+					__instance._laterJoinNextIndex++;
 					if (__instance.Classes.CheckBounds(forcedClass))
 					{
 						roleType = forcedClass;
