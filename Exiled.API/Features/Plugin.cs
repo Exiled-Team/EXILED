@@ -9,7 +9,6 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     using CommandSystem;
@@ -17,8 +16,6 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Interfaces;
-
-    using GameCore;
 
     using RemoteAdmin;
 
@@ -36,7 +33,7 @@ namespace Exiled.API.Features
         {
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
-            Author = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly, typeof(AssemblyCompanyAttribute), false)).Company;
+            Author = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly, typeof(AssemblyCompanyAttribute), false))?.Company;
             Version = Assembly.GetName().Version;
         }
 
