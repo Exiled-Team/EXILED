@@ -13,7 +13,7 @@ namespace EXILED.Patches
 
 			try
 			{
-				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color);
+				Events.InvokeConsoleCommand(__instance.gameObject, query, encrypted, out string returnMessage, out string color, out bool allow);
 
 				if (string.IsNullOrEmpty(color))
 					color = "white";
@@ -21,7 +21,7 @@ namespace EXILED.Patches
 				if (!string.IsNullOrEmpty(returnMessage))
 					__instance.GCT.SendToClient(__instance.connectionToClient, returnMessage, color);
 
-				return false;
+				return allow;
 			}
 			catch (Exception exception)
 			{

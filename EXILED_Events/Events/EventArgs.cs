@@ -370,12 +370,13 @@ namespace EXILED
 		{
 			Encrypted = encrypted;
 		}
-
+		
 		public ReferenceHub Player { get; set; }
 		public string Command { get; set; }
 		public string ReturnMessage { get; set; }
 		public bool Encrypted { get; private set; }
 		public string Color { get; set; }
+		public bool Allow { get; set; }
 	}
 
 	public class DropItemEvent : EventArgs

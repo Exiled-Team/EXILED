@@ -281,12 +281,13 @@ namespace EXILED
 		public static event OnConsoleCommand ConsoleCommandEvent;
 		public delegate void OnConsoleCommand(ConsoleCommandEvent ev);
 
-		public static void InvokeConsoleCommand(GameObject player, string command, bool isEncrypted, out string returnMessage, out string color)
+		public static void InvokeConsoleCommand(GameObject player, string command, bool isEncrypted, out string returnMessage, out string color, out bool allow)
 		{
 			if (ConsoleCommandEvent == null)
 			{
-				returnMessage = "Command not found.";
-				color = "red";
+				returnMessage = "";
+				color = "";
+				allow = true;
 				return;
 			}
 
@@ -294,14 +295,15 @@ namespace EXILED
 			{
 				Command = command,
 				Player = player.GetPlayer(),
-				ReturnMessage = "Command not found.",
-				Color = "red"
+				ReturnMessage = "",
+				Color = "",
+				Allow = true
 			};
 
 			ConsoleCommandEvent.InvokeSafely(ev);
-
 			returnMessage = ev.ReturnMessage;
 			color = ev.Color;
+			allow = ev.Allow;
 		}
 
 		public static event PlayerHurt PlayerHurtEvent;
