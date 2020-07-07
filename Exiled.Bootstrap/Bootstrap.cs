@@ -54,7 +54,7 @@ namespace Exiled.Boostrap
                             Assembly.LoadFrom(Path.Combine(rootPath, "Exiled.Loader.dll"))
                                 .GetType("Exiled.Loader.Loader")
                                 .GetMethod("Run")
-                                .Invoke(null, new object[] { new Assembly[] { Assembly.LoadFrom(Path.Combine(dependenciesPath, "Exiled.API.dll")), Assembly.LoadFrom(Path.Combine(dependenciesPath, "YamlDotNet.dll")) } });
+                                ?.Invoke(null, new object[] { new Assembly[] { Assembly.LoadFrom(Path.Combine(dependenciesPath, "Exiled.API.dll")), Assembly.LoadFrom(Path.Combine(dependenciesPath, "YamlDotNet.dll")) } });
 
                             IsLoaded = true;
                         }
