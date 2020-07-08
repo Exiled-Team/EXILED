@@ -132,6 +132,7 @@ namespace EXILED.Patches
 				}
 				if (roundSummary._roundEnded)
 				{
+					FriendlyFireConfig.PauseDetector = true;
 					RoundSummary.LeadingTeam leadingTeam = RoundSummary.LeadingTeam.Draw;
 					if (num1 > 0)
 					{
