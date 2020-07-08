@@ -161,7 +161,10 @@ namespace EXILED.Patches
 						yield return 0.0f;
 					int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 					if (roundSummary != null)
+					{
+						Radio.roundEnded = true;
 						roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, newList, leadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, timeToRoundRestart);
+					}
 					for (int i2 = 0; i2 < 50 * (timeToRoundRestart - 1); ++i2)
 						yield return 0.0f;
 					roundSummary.RpcDimScreen();
