@@ -48,7 +48,8 @@ namespace EXILED.Extensions
                 // 2. System.Reflection.MonoMethod.InternalInvoke
                 var second = GetStackTrace(ex.InnerException, 2, false);
                 if (second != null)
-                    result += string.Format(endOfInnerExcetionFinalTemplate, second, endOfInnerExceptionStack);
+                    // change the order of exceptions according to the call stack
+                    result = second + string.Format(endOfInnerExcetionFinalTemplate, result, endOfInnerExceptionStack);
                 // insert a new line for a better view of the stack
                 Log.Error(Environment.NewLine + result);
             }
