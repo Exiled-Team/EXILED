@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
     using System;
     using LiteNetLib;
     using LiteNetLib.Utils;
+
     /// <summary>
     /// Contains all informations before pre-autenticating a player.
     /// </summary>
@@ -32,30 +33,37 @@ namespace Exiled.Events.EventArgs
             Country = country;
             IsAllowed = isAllowed;
         }
+
         /// <summary>
         /// Gets the player's user id.
         /// </summary>
         public string UserId { get; private set; }
+
         /// <summary>
         /// Gets the reader starting position for reading the preauth.
         /// </summary>
         public int ReaderStartPosition { get; private set; }
+
         /// <summary>
         /// Gets the flags.
         /// </summary>
         public byte Flags { get; private set; }
+
         /// <summary>
         /// Gets the player's country.
         /// </summary>
         public string Country { get; private set; }
+
         /// <summary>
         /// Gets the connection request.
         /// </summary>
         public ConnectionRequest Request { get; private set; }
+
         /// <summary>
         /// Gets a value indicating whether the player can be authenticated or not.
         /// </summary>
         public bool IsAllowed { get; private set; }
+
         /// <summary>
         /// Delays the connection.
         /// </summary>
@@ -67,12 +75,14 @@ namespace Exiled.Events.EventArgs
                 throw new Exception("Delay duration must be between 1 and 25 seconds.");
             Reject(RejectionReason.Delay, isForced, null, 0, seconds);
         }
+
         /// <summary>
         /// Rejects the player and redirects them to another server port.
         /// </summary>
         /// <param name="port">The new server port.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Redirect(ushort port, bool isForced) => Reject(RejectionReason.Redirect, isForced, null, 0, 0, port);
+
         /// <summary>
         /// Rejects a player who's trying to authenticate.
         /// </summary>
@@ -81,9 +91,9 @@ namespace Exiled.Events.EventArgs
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void RejectBanned(string banReason, DateTime expiration, bool isForced)
         {
-            Reject(RejectionReason.Banned, isForced, reason, expiration.Ticks);
+            Reject(RejectionReason.Banned, isForced, banReason, expiration.Ticks);
         }
-        
+
         /// <summary>
         /// Rejects a player who's trying to authenticate.
         /// </summary>
@@ -92,9 +102,9 @@ namespace Exiled.Events.EventArgs
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void RejectBanned(string banReason, long expiration, bool isForced)
         {
-            Reject(RejectionReason.Banned, isForced, reason, expiration);
+            Reject(RejectionReason.Banned, isForced, banReason, expiration);
         }
-        
+
         /// <summary>
         /// Rejects a player who's trying to authenticate.
         /// </summary>
@@ -110,42 +120,35 @@ namespace Exiled.Events.EventArgs
             else
                 Request.Reject(writer);
         }
-        /// <summary>
-        /// Rejects a player who's trying to authenticate.
-        /// </summary>
-        /// <param name="rejectionReason">The rejection reason.</param>
-        /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Reject(RejectionReason rejectionReason, bool isForced)
-        {
-            Reject(rejectionReason, isForced);
-        }
+
         /// <summary>
         /// Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="rejectionReason">The custom rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Reject(string reason, bool isForced)
+        public void Reject(string rejectionReason, bool isForced)
         {
-            Reject(RejectionReason.Custom, isForced, reason);
+            Reject(RejectionReason.Custom, isForced, rejectionReason);
         }
+
         /// <summary>
         /// Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="rejectionReason">The rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        /// <param name="reason">The custom rejection reason (Banned and Custom reasons only).</param>
+        /// <param name="customReason">The custom rejection reason (Banned and Custom reasons only).</param>
         /// <param name="expiration">The ban expiration ticks (Banned reason only).</param>
         /// <param name="seconds">The delay in seconds (Delay reason only).</param>
         /// <param name="port">The redirection port (Redirect reason only).</param>
         public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
         {
-            if (reason != null && reason.Length > 400)
-                throw new InvalidArgumentException("Reason can't be longer than 400 characters.");
+            if (customReason != null && customReason.Length > 400)
+                throw new ArgumentOutOfRangeException(nameof(rejectionReason), "Reason can't be longer than 400 characters.");
             if (!IsAllowed)
                 return;
             IsAllowed = false;
             NetDataWriter rejectData = new NetDataWriter();
-            switch (reason)
+            switch (rejectionReason)
             {
                 case RejectionReason.Banned:
                     rejectData.Put(expiration);
@@ -154,20 +157,25 @@ namespace Exiled.Events.EventArgs
                 case RejectionReason.Custom:
                     rejectData.Put(customReason);
                     break;
-                
+
                 case RejectionReason.Delay:
                     rejectData.Put(seconds);
                     break;
-                
+
                 case RejectionReason.Redirect:
                     rejectData.Put(port);
                     break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rejectionReason), rejectionReason, null);
             }
+
             if (isForced)
                 Request.RejectForce(rejectData);
             else
                 Request.Reject(rejectData);
         }
+
         /// <summary>
         /// Disallows the connection without sending any reason.
         /// </summary>
