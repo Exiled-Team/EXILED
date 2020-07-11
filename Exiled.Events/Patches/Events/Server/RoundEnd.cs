@@ -36,15 +36,15 @@ namespace Exiled.Events.Patches.Events.Server
             RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || PlayerManager.players.Count < 2)
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
                     yield return 0.0f;
+                API.Features.Log.Error($"Passed round check.. Round ended: {roundSummary._roundEnded} - Round Started?: {RoundSummary.RoundInProgress()}");
                 yield return 0.0f;
                 RoundSummary.SumInfo_ClassList newList = default;
                 foreach (GameObject player in PlayerManager.players)
                 {
                     if (!(player == null))
                     {
-                        Dictionary<GameObject, ReferenceHub> hubs = new Dictionary<GameObject, ReferenceHub>(20, new ReferenceHub.GameObjectComparer());
                         CharacterClassManager component = player.GetComponent<CharacterClassManager>();
                         if (component.Classes.CheckBounds(component.CurClass))
                         {
@@ -91,6 +91,12 @@ namespace Exiled.Events.Patches.Events.Server
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
+                    API.Features.Log.Error($"Set to true: 1");
+                    roundSummary._roundEnded = true;
+                }
+                else if (num1 == 0 && PlayerManager.localPlayer.GetComponent<MTFRespawn>().MtfRespawnTickets == 0)
+                {
+                    API.Features.Log.Error($"Set to true: 2");
                     roundSummary._roundEnded = true;
                 }
                 else
@@ -103,7 +109,10 @@ namespace Exiled.Events.Patches.Events.Server
                     if (num3 > 0)
                         ++num6;
                     if (num6 <= 1)
+                    {
+                        API.Features.Log.Error($"Set to true: 3");
                         roundSummary._roundEnded = true;
+                    }
                 }
 
                 var endingRoundEventArgs = new EndingRoundEventArgs(RoundSummary.LeadingTeam.Draw, roundSummary._roundEnded);
@@ -121,9 +130,11 @@ namespace Exiled.Events.Patches.Events.Server
                 Server.OnEndingRound(endingRoundEventArgs);
 
                 roundSummary._roundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
+                API.Features.Log.Error($"EventCheck: {roundSummary._roundEnded}");
 
                 if (roundSummary._roundEnded)
                 {
+                    API.Features.Log.Error($"If check passed, round is over.");
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
                     Console.AddLog(str, Color.gray, false);
                     ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);
@@ -149,6 +160,8 @@ namespace Exiled.Events.Patches.Events.Server
                     for (i1 = 0; i1 < 50; ++i1)
                         yield return 0.0f;
                     PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
+                    ReferenceHub.LocalHub.characterClassManager.RoundStarted = false;
+                    ReferenceHub.LocalHub.characterClassManager.NetworkRoundStarted = false;
                     yield break;
                 }
             }

@@ -31,11 +31,17 @@ namespace Exiled.Events.Handlers
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();
+            ReferenceHub.LocalHub.characterClassManager.RoundStarted = false;
+            ReferenceHub.LocalHub.characterClassManager.NetworkRoundStarted = false;
+            RoundSummary.RoundLock = false;
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
+            ReferenceHub.LocalHub.characterClassManager.RoundStarted = true;
+            ReferenceHub.LocalHub.characterClassManager.NetworkRoundStarted = true;
+
             foreach (API.Features.Player player in API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)
