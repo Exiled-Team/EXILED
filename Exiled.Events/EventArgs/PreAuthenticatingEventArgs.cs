@@ -1,16 +1,14 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="PreAuthenticatingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
 namespace Exiled.Events.EventArgs
 {
     using System;
     using LiteNetLib;
     using LiteNetLib.Utils;
-
     /// <summary>
     /// Contains all informations before pre-autenticating a player.
     /// </summary>
@@ -34,125 +32,145 @@ namespace Exiled.Events.EventArgs
             Country = country;
             IsAllowed = isAllowed;
         }
-
         /// <summary>
         /// Gets the player's user id.
         /// </summary>
         public string UserId { get; private set; }
-
         /// <summary>
-        /// Gets the reader starting position.
+        /// Gets the reader starting position for reading the preauth.
         /// </summary>
         public int ReaderStartPosition { get; private set; }
-
         /// <summary>
         /// Gets the flags.
         /// </summary>
         public byte Flags { get; private set; }
-
         /// <summary>
         /// Gets the player's country.
         /// </summary>
         public string Country { get; private set; }
-
         /// <summary>
         /// Gets the connection request.
         /// </summary>
         public ConnectionRequest Request { get; private set; }
-
         /// <summary>
         /// Gets a value indicating whether the player can be authenticated or not.
         /// </summary>
         public bool IsAllowed { get; private set; }
-
         /// <summary>
         /// Delays the connection.
         /// </summary>
         /// <param name="seconds">The delay in seconds.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Delay(byte seconds, bool isForced = false)
+        public void Delay(byte seconds, bool isForced)
         {
             if (seconds < 1 && seconds > 25)
                 throw new Exception("Delay duration must be between 1 and 25 seconds.");
-
-            Reject(RejectionReason.Delay, string.Empty, isForced, 0, seconds);
+            Reject(RejectionReason.Delay, isForced, null, 0, seconds);
         }
-
         /// <summary>
-        /// Reject the player and redirects him to another server port.
+        /// Rejects the player and redirects them to another server port.
         /// </summary>
         /// <param name="port">The new server port.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Redirect(ushort port, bool isForced = false) => Reject(RejectionReason.Redirect, string.Empty, isForced, 0, 0, port);
-
+        public void Redirect(ushort port, bool isForced) => Reject(RejectionReason.Redirect, isForced, null, 0, 0, port);
         /// <summary>
-        /// Reject a player who's trying to authenticate.
+        /// Rejects a player who's trying to authenticate.
+        /// </summary>
+        /// <param name="banReason">The ban reason.</param>
+        /// <param name="expiration">The ban expiration time.</param>
+        /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
+        public void RejectBanned(string banReason, DateTime expiration, bool isForced)
+        {
+            Reject(RejectionReason.Banned, isForced, reason, expiration.Ticks);
+        }
+        
+        /// <summary>
+        /// Rejects a player who's trying to authenticate.
+        /// </summary>
+        /// <param name="banReason">The ban reason.</param>
+        /// <param name="expiration">The ban expiration time in .NET Ticks.</param>
+        /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
+        public void RejectBanned(string banReason, long expiration, bool isForced)
+        {
+            Reject(RejectionReason.Banned, isForced, reason, expiration);
+        }
+        
+        /// <summary>
+        /// Rejects a player who's trying to authenticate.
         /// </summary>
         /// <param name="writer">The <see cref="NetDataWriter"/> instance.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Reject(NetDataWriter writer, bool isForced = false)
+        public void Reject(NetDataWriter writer, bool isForced)
         {
             if (!IsAllowed)
                 return;
-
             IsAllowed = false;
-
             if (isForced)
                 Request.RejectForce(writer);
             else
                 Request.Reject(writer);
         }
-
         /// <summary>
-        /// Reject a player who's trying to authenticate.
+        /// Rejects a player who's trying to authenticate.
         /// </summary>
-        /// <param name="rejectionType">The rejection type.</param>
-        /// <param name="reason">The rejection reason.</param>
+        /// <param name="rejectionReason">The rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        /// <param name="expiration">The ban expiration date.</param>
-        public void Reject(RejectionReason rejectionType, string reason = null, bool isForced = false, DateTime expiration = default)
+        public void Reject(RejectionReason rejectionReason, bool isForced)
         {
-            Reject(rejectionType, reason, isForced, expiration.Ticks);
+            Reject(rejectionReason, isForced);
         }
-
         /// <summary>
-        /// Reject a player who's trying to authenticate.
+        /// Rejects a player who's trying to authenticate.
         /// </summary>
-        /// <param name="rejectionType">The rejection type.</param>
-        /// <param name="reason">The rejection reason.</param>
+        /// <param name="rejectionReason">The custom rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        /// <param name="expiration">The ban expiration ticks.</param>
-        /// <param name="seconds">The delay in seconds.</param>
-        /// <param name="port">The redirection port.</param>
-        public void Reject(RejectionReason rejectionType, string reason = null, bool isForced = false, long expiration = 0, byte seconds = 0, ushort port = 0)
+        public void Reject(string reason, bool isForced)
         {
-            if (string.IsNullOrEmpty(reason) && reason.Length > 400)
+            Reject(RejectionReason.Custom, isForced, reason);
+        }
+        /// <summary>
+        /// Rejects a player who's trying to authenticate.
+        /// </summary>
+        /// <param name="rejectionReason">The rejection reason.</param>
+        /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
+        /// <param name="reason">The custom rejection reason (Banned and Custom reasons only).</param>
+        /// <param name="expiration">The ban expiration ticks (Banned reason only).</param>
+        /// <param name="seconds">The delay in seconds (Delay reason only).</param>
+        /// <param name="port">The redirection port (Redirect reason only).</param>
+        public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
+        {
+            if (reason != null && reason.Length > 400)
                 throw new Exception("Reason can't be longer than 400 characters.");
-
             if (!IsAllowed)
                 return;
-
             IsAllowed = false;
-
             NetDataWriter rejectData = new NetDataWriter();
-
-            rejectData.Put((byte)rejectionType);
-
-            if (rejectionType == RejectionReason.Banned)
-                rejectData.Put(expiration);
-
-            rejectData.Put(reason);
-
-            if (rejectionType == RejectionReason.Delay)
-                rejectData.Put(seconds);
-
-            if (rejectionType == RejectionReason.Redirect)
-                rejectData.Put(port);
-
+            switch (reason)
+            {
+                case RejectionReason.Banned:
+                    rejectData.Put(expiration);
+                    rejectData.Put(customReason);
+                    break;
+                case RejectionReason.Custom:
+                    rejectData.Put(customReason);
+                    break;
+                
+                case RejectionReason.Delay:
+                    rejectData.Put(seconds);
+                    break;
+                
+                case RejectionReason.Redirect:
+                    rejectData.Put(port);
+                    break;
+            }
             if (isForced)
                 Request.RejectForce(rejectData);
             else
                 Request.Reject(rejectData);
         }
+        /// <summary>
+        /// Disallows the connection without sending any reason.
+        /// </summary>
+        public void Disallow() => IsAllowed = false;
     }
 }
