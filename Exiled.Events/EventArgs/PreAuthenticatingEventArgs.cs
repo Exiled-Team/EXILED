@@ -66,9 +66,9 @@ namespace Exiled.Events.EventArgs
         public bool IsAllowed { get; private set; }
 
         /// <summary>
-        /// Delays the rejection.
+        /// Delays the connection.
         /// </summary>
-        /// <param name="seconds">The seconds delay.</param>
+        /// <param name="seconds">The delay in seconds.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
         public void Delay(byte seconds, bool isForced = false)
         {
@@ -109,7 +109,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="rejectionType">The rejection type.</param>
         /// <param name="reason">The rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        /// <param name="expiration">The rejection expiration date.</param>
+        /// <param name="expiration">The ban expiration date.</param>
         public void Reject(RejectionReason rejectionType, string reason = null, bool isForced = false, DateTime expiration = default)
         {
             Reject(rejectionType, reason, isForced, expiration.Ticks);
@@ -121,8 +121,8 @@ namespace Exiled.Events.EventArgs
         /// <param name="rejectionType">The rejection type.</param>
         /// <param name="reason">The rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        /// <param name="expiration">The rejection expiration ticks.</param>
-        /// <param name="seconds">The seconds delay.</param>
+        /// <param name="expiration">The ban expiration ticks.</param>
+        /// <param name="seconds">The delay in seconds.</param>
         /// <param name="port">The redirection port.</param>
         public void Reject(RejectionReason rejectionType, string reason = null, bool isForced = false, long expiration = 0, byte seconds = 0, ushort port = 0)
         {
