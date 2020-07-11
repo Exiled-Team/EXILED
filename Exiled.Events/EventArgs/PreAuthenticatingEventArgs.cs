@@ -140,7 +140,7 @@ namespace Exiled.Events.EventArgs
         public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
         {
             if (reason != null && reason.Length > 400)
-                throw new Exception("Reason can't be longer than 400 characters.");
+                throw new InvalidArgumentException("Reason can't be longer than 400 characters.");
             if (!IsAllowed)
                 return;
             IsAllowed = false;
