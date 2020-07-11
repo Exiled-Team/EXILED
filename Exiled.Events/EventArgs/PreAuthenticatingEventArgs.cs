@@ -154,6 +154,7 @@ namespace Exiled.Events.EventArgs
                     rejectData.Put(expiration);
                     rejectData.Put(customReason);
                     break;
+
                 case RejectionReason.Custom:
                     rejectData.Put(customReason);
                     break;
@@ -177,7 +178,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Disallows the connection without sending any reason.
+        /// Disallows the connection without sending any reason. Should only be used when the connection has already been terminated by the plugin itself.
         /// </summary>
         public void Disallow() => IsAllowed = false;
     }
