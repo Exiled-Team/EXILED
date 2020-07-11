@@ -63,6 +63,7 @@ namespace Exiled.API.Features
         {
             { typeof(RemoteAdminCommandHandler), new Dictionary<Type, ICommand>() },
             { typeof(GameConsoleCommandHandler), new Dictionary<Type, ICommand>() },
+            { typeof(ClientCommandHandler), new Dictionary<Type, ICommand>() },
         };
 
         /// <inheritdoc/>
@@ -104,6 +105,7 @@ namespace Exiled.API.Features
                     CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
                     GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
 
+                    Commands[typeof(ClientCommandHandler)][type] = command;
                     Commands[typeof(RemoteAdminCommandHandler)][type] = command;
                     Commands[typeof(GameConsoleCommandHandler)][type] = command;
 
