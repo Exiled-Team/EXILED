@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1313
