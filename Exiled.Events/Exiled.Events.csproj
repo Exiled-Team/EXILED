@@ -39,7 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>..\Refs\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
@@ -199,6 +199,7 @@
     <Compile Include="EventArgs\FailingEscapePocketDimensionEventArgs.cs" />
     <Compile Include="EventArgs\StartingRecallEventArgs.cs" />
     <Compile Include="EventArgs\FinishingRecallEventArgs.cs" />
+    <Compile Include="Extensions\Event.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Round.cs" />
@@ -320,7 +321,7 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
          Other similar extension points exist, see Microsoft.Common.targets.
     <Target Name="BeforeBuild">
     </Target>

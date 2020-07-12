@@ -7,14 +7,15 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
+
     using static Exiled.Events.Events;
 
     /// <summary>
     /// SCP-079 related events.
     /// </summary>
-    public class Scp079
+    public static class Scp079
     {
         /// <summary>
         /// Invoked before gaining experience with SCP-079

@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
+      <HintPath>..\Refs\Assembly-CSharp-Publicized.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
@@ -69,7 +69,6 @@
     <Compile Include="Enums\PluginPriority.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\ZoneType.cs" />
-    <Compile Include="Extensions\Event.cs" />
     <Compile Include="Extensions\Item.cs" />
     <Compile Include="Extensions\Role.cs" />
     <Compile Include="Features\Player.cs" />

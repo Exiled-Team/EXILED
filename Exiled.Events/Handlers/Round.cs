@@ -55,7 +55,7 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.Player == null || ev.Player.IsHost || string.IsNullOrEmpty(ev.Player.UserId))
+            if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
                 return;
 
             if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)

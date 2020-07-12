@@ -7,14 +7,15 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
+
     using static Exiled.Events.Events;
 
     /// <summary>
     /// Map related events.
     /// </summary>
-    public class Map
+    public static class Map
     {
         /// <summary>
         /// Invoked before placing decals.
