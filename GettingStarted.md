@@ -61,10 +61,10 @@ And the output would be:
 3
 
 ```
-(Of course dis-including anything besides the actual responses)
+(Of course excluding anything besides the actual responses)
 Without doing this it would have just went to 1 and then to 2 again.
 
-### ReferenceHubs + Events
+### Players + Events
 Now that we are done with getting our plugins **Dynamically Updatable** we can focus on trying to interact with players with events!
 
 An event is pretty cool, it allows SCP:SL to communicate with Exiled and then with Exiled to all the plugins!
@@ -113,16 +113,7 @@ Now we have successfully hooked to a player join event which fires when ever a p
 
 This will allow us to broadcast a message to them, so why don't we?
 
-We are going to make another class called 'Extensions' this will allow us to store some functions that would take up way to much space otherwise in classes.
-
-```csharp    
-public static class Extensions
-{
-    public static void Broadcast(this ReferenceHub rh, uint time, string message) =>
-        rh.GetComponent<Broadcast>().TargetAddElement(rh.scp079PlayerScript.connectionToClient, message, time, false);
-}
-```
-That will be our broadcast function we will use. Now lets add it to our event.
+EXILED already provides a broadcast function, so let's use it in our event:
 
 ```csharp
 public class EventHandlers
