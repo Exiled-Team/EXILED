@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System;
+
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1313
@@ -23,8 +25,9 @@ namespace Exiled.Events.Patches.Events.Map
         /// <summary>
         /// Gets a value indicating whether stops the Announcement Event from triggering.
         /// Prevents an issue where the event is constantly called after Decon occurs.
+        /// NOTE: Commented out as it should no longer be necessary to use this, however it will remain here in the code during testing, in case it is again in the future.
         /// </summary>
-        public static bool StopAnnouncing { get; internal set; }
+        /// public static bool StopAnnouncing { get; internal set; }
 
         /// <summary>
         /// Prefix of <see cref="DecontaminationController.UpdateSpeaker"/>.
@@ -34,17 +37,12 @@ namespace Exiled.Events.Patches.Events.Map
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
         public static bool Prefix(DecontaminationController __instance, bool hard)
         {
-            if (StopAnnouncing)
-                return true;
-
             var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
 
             __instance._nextPhase = ev.Id;
 
-            if (ev.Id == 5)
-                StopAnnouncing = true;
             return ev.IsAllowed;
         }
     }

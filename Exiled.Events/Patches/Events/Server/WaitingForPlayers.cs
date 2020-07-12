@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Server
         {
             if (q == "Waiting for players...")
             {
-                AnnouncingDecontamination.StopAnnouncing = false;
                 Server.OnWaitingForPlayers();
             }
         }
