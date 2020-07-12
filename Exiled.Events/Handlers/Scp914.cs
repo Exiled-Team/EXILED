@@ -7,14 +7,14 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
     using static Exiled.Events.Events;
 
     /// <summary>
     /// Handles SCP-914 related events.
     /// </summary>
-    public class Scp914
+    public static class Scp914
     {
         /// <summary>
         /// Invoked before upgrading items in the SCP-914 machine.

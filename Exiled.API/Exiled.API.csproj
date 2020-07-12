@@ -69,7 +69,6 @@
     <Compile Include="Enums\PluginPriority.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\ZoneType.cs" />
-    <Compile Include="Extensions\Event.cs" />
     <Compile Include="Extensions\Item.cs" />
     <Compile Include="Extensions\Role.cs" />
     <Compile Include="Features\Player.cs" />

@@ -7,14 +7,14 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
     using static Exiled.Events.Events;
 
     /// <summary>
     /// Scp049 related events.
     /// </summary>
-    public class Scp049
+    public static class Scp049
     {
         /// <summary>
         /// Invoked before a player is infected.

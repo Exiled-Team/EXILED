@@ -37,7 +37,8 @@ namespace Exiled.Events
         /// </summary>
         /// <typeparam name="TEventArgs">The <see cref="EventHandler{TEventArgs}"/> type.</typeparam>
         /// <param name="ev">The <see cref="EventHandler{TEventArgs}"/> instance.</param>
-        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev);
+        public delegate void CustomEventHandler<TEventArgs>(TEventArgs ev)
+            where TEventArgs : System.EventArgs;
 
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate, with empty parameters.
@@ -94,12 +95,15 @@ namespace Exiled.Events
             try
             {
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
-                Harmony.PatchAll();
-
-                Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
 #if DEBUG
-				Harmony.DEBUG = true;
+                var lastDebugStatus = Harmony.DEBUG;
+                Harmony.DEBUG = true;
 #endif
+                Harmony.PatchAll();
+#if DEBUG
+                Harmony.DEBUG = lastDebugStatus;
+#endif
+                Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception exception)
             {

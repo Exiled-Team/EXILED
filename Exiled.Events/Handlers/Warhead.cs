@@ -7,14 +7,14 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
     using static Exiled.Events.Events;
 
     /// <summary>
     /// Handles warhead related events.
     /// </summary>
-    public class Warhead
+    public static class Warhead
     {
         /// <summary>
         /// Invoked before stopping the warhead.
