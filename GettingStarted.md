@@ -111,8 +111,6 @@ public class EventHandlers
 ```
 Now we have successfully hooked to a player join event which fires when ever a player joins!
 
-This will allow us to broadcast a message to them, so why don't we?
-
 EXILED already provides a broadcast function, so let's use it in our event:
 
 ```csharp
