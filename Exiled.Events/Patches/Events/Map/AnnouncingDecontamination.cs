@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Map
         /// Prevents an issue where the event is constantly called after Decon occurs.
         /// NOTE: Commented out as it should no longer be necessary to use this, however it will remain here in the code during testing, in case it is again in the future.
         /// </summary>
-        /// public static bool StopAnnouncing { get; internal set; }
+        public static bool StopAnnouncing { get; internal set; }
 
         /// <summary>
         /// Prefix of <see cref="DecontaminationController.UpdateSpeaker"/>.
