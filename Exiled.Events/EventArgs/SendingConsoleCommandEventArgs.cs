@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
             List<string> arguments,
             bool isEncrypted,
             string returnMessage = "",
-            string color = "",
+            string color = "white",
             bool allow = true)
         {
             Player = player;

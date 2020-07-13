@@ -27,8 +27,8 @@ namespace Exiled.Events.Extensions
             where T : EventArgs
         {
             // So we'll see the exact reason
-            if (ev == null || arg == null)
-                throw new ArgumentNullException(ev == null ? nameof(ev) : nameof(arg));
+            if (ev == null)
+                return;
 
             var eventName = ev.GetType().FullName;
             foreach (Events.CustomEventHandler<T> handler in ev.GetInvocationList())
