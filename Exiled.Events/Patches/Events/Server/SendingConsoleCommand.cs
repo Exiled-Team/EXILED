@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Server
             if (!string.IsNullOrEmpty(ev.ReturnMessage))
                 __instance.GCT.SendToClient(__instance.connectionToClient, ev.ReturnMessage, ev.Color);
 
-            return false;
+            return ev.Allow;
         }
     }
 }
