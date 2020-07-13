@@ -13,17 +13,12 @@ namespace Exiled.Events.Patches.Fixes
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.NetworkCurClass"/>.
+    /// Fixes <see cref="CharacterClassManager.NetworkCurClass"/> property.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), "set_" + nameof(CharacterClassManager.NetworkCurClass))]
-    public static class DoubleSpawn
+    internal static class DoubleSpawn
     {
-        /// <summary>
-        /// Fix the <see cref="CharacterClassManager.NetworkCurClass"/> property.
-        /// </summary>
-        /// <param name="instructions">The list of property OpCodes.</param>
-        /// <returns>Used to wait.</returns>
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             bool isNOPDetected = false;
 

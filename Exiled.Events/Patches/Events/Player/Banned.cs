@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Banned"/> event.
     /// </summary>
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]
-    public class Banned
+    internal class Banned
     {
-        /// <summary>
-        /// Prefix of <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType)"/>.
-        /// </summary>
-        /// <param name="ban">The <see cref="BanDetails"/> instance.</param>
-        /// <param name="banType"><inheritdoc cref="BannedEventArgs.Type"/></param>
-        public static void Postfix(BanDetails ban, BanHandler.BanType banType)
+        private static void Postfix(BanDetails ban, BanHandler.BanType banType)
         {
             var ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), ban, banType);
 

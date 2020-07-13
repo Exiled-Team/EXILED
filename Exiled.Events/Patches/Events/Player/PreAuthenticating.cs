@@ -24,14 +24,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.PreAuthenticating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest), typeof(ConnectionRequest))]
-    public class PreAuthenticating
+    internal class PreAuthenticating
     {
-        /// <summary>
-        /// Prefix of <see cref="CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest(ConnectionRequest)"/>.
-        /// </summary>
-        /// <param name="request">The <see cref="ConnectionRequest"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ref ConnectionRequest request)
+        private static bool Prefix(ref ConnectionRequest request)
         {
             HandleConnection(request);
             return false;
@@ -202,8 +197,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
                         else
                         {
-                            string result6;
-                            if (!request.Data.TryGetString(out result6) || result6 == string.Empty)
+                            if (!request.Data.TryGetString(out string result6) || result6 == string.Empty)
                             {
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)5);
@@ -211,11 +205,7 @@ namespace Exiled.Events.Patches.Events.Player
                             }
                             else
                             {
-                                ulong result7;
-                                byte result8;
-                                string result9;
-                                byte[] result10;
-                                if (!request.Data.TryGetULong(out result7) || !request.Data.TryGetByte(out result8) || !request.Data.TryGetString(out result9) || !request.Data.TryGetBytesWithLength(out result10))
+                                if (!request.Data.TryGetULong(out ulong result7) || !request.Data.TryGetByte(out byte result8) || !request.Data.TryGetString(out string result9) || !request.Data.TryGetBytesWithLength(out byte[] result10))
                                 {
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)4);

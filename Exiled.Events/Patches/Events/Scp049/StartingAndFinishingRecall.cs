@@ -19,16 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// Adds the <see cref="Handlers.Scp049.StartingRecall"/> and <see cref="Handlers.Scp049.FinishingRecall"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp049), nameof(PlayableScps.Scp049.BodyCmd_ByteAndGameObject))]
-    public class StartingAndFinishingRecall
+    internal class StartingAndFinishingRecall
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayableScps.Scp049.BodyCmd_ByteAndGameObject(byte, GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayableScps.Scp049"/> instance.</param>
-        /// <param name="num">The byte determining what type of action is taking place instance.</param>
-        /// <param name="go">The player's game object.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayableScps.Scp049 __instance, byte num, GameObject go)
+        private static bool Prefix(PlayableScps.Scp049 __instance, byte num, GameObject go)
         {
             if (num == 2)
             {

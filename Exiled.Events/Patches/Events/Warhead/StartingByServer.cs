@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Warhead.Starting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
-    public class StartingByServer
+    internal class StartingByServer
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdDetonateWarhead"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="AlphaWarheadController"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(AlphaWarheadController __instance)
+        private static bool Prefix(AlphaWarheadController __instance)
         {
             if (Recontainer079.isLocked)
                 return false;

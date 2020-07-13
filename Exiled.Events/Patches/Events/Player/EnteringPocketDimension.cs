@@ -20,16 +20,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.EnteringPocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
-    public class EnteringPocketDimension
+    internal class EnteringPocketDimension
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp106PlayerScript.CallCmdMovePlayer(GameObject, int)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp106PlayerScript"/> instance.</param>
-        /// <param name="ply">The player's game object.</param>
-        /// <param name="t">The time.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
+        private static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
         {
             if (!__instance._iawRateLimit.CanExecute(true))
                 return false;
@@ -98,14 +91,14 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply));
+                var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f);
 
                 Player.OnEnteringPocketDimension(ev);
 
                 if (!ev.IsAllowed)
                     return false;
 
-                ply.GetComponent<PlayerMovementSync>().OverridePosition(Vector3.down * 1998.5f, 0f, true);
+                ply.GetComponent<PlayerMovementSync>().OverridePosition(ev.Position, 0f, true);
 
                 __instance.GetComponent<PlayerStats>().HurtPlayer(
                     new PlayerStats.HitInfo(

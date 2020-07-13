@@ -22,16 +22,11 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
-    public class RoundEnd
+    internal class RoundEnd
     {
         private static readonly MethodInfo CustomProcess = SymbolExtensions.GetMethodInfo(() => Process(null));
 
-        /// <summary>
-        /// Process the round end checks.
-        /// </summary>
-        /// <param name="instance">The <see cref="RoundSummary"/> instance.</param>
-        /// <returns>Used to wait.</returns>
-        public static IEnumerator<float> Process(RoundSummary instance)
+        private static IEnumerator<float> Process(RoundSummary instance)
         {
             RoundSummary roundSummary = instance;
             while (roundSummary != null)
@@ -161,12 +156,7 @@ namespace Exiled.Events.Patches.Events.Server
             }
         }
 
-        /// <summary>
-        /// Run <see cref="CustomProcess"/>.
-        /// </summary>
-        /// <param name="instructions">The list of OpCodes.</param>
-        /// <returns>Used to wait.</returns>
-        internal static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             foreach (CodeInstruction instruction in instructions)
             {

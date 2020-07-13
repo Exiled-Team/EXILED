@@ -18,13 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.SetNick))]
-    public class Joined
+    internal class Joined
     {
-        /// <summary>
-        /// Prefix of <see cref="NicknameSync.SetNick(string)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="NicknameSync"/> instance.</param>
-        public static void Postfix(NicknameSync __instance)
+        private static void Postfix(NicknameSync __instance)
         {
             if (__instance.hub.characterClassManager.IsHost || string.IsNullOrEmpty(__instance.hub.characterClassManager.UserId))
                 return;

@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
-    public class ChangingItem
+    internal class ChangingItem
     {
-        /// <summary>
-        /// Prefix of <see cref="Inventory.CallCmdSetUnic(int)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Inventory"/> instance.</param>
-        /// <param name="i">The item unique index.</param>
-        public static void Prefix(Inventory __instance, int i)
+        private static void Prefix(Inventory __instance, int i)
         {
             if (__instance.itemUniq == i)
                 return;

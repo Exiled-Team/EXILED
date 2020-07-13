@@ -17,15 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
-    public class ItemDrop
+    internal class ItemDrop
     {
-        /// <summary>
-        /// Prefix of <see cref="Inventory.CallCmdDropItem(int)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Inventory"/> instance.</param>
-        /// <param name="itemInventoryIndex">The item inventory index.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Inventory __instance, int itemInventoryIndex)
+        private static bool Prefix(Inventory __instance, int itemInventoryIndex)
         {
             if (!__instance._iawRateLimit.CanExecute(true) || itemInventoryIndex < 0 || itemInventoryIndex >= __instance.items.Count)
                 return false;

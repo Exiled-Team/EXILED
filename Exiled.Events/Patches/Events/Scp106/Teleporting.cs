@@ -19,14 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Adds the <see cref="Scp106.Teleporting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdUsePortal))]
-    public class Teleporting
+    internal class Teleporting
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp106PlayerScript.CallCmdUsePortal"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp106PlayerScript"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp106PlayerScript __instance)
+        private static bool Prefix(Scp106PlayerScript __instance)
         {
             if (!__instance._interactRateLimit.CanExecute(false) || !__instance.GetComponent<FallDamage>().isGrounded)
                 return false;

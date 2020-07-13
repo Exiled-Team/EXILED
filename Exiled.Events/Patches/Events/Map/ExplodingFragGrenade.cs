@@ -20,17 +20,12 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FragGrenade), nameof(FragGrenade.ServersideExplosion))]
-    public class ExplodingFragGrenade
+    internal class ExplodingFragGrenade
     {
-        /// <summary>
-        /// Prefix of <see cref="FragGrenade.ServersideExplosion()"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="FragGrenade"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(FragGrenade __instance)
+        private static bool Prefix(FragGrenade __instance)
         {
             Vector3 position = __instance.transform.position;
-            List<Exiled.API.Features.Player> players = new List<Exiled.API.Features.Player>();
+            List<API.Features.Player> players = new List<API.Features.Player>();
             foreach (GameObject gameObject in PlayerManager.players)
             {
                 if (ServerConsole.FriendlyFire || !(gameObject != __instance.thrower.gameObject) || gameObject.GetComponent<WeaponManager>().GetShootPermission(__instance.throwerTeam, false))
@@ -46,7 +41,9 @@ namespace Exiled.Events.Patches.Events.Map
             }
 
             ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, true, __instance.gameObject);
-            Exiled.Events.Handlers.Map.OnExplodingGrenade(ev);
+
+            Handlers.Map.OnExplodingGrenade(ev);
+
             return ev.IsAllowed;
         }
     }

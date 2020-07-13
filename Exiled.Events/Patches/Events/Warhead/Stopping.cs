@@ -20,15 +20,9 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Warhead.Stopping"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), new Type[] { typeof(GameObject) })]
-    public class Stopping
+    internal class Stopping
     {
-        /// <summary>
-        /// Prefix of <see cref="AlphaWarheadController.CancelDetonation(GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="AlphaWarheadController"/> instance.</param>
-        /// <param name="disabler">The player who's disabling the warhead.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(AlphaWarheadController __instance, GameObject disabler)
+        private static bool Prefix(AlphaWarheadController __instance, GameObject disabler)
         {
             ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Detonation cancelled.", ServerLogs.ServerLogType.GameEvent);
 
@@ -42,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             Warhead.OnStopping(ev);
 
-            return ev.IsAllowed && !Exiled.API.Features.Warhead.IsWarheadLocked;
+            return ev.IsAllowed && !API.Features.Warhead.IsWarheadLocked;
         }
     }
 }

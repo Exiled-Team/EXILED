@@ -21,34 +21,25 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))]
-    public class ChangingRole
+    internal class ChangingRole
     {
-        /// <summary>
-        /// Prefix of <see cref="CharacterClassManager.SetPlayersClass(RoleType, GameObject, bool, bool)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="CharacterClassManager"/> instance.</param>
-        /// <param name="classid"><inheritdoc cref="ChangingRoleEventArgs.NewRole"/></param>
-        /// <param name="ply">The player's <see cref="GameObject"/>.</param>
-        /// <param name="lite"><inheritdoc cref="ChangingRoleEventArgs.ShouldPreservePosition"/></param>
-        /// <param name="escape"><inheritdoc cref="ChangingRoleEventArgs.IsEscaped"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(CharacterClassManager __instance, RoleType classid, GameObject ply, bool lite = false, bool escape = false)
+        private static bool Prefix(CharacterClassManager __instance, ref RoleType classid, GameObject ply, bool lite = false, bool escape = false)
         {
             if (!NetworkServer.active)
-            {
                 return false;
-            }
 
             if (!ply.GetComponent<CharacterClassManager>().IsVerified)
-            {
                 return false;
-            }
 
             var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, __instance.Classes.SafeGet(classid).startItems.ToList(), lite, escape);
 
             Player.OnChangingRole(changingRoleEventArgs);
 
-            if (lite)
+            lite = changingRoleEventArgs.ShouldPreservePosition;
+            escape = changingRoleEventArgs.IsEscaped;
+            classid = changingRoleEventArgs.NewRole;
+
+            if (escape)
             {
                 var escapingEventArgs = new EscapingEventArgs(API.Features.Player.Get(ply), classid);
 
@@ -61,18 +52,14 @@ namespace Exiled.Events.Patches.Events.Player
             ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
 
             if (lite)
-            {
                 return false;
-            }
 
             Inventory component = ply.GetComponent<Inventory>();
             List<Inventory.SyncItemInfo> list = new List<Inventory.SyncItemInfo>();
             if (escape && __instance.KeepItemsAfterEscaping)
             {
                 foreach (Inventory.SyncItemInfo item in component.items)
-                {
                     list.Add(item);
-                }
             }
 
             component.items.Clear();

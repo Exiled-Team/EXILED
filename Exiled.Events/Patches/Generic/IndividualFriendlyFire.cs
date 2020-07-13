@@ -16,17 +16,8 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="WeaponManager.GetShootPermission(CharacterClassManager,bool)"/>.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission), new Type[] { typeof(CharacterClassManager), typeof(bool) })]
-    public class IndividualFriendlyFire
+    internal class IndividualFriendlyFire
     {
-        /// <summary>
-        /// Fix NW removing individualized FF bools.
-        /// </summary>
-        /// <param name="__instance">The WeaponManager instance of the player.</param>
-        /// <param name="c">The CCM of the target player.</param>
-        /// <param name="forceFriendlyFire">If FF should be forced or not.</param>
-        public static void Prefix(WeaponManager __instance, CharacterClassManager c, ref bool forceFriendlyFire)
-        {
-            forceFriendlyFire = Player.Get(__instance.gameObject).IsFriendlyFireEnabled;
-        }
+        private static void Prefix(WeaponManager __instance, ref bool forceFriendlyFire) => forceFriendlyFire = Player.Get(__instance.gameObject).IsFriendlyFireEnabled;
     }
 }

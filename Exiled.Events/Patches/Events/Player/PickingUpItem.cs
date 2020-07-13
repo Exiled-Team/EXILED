@@ -18,14 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.PickingUpItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]
-    public class PickingUpItem
+    internal class PickingUpItem
     {
-        /// <summary>
-        /// Prefix of <see cref="ItemSearchCompletor.Complete"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="ItemSearchCompletor"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ItemSearchCompletor __instance)
+        private static bool Prefix(ItemSearchCompletor __instance)
         {
             var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
 

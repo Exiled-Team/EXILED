@@ -17,15 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.MedicalItemUsed"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.SendRpc))]
-    public class UsedMedicalItem
+    internal class UsedMedicalItem
     {
-        /// <summary>
-        /// Prefix of <see cref="ConsumableAndWearableItems.SendRpc(ConsumableAndWearableItems.HealAnimation, int)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="ConsumableAndWearableItems"/> instance.</param>
-        /// <param name="healAnimation">The heal animation.</param>
-        /// <param name="mid">The medical item id.</param>
-        public static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
+        private static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
         {
             if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
             {

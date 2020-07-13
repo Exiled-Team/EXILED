@@ -18,15 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InteractingElevator"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
-    public class InteractingElevator
+    internal class InteractingElevator
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdUseElevator(GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <param name="elevator">The elevator game object.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerInteract __instance, GameObject elevator)
+        private static bool Prefix(PlayerInteract __instance, GameObject elevator)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) ||
                 (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) || elevator == null)

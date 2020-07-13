@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.CalmingDown"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.EndEnrage))]
-    public class CalmingDown
+    internal class CalmingDown
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp096.EndEnrage"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp096"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp096 __instance)
+        private static bool Prefix(Scp096 __instance)
         {
             var ev = new CalmingDownEventArgs(__instance, API.Features.Player.Get(__instance.Hub.gameObject));
 

@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="Scp173PlayerScript.FixedUpdate"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
-    public class Scp173BeingLooked
+    internal class Scp173BeingLooked
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp173PlayerScript.FixedUpdate"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp173PlayerScript"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp173PlayerScript __instance)
+        private static bool Prefix(Scp173PlayerScript __instance)
         {
             try
             {
@@ -55,7 +50,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception exception)
             {
-                Log.Error($"Scp173Patch error: {exception}");
+                Log.Error($"Scp173BeingLooked error: {exception}");
                 return true;
             }
         }

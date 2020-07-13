@@ -21,14 +21,9 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.SendingRemoteAdminCommand"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Console), nameof(Console.TypeCommand), new Type[] { typeof(string), typeof(CommandSender) })]
-    public class ServerSendingConsoleCommand
+    internal class ServerSendingConsoleCommand
     {
-        /// <summary>
-        /// Prefix of <see cref="Console.TypeCommand(string, CommandSender)"/>.
-        /// </summary>
-        /// <param name="cmd">The command sent to with the Remote Admin console.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(string cmd)
+        private static bool Prefix(string cmd)
         {
             (string name, string[] arguments) = cmd.ExtractCommand();
 

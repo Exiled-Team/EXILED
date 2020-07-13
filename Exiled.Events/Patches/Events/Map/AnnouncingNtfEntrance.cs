@@ -17,16 +17,9 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceNtfEntrance))]
-    public class AnnouncingNtfEntrance
+    internal class AnnouncingNtfEntrance
     {
-        /// <summary>
-        /// Prefix of <see cref="NineTailedFoxAnnouncer.AnnounceNtfEntrance(int, int, char)"/>.
-        /// </summary>
-        /// <param name="_scpsLeft"><inheritdoc cref="AnnouncingNtfEntranceEventArgs.ScpsLeft"/></param>
-        /// <param name="_mtfNumber"><inheritdoc cref="AnnouncingNtfEntranceEventArgs.NtfNumber"/></param>
-        /// <param name="_mtfLetter"><inheritdoc cref="AnnouncingNtfEntranceEventArgs.NtfLetter"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ref int _scpsLeft, ref int _mtfNumber, ref char _mtfLetter)
+        private static bool Prefix(ref int _scpsLeft, ref int _mtfNumber, ref char _mtfLetter)
         {
             var ev = new AnnouncingNtfEntranceEventArgs(_scpsLeft, _mtfNumber, _mtfLetter);
 

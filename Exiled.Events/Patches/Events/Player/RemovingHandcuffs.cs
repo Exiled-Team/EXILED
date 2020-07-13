@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.RemovingHandcuffs"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.ClearTarget))]
-    public class RemovingHandcuffs
+    internal class RemovingHandcuffs
     {
-        /// <summary>
-        /// Prefix of <see cref="Handcuffs.ClearTarget"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Handcuffs"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Handcuffs __instance)
+        private static bool Prefix(Handcuffs __instance)
         {
             foreach (API.Features.Player target in API.Features.Player.List)
             {

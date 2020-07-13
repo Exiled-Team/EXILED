@@ -19,14 +19,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.TriggeringTesla"/> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
-    public class TriggeringTesla
+    internal class TriggeringTesla
     {
-        /// <summary>
-        /// Postfix of <see cref="TeslaGate.PlayersInRange(bool)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="TeslaGateController"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(TeslaGateController __instance)
+        private static bool Prefix(TeslaGateController __instance)
         {
             foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
             {

@@ -18,14 +18,9 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.Decontaminating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
-    public class Decontaminating
+    internal class Decontaminating
     {
-        /// <summary>
-        /// Prefix of <see cref="DecontaminationController.FinishDecontamination"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="DecontaminationController"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(DecontaminationController __instance)
+        private static bool Prefix()
         {
             var ev = new DecontaminatingEventArgs();
 

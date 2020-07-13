@@ -20,14 +20,9 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Exiled.Events.Handlers.Server.RespawningTeam"/> event.
     /// </summary>
     [HarmonyPatch(typeof(MTFRespawn), nameof(MTFRespawn.RespawnDeadPlayers))]
-    public class RespawningTeam
+    internal class RespawningTeam
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdSwitchAWButton"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(MTFRespawn __instance)
+        private static bool Prefix(MTFRespawn __instance)
         {
             int num = 0;
             List<Player> deadPlayers = Player.List.Where(player => player.IsDead || player.IsOverwatchEnabled).ToList();

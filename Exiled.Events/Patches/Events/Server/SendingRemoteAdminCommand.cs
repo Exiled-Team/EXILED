@@ -20,15 +20,9 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Handlers.Server.SendingRemoteAdminCommand"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery), typeof(string), typeof(CommandSender))]
-    public class SendingRemoteAdminCommand
+    internal class SendingRemoteAdminCommand
     {
-        /// <summary>
-        /// Prefix of <see cref="CommandProcessor.ProcessQuery(string, CommandSender)"/>.
-        /// </summary>
-        /// <param name="q">The command query.</param>
-        /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ref string q, ref CommandSender sender)
+        private static bool Prefix(ref string q, ref CommandSender sender)
         {
             QueryProcessor queryProcessor = sender is PlayerCommandSender playerCommandSender ? playerCommandSender.Processor : null;
 

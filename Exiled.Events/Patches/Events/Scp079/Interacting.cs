@@ -20,16 +20,9 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="InteractingTeslaEventArgs"/> and <see cref="InteractingDoorEventArgs"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
-    public class Interacting
+    internal class Interacting
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp079PlayerScript"/> instance.</param>
-        /// <param name="command">The command to be executed.</param>
-        /// <param name="target">The target game object.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
+        private static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
         {
             if (!__instance._interactRateLimit.CanExecute() || !__instance.iAm079)
                     return false;
@@ -78,7 +71,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                         return false;
                     if (target == null)
                     {
-                        GameCore.Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant, false);
+                        Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant, false);
                         return false;
                     }
 
@@ -87,8 +80,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                         return false;
                     if (list.Count > 0 && list.Contains(component.DoorName))
                     {
-                        GameCore.Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant, false);
-                        return false;
+                            Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant, false);
+                            return false;
                     }
 
                     float manaFromLabel = __instance.GetManaFromLabel("Door Interaction " + component.PermissionLevels, __instance.abilities);
@@ -112,11 +105,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                     {
                         __instance.Mana -= manaFromLabel;
                         __instance.AddInteractionToHistory(target, s, true);
-                        GameCore.Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant, false);
+                        Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant, false);
                         return false;
                     }
 
-                    GameCore.Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant, false);
+                    Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant, false);
                     return false;
                 }
 

@@ -19,17 +19,9 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.PlacingBlood"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))]
-    public class PlacingBlood
+    internal class PlacingBlood
     {
-        /// <summary>
-        /// Prefix of <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="CharacterClassManager"/> instance.</param>
-        /// <param name="pos"><inheritdoc cref="PlacingBloodEventArgs.Position"/></param>
-        /// <param name="type"><inheritdoc cref="PlacingBloodEventArgs.Type"/></param>
-        /// <param name="f"><inheritdoc cref="PlacingBloodEventArgs.Multiplier"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(CharacterClassManager __instance, Vector3 pos, int type, float f)
+        private static bool Prefix(CharacterClassManager __instance, ref Vector3 pos, ref int type, ref float f)
         {
             var ev = new PlacingBloodEventArgs(API.Features.Player.Get(__instance.gameObject), pos, type, f);
 

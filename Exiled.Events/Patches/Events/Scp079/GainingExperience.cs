@@ -18,16 +18,9 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="Scp079.GainingExperience"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallRpcGainExp))]
-    public class GainingExperience
+    internal class GainingExperience
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp079PlayerScript.CallRpcGainExp(ExpGainType, RoleType)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp079PlayerScript"/> instance.</param>
-        /// <param name="type"><inheritdoc cref="GainingExperienceEventArgs.GainType"/></param>
-        /// <param name="details">The role type or the amount of gained experience.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
+        private static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
         {
             var ev = new GainingExperienceEventArgs(API.Features.Player.Get(__instance.gameObject), type, (float)details);
 

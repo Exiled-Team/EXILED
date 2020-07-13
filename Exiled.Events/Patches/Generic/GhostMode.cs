@@ -21,14 +21,9 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="PlayerPositionManager.TransmitData"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
-    public class GhostMode
+    internal class GhostMode
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerPositionManager.TransmitData"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerPositionManager"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerPositionManager __instance)
+        private static bool Prefix(PlayerPositionManager __instance)
         {
             try
             {
@@ -75,8 +70,7 @@ namespace Exiled.Events.Patches.Generic
                             }
                             else
                             {
-                                ReferenceHub hub2;
-                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out hub2))
+                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
                                 {
                                     if (player.IsInvisible || (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP)))
                                         __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);

@@ -20,14 +20,9 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashGrenade), nameof(FlashGrenade.ServersideExplosion))]
-    public class ExplodingFlashGrenade
+    internal class ExplodingFlashGrenade
     {
-        /// <summary>
-        /// Prefix of <see cref="FlashGrenade.ServersideExplosion()"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="FlashGrenade"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(FlashGrenade __instance)
+        private static bool Prefix(FlashGrenade __instance)
         {
             List<Exiled.API.Features.Player> players = new List<Exiled.API.Features.Player>();
             foreach (GameObject gameObject in PlayerManager.players)
@@ -43,12 +38,14 @@ namespace Exiled.Events.Patches.Events.Map
                 byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
                 if (b >= effect.Intensity && num > 0f)
                 {
-                    players.Add(Exiled.API.Features.Player.Get(gameObject));
+                    players.Add(API.Features.Player.Get(gameObject));
                 }
             }
 
             ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, false, __instance.gameObject);
-            Exiled.Events.Handlers.Map.OnExplodingGrenade(ev);
+
+            Handlers.Map.OnExplodingGrenade(ev);
+
             return ev.IsAllowed;
         }
     }

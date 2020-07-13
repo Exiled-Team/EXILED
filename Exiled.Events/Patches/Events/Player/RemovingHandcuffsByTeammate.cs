@@ -18,15 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.RemovingHandcuffs"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdFreeTeammate))]
-    public class RemovingHandcuffsByTeammate
+    internal class RemovingHandcuffsByTeammate
     {
-        /// <summary>
-        /// Prefix of <see cref="Handcuffs.CallCmdFreeTeammate(GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Handcuffs"/> instance.</param>
-        /// <param name="target"><inheritdoc cref="HandcuffingEventArgs.Target"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Handcuffs __instance, GameObject target)
+        private static bool Prefix(Handcuffs __instance, GameObject target)
         {
             if (!__instance._interactRateLimit.CanExecute(true) || target == null ||
                 (Vector3.Distance(target.transform.position, __instance.transform.position) >
