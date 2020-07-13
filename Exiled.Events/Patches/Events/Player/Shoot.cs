@@ -20,19 +20,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
-    public class Shoot
+    internal class Shoot
     {
-        /// <summary>
-        /// Prefix of <see cref="WeaponManager.CallCmdShoot(GameObject, string, Vector3, Vector3, Vector3)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="WeaponManager"/> instance.</param>
-        /// <param name="target">The shoot target.</param>
-        /// <param name="hitboxType">The hitbox type.</param>
-        /// <param name="dir">The shoot direction.</param>
-        /// <param name="sourcePos">The shoot source position.</param>
-        /// <param name="targetPos">The shoot target position.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
+        private static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
         {
             if (!__instance._iawRateLimit.CanExecute(true))
                 return false;
@@ -51,6 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             if (!shootingEventArgs.IsAllowed)
                 return false;
+
+            targetPos = shootingEventArgs.Position;
 
             if (Vector3.Distance(__instance.camera.transform.position, sourcePos) > 6.5)
             {
@@ -190,7 +182,7 @@ namespace Exiled.Events.Patches.Events.Player
                             __instance._hub.queryProcessor.PlayerId),
                           c.gameObject);
                         __instance.RpcConfirmShot(true, __instance.curWeapon);
-                        __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)c.CurClass, num1);
+                        __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)c.CurClass, shotEventArgs.Damage);
                     }
                 }
                 else if (target != null && hitboxType == "window" && target.GetComponent<BreakableWindow>() != null)

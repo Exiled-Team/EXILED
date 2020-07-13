@@ -17,12 +17,8 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Interacted"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
-    public class Interacted
+    internal class Interacted
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.OnInteract"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        public static void Prefix(PlayerInteract __instance) => Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(__instance.gameObject)));
+        private static void Prefix(PlayerInteract __instance) => Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(__instance.gameObject)));
     }
 }

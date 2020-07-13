@@ -19,14 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Scp914.ChangingKnobSetting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdChange914Knob))]
-    public class ChangingKnobSetting
+    internal class ChangingKnobSetting
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdChange914Knob"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerInteract __instance)
+        private static bool Prefix(PlayerInteract __instance)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) ||
                 (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||

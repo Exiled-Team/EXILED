@@ -17,15 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.IntercomSpeaking"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.CallCmdSetTransmit))]
-    public class IntercomSpeaking
+    internal class IntercomSpeaking
     {
-        /// <summary>
-        /// Prefix of <see cref="Intercom.CallCmdSetTransmit(bool)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Intercom"/> instance.</param>
-        /// <param name="player">Indicates whether a player is talking or not.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Intercom __instance, bool player)
+        private static bool Prefix(Intercom __instance, bool player)
         {
             if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
                 return false;

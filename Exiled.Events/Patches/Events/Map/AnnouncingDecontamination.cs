@@ -18,21 +18,15 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingDecontamination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
-    public class AnnouncingDecontamination
+    internal class AnnouncingDecontamination
     {
         /// <summary>
-        /// Gets a value indicating whether stops the Announcement Event from triggering.
+        /// Gets or sets a value indicating whether stops the Announcement Event from triggering.
         /// Prevents an issue where the event is constantly called after Decon occurs.
         /// </summary>
-        public static bool StopAnnouncing { get; internal set; }
+        internal static bool StopAnnouncing { get; set; }
 
-        /// <summary>
-        /// Prefix of <see cref="DecontaminationController.UpdateSpeaker"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="DecontaminationController"/> instance.</param>
-        /// <param name="hard"><inheritdoc cref="AnnouncingDecontaminationEventArgs.IsGlobal"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(DecontaminationController __instance, bool hard)
+        private static bool Prefix(DecontaminationController __instance, bool hard)
         {
             if (StopAnnouncing)
                 return true;
@@ -43,8 +37,8 @@ namespace Exiled.Events.Patches.Events.Map
 
             __instance._nextPhase = ev.Id;
 
-            if (ev.Id == 5)
-                StopAnnouncing = true;
+            StopAnnouncing = ev.Id == 5;
+
             return ev.IsAllowed;
         }
     }

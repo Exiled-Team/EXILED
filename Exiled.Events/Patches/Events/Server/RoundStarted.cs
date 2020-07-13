@@ -16,11 +16,8 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the RoundStarted event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.CmdStartRound))]
-    public class RoundStarted
+    internal class RoundStarted
     {
-        /// <summary>
-        /// Prefix of <see cref="CharacterClassManager.CmdStartRound"/>.
-        /// </summary>
-        public static void Prefix() => Server.OnRoundStarted();
+        private static void Prefix() => Server.OnRoundStarted();
     }
 }

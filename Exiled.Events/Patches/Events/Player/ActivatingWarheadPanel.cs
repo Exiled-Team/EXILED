@@ -20,14 +20,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ActivatingWarheadPanel"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdSwitchAWButton))]
-    public class ActivatingWarheadPanel
+    internal class ActivatingWarheadPanel
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdSwitchAWButton"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerInteract __instance)
+        private static bool Prefix(PlayerInteract __instance)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
                 return false;

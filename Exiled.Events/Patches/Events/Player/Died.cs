@@ -18,15 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Died"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-    public class Died
+    internal class Died
     {
-        /// <summary>
-        /// Postfix of <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerStats"/> instance.</param>
-        /// <param name="info"><inheritdoc cref="DiedEventArgs.HitInformations"/></param>
-        /// <param name="go">The player's game object.</param>
-        public static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
             API.Features.Player target = API.Features.Player.Get(go);

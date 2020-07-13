@@ -19,15 +19,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
-    public class InteractingDoor
+    internal class InteractingDoor
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdOpenDoor(GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <param name="doorId">The door id.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerInteract __instance, GameObject doorId)
+        private static bool Prefix(PlayerInteract __instance, GameObject doorId)
         {
             if (!__instance._playerInteractRateLimit.CanExecute() ||
                 (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||

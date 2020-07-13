@@ -15,17 +15,12 @@ namespace Exiled.Events.Patches.Fixes
     using Mirror;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.Start"/>.
+    /// Fixes <see cref="NetworkBehaviour.isServer"/> property.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.Start))]
-    public static class CharacterClassManagerLoadSpam
+    internal static class CharacterClassManagerLoadSpam
     {
-        /// <summary>
-        /// Fix the <see cref="NetworkBehaviour.isServer"/> property.
-        /// </summary>
-        /// <param name="instructions">The list of OpCodes.</param>
-        /// <returns>Used to wait.</returns>
-        public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             bool isFirst = false;
 

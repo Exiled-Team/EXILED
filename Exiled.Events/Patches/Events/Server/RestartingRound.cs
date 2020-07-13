@@ -17,13 +17,9 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the RestartingRound event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
-    public class RestartingRound
+    internal class RestartingRound
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerStats.Roundrestart"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerStats"/> instance.</param>
-        public static void Prefix(PlayerStats __instance)
+        private static void Prefix()
         {
             API.Features.Log.Debug("Round restarting");
 

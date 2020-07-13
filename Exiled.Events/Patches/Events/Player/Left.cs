@@ -17,13 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Left"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
-    public class Left
+    internal class Left
     {
-        /// <summary>
-        /// Prefix of <see cref="ReferenceHub.OnDestroy"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="ReferenceHub"/> instance.</param>
-        public static void Prefix(ReferenceHub __instance)
+        private static void Prefix(ReferenceHub __instance)
         {
             API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
 

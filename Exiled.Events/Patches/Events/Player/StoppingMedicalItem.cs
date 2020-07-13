@@ -17,14 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.StoppingMedicalItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdCancelMedicalItem))]
-    public class StoppingMedicalItem
+    internal class StoppingMedicalItem
     {
-        /// <summary>
-        /// Prefix of <see cref="ConsumableAndWearableItems.CallCmdCancelMedicalItem"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="ConsumableAndWearableItems"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(ConsumableAndWearableItems __instance)
+        private static bool Prefix(ConsumableAndWearableItems __instance)
         {
             if (!__instance._interactRateLimit.CanExecute(true))
                 return false;

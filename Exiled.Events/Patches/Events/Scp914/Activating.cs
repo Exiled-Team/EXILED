@@ -19,14 +19,9 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Scp914.Activating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUse914))]
-    public class Activating
+    internal class Activating
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerInteract.CallCmdUse914"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerInteract"/> instance.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(PlayerInteract __instance)
+        private static bool Prefix(PlayerInteract __instance)
         {
             if (!__instance._playerInteractRateLimit.CanExecute(true) ||
                     (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||

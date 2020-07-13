@@ -18,16 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InsertingGeneratorTablet"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
-    public class InsertingGeneratorTablet
+    internal class InsertingGeneratorTablet
     {
-        /// <summary>
-        /// Prefix of <see cref="Generator079.Interact(GameObject, string)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Generator079"/> instance.</param>
-        /// <param name="person"><inheritdoc cref="InsertingGeneratorTabletEventArgs.Player"/></param>
-        /// <param name="command">The command to be executed.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Generator079 __instance, GameObject person, string command)
+        private static bool Prefix(Generator079 __instance, GameObject person, string command)
         {
             if (command.StartsWith("EPS_TABLET"))
             {
@@ -71,17 +64,16 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 if (!__instance.isDoorUnlocked)
                 {
-                    bool isAllowed = person.GetComponent<ServerRoles>().BypassMode;
+                    var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, person.GetComponent<ServerRoles>().BypassMode);
+
                     if (component.curItem > ItemType.KeycardJanitor)
                     {
                         foreach (string permission in component.GetItemByID(component.curItem).permissions)
                         {
                             if (permission == "ARMORY_LVL_2")
-                                isAllowed = true;
+                                ev.IsAllowed = true;
                         }
                     }
-
-                    var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
 
                     Player.OnUnlockingGenerator(ev);
 

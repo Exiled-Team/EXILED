@@ -19,18 +19,9 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.PlacingDecal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.RpcPlaceDecal))]
-    public class PlacingBloodAndDecal
+    internal class PlacingBloodAndDecal
     {
-        /// <summary>
-        /// Prefix of <see cref="WeaponManager.RpcPlaceDecal(bool, int, Vector3, Quaternion)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="WeaponManager"/> instance.</param>
-        /// <param name="isBlood">Indicates whether it's blood or not.</param>
-        /// <param name="type"><inheritdoc cref="PlacingDecalEventArgs.Type"/></param>
-        /// <param name="pos"><inheritdoc cref="PlacingDecalEventArgs.Position"/></param>
-        /// <param name="rot"><inheritdoc cref="PlacingDecalEventArgs.Rotation"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(WeaponManager __instance, bool isBlood, int type, Vector3 pos, Quaternion rot)
+        private static bool Prefix(WeaponManager __instance, bool isBlood, ref int type, ref Vector3 pos, ref Quaternion rot)
         {
             if (isBlood)
             {

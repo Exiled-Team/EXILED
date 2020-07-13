@@ -18,18 +18,9 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.ReportingCheater"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.IssueReport))]
-    public class ReportingCheater
+    internal class ReportingCheater
     {
-        /// <summary>
-        /// Prefix of <see cref="CheaterReport.IssueReport(GameConsoleTransmission, string, string, string, string, string, string, ref string, ref byte[], string, int, string, string)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="CheaterReport"/> instance.</param>
-        /// <param name="reporter">The reporter.</param>
-        /// <param name="reporterUserId"><inheritdoc cref="ReportingCheaterEventArgs.Reporter"/></param>
-        /// <param name="reportedUserId"><inheritdoc cref="ReportingCheaterEventArgs.Reported"/></param>
-        /// <param name="reason"><inheritdoc cref="ReportingCheaterEventArgs.Reason"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(
+        private static bool Prefix(
             CheaterReport __instance,
             GameConsoleTransmission reporter,
             string reporterUserId,

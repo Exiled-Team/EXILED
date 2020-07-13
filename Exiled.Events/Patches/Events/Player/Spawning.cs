@@ -19,16 +19,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Spawning"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
-    public class Spawning
+    internal class Spawning
     {
-        /// <summary>
-        /// Prefix of <see cref="CharacterClassManager.ApplyProperties(bool, bool)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="CharacterClassManager"/> instance.</param>
-        /// <param name="lite">Indicates a value indicating whether items are going to be peserved or not.</param>
-        /// <param name="escape">Indicates a value indicating whether the item is going to escape or not.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(CharacterClassManager __instance, bool lite = false, bool escape = false)
+        private static bool Prefix(CharacterClassManager __instance, bool lite = false, bool escape = false)
         {
             Role role = __instance.Classes.SafeGet(__instance.CurClass);
             if (!__instance._wasAnytimeAlive && __instance.CurClass != RoleType.Spectator && __instance.CurClass != RoleType.None)
@@ -80,8 +73,9 @@ namespace Exiled.Events.Patches.Events.Player
                     else
                     {
                         GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(__instance.CurClass);
-                        Vector3 spawnPoint = new Vector3(0f, 0f, 0f);
-                        float rotY = 0f;
+                        Vector3 spawnPoint;
+                        float rotY;
+
                         if (randomPosition != null)
                         {
                             spawnPoint = randomPosition.transform.position;

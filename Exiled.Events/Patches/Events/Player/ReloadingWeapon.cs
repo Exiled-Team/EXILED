@@ -17,15 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ReloadingWeapon"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdReload))]
-    public class ReloadingWeapon
+    internal class ReloadingWeapon
     {
-        /// <summary>
-        /// Prefix of <see cref="WeaponManager.CallCmdReload(bool)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="WeaponManager"/> instance.</param>
-        /// <param name="animationOnly"><inheritdoc cref="ReloadingWeaponEventArgs.IsAnimationOnly"/></param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(WeaponManager __instance, bool animationOnly)
+        private static bool Prefix(WeaponManager __instance, bool animationOnly)
         {
             if (!__instance._iawRateLimit.CanExecute(false))
                 return false;

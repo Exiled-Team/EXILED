@@ -18,15 +18,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-    public class Hurting
+    internal class Hurting
     {
-        /// <summary>
-        /// Prefix of <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="PlayerStats"/> instance.</param>
-        /// <param name="info"><inheritdoc cref="DiedEventArgs.HitInformations"/></param>
-        /// <param name="go">The player's game object.</param>
-        public static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             if (go == null)
                 return;
