@@ -114,7 +114,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 }
 
                 default:
-                    return false;
+                    return true;
             }
         }
     }
