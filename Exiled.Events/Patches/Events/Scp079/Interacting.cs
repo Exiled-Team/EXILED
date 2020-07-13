@@ -8,9 +8,12 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1313
+#pragma warning disable CS0618
+#pragma warning disable CS0436
     using System.Collections.Generic;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+    using GameCore;
     using HarmonyLib;
     using UnityEngine;
     using Console = GameCore.Console;
@@ -20,55 +23,76 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="InteractingTeslaEventArgs"/> and <see cref="InteractingDoorEventArgs"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
-    internal class Interacting
+    public class Interacting
     {
-        private static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
+        /// <summary>
+        /// Prefix of <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
+        /// </summary>
+        /// <param name="__instance">The <see cref="Scp079PlayerScript"/> instance.</param>
+        /// <param name="command">The command to be executed.</param>
+        /// <param name="target">The target game object.</param>
+        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
+        public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
         {
-            if (!__instance._interactRateLimit.CanExecute() || !__instance.iAm079)
-                    return false;
-            Console.AddDebugLog("SCP079", "Command received from a client: " + command, MessageImportance.LessImportant);
-            if (!command.Contains(":"))
+            if (!__instance._interactRateLimit.CanExecute(true))
+            {
                 return false;
-            string[] strArray = command.Split(':');
+            }
+
+            if (!__instance.iAm079)
+            {
+                return false;
+            }
+
+            Console.AddDebugLog("SCP079", "Command received from a client: " + command, global::MessageImportance.LessImportant, false);
+            if (!command.Contains(":"))
+            {
+                return false;
+            }
+
+            string[] array = command.Split(new char[]
+            {
+            ':',
+            });
             __instance.RefreshCurrentRoom();
             if (!__instance.CheckInteractableLegitness(__instance.currentRoom, __instance.currentZone, target, true))
+            {
                 return false;
+            }
 
-            string s = strArray[0];
+            List<string> list = ConfigFile.ServerConfig.GetStringList("scp079_door_blacklist") ?? new List<string>();
+            string s = array[0];
 
             switch (s)
             {
                 case "TESLA":
                 {
-                    float manaFromLabel2 = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-                    if (manaFromLabel2 > (double)__instance.curMana)
-                    {
-                        __instance.RpcNotEnoughMana(manaFromLabel2, __instance.curMana);
+                        float manaFromLabel = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
+                        if (manaFromLabel > __instance.curMana)
+                        {
+                            __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                            return false;
+                        }
+
+                        GameObject gameObject = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
+                        if (gameObject != null)
+                        {
+                            gameObject.GetComponent<global::TeslaGate>().RpcInstantBurst();
+                            __instance.AddInteractionToHistory(gameObject, array[0], true);
+                            __instance.Mana -= manaFromLabel;
+                            return false;
+                        }
+
                         return false;
-                    }
-
-                    GameObject go1 = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
-                    if (!(go1 != null))
-                        return false;
-
-                    InteractingTeslaEventArgs ev = new InteractingTeslaEventArgs(API.Features.Player.Get(__instance.gameObject), go1.GetComponent<TeslaGate>());
-
-                    Scp079.OnInteractingTesla(ev);
-
-                    if (!ev.IsAllowed)
-                        return false;
-
-                    go1.GetComponent<TeslaGate>().RpcInstantBurst();
-                    __instance.AddInteractionToHistory(go1, strArray[0], true);
-                    __instance.Mana -= manaFromLabel2;
-                    return false;
                 }
 
                 case "DOOR":
                 {
-                    List<string> list = GameCore.ConfigFile.ServerConfig.GetStringList("scp079_door_blacklist") ?? new List<string>();
                     if (AlphaWarheadController.Host.inProgress)
+                    {
                         return false;
+                    }
+
                     if (target == null)
                     {
                         Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant, false);
@@ -77,36 +101,30 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     Door component = target.GetComponent<Door>();
                     if (component == null)
-                        return false;
-                    if (list.Count > 0 && list.Contains(component.DoorName))
                     {
-                            Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant, false);
-                            return false;
+                        return false;
                     }
 
-                    float manaFromLabel = __instance.GetManaFromLabel("Door Interaction " + component.PermissionLevels, __instance.abilities);
+                    if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
+                    {
+                        Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant, false);
+                        return false;
+                    }
+
+                    float manaFromLabel = __instance.GetManaFromLabel("Door Interaction " + (string.IsNullOrEmpty(component.permissionLevel) ? "DEFAULT" : component.permissionLevel), __instance.abilities);
                     if (manaFromLabel > __instance.curMana)
                     {
-                        GameCore.Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant, false);
+                        Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant, false);
                         __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
                         return false;
                     }
 
-                    if (component == null)
-                        return false;
-                    InteractingDoorEventArgs ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), component);
-
-                    Scp079.OnInteractingDoor(ev);
-
-                    if (!ev.IsAllowed)
-                        return false;
-
-                    if (component.ChangeState079())
+                    if (component != null && component.ChangeState079())
                     {
                         __instance.Mana -= manaFromLabel;
-                        __instance.AddInteractionToHistory(target, s, true);
+                        __instance.AddInteractionToHistory(target, array[0], true);
                         Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant, false);
-                        return false;
+                        return true;
                     }
 
                     Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant, false);
@@ -114,7 +132,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 }
 
                 default:
-                    return false;
+                    return true;
             }
         }
     }
