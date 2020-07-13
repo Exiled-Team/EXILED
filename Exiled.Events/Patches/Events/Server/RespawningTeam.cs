@@ -5,18 +5,18 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Exiled.Events.EventArgs;
-using HarmonyLib;
-using Respawning;
-using Respawning.NamingRules;
-using UnityEngine;
-
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Exiled.Events.EventArgs;
+    using HarmonyLib;
+    using Respawning;
+    using Respawning.NamingRules;
+    using UnityEngine;
+
     /// <summary>
     /// Patch the <see cref="RespawnManager.Spawn"/>.
     /// Adds the <see cref="Exiled.Events.Handlers.Server.RespawningTeam"/> event.
