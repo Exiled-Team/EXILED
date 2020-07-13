@@ -25,13 +25,15 @@ namespace Exiled.Events.EventArgs
         /// <param name="isEncrypted"><inheritdoc cref="IsEncrypted"/></param>
         /// <param name="returnMessage"><inheritdoc cref="ReturnMessage"/></param>
         /// <param name="color"><inheritdoc cref="Color"/></param>
+        /// <param name="allow"><inheritdoc cref="Allow"/></param>
         public SendingConsoleCommandEventArgs(
             Player player,
             string name,
             List<string> arguments,
             bool isEncrypted,
-            string returnMessage = "Command not found.",
-            string color = "red")
+            string returnMessage = "",
+            string color = "",
+            bool allow = true)
         {
             Player = player;
             Name = name;
@@ -39,6 +41,7 @@ namespace Exiled.Events.EventArgs
             IsEncrypted = isEncrypted;
             ReturnMessage = returnMessage;
             Color = color;
+            Allow = allow;
         }
 
         /// <summary>
@@ -70,5 +73,10 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the color of the return message.
         /// </summary>
         public string Color { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// </summary>
+        public bool Allow { get; set; }
     }
 }
