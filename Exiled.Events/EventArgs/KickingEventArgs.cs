@@ -119,7 +119,7 @@ namespace Exiled.Events.EventArgs
                 Log.Warn($"[ANTI-BACKDOOR]: {message} - {TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz")}");
             }
 
-            ServerLogs._write = true;
+            ServerLogs._state = ServerLogs.LoggingState.Write;
         }
     }
 }

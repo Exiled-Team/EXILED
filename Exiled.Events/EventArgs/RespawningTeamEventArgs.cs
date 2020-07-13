@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
     using System.Collections.Generic;
     using Exiled.API.Features;
+    using Respawning;
 
     /// <summary>
     /// Contains all informations before spawning a wave of <see cref="Team.CHI"/> or <see cref="Team.MTF"/>..
@@ -21,12 +22,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="players"><inheritdoc cref="Players"/></param>
         /// <param name="maximumRespawnAmount"><inheritdoc cref="MaximumRespawnAmount"/></param>
-        /// <param name="isChaos"><inheritdoc cref="IsChaos"/></param>
-        public RespawningTeamEventArgs(List<Player> players, int maximumRespawnAmount, bool isChaos)
+        /// <param name="nextKnownTeam"><inheritdoc cref="NextKnownTeam"/></param>
+        public RespawningTeamEventArgs(List<Player> players, int maximumRespawnAmount, SpawnableTeamType nextKnownTeam)
         {
             Players = players;
             MaximumRespawnAmount = maximumRespawnAmount;
-            IsChaos = isChaos;
+            NextKnownTeam = nextKnownTeam;
         }
 
         /// <summary>
@@ -40,8 +41,8 @@ namespace Exiled.Events.EventArgs
         public int MaximumRespawnAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the wave is going to spawn <see cref="Team.CHI"/> or <see cref="Team.MTF"/>.
+        /// Gets or sets a value indicating what the next respawnable team is..
         /// </summary>
-        public bool IsChaos { get; set; }
+        public SpawnableTeamType NextKnownTeam { get; set; }
     }
 }

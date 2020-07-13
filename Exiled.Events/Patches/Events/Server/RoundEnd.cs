@@ -87,10 +87,6 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     roundSummary._roundEnded = true;
                 }
-                else if (num1 == 0 && PlayerManager.localPlayer.GetComponent<MTFRespawn>().MtfRespawnTickets == 0)
-                {
-                    roundSummary._roundEnded = true;
-                }
                 else
                 {
                     int num6 = 0;

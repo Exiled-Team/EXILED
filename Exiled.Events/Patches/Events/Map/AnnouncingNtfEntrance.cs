@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Respawning.NamingRules;
+
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1313
@@ -13,15 +15,15 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     /// <summary>
-    /// Patch the <see cref="NineTailedFoxAnnouncer.AnnounceNtfEntrance(int, int, char)"/>.
+    /// Patch the <see cref="UnitNamingRule.PlayEntranceAnnouncement(string)"/>.
     /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceNtfEntrance))]
+    [HarmonyPatch(typeof(UnitNamingRule), nameof(UnitNamingRule.PlayEntranceAnnouncement))]
     internal class AnnouncingNtfEntrance
     {
-        private static bool Prefix(ref int _scpsLeft, ref int _mtfNumber, ref char _mtfLetter)
+        private static bool Prefix(UnitNamingRule __instance, ref string regular)
         {
-            var ev = new AnnouncingNtfEntranceEventArgs(_scpsLeft, _mtfNumber, _mtfLetter);
+            var ev = new AnnouncingNtfEntranceEventArgs(0, 0, 'a');
 
             Map.OnAnnouncingNtfEntrance(ev);
 
