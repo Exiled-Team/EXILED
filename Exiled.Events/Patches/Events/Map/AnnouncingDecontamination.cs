@@ -27,11 +27,13 @@ namespace Exiled.Events.Patches.Events.Map
         /// </summary>
         public static bool StopAnnouncing { get; internal set; }*/
 
-        private static bool Prefix(DecontaminationController __instance, bool hard)
+        private static bool Prefix(DecontaminationController __instance, ref bool hard)
         {
             var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
+
+            hard = ev.IsGlobal;
 
             __instance._nextPhase = ev.Id;
 
