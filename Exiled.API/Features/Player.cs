@@ -142,8 +142,8 @@ namespace Exiled.API.Features
         /// </summary>
         public string Nickname
         {
-            get => ReferenceHub.nicknameSync.Network_myNickSync;
-            set => ReferenceHub.nicknameSync.Network_myNickSync = value;
+            get => ReferenceHub.nicknameSync.Network_displayName;
+            set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
 
         /// <summary>
