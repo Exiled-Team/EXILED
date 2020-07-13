@@ -7,14 +7,15 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
+
     using static Exiled.Events.Events;
 
     /// <summary>
     /// SCP-096 related events.
     /// </summary>
-    public class Scp096
+    public static class Scp096
     {
         /// <summary>
         /// Invoked before enraging with SCP-096.

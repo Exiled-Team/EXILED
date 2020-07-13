@@ -7,14 +7,14 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
     using static Exiled.Events.Events;
 
     /// <summary>
     /// SCP-106 related events.
     /// </summary>
-    public class Scp106
+    public static class Scp106
     {
         /// <summary>
         /// Invoked before creating an SCP-106 portal.

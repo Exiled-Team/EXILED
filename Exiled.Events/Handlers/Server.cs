@@ -9,15 +9,15 @@ namespace Exiled.Events.Handlers
 {
     using System;
     using System.IO;
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Extensions;
     using static Exiled.Events.Events;
 
     /// <summary>
     /// Server related events.
     /// </summary>
-    public class Server
+    public static class Server
     {
         /// <summary>
         /// Invoked before waiting for players.

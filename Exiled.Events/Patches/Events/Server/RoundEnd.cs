@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Server
             RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || PlayerManager.players.Count < 2)
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
                     yield return 0.0f;
                 yield return 0.0f;
                 RoundSummary.SumInfo_ClassList newList = default;
@@ -39,7 +39,6 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     if (!(player == null))
                     {
-                        Dictionary<GameObject, ReferenceHub> hubs = new Dictionary<GameObject, ReferenceHub>(20, new ReferenceHub.GameObjectComparer());
                         CharacterClassManager component = player.GetComponent<CharacterClassManager>();
                         if (component.Classes.CheckBounds(component.CurClass))
                         {
@@ -88,6 +87,10 @@ namespace Exiled.Events.Patches.Events.Server
                 {
                     roundSummary._roundEnded = true;
                 }
+                else if (num1 == 0 && PlayerManager.localPlayer.GetComponent<MTFRespawn>().MtfRespawnTickets == 0)
+                {
+                    roundSummary._roundEnded = true;
+                }
                 else
                 {
                     int num6 = 0;
@@ -98,7 +101,9 @@ namespace Exiled.Events.Patches.Events.Server
                     if (num3 > 0)
                         ++num6;
                     if (num6 <= 1)
+                    {
                         roundSummary._roundEnded = true;
+                    }
                 }
 
                 var endingRoundEventArgs = new EndingRoundEventArgs(RoundSummary.LeadingTeam.Draw, roundSummary._roundEnded);
@@ -144,6 +149,8 @@ namespace Exiled.Events.Patches.Events.Server
                     for (i1 = 0; i1 < 50; ++i1)
                         yield return 0.0f;
                     PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
+                    ReferenceHub.LocalHub.characterClassManager.RoundStarted = false;
+                    ReferenceHub.LocalHub.characterClassManager.NetworkRoundStarted = false;
                     yield break;
                 }
             }

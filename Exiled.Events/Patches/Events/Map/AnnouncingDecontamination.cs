@@ -20,24 +20,20 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
     internal class AnnouncingDecontamination
     {
-        /// <summary>
+        /*/// <summary>
         /// Gets or sets a value indicating whether stops the Announcement Event from triggering.
         /// Prevents an issue where the event is constantly called after Decon occurs.
+        /// NOTE: Commented out as it should no longer be necessary to use this, however it will remain here in the code during testing, in case it is again in the future.
         /// </summary>
-        internal static bool StopAnnouncing { get; set; }
+        public static bool StopAnnouncing { get; internal set; }*/
 
         private static bool Prefix(DecontaminationController __instance, bool hard)
         {
-            if (StopAnnouncing)
-                return true;
-
             var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
 
             __instance._nextPhase = ev.Id;
-
-            StopAnnouncing = ev.Id == 5;
 
             return ev.IsAllowed;
         }

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ChangingItemEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player changes the item in his hand.
     /// </summary>
-    public class ChangingItemEventArgs
+    public class ChangingItemEventArgs : System.EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingItemEventArgs"/> class.
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's changing the item.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets the old item.
