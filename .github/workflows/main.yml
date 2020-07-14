@@ -4,7 +4,7 @@ name: EXILED CI
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
-on: [push]
+on: [push, pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -21,33 +21,42 @@ jobs:
     # Runs a single command using the runners shell
     - name: Setup Nuget
       uses: warrenbuckley/Setup-Nuget@v1
-      
+
     - name: Restore Packages
       run: nuget restore EXILED.sln
-    
+
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
-    
+
     - name: Download references
       uses: carlosperate/download-file-action@v1.0.3
       with:
         file-url: 'https://www.exiled.host/build_deps/References.zip'
         file-name: 'References.zip'
-    
+
     - name: Download 7zip
       uses: carlosperate/download-file-action@v1.0.3
       with:
         file-url: 'https://www.exiled.host/7za.exe'
         file-name: '7zip.exe'
-    
-    - name: im retarded give me info pls
-      run: cmd /r dir /s /b
-    
+
     - name: Extract Refs
-      run: ./7zip.exe e References.zip -oReferences -r -y
-      
+      run: ./7zip.exe e References.zip -obin/Release -r -y
+
     - name: Build
-      env: 
+      env:
         EXILED_REFERENCES: ./References
       run: msbuild EXILED.sln -p:Configuration=release
-      
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: Build Results
+        path: bin/Release
+
+    - name: Upload EXILED Build
+      uses: actions/upload-artifact@v2
+      with:
+        name: EXILED DLLs
+        path: bin/Release/Exiled*.dll
+

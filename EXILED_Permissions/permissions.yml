@@ -1,9 +1,0 @@
-﻿groups:
-    user:
-        default: true
-        permissions:
-        - testplugin.user
-    admin:
-        permissions:
-        - testplugin.admin
-    

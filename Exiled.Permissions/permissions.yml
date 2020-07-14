@@ -1,0 +1,18 @@
+﻿user:
+    default: true
+    inheritance: []
+    permissions:
+        - testplugin.user
+admin:
+    inheritance: []
+    permissions:
+        - testplugin.admin
+        - testplugin.*
+moderator:
+    inheritance: []
+    permissions:
+        - '*'
+helper:
+    inheritance: []
+    permissions:
+        - .*

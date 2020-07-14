@@ -264,4 +264,12 @@ __pycache__/
 
 # References
 References/
-/Resources
+
+# ResolveUR
+.refsignored
+
+# DocFX
+log.txt
+
+# LEU
+.leu
