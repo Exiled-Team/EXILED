@@ -21,9 +21,12 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(ReferenceHub __instance)
         {
+            if (__instance.characterClassManager.IsHost)
+                return;
+
             API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
 
-            if (player.IsHost || string.IsNullOrEmpty(player.UserId))
+            if (player == null || string.IsNullOrEmpty(player.UserId))
                 return;
 
             var ev = new LeftEventArgs(player);

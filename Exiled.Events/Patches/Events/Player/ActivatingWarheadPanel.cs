@@ -5,16 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Linq;
+using Exiled.Events.EventArgs;
+using Exiled.Events.Handlers;
+using HarmonyLib;
+using UnityEngine;
+
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-    using System.Collections.Generic;
-    using System.Linq;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-    using HarmonyLib;
-    using UnityEngine;
-
     /// <summary>
     /// Patch the <see cref="PlayerInteract.CallCmdSwitchAWButton"/>.
     /// Adds the <see cref="Player.ActivatingWarheadPanel"/> event.
@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(PlayerInteract __instance)
         {
-            if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+            if (!__instance._playerInteractRateLimit.CanExecute() || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
                 return false;
 
             GameObject gameObject = GameObject.Find("OutsitePanelScript");
@@ -32,15 +32,17 @@ namespace Exiled.Events.Patches.Events.Player
             if (!__instance.ChckDis(gameObject.transform.position))
                 return false;
 
-            var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string>() { "CONT_LVL_3" });
+            Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
 
-            Player.OnActivatingWarheadPanel(ev);
+            if (!__instance._sr.BypassMode && (itemById == null || !Enumerable.Contains(itemById.permissions, "CONT_LVL_3")))
+                return false;
 
-            if (ev.IsAllowed && __instance._inv.GetItemByID(__instance._inv.curItem).permissions.Intersect(ev.Permissions).Any())
-            {
-                gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
-                __instance.OnInteract();
-            }
+            var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string> { "CONT_LVL_3" });
+
+            Handlers.Player.OnActivatingWarheadPanel(ev);
+
+            gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
+            __instance.OnInteract();
 
             return false;
         }
