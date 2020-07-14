@@ -145,8 +145,6 @@ namespace Exiled.Events.Patches.Events.Server
                     for (i1 = 0; i1 < 50; ++i1)
                         yield return 0.0f;
                     PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
-                    ReferenceHub.LocalHub.characterClassManager.RoundStarted = false;
-                    ReferenceHub.LocalHub.characterClassManager.NetworkRoundStarted = false;
                     yield break;
                 }
             }

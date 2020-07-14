@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,14 +23,23 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(AnimationController __instance, byte state, Vector2 v2)
         {
-            if (!__instance._mSyncRateLimit.CanExecute(false))
-                return false;
+            try
+            {
+                if (!__instance._mSyncRateLimit.CanExecute(false))
+                    return false;
 
-            var ev = new SyncingDataEventArgs(API.Features.Player.Get(__instance.gameObject), v2, state);
+                var ev = new SyncingDataEventArgs(API.Features.Player.Get(__instance.gameObject), v2, state);
 
-            Player.OnSyncingData(ev);
+                Player.OnSyncingData(ev);
 
-            return ev.IsAllowed;
+                return ev.IsAllowed;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SyncingData: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

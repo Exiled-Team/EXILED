@@ -22,6 +22,6 @@ namespace Exiled.Events.Patches.Events.Server
             API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
 
             Handlers.Server.OnRestartingRound();
-            }
+        }
     }
 }

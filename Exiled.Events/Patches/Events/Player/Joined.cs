@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,30 +23,39 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Postfix(NicknameSync __instance)
         {
-            if (__instance.hub.characterClassManager.IsHost || string.IsNullOrEmpty(__instance.hub.characterClassManager.UserId))
-                return;
-
-            if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
+            try
             {
-                player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+                if (__instance.hub.characterClassManager.IsHost ||
+                    string.IsNullOrEmpty(__instance.hub.characterClassManager.UserId))
+                    return;
 
-                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
+                if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
+                {
+                    player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+
+                    API.Features.Player.Dictionary.Add(__instance.gameObject, player);
+                }
+
+                API.Features.Log.Debug(
+                    $"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
+
+                if (PlayerManager.players.Count >= CustomNetworkManager.slots)
+                    API.Features.Log.Debug($"Server is full!");
+
+                Timing.CallDelayed(0.25f, () =>
+                {
+                    if (player != null && player.IsMuted)
+                        player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
+                });
+
+                var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
+
+                Player.OnJoined(ev);
             }
-
-            API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
-
-            if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                API.Features.Log.Debug($"Server is full!");
-
-            Timing.CallDelayed(0.25f, () =>
+            catch (Exception e)
             {
-                if (player != null && player.IsMuted)
-                    player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
-            });
-
-            var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
-
-            Player.OnJoined(ev);
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {e}\n{e.StackTrace}");
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -23,32 +24,43 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(CharacterClassManager __instance)
         {
-            if (!NetworkServer.active || !NonFacilityCompatibility.currentSceneSettings.enableStandardGamplayItems)
-                return false;
-
-            foreach (GameObject player in PlayerManager.players)
+            try
             {
-                if (Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) < 1.97000002861023)
+                if (!NetworkServer.active || !NonFacilityCompatibility.currentSceneSettings.enableStandardGamplayItems)
+                    return false;
+
+                foreach (GameObject player in PlayerManager.players)
                 {
-                    CharacterClassManager component1 = player.GetComponent<CharacterClassManager>();
-                    PlayerStats component2 = player.GetComponent<PlayerStats>();
-
-                    if (component1.Classes.SafeGet(component1.CurClass).team != Team.SCP && component1.CurClass != RoleType.Spectator && !component1.GodMode)
+                    if (Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) <
+                        1.97000002861023)
                     {
-                        var ev = new EnteringFemurBreakerEventArgs(API.Features.Player.Get(component2.gameObject));
+                        CharacterClassManager component1 = player.GetComponent<CharacterClassManager>();
+                        PlayerStats component2 = player.GetComponent<PlayerStats>();
 
-                        Player.OnEnteringFemurBreaker(ev);
-
-                        if (ev.IsAllowed)
+                        if (component1.Classes.SafeGet(component1.CurClass).team != Team.SCP &&
+                            component1.CurClass != RoleType.Spectator && !component1.GodMode)
                         {
-                            component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), player);
-                            __instance._lureSpj.SetState(true);
+                            var ev = new EnteringFemurBreakerEventArgs(API.Features.Player.Get(component2.gameObject));
+
+                            Player.OnEnteringFemurBreaker(ev);
+
+                            if (ev.IsAllowed)
+                            {
+                                component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), player);
+                                __instance._lureSpj.SetState(true);
+                            }
                         }
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EnteringFemurBreaker: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,11 +22,20 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ServerRoles __instance, UserGroup group)
         {
-            var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
+            try
+            {
+                var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
 
-            Player.OnChangingGroup(ev);
+                Player.OnChangingGroup(ev);
 
-            return ev.IsAllowed;
+                return ev.IsAllowed;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

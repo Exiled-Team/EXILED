@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,12 +23,14 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
         {
-            var ev = new GainingExperienceEventArgs(API.Features.Player.Get(__instance.gameObject), type, (float)details);
-
-            switch (type)
+            try
             {
-                case ExpGainType.KillAssist:
-                case ExpGainType.PocketAssist:
+                var ev = new GainingExperienceEventArgs(API.Features.Player.Get(__instance.gameObject), type, (float)details);
+
+                switch (type)
+                {
+                    case ExpGainType.KillAssist:
+                    case ExpGainType.PocketAssist:
                     {
                         Team team = __instance.GetComponent<CharacterClassManager>().Classes.SafeGet(details).team;
                         int num = 6;
@@ -69,13 +72,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                         break;
                     }
 
-                case ExpGainType.DirectKill:
-                case ExpGainType.HardwareHack:
-                    break;
-                case ExpGainType.AdminCheat:
-                    ev.Amount = (float)details;
-                    break;
-                case ExpGainType.GeneralInteractions:
+                    case ExpGainType.DirectKill:
+                    case ExpGainType.HardwareHack:
+                        break;
+                    case ExpGainType.AdminCheat:
+                        ev.Amount = (float)details;
+                        break;
+                    case ExpGainType.GeneralInteractions:
                     {
                         switch (details)
                         {
@@ -103,19 +106,26 @@ namespace Exiled.Events.Patches.Events.Scp079
                         break;
                     }
 
-                default:
+                    default:
+                        return false;
+                }
+
+                Scp079.OnGainingExperience(ev);
+
+                if (ev.IsAllowed && ev.Amount > 0)
+                {
+                    __instance.AddExperience(ev.Amount);
                     return false;
-            }
+                }
 
-            Scp079.OnGainingExperience(ev);
-
-            if (ev.IsAllowed && ev.Amount > 0)
-            {
-                __instance.AddExperience(ev.Amount);
                 return false;
             }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Scp079.GainingExperience: {e}\n{e.StackTrace}");
 
-            return false;
+                return true;
+            }
         }
     }
 }

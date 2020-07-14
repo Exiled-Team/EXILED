@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,28 +22,35 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(ReferenceHub __instance)
         {
-            if (__instance.characterClassManager.IsHost)
-                return;
+            try
+            {
+                if (__instance.characterClassManager.IsHost)
+                    return;
 
-            API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
+                API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
 
-            if (player == null || string.IsNullOrEmpty(player.UserId))
-                return;
+                if (player == null || string.IsNullOrEmpty(player.UserId))
+                    return;
 
-            var ev = new LeftEventArgs(player);
+                var ev = new LeftEventArgs(player);
 
-            API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
+                API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
 
-            Player.OnLeft(ev);
+                Player.OnLeft(ev);
 
-            if (API.Features.Player.IdsCache.ContainsKey(__instance.queryProcessor.PlayerId))
-                API.Features.Player.IdsCache.Remove(__instance.queryProcessor.PlayerId);
+                if (API.Features.Player.IdsCache.ContainsKey(__instance.queryProcessor.PlayerId))
+                    API.Features.Player.IdsCache.Remove(__instance.queryProcessor.PlayerId);
 
-            if (API.Features.Player.UserIdsCache.ContainsKey(__instance.characterClassManager.UserId))
-                API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
+                if (API.Features.Player.UserIdsCache.ContainsKey(__instance.characterClassManager.UserId))
+                    API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
 
-            if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
-                API.Features.Player.Dictionary.Remove(__instance.gameObject);
+                if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
+                    API.Features.Player.Dictionary.Remove(__instance.gameObject);
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Left: {e}\n{e.StackTrace}");
+            }
         }
     }
 }

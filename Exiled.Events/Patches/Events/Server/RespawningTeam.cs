@@ -26,90 +26,104 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static bool Prefix(RespawnManager __instance)
         {
-            SpawnableTeam spawnableTeam;
-            if (!RespawnWaveGenerator.SpawnableTeams.TryGetValue(__instance.NextKnownTeam, out spawnableTeam) || __instance.NextKnownTeam == SpawnableTeamType.None)
+            try
             {
-                ServerConsole.AddLog("Fatal error. Team '" + __instance.NextKnownTeam + "' is undefined.", ConsoleColor.Red);
-            }
-            else
-            {
-                List<API.Features.Player> list = API.Features.Player.List.Where(p => p.IsDead && !p.IsOverwatchEnabled).ToList();
-
-                if (__instance._prioritySpawn)
+                SpawnableTeam spawnableTeam;
+                if (!RespawnWaveGenerator.SpawnableTeams.TryGetValue(__instance.NextKnownTeam, out spawnableTeam) ||
+                    __instance.NextKnownTeam == SpawnableTeamType.None)
                 {
-                    list = list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime).ToList();
+                    ServerConsole.AddLog("Fatal error. Team '" + __instance.NextKnownTeam + "' is undefined.", ConsoleColor.Red);
                 }
                 else
                 {
+                    List<API.Features.Player> list = API.Features.Player.List
+                        .Where(p => p.IsDead && !p.IsOverwatchEnabled).ToList();
+
+                    if (__instance._prioritySpawn)
+                    {
+                        list = list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime).ToList();
+                    }
+                    else
+                    {
+                        list.ShuffleList();
+                    }
+
+                    RespawnTickets singleton = RespawnTickets.Singleton;
+                    int a = singleton.GetAvailableTickets(__instance.NextKnownTeam);
+                    if (a == 0)
+                    {
+                        a = singleton.DefaultTeamAmount;
+                        RespawnTickets.Singleton.GrantTickets(singleton.DefaultTeam, singleton.DefaultTeamAmount, true);
+                    }
+
+                    int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);
+
+                    List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Rent();
+
+                    var ev = new RespawningTeamEventArgs(list, num, __instance.NextKnownTeam);
+                    Handlers.Server.OnRespawningTeam(ev);
+
+                    while (list.Count > num)
+                        list.RemoveAt(list.Count - 1);
                     list.ShuffleList();
-                }
 
-                RespawnTickets singleton = RespawnTickets.Singleton;
-                int a = singleton.GetAvailableTickets(__instance.NextKnownTeam);
-                if (a == 0)
-                {
-                    a = singleton.DefaultTeamAmount;
-                    RespawnTickets.Singleton.GrantTickets(singleton.DefaultTeam, singleton.DefaultTeamAmount, true);
-                }
-
-                int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);
-
-                List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Rent();
-
-                var ev = new RespawningTeamEventArgs(list, num, __instance.NextKnownTeam);
-                Handlers.Server.OnRespawningTeam(ev);
-
-                while (list.Count > num)
-                    list.RemoveAt(list.Count - 1);
-                list.ShuffleList();
-
-                foreach (API.Features.Player me in list)
-                {
-                    try
+                    foreach (API.Features.Player me in list)
                     {
-                        RoleType classid = spawnableTeam.ClassQueue[Mathf.Min(referenceHubList.Count, spawnableTeam.ClassQueue.Length - 1)];
-                        me.ReferenceHub.characterClassManager.SetPlayersClass(classid, me.ReferenceHub.gameObject);
-                        referenceHubList.Add(me.ReferenceHub);
-                        ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " respawned as " + classid + ".", ServerLogs.ServerLogType.GameEvent);
-                    }
-                    catch (Exception ex)
-                    {
-                        if (me != null)
+                        try
                         {
-                            ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " couldn't be spawned. Err msg: " + ex.Message, ServerLogs.ServerLogType.GameEvent);
+                            RoleType classid =
+                                spawnableTeam.ClassQueue[
+                                    Mathf.Min(referenceHubList.Count, spawnableTeam.ClassQueue.Length - 1)];
+                            me.ReferenceHub.characterClassManager.SetPlayersClass(classid, me.ReferenceHub.gameObject);
+                            referenceHubList.Add(me.ReferenceHub);
+                            ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " respawned as " + classid + ".", ServerLogs.ServerLogType.GameEvent);
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Couldn't spawn a player - target's ReferenceHub is null.", ServerLogs.ServerLogType.GameEvent);
+                            if (me != null)
+                            {
+                                ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " couldn't be spawned. Err msg: " + ex.Message, ServerLogs.ServerLogType.GameEvent);
+                            }
+                            else
+                            {
+                                ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Couldn't spawn a player - target's ReferenceHub is null.", ServerLogs.ServerLogType.GameEvent);
+                            }
                         }
                     }
-                }
 
-                if (referenceHubList.Count > 0)
-                {
-                    ServerLogs.AddLog(ServerLogs.Modules.ClassChange, $"RespawnManager has successfully spawned {referenceHubList.Count} players as {__instance.NextKnownTeam}!", ServerLogs.ServerLogType.GameEvent);
-                    RespawnTickets.Singleton.GrantTickets(__instance.NextKnownTeam, -referenceHubList.Count * spawnableTeam.TicketRespawnCost);
-                    UnitNamingRule rule;
-                    if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out rule))
+                    if (referenceHubList.Count > 0)
                     {
-                        string regular;
-                        rule.GenerateNew(__instance.NextKnownTeam, out regular);
-                        foreach (ReferenceHub referenceHub in referenceHubList)
+                        ServerLogs.AddLog(ServerLogs.Modules.ClassChange, $"RespawnManager has successfully spawned {referenceHubList.Count} players as {__instance.NextKnownTeam}!", ServerLogs.ServerLogType.GameEvent);
+                        RespawnTickets.Singleton.GrantTickets(__instance.NextKnownTeam, -referenceHubList.Count * spawnableTeam.TicketRespawnCost);
+                        UnitNamingRule rule;
+                        if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out rule))
                         {
-                            referenceHub.characterClassManager.NetworkCurSpawnableTeamType = (byte)__instance.NextKnownTeam;
-                            referenceHub.characterClassManager.NetworkCurUnitName = regular;
+                            string regular;
+                            rule.GenerateNew(__instance.NextKnownTeam, out regular);
+                            foreach (ReferenceHub referenceHub in referenceHubList)
+                            {
+                                referenceHub.characterClassManager.NetworkCurSpawnableTeamType =
+                                    (byte)__instance.NextKnownTeam;
+                                referenceHub.characterClassManager.NetworkCurUnitName = regular;
+                            }
+
+                            rule.PlayEntranceAnnouncement(regular);
                         }
 
-                        rule.PlayEntranceAnnouncement(regular);
+                        RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.UponRespawn, __instance.NextKnownTeam);
                     }
 
-                    RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.UponRespawn, __instance.NextKnownTeam);
+                    __instance.NextKnownTeam = SpawnableTeamType.None;
                 }
 
-                __instance.NextKnownTeam = SpawnableTeamType.None;
+                return false;
             }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Server.RespawningTeam: {e}\n{e.StackTrace}");
 
-            return false;
+                return true;
+            }
         }
     }
 }

@@ -70,8 +70,7 @@ namespace Exiled.Events
 
             Handlers.Player.ChangingRole += round.OnChangingRole;
 
-            if (Config.IsNameTrackingEnabled)
-                Server.Name = $"{Server.Name} <color=#00000000><size=1>Exiled {RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build}</size></color>";
+            ServerConsole.ReloadServerName();
         }
 
         /// <inheritdoc/>

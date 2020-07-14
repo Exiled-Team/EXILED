@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,22 +22,31 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ConsumableAndWearableItems __instance)
         {
-            if (!__instance._interactRateLimit.CanExecute(true))
-                return false;
-
-            for (int i = 0; i < __instance.usableItems.Length; ++i)
+            try
             {
-                if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
+                if (!__instance._interactRateLimit.CanExecute(true))
+                    return false;
+
+                for (int i = 0; i < __instance.usableItems.Length; ++i)
                 {
-                    var ev = new StoppingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+                    if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
+                    {
+                        var ev = new StoppingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
 
-                    Player.OnStoppingMedicalItem(ev);
+                        Player.OnStoppingMedicalItem(ev);
 
-                    __instance._cancel = ev.IsAllowed;
+                        __instance._cancel = ev.IsAllowed;
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.StoppingMedicalItem: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,101 +23,111 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Generator079 __instance, GameObject person, string command)
         {
-            if (command.StartsWith("EPS_TABLET"))
+            try
             {
-                if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance._localTime <= 0.0 ||
-                    Generator079.mainGenerator.forcedOvercharge)
-                    return false;
-                Inventory component = person.GetComponent<Inventory>();
-                foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
+                if (command.StartsWith("EPS_TABLET"))
                 {
-                    if (syncItemInfo.id == ItemType.WeaponManagerTablet)
+                    if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance._localTime <= 0.0 ||
+                        Generator079.mainGenerator.forcedOvercharge)
+                        return false;
+                    Inventory component = person.GetComponent<Inventory>();
+                    foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
                     {
-                        var ev = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
-
-                        Player.OnInsertingGeneratorTablet(ev);
-
-                        if (!ev.IsAllowed)
-                            return false;
-
-                        component.items.Remove(syncItemInfo);
-                        __instance.NetworkisTabletConnected = true;
-                        break;
-                    }
-                }
-            }
-            else if (command.StartsWith("EPS_CANCEL"))
-            {
-                if (!__instance.isTabletConnected)
-                    return false;
-
-                var ev = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
-
-                Player.OnEjectingGeneratorTablet(ev);
-
-                if (ev.IsAllowed)
-                    __instance.EjectTablet();
-            }
-            else if (command.StartsWith("EPS_DOOR"))
-            {
-                Inventory component = person.GetComponent<Inventory>();
-                if (component == null || __instance._doorAnimationCooldown > 0.0 || __instance._deniedCooldown > 0.0)
-                    return false;
-                if (!__instance.isDoorUnlocked)
-                {
-                    var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, person.GetComponent<ServerRoles>().BypassMode);
-
-                    if (component.curItem > ItemType.KeycardJanitor)
-                    {
-                        foreach (string permission in component.GetItemByID(component.curItem).permissions)
+                        if (syncItemInfo.id == ItemType.WeaponManagerTablet)
                         {
-                            if (permission == "ARMORY_LVL_2")
-                                ev.IsAllowed = true;
+                            var ev = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+
+                            Player.OnInsertingGeneratorTablet(ev);
+
+                            if (!ev.IsAllowed)
+                                return false;
+
+                            component.items.Remove(syncItemInfo);
+                            __instance.NetworkisTabletConnected = true;
+                            break;
                         }
                     }
+                }
+                else if (command.StartsWith("EPS_CANCEL"))
+                {
+                    if (!__instance.isTabletConnected)
+                        return false;
 
-                    Player.OnUnlockingGenerator(ev);
+                    var ev = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+
+                    Player.OnEjectingGeneratorTablet(ev);
 
                     if (ev.IsAllowed)
-                    {
-                        __instance.NetworkisDoorUnlocked = true;
-                        __instance._doorAnimationCooldown = 0.5f;
-                    }
-                    else
-                    {
-                        __instance.RpcDenied();
-                    }
+                        __instance.EjectTablet();
                 }
-                else
+                else if (command.StartsWith("EPS_DOOR"))
                 {
-                    OpeningGeneratorEventArgs ev;
-
-                    if (!__instance.NetworkisDoorOpen)
+                    Inventory component = person.GetComponent<Inventory>();
+                    if (component == null || __instance._doorAnimationCooldown > 0.0 ||
+                        __instance._deniedCooldown > 0.0)
+                        return false;
+                    if (!__instance.isDoorUnlocked)
                     {
-                        ev = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance);
+                        var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, person.GetComponent<ServerRoles>().BypassMode);
 
-                        Player.OnOpeningGenerator(ev);
+                        if (component.curItem > ItemType.KeycardJanitor)
+                        {
+                            foreach (string permission in component.GetItemByID(component.curItem).permissions)
+                            {
+                                if (permission == "ARMORY_LVL_2")
+                                    ev.IsAllowed = true;
+                            }
+                        }
+
+                        Player.OnUnlockingGenerator(ev);
+
+                        if (ev.IsAllowed)
+                        {
+                            __instance.NetworkisDoorUnlocked = true;
+                            __instance._doorAnimationCooldown = 0.5f;
+                        }
+                        else
+                        {
+                            __instance.RpcDenied();
+                        }
                     }
                     else
                     {
-                        ev = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
+                        OpeningGeneratorEventArgs ev;
 
-                        Player.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
+                        if (!__instance.NetworkisDoorOpen)
+                        {
+                            ev = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance);
+
+                            Player.OnOpeningGenerator(ev);
+                        }
+                        else
+                        {
+                            ev = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
+
+                            Player.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
+                        }
+
+                        if (!ev.IsAllowed)
+                        {
+                            __instance.RpcDenied();
+                            return false;
+                        }
+
+                        __instance._doorAnimationCooldown = 1.5f;
+                        __instance.NetworkisDoorOpen = !__instance.isDoorOpen;
+                        __instance.RpcDoSound(__instance.isDoorOpen);
                     }
-
-                    if (!ev.IsAllowed)
-                    {
-                        __instance.RpcDenied();
-                        return false;
-                    }
-
-                    __instance._doorAnimationCooldown = 1.5f;
-                    __instance.NetworkisDoorOpen = !__instance.isDoorOpen;
-                    __instance.RpcDoSound(__instance.isDoorOpen);
                 }
-            }
 
-            return false;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

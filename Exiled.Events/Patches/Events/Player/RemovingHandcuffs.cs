@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,25 +22,34 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Handcuffs __instance)
         {
-            foreach (API.Features.Player target in API.Features.Player.List)
+            try
             {
-                if (target == null)
-                    continue;
-
-                if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
+                foreach (API.Features.Player target in API.Features.Player.List)
                 {
-                    var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
+                    if (target == null)
+                        continue;
 
-                    Player.OnRemovingHandcuffs(ev);
+                    if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
+                    {
+                        var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
 
-                    if (ev.IsAllowed)
-                        target.CufferId = -1;
+                        Player.OnRemovingHandcuffs(ev);
 
-                    break;
+                        if (ev.IsAllowed)
+                            target.CufferId = -1;
+
+                        break;
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.RemovingHandcuffs: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

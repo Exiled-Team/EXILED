@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using System.Collections.Generic;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -23,24 +24,33 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(TeslaGateController __instance)
         {
-            foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
+            try
             {
-                if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
-                    continue;
-                foreach (TeslaGate teslaGate in __instance.TeslaGates)
+                foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
                 {
-                    if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
+                    if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
                         continue;
+                    foreach (TeslaGate teslaGate in __instance.TeslaGates)
+                    {
+                        if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
+                            continue;
 
-                    var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
-                    Player.OnTriggeringTesla(ev);
+                        var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
+                        Player.OnTriggeringTesla(ev);
 
-                    if (ev.IsTriggerable)
-                        teslaGate.ServerSideCode();
+                        if (ev.IsTriggerable)
+                            teslaGate.ServerSideCode();
+                    }
                 }
-            }
 
-            return false;
+                return false;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

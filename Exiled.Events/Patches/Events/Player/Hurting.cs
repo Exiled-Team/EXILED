@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,23 +23,30 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
-            if (go == null)
-                return;
+            try
+            {
+                if (go == null)
+                    return;
 
-            API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
-            API.Features.Player target = API.Features.Player.Get(go);
+                API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
+                API.Features.Player target = API.Features.Player.Get(go);
 
-            if (attacker == null || target == null || attacker.IsHost || target.IsHost)
-                return;
+                if (attacker == null || target == null || attacker.IsHost || target.IsHost)
+                    return;
 
-            var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
+                var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
-            if (ev.Target.IsHost)
-                return;
+                if (ev.Target.IsHost)
+                    return;
 
-            Player.OnHurting(ev);
+                Handlers.Player.OnHurting(ev);
 
-            info = ev.HitInformations;
+                info = ev.HitInformations;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
+            }
         }
     }
 }

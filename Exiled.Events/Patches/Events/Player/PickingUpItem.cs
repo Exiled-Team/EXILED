@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -22,11 +23,20 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ItemSearchCompletor __instance)
         {
-            var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
+            try
+            {
+                var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
 
-            Player.OnPickingUpItem(ev);
+                Player.OnPickingUpItem(ev);
 
-            return ev.IsAllowed;
+                return ev.IsAllowed;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.PickingUpItem: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

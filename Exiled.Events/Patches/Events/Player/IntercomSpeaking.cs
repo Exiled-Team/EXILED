@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,33 +22,42 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Intercom __instance, bool player)
         {
-            if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+            try
+            {
+                if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+                    return false;
+
+                var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
+
+                if (player)
+                {
+                    if (!__instance.ServerAllowToSpeak())
+                        return false;
+
+                    Player.OnIntercomSpeaking(ev);
+
+                    if (ev.IsAllowed)
+                        Intercom.host.RequestTransmission(__instance.gameObject);
+                }
+                else
+                {
+                    if (!(Intercom.host.Networkspeaker == __instance.gameObject))
+                        return false;
+
+                    Player.OnIntercomSpeaking(ev);
+
+                    if (ev.IsAllowed)
+                        Intercom.host.RequestTransmission(null);
+                }
+
                 return false;
-
-            var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
-
-            if (player)
-            {
-                if (!__instance.ServerAllowToSpeak())
-                    return false;
-
-                Player.OnIntercomSpeaking(ev);
-
-                if (ev.IsAllowed)
-                    Intercom.host.RequestTransmission(__instance.gameObject);
             }
-            else
+            catch (Exception e)
             {
-                if (!(Intercom.host.Networkspeaker == __instance.gameObject))
-                    return false;
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.IntercomSpeaking: {e}\n{e.StackTrace}");
 
-                Player.OnIntercomSpeaking(ev);
-
-                if (ev.IsAllowed)
-                    Intercom.host.RequestTransmission(null);
+                return true;
             }
-
-            return false;
         }
     }
 }

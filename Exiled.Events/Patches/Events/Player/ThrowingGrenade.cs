@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using Grenades;
@@ -22,15 +23,24 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ref GrenadeManager __instance, ref int id, ref bool slowThrow, ref double time)
         {
-            var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, id, slowThrow, time);
+            try
+            {
+                var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, id, slowThrow, time);
 
-            Player.OnThrowingGrenade(ev);
+                Player.OnThrowingGrenade(ev);
 
-            id = ev.Id;
-            slowThrow = ev.IsSlow;
-            time = ev.FuseTime;
+                id = ev.Id;
+                slowThrow = ev.IsSlow;
+                time = ev.FuseTime;
 
-            return ev.IsAllowed;
+                return ev.IsAllowed;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ThrowingGrenade: {e}\n{e.StackTrace}");
+
+                return true;
+            }
         }
     }
 }

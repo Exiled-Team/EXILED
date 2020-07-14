@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;
@@ -21,11 +22,18 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
         {
-            if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
+            try
             {
-                var ev = new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
+                if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
+                {
+                    var ev = new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
 
-                Player.OnMedicalItemUsed(ev);
+                    Player.OnMedicalItemUsed(ev);
+                }
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.UsedMedicalItem: {e}\n{e.StackTrace}");
             }
         }
     }

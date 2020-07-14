@@ -289,6 +289,7 @@
     <Compile Include="Patches\Events\Warhead\Detonated.cs" />
     <Compile Include="Patches\Events\Player\ActivatingWarheadPanel.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="Patches\Generic\ServerNamePatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
