@@ -45,7 +45,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         {
             if (!(sender as CommandSender).CheckPermission("ep.groupinfo"))
             {
-                response = "You can't see group informations, you don't have \"ep.groupinfo\" permission.";
+                response = "You can't see group information, you don't have \"ep.groupinfo\" permission.";
                 return false;
             }
 
@@ -66,6 +66,14 @@ namespace Exiled.Permissions.Commands.Permissions.Group
             StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
+
+            if (group == null)
+            {
+                stringBuilder.AppendLine($"Group is null.");
+                response = stringBuilder.ToString();
+                return false;
+            }
+
             stringBuilder.AppendLine($"Default: {group.IsDefault}");
 
             if (group.Inheritance.Count != 0)

@@ -114,11 +114,6 @@ namespace Exiled.Permissions.Extensions
             {
                 return true;
             }
-            else if (player == null)
-            {
-                Log.Error("Player was null, unable to check permissions.");
-                return false;
-            }
 
             Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
             if (string.IsNullOrEmpty(permission))
@@ -144,7 +139,7 @@ namespace Exiled.Permissions.Extensions
 
                 if (!Groups.Any())
                 {
-                    Log.Error("No permissionconfig groups.");
+                    Log.Error("No permission config groups.");
                     return false;
                 }
 

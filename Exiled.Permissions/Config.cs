@@ -20,7 +20,7 @@ namespace Exiled.Permissions
         /// </summary>
         public Config()
         {
-            Folder = Path.Combine(Paths.Plugins, "Exiled Permissions");
+            Folder = Paths.Configs;
             FullPath = Path.Combine(Folder, "permissions.yml");
         }
 

@@ -57,6 +57,7 @@ namespace Exiled.Events.Patches.Events.Server
                 List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Rent();
 
                 var ev = new RespawningTeamEventArgs(list, num, __instance.NextKnownTeam);
+                Handlers.Server.OnRespawningTeam(ev);
 
                 while (list.Count > num)
                     list.RemoveAt(list.Count - 1);
