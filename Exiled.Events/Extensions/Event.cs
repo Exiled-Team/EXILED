@@ -51,9 +51,9 @@ namespace Exiled.Events.Extensions
         public static void InvokeSafely(this Events.CustomEventHandler ev)
         {
             if (ev == null)
-                throw new ArgumentNullException(nameof(ev));
+                return;
 
-            var eventName = ev.GetType().FullName;
+            string eventName = ev.GetType().FullName;
             foreach (Events.CustomEventHandler handler in ev.GetInvocationList())
             {
                 try
@@ -62,7 +62,7 @@ namespace Exiled.Events.Extensions
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType.FullName, eventName);
+                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName, eventName);
                 }
             }
         }

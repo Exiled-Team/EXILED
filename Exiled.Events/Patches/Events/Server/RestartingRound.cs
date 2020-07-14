@@ -8,8 +8,6 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
     using HarmonyLib;
 
     /// <summary>
@@ -21,12 +19,9 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static void Prefix()
         {
-            API.Features.Log.Debug("Round restarting");
+            API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
 
-            var ev = new RoundEndedEventArgs(RoundSummary.LeadingTeam.Draw, default, 0);
-
-            Server.OnRestartingRound();
-            Server.OnRoundEnded(ev);
-        }
+            Handlers.Server.OnRestartingRound();
+            }
     }
 }
