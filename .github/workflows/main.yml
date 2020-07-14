@@ -21,39 +21,39 @@ jobs:
     # Runs a single command using the runners shell
     - name: Setup Nuget
       uses: warrenbuckley/Setup-Nuget@v1
-      
+
     - name: Restore Packages
       run: nuget restore EXILED.sln
-    
+
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
-    
+
     - name: Download references
       uses: carlosperate/download-file-action@v1.0.3
       with:
         file-url: 'https://www.exiled.host/build_deps/References.zip'
         file-name: 'References.zip'
-    
+
     - name: Download 7zip
       uses: carlosperate/download-file-action@v1.0.3
       with:
         file-url: 'https://www.exiled.host/7za.exe'
         file-name: '7zip.exe'
-    
+
     - name: Extract Refs
       run: ./7zip.exe e References.zip -obin/Release -r -y
-      
+
     - name: Build
-      env: 
+      env:
         EXILED_REFERENCES: ./References
       run: msbuild EXILED.sln -p:Configuration=release
-    
+
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: Build Results
         path: bin/Release
-        
+
     - name: Upload EXILED Build
       uses: actions/upload-artifact@v2
       with:

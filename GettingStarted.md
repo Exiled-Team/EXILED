@@ -105,7 +105,7 @@ public class EventHandlers
 {
     public void PlayerJoined(PlayerJoinEvent ev)
     {
-        
+
     }
 }
 ```
