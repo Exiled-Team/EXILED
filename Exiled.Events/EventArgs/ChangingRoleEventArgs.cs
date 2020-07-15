@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ChangingRoleEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="items"><inheritdoc cref="Items"/></param>
         /// <param name="shouldPreservePosition"><inheritdoc cref="ShouldPreservePosition"/></param>
         /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangingRoleEventArgs(Player player, RoleType newRole, List<ItemType> items, bool isEscaped, bool shouldPreservePosition)
+        public ChangingRoleEventArgs(Player player, RoleType newRole, List<ItemType> items, bool shouldPreservePosition, bool isEscaped)
         {
             Player = player;
             NewRole = newRole;

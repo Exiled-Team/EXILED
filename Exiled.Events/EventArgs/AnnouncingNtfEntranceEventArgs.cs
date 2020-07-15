@@ -9,8 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Respawning.NamingRules;
-
     /// <summary>
     /// Contains all informations before announcing the ntf entrance.
     /// </summary>

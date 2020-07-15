@@ -32,8 +32,7 @@ namespace Exiled.Events.Patches.Events.Server
         {
             try
             {
-                SpawnableTeam spawnableTeam;
-                if (!RespawnWaveGenerator.SpawnableTeams.TryGetValue(__instance.NextKnownTeam, out spawnableTeam) ||
+                if (!RespawnWaveGenerator.SpawnableTeams.TryGetValue(__instance.NextKnownTeam, out SpawnableTeam spawnableTeam) ||
                     __instance.NextKnownTeam == SpawnableTeamType.None)
                 {
                     ServerConsole.AddLog("Fatal error. Team '" + __instance.NextKnownTeam + "' is undefined.", ConsoleColor.Red);
@@ -99,11 +98,9 @@ namespace Exiled.Events.Patches.Events.Server
                     {
                         ServerLogs.AddLog(ServerLogs.Modules.ClassChange, $"RespawnManager has successfully spawned {referenceHubList.Count} players as {__instance.NextKnownTeam}!", ServerLogs.ServerLogType.GameEvent);
                         RespawnTickets.Singleton.GrantTickets(__instance.NextKnownTeam, -referenceHubList.Count * spawnableTeam.TicketRespawnCost);
-                        UnitNamingRule rule;
-                        if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out rule))
+                        if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out UnitNamingRule rule))
                         {
-                            string regular;
-                            rule.GenerateNew(__instance.NextKnownTeam, out regular);
+                            rule.GenerateNew(__instance.NextKnownTeam, out string regular);
                             foreach (ReferenceHub referenceHub in referenceHubList)
                             {
                                 referenceHub.characterClassManager.NetworkCurSpawnableTeamType =
