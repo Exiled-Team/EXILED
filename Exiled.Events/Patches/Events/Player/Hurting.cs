@@ -18,13 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool)"/>.
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal class Hurting
     {
-        private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go, bool noTeamDamage = false)
         {
             try
             {
