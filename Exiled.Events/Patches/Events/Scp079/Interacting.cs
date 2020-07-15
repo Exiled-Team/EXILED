@@ -12,10 +12,15 @@ namespace Exiled.Events.Patches.Events.Scp079
 #pragma warning disable CS0436
     using System;
     using System.Collections.Generic;
+
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using UnityEngine;
+
     using Console = GameCore.Console;
     using Log = Exiled.API.Features.Log;
 
@@ -24,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="InteractingTeslaEventArgs"/> and <see cref="InteractingDoorEventArgs"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
-    public class Interacting
+    internal class Interacting
     {
         /// <summary>
         /// Prefix of <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
@@ -33,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp079
         /// <param name="command">The command to be executed.</param>
         /// <param name="target">The target game object.</param>
         /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        public static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
+        private static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
         {
             try
             {
@@ -67,74 +72,74 @@ namespace Exiled.Events.Patches.Events.Scp079
                 switch (s)
                 {
                     case "TESLA":
-                    {
-                        float manaFromLabel = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-                        if (manaFromLabel > __instance.curMana)
                         {
-                            __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                            float manaFromLabel = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
+                            if (manaFromLabel > __instance.curMana)
+                            {
+                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                                return false;
+                            }
+
+                            GameObject gameObject =
+                                GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
+                            if (gameObject != null)
+                            {
+                                gameObject.GetComponent<TeslaGate>().RpcInstantBurst();
+                                __instance.AddInteractionToHistory(gameObject, array[0], true);
+                                __instance.Mana -= manaFromLabel;
+                                return false;
+                            }
+
                             return false;
                         }
-
-                        GameObject gameObject =
-                            GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
-                        if (gameObject != null)
-                        {
-                            gameObject.GetComponent<TeslaGate>().RpcInstantBurst();
-                            __instance.AddInteractionToHistory(gameObject, array[0], true);
-                            __instance.Mana -= manaFromLabel;
-                            return false;
-                        }
-
-                        return false;
-                    }
 
                     case "DOOR":
-                    {
-                        if (AlphaWarheadController.Host.inProgress)
                         {
+                            if (AlphaWarheadController.Host.inProgress)
+                            {
+                                return false;
+                            }
+
+                            if (target == null)
+                            {
+                                Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            Door component = target.GetComponent<Door>();
+                            if (component == null)
+                            {
+                                return false;
+                            }
+
+                            if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
+                            {
+                                Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
+                                return false;
+                            }
+
+                            float manaFromLabel = __instance.GetManaFromLabel(
+                                "Door Interaction " + (string.IsNullOrEmpty(component.permissionLevel)
+                                    ? "DEFAULT"
+                                    : component.permissionLevel), __instance.abilities);
+                            if (manaFromLabel > __instance.curMana)
+                            {
+                                Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
+                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                                return false;
+                            }
+
+                            if (component != null && component.ChangeState079())
+                            {
+                                __instance.Mana -= manaFromLabel;
+                                __instance.AddInteractionToHistory(target, array[0], true);
+                                Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
+                                return true;
+                            }
+
+                            Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
                             return false;
                         }
-
-                        if (target == null)
-                        {
-                            Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant);
-                            return false;
-                        }
-
-                        Door component = target.GetComponent<Door>();
-                        if (component == null)
-                        {
-                            return false;
-                        }
-
-                        if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
-                        {
-                            Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
-                            return false;
-                        }
-
-                        float manaFromLabel = __instance.GetManaFromLabel(
-                            "Door Interaction " + (string.IsNullOrEmpty(component.permissionLevel)
-                                ? "DEFAULT"
-                                : component.permissionLevel), __instance.abilities);
-                        if (manaFromLabel > __instance.curMana)
-                        {
-                            Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
-                            __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                            return false;
-                        }
-
-                        if (component != null && component.ChangeState079())
-                        {
-                            __instance.Mana -= manaFromLabel;
-                            __instance.AddInteractionToHistory(target, array[0], true);
-                            Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                            return true;
-                        }
-
-                        Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
-                        return false;
-                    }
 
                     default:
                         return true;

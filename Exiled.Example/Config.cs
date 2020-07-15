@@ -9,6 +9,7 @@ namespace Exiled.Example
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+
     using Exiled.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>

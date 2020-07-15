@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features
 {
-    using System.Diagnostics;
     using System.Reflection;
+
     using Discord;
 
     /// <summary>

@@ -8,6 +8,7 @@
 namespace Exiled.Permissions
 {
     using System;
+
     using Exiled.API.Features;
 
     /// <summary>

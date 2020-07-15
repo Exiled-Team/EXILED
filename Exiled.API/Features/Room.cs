@@ -9,7 +9,9 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -65,21 +67,21 @@ namespace Exiled.API.Features
                 {
                     switch (Transform.parent.name)
                     {
-                    case "HeavyRooms":
-                        zone = ZoneType.HeavyContainment;
-                        break;
-                    case "LightRooms":
-                        zone = ZoneType.LightContainment;
-                        break;
-                    case "EntranceRooms":
-                        zone = ZoneType.Entrance;
-                        break;
-                    default:
-                    {
-                        zone = Position.y >= 5 ? ZoneType.Surface : ZoneType.Unspecified;
-                        break;
+                        case "HeavyRooms":
+                            zone = ZoneType.HeavyContainment;
+                            break;
+                        case "LightRooms":
+                            zone = ZoneType.LightContainment;
+                            break;
+                        case "EntranceRooms":
+                            zone = ZoneType.Entrance;
+                            break;
+                        default:
+                            {
+                                zone = Position.y >= 5 ? ZoneType.Surface : ZoneType.Unspecified;
+                                break;
+                            }
                     }
-                  }
                 }
 
                 return zone;

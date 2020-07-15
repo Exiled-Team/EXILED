@@ -10,13 +10,20 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using GameCore;
+
     using HarmonyLib;
+
     using LightContainmentZoneDecontamination;
+
     using Mirror;
+
     using UnityEngine;
+
     using Object = UnityEngine.Object;
     using Random = UnityEngine.Random;
 

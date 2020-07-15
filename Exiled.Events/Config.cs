@@ -8,6 +8,7 @@
 namespace Exiled.Events
 {
     using System.ComponentModel;
+
     using Exiled.API.Interfaces;
 
     /// <inheritdoc cref="IConfig"/>

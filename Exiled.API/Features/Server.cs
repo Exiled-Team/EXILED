@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System.Reflection;
+
     using Mirror;
 
     /// <summary>

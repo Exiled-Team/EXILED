@@ -7,6 +7,7 @@
 namespace Exiled.API.Extensions
 {
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>

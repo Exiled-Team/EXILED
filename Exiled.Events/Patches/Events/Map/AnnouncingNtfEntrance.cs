@@ -7,24 +7,33 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+    using System.Linq;
+
 #pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using Respawning.NamingRules;
 
     /// <summary>
-    /// Patch the <see cref="UnitNamingRule.PlayEntranceAnnouncement(string)"/>.
+    /// Patch the <see cref="NineTailedFoxNamingRule.PlayEntranceAnnouncement(string)"/>.
     /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(UnitNamingRule), nameof(UnitNamingRule.PlayEntranceAnnouncement))]
+    [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
     internal class AnnouncingNtfEntrance
     {
-        private static bool Prefix(UnitNamingRule __instance, ref string regular)
+        private static bool Prefix(ref string regular)
         {
-            var ev = new AnnouncingNtfEntranceEventArgs(0, 0, 'a');
+            int scpsLeft = API.Features.Player.List.Where(player => player.Team == Team.SCP && player.Role != RoleType.Scp0492).Count();
+            string[] unitInformations = regular.Split('-');
+
+            var ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformations[0], int.Parse(unitInformations[1]));
 
             Map.OnAnnouncingNtfEntrance(ev);
+
+            regular = $"{ev.UnitName}-{ev.UnitNumber}";
 
             return ev.IsAllowed;
         }

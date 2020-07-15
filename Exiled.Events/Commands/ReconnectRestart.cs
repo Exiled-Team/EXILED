@@ -8,11 +8,13 @@
 namespace Exiled.Events.Commands
 {
     using System;
+
     using CommandSystem;
 
     using Exiled.API.Features;
 
     using MEC;
+
     using UnityEngine;
 
     /// <summary>

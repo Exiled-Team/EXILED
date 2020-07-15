@@ -10,11 +10,17 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+
     using CustomPlayerEffects;
+
     using Exiled.API.Features;
+
     using HarmonyLib;
+
     using Mirror;
+
     using PlayableScps;
+
     using UnityEngine;
 
     /// <summary>

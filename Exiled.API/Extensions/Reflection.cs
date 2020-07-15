@@ -9,6 +9,7 @@ namespace Exiled.API.Extensions
 {
     using System;
     using System.Reflection;
+
     using LiteNetLib.Utils;
 
     /// <summary>

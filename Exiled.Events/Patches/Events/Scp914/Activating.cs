@@ -10,8 +10,11 @@ namespace Exiled.Events.Patches.Events.Scp914
 #pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using global::Scp914;
+
     using HarmonyLib;
+
     using Mirror;
 
     /// <summary>

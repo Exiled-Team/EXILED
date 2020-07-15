@@ -10,10 +10,15 @@ namespace Exiled.Events.Patches.Events.Map
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+
     using CustomPlayerEffects;
+
     using Exiled.Events.EventArgs;
+
     using Grenades;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

@@ -8,6 +8,7 @@
 namespace Exiled.Loader
 {
     using System.ComponentModel;
+
     using Exiled.API.Enums;
     using Exiled.API.Interfaces;
 

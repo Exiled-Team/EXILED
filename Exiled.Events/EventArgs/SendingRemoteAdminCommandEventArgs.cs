@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+
     using Exiled.API.Features;
 
     /// <summary>

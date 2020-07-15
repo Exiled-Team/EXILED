@@ -11,10 +11,14 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using GameCore;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

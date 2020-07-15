@@ -9,10 +9,13 @@ namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
     using System.Linq;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using HarmonyLib;
+
     using RemoteAdmin;
 
     /// <summary>

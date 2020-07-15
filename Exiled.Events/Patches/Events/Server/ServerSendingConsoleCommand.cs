@@ -10,10 +10,13 @@ namespace Exiled.Events.Patches.Events.Server
 #pragma warning disable SA1313
     using System;
     using System.Linq;
+
     using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using Console = GameCore.Console;
 
     /// <summary>

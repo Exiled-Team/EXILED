@@ -8,7 +8,9 @@
 namespace Exiled.Events.Commands.Reload
 {
     using System;
+
     using CommandSystem;
+
     using Exiled.Loader;
 
     /// <summary>
