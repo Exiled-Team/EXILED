@@ -115,6 +115,38 @@ namespace Exiled.API.Features
                 {
                     Log.Error($"An error has occurred while registering a command: {exception}");
                 }
+
+                // Register ClientCommand
+                try
+                {
+                    bool foundClient = false;
+                    foreach (CustomAttributeData data in type.CustomAttributes)
+                    {
+                        if (data.AttributeType == typeof(CommandHandlerAttribute))
+                        {
+                            if (((Type)data.ConstructorArguments[0].Value) == typeof(ClientCommandHandler))
+                            {
+                                foundClient = true;
+                            }
+                        }
+                    }
+
+                    if (foundClient)
+                    {
+                        if (!Commands[typeof(ClientCommandHandler)].TryGetValue(type, out ICommand command))
+                            command = (ICommand)Activator.CreateInstance(type);
+
+                        QueryProcessor.DotCommandHandler.RegisterCommand(command);
+
+                        Commands[typeof(ClientCommandHandler)][type] = command;
+
+                        Log.Debug($"Successfully registered client command {command.Command}");
+                    }
+                }
+                catch (Exception exception)
+                {
+                    Log.Error($"An error has occurred while registering a client command: {exception}");
+                }
             }
 
             Log.Debug($"Commands have been registered successfully!");
@@ -130,7 +162,9 @@ namespace Exiled.API.Features
                     if (types.Key == typeof(RemoteAdminCommandHandler))
                         CommandProcessor.RemoteAdminCommandHandler.UnregisterCommand(command);
                     else if (types.Key == typeof(GameConsoleCommandHandler))
-                        GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                        GameCore.Console.singleton.ConsoleCommandHandler.UnregisterCommand(command);
+                    else if (types.Key == typeof(ClientCommandHandler))
+                        QueryProcessor.DotCommandHandler.UnregisterCommand(command);
                 }
             }
         }
