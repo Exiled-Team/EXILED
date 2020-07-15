@@ -8,7 +8,7 @@
 namespace Exiled.Events.Patches.Events.Server
 {
     using Exiled.Events.Handlers;
-    using Exiled.Events.Patches.Events.Map;
+
     using HarmonyLib;
 
     /// <summary>

@@ -12,6 +12,7 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;

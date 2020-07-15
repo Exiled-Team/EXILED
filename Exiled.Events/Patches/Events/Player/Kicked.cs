@@ -8,9 +8,12 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

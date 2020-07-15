@@ -9,6 +9,7 @@ namespace Exiled.Permissions
 {
     using System.ComponentModel;
     using System.IO;
+
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
 

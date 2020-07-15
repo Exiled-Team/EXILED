@@ -8,6 +8,7 @@
 namespace Exiled.Loader.Features.Configs
 {
     using System;
+
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
 

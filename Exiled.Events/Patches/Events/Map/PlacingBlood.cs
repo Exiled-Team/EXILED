@@ -11,7 +11,9 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.Events;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using UnityEngine;
 
     /// <summary>

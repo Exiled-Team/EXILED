@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using MEC;
+
     using Respawning;
 
     /// <summary>

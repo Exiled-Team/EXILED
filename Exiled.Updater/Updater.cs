@@ -13,7 +13,9 @@ namespace Exiled.Updater
     using System.Linq;
     using System.Net;
     using System.Text;
+
     using Exiled.API.Features;
+
     using UnityEngine;
 
     /// <summary>

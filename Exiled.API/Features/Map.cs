@@ -9,8 +9,11 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using LightContainmentZoneDecontamination;
+
     using UnityEngine;
+
     using Object = UnityEngine.Object;
 
     /// <summary>

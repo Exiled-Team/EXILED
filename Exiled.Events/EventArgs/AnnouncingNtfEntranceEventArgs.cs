@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AnnouncingNtfEntranceEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Respawning.NamingRules;
+
     /// <summary>
     /// Contains all informations before announcing the ntf entrance.
     /// </summary>
@@ -18,31 +20,31 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="AnnouncingNtfEntranceEventArgs"/> class.
         /// </summary>
         /// <param name="scpsLeft"><inheritdoc cref="ScpsLeft"/></param>
-        /// <param name="ntfNumber"><inheritdoc cref="NtfNumber"/></param>
-        /// <param name="ntfLetter"><inheritdoc cref="NtfLetter"/></param>
+        /// <param name="unitName"><inheritdoc cref="UnitName"/></param>
+        /// <param name="unitNumber"><inheritdoc cref="UnitNumber"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AnnouncingNtfEntranceEventArgs(int scpsLeft, int ntfNumber, char ntfLetter, bool isAllowed = true)
+        public AnnouncingNtfEntranceEventArgs(int scpsLeft, string unitName, int unitNumber, bool isAllowed = true)
         {
             ScpsLeft = scpsLeft;
-            NtfNumber = ntfNumber;
-            NtfLetter = ntfLetter;
+            UnitName = unitName;
+            UnitNumber = unitNumber;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets or sets the number of scps left.
+        /// Gets the number of scps left.
         /// </summary>
-        public int ScpsLeft { get; set; }
+        public int ScpsLeft { get; private set; }
 
         /// <summary>
-        /// Gets or sets the number of ntf.
+        /// Gets or sets the unit name.
         /// </summary>
-        public int NtfNumber { get; set; }
+        public string UnitName { get; set; }
 
         /// <summary>
-        /// Gets or sets the ntf letter.
+        /// Gets or sets the unit number.
         /// </summary>
-        public char NtfLetter { get; set; }
+        public int UnitNumber { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -7,6 +7,7 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using LiteNetLib;
     using LiteNetLib.Utils;
 

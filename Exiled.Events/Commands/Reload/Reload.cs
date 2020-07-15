@@ -8,6 +8,7 @@
 namespace Exiled.Events.Commands.Reload
 {
     using System;
+
     using CommandSystem;
 
     /// <summary>

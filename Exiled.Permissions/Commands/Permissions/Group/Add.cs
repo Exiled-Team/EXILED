@@ -12,7 +12,6 @@ namespace Exiled.Permissions.Commands.Permissions.Group
     using CommandSystem;
 
     using Exiled.Permissions.Extensions;
-    using Exiled.Permissions.Features;
 
     /// <summary>
     /// Adds a group to permissions.

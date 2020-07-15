@@ -8,6 +8,7 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using UnityEngine;
 
     /// <summary>

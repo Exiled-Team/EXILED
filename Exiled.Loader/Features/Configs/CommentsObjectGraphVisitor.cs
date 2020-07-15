@@ -7,10 +7,6 @@
 
 namespace Exiled.Loader.Features.Configs
 {
-    using System;
-
-    using Exiled.API.Features;
-
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;

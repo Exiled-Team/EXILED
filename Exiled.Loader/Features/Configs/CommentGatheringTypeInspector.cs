@@ -10,6 +10,7 @@ namespace Exiled.Loader.Features.Configs
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.TypeInspectors;
 

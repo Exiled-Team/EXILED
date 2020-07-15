@@ -9,6 +9,7 @@ namespace Exiled.Patcher
 {
     using System;
     using System.IO;
+
     using dnlib.DotNet;
     using dnlib.DotNet.Emit;
 

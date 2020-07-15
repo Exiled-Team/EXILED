@@ -8,9 +8,13 @@
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+
     using global::Scp914;
+
     using Mirror;
+
     using UnityEngine;
+
     using Utils.ConfigHandler;
 
     /// <summary>

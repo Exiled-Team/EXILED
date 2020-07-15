@@ -10,10 +10,12 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Loader.Features.Configs;
+
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;

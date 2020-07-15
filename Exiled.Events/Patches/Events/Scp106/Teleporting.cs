@@ -10,8 +10,11 @@ namespace Exiled.Events.Patches.Events.Scp106
 #pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using MEC;
+
     using UnityEngine;
 
     /// <summary>

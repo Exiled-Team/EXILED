@@ -9,7 +9,9 @@ namespace Exiled.Events.Patches.Events.Scp096
 {
 #pragma warning disable SA1313
     using Exiled.Events.EventArgs;
+
     using HarmonyLib;
+
     using PlayableScps;
 
     /// <summary>
