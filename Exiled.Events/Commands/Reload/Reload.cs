@@ -43,7 +43,7 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: plugins, gameplay, pluginconfigs, remoteadminconfigs";
+            response = "Please, specify a valid subcommand! Available ones: plugins, gameplay, configs, remoteadminconfigs";
             return false;
         }
     }
