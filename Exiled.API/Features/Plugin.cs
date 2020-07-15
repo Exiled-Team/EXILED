@@ -127,6 +127,7 @@ namespace Exiled.API.Features
                             if (((Type)data.ConstructorArguments[0].Value) == typeof(ClientCommandHandler))
                             {
                                 foundClient = true;
+                                break;
                             }
                         }
                     }
