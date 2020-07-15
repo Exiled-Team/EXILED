@@ -1,16 +1,6 @@
 # Exiled Low-Level Documentation
 *(Written by [KadeDev](https://github.com/KadeDev) for the community)*
 
-**Table of contents**
-
-*Want to just skip ahead to the part you want? Heres your chance!*
-
-[Intro](#intro)
-
-[Sample Plugin](#sample-plugin)
-
-[Events and ReferenceHubs](#referencehubs--events)
-
 ## Getting Started
 ### Intro
 Exiled is a low-level API meaning that you can call functions from the game without needing a bunch of API bloatware.
@@ -80,6 +70,8 @@ To reference an event we will be using a new class we create; called "EventHandl
 
 We can reference it in the OnEnable and OnDisable void like this:
 ```csharp
+using Player = Exiled.Events.Handlers.Player;
+
 public EventHandlers EventHandler;
 
 public override OnEnable()
@@ -87,7 +79,7 @@ public override OnEnable()
     // Register the event handler class. And add the event,
     // to the EXILED_Events event listener so we get the event.
     EventHandler = new EventHandlers();
-    Events.PlayerJoinEvent += EventHandler.PlayerJoined;
+    Player.Joined += EventHandler.PlayerJoined;
 }
 
 public override OnDisable()
@@ -95,7 +87,7 @@ public override OnDisable()
     // Make it dynamically updatable.
     // We do this by removing the listener for the event and then nulling the event handler.
     // The more events the more times you have to do this for each one.
-    Events.PlayerJoinEvent -= EventHandler.PlayerJoined;
+    Player.Joined -= EventHandler.PlayerJoined;
     EventHandler = null;
 }
 ```
@@ -103,7 +95,7 @@ And in the EventHandlers class we would do:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(PlayerJoinEvent ev)
+    public void PlayerJoined(JoinedEventArgs ev)
     {
 
     }
@@ -121,6 +113,40 @@ public class EventHandlers
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
 }
+```
+
+### Configs
+
+Now that you've created most of your plugin, if you wanted to create a config. Heres whatcha need to do.
+
+First create a `config.cs` class, and change your plugin inheritance from `Plugin<>` to `Plugin<Config>`
+
+Now you need to make that config inherit `IConfig`. Auto complete it in your IDE. And it should look like this:
+
+```
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+    }
+```
+
+You can add any config option in there and reference it like so:
+
+`Config.cs`
+```
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+        public string TextThatINeed { get; set; } = "this is the default";
+    }
+```
+
+`MainClass.cs`
+```
+   public override OnEnabled()
+   {
+        Log.Info(Config.TextThatINeed);
+   }
 ```
 
 And then congratulations! You have made your very first Exiled Plugin!
