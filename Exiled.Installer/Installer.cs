@@ -32,7 +32,7 @@ namespace Exiled.Installer
 
             Console.WriteLine("Getting latest download URL...");
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url + "latest");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
             StreamReader reader = new StreamReader(((HttpWebResponse)request.GetResponse()).GetResponseStream());
 
             string[] readArray = reader.ReadToEnd().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
@@ -145,6 +145,10 @@ namespace Exiled.Installer
                         offset = 0;
 
                     stream.Seek(offset, SeekOrigin.Current);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // ignored
                 }
                 catch (Exception exception)
                 {
