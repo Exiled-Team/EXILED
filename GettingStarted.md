@@ -1,16 +1,6 @@
 # Exiled Low-Level Documentation
 *(Written by [KadeDev](https://github.com/KadeDev) for the community)*
 
-**Table of contents**
-
-*Want to just skip ahead to the part you want? Heres your chance!*
-
-[Intro](#intro)
-
-[Sample Plugin](#sample-plugin)
-
-[Events and ReferenceHubs](#referencehubs--events)
-
 ## Getting Started
 ### Intro
 Exiled is a low-level API meaning that you can call functions from the game without needing a bunch of API bloatware.
@@ -21,8 +11,8 @@ It also allows plugin developers to not have to change their code to update. In 
 
 This documentation will show you the bare basics of making an Exiled Plugin. From here you can start showing the world what creative things you can make with this framework!
 
-### Sample Plugin
-The [Sample Plugin](https://github.com/galaxy119/SamplePlugin) which is a simple plugin that shows off events and how to properly make them; will help you learn Exiled. There are a couple of things in that plugin that are important, lets talk about them
+### Example Plugin
+The [Example Plugin](https://github.com/galaxy119/EXILED/tree/master/Exiled.Example) which is a simple plugin that shows off events and how to properly make them; will help you learn Exiled. There are a couple of things in that plugin that are important, lets talk about them
 
 #### On Enable + On Disable Dynamic Updates
 Exiled is a framework that has a **Reload** command which can be used to reload all the plugins and get new ones. This means you must make your plugins **Dynamically Updatable.** What this means is assigning variables, events, and other stuff like coroutines. Must be dis-assigned and nulled in on disable. **On Enable** should enable it all, and **On Disable** should disable it all. But you might be wondering what about **On Reload**? That void is meant to carry over static variables, as in every static constant you make won't be wiped. So you could do something like this:
@@ -80,6 +70,8 @@ To reference an event we will be using a new class we create; called "EventHandl
 
 We can reference it in the OnEnable and OnDisable void like this:
 ```csharp
+using Player = Exiled.Events.Handlers.Player;
+
 public EventHandlers EventHandler;
 
 public override OnEnable()
@@ -87,7 +79,7 @@ public override OnEnable()
     // Register the event handler class. And add the event,
     // to the EXILED_Events event listener so we get the event.
     EventHandler = new EventHandlers();
-    Events.PlayerJoinEvent += EventHandler.PlayerJoined;
+    Player.Joined += EventHandler.PlayerJoined;
 }
 
 public override OnDisable()
@@ -95,7 +87,7 @@ public override OnDisable()
     // Make it dynamically updatable.
     // We do this by removing the listener for the event and then nulling the event handler.
     // The more events the more times you have to do this for each one.
-    Events.PlayerJoinEvent -= EventHandler.PlayerJoined;
+    Player.Joined -= EventHandler.PlayerJoined;
     EventHandler = null;
 }
 ```
@@ -103,7 +95,7 @@ And in the EventHandlers class we would do:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(PlayerJoinEvent ev)
+    public void PlayerJoined(JoinedEventArgs ev)
     {
 
     }
@@ -116,11 +108,45 @@ EXILED already provides a broadcast function, so let's use it in our event:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(PlayerJoinEvent ev)
+    public void PlayerJoined(JoinedEventArgs ev)
     {
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
 }
+```
+
+### Configs
+
+Now that you've created most of your plugin, if you wanted to create a config. Heres whatcha need to do.
+
+First create a `config.cs` class, and change your plugin inheritance from `Plugin<>` to `Plugin<Config>`
+
+Now you need to make that config inherit `IConfig`. Auto complete it in your IDE. And it should look like this:
+
+```csharp
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+    }
+```
+
+You can add any config option in there and reference it like so:
+
+`Config.cs`
+```csharp
+    public class Config : IConfig
+    {
+        public bool IsEnabled { get; set; }
+        public string TextThatINeed { get; set; } = "this is the default";
+    }
+```
+
+`MainClass.cs`
+```csharp
+   public override OnEnabled()
+   {
+        Log.Info(Config.TextThatINeed);
+   }
 ```
 
 And then congratulations! You have made your very first Exiled Plugin!
