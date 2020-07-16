@@ -11,8 +11,8 @@ It also allows plugin developers to not have to change their code to update. In 
 
 This documentation will show you the bare basics of making an Exiled Plugin. From here you can start showing the world what creative things you can make with this framework!
 
-### Sample Plugin
-The [Sample Plugin](https://github.com/galaxy119/SamplePlugin) which is a simple plugin that shows off events and how to properly make them; will help you learn Exiled. There are a couple of things in that plugin that are important, lets talk about them
+### Example Plugin
+The [Example Plugin](https://github.com/galaxy119/EXILED/tree/master/Exiled.Example) which is a simple plugin that shows off events and how to properly make them; will help you learn Exiled. There are a couple of things in that plugin that are important, lets talk about them
 
 #### On Enable + On Disable Dynamic Updates
 Exiled is a framework that has a **Reload** command which can be used to reload all the plugins and get new ones. This means you must make your plugins **Dynamically Updatable.** What this means is assigning variables, events, and other stuff like coroutines. Must be dis-assigned and nulled in on disable. **On Enable** should enable it all, and **On Disable** should disable it all. But you might be wondering what about **On Reload**? That void is meant to carry over static variables, as in every static constant you make won't be wiped. So you could do something like this:
