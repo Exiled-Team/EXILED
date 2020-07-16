@@ -21,11 +21,6 @@ namespace Exiled.Events
     /// </summary>
     public sealed class Events : Plugin<Config>
     {
-        /// <summary>
-        /// A list of types and methods for which EXILED patches should not be run.
-        /// </summary>
-        public static List<Tuple<Type, string>> DisabledPatches = new List<Tuple<Type, string>>();
-
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
         private readonly Handlers.Round round = new Handlers.Round();
 
@@ -55,6 +50,11 @@ namespace Exiled.Events
         /// Gets the plugin instance.
         /// </summary>
         public static Events Instance => LazyInstance.Value;
+
+        /// <summary>
+        /// Gets a list of types and methods for which EXILED patches should not be run.
+        /// </summary>
+        public static List<Tuple<Type, string>> DisabledPatches { get; } = new List<Tuple<Type, string>>();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.Last;
