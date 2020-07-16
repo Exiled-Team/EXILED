@@ -108,7 +108,7 @@ EXILED already provides a broadcast function, so let's use it in our event:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(PlayerJoinEvent ev)
+    public void PlayerJoined(JoinedEventArgs ev)
     {
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
