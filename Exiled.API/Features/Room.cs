@@ -19,7 +19,7 @@ namespace Exiled.API.Features
     /// </summary>
     public class Room
     {
-        private ZoneType zone;
+        private ZoneType? zone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform { get; private set; }
+        public Transform Transform { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="Room"/> position.
@@ -56,8 +56,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (zone != ZoneType.Unspecified)
-                    return zone;
+                if (zone != null)
+                    return zone.Value;
 
                 if (Transform.parent == null)
                 {
@@ -84,7 +84,7 @@ namespace Exiled.API.Features
                     }
                 }
 
-                return zone;
+                return zone.Value;
             }
         }
 

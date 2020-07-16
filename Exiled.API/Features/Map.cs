@@ -48,7 +48,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (rooms == null || rooms.Count == 0)
+                if (rooms == null || rooms.Count == 0 || rooms.Any(r => r.Transform == null))
                     rooms = Object.FindObjectsOfType<Transform>().Where(transform => transform.CompareTag("Room")).Select(doorTransform => new Room(doorTransform.name, doorTransform, doorTransform.position)).ToList();
 
                 return rooms;
