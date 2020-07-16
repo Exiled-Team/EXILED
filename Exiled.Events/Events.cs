@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace Exiled.Events
 {
     using System;
@@ -20,6 +22,11 @@ namespace Exiled.Events
     /// </summary>
     public sealed class Events : Plugin<Config>
     {
+        /// <summary>
+        /// A list of types and methods for which EXILED patches should not be run.
+        /// </summary>
+        public static List<Tuple<Type, string>> DisabledPatches = new List<Tuple<Type, string>>();
+
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
         private readonly Handlers.Round round = new Handlers.Round();
 
@@ -107,6 +114,17 @@ namespace Exiled.Events
             catch (Exception exception)
             {
                 Log.Error($"Patching failed! {exception}");
+            }
+        }
+
+        /// <summary>
+        /// Checks the <see cref="DisabledPatches"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
+        /// </summary>
+        public void ReloadDisabledPatches()
+        {
+            foreach ((Type type, string methodName) in DisabledPatches)
+            {
+                Harmony.Unpatch(type.GetMethod(methodName), HarmonyPatchType.All, Harmony.Id);
             }
         }
 
