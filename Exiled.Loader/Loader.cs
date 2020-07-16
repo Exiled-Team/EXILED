@@ -253,7 +253,7 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
-            
+
             foreach (IPlugin<IConfig> plugin in pluginsToRemove)
             {
                 Plugins.Remove(plugin);
