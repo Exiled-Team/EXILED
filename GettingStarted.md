@@ -108,7 +108,7 @@ EXILED already provides a broadcast function, so let's use it in our event:
 ```csharp
 public class EventHandlers
 {
-    public void PlayerJoined(PlayerJoinEvent ev)
+    public void PlayerJoined(JoinedEventArgs ev)
     {
         ev.Player.Broadcast(5, "<color=lime>Welcome to my cool server!</color>");
     }
@@ -123,7 +123,7 @@ First create a `config.cs` class, and change your plugin inheritance from `Plugi
 
 Now you need to make that config inherit `IConfig`. Auto complete it in your IDE. And it should look like this:
 
-```
+```csharp
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -133,7 +133,7 @@ Now you need to make that config inherit `IConfig`. Auto complete it in your IDE
 You can add any config option in there and reference it like so:
 
 `Config.cs`
-```
+```csharp
     public class Config : IConfig
     {
         public bool IsEnabled { get; set; }
@@ -142,7 +142,7 @@ You can add any config option in there and reference it like so:
 ```
 
 `MainClass.cs`
-```
+```csharp
    public override OnEnabled()
    {
         Log.Info(Config.TextThatINeed);
