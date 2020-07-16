@@ -235,6 +235,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void ReloadPlugins()
         {
+            List<IPlugin<IConfig>> pluginsToRemove = new List<IPlugin<IConfig>>();
             foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
@@ -245,12 +246,17 @@ namespace Exiled.Loader
 
                     plugin.OnDisabled();
 
-                    Plugins.Remove(plugin);
+                    pluginsToRemove.Add(plugin);
                 }
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
+            }
+            
+            foreach (IPlugin<IConfig> plugin in pluginsToRemove)
+            {
+                Plugins.Remove(plugin);
             }
 
             LoadPlugins();
