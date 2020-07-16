@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace Exiled.Events
 {
     using System;
+    using System.Collections.Generic;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
