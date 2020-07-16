@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         /// <param name="color">The message color.</param>
         public static void Send(object message, LogLevel level, System.ConsoleColor color = System.ConsoleColor.Gray)
         {
-            SendRaw($"[{level.ToString().ToUpper()}] {message}", color);
+            SendRaw($"[{level.ToString().ToUpperInvariant()}] {message}", color);
         }
 
         /// <summary>

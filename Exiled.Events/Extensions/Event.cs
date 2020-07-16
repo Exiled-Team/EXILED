@@ -62,7 +62,7 @@ namespace Exiled.Events.Extensions
                 }
                 catch (Exception ex)
                 {
-                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName, eventName);
+                    LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName ?? "(unknown class)", eventName);
                 }
             }
         }

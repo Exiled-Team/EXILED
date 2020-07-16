@@ -20,6 +20,7 @@ namespace Exiled.Loader
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
+    using YamlDotNet.Serialization.NodeTypeResolvers;
 
     /// <summary>
     /// Used to handle plugin configs.
@@ -33,6 +34,7 @@ namespace Exiled.Loader
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithTagMapping("!DefaultConfigImplementation", typeof(DefaultConfigImplementation))
             .WithTagMapping("!Dictionary[string,IConfig]", typeof(Dictionary<string, IConfig>))
             .WithTagMapping("!Exiled.Loader.Config", typeof(Config))
             .IgnoreFields()
@@ -44,6 +46,9 @@ namespace Exiled.Loader
         internal static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithoutNodeTypeResolver(typeof(PreventUnknownTagsNodeTypeResolver)) // Getting rid of what is causing the exception
+            .WithObjectFactory(new ExtendedObjectFactory())
+            .WithTagMapping("!DefaultConfigImplementation", typeof(DefaultConfigImplementation))
             .WithTagMapping("!Dictionary[string,IConfig]", typeof(Dictionary<string, IConfig>))
             .WithTagMapping("!Exiled.Loader.Config", typeof(Config))
             .IgnoreFields()
@@ -52,12 +57,12 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the config serializer.
         /// </summary>
-        private static ISerializer Serializer => SerializerBuilder.Build();
+        private static ISerializer Serializer { get; } = SerializerBuilder.Build();
 
         /// <summary>
         /// Gets the config serializer.
         /// </summary>
-        private static IDeserializer Deserializer => DeserializerBuilder.Build();
+        private static IDeserializer Deserializer { get; } = DeserializerBuilder.Build();
 
         /// <summary>
         /// Loads all plugin configs.

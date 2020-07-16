@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.PreAuthenticating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.ProcessConnectionRequest), typeof(ConnectionRequest))]
-    internal class PreAuthenticating
+    internal static class PreAuthenticating
     {
         private static bool Prefix(ref ConnectionRequest request)
         {
