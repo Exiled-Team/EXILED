@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Interfaces
 {
+    using System.ComponentModel;
+
     /// <summary>
     /// Defines the contract for basic config features.
     /// </summary>
@@ -15,6 +17,7 @@ namespace Exiled.API.Interfaces
         /// <summary>
         /// Gets or sets a value indicating whether the plugin is enabled or not.
         /// </summary>
+        [Description("Indicates whether the plugin is enabled or not")]
         bool IsEnabled { get; set; }
     }
 }

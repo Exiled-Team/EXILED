@@ -10,6 +10,7 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -46,7 +47,7 @@ namespace Exiled.Loader
         internal static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .WithoutNodeTypeResolver(typeof(PreventUnknownTagsNodeTypeResolver)) // Getting rid of what is causing the exception
+            .WithoutNodeTypeResolver(typeof(PreventUnknownTagsNodeTypeResolver)) // Avoiding an exception if the tag type couldn't be resolved
             .WithObjectFactory(new ExtendedObjectFactory())
             .WithTagMapping("!DefaultConfigImplementation", typeof(DefaultConfigImplementation))
             .WithTagMapping("!Dictionary[string,IConfig]", typeof(Dictionary<string, IConfig>))
@@ -77,9 +78,20 @@ namespace Exiled.Loader
 
                 Dictionary<string, IConfig> deserializedConfigs = Deserializer.Deserialize<Dictionary<string, IConfig>>(rawConfigs) ?? new Dictionary<string, IConfig>();
 
+                // Removing the default implementations
+                // We call `ToArray()` since this is a `GetEnumerator()` operation,
+                // any change will throw an InvalidOperationException
+                foreach (var config in deserializedConfigs.ToArray())
+                {
+                    if (config.Value is DefaultConfigImplementation)
+                    {
+                        deserializedConfigs.Remove(config.Key);
+                    }
+                }
+
                 if (!deserializedConfigs.TryGetValue("exiled_loader", out IConfig deserializedConfig))
                 {
-                    Log.Warn($"Exiled.Loader doesn't have default configs, generating...");
+                    Log.Warn("Exiled.Loader doesn't have default configs, generating...");
 
                     deserializedConfigs.Add("exiled_loader", Loader.Config);
                 }
