@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the RestartingRound event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
-    internal class RestartingRound
+    internal static class RestartingRound
     {
         private static void Prefix()
         {

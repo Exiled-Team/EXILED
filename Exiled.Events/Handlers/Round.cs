@@ -15,7 +15,7 @@ namespace Exiled.Events.Handlers
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
     /// </summary>
-    public class Round
+    public sealed class Round
     {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
@@ -23,15 +23,15 @@ namespace Exiled.Events.Handlers
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
                 ConfigManager.Reload();
 
-            API.Features.Map.Rooms.Clear();
-            API.Features.Map.Doors.Clear();
-            API.Features.Map.Lifts.Clear();
-            API.Features.Map.TeslaGates.Clear();
+            RoundSummary.RoundLock = false;
+        }
 
+        /// <inheritdoc cref="Server.OnRestartingRound"/>
+        public void OnRestartingRound()
+        {
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();
-            RoundSummary.RoundLock = false;
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>

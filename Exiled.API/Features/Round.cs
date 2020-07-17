@@ -45,8 +45,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool IsLobbyLocked
         {
-            get => GameCore.RoundStart.LobbyLock;
-            set => GameCore.RoundStart.LobbyLock = value;
+            get => RoundStart.LobbyLock;
+            set => RoundStart.LobbyLock = value;
         }
 
         /// <summary>
