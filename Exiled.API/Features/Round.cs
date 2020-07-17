@@ -9,6 +9,8 @@ namespace Exiled.API.Features
 {
     using System;
 
+    using GameCore;
+
     /// <summary>
     /// A set of tools to handle the round more easily.
     /// </summary>
@@ -17,7 +19,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
-        public static TimeSpan ElapsedTime => new TimeSpan(0, 0, RoundSummary.roundTime);
+        public static TimeSpan ElapsedTime => RoundStart.RoundLenght;
 
         /// <summary>
         /// Gets the start time of the round.
@@ -43,8 +45,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool IsLobbyLocked
         {
-            get => GameCore.RoundStart.LobbyLock;
-            set => GameCore.RoundStart.LobbyLock = value;
+            get => RoundStart.LobbyLock;
+            set => RoundStart.LobbyLock = value;
         }
 
         /// <summary>

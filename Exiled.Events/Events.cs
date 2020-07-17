@@ -72,6 +72,7 @@ namespace Exiled.Events
             Patch();
 
             Handlers.Server.WaitingForPlayers += round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound += round.OnRestartingRound;
             Handlers.Server.RoundStarted += round.OnRoundStarted;
 
             Handlers.Player.ChangingRole += round.OnChangingRole;
@@ -87,6 +88,7 @@ namespace Exiled.Events
             Unpatch();
 
             Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound -= round.OnRestartingRound;
             Handlers.Server.RoundStarted -= round.OnRoundStarted;
 
             Handlers.Player.ChangingRole -= round.OnChangingRole;

@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     using LightContainmentZoneDecontamination;
@@ -21,10 +22,15 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        private static List<Room> rooms = new List<Room>();
-        private static List<Door> doors = new List<Door>();
-        private static List<Lift> lifts = new List<Lift>();
-        private static List<TeslaGate> teslas = new List<TeslaGate>();
+        private static readonly List<Room> RoomsValue = new List<Room>();
+        private static readonly List<Door> DoorsValue = new List<Door>();
+        private static readonly List<Lift> LiftsValue = new List<Lift>();
+        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>();
+
+        private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
 
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
@@ -44,56 +50,68 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Room"/>.
         /// </summary>
-        public static List<Room> Rooms
+        public static ReadOnlyCollection<Room> Rooms
         {
             get
             {
-                if (rooms == null || rooms.Count == 0)
-                    rooms = Object.FindObjectsOfType<Transform>().Where(transform => transform.CompareTag("Room")).Select(doorTransform => new Room(doorTransform.name, doorTransform, doorTransform.position)).ToList();
+                if (RoomsValue.Count == 0 || RoomsValue.Any(r => r.Transform == null))
+                {
+                    RoomsValue.Clear();
+                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
+                }
 
-                return rooms;
+                return ReadOnlyRoomsValue;
             }
         }
 
         /// <summary>
         /// Gets all <see cref="Door"/>.
         /// </summary>
-        public static List<Door> Doors
+        public static ReadOnlyCollection<Door> Doors
         {
             get
             {
-                if (doors == null || doors.Count == 0)
-                    doors = Object.FindObjectsOfType<Door>().ToList();
+                if (DoorsValue.Count == 0 || DoorsValue.Contains(null))
+                {
+                    DoorsValue.Clear();
+                    DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
+                }
 
-                return doors;
+                return ReadOnlyDoorsValue;
             }
         }
 
         /// <summary>
         /// Gets all <see cref="Lift"/>.
         /// </summary>
-        public static List<Lift> Lifts
+        public static ReadOnlyCollection<Lift> Lifts
         {
             get
             {
-                if (lifts == null || lifts.Count == 0)
-                    lifts = Object.FindObjectsOfType<Lift>().ToList();
+                if (LiftsValue.Count == 0 || LiftsValue.Contains(null))
+                {
+                    LiftsValue.Clear();
+                    LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
+                }
 
-                return lifts;
+                return ReadOnlyLiftsValue;
             }
         }
 
         /// <summary>
         /// Gets all <see cref="TeslaGate"/>.
         /// </summary>
-        public static List<TeslaGate> TeslaGates
+        public static ReadOnlyCollection<TeslaGate> TeslaGates
         {
             get
             {
-                if (teslas == null || teslas.Count == 0)
-                    teslas = Object.FindObjectsOfType<TeslaGate>().ToList();
+                if (TeslasValue.Count == 0 || TeslasValue.Contains(null))
+                {
+                    TeslasValue.Clear();
+                    TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
+                }
 
-                return teslas;
+                return ReadOnlyTeslasValue;
             }
         }
 

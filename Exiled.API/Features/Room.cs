@@ -19,8 +19,6 @@ namespace Exiled.API.Features
     /// </summary>
     public class Room
     {
-        private ZoneType zone;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
         /// </summary>
@@ -32,65 +30,56 @@ namespace Exiled.API.Features
             Name = name;
             Transform = transform;
             Position = position;
+            Zone = FindZone();
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Room"/> name.
+        /// Gets the <see cref="Room"/> name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform { get; private set; }
+        public Transform Transform { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Room"/> position.
+        /// Gets the <see cref="Room"/> position.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector3 Position { get; }
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone
-        {
-            get
-            {
-                if (zone != ZoneType.Unspecified)
-                    return zone;
-
-                if (Transform.parent == null)
-                {
-                    zone = ZoneType.Unspecified;
-                }
-                else
-                {
-                    switch (Transform.parent.name)
-                    {
-                        case "HeavyRooms":
-                            zone = ZoneType.HeavyContainment;
-                            break;
-                        case "LightRooms":
-                            zone = ZoneType.LightContainment;
-                            break;
-                        case "EntranceRooms":
-                            zone = ZoneType.Entrance;
-                            break;
-                        default:
-                            {
-                                zone = Position.y >= 5 ? ZoneType.Surface : ZoneType.Unspecified;
-                                break;
-                            }
-                    }
-                }
-
-                return zone;
-            }
-        }
+        public ZoneType Zone { get; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Name == Name);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
+
+        private ZoneType FindZone()
+        {
+            if (Transform.parent == null)
+            {
+                return ZoneType.Unspecified;
+            }
+            else
+            {
+                switch (Transform.parent.name)
+                {
+                    case "HeavyRooms":
+                        return ZoneType.HeavyContainment;
+                    case "LightRooms":
+                        return ZoneType.LightContainment;
+                    case "EntranceRooms":
+                        return ZoneType.Entrance;
+                    default:
+                        {
+                            return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
+                        }
+                }
+            }
+        }
     }
 }

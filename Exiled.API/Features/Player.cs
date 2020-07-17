@@ -560,18 +560,17 @@ namespace Exiled.API.Features
                 if (!flag || raycastHit.transform == null)
                     return null;
 
-                Transform transform = raycastHit.transform;
-
-                while (transform.parent != null && transform.parent.parent != null)
-                    transform = transform.parent;
+                Transform latestParent = raycastHit.transform;
+                while (latestParent.parent?.parent != null)
+                    latestParent = latestParent.parent;
 
                 foreach (Room room in Map.Rooms)
                 {
-                    if (room.Position == transform.position)
+                    if (room.Transform == latestParent)
                         return room;
                 }
 
-                return new Room(transform.name, transform, transform.position);
+                return new Room(latestParent.name, latestParent, latestParent.position);
             }
         }
 
