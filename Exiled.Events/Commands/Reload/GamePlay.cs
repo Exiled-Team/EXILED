@@ -32,6 +32,8 @@ namespace Exiled.Events.Commands.Reload
         {
             ReloadGameConfigs();
 
+            Handlers.Server.OnReloadGameplay();
+
             response = "Gameplay configs reloaded successfully!";
 
             return true;
