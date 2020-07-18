@@ -124,6 +124,7 @@
     <Compile Include="Commands\Reload\Configs.cs" />
     <Compile Include="Commands\Reload\RemoteAdmin.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="EventArgs\DyingEventArgs.cs" />
     <Compile Include="EventArgs\StartingEventArgs.cs" />
     <Compile Include="EventArgs\StoppingEventArgs.cs" />
     <Compile Include="EventArgs\ActivatingEventArgs.cs" />

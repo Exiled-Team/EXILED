@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player dies.
+    /// Contains all informations after a player dies.
     /// </summary>
     public class DiedEventArgs : EventArgs
     {

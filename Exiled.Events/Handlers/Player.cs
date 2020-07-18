@@ -88,6 +88,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<HurtingEventArgs> Hurting;
 
         /// <summary>
+        /// Invoked before a player dies.
+        /// </summary>
+        public static event CustomEventHandler<DyingEventArgs> Dying;
+
+        /// <summary>
         /// Invoked after a player died.
         /// </summary>
         public static event CustomEventHandler<DiedEventArgs> Died;
@@ -320,6 +325,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="HurtingEventArgs"/> instance.</param>
         public static void OnHurting(HurtingEventArgs ev) => Hurting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before a player dies.
+        /// </summary>
+        /// <param name="ev"><see cref="DyingEventArgs"/> instance.</param>
+        public static void OnDying(DyingEventArgs ev) => Dying.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked after a player died.
