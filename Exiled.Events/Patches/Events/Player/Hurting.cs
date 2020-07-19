@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal class Hurting
     {
-        private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             try
             {
