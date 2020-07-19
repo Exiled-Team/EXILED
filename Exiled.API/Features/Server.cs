@@ -65,7 +65,7 @@ namespace Exiled.API.Features
                 {
                     sendSpawnMessage = typeof(NetworkServer).GetMethod(
                         "SendSpawnMessage",
-                        BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public);
+                        BindingFlags.NonPublic | BindingFlags.Static);
                 }
 
                 return sendSpawnMessage;

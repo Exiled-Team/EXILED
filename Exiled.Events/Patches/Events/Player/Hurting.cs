@@ -18,13 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject)"/>.
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal class Hurting
     {
-        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go, bool noTeamDamage = false)
+        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (ev.Target.IsHost)
                     return true;
 
-                Handlers.Player.OnHurting(ev);
+                Player.OnHurting(ev);
 
                 info = ev.HitInformations;
 
