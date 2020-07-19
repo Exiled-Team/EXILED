@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject, bool)"/>.
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
@@ -53,6 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     var dyingEv = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
 
+                    Player.OnDying(dyingEv);
                     if (!ev.IsAllowed)
                         return false;
                 }
