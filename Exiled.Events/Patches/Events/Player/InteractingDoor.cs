@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         if (ev.Door.PermissionLevels == 0)
                         {
-                            ev.IsAllowed = ev.Door.locked;
+                            ev.IsAllowed = !ev.Door.locked;
                         }
                         else if (!ev.Door.RequireAllPermissions)
                         {
@@ -80,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed)
+                if (ev.IsAllowed && !ev.Door.locked)
                     ev.Door.ChangeState(__instance._sr.BypassMode);
                 else
                     __instance.RpcDenied(doorId);
