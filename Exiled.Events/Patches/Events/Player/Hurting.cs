@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     Player.OnDying(dyingEventArgs);
 
-                    if (!ev.IsAllowed)
+                    if (!dyingEventArgs.IsAllowed)
                         return false;
                 }
 
