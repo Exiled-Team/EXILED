@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Server.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -13,7 +13,7 @@ namespace Exiled.Example.Handlers
     /// <summary>
     /// Handles server-related events.
     /// </summary>
-    internal class Server
+    internal sealed class Server
     {
         /// <inheritdoc cref="Events.Handlers.Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()

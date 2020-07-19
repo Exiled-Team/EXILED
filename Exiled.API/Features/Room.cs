@@ -75,9 +75,7 @@ namespace Exiled.API.Features
                     case "EntranceRooms":
                         return ZoneType.Entrance;
                     default:
-                        {
-                            return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
-                        }
+                        return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
                 }
             }
         }
