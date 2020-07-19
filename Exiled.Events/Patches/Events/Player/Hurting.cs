@@ -53,6 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     var dyingEv = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
 
+                    Player.OnDying(dyingEv);
                     if (!ev.IsAllowed)
                         return false;
                 }
