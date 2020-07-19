@@ -74,17 +74,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadConfigs;
+        public static event CustomEventHandler ReloadedConfigs;
 
         /// <summary>
         /// Invoked after the "reload gameplay" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadGameplay;
+        public static event CustomEventHandler ReloadedGameplay;
 
         /// <summary>
         /// Invoked after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static event CustomEventHandler ReloadRA;
+        public static event CustomEventHandler ReloadedRA;
 
         /// <summary>
         /// Called before waiting for players.
@@ -154,16 +154,16 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after the "reload configs" command is ran.
         /// </summary>
-        public static void OnReloadConfigs() => ReloadConfigs.InvokeSafely();
+        public static void OnReloadedConfigs() => ReloadConfigs.InvokeSafely();
 
         /// <summary>
         /// Called after the "reload gameplay" command is ran.
         /// </summary>
-        public static void OnReloadGameplay() => ReloadGameplay.InvokeSafely();
+        public static void OnReloadedGameplay() => ReloadGameplay.InvokeSafely();
 
         /// <summary>
         /// Called after the "reload remoteadminconfigs" command is ran.
         /// </summary>
-        public static void OnReloadRA() => ReloadRA.InvokeSafely();
+        public static void OnReloadedRA() => ReloadRA.InvokeSafely();
     }
 }
