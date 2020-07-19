@@ -7,13 +7,15 @@
 
 namespace Exiled.Example.Handlers
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     /// <summary>
     /// Handles player events.
     /// </summary>
-    public class Player
+    internal sealed class Player
     {
         /// <inheritdoc cref="Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
@@ -31,6 +33,12 @@ namespace Exiled.Example.Handlers
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} is changing his {ev.OldItem.id} item to {ev.NewItem.id}!");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
+        public void OnTeleporting(TeleportingEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} has teleported to {ev.PortalPosition} with SCP-106!");
         }
     }
 }
