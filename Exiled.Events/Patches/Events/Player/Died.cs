@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject, bool)"/>.
     /// Adds the <see cref="Player.Died"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
