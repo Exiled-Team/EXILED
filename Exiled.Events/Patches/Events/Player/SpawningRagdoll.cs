@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.SpawningRagdoll"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
-    internal class SpawningRagdoll
+    internal static class SpawningRagdoll
     {
         private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
         {

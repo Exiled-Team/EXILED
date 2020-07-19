@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.UsingMedicalItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdUseMedicalItem))]
-    internal class UsingMedicalItem
+    internal static class UsingMedicalItem
     {
         private static bool Prefix(ConsumableAndWearableItems __instance)
         {

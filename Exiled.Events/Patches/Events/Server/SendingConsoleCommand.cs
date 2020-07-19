@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.SendingConsoleCommand"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RemoteAdmin.QueryProcessor), nameof(RemoteAdmin.QueryProcessor.ProcessGameConsoleQuery), new Type[] { typeof(string), typeof(bool) })]
-    internal class SendingConsoleCommand
+    internal static class SendingConsoleCommand
     {
         private static bool Prefix(RemoteAdmin.QueryProcessor __instance, ref string query, bool encrypted)
         {

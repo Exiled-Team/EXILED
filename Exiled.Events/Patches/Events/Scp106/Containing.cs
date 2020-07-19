@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Adds the <see cref="Scp106.Containing"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdContain106))]
-    internal class Containing
+    internal static class Containing
     {
         private static bool Prefix(CharacterClassManager __instance)
         {

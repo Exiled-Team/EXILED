@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp049
     /// Adds the <see cref="Handlers.Scp049.StartingRecall"/> and <see cref="Handlers.Scp049.FinishingRecall"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp049), nameof(PlayableScps.Scp049.BodyCmd_ByteAndGameObject))]
-    internal class StartingAndFinishingRecall
+    internal static class StartingAndFinishingRecall
     {
         private static bool Prefix(PlayableScps.Scp049 __instance, byte num, GameObject go)
         {

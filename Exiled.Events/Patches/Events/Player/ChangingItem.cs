@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
-    internal class ChangingItem
+    internal static class ChangingItem
     {
         private static void Prefix(Inventory __instance, int i)
         {

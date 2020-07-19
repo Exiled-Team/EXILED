@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingNtfEntrance"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.PlayEntranceAnnouncement))]
-    internal class AnnouncingNtfEntrance
+    internal static class AnnouncingNtfEntrance
     {
         private static bool Prefix(ref string regular)
         {

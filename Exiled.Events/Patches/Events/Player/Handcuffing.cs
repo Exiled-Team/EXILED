@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Handcuffing"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdCuffTarget))]
-    internal class Handcuffing
+    internal static class Handcuffing
     {
         private static bool Prefix(Handcuffs __instance, GameObject target)
         {

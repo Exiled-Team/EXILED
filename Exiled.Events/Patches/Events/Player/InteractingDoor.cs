@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
-    internal class InteractingDoor
+    internal static class InteractingDoor
     {
         private static bool Prefix(PlayerInteract __instance, GameObject doorId)
         {

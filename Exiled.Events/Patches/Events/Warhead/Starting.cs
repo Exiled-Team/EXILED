@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Warhead.Starting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdDetonateWarhead))]
-    internal class Starting
+    internal static class Starting
     {
         private static bool Prefix(PlayerInteract __instance)
         {

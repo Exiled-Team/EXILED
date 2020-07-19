@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="Scp079.GainingExperience"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallRpcGainExp))]
-    internal class GainingExperience
+    internal static class GainingExperience
     {
         private static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
         {

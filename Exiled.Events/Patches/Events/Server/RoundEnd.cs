@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.EndingRound"/> and <see cref="Server.RoundEnded"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
-    internal class RoundEnd
+    internal static class RoundEnd
     {
         private static readonly MethodInfo CustomProcess = SymbolExtensions.GetMethodInfo(() => Process(null));
 

@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.SyncingData"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.CallCmdSyncData))]
-    internal class SyncingData
+    internal static class SyncingData
     {
         private static bool Prefix(AnimationController __instance, byte state, Vector2 v2)
         {

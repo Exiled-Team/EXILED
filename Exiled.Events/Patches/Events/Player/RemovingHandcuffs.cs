@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.RemovingHandcuffs"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.ClearTarget))]
-    internal class RemovingHandcuffs
+    internal static class RemovingHandcuffs
     {
         private static bool Prefix(Handcuffs __instance)
         {

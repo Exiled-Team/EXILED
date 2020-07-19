@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FragGrenade), nameof(FragGrenade.ServersideExplosion))]
-    internal class ExplodingFragGrenade
+    internal static class ExplodingFragGrenade
     {
         private static bool Prefix(FragGrenade __instance)
         {

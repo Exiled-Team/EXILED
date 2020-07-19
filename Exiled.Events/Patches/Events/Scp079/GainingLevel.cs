@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="Scp079.GainingLevel"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.TargetLevelChanged))]
-    internal class GainingLevel
+    internal static class GainingLevel
     {
         private static bool Prefix(Scp079PlayerScript __instance, ref int newLvl)
         {

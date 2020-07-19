@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ActivatingWarheadPanel"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdSwitchAWButton))]
-    internal class ActivatingWarheadPanel
+    internal static class ActivatingWarheadPanel
     {
         private static bool Prefix(PlayerInteract __instance)
         {

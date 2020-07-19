@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InteractingLocker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
-    internal class InteractingLocker
+    internal static class InteractingLocker
     {
         private static bool Prefix(PlayerInteract __instance, int lockerId, int chamberNumber)
         {

@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the WaitingForPlayers event.
     /// </summary>
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.AddLog))]
-    internal static class WaitingForPlayers
+    internal static static class WaitingForPlayers
     {
         private static void Prefix(string q)
         {

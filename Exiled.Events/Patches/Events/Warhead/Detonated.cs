@@ -17,7 +17,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the WarheadDetonated event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
-    internal class Detonated
+    internal static class Detonated
     {
         private static void Prefix() => Warhead.OnDetonated();
     }

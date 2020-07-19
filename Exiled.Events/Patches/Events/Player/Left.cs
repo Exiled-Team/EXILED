@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Left"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
-    internal class Left
+    internal static class Left
     {
         private static void Prefix(ReferenceHub __instance)
         {

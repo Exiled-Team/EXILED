@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Exiled.Events.Handlers.Server.RespawningTeam"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
-    internal class RespawningTeam
+    internal static class RespawningTeam
     {
         private static bool Prefix(RespawnManager __instance)
         {

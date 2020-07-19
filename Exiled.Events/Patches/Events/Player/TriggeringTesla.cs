@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.TriggeringTesla"/> event.
     /// </summary>
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
-    internal class TriggeringTesla
+    internal static class TriggeringTesla
     {
         private static bool Prefix(TeslaGateController __instance)
         {

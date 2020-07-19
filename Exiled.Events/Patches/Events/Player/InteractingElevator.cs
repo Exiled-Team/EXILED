@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InteractingElevator"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
-    internal class InteractingElevator
+    internal static class InteractingElevator
     {
         private static bool Prefix(PlayerInteract __instance, GameObject elevator)
         {

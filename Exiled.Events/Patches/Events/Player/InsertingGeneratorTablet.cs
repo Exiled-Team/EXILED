@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.InsertingGeneratorTablet"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
-    internal class InsertingGeneratorTablet
+    internal static class InsertingGeneratorTablet
     {
         private static bool Prefix(Generator079 __instance, GameObject person, string command)
         {

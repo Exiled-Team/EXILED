@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingScpTermination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
-    internal class AnnouncingScpTermination
+    internal static class AnnouncingScpTermination
     {
         private static bool Prefix(Role scp, ref PlayerStats.HitInfo hit, ref string groupId)
         {

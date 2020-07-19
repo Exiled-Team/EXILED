@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ReloadingWeapon"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdReload))]
-    internal class ReloadingWeapon
+    internal static class ReloadingWeapon
     {
         private static bool Prefix(WeaponManager __instance, bool animationOnly)
         {

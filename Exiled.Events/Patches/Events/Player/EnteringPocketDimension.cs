@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.EnteringPocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
-    internal class EnteringPocketDimension
+    internal static class EnteringPocketDimension
     {
         private static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
         {

@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.SetNick))]
-    internal class Joined
+    internal static class Joined
     {
         private static void Postfix(NicknameSync __instance)
         {

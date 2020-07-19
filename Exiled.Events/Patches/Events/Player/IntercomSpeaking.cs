@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.IntercomSpeaking"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.CallCmdSetTransmit))]
-    internal class IntercomSpeaking
+    internal static class IntercomSpeaking
     {
         private static bool Prefix(Intercom __instance, bool player)
         {

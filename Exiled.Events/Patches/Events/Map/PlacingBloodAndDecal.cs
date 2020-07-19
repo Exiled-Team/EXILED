@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.PlacingDecal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.RpcPlaceDecal))]
-    internal class PlacingBloodAndDecal
+    internal static class PlacingBloodAndDecal
     {
         private static bool Prefix(WeaponManager __instance, bool isBlood, ref int type, ref Vector3 pos, ref Quaternion rot)
         {

@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
-    internal class ItemDrop
+    internal static class ItemDrop
     {
         private static bool Prefix(Inventory __instance, int itemInventoryIndex)
         {

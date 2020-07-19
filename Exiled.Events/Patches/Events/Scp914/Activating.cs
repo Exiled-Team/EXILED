@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Scp914.Activating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUse914))]
-    internal class Activating
+    internal static class Activating
     {
         private static bool Prefix(PlayerInteract __instance)
         {

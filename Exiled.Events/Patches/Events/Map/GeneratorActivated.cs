@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.GeneratorActivated"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.CheckFinish))]
-    internal class GeneratorActivated
+    internal static class GeneratorActivated
     {
         private static bool Prefix(Generator079 __instance)
         {

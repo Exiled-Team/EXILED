@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Adds the <see cref="Handlers.Scp096.CalmingDown"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.EndEnrage))]
-    internal class CalmingDown
+    internal static class CalmingDown
     {
         private static bool Prefix(Scp096 __instance)
         {

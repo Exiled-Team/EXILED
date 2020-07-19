@@ -18,11 +18,11 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject, bool)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool)"/>.
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-    internal class Hurting
+    internal static class Hurting
     {
         private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
@@ -51,9 +51,10 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
                 {
-                    var dyingEv = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
+                    var dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
 
-                    Player.OnDying(dyingEv);
+                    Player.OnDying(dyingEventArgs);
+
                     if (!ev.IsAllowed)
                         return false;
                 }

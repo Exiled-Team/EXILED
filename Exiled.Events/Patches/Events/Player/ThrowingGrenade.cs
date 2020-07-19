@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ThrowingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(GrenadeManager), nameof(GrenadeManager.CallCmdThrowGrenade))]
-    internal class ThrowingGrenade
+    internal static class ThrowingGrenade
     {
         private static bool Prefix(ref GrenadeManager __instance, ref int id, ref bool slowThrow, ref double time)
         {

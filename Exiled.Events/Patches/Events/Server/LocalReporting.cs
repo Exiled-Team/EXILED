@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// is inserted into it which returns the bool value that determines further processing of the report.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.CallCmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]
-    internal static class LocalReporting
+    internal static static class LocalReporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
