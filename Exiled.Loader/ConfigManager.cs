@@ -27,37 +27,24 @@ namespace Exiled.Loader
     public static class ConfigManager
     {
         /// <summary>
-        /// Gets the serializer builder instance.
+        /// Gets the config serializer.
         /// </summary>
-        internal static SerializerBuilder SerializerBuilder { get; } = new SerializerBuilder()
+        public static ISerializer Serializer { get; } = new SerializerBuilder()
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithTagMapping("!Dictionary[string,IConfig]", typeof(Dictionary<string, IConfig>))
-            .WithTagMapping("!Exiled.Loader.Config", typeof(Config))
             .IgnoreFields()
-            .EnsureRoundtrip();
+            .Build();
 
         /// <summary>
-        /// Gets the deserializer builder instance.
+        /// Gets the config serializer.
         /// </summary>
-        internal static DeserializerBuilder DeserializerBuilder { get; } = new DeserializerBuilder()
+        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .WithTagMapping("!Dictionary[string,IConfig]", typeof(Dictionary<string, IConfig>))
-            .WithTagMapping("!Exiled.Loader.Config", typeof(Config))
             .IgnoreFields()
-            .IgnoreUnmatchedProperties();
-
-        /// <summary>
-        /// Gets the config serializer.
-        /// </summary>
-        private static ISerializer Serializer => SerializerBuilder.Build();
-
-        /// <summary>
-        /// Gets the config serializer.
-        /// </summary>
-        private static IDeserializer Deserializer => DeserializerBuilder.Build();
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Loads all plugin configs.
@@ -70,9 +57,10 @@ namespace Exiled.Loader
             {
                 Log.Info("Loading plugin configs...");
 
-                Dictionary<string, IConfig> deserializedConfigs = Deserializer.Deserialize<Dictionary<string, IConfig>>(rawConfigs) ?? new Dictionary<string, IConfig>();
+                Dictionary<string, object> rawDeserializedConfigs = Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
+                Dictionary<string, IConfig> deserializedConfigs = new Dictionary<string, IConfig>();
 
-                if (!deserializedConfigs.TryGetValue("exiled_loader", out IConfig deserializedConfig))
+                if (!rawDeserializedConfigs.TryGetValue("exiled_loader", out object rawDeserializedConfig))
                 {
                     Log.Warn($"Exiled.Loader doesn't have default configs, generating...");
 
@@ -80,12 +68,14 @@ namespace Exiled.Loader
                 }
                 else
                 {
+                    deserializedConfigs.Add("exiled_loader", Deserializer.Deserialize<Config>(Serializer.Serialize(rawDeserializedConfig)));
+
                     Loader.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
                 }
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (!deserializedConfigs.TryGetValue(plugin.Prefix, out deserializedConfig))
+                    if (!rawDeserializedConfigs.TryGetValue(plugin.Prefix, out rawDeserializedConfig))
                     {
                         Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
 
@@ -93,7 +83,18 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        plugin.Config.CopyProperties(deserializedConfig);
+                        try
+                        {
+                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
+
+                            plugin.Config.CopyProperties(deserializedConfigs[plugin.Prefix]);
+                        }
+                        catch (YamlException yamlException)
+                        {
+                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException}");
+
+                            deserializedConfigs.Add(plugin.Prefix, plugin.Config);
+                        }
                     }
                 }
 
@@ -103,7 +104,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading configs, default configs will be loaded instead! {exception}");
+                Log.Error($"An error has occurred while loading configs! {exception}");
 
                 return null;
             }
@@ -193,29 +194,6 @@ namespace Exiled.Loader
             ServerStatic.SharedGroupsMembersConfig = (GameCore.ConfigSharing.Paths[5] == null) ? null : new YamlConfig(GameCore.ConfigSharing.Paths[5] + "shared_groups_members.txt");
             ServerStatic.PermissionsHandler = new PermissionsHandler(ref ServerStatic.RolesConfig, ref ServerStatic.SharedGroupsConfig, ref ServerStatic.SharedGroupsMembersConfig);
             ServerStatic.GetPermissionsHandler().RefreshPermissions();
-        }
-
-        /// <summary>
-        /// Adds a new config type tag to the serializer and deserializer.
-        /// </summary>
-        /// <param name="obj">The object to get the tag from.</param>
-        public static void AddTag(object obj) => AddTag(obj.GetType());
-
-        /// <summary>
-        /// Adds a new config type tag to the serializer and deserializer.
-        /// </summary>
-        /// <param name="type">The tag type.</param>
-        public static void AddTag(Type type)
-        {
-            try
-            {
-                SerializerBuilder.WithTagMapping($"!{type.FullName}", type);
-                DeserializerBuilder.WithTagMapping($"!{type.FullName}", type);
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"An error has occurred while trying to add a tag to the serializer/deserializer: {exception}");
-            }
         }
     }
 }

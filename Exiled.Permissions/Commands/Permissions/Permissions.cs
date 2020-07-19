@@ -15,7 +15,7 @@ namespace Exiled.Permissions.Commands.Permissions
     /// <summary>
     /// Handles commands about permissions.
     /// </summary>
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Permissions : ParentCommand
     {
         /// <summary>

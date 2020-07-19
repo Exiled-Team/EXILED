@@ -18,13 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool)"/>.
+    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, UnityEngine.GameObject)"/>.
     /// Adds the <see cref="Player.Died"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal class Died
     {
-        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go, bool noTeamDamage = false)
+        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             try
             {

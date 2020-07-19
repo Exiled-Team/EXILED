@@ -81,8 +81,6 @@ namespace Exiled.API.Features
         /// <inheritdoc/>
         public virtual void OnRegisteringCommands()
         {
-            Log.Debug($"Registering commands...");
-
             foreach (Type type in Assembly.GetTypes())
             {
                 if (type.GetInterface("ICommand") != typeof(ICommand))
@@ -91,66 +89,36 @@ namespace Exiled.API.Features
                 if (!Attribute.IsDefined(type, typeof(CommandHandlerAttribute)))
                     continue;
 
-                // Useless for now.
-                CommandHandlerAttribute commandHandlerAttribute = type.GetCustomAttribute<CommandHandlerAttribute>();
-
-                // Since I cannot determine the type of the command from the CommandHandlerAttribute, because it's not being saved anywhere inside that class,
-                // I just register commands for both RemoteAdmin and GameConsole.
-                try
+                foreach (CustomAttributeData customAttributeData in type.CustomAttributes)
                 {
-                    // Every command will be registered as RemoteAdminCommandHandler, so I'll just do one check.
-                    if (!Commands[typeof(RemoteAdminCommandHandler)].TryGetValue(type, out ICommand command))
-                        command = (ICommand)Activator.CreateInstance(type);
-
-                    CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
-                    GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
-
-                    Commands[typeof(ClientCommandHandler)][type] = command;
-                    Commands[typeof(RemoteAdminCommandHandler)][type] = command;
-                    Commands[typeof(GameConsoleCommandHandler)][type] = command;
-
-                    Log.Debug($"Successfully registered command {command.Command}");
-                }
-                catch (Exception exception)
-                {
-                    Log.Error($"An error has occurred while registering a command: {exception}");
-                }
-
-                // Register ClientCommand
-                try
-                {
-                    bool foundClient = false;
-                    foreach (CustomAttributeData data in type.CustomAttributes)
+                    try
                     {
-                        if (data.AttributeType == typeof(CommandHandlerAttribute))
-                        {
-                            if (((Type)data.ConstructorArguments[0].Value) == typeof(ClientCommandHandler))
-                            {
-                                foundClient = true;
-                                break;
-                            }
-                        }
-                    }
+                        if (customAttributeData.AttributeType != typeof(CommandHandlerAttribute))
+                            continue;
 
-                    if (foundClient)
-                    {
-                        if (!Commands[typeof(ClientCommandHandler)].TryGetValue(type, out ICommand command))
+                        Type commandType = (Type)customAttributeData.ConstructorArguments?[0].Value;
+
+                        if (!Commands.TryGetValue(commandType, out Dictionary<Type, ICommand> typeCommands))
+                            continue;
+
+                        if (!typeCommands.TryGetValue(type, out ICommand command))
                             command = (ICommand)Activator.CreateInstance(type);
 
-                        QueryProcessor.DotCommandHandler.RegisterCommand(command);
+                        if (commandType == typeof(RemoteAdminCommandHandler))
+                            CommandProcessor.RemoteAdminCommandHandler.RegisterCommand(command);
+                        else if (commandType == typeof(GameConsoleCommandHandler))
+                            GameCore.Console.singleton.ConsoleCommandHandler.RegisterCommand(command);
+                        else if (commandType == typeof(ClientCommandHandler))
+                            QueryProcessor.DotCommandHandler.RegisterCommand(command);
 
-                        Commands[typeof(ClientCommandHandler)][type] = command;
-
-                        Log.Debug($"Successfully registered client command {command.Command}");
+                        Commands[commandType][type] = command;
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error($"An error has occurred while registering a command: {exception}");
                     }
                 }
-                catch (Exception exception)
-                {
-                    Log.Error($"An error has occurred while registering a client command: {exception}");
-                }
             }
-
-            Log.Debug($"Commands have been registered successfully!");
         }
 
         /// <inheritdoc/>
