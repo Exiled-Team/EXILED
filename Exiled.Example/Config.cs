@@ -52,12 +52,44 @@ namespace Exiled.Example
         /// <summary>
         /// Gets the dictionary of string as key and int as value config.
         /// </summary>
-        [Description("This is a dictionary of string as key and int as value config")]
+        [Description("This is a dictionary of strings as key and int as value config")]
         public Dictionary<string, int> StringIntDictionary { get; private set; } = new Dictionary<string, int>()
         {
             { "First Key", 1 },
             { "Second Key", 2 },
             { "Third Key", 3 },
+        };
+
+        /// <summary>
+        /// Gets the dictionary of string as key and <see cref="Dictionary{TKey, TValue}"/> as value config.
+        /// </summary>
+        [Description("This is a dictionary of strings as key and Dictionary<string, int> as value config")]
+        public Dictionary<string, Dictionary<string, int>> NestedDictionaries { get; private set; } = new Dictionary<string, Dictionary<string, int>>()
+        {
+            {
+                "First Key", new Dictionary<string, int>()
+            {
+                { "First Key", 1 },
+                { "Second Key", 2 },
+                { "Third Key", 3 },
+            }
+            },
+            {
+                "Second Key", new Dictionary<string, int>()
+            {
+                { "First Key", 4 },
+                { "Second Key", 5 },
+                { "Third Key", 6 },
+            }
+            },
+            {
+                "Third Key", new Dictionary<string, int>()
+            {
+                { "First Key", 7 },
+                { "Second Key", 8 },
+                { "Third Key", 9 },
+            }
+            },
         };
     }
 }
