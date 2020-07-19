@@ -10,6 +10,7 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -56,6 +57,8 @@ namespace Exiled.Loader
             try
             {
                 Log.Info("Loading plugin configs...");
+
+                rawConfigs = Regex.Replace(rawConfigs, @"\ !.*", string.Empty).Replace("!Dictionary[string,IConfig]", string.Empty);
 
                 Dictionary<string, object> rawDeserializedConfigs = Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
                 Dictionary<string, IConfig> deserializedConfigs = new Dictionary<string, IConfig>();
