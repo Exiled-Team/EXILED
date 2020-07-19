@@ -124,6 +124,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 if (roundSummary._roundEnded)
                 {
+                    FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
                     Console.AddLog(str, Color.gray, false);
                     ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);

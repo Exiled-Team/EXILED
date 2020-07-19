@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         if (ev.Door.PermissionLevels == 0)
                         {
-                            ev.IsAllowed = !ev.Door.locked;
+                            ev.IsAllowed = ev.Door.locked;
                         }
                         else if (!ev.Door.RequireAllPermissions)
                         {

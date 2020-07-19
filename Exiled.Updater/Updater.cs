@@ -67,7 +67,8 @@ namespace Exiled.Updater
                 ExtractTarGz(exiledTempPath, tempDirectory);
                 Log.Info($"Extraction complete, moving files...");
 
-                string tempExiledMainPath = Path.Combine(Path.Combine(tempDirectory, "Exiled"), "Exiled.Loader.dll");
+                string tempExiledMainPath = Path.Combine(tempDirectory, "EXILED-PTB");
+                string tempLoaderPath = Path.Combine(tempExiledMainPath, "Exiled.Loader.dll");
                 string tempPluginsDirectory = Path.Combine(tempExiledMainPath, "Plugins");
                 string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "Exiled.Events.dll");
                 string tempPermissionsPath = Path.Combine(tempPluginsDirectory, "Exiled.Permissions.dll");
@@ -83,7 +84,7 @@ namespace Exiled.Updater
                 File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
                 File.Delete(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
                 File.Delete(Path.Combine(Paths.Dependencies, "Exiled.API.dll"));
-                File.Move(tempExiledMainPath, Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
+                File.Move(tempLoaderPath, Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
                 File.Move(tempExiledEventsPath, Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
                 File.Move(tempPermissionsPath, Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
                 File.Move(tempUpdaterPath, Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
@@ -95,6 +96,9 @@ namespace Exiled.Updater
                 Log.Info("Auto-update complete, restarting server...");
 
                 Application.Quit();
+            }
+            catch (System.UnauthorizedAccessException)
+            {
             }
             catch (Exception exception)
             {
@@ -147,7 +151,7 @@ namespace Exiled.Updater
                     return false;
                 }
 
-                versionUpdateUrl = $"{url.Replace("latest/", string.Empty)}download/{version}/EXILED.tar.gz";
+                versionUpdateUrl = $"{url.Replace("latest/", string.Empty)}download/{version}/Exiled.tar.gz";
 
                 if (RequiredExiledVersion < new Version(major, minor, build))
                 {
@@ -243,6 +247,9 @@ namespace Exiled.Updater
                         offset = 0;
 
                     stream.Seek(offset, SeekOrigin.Current);
+                }
+                catch (UnauthorizedAccessException)
+                {
                 }
                 catch (Exception exception)
                 {

@@ -29,26 +29,40 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 if (go == null)
-                    return;
+                    return true;
 
                 API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
                 if (attacker == null || target == null || attacker.IsHost || target.IsHost)
-                    return;
+                    return true;
 
                 var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
                 if (ev.Target.IsHost)
-                    return;
+                    return true;
 
                 Player.OnHurting(ev);
 
                 info = ev.HitInformations;
+
+                if (!ev.IsAllowed)
+                    return false;
+
+                if (ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
+                {
+                    var dyingEv = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
+
+                    if (!ev.IsAllowed)
+                        return false;
+                }
+
+                return true;
             }
             catch (Exception e)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
+                return true;
             }
         }
     }

@@ -52,6 +52,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     Player.OnEscaping(escapingEventArgs);
 
+                    if (!escapingEventArgs.IsAllowed)
+                        return false;
+
                     classid = escapingEventArgs.NewRole;
                 }
 
