@@ -27,6 +27,11 @@ namespace Exiled.API.Features
         private static readonly List<Lift> LiftsValue = new List<Lift>();
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>();
 
+        private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
+
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
         /// </summary>
@@ -55,7 +60,7 @@ namespace Exiled.API.Features
                     RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
                 }
 
-                return RoomsValue.AsReadOnly();
+                return ReadOnlyRoomsValue;
             }
         }
 
@@ -72,7 +77,7 @@ namespace Exiled.API.Features
                     DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
                 }
 
-                return DoorsValue.AsReadOnly();
+                return ReadOnlyDoorsValue;
             }
         }
 
@@ -89,7 +94,7 @@ namespace Exiled.API.Features
                     LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
                 }
 
-                return LiftsValue.AsReadOnly();
+                return ReadOnlyLiftsValue;
             }
         }
 
@@ -106,7 +111,7 @@ namespace Exiled.API.Features
                     TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
                 }
 
-                return TeslasValue.AsReadOnly();
+                return ReadOnlyTeslasValue;
             }
         }
 
