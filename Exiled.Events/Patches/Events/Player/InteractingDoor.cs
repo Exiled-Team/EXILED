@@ -10,32 +10,29 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
     using System.Linq;
-
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-
     using HarmonyLib;
-
     using UnityEngine;
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdOpenDoor(GameObject)"/>.
-    /// Adds the <see cref="Player.InteractingDoor"/> event.
+    /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
-    internal class InteractingDoor
+    internal static class InteractingDoor
     {
         private static bool Prefix(PlayerInteract __instance, GameObject doorId)
         {
             try
             {
                 if (!__instance._playerInteractRateLimit.CanExecute() ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) || doorId == null ||
-                    !doorId.TryGetComponent(out Door door) ||
-                    (__instance._ccm.CurClass == RoleType.None || __instance._ccm.CurClass == RoleType.Spectator) ||
-                    (door.buttons.Count == 0
-                        ? (__instance.ChckDis(doorId.transform.position) ? 1 : 0)
-                        : (door.buttons.Any(item => __instance.ChckDis(item.transform.position)) ? 1 : 0)) == 0)
+                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||
+                    (doorId == null || __instance._ccm.CurClass == RoleType.None ||
+                     (__instance._ccm.CurClass == RoleType.Spectator || !doorId.TryGetComponent(out Door door))) ||
+                    (door.Buttons.Count == 0
+                        ? (!__instance.ChckDis(doorId.transform.position) ? 1 : 0)
+                        : (door.Buttons.All(item => !__instance.ChckDis(item.button.transform.position)) ? 1 : 0)) != 0)
                     return false;
 
                 var ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), door);
@@ -78,9 +75,9 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                Player.OnInteractingDoor(ev);
+                Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed)
+                if (ev.IsAllowed && !ev.Door.locked)
                     ev.Door.ChangeState(__instance._sr.BypassMode);
                 else
                     __instance.RpcDenied(doorId);
@@ -89,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingDoor: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.InteractingDoor: {e}\n{e.StackTrace}");
 
                 return true;
             }

@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.EscapingPocketDimension"/> and <see cref="Player.FailingEscapePocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
-    internal class EscapingAndFailingEscapePocketDimension
+    internal static class EscapingAndFailingEscapePocketDimension
     {
         private static bool Prefix(PocketDimensionTeleport __instance, Collider other)
         {

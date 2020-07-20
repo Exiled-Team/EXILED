@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Server.ReportingCheater"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.IssueReport))]
-    internal class ReportingCheater
+    internal static class ReportingCheater
     {
         private static bool Prefix(
             CheaterReport __instance,

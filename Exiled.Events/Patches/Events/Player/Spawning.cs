@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Spawning"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
-    internal class Spawning
+    internal static class Spawning
     {
         private static bool Prefix(CharacterClassManager __instance, bool lite = false, bool escape = false)
         {

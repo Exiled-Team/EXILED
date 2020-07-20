@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Banning"/> and <see cref="Player.Kicking"/>events.
     /// </summary>
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool) })]
-    internal class BanningAndKicking
+    internal static class BanningAndKicking
     {
         private static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
         {

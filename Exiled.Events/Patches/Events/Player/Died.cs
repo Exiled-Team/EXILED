@@ -22,9 +22,9 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Died"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-    internal class Died
+    internal static class Died
     {
-        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go, bool noTeamDamage = false)
+        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             try
             {

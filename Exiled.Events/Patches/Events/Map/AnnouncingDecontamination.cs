@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Map
     /// Adds the <see cref="Map.AnnouncingDecontamination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
-    internal class AnnouncingDecontamination
+    internal static class AnnouncingDecontamination
     {
         /*/// <summary>
         /// Gets or sets a value indicating whether stops the Announcement Event from triggering.

@@ -22,33 +22,49 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
-    internal class Hurting
+    internal static class Hurting
     {
-        private static void Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go, bool noTeamDamage = false)
+        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
         {
             try
             {
                 if (go == null)
-                    return;
+                    return true;
 
                 API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
                 if (attacker == null || target == null || attacker.IsHost || target.IsHost)
-                    return;
+                    return true;
 
                 var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
 
                 if (ev.Target.IsHost)
-                    return;
+                    return true;
 
-                Handlers.Player.OnHurting(ev);
+                Player.OnHurting(ev);
 
                 info = ev.HitInformations;
+
+                if (!ev.IsAllowed)
+                    return false;
+
+                if (ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
+                {
+                    var dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
+
+                    Player.OnDying(dyingEventArgs);
+
+                    if (!dyingEventArgs.IsAllowed)
+                        return false;
+                }
+
+                return true;
             }
             catch (Exception e)
             {
                 Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
+                return true;
             }
         }
     }

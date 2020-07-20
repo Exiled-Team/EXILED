@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.EnteringFemurBreaker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.AllowContain))]
-    internal class EnteringFemurBreaker
+    internal static class EnteringFemurBreaker
     {
         private static bool Prefix(CharacterClassManager __instance)
         {

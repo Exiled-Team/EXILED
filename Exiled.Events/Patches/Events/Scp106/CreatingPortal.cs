@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     /// Adds the <see cref="Scp106.CreatingPortal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMakePortal))]
-    internal class CreatingPortal
+    internal static class CreatingPortal
     {
         /// <summary>
         /// Prefix of <see cref="Scp106PlayerScript.CallCmdMakePortal"/>.

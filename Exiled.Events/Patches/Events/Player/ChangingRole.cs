@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))]
-    internal class ChangingRole
+    internal static class ChangingRole
     {
         private static bool Prefix(CharacterClassManager __instance, ref RoleType classid, GameObject ply, bool lite = false, bool escape = false)
         {
@@ -51,6 +51,9 @@ namespace Exiled.Events.Patches.Events.Player
                     var escapingEventArgs = new EscapingEventArgs(API.Features.Player.Get(ply), classid);
 
                     Player.OnEscaping(escapingEventArgs);
+
+                    if (!escapingEventArgs.IsAllowed)
+                        return false;
 
                     classid = escapingEventArgs.NewRole;
                 }

@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Warhead.Starting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
-    internal class StartingByServer
+    internal static class StartingByServer
     {
         private static bool Prefix(AlphaWarheadController __instance)
         {

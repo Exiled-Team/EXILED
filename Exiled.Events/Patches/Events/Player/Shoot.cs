@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
-    internal class Shoot
+    internal static class Shoot
     {
         private static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
         {

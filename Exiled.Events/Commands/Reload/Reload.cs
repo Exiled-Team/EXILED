@@ -15,6 +15,7 @@ namespace Exiled.Events.Commands.Reload
     /// The reload command.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class Reload : ParentCommand
     {
         /// <summary>
@@ -43,7 +44,7 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: plugins, gameplay, configs, remoteadminconfigs";
+            response = "Please, specify a valid subcommand! Available ones: plugins, gameplay, configs, remoteadmin";
             return false;
         }
     }

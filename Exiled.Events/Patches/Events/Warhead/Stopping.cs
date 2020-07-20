@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Adds the <see cref="Warhead.Stopping"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), new Type[] { typeof(GameObject) })]
-    internal class Stopping
+    internal static class Stopping
     {
         private static bool Prefix(AlphaWarheadController __instance, GameObject disabler)
         {

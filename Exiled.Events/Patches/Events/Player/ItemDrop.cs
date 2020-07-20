@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
-    internal class ItemDrop
+    internal static class ItemDrop
     {
         private static bool Prefix(Inventory __instance, int itemInventoryIndex)
         {
@@ -40,6 +40,8 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnDroppingItem(droppingItemEventArgs);
 
+                syncItemInfo = droppingItemEventArgs.Item;
+
                 if (!droppingItemEventArgs.IsAllowed)
                     return false;
 
@@ -47,8 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 __instance.items.RemoveAt(itemInventoryIndex);
 
-                var itemDroppedEventArgs =
-                    new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
+                var itemDroppedEventArgs = new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
 
                 Player.OnItemDropped(itemDroppedEventArgs);
 
@@ -56,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ItemDrop: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ItemDrop: {e}\n{e.StackTrace}");
 
                 return true;
             }

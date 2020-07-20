@@ -79,7 +79,7 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
-            if (dependencies?.Length > 0)
+            if (dependencies != null && dependencies.Length > 0)
                 Dependencies.AddRange(dependencies);
 
             LoadDependencies();
@@ -108,8 +108,6 @@ namespace Exiled.Loader
                     continue;
 
                 Plugins.Add(plugin);
-
-                ConfigManager.AddTag(plugin.Config);
             }
 
             Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
@@ -158,6 +156,7 @@ namespace Exiled.Loader
                     var constructor = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
                     if (constructor != null)
                     {
+                        Log.Debug($"Public default constructor found, creating instance...", ShouldDebugBeShown);
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
 
                         plugin = constructor.Invoke(null, null) as IPlugin<IConfig>;
@@ -165,8 +164,7 @@ namespace Exiled.Loader
                     else
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
-
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static), property => property.PropertyType == type)?.GetValue(null);
+                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
                     }
@@ -234,7 +232,6 @@ namespace Exiled.Loader
         /// </summary>
         public static void ReloadPlugins()
         {
-            List<IPlugin<IConfig>> pluginsToRemove = new List<IPlugin<IConfig>>();
             foreach (IPlugin<IConfig> plugin in Plugins)
             {
                 try
@@ -244,18 +241,11 @@ namespace Exiled.Loader
                     plugin.Config.IsEnabled = false;
 
                     plugin.OnDisabled();
-
-                    pluginsToRemove.Add(plugin);
                 }
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
-            }
-
-            foreach (IPlugin<IConfig> plugin in pluginsToRemove)
-            {
-                Plugins.Remove(plugin);
             }
 
             LoadPlugins();

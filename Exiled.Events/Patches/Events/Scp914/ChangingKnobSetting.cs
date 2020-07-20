@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Scp914.ChangingKnobSetting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdChange914Knob))]
-    internal class ChangingKnobSetting
+    internal static class ChangingKnobSetting
     {
         private static bool Prefix(PlayerInteract __instance)
         {

@@ -72,6 +72,21 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
 
         /// <summary>
+        /// Invoked after the "reload configs" command is ran.
+        /// </summary>
+        public static event CustomEventHandler ReloadedConfigs;
+
+        /// <summary>
+        /// Invoked after the "reload gameplay" command is ran.
+        /// </summary>
+        public static event CustomEventHandler ReloadedGameplay;
+
+        /// <summary>
+        /// Invoked after the "reload remoteadminconfigs" command is ran.
+        /// </summary>
+        public static event CustomEventHandler ReloadedRA;
+
+        /// <summary>
         /// Called before waiting for players.
         /// </summary>
         public static void OnWaitingForPlayers() => WaitingForPlayers.InvokeSafely();
@@ -135,5 +150,20 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
         public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after the "reload configs" command is ran.
+        /// </summary>
+        public static void OnReloadedConfigs() => ReloadedConfigs.InvokeSafely();
+
+        /// <summary>
+        /// Called after the "reload gameplay" command is ran.
+        /// </summary>
+        public static void OnReloadedGameplay() => ReloadedGameplay.InvokeSafely();
+
+        /// <summary>
+        /// Called after the "reload remoteadminconfigs" command is ran.
+        /// </summary>
+        public static void OnReloadedRA() => ReloadedRA.InvokeSafely();
     }
 }

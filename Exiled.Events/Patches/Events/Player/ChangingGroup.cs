@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.ChangingGroup"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetGroup))]
-    internal class ChangingGroup
+    internal static class ChangingGroup
     {
         private static bool Prefix(ServerRoles __instance, UserGroup group)
         {

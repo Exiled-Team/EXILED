@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// Adds the <see cref="Handlers.Server.SendingRemoteAdminCommand"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery), typeof(string), typeof(CommandSender))]
-    internal class SendingRemoteAdminCommand
+    internal static class SendingRemoteAdminCommand
     {
         private static bool Prefix(ref string q, ref CommandSender sender)
         {

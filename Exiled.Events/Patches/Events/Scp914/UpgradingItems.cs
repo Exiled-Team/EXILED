@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp914
     /// Adds the <see cref="Scp914.UpgradingItems"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Machine), nameof(Scp914Machine.ProcessItems))]
-    internal class UpgradingItems
+    internal static class UpgradingItems
     {
         private static bool Prefix(Scp914Machine __instance)
         {

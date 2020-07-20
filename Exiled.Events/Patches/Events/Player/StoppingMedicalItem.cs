@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.StoppingMedicalItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdCancelMedicalItem))]
-    internal class StoppingMedicalItem
+    internal static class StoppingMedicalItem
     {
         private static bool Prefix(ConsumableAndWearableItems __instance)
         {

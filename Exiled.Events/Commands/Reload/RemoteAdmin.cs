@@ -32,6 +32,8 @@ namespace Exiled.Events.Commands.Reload
         {
             ConfigManager.ReloadRemoteAdmin();
 
+            Handlers.Server.OnReloadedRA();
+
             response = "Remote admin configs reloaded.";
 
             return true;

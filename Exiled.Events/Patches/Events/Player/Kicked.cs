@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Adds the <see cref="Player.Kicked"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), new[] { typeof(GameObject), typeof(string) })]
-    internal class Kicked
+    internal static class Kicked
     {
         private static bool Prefix(GameObject player, ref string message)
         {

@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     /// Adds the <see cref="InteractingTeslaEventArgs"/> and <see cref="InteractingDoorEventArgs"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
-    internal class Interacting
+    internal static class Interacting
     {
         /// <summary>
         /// Prefix of <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
