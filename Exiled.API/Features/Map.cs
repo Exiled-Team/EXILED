@@ -153,6 +153,5 @@ namespace Exiled.API.Features
             LiftsValue.Clear();
             TeslasValue.Clear();
         }
-
     }
 }
