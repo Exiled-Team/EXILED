@@ -143,10 +143,7 @@ namespace Exiled.Loader
             {
                 foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
-                    if (
-                        !type.BaseType.IsGenericType ||
-                        type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) ||
-                        type.BaseType.GetGenericArguments()?[0]?.GetInterface(nameof(IConfig)) != typeof(IConfig))
+                    if (!type.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Exiled.API.Plugin<IConfig>, skipping.", ShouldDebugBeShown);
                         continue;
@@ -154,24 +151,27 @@ namespace Exiled.Loader
 
                     Log.Debug($"Loading type {type.FullName}", ShouldDebugBeShown);
 
-                    IPlugin<IConfig> plugin;
+                    IPlugin<IConfig> plugin = null;
 
-                    if (type.GetConstructor(Type.EmptyTypes) != null)
+                    var constructor = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+                    if (constructor != null)
                     {
                         Log.Debug($"Public default constructor found, creating instance...", ShouldDebugBeShown);
+                        Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
 
-                        plugin = (IPlugin<IConfig>)Activator.CreateInstance(type);
+                        plugin = constructor.Invoke(null, null) as IPlugin<IConfig>;
                     }
                     else
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
-
-                        plugin = (IPlugin<IConfig>)type.GetProperties().Where(property => property.PropertyType == type)?.FirstOrDefault()?.GetValue(null);
+                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        if (value != null)
+                            plugin = value as IPlugin<IConfig>;
                     }
 
                     if (plugin == null)
                     {
-                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor or a static property of the {type.FullName} type!");
+                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a default constructor without any arguments or a static property of the {type.FullName} type!");
 
                         continue;
                     }
@@ -182,16 +182,15 @@ namespace Exiled.Loader
                     {
                         if (!Config.ShouldLoadOutdatedPlugins)
                         {
-                            Log.Error($"You're running an older version of Exiled ({Version.Major}.{Version.Minor}.{Version.Build})! This plugin won't be loaded!" +
-                            $"Required version to load it: {plugin.RequiredExiledVersion.Major}.{plugin.RequiredExiledVersion.Minor}.{plugin.RequiredExiledVersion.Build}");
+                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! This plugin won't be loaded!" +
+                            $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                             continue;
                         }
                         else
                         {
-                            Log.Warn($"You're running an older version of Exiled ({Version.Major}.{Version.Minor}.{Version.Build})! " +
-                            $"You may encounter some bugs! Update Exiled to at least " +
-                            $"{plugin.RequiredExiledVersion.Major}.{plugin.RequiredExiledVersion.Minor}.{plugin.RequiredExiledVersion.Build}");
+                            Log.Warn($"You're running an older version of Exiled ({Version.ToString(3)})! " +
+                            $"You may encounter some bugs! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
                         }
                     }
 
