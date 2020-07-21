@@ -27,6 +27,11 @@ namespace Exiled.API.Features
         private static readonly List<Lift> LiftsValue = new List<Lift>();
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>();
 
+        private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
+
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
         /// </summary>
@@ -49,13 +54,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (RoomsValue.Count == 0 || RoomsValue.Any(r => r.Transform == null))
-                {
-                    RoomsValue.Clear();
+                if (RoomsValue.Count == 0)
                     RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
-                }
 
-                return RoomsValue.AsReadOnly();
+                return ReadOnlyRoomsValue;
             }
         }
 
@@ -66,13 +68,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (DoorsValue.Count == 0 || DoorsValue.Contains(null))
-                {
-                    DoorsValue.Clear();
+                if (DoorsValue.Count == 0)
                     DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
-                }
 
-                return DoorsValue.AsReadOnly();
+                return ReadOnlyDoorsValue;
             }
         }
 
@@ -83,13 +82,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (LiftsValue.Count == 0 || LiftsValue.Contains(null))
-                {
-                    LiftsValue.Clear();
+                if (LiftsValue.Count == 0)
                     LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
-                }
 
-                return LiftsValue.AsReadOnly();
+                return ReadOnlyLiftsValue;
             }
         }
 
@@ -100,13 +96,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (TeslasValue.Count == 0 || TeslasValue.Contains(null))
-                {
-                    TeslasValue.Clear();
+                if (TeslasValue.Count == 0)
                     TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
-                }
 
-                return TeslasValue.AsReadOnly();
+                return ReadOnlyTeslasValue;
             }
         }
 
@@ -149,5 +142,16 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
         public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
+
+        /// <summary>
+        ///     Clears the lazy loading game object cache.
+        /// </summary>
+        internal static void ClearCache()
+        {
+            RoomsValue.Clear();
+            DoorsValue.Clear();
+            LiftsValue.Clear();
+            TeslasValue.Clear();
+        }
     }
 }
