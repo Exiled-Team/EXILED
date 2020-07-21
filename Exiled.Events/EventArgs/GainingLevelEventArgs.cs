@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
@@ -39,6 +40,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the old level of SCP-079.
         /// </summary>
+        [Obsolete("This property isn't always 100% accurate, it will be either removed or reworked in a future update.")]
         public int OldLevel { get; private set; }
 
         /// <summary>
