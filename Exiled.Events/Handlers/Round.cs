@@ -32,7 +32,7 @@ namespace Exiled.Events.Handlers
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();
-            API.Features.Map.CleanCache();
+            API.Features.Map.ClearCache();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
