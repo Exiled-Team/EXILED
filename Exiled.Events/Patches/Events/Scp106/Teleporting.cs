@@ -47,10 +47,13 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Generate the return label.
             var returnLabel = generator.DefineLabel();
 
-            // TeleportingEventArgs teleportingEventArgs = new TeleportingEventArgs(API.Features.Player.Get(this.gameObject), this.portalPosition, true);
-            // Scp106.OnTeleporting(teleportingEventArgs);
-            // this.portalPosition = teleportingEventArgs.PortalPosition;
-            // if (!teleportingEventArgs.IsAllowed)
+            // TeleportingEventArgs ev = new TeleportingEventArgs(API.Features.Player.Get(this.gameObject), this.portalPosition, true);
+            //
+            // Scp106.OnTeleporting(ev);
+            //
+            // this.portalPosition = ev.PortalPosition;
+            //
+            // if (!ev.IsAllowed)
             //   return
             newInstructions.InsertRange(i, new[]
             {
