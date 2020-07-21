@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="WeaponManager.GetShootPermission(CharacterClassManager,bool)"/>.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission), new Type[] { typeof(CharacterClassManager), typeof(bool) })]
-    internal class IndividualFriendlyFire
+    internal static class IndividualFriendlyFire
     {
         private static void Prefix(WeaponManager __instance, ref bool forceFriendlyFire) => forceFriendlyFire = Player.Get(__instance.gameObject).IsFriendlyFireEnabled;
     }

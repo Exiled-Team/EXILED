@@ -8,25 +8,22 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
-    using System;
-
     using HarmonyLib;
+
+    using static Exiled.Events.Events;
 
     /// <summary>
     /// Patch the <see cref="ServerConsole.ReloadServerName"/>.
     /// </summary>
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.ReloadServerName))]
-    internal class ServerNamePatch
+    internal static class ServerNamePatch
     {
         private static void Postfix()
         {
-            if (!Exiled.Events.Events.Instance.Config.IsNameTrackingEnabled)
+            if (!Instance.Config.IsNameTrackingEnabled)
                 return;
 
-            Version exiledVersion = Exiled.Events.Events.Instance.RequiredExiledVersion;
-            var thing = Exiled.Events.Events.Instance.Version;
-            ServerConsole._serverName +=
-                $"<color=#00000000><size=1>Exiled {exiledVersion.Major}.{exiledVersion.Minor}.{exiledVersion.Build}</size></color>";
+            ServerConsole._serverName += $"<color=#00000000><size=1>Exiled {Instance.RequiredExiledVersion.ToString(3)}</size></color>";
         }
     }
 }

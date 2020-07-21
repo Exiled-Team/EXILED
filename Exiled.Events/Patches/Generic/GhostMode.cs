@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="PlayerPositionManager.TransmitData"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayerPositionManager), nameof(PlayerPositionManager.TransmitData))]
-    internal class GhostMode
+    internal static class GhostMode
     {
         private static bool Prefix(PlayerPositionManager __instance)
         {

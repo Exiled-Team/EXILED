@@ -13,7 +13,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Fixes <see cref="MuteHandler.Reload"/> method.
     /// </summary>
     [HarmonyPatch(typeof(MuteHandler), nameof(MuteHandler.Reload))]
-    internal class MuteHandlerClear
+    internal static class MuteHandlerClear
     {
         private static void Prefix() => MuteHandler.Mutes?.Clear();
     }

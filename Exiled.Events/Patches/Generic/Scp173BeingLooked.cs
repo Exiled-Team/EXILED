@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="Scp173PlayerScript.FixedUpdate"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
-    internal class Scp173BeingLooked
+    internal static class Scp173BeingLooked
     {
         private static bool Prefix(Scp173PlayerScript __instance)
         {

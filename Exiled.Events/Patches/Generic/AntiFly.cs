@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="PlayerMovementSync.AntiFly(Vector3, bool)"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.AntiFly))]
-    internal class AntiFly
+    internal static class AntiFly
     {
         private static bool Prefix() => Events.Instance.Config.IsAntyFlyEnabled;
     }
