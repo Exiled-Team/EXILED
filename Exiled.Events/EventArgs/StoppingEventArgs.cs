@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public StoppingEventArgs(Player player, bool isAllowed = true)
         {
-            Player = player;
+            Player = player ?? Server.Host;
             IsAllowed = isAllowed;
         }
 

@@ -40,6 +40,7 @@
     <Compile Include="Example.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Server.cs" />
+    <Compile Include="Handlers\Warhead.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

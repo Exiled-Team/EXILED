@@ -17,6 +17,7 @@ namespace Exiled.Example
     {
         private Handlers.Server server;
         private Handlers.Player player;
+        private Handlers.Warhead warhead;
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
@@ -48,6 +49,7 @@ namespace Exiled.Example
         {
             server = new Handlers.Server();
             player = new Handlers.Player();
+            warhead = new Handlers.Warhead();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound += server.OnEndingRound;
@@ -55,6 +57,8 @@ namespace Exiled.Example
             Events.Handlers.Player.Died += player.OnDied;
             Events.Handlers.Player.ChangingRole += player.OnChangingRole;
             Events.Handlers.Player.ChangingItem += player.OnChangingItem;
+
+            Events.Handlers.Warhead.Stopping += warhead.OnStopping;
 
             Events.Handlers.Scp106.Teleporting += player.OnTeleporting;
         }
@@ -71,10 +75,13 @@ namespace Exiled.Example
             Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
             Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
 
+            Events.Handlers.Warhead.Stopping -= warhead.OnStopping;
+
             Events.Handlers.Scp106.Teleporting -= player.OnTeleporting;
 
             server = null;
             player = null;
+            warhead = null;
         }
     }
 }

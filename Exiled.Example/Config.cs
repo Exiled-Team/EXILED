@@ -12,6 +12,8 @@ namespace Exiled.Example
 
     using Exiled.API.Interfaces;
 
+    using UnityEngine;
+
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
