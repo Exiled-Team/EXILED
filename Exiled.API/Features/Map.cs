@@ -54,11 +54,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (RoomsValue.Count == 0 || RoomsValue.Any(r => r.Transform == null))
-                {
-                    RoomsValue.Clear();
+                if (RoomsValue.Count == 0)
                     RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
-                }
 
                 return ReadOnlyRoomsValue;
             }
@@ -71,11 +68,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (DoorsValue.Count == 0 || DoorsValue.Contains(null))
-                {
-                    DoorsValue.Clear();
+                if (DoorsValue.Count == 0)
                     DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
-                }
 
                 return ReadOnlyDoorsValue;
             }
@@ -88,11 +82,8 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (LiftsValue.Count == 0 || LiftsValue.Contains(null))
-                {
-                    LiftsValue.Clear();
+                if (LiftsValue.Count == 0)
                     LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
-                }
 
                 return ReadOnlyLiftsValue;
             }
@@ -105,14 +96,22 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (TeslasValue.Count == 0 || TeslasValue.Contains(null))
-                {
-                    TeslasValue.Clear();
+                if (TeslasValue.Count == 0)
                     TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
-                }
 
                 return ReadOnlyTeslasValue;
             }
+        }
+
+        /// <summary>
+        ///     Clears the lazy loading game object cache.
+        /// </summary>
+        internal static void CleanCache()
+        {
+            RoomsValue.Clear();
+            DoorsValue.Clear();
+            LiftsValue.Clear();
+            TeslasValue.Clear();
         }
 
         /// <summary>
