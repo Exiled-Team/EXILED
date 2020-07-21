@@ -172,7 +172,7 @@ namespace Exiled.Loader
 
                     if (plugin == null)
                     {
-                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a default constructor without any arguments or a static property of the {type.FullName} type!");
+                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
 
                         continue;
                     }
