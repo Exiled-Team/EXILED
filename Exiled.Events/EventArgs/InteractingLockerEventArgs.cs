@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="InteractingLockerEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -34,17 +34,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's interacting with the locker.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="Locker"/> instance.
         /// </summary>
-        public Locker Locker { get; private set; }
+        public Locker Locker { get; }
 
         /// <summary>
         /// Gets the locker id.
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

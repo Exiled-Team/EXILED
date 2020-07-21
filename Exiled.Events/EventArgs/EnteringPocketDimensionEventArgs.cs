@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's entering the pocket dimension.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets the pocket dimension position.

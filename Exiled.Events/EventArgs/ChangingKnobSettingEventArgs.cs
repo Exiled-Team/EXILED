@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's changing the SCP-914 knob setting.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets the SCP-914 knob setting.

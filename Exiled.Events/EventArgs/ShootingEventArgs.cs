@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ShootingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -36,12 +36,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's shooting.
         /// </summary>
-        public Player Shooter { get; private set; }
+        public Player Shooter { get; }
 
         /// <summary>
         /// Gets the target the player's shooting at.
         /// </summary>
-        public GameObject Target { get; private set; }
+        public GameObject Target { get; }
 
         /// <summary>
         /// Gets or sets the position of the shoot.

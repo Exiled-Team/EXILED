@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ShotEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,22 +40,22 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who shot.
         /// </summary>
-        public Player Shooter { get; private set; }
+        public Player Shooter { get; }
 
         /// <summary>
         /// Gets the target of the shot.
         /// </summary>
-        public GameObject Target { get; private set; }
+        public GameObject Target { get; }
 
         /// <summary>
         /// Gets the hitbox type of the shot.
         /// </summary>
-        public string HitboxType { get; private set; }
+        public string HitboxType { get; }
 
         /// <summary>
         /// Gets the shot distance.
         /// </summary>
-        public float Distance { get; private set; }
+        public float Distance { get; }
 
         /// <summary>
         /// Gets or sets the inflicted damage.

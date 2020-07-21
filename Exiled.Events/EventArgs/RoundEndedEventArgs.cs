@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="RoundEndedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the leading team.
         /// </summary>
-        public RoundSummary.LeadingTeam LeadingTeam { get; private set; }
+        public RoundSummary.LeadingTeam LeadingTeam { get; }
 
         /// <summary>
         /// Gets or sets the round summary class list.

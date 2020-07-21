@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's activating SCP-914.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets for how long SCP-914 would be occupied.

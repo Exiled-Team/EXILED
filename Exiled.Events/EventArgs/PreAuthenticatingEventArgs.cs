@@ -38,27 +38,27 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player's user id.
         /// </summary>
-        public string UserId { get; private set; }
+        public string UserId { get; }
 
         /// <summary>
         /// Gets the reader starting position for reading the preauth.
         /// </summary>
-        public int ReaderStartPosition { get; private set; }
+        public int ReaderStartPosition { get; }
 
         /// <summary>
         /// Gets the flags.
         /// </summary>
-        public byte Flags { get; private set; }
+        public byte Flags { get; }
 
         /// <summary>
         /// Gets the player's country.
         /// </summary>
-        public string Country { get; private set; }
+        public string Country { get; }
 
         /// <summary>
         /// Gets the connection request.
         /// </summary>
-        public ConnectionRequest Request { get; private set; }
+        public ConnectionRequest Request { get; }
 
         /// <summary>
         /// Gets a value indicating whether the player can be authenticated or not.
@@ -74,6 +74,7 @@ namespace Exiled.Events.EventArgs
         {
             if (seconds < 1 && seconds > 25)
                 throw new Exception("Delay duration must be between 1 and 25 seconds.");
+
             Reject(RejectionReason.Delay, isForced, null, 0, seconds);
         }
 
@@ -115,7 +116,9 @@ namespace Exiled.Events.EventArgs
         {
             if (!IsAllowed)
                 return;
+
             IsAllowed = false;
+
             if (isForced)
                 Request.RejectForce(writer);
             else
@@ -127,10 +130,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="rejectionReason">The custom rejection reason.</param>
         /// <param name="isForced">Indicates whether the player has to be rejected forcefully or not.</param>
-        public void Reject(string rejectionReason, bool isForced)
-        {
-            Reject(RejectionReason.Custom, isForced, rejectionReason);
-        }
+        public void Reject(string rejectionReason, bool isForced) => Reject(RejectionReason.Custom, isForced, rejectionReason);
 
         /// <summary>
         /// Rejects a player who's trying to authenticate.
@@ -145,10 +145,14 @@ namespace Exiled.Events.EventArgs
         {
             if (customReason != null && customReason.Length > 400)
                 throw new ArgumentOutOfRangeException(nameof(rejectionReason), "Reason can't be longer than 400 characters.");
+
             if (!IsAllowed)
                 return;
+
             IsAllowed = false;
+
             NetDataWriter rejectData = new NetDataWriter();
+
             switch (rejectionReason)
             {
                 case RejectionReason.Banned:

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="HurtingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the attacker player.
         /// </summary>
-        public Player Attacker { get; private set; }
+        public Player Attacker { get; }
 
         /// <summary>
         /// Gets the target player, who is going to be hurt.
         /// </summary>
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets the hit informations.

@@ -34,12 +34,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's controlling SCP-079.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the experience gain type.
         /// </summary>
-        public ExpGainType GainType { get; private set; }
+        public ExpGainType GainType { get; }
 
         /// <summary>
         /// Gets or sets the amount of experience to be gained.

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SyncingDataEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -36,12 +36,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player of the syncing data.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the player's speed.
         /// </summary>
-        public Vector2 Speed { get; private set; }
+        public Vector2 Speed { get; }
 
         /// <summary>
         /// Gets or sets the current player's animation.

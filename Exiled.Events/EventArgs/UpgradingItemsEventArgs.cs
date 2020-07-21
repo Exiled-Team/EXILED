@@ -39,17 +39,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the <see cref="Scp914Machine"/> instance.
         /// </summary>
-        public Scp914Machine Scp914 { get; private set; }
+        public Scp914Machine Scp914 { get; }
 
         /// <summary>
-        /// Gets or sets all players inside SCP-914.
+        /// Gets all players inside SCP-914.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<Player> Players { get; }
 
         /// <summary>
-        /// Gets or sets all items to be upgraded inside SCP-914.
+        /// Gets all items to be upgraded inside SCP-914.
         /// </summary>
-        public List<Pickup> Items { get; set; }
+        public List<Pickup> Items { get; }
 
         /// <summary>
         /// Gets or sets SCP-914 working knob setting.

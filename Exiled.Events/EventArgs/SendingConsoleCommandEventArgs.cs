@@ -48,22 +48,22 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's sending the command.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the command name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets the command arguments.
         /// </summary>
-        public List<string> Arguments { get; private set; }
+        public List<string> Arguments { get; }
 
         /// <summary>
         /// Gets a value indicating whether the command is encrypted or not.
         /// </summary>
-        public bool IsEncrypted { get; private set; }
+        public bool IsEncrypted { get; }
 
         /// <summary>
         /// Gets or sets the return message, that will be shown to the user in the console.

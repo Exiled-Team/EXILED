@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ItemDroppedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -30,11 +30,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who dropped the item.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the dropped pickup.
         /// </summary>
-        public Pickup Pickup { get; private set; }
+        public Pickup Pickup { get; }
     }
 }

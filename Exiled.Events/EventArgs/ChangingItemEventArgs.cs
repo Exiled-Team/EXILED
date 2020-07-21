@@ -40,6 +40,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the new item.
         /// </summary>
-        public Inventory.SyncItemInfo NewItem { get; private set; }
+        public Inventory.SyncItemInfo NewItem { get; }
     }
 }

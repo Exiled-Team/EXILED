@@ -34,12 +34,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the SCP-096 instance.
         /// </summary>
-        public Scp096 Scp096 { get; private set; }
+        public Scp096 Scp096 { get; }
 
         /// <summary>
         /// Gets the player who's controlling SCP-096.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

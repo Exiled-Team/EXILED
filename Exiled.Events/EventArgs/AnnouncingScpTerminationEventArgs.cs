@@ -36,12 +36,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who killed the SCP.
         /// </summary>
-        public Player Killer { get; private set; }
+        public Player Killer { get; }
 
         /// <summary>
         /// Gets the killed <see cref="Role"/>.
         /// </summary>
-        public Role Role { get; private set; }
+        public Role Role { get; }
 
         /// <summary>
         /// Gets or sets the hit info.

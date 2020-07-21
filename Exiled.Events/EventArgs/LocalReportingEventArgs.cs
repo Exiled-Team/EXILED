@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LocalReportingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -34,12 +34,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the report issuer.
         /// </summary>
-        public Player Issuer { get; private set; }
+        public Player Issuer { get; }
 
         /// <summary>
         /// Gets the report target.
         /// </summary>
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets or sets the report reason.

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ReloadingWeaponEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's reloading the weapon.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets a value indicating whether only the reload animation is being reproduced or not.
         /// </summary>
-        public bool IsAnimationOnly { get; private set; }
+        public bool IsAnimationOnly { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

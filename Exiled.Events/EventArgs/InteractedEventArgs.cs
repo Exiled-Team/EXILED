@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="InteractedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -25,6 +25,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who interacted.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
     }
 }

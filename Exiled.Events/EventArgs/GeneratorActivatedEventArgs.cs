@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="GeneratorActivatedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -23,6 +23,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the activated generator.
         /// </summary>
-        public Generator079 Generator { get; private set; }
+        public Generator079 Generator { get; }
     }
 }

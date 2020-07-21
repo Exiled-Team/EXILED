@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TriggeringTeslaEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who triggered the tesla.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is in hurting range or not.

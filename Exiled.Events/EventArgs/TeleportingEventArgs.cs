@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's controlling SCP-106.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets the portal position.

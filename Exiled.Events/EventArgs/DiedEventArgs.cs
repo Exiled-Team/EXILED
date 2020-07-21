@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="DiedEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the killer player.
         /// </summary>
-        public Player Killer { get; private set; }
+        public Player Killer { get; }
 
         /// <summary>
         /// Gets the killed player.
         /// </summary>
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets or sets the hit informations.

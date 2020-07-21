@@ -202,8 +202,8 @@ namespace Exiled.API.Features
         /// <returns>Returns the direction he's looking at, useful for Raycasts.</returns>
         public Vector3 Rotation
         {
-            get => ReferenceHub.characterClassManager._plyCam.transform.forward;
-            set => ReferenceHub.characterClassManager._plyCam.transform.forward = value;
+            get => ReferenceHub.PlayerCameraReference.forward;
+            set => ReferenceHub.PlayerCameraReference.forward = value;
         }
 
         /// <summary>

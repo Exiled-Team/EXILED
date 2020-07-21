@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's going to stop the warhead.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

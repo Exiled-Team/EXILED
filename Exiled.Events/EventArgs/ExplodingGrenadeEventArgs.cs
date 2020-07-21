@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the players who will be affected by the grenade (if any).
         /// </summary>
-        public List<Player> Targets { get; private set; }
+        public List<Player> Targets { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
@@ -46,11 +46,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
         /// </summary>
-        public bool IsFrag { get; private set; }
+        public bool IsFrag { get; }
 
         /// <summary>
         /// Gets the grenade that is exploding.
         /// </summary>
-        public GameObject Grenade { get; private set; }
+        public GameObject Grenade { get; }
     }
 }

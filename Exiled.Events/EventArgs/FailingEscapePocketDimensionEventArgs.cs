@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's escaping the pocket dimension.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the PocketDimensionTeleport the player walked into.
         /// </summary>
-        public PocketDimensionTeleport Teleporter { get; private set; }
+        public PocketDimensionTeleport Teleporter { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SpawningEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -36,12 +36,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the spawning player.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the player role type.
         /// </summary>
-        public RoleType RoleType { get; private set; }
+        public RoleType RoleType { get; }
 
         /// <summary>
         /// Gets or sets the player's spawning position.

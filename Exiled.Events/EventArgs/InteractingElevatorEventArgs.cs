@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="InteractingElevatorEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's interacting with the elevator.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="Lift.Elevator"/> instance.
         /// </summary>
-        public Lift.Elevator Elevator { get; private set; }
+        public Lift.Elevator Elevator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's getting infected.
         /// </summary>
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets the player who is SCP049.
         /// </summary>
-        public Player Scp049 { get; private set; }
+        public Player Scp049 { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

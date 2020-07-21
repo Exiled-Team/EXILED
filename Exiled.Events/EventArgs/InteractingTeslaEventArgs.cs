@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's triggering the tesla through SCP-079.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the tesla game object, that SCP-079 is triggering.
         /// </summary>
-        public TeslaGate Tesla { get; private set; }
+        public TeslaGate Tesla { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

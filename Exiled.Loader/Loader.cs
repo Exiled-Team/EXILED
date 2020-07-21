@@ -145,7 +145,7 @@ namespace Exiled.Loader
                 {
                     if (!type.BaseType.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
                     {
-                        Log.Debug($"\"{type.FullName}\" does not inherit from Exiled.API.Plugin<IConfig>, skipping.", ShouldDebugBeShown);
+                        Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
@@ -153,18 +153,19 @@ namespace Exiled.Loader
 
                     IPlugin<IConfig> plugin = null;
 
-                    var constructor = type.GetConstructor(BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+                    var constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor != null)
                     {
-                        Log.Debug($"Public default constructor found, creating instance...", ShouldDebugBeShown);
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
 
-                        plugin = constructor.Invoke(null, null) as IPlugin<IConfig>;
+                        plugin = constructor.Invoke(null) as IPlugin<IConfig>;
                     }
                     else
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
+
                         var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
                     }

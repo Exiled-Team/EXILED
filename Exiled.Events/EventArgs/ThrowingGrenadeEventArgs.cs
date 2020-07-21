@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="ThrowingGrenadeEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,17 +40,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's throwing the greande.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="Grenades.GrenadeManager"/> instance.
         /// </summary>
-        public GrenadeManager GrenadeManager { get; private set; }
+        public GrenadeManager GrenadeManager { get; }
 
         /// <summary>
         /// Gets the grenade id.
         /// </summary>
-        public int Id { get; private set; }
+        public int Id { get; }
 
         /// <summary>
         ///  Gets or sets a value indicating whether the throw is slow or not.

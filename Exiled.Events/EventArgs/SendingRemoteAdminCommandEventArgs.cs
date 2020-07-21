@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="SendingRemoteAdminCommandEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -40,17 +40,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the <see cref="CommandSender"/> sending the command.
         /// </summary>
-        public CommandSender CommandSender { get; private set; }
+        public CommandSender CommandSender { get; }
 
         /// <summary>
         /// Gets the player who's sending the command.
         /// </summary>
-        public Player Sender { get; private set; }
+        public Player Sender { get; }
 
         /// <summary>
         /// Gets the command name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; }
 
         /// <summary>
         /// Gets or sets the command arguments.

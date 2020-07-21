@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's trying to activate the warhead panel.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a list of permissions, required to activate the warhead panel.

@@ -32,16 +32,16 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the banned player.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the ban details.
         /// </summary>
-        public BanDetails Details { get; private set; }
+        public BanDetails Details { get; }
 
         /// <summary>
         /// Gets the ban type.
         /// </summary>
-        public BanHandler.BanType Type { get; private set; }
+        public BanHandler.BanType Type { get; }
     }
 }

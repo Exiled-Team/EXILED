@@ -35,13 +35,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the player who's controlling SCP-079.
         /// </summary>
-        public Player Player { get; private set; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the old level of SCP-079.
         /// </summary>
         [Obsolete("This property isn't always 100% accurate, it will be either removed or reworked in a future update.")]
-        public int OldLevel { get; private set; }
+        public int OldLevel { get; }
 
         /// <summary>
         /// Gets or sets the new level of SCP-079.

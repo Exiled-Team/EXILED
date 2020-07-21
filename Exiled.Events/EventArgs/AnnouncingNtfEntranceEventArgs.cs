@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the number of scps left.
         /// </summary>
-        public int ScpsLeft { get; private set; }
+        public int ScpsLeft { get; }
 
         /// <summary>
         /// Gets or sets the unit name.

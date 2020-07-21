@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="HandcuffingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the cuffer player.
         /// </summary>
-        public Player Cuffer { get; private set; }
+        public Player Cuffer { get; }
 
         /// <summary>
         /// Gets the target player to be cuffed.
         /// </summary>
-        public Player Target { get; private set; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

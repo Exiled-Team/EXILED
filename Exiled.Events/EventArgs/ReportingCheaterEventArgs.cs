@@ -41,17 +41,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the reporter player.
         /// </summary>
-        public Player Reporter { get; private set; }
+        public Player Reporter { get; }
 
         /// <summary>
         /// Gets the reported player.
         /// </summary>
-        public Player Reported { get; private set; }
+        public Player Reported { get; }
 
         /// <summary>
         /// Gets the server id.
         /// </summary>
-        public int ServerPort { get; private set; }
+        public int ServerPort { get; }
 
         /// <summary>
         /// Gets or sets the report reason.
