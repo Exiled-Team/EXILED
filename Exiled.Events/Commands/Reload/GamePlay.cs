@@ -32,7 +32,7 @@ namespace Exiled.Events.Commands.Reload
         {
             ReloadGameConfigs();
 
-            Handlers.Server.OnReloadGameplay();
+            Handlers.Server.OnReloadedGameplay();
 
             response = "Gameplay configs reloaded successfully!";
 

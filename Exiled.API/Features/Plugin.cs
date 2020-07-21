@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         public virtual Version Version { get; }
 
         /// <inheritdoc/>
-        public virtual Version RequiredExiledVersion { get; } = new Version(2, 0, 4);
+        public virtual Version RequiredExiledVersion { get; } = new Version(2, 0, 5);
 
         /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new Dictionary<Type, Dictionary<Type, ICommand>>()
