@@ -642,7 +642,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
         /// <returns>Returns a player or null if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => Get(referenceHub.gameObject);
+        public static Player Get(ReferenceHub referenceHub) => Get(referenceHub?.gameObject);
 
         /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
