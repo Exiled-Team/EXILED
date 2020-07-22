@@ -116,6 +116,7 @@ namespace Exiled.Events.Patches.Events.Player
                             .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
                     }
                 }
+
                 if (!__instance.RefreshExit)
                     return false;
                 ImageGenerator.pocketDimensionGenerator.GenerateRandom();
