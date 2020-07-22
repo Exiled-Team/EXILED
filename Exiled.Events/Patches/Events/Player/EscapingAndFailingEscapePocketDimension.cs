@@ -115,7 +115,6 @@ namespace Exiled.Events.Patches.Events.Player
                         PlayerManager.localPlayer.GetComponent<PlayerStats>()
                             .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
                     }
-
                 }
 
                 if (!__instance.RefreshExit)
