@@ -116,10 +116,6 @@ namespace Exiled.Events.Patches.Events.Player
                             .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
                     }
 
-                    component2.OverridePosition(tpPosition, 0.0f, false);
-                    __instance.RemoveCorrosionEffect(other.gameObject);
-                    PlayerManager.localPlayer.GetComponent<PlayerStats>()
-                        .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
                 }
 
                 if (!__instance.RefreshExit)
