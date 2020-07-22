@@ -20,6 +20,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="AlphaWarheadController.CancelDetonation(GameObject)"/>.
     /// Adds the <see cref="Warhead.Stopping"/> event.
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Warhead
         {
             List<CodeInstruction> newInstructions = new List<CodeInstruction>(instructions);
 
-            // Search for "br.s" and then subtract 2 indexes to get the index of the third "ldc.i4.0".
+            // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
 
             // Generate the return label.
@@ -50,14 +52,14 @@ namespace Exiled.Events.Patches.Events.Warhead
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(StoppingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Warhead), nameof(Warhead.OnStopping))),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStopping))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Warhead), nameof(API.Features.Warhead.IsWarheadLocked))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Warhead), nameof(API.Features.Warhead.IsWarheadLocked))),
                 new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
             });
 

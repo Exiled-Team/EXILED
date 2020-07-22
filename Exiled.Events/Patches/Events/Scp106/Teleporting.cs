@@ -13,13 +13,14 @@ namespace Exiled.Events.Patches.Events.Scp106
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.CallCmdUsePortal"/>.
@@ -32,9 +33,9 @@ namespace Exiled.Events.Patches.Events.Scp106
         {
             var newInstructions = new List<CodeInstruction>(instructions);
 
-            // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 index to get the index of the third "ldarg.0".
+            // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 to get the index of the third "ldarg.0".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                (FieldInfo)instruction.operand == AccessTools.Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) - 1;
+                (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) - 1;
 
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
             generator.DeclareLocal(typeof(TeleportingEventArgs));
@@ -57,21 +58,21 @@ namespace Exiled.Events.Patches.Events.Scp106
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(TeleportingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TeleportingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Stloc_0),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Scp106), nameof(Scp106.OnTeleporting))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnTeleporting))),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.PortalPosition))),
-                new CodeInstruction(OpCodes.Stfld, AccessTools.Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.PortalPosition))),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 

@@ -7,12 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Scp106
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
     using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+
     using HarmonyLib;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdContain106"/>.
@@ -21,50 +28,33 @@ namespace Exiled.Events.Patches.Events.Scp106
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdContain106))]
     internal static class Containing
     {
-        private static bool Prefix(PlayerInteract __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!__instance._playerInteractRateLimit.CanExecute(true) || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+            var newInstructions = new List<CodeInstruction>(instructions);
+
+            // Search for the last "bne.un.s" and add 1 to get the index of the last "ldloca.s".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + 1;
+
+            // var ev = new ContainingEventArgs(API.Features.Player.Get(keyValuePair.Key), true);
+            //
+            // Scp106.OnContaining(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                return false;
-            }
+                new CodeInstruction(OpCodes.Ldloca_S, 3),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ContainingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnContaining))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ContainingEventArgs), nameof(ContainingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
+            });
 
-            if (!UnityEngine.Object.FindObjectOfType<LureSubjectContainer>().allowContain || (__instance._ccm.CurRole.team == Team.SCP && __instance._ccm.CurClass != RoleType.Scp106) || !__instance.ChckDis(GameObject.FindGameObjectWithTag("FemurBreaker").transform.position) || UnityEngine.Object.FindObjectOfType<OneOhSixContainer>().used || __instance._ccm.CurRole.team == Team.RIP)
-            {
-                return false;
-            }
-
-            bool flag = false;
-            foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
-            {
-                if (keyValuePair.Value.characterClassManager.GodMode && keyValuePair.Value.characterClassManager.CurClass == RoleType.Scp106)
-                {
-                    flag = true;
-                }
-            }
-
-            if (!flag)
-            {
-                foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair2 in ReferenceHub.GetAllHubs())
-                {
-                    if (keyValuePair2.Value.characterClassManager.CurClass == RoleType.Scp106)
-                    {
-                        var ev = new ContainingEventArgs(API.Features.Player.Get(keyValuePair2.Key));
-
-                        Scp106.OnContaining(ev);
-
-                        if (ev.IsAllowed)
-                        {
-                            keyValuePair2.Key.GetComponent<Scp106PlayerScript>().Contain(__instance._hub);
-                        }
-                    }
-                }
-
-                __instance.RpcContain106(__instance.gameObject);
-                UnityEngine.Object.FindObjectOfType<OneOhSixContainer>().Networkused = true;
-            }
-
-            __instance.OnInteract();
-            return false;
+            return newInstructions;
         }
     }
 }

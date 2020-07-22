@@ -61,6 +61,7 @@ namespace Exiled.Example
             Events.Handlers.Warhead.Stopping += warhead.OnStopping;
 
             Events.Handlers.Scp106.Teleporting += player.OnTeleporting;
+            Events.Handlers.Scp106.Containing += player.OnContaining;
         }
 
         /// <summary>
@@ -78,6 +79,7 @@ namespace Exiled.Example
             Events.Handlers.Warhead.Stopping -= warhead.OnStopping;
 
             Events.Handlers.Scp106.Teleporting -= player.OnTeleporting;
+            Events.Handlers.Scp106.Containing -= player.OnContaining;
 
             server = null;
             player = null;
