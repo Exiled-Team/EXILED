@@ -12,6 +12,8 @@ namespace Exiled.Example.Handlers
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
+    using UnityEngine;
+
     /// <summary>
     /// Handles player events.
     /// </summary>
@@ -38,13 +40,21 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
         public void OnTeleporting(TeleportingEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} has teleported to {ev.PortalPosition} with SCP-106!");
+            Log.Info($"{ev.Player?.Nickname} is teleporting to {ev.PortalPosition} as SCP-106!");
         }
 
         /// <inheritdoc cref="Events.Handlers.Scp106.OnContaining(ContainingEventArgs)"/>
         public void OnContaining(ContainingEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} is being contained as SCP-106!");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Scp106.OnCreatingPortal(CreatingPortalEventArgs)"/>
+        public void OnCreatingPortal(CreatingPortalEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is creating a portal as SCP-106, in the position: {ev.Position}");
+
+            ev.Position += new Vector3(10, 0, 0);
         }
     }
 }
