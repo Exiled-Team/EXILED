@@ -53,8 +53,6 @@ namespace Exiled.Example.Handlers
         public void OnCreatingPortal(CreatingPortalEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} is creating a portal as SCP-106, in the position: {ev.Position}");
-
-            ev.Position += new Vector3(10, 0, 0);
         }
     }
 }
