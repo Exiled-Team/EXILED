@@ -183,7 +183,7 @@ namespace Exiled.Loader
                     {
                         if (!Config.ShouldLoadOutdatedPlugins)
                         {
-                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! This plugin won't be loaded!" +
+                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! This plugin won't be loaded! " +
                             $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                             continue;

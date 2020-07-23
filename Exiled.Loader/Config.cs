@@ -25,7 +25,7 @@ namespace Exiled.Loader
         /// Gets or sets a value indicating whether outdated plugins should be loaded or not.
         /// </summary>
         [Description("Indicates whether outdated plugins should be loaded or not")]
-        public bool ShouldLoadOutdatedPlugins { get; set; }
+        public bool ShouldLoadOutdatedPlugins { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the environment type.
