@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System;
+
     /// <summary>
     /// A set of tools to work with the warhead code more easily.
     /// </summary>
@@ -74,7 +76,20 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead can be disabled or not.
         /// </summary>
-        public static bool IsWarheadLocked { get; set; }
+        public static bool IsWarheadLocked
+        {
+            get => Controller._isLocked;
+            set => Controller._isLocked = value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the warhead can be started or not.
+        /// </summary>
+        public static bool CanBeStarted => !Recontainer079.isLocked &&
+            ((AlphaWarheadController._resumeScenario == -1 &&
+            Math.Abs(Controller.scenarios_start[AlphaWarheadController._startScenario].SumTime() - Controller.timeToDetonation) < 0.0001f) ||
+            (AlphaWarheadController._resumeScenario != -1 &&
+            Math.Abs(Controller.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() - Controller.timeToDetonation) < 0.0001f));
 
         /// <summary>
         /// Starts the warhead countdown.

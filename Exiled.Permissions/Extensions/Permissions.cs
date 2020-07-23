@@ -145,7 +145,7 @@ namespace Exiled.Permissions.Extensions
 
                 if (!Groups.TryGetValue(groupName, out group))
                 {
-                    Log.Error("Could not get permission value.");
+                    Log.Error($"Could not get \"{groupName}\" permission");
                     return false;
                 }
 
