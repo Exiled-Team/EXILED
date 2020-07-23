@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Warhead
 #pragma warning disable SA1118
 #pragma warning disable SA1313
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
