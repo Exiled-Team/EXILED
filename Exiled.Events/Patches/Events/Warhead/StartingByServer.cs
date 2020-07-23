@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 #pragma warning disable SA1118
 #pragma warning disable SA1313
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
@@ -33,6 +34,10 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Search for the last "ldarg.0".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
+            // Copy [Label2] from "ldarg.0" and then remove it.
+            var labels = new List<Label>(newInstructions[index].labels);
+            newInstructions[index].labels.Clear();
+
             // var ev = new StartingEventArgs(API.Features.Server.Host, true);
             //
             // Warhead.OnStarting(ev);
@@ -49,6 +54,9 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
             });
+
+            // Add [Label2] to "call".
+            newInstructions[index].labels.AddRange(labels);
 
             return newInstructions;
         }
