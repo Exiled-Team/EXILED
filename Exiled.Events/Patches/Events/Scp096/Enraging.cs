@@ -27,22 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             Handlers.Scp096.OnEnraging(ev);
 
-            if (!ev.IsAllowed)
-                return false;
-
-            if (__instance.Enraged)
-            {
-                __instance.AddReset();
-            }
-            else
-            {
-                __instance.SetMovementSpeed(12f);
-                __instance.SetJumpHeight(10f);
-                __instance.PlayerState = Scp096PlayerState.Enraged;
-                __instance.EnrageTimeLeft = __instance.EnrageTime;
-            }
-
-            return false;
+            return ev.IsAllowed;
         }
     }
 }
