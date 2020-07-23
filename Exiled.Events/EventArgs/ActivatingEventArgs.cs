@@ -20,12 +20,10 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ActivatingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="duration"><inheritdoc cref="Duration"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ActivatingEventArgs(Player player, double duration, bool isAllowed = true)
+        public ActivatingEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-            Duration = duration;
             IsAllowed = isAllowed;
         }
 
@@ -33,11 +31,6 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's activating SCP-914.
         /// </summary>
         public Player Player { get; }
-
-        /// <summary>
-        /// Gets or sets for how long SCP-914 would be occupied.
-        /// </summary>
-        public double Duration { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

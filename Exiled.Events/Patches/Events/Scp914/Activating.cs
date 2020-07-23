@@ -7,15 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
-    using global::Scp914;
-
     using HarmonyLib;
 
-    using Mirror;
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdUse914"/>.
@@ -24,24 +28,40 @@ namespace Exiled.Events.Patches.Events.Scp914
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUse914))]
     internal static class Activating
     {
-        private static bool Prefix(PlayerInteract __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||
-                    (Scp914Machine.singleton.working || !__instance.ChckDis(Scp914Machine.singleton.button.position)))
-                return false;
+            var newInstructions = new List<CodeInstruction>(instructions);
 
-            var ev = new ActivatingEventArgs(API.Features.Player.Get(__instance.gameObject), 0);
+            // Search for the last "ldsfld".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
 
-            Scp914.OnActivating(ev);
+            // Get the start label [Label4] and remove it.
+            var startLabel = newInstructions[index].labels[0];
+            newInstructions[index].labels.Clear();
 
-            if (ev.IsAllowed)
+            // var ev = new ActivatingEventArgs(API.Features.Player.Get(this.gameObject));
+            //
+            // Scp914.OnActivating(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                Scp914Machine.singleton.RpcActivate(NetworkTime.time + ev.Duration);
-                __instance.OnInteract();
-            }
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnActivating))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ActivatingEventArgs), nameof(ActivatingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].labels[0]),
+            });
 
-            return false;
+            // Add the start label [Label4].
+            newInstructions[index].labels.Add(startLabel);
+
+            return newInstructions;
         }
     }
 }

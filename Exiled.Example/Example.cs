@@ -64,6 +64,8 @@ namespace Exiled.Example
             Events.Handlers.Scp106.Teleporting += player.OnTeleporting;
             Events.Handlers.Scp106.Containing += player.OnContaining;
             Events.Handlers.Scp106.CreatingPortal += player.OnCreatingPortal;
+
+            Events.Handlers.Scp914.Activating += player.OnActivating;
         }
 
         /// <summary>
@@ -84,6 +86,8 @@ namespace Exiled.Example
             Events.Handlers.Scp106.Teleporting -= player.OnTeleporting;
             Events.Handlers.Scp106.Containing -= player.OnContaining;
             Events.Handlers.Scp106.CreatingPortal -= player.OnCreatingPortal;
+
+            Events.Handlers.Scp914.Activating -= player.OnActivating;
 
             server = null;
             player = null;
