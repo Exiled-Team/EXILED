@@ -66,6 +66,7 @@ namespace Exiled.Example
             Events.Handlers.Scp106.CreatingPortal += player.OnCreatingPortal;
 
             Events.Handlers.Scp914.Activating += player.OnActivating;
+            Events.Handlers.Scp914.ChangingKnobSetting += player.OnChangingKnobSetting;
         }
 
         /// <summary>
@@ -88,6 +89,7 @@ namespace Exiled.Example
             Events.Handlers.Scp106.CreatingPortal -= player.OnCreatingPortal;
 
             Events.Handlers.Scp914.Activating -= player.OnActivating;
+            Events.Handlers.Scp914.ChangingKnobSetting -= player.OnChangingKnobSetting;
 
             server = null;
             player = null;

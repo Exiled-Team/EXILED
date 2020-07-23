@@ -60,5 +60,11 @@ namespace Exiled.Example.Handlers
         {
             Log.Info($"{ev.Player?.Nickname} is activating SCP-914!");
         }
+
+        /// <inheritdoc cref="Events.Handlers.Scp914.OnChangingKnobSetting(ChangingKnobSettingEventArgs)"/>
+        public void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is changing the knob setting of SCP-914 to {ev.KnobSetting}");
+        }
     }
 }
