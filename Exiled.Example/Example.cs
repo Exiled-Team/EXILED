@@ -59,6 +59,7 @@ namespace Exiled.Example
             Events.Handlers.Player.ChangingItem += player.OnChangingItem;
 
             Events.Handlers.Warhead.Stopping += warhead.OnStopping;
+            Events.Handlers.Warhead.Starting += warhead.OnStarting;
 
             Events.Handlers.Scp106.Teleporting += player.OnTeleporting;
             Events.Handlers.Scp106.Containing += player.OnContaining;
@@ -78,6 +79,7 @@ namespace Exiled.Example
             Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
 
             Events.Handlers.Warhead.Stopping -= warhead.OnStopping;
+            Events.Handlers.Warhead.Starting -= warhead.OnStarting;
 
             Events.Handlers.Scp106.Teleporting -= player.OnTeleporting;
             Events.Handlers.Scp106.Containing -= player.OnContaining;

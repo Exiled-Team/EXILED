@@ -20,5 +20,11 @@ namespace Exiled.Example.Handlers
         {
             Log.Info($"{ev.Player?.Nickname} stopped the warhead!");
         }
+
+        /// <inheritdoc cref="Events.Handlers.Warhead.OnStarting(StartingEventArgs)"/>
+        public void OnStarting(StartingEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} started the warhead!");
+        }
     }
 }

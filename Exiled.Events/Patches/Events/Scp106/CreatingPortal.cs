@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 

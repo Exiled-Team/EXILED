@@ -7,11 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Warhead
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patch the <see cref="AlphaWarheadController.StartDetonation"/>.
@@ -20,28 +26,31 @@ namespace Exiled.Events.Patches.Events.Warhead
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
     internal static class StartingByServer
     {
-        private static bool Prefix(AlphaWarheadController __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (Recontainer079.isLocked)
-                return false;
+            var newInstructions = new List<CodeInstruction>(instructions);
 
-            __instance.doorsOpen = false;
+            // Search for the last "ldarg.0".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            ServerLogs.AddLog(ServerLogs.Modules.Warhead, "Countdown started.", ServerLogs.ServerLogType.GameEvent);
+            // var ev = new StartingEventArgs(API.Features.Server.Host, true);
+            //
+            // Warhead.OnStarting(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Server), nameof(API.Features.Server.Host))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStarting))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
+            });
 
-            if ((AlphaWarheadController._resumeScenario != -1 || __instance.scenarios_start[AlphaWarheadController._startScenario].SumTime() != (double)__instance.timeToDetonation) && (AlphaWarheadController._resumeScenario == -1 || __instance.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() != (double)__instance.timeToDetonation))
-                return false;
-
-            var ev = new StartingEventArgs(API.Features.Server.Host);
-
-            Warhead.OnStarting(ev);
-
-            if (!ev.IsAllowed)
-                return false;
-
-            __instance.NetworkinProgress = true;
-
-            return false;
+            return newInstructions;
         }
     }
 }
