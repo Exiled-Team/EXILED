@@ -654,7 +654,8 @@ namespace Exiled.API.Features
             if (gameObject == null)
                 return null;
 
-            return Dictionary.TryGetValue(gameObject, out Player player) ? player : null;
+            Dictionary.TryGetValue(gameObject, out Player player);
+            return player;
         }
 
         /// <summary>

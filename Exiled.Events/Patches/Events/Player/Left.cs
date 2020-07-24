@@ -40,14 +40,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnLeft(ev);
 
-                if (API.Features.Player.IdsCache.ContainsKey(__instance.queryProcessor.PlayerId))
-                    API.Features.Player.IdsCache.Remove(__instance.queryProcessor.PlayerId);
-
-                if (API.Features.Player.UserIdsCache.ContainsKey(__instance.characterClassManager.UserId))
-                    API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
-
-                if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
-                    API.Features.Player.Dictionary.Remove(__instance.gameObject);
+                API.Features.Player.IdsCache.Remove(__instance.queryProcessor.PlayerId);
+                API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
+                API.Features.Player.Dictionary.Remove(__instance.gameObject);
             }
             catch (Exception e)
             {

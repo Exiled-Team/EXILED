@@ -36,11 +36,12 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
                     Player player = Player.Get(gameObject);
-
-                    if (player.Role == RoleType.Tutorial)
+                    if (player == null || player.Role == RoleType.Tutorial || player.Role == RoleType.Spectator)
                         continue;
 
-                    Scp173PlayerScript component = player.ReferenceHub.GetComponent<Scp173PlayerScript>();
+                    Scp173PlayerScript component = player.ReferenceHub?.GetComponent<Scp173PlayerScript>();
+                    if (component == null)
+                        continue;
 
                     if (!component.SameClass && component.LookFor173(__instance.gameObject, true) && __instance.LookFor173(component.gameObject, false))
                     {
