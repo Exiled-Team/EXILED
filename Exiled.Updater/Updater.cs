@@ -67,7 +67,7 @@ namespace Exiled.Updater
                 ExtractTarGz(exiledTempPath, tempDirectory);
                 Log.Info($"Extraction complete, moving files...");
 
-                string tempExiledMainPath = Path.Combine(tempDirectory, "EXILED-PTB");
+                string tempExiledMainPath = Path.Combine(tempDirectory, "EXILED");
                 string tempLoaderPath = Path.Combine(tempExiledMainPath, "Exiled.Loader.dll");
                 string tempPluginsDirectory = Path.Combine(tempExiledMainPath, "Plugins");
                 string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "Exiled.Events.dll");
