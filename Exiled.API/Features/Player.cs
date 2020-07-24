@@ -655,6 +655,7 @@ namespace Exiled.API.Features
                 return null;
 
             Dictionary.TryGetValue(gameObject, out Player player);
+
             return player;
         }
 

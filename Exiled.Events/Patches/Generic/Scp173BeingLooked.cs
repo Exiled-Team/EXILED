@@ -7,8 +7,11 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
@@ -16,47 +19,60 @@ namespace Exiled.Events.Patches.Generic
 
     using UnityEngine;
 
+    using static Exiled.Events.Events;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="Scp173PlayerScript.FixedUpdate"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
     internal static class Scp173BeingLooked
     {
-        private static bool Prefix(Scp173PlayerScript __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = new List<CodeInstruction>(instructions);
+
+            // Search for the last "br.s".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Br_S) + 1;
+
+            // Declare Player, to be able to store its instance with "stloc.2".
+            generator.DeclareLocal(typeof(Player));
+
+            // Get the start label and remove it.
+            var startLabel = newInstructions[index].labels[0];
+            newInstructions[index].labels.Clear();
+
+            // Define the continue label and add it.
+            var continueLabel = generator.DefineLabel();
+            newInstructions[index].labels.Add(continueLabel);
+
+            // Player player = Player.Get(gameObject);
+            //
+            // if (player == null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
+            //   continue;
+            newInstructions.InsertRange(index, new[]
             {
-                __instance.DoBlinkingSequence();
+                new CodeInstruction(OpCodes.Ldloca_S, 0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(List<GameObject>.Enumerator), nameof(List<GameObject>.Enumerator.Current))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_2),
+                new CodeInstruction(OpCodes.Brtrue_S, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
+                new CodeInstruction(OpCodes.Brtrue_S, newInstructions[index - 1].operand),
+            });
 
-                if (!__instance.iAm173)
-                    return false;
+            // Add the start label.
+            newInstructions[index].labels.Add(startLabel);
 
-                __instance._allowMove = true;
-
-                foreach (GameObject gameObject in PlayerManager.players)
-                {
-                    Player player = Player.Get(gameObject);
-                    if (player == null || player.Role == RoleType.Tutorial || player.Role == RoleType.Spectator)
-                        continue;
-
-                    Scp173PlayerScript component = player.ReferenceHub?.GetComponent<Scp173PlayerScript>();
-                    if (component == null)
-                        continue;
-
-                    if (!component.SameClass && component.LookFor173(__instance.gameObject, true) && __instance.LookFor173(component.gameObject, false))
-                    {
-                        __instance._allowMove = false;
-                        break;
-                    }
-                }
-
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Scp173BeingLooked error: {exception}");
-                return true;
-            }
+            return newInstructions;
         }
-    }
+}
 }

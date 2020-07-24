@@ -57,7 +57,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether the anti fly is enabled or not.
         /// </summary>
-        [Description("Indicates whether the anti fly is enabled or not")]
+        [Description("Indicates whether the anti-fly is enabled or not")]
         public bool IsAntiFlyEnabled { get; set; } = true;
 
         /// <summary>
