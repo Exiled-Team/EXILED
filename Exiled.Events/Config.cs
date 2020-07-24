@@ -58,7 +58,7 @@ namespace Exiled.Events
         /// Gets or sets a value indicating whether the anti fly is enabled or not.
         /// </summary>
         [Description("Indicates whether the anti fly is enabled or not")]
-        public bool IsAntyFlyEnabled { get; set; } = true;
+        public bool IsAntiFlyEnabled { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether the teams have to be respawned at random or not.
