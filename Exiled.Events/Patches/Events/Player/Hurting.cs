@@ -31,13 +31,13 @@ namespace Exiled.Events.Patches.Events.Player
                 if (go == null)
                     return true;
 
-                API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
+                API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
                 if (attacker == null || target == null || attacker.IsHost || target.IsHost)
                     return true;
 
-                var ev = new HurtingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(go), info);
+                var ev = new HurtingEventArgs(attacker, target, info);
 
                 if (ev.Target.IsHost)
                     return true;
