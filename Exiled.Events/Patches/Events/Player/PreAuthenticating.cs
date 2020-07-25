@@ -334,10 +334,10 @@ namespace Exiled.Events.Patches.Events.Player
                                                     else
                                                     {
                                                         ServerConsole.AddLog(
-                                                          $"Player {result3} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.");
+                                                          $"Player {result6} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.");
                                                         ServerLogs.AddLog(
                                                           ServerLogs.Modules.Networking,
-                                                          $"{result3} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.",
+                                                          $"{result6} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.",
                                                           ServerLogs.ServerLogType.ConnectionUpdate);
                                                     }
                                                 }
