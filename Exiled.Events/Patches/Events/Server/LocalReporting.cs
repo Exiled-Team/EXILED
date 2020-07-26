@@ -46,10 +46,10 @@ namespace Exiled.Events.Patches.Events.Server
     ///         ldloc.s 5
     ///         ldloc.0
     ///         ldflda System.String<>c__DisplayClass14_0::reason
-    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, System.String& reason)
+    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, ref System.String reason)
     ///         ldloc.s 5
     ///         ldarga.s 2
-    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, System.String& reason)
+    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, ref System.String reason)
     ///         ldloc.s 5
     ///         call System.String Exiled.Events.EventArgs.LocalReportingEventArgs::get_Reason()
     ///         ldc.i4.1
