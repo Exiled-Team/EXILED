@@ -109,7 +109,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
-        public static void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
             Server.Broadcast.RpcAddElement(message, duration, type);
         }

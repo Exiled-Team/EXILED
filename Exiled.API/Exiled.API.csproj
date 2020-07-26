@@ -71,6 +71,7 @@
     <Compile Include="Enums\ZoneType.cs" />
     <Compile Include="Extensions\Item.cs" />
     <Compile Include="Extensions\Role.cs" />
+    <Compile Include="Features\Broadcast.cs" />
     <Compile Include="Features\Player.cs" />
     <Compile Include="Extensions\Reflection.cs" />
     <Compile Include="Extensions\String.cs" />

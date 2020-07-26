@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     public static class Server
     {
         private static Player host;
-        private static Broadcast broadcast;
+        private static global::Broadcast broadcast;
         private static BanPlayer banPlayer;
         private static MethodInfo sendSpawnMessage;
 
@@ -29,12 +29,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the cached <see cref="Broadcast"/> component.
         /// </summary>
-        public static Broadcast Broadcast
+        public static global::Broadcast Broadcast
         {
             get
             {
                 if (broadcast == null)
-                    broadcast = PlayerManager.localPlayer.GetComponent<Broadcast>();
+                    broadcast = PlayerManager.localPlayer.GetComponent<global::Broadcast>();
 
                 return broadcast;
             }

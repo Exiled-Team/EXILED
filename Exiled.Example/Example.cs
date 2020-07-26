@@ -7,17 +7,31 @@
 
 namespace Exiled.Example
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.Extensions;
 
     /// <summary>
     /// The example plugin.
     /// </summary>
     public class Example : Plugin<Config>
     {
+        private static readonly Lazy<Example> LazyInstance = new Lazy<Example>(() => new Example());
+
         private Handlers.Server server;
         private Handlers.Player player;
         private Handlers.Warhead warhead;
+
+        private Example()
+        {
+        }
+
+        /// <summary>
+        /// Gets the lazy instance.
+        /// </summary>
+        public static Example Instance => LazyInstance.Value;
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.Medium;
@@ -57,6 +71,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Died += player.OnDied;
             Events.Handlers.Player.ChangingRole += player.OnChangingRole;
             Events.Handlers.Player.ChangingItem += player.OnChangingItem;
+            Events.Handlers.Player.Joined += player.OnJoined;
 
             Events.Handlers.Warhead.Stopping += warhead.OnStopping;
             Events.Handlers.Warhead.Starting += warhead.OnStarting;
@@ -80,6 +95,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Died -= player.OnDied;
             Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
             Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
+            Events.Handlers.Player.Joined -= player.OnJoined;
 
             Events.Handlers.Warhead.Stopping -= warhead.OnStopping;
             Events.Handlers.Warhead.Starting -= warhead.OnStarting;

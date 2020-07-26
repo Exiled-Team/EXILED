@@ -14,6 +14,8 @@ namespace Exiled.Example.Handlers
 
     using UnityEngine;
 
+    using static Example;
+
     /// <summary>
     /// Handles player events.
     /// </summary>
@@ -65,6 +67,15 @@ namespace Exiled.Example.Handlers
         public void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} is changing the knob setting of SCP-914 to {ev.KnobSetting}");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnJoined(JoinedEventArgs)"/>
+        public void OnJoined(JoinedEventArgs ev)
+        {
+            if (!Instance.Config.JoinedBroadcast.Show)
+                return;
+
+            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type);
         }
     }
 }

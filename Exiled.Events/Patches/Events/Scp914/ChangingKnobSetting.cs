@@ -7,9 +7,10 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-    using System;
 #pragma warning disable SA1118
 #pragma warning disable SA1313
+    using System;
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 

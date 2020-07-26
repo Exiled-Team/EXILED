@@ -45,9 +45,9 @@ namespace Exiled.Events.EventArgs
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets or sets base items that the player will receive.
+        /// Gets base items that the player will receive.
         /// </summary>
-        public List<ItemType> Items { get; set; }
+        public List<ItemType> Items { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is escaped or not.

@@ -65,13 +65,13 @@ namespace Exiled.Permissions.Extensions
         {
             if (!Directory.Exists(Instance.Config.Folder))
             {
-                Log.Warn("Permissions directory missing, creating.");
+                Log.Warn($"Permissions directory at {Instance.Config.Folder} is missing, creating.");
                 Directory.CreateDirectory(Instance.Config.Folder);
             }
 
             if (!File.Exists(Instance.Config.FullPath))
             {
-                Log.Warn("Permissions file missing, creating.");
+                Log.Warn($"Permissions file at {Instance.Config.FullPath} is missing, creating.");
                 File.WriteAllText(Instance.Config.FullPath, Encoding.UTF8.GetString(Resources.permissions));
             }
         }
@@ -110,12 +110,11 @@ namespace Exiled.Permissions.Extensions
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
-            if (player.GameObject == PlayerManager.localPlayer)
-            {
+            if (player.GameObject == Server.Host.GameObject)
                 return true;
-            }
 
             Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
+
             if (string.IsNullOrEmpty(permission))
             {
                 Log.Error("Permission checked was null.");
@@ -123,14 +122,18 @@ namespace Exiled.Permissions.Extensions
             }
 
             Log.Debug($"Permission string: {permission}", Loader.ShouldDebugBeShown);
+
             UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(player.UserId);
             Group group = null;
 
             if (userGroup != null)
             {
                 Log.Debug($"UserGroup: {userGroup.BadgeText}", Loader.ShouldDebugBeShown);
+
                 string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key;
+
                 Log.Debug($"GroupName: {groupName}", Loader.ShouldDebugBeShown);
+
                 if (Groups == null)
                 {
                     Log.Error("Permissions config is null.");
@@ -154,15 +157,18 @@ namespace Exiled.Permissions.Extensions
             else
             {
                 Log.Debug("Player group is null, getting default..", Loader.ShouldDebugBeShown);
+
                 group = DefaultGroup;
             }
 
             if (group != null)
             {
                 Log.Debug("Group is not null!", Loader.ShouldDebugBeShown);
+
                 if (permission.Contains("."))
                 {
                     Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
+
                     if (group.Permissions.Any(s => s == ".*"))
                     {
                         Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);

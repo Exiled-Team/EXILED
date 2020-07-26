@@ -418,6 +418,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the index of the current item in hand.
+        /// </summary>
+        public int CurrentItemIndex => Inventory.GetItemIndex();
+
+        /// <summary>
         /// Gets or sets the abilities of SCP-079. Can be null.
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
@@ -484,6 +489,11 @@ namespace Exiled.API.Features
                 ReferenceHub.scp079PlayerScript.OnExpChange();
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="global::Stamina"/> class.
+        /// </summary>
+        public Stamina Stamina => ReferenceHub.playerMovementSync._fpc.staminaController;
 
         /// <summary>
         /// Gets or sets the level of SCP-079.
@@ -933,7 +943,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        public void Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
         }
@@ -950,25 +960,31 @@ namespace Exiled.API.Features
         public void AddItem(ItemType itemType) => Inventory.AddNewItem(itemType);
 
         /// <summary>
-        /// Add an item with the specified info to a player's inventory.
+        /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
         public void AddItem(Inventory.SyncItemInfo item) => Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
 
         /// <summary>
-        /// Resets the player's inventory to the provided list of items, clearing any items they already possess.
+        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        public void ResetInventory(List<Inventory.SyncItemInfo> newItems)
+        public void ResetInventory(List<ItemType> newItems)
         {
             ClearInventory();
 
             if (newItems.Count > 0)
             {
-                foreach (Inventory.SyncItemInfo item in newItems)
-                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                foreach (ItemType item in newItems)
+                    AddItem(item);
             }
         }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
+        /// </summary>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        public void ResetInventory(List<Inventory.SyncItemInfo> newItems) => ResetInventory(newItems.Select(item => item.id).ToList());
 
         /// <summary>
         /// Clears the player's inventory.
