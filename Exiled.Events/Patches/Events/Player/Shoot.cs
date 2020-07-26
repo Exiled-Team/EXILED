@@ -167,7 +167,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                             __instance._hub.playerStats.HurtPlayer(
                                 new PlayerStats.HitInfo(
-                                    num2 * __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier *
+                                    shotEventArgs.Damage * __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier *
                                     __instance.overallDamagerFactor,
                                     __instance._hub.nicknameSync.MyNick + " (" + __instance._hub.characterClassManager.UserId + ")",
                                     DamageTypes.FromWeaponId(__instance.curWeapon),
