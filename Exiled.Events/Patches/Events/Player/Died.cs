@@ -38,6 +38,8 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var ev = new DiedEventArgs(API.Features.Player.Get(__instance.gameObject), target, info);
 
+                target.Position = Vector3.zero;
+
                 Player.OnDied(ev);
 
                 info = ev.HitInformations;
