@@ -27,42 +27,59 @@ namespace Exiled.Installer
         /// <param name="args">Extra arguments, not required.</param>
         public static void Main(string[] args)
         {
-            if (args.Length < 1)
-                args = new[] { "/home/scp/scp_server" };
-
-            Console.WriteLine("Getting latest download URL...");
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
-            StreamReader reader = new StreamReader(((HttpWebResponse)request.GetResponse()).GetResponseStream());
-
-            string[] readArray = reader.ReadToEnd().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            string subFolder = Between(readArray.FirstOrDefault(subFolderName => subFolderName.Contains("EXILED.tar.gz")), "/galaxy119/EXILED/releases/download/", "/EXILED.tar.gz");
-            string fullPath = $"{Url}download/{subFolder}/EXILED.tar.gz";
-
-            Console.WriteLine($"GitHub download URL found: {fullPath}, downloading...");
-
-            using (WebClient client = new WebClient())
+            try
             {
-                client.DownloadFile(fullPath, "EXILED.tar.gz");
+                if (args.Length < 1)
+                    args = new[] { "/home/scp/scp_server" };
+
+                Console.WriteLine("Getting latest download URL...");
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+                StreamReader reader = new StreamReader(((HttpWebResponse)request.GetResponse()).GetResponseStream() ?? throw new NullReferenceException());
+
+                string[] readArray = reader.ReadToEnd().Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                string subFolder =
+                    Between(
+                        readArray.FirstOrDefault(subFolderName => subFolderName.Contains("Exiled.tar.gz")),
+                        "/galaxy119/EXILED/releases/download/",
+                        "/Exiled.tar.gz");
+                string fullPath = $"{Url}download/{subFolder}/Exiled.tar.gz";
+
+                Console.WriteLine($"GitHub download URL found: {fullPath}, downloading...");
+
+                using (WebClient client = new WebClient())
+                {
+                    client.DownloadFile(fullPath, "Exiled.tar.gz");
+                }
+
+                Console.WriteLine("Latest version downloaded, extracting...");
+
+                ExtractTarGz("Exiled.tar.gz", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
+
+                Console.WriteLine("Extraction complete, moving files...");
+
+                string installPath = Path.Combine(args[0], "SCPSL_Data");
+                string managedPath = Path.Combine(installPath, "Managed");
+                string fileName = Path.Combine(managedPath, "Assembly-CSharp.dll");
+
+                if (!Directory.Exists(args[0]))
+                    throw new ArgumentException("The provided Managed folder does not exist.");
+
+                File.Delete(fileName);
+                File.Move(
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "Assembly-CSharp.dll"), fileName);
+
+                Console.WriteLine("Installation complete.");
             }
-
-            Console.WriteLine("Latest version downloaded, extracting...");
-
-            ExtractTarGz("EXILED.tar.gz", Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData));
-
-            Console.WriteLine("Extraction complete, moving files...");
-
-            string installPath = Path.Combine(args[0], "SCPSL_Data");
-            string managedPath = Path.Combine(installPath, "Managed");
-            string fileName = Path.Combine(managedPath, "Assembly-CSharp.dll");
-
-            if (!Directory.Exists(args[0]))
-                throw new ArgumentException("The provided Managed folder does not exist.");
-
-            File.Delete(fileName);
-            File.Move(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Assembly-CSharp.dll"), fileName);
-
-            Console.WriteLine("Installation complete.");
+            catch (UnauthorizedAccessException)
+            {
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
 
         private static string Between(string str, string firstString, string lastString)
@@ -126,7 +143,7 @@ namespace Exiled.Installer
                     string output = Path.Combine(outputDir, name);
 
                     if (!Directory.Exists(Path.GetDirectoryName(output)))
-                        Directory.CreateDirectory(Path.GetDirectoryName(output));
+                        Directory.CreateDirectory(Path.GetDirectoryName(output) ?? throw new NullReferenceException());
 
                     if (!name.Equals("./", StringComparison.InvariantCulture))
                     {
