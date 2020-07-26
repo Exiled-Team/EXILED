@@ -7,120 +7,233 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-#pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
-
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using UnityEngine;
-
+#pragma warning disable RCS1139 // Add summary element to documentation comment.
     /// <remarks>
+    /// <para>
     ///     Code before patching:
     ///     <code>
-    ///         57: if (!notifyGm)
-    ///         58: {
-    ///         59:     ....
-    ///         **: }
+    ///         if (!notifyGm) { /* ... */ }
     ///     </code>
-    ///     Code after pathing:
+    /// </para>
+    /// <para>
+    ///     IL before patching:
     ///     <code>
-    ///         57: if (!notifyGm)
-    ///         58: {
-    ///         59:    if (!InvokeLocalReport(reporter: CheaterReport, reportedTo: GameObject, reason: string))
-    ///         60:        return;
-    ///         61:     ...
-    ///         **: }
+    ///         ldarg.s notifyGm (4)
+    ///         brtrue Label13
     ///     </code>
-    ///
-    ///     Line numbering is shown, as are names of variables with object types.
+    /// </para>
+    /// <para>
+    ///     IL after pathing:
+    ///     <code>
+    ///         ldarg.s notifyGm (4)
+    ///         brtrue => Label13
+    ///         ldloc.3
+    ///         call static Exiled.API.Features.Player Exiled.API.Features.Player::Get(ReferenceHub referenceHub)
+    ///         ldloc.2
+    ///         call static Exiled.API.Features.Player Exiled.API.Features.Player::Get(ReferenceHub referenceHub)
+    ///         ldarg.s 2
+    ///         ldc.i4.1
+    ///         newobj System.Void Exiled.Events.EventArgs.LocalReportingEventArgs::.ctor(Exiled.API.Features.Player issuer, Exiled.API.Features.Player target, System.String reason, System.Boolean isAllowed)
+    ///         dup
+    ///         stloc.s 5
+    ///         call static System.Void Exiled.Events.Handlers.Server::OnLocalReporting(Exiled.Events.EventArgs.LocalReportingEventArgs ev)
+    ///         ldloc.s 5
+    ///         ldloc.0
+    ///         ldflda System.String<>c__DisplayClass14_0::reason
+    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, System.String& reason)
+    ///         ldloc.s 5
+    ///         ldarga.s 2
+    ///         call static System.Void Exiled.Events.Patches.Events.Server.LocalReporting::SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, System.String& reason)
+    ///         ldloc.s 5
+    ///         call System.String Exiled.Events.EventArgs.LocalReportingEventArgs::get_Reason()
+    ///         ldc.i4.1
+    ///         call static System.Void Exiled.API.Features.Log::Debug(System.Object message, System.Boolean canBeSent)
+    ///         ldloc.0
+    ///         ldfld System.String<>c__DisplayClass14_0::reason
+    ///         ldc.i4.1
+    ///         call static System.Void Exiled.API.Features.Log::Debug(System.Object message, System.Boolean canBeSent)
+    ///         ldarg.s 2
+    ///         ldc.i4.1
+    ///         call static System.Void Exiled.API.Features.Log::Debug(System.Object message, System.Boolean canBeSent)
+    ///         ldloc.s 5
+    ///         call System.Boolean Exiled.Events.EventArgs.LocalReportingEventArgs::get_IsAllowed()
+    ///         brtrue => Label17
+    ///         br => Label27
+    ///         Label17
+    ///     </code>
+    /// </para>
+    /// <para>
+    ///     Code after patching:
+    ///     <code>
+    ///         if (!notifyGm)
+    ///         {
+    ///             var ev = new LocalReportingEventArgs(Player.Get(reporter: ReferenceHub), Player.Get(reported: ReferenceHub), reason: string, true: bool);
+    ///             Exiled.Events.Server.OnLocalReporting(ev);
+    ///             Exiled.Events.Patches.Events.Server.LocalReporting.SuperReasonReplacer(ev, ref reason); // nested type field
+    ///             Exiled.Events.Patches.Events.Server.LocalReporting.SuperReasonReplacer(ev, ref reason); // method arg
+    ///             if (!ev.IsAllowed)
+    ///                 return;
+    ///         }
+    ///     </code>
+    /// </para>
     /// </remarks>
     /// <summary>
-    /// The patch is located on line 57 of the <see cref="CheaterReport.CallCmdReport(int, string, byte[], bool)"/> method that decompiled by dnSpy v6.1.1 .NET Core.
+    /// Method decompiled by dnSpy v6.1.1 .NET Core.
     /// A call to our <see cref="Server.OnLocalReporting(LocalReportingEventArgs)"/> method
     /// is inserted into it which returns the bool value that determines further processing of the report.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.CallCmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]
+#pragma warning restore RCS1139 // Add summary element to documentation comment.
+#pragma warning disable SA1604 // Element documentation should have summary
     internal static class LocalReporting
+#pragma warning restore SA1604 // Element documentation should have summary
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            // Creating a list to use LastIndexOf
-            var list = new List<CodeInstruction>(instructions);
-
-            // Finding the last access to the fourth argument 'notifyGm'
             // Moving 2 indexes forward skipping the access itself and 'brtrue'
-            var lastNotifyGm = list.FindLastIndex(ci => ci.opcode == OpCodes.Ldarg_S && (byte)ci.operand == 4) + 2;
+            const sbyte skipOpcodes = 2;
 
-            // If not found, then do not touch anything
-            if (lastNotifyGm < 1)
-                return list;
+            var list = new List<CodeInstruction>(instructions);
+            var patchIndex = list.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
 
 #if DEBUG
-            var lastNotifyGmInstruction = list[lastNotifyGm];
-
-            // Debugging for the developer
-            // It's important that the method was used before calling the log to the console
-            API.Features.Log.Error($"LocalReportEvent ->>>>>>>>>>> {lastNotifyGm}: {lastNotifyGmInstruction.opcode} - {lastNotifyGmInstruction.operand}");
+            LogL($"Patch index: {patchIndex}");
 #endif
 
-            // Get a label that can be used to return the value safely,
-            // if the condition is equal to.
-            // Actually equal to {}
-            var retEnd = generator.DefineLabel();
-            list[lastNotifyGm].labels.Add(retEnd);
-
-            // this - issuer
-            // GameObject - target
-            // string - reason
-            // InvokeLocalReport()
-            // if (true)
-            // return
-            list.InsertRange(lastNotifyGm, new[]
+            if (patchIndex == -1)
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Ldarga_S, 2),
-                new CodeInstruction(
-                    OpCodes.Call,
-                    AccessTools.Method(typeof(LocalReporting), nameof(InvokeLocalReport), new[] { typeof(CheaterReport), typeof(GameObject), typeof(string).MakeByRefType() })),
+                API.Features.Log.Warn($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: Couldn't find index for patching!");
+                return null;
+            }
+
+            patchIndex += skipOpcodes;
+
+            var retEnd = generator.DefineLabel();
+            list[patchIndex].labels.Add(retEnd);
+
+            var call_PlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
+            var new_LocalReportingEventArgs = AccessTools.Constructor(
+                typeof(EventArgs.LocalReportingEventArgs),
+                new[] { typeof(API.Features.Player), typeof(API.Features.Player), typeof(string), typeof(bool) });
+
+            generator.DeclareLocal(typeof(EventArgs.LocalReportingEventArgs));
+            const byte loc_index_LocalReportEventArgs = 5;
+            const byte arg_index_reason = 2;
+
+            var call_OnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(EventArgs.LocalReportingEventArgs) });
+            var call_LocalReportingEventArgs_get_IsAllowed = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.IsAllowed));
+            var call_LocalReportingEventArgs_get_Reason = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.Reason));
+            var call_SuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
+
+            var internal_report_data_root_class = typeof(CheaterReport);
+            const string internal_report_data_nested_class_name = "<>c__DisplayClass14_0";
+            const string internal_report_data_nested_class_reason_field_name = "reason";
+
+            var internal_report_data_nested_class = internal_report_data_root_class.GetNestedType(internal_report_data_nested_class_name, BindingFlags.NonPublic);
+            var field_reason = AccessTools.Field(internal_report_data_nested_class, internal_report_data_nested_class_reason_field_name);
+#if DEBUG
+            void LogL(string value) =>
+                API.Features.Log.Debug($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: {value}", true);
+
+            LogL($"{nameof(call_PlayerGet)} is null: {call_PlayerGet == null}");
+            LogL($"{nameof(new_LocalReportingEventArgs)} is null: {new_LocalReportingEventArgs == null}");
+            LogL($"{nameof(call_OnLocalReporting)} is null: {call_OnLocalReporting == null}");
+            LogL($"{nameof(call_LocalReportingEventArgs_get_IsAllowed)} is null: {call_LocalReportingEventArgs_get_IsAllowed == null}");
+            LogL($"{nameof(call_LocalReportingEventArgs_get_Reason)} is null: {call_LocalReportingEventArgs_get_Reason == null}");
+            LogL($"{nameof(internal_report_data_nested_class)} is null: {internal_report_data_nested_class == null}");
+            LogL($"{nameof(field_reason)} is null: {field_reason == null}");
+            LogL($"{nameof(field_reason)} is called '{field_reason?.Name}'");
+            if (internal_report_data_nested_class == null)
+            {
+                LogL($"I see, the {nameof(internal_report_data_nested_class)} is null, trying to find the {nameof(internal_report_data_nested_class_reason_field_name)} field in all nested types...");
+                var nestedTypes = internal_report_data_root_class.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
+                foreach (var nestedType in nestedTypes)
+                {
+                    var reasonField = nestedType.GetField(internal_report_data_nested_class_reason_field_name);
+                    if (reasonField != null)
+                    {
+                        LogL($"Found the {nameof(internal_report_data_nested_class_reason_field_name)}! It's {reasonField.Name} in the {nestedType.FullName}!");
+                    }
+                }
+            }
+#endif
+
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+            list.InsertRange(patchIndex, new[]
+            {
+                // Issuer: Player
+                new CodeInstruction(OpCodes.Ldloc_3), // reporter: ReferenceHub
+                new CodeInstruction(OpCodes.Call, call_PlayerGet),
+
+                // Target: Player
+                new CodeInstruction(OpCodes.Ldloc_2), // reported: ReferenceHub
+                new CodeInstruction(OpCodes.Call, call_PlayerGet),
+
+                // Reason: string
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldfld, field_reason),
+
+                // IsAllowed: bool
+                new CodeInstruction(OpCodes.Ldc_I4_1), // true: bool
+
+                // Creating object
+                new CodeInstruction(OpCodes.Newobj, new_LocalReportingEventArgs),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, loc_index_LocalReportEventArgs),
+
+                // Invoking the event
+                new CodeInstruction(OpCodes.Call, call_OnLocalReporting),
+
+                // Replacing the reason
+
+                // Replacing the reason in the nested type
+                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldflda, field_reason),
+                new CodeInstruction(OpCodes.Call, call_SuperReasonReplacer),
+
+                // Replacing the reason in the arg
+                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
+                new CodeInstruction(OpCodes.Ldarga_S, arg_index_reason),
+                new CodeInstruction(OpCodes.Call, call_SuperReasonReplacer),
+
+#if DEBUG
+                new CodeInstruction(OpCodes.Ldstr, "Final nested type reason: "),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldfld, field_reason),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug))),
+
+                new CodeInstruction(OpCodes.Ldstr, "Final arg reason: "),
+                new CodeInstruction(OpCodes.Ldarg_S, arg_index_reason),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug))),
+#endif
+
+                // Checking for availability to continue
+                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
+                new CodeInstruction(OpCodes.Call, call_LocalReportingEventArgs_get_IsAllowed),
                 new CodeInstruction(OpCodes.Brtrue_S, retEnd),
                 new CodeInstruction(OpCodes.Ret),
             });
+#pragma warning restore SA1118 // Parameter should not span multiple lines
 
             return list;
         }
 
-        // Calling the method with bool is easier
-        // It contains the code that processes the event
-        private static bool InvokeLocalReport(CheaterReport reporter, GameObject reportedTo, ref string reason)
+        // Try to replace the reason as a field,
+        // it didn't work for me
+        private static void SuperReasonReplacer(EventArgs.LocalReportingEventArgs ev, ref string reason)
         {
-            var issuer = API.Features.Player.Get(reporter.gameObject);
-            var target = API.Features.Player.Get(reportedTo);
-
-            var ev = new LocalReportingEventArgs(issuer, target, reason);
-
-            Server.OnLocalReporting(ev);
-
             reason = ev.Reason;
-
-            // If further processing isn't allowed
-            // then send the success of sending the report
-            // --------------------------------------------------
-            // gameObjects is compared cuz there is no comparison overload for Player,
-            // it can be different objects
-            if (!ev.IsAllowed && reporter.gameObject != reportedTo.gameObject)
-            {
-                reporter.GetComponent<GameConsoleTransmission>().SendToClient(
-                    reporter.connectionToClient,
-                    "[Reporting] Player report successfully sent to local administrators.",
-                    "green");
-            }
-
-            return ev.IsAllowed;
         }
     }
 }
