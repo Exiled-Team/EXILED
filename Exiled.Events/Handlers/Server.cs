@@ -149,7 +149,20 @@ namespace Exiled.Events.Handlers
         /// Called when sending a complaint about a player to the local server administrators.
         /// </summary>
         /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
-        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+        public static void OnLocalReporting(LocalReportingEventArgs ev)
+        {
+#if DEBUG
+            void LogL(string s) =>
+                Log.Debug($"{nameof(Server)}-{nameof(OnLocalReporting)}: {s}", true);
+
+            LogL($"Original reason: {ev.Reason}");
+            ev.Reason = "some random reason for debug";
+            LogL($"Replaced reason: {ev.Reason}");
+            LogL($"{nameof(ev.Target)} is null: {ev.Target == null}");
+            LogL($"{nameof(ev.Issuer)} is null: {ev.Issuer == null}");
+#endif
+            LocalReporting.InvokeSafely(ev);
+        }
 
         /// <summary>
         /// Called after the "reload configs" command is ran.
