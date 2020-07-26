@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
 #pragma warning disable RCS1139 // Add summary element to documentation comment.
+#pragma warning disable CS1570 // XML comment has badly formed XML
     /// <remarks>
     /// <para>
     ///     Code before patching:
@@ -90,6 +91,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.CallCmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]
 #pragma warning restore RCS1139 // Add summary element to documentation comment.
+#pragma warning restore CS1570 // XML comment has badly formed XML
 #pragma warning disable SA1604 // Element documentation should have summary
     internal static class LocalReporting
 #pragma warning restore SA1604 // Element documentation should have summary
