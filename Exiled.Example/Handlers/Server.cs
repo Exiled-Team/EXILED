@@ -21,7 +21,7 @@ namespace Exiled.Example.Handlers
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
-        /// <inheritdoc cref="Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
+        /// <inheritdoc cref="Events.Handlers.Server.OnRoundEnd(RoundEndedEventArgs)"/>
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
