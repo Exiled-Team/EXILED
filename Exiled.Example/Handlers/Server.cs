@@ -21,7 +21,7 @@ namespace Exiled.Example.Handlers
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
-        /// <inheritdoc cref="Events.Handlers.Server.OnRoundEnd(RoundEndedEventArgs)"/>
+        /// <inheritdoc cref="Events.Handlers.Server.RoundEnded(RoundEndedEventArgs)"/>
         public void OnRoundEnd(RoundEndedEventArgs ev)
         {
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
@@ -31,6 +31,7 @@ namespace Exiled.Example.Handlers
             }
 
             Log.Warn($"The actual leading team is: {ev.LeadingTeam}"); // This is how to send warning messages, in the event you expect possible code breaking!
+            Log.Warn($"If you are not a developer and seeing this message in a LIVE server, please uninstall Exiled.Example!!!");
         }
     }
 }
