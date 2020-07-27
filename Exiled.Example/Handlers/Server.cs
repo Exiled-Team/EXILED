@@ -18,17 +18,19 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
-            Log.Warn("I'm waiting for players!");
+            Log.Info("I'm waiting for players!");
         }
 
         /// <inheritdoc cref="Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
-        public void OnEndingRound(EndingRoundEventArgs ev)
+        public void OnRoundEnd(RoundEndedEventArgs ev)
         {
-            Log.Warn($"The actual leading team is: {ev.LeadingTeam}");
-            Log.Info($"If this message is spammed, remove EXILED.Example!");
-
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
-                ev.IsAllowed = false;
+            {
+                Log.Debug($"The round has ended in a draw!");
+                return;
+            }
+
+            Log.Warn($"The actual leading team is: {ev.LeadingTeam}");
         }
     }
 }
