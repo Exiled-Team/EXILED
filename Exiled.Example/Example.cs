@@ -50,7 +50,7 @@ namespace Exiled.Example
             player = new Handlers.Player();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
-            Events.Handlers.Server.EndingRound += server.OnEndingRound;
+            Events.Handlers.Server.RoundEnded += server.OnRoundEnd;
 
             Events.Handlers.Player.Died += player.OnDied;
             Events.Handlers.Player.ChangingRole += player.OnChangingRole;
@@ -63,7 +63,7 @@ namespace Exiled.Example
         private void UnregisterEvents()
         {
             Events.Handlers.Server.WaitingForPlayers -= server.OnWaitingForPlayers;
-            Events.Handlers.Server.EndingRound -= server.OnEndingRound;
+            Events.Handlers.Server.RoundEnded -= server.OnRoundEnd;
 
             Events.Handlers.Player.Died -= player.OnDied;
             Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
