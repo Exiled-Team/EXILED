@@ -155,6 +155,15 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the players can be tracked or not.
+        /// </summary>
+        public bool DoNotTrack
+        {
+            get => ReferenceHub.serverRoles.DoNotTrack;
+            set => ReferenceHub.serverRoles.DoNotTrack = value;
+        }
+
+        /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
         public List<int> TargetGhosts { get; private set; } = new List<int>();

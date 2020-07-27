@@ -16,6 +16,7 @@ namespace Exiled.API.Features
     {
         private static AlphaWarheadController controller;
         private static AlphaWarheadNukesitePanel sitePanel;
+        private static AlphaWarheadOutsitePanel outsitePanel;
 
         /// <summary>
         /// Gets the cached <see cref="AlphaWarheadController"/> component.
@@ -46,12 +47,35 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the cached <see cref="AlphaWarheadOutsitePanel"/> component.
+        /// </summary>
+        public static AlphaWarheadOutsitePanel OutsitePanel
+        {
+            get
+            {
+                if (outsitePanel == null)
+                    outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
+
+                return outsitePanel;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
         /// </summary>
         public static bool LeverStatus
         {
             get => SitePanel.Networkenabled;
             set => SitePanel.Networkenabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the warhead has already been activated or not.
+        /// </summary>
+        public static bool IsKeycardActivated
+        {
+            get => OutsitePanel.NetworkkeycardEntered;
+            set => OutsitePanel.NetworkkeycardEntered = value;
         }
 
         /// <summary>
