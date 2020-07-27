@@ -18,7 +18,7 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
-            Log.Info("I'm waiting for players!");
+            Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
         /// <inheritdoc cref="Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
@@ -26,11 +26,11 @@ namespace Exiled.Example.Handlers
         {
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
             {
-                Log.Debug($"The round has ended in a draw!");
+                Log.Debug($"The round has ended in a draw!"); // This is a debug line, used for obvious debug purposes in your code.
                 return;
             }
 
-            Log.Warn($"The actual leading team is: {ev.LeadingTeam}");
+            Log.Warn($"The actual leading team is: {ev.LeadingTeam}"); // This is how to send warning messages, in the event you expect possible code breaking!
         }
     }
 }
