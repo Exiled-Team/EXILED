@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Server.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -25,6 +25,7 @@ namespace Exiled.Example.Handlers
         public void OnEndingRound(EndingRoundEventArgs ev)
         {
             Log.Warn($"The actual leading team is: {ev.LeadingTeam}");
+            Log.Info($"If this message is spammed, remove EXILED.Example!");
 
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
                 ev.IsAllowed = false;
