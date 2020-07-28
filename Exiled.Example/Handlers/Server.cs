@@ -18,16 +18,18 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
-            Log.Warn("I'm waiting for players!");
+            Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
         /// <inheritdoc cref="Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
         public void OnEndingRound(EndingRoundEventArgs ev)
         {
-            Log.Warn($"The actual leading team is: {ev.LeadingTeam}");
+            Log.Debug($"The round is ending, fetching leading team...");
 
             if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
-                ev.IsAllowed = false;
+                Log.Error($"The round has ended in a draw!");
+            else
+                Log.Info($"The leading team is actually: {ev.LeadingTeam}.");
         }
     }
 }
