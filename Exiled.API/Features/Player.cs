@@ -1013,7 +1013,7 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
-        public void ShowHint(float duration,string message)
+        public void ShowHint(string message,float duration = 3f)
         {
             HintParameter[] parameters = new HintParameter[]
             {
@@ -1023,7 +1023,7 @@ namespace Exiled.API.Features
             {
                 new OutlineEffect(new Color32(0, 0, 0, 0), 5f, 0f, 1f)
             };
-            TextHint hint = new TextHint(message, parameters, effects, 3f);
+            TextHint hint = new TextHint(message, parameters, effects, duration);
             this.HintDisplay.Show(hint);
         }
         
