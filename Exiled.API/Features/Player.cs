@@ -71,7 +71,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => ReferenceHub.gameObject == null ? null : ReferenceHub.gameObject;
+        public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
+
+        /// <summary>
+        /// Gets the HintDisplay of the players ReferenceHub.
+        /// </summary>
+        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
+        public HintDisplay HintDisplay => ReferenceHub.hints;
 
         /// <summary>
         /// Gets the player's inventory.
@@ -659,6 +665,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
+        /// </summary>
+        /// <param name="team">The players' team.</param>
+        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+
+        /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
+        /// </summary>
+        /// <param name="role">The players' role.</param>
+        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+
+        /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
@@ -899,13 +919,30 @@ namespace Exiled.API.Features
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
 
         /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damage">The damage to be inflicted.</param>
+        /// <param name="damageType">The damage type.</param>
+        /// <param name="attackerName">The attacker name.</param>
+        /// <param name="attackerId">The attacker player id.</param>
+        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0)
+        {
+            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, attackerName, damageType ?? DamageTypes.None, attackerId), GameObject);
+        }
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damage">The damage to be inflicted.</param>
+        /// <param name="attacker">The attacker.</param>
+        /// <param name="damageType">The damage type.</param>
+        public void Hurt(float damage, Player attacker, DamageTypes.DamageType damageType = default) => Hurt(damage, damageType, attacker?.Nickname, attacker?.Id ?? 0);
+
+        /// <summary>
         /// Kills the player.
         /// </summary>
         /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default)
-        {
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, "WORLD", damageType, 0), GameObject);
-        }
+        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f);
 
         /// <summary>
         /// Bans a the player.
@@ -1017,15 +1054,6 @@ namespace Exiled.API.Features
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
 
         /// <summary>
-        /// Gets the HintDisplay of the players ReferenceHub.
-        /// </summary>
-        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
-        public HintDisplay GetHintDisplay()
-        {
-            return ReferenceHub.hints;
-        }
-
-        /// <summary>
         /// Simple way to show a hint to the player.
         /// </summary>
         /// <param name="message">The message to be shown.</param>
@@ -1036,12 +1064,7 @@ namespace Exiled.API.Features
             {
                 new StringHintParameter(message),
             };
-            HintEffect[] effects = new HintEffect[]
-            {
-                new OutlineEffect(new Color32(0, 0, 0, 0), 5f, 0f, 1f),
-            };
-            TextHint hint = new TextHint(message, parameters, effects, duration);
-            this.GetHintDisplay().Show(hint);
+            HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
 
         /// <inheritdoc/>
