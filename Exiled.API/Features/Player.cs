@@ -14,7 +14,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
+    using Hints;
     using Mirror;
 
     using UnityEngine;
@@ -29,7 +29,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
-
+        public HintDisplay HintDisplay => ReferenceHub.hints;
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -1013,8 +1013,22 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
-
+        public void ShowHint(float duration,string message)
+        {
+            HintParameter[] parameters = new HintParameter[]
+            {
+                new StringHintParameter(message)
+            };
+            HintEffect[] effects = new HintEffect[]
+            {
+                new OutlineEffect(new Color32(0, 0, 0, 0), 5f, 0f, 1f)
+            };
+            TextHint hint = new TextHint(message, parameters, effects, 3f);
+            this.HintDisplay.Show(hint);
+        }
+        
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId}";
+        
     }
 }
