@@ -15,6 +15,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Hints;
+
     using Mirror;
 
     using UnityEngine;
@@ -70,6 +72,12 @@ namespace Exiled.API.Features
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
+
+        /// <summary>
+        /// Gets the HintDisplay of the players ReferenceHub.
+        /// </summary>
+        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
+        public HintDisplay HintDisplay => ReferenceHub.hints;
 
         /// <summary>
         /// Gets the player's inventory.
@@ -1044,6 +1052,20 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
+
+        /// <summary>
+        /// Simple way to show a hint to the player.
+        /// </summary>
+        /// <param name="message">The message to be shown.</param>
+        /// <param name="duration">The duration the text will be on screen.</param>
+        public void ShowHint(string message, float duration = 3f)
+        {
+            HintParameter[] parameters = new HintParameter[]
+            {
+                new StringHintParameter(message),
+            };
+            HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId}";
