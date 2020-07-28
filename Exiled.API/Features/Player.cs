@@ -14,7 +14,9 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
     using Hints;
+
     using Mirror;
 
     using UnityEngine;
@@ -29,7 +31,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The <see cref="ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
-        public HintDisplay HintDisplay => ReferenceHub.hints;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -1013,22 +1015,36 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
-        public void ShowHint(string message,float duration = 3f)
+
+        /// <summary>
+        /// Gets the HintDisplay of the players ReferenceHub.
+        /// </summary>
+        /// <returns>Returns Hintdisplay of ReferenceHub.</returns>
+        public HintDisplay GetHintDisplay()
+        {
+            return ReferenceHub.hints;
+        }
+
+        /// <summary>
+        /// Simple way to show a hint to the player.
+        /// </summary>
+        /// <param name="message">The message to be shown.</param>
+        /// <param name="duration">The duration the text will be on screen.</param>
+        public void ShowHint(string message, float duration = 3f)
         {
             HintParameter[] parameters = new HintParameter[]
             {
-                new StringHintParameter(message)
+                new StringHintParameter(message),
             };
             HintEffect[] effects = new HintEffect[]
             {
-                new OutlineEffect(new Color32(0, 0, 0, 0), 5f, 0f, 1f)
+                new OutlineEffect(new Color32(0, 0, 0, 0), 5f, 0f, 1f),
             };
             TextHint hint = new TextHint(message, parameters, effects, duration);
-            this.HintDisplay.Show(hint);
+            this.GetHintDisplay().Show(hint);
         }
-        
+
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId}";
-        
     }
 }
