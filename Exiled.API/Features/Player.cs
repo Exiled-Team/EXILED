@@ -1019,7 +1019,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the HintDisplay of the players ReferenceHub.
         /// </summary>
-        /// <returns>Returns Hintdisplay of ReferenceHub.</returns>
+        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
         public HintDisplay GetHintDisplay()
         {
             return ReferenceHub.hints;
