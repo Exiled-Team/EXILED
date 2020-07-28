@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (ev.IsAllowed)
                     {
-                        component2.OverridePosition(tpPosition, 0.0f, false);
+                        component2.OverridePosition(ev.TeleportPosition, 0.0f, false);
                         __instance.RemoveCorrosionEffect(other.gameObject);
                         PlayerManager.localPlayer.GetComponent<PlayerStats>()
                             .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
