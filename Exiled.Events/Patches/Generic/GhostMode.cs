@@ -54,15 +54,19 @@ namespace Exiled.Events.Patches.Generic
                         continue;
 
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
-
                     for (int index = 0; index < __instance._usedData; ++index)
                     {
                         PlayerPositionData ppd = __instance._transmitBuffer[index];
                         Player currentTarget = Player.Get(players[index]);
                         Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
                         bool canSee = true;
-                        if (currentTarget == null) { continue; }
-                        if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID)) { canSee = false; }
+                        if (currentTarget == null)
+                            continue;
+
+                        if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))
+                        {
+                            canSee = false;
+                        }
                         else if (player.Role.Is939() && ppd.position.y < 800.0)
                         {
                             if (currentTarget.Team != Team.SCP && currentTarget.Team != Team.RIP && !currentTarget.GameObject.GetComponent<Scp939_VisionController>().CanSee(player.ReferenceHub.characterClassManager.Scp939))
@@ -70,7 +74,10 @@ namespace Exiled.Events.Patches.Generic
                         }
                         else if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator)
                         {
-                            if (Math.Abs(ppd.position.y - player.Position.y) > 35) { canSee = false; }
+                            if (Math.Abs(ppd.position.y - player.Position.y) > 35)
+                            {
+                                canSee = false;
+                            }
                             else
                             {
                                 if (ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub hub))
@@ -84,6 +91,7 @@ namespace Exiled.Events.Patches.Generic
                         }
                         if (!canSee)
                             ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
+
                         __instance._transmitBuffer[index] = ppd;
                     }
 
