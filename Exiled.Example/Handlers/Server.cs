@@ -30,7 +30,6 @@ namespace Exiled.Example.Handlers
                 Log.Error($"The round has ended in a draw!");
             else
                 Log.Info($"The leading team is actually: {ev.LeadingTeam}.");
-
         }
     }
 }
