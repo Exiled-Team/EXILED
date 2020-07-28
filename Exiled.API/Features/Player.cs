@@ -897,13 +897,30 @@ namespace Exiled.API.Features
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
 
         /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damage">The damage to be inflicted.</param>
+        /// <param name="damageType">The damage type.</param>
+        /// <param name="attackerName">The attacker name.</param>
+        /// <param name="attackerId">The attacker player id.</param>
+        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0)
+        {
+            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, attackerName, damageType ?? DamageTypes.None, attackerId), GameObject);
+        }
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="damage">The damage to be inflicted.</param>
+        /// <param name="attacker">The attacker.</param>
+        /// <param name="damageType">The damage type.</param>
+        public void Hurt(float damage, Player attacker, DamageTypes.DamageType damageType = default) => Hurt(damage, damageType, attacker?.Nickname, attacker?.Id ?? 0);
+
+        /// <summary>
         /// Kills the player.
         /// </summary>
         /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default)
-        {
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, "WORLD", damageType, 0), GameObject);
-        }
+        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f);
 
         /// <summary>
         /// Bans a the player.
