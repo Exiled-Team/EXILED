@@ -69,7 +69,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => ReferenceHub.gameObject;
+        public GameObject GameObject => ReferenceHub.gameObject == null ? null : ReferenceHub.gameObject;
 
         /// <summary>
         /// Gets the player's inventory.
@@ -502,7 +502,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::Stamina"/> class.
         /// </summary>
-        public Stamina Stamina => ReferenceHub.playerMovementSync._fpc.staminaController;
+        public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
         /// <summary>
         /// Gets or sets the level of SCP-079.

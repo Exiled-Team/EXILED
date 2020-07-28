@@ -17,6 +17,8 @@ namespace Exiled.Permissions.Extensions
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
 
+    using RemoteAdmin;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
 
@@ -94,12 +96,21 @@ namespace Exiled.Permissions.Extensions
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this CommandSender sender, string permission)
         {
-            Player player = Player.Get(sender.SenderId) ?? (sender is ServerConsoleSender ? Server.Host : null);
+            if (sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender)
+            {
+                return true;
+            }
+            else if (sender is PlayerCommandSender)
+            {
+                Player player = Player.Get(sender.SenderId);
 
-            if (player == null)
-                return false;
+                if (player == null)
+                    return false;
 
-            return player.CheckPermission(permission);
+                return player.CheckPermission(permission);
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -110,7 +121,10 @@ namespace Exiled.Permissions.Extensions
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
-            if (player.GameObject == Server.Host.GameObject)
+            if (player == null)
+                return false;
+
+            if (player.GameObject == PlayerManager.localPlayer)
                 return true;
 
             Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
