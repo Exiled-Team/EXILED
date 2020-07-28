@@ -72,7 +72,7 @@ namespace Exiled.API.Features
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
-      
+
         /// <summary>
         /// Gets the HintDisplay of the players ReferenceHub.
         /// </summary>
