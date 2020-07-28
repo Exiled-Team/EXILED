@@ -69,7 +69,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => ReferenceHub.gameObject == null ? null : ReferenceHub.gameObject;
+        public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
 
         /// <summary>
         /// Gets the player's inventory.
@@ -655,6 +655,20 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
+        /// </summary>
+        /// <param name="team">The players' team.</param>
+        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+
+        /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
+        /// </summary>
+        /// <param name="role">The players' role.</param>
+        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.
