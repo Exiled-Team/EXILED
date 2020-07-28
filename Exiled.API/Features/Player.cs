@@ -1022,7 +1022,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Simple way to show a hint to the player.
         /// </summary>
-        /// <param name="message">The message to be shown</param>
+        /// <param name="message">The message to be shown.</param>
         /// <param name="duration">The duration the text will be on screen.</param>
         public void ShowHint(string message,float duration = 3f)
         {
@@ -1040,6 +1040,5 @@ namespace Exiled.API.Features
         
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId}";
-        
     }
 }
