@@ -89,6 +89,7 @@ namespace Exiled.Events.Patches.Generic
                                 }
                             }
                         }
+
                         if (!canSee)
                             ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
 
