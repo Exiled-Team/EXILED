@@ -183,20 +183,20 @@ namespace Exiled.Permissions.Extensions
                 {
                     Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
 
-                    if (group.Permissions.Any(s => s == ".*"))
+                    if (group.CombinedPermissions.Any(s => s == ".*"))
                     {
                         Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);
                         return true;
                     }
 
-                    if (group.Permissions.Contains(permission.Split('.')[0] + ".*"))
+                    if (group.CombinedPermissions.Contains(permission.Split('.')[0] + ".*"))
                     {
                         Log.Debug("Check 1: True, returning.", Loader.ShouldDebugBeShown);
                         return true;
                     }
                 }
 
-                if (group.Permissions.Contains(permission) || group.Permissions.Contains("*"))
+                if (group.CombinedPermissions.Contains(permission) || group.CombinedPermissions.Contains("*"))
                 {
                     Log.Debug("Check 2: True, returning.", Loader.ShouldDebugBeShown);
                     return true;
