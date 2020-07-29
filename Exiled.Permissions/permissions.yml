@@ -10,7 +10,7 @@ admin:
         - testplugin.admin
         - testplugin.*
 moderator:
-    inheritance:
+    inheritance: []
     permissions:
         - '*'
 helper:
