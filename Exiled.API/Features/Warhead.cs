@@ -98,9 +98,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the warhead real detonation timer.
+        /// </summary>
+        public static float RealDetonationTimer => Controller.RealDetonationTime();
+
+        /// <summary>
         /// Gets or sets a value indicating whether the warhead can be disabled or not.
         /// </summary>
+        [Obsolete("Use Warhead.IsLocked instead", true)]
         public static bool IsWarheadLocked
+        {
+            get => IsLocked;
+            set => IsLocked = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the warhead can be disabled or not.
+        /// </summary>
+        public static bool IsLocked
         {
             get => Controller._isLocked;
             set => Controller._isLocked = value;
