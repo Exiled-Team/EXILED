@@ -19,8 +19,8 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
 As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
 
-  - Click on the "Release" tab near the top-right, and download the latest release version of the framework. You can choose the automated EXILED_Installer.exe, or you can follow the directions below to install the framework manually, either is acceptable.
-  - If choosing to use the Installer.exe, simply run the .exe to install EXILED. If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP: SL servers. (Linux server owners can still use the .exe, simply run it in a terminal with ``mono Exiled.Installer.exe``). The installer will, if run correctly, take care of installing EXILED, EXILED_Events, and ensuring your server has the proper Assembly-CSharp.dll file installer. If you are on a Windows server, or have a non-standard scp_server installation folder (default is ``/home/scp/scp_server``) you can run the .exe in a Command Prompt/Terminal and specify your server's install directory. EX: ``mono Exiled.Installer.exe /home/scp/server``(or just ``Exiled.Installer.exe path\to\server\folder`` for Windows).
+  - Click on the "Release" tab near the top-right, and download the latest release version of the framework. You can choose the automated `Exiled.Installer.exe`, or you can follow the directions below to install the framework manually, either is acceptable.
+  - If choosing to use the Installer.exe, simply run the .exe to install EXILED. If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP: SL servers. (Linux server owners can still use the .exe, simply run it in a terminal with ``mono Exiled.Installer.exe``). The installer will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer. If you are on a Windows server, or have a non-standard scp_server installation folder (default is ``/home/scp/scp_server``) you can run the .exe in a Command Prompt/Terminal and specify your server's install directory. EX: ``mono Exiled.Installer.exe /home/scp/server``(or just ``Exiled.Installer.exe path\to\server\folder`` for Windows).
 
 
 If you choose to install EXILED manually:
@@ -28,7 +28,7 @@ If you choose to install EXILED manually:
   - Download the EXILED.tar.gz archive from the latest release, and extract it's contents to a folder on the machine you will be installing EXILED on. (Windows users will need a 3rd party tool such as 7zip to do this) *Linux command line: ``tar -xzvf EXILED.tar.gz``*
   - Move the included ``Assembly-CSharp.dll`` file into the ``SCPSL_Data/Managed`` folder of your server installation. (Replace the existing file).
   - Navigate to ``~/.config`` (``%AppData%`` on Windows), and move both the "EXILED" folder that were provided in the above mentioned archive into this location *Note: These 2 folders need to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``
-  - That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED and EXILED_Events by themselves will do nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the "Plugins" folder that should now be located at ``~/.config/EXILED/Plugins`` (``%AppData%\EXILED\Plugins`` on Windows).
+  - That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``~/.config/EXILED/Plugins`` (``%AppData%\EXILED\Plugins`` on Windows).
 
 # Config
 EXILED by itself offers some config options.
@@ -80,7 +80,7 @@ It is ***strongly*** recommended that you do some googling, or ask around in the
 
 ### Dynamic Updates
 EXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
-For example, if you start the server with just EXILED_Events as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RA/ServerConsole command "reload" to reload all EXILED plugins, including new ones that weren't loaded before.
+For example, if you start the server with just `Exiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all EXILED plugins, including new ones that weren't loaded before.
 
 This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
 
