@@ -11,8 +11,6 @@ namespace Exiled.Permissions.Features
 
     using System.Linq;
 
-    using Exiled.API.Features;
-
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -52,7 +50,6 @@ namespace Exiled.Permissions.Features
                 if (inheritedPermissions != null)
                     return Permissions.Union(inheritedPermissions).ToList();
 
-                Log.Info("Generating inherited permissions field.");
                 IEnumerable<string> inheritedPerms = new List<string>();
                 inheritedPerms = Extensions.Permissions.Groups.Where(pair => Inheritance.Contains(pair.Key)).Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.Permissions));
 
