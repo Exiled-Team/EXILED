@@ -19,8 +19,8 @@ All EXILED events are coded with Harmony, meaning they require no direct editing
 Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
 As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
 
-  - Click on the "Release" tab near the top-right, and download the latest release version of the framework. You can choose the automated EXILED_Installer.exe, or you can follow the directions below to install the framework manually, either is acceptable.
-  - If choosing to use the Installer.exe, simply run the .exe to install EXILED. If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP: SL servers. (Linux server owners can still use the .exe, simply run it in a terminal with ``mono EXILED_Installer.exe``). The installer will, if run correctly, take care of installing EXILED, EXILED_Events, and ensuring your server has the proper Assembly-CSharp.dll file installer. If you are on a Windows server, or have a non-standard scp_server installation folder (default is ``/home/scp/scp_server``) you can run the .exe in a Command Prompt/Terminal and specify your server's install directory. EX: ``mono EXILED_Installer.exe /home/scp/server``(or just ``EXILED_Installer.exe path\to\server\folder`` for Windows).
+  - Click on the "Release" tab near the top-right, and download the latest release version of the framework. You can choose the automated `Exiled.Installer.exe`, or you can follow the directions below to install the framework manually, either is acceptable.
+  - If choosing to use the Installer.exe, simply run the .exe to install EXILED. If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP: SL servers. (Linux server owners can still use the .exe, simply run it in a terminal with ``mono Exiled.Installer.exe``). The installer will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer. If you are on a Windows server, or have a non-standard scp_server installation folder (default is ``/home/scp/scp_server``) you can run the .exe in a Command Prompt/Terminal and specify your server's install directory. EX: ``mono Exiled.Installer.exe /home/scp/server``(or just ``Exiled.Installer.exe path\to\server\folder`` for Windows).
 
 
 If you choose to install EXILED manually:
@@ -28,20 +28,20 @@ If you choose to install EXILED manually:
   - Download the EXILED.tar.gz archive from the latest release, and extract it's contents to a folder on the machine you will be installing EXILED on. (Windows users will need a 3rd party tool such as 7zip to do this) *Linux command line: ``tar -xzvf EXILED.tar.gz``*
   - Move the included ``Assembly-CSharp.dll`` file into the ``SCPSL_Data/Managed`` folder of your server installation. (Replace the existing file).
   - Navigate to ``~/.config`` (``%AppData%`` on Windows), and move both the "EXILED" folder that were provided in the above mentioned archive into this location *Note: These 2 folders need to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``
-  - That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED and EXILED_Events by themselves will do nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the "Plugins" folder that should now be located at ``~/.config/EXILED/Plugins`` (``%AppData%\EXILED\Plugins`` on Windows).
+  - That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``~/.config/EXILED/Plugins`` (``%AppData%\EXILED\Plugins`` on Windows).
 
 # Config
-EXILED by itself offers very little in the way of config options, as it, by itself, does nothing.
-The only thing offered is the ``exiled_debug`` value, which should go into your ``~/.config/EXILED/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows). This value is false by default, setting it to true will print additional lines from plugins and EXILED itself to help developers/hosts fix misbehaving code. *Note: This value will not be automatically added to the config file, and if you wish to set it to true, you will need to add it to the file yourself.*
+EXILED by itself offers some config options.
+All of them are auto-generated at the server startup, they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
 
-Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
-However, plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
-
-This text you see here is *actually* written in Markdown! To get a feel for Markdown's syntax, type some text into the left window and watch the results in the right.
+Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
+However, some plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md) But make sure to follow these rules when publishing your plugins:
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
+
+But make sure to follow these rules when publishing your plugins:
 
  - Your plugin must contain a class that inherits from Exiled.API.Features.Plugin<>, if it does not, EXILED will not load your plugin when the server starts.
  - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
@@ -80,7 +80,7 @@ It is ***strongly*** recommended that you do some googling, or ask around in the
 
 ### Dynamic Updates
 EXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
-For example, if you start the server with just EXILED_Events as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RA/ServerConsole command "reload" to reload all EXILED plugins, including new ones that weren't loaded before.
+For example, if you start the server with just `Exiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all EXILED plugins, including new ones that weren't loaded before.
 
 This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
 
@@ -93,9 +93,9 @@ This also means that you can *update* plugins without having to fully reboot the
 
  - Plugins that want to support Dynamic Updating need to be sure to unsubscribe from all events they are hooked into when they are Disabled or Reloaded.
  - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
- - Any coroutines started by the plugin in OnEnable must also be killed when the plugin is disabled or reloaded.
+ - Any coroutines started by the plugin in OnEnabled must also be killed when the plugin is disabled or reloaded.
 
-All of these can be achieved in either the OnReload() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisable(), then OnReload(), then it will load in the new assemblies, and then executes OnEnable().
+All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
 
 Note that I said *new* assemblies. If you replace an assembly with another one of the same name, it will ***NOT*** be updated. This is due to the GAC (Global Assembly Cache), if you attempt to 'load' and assembly that is already in the cache, it will always use the cached assembly instead.
 For this reason, if your plugin will support Dynamic Updates, you must build each version with a different Assembly Name in the build options (renaming the file will not work). Also, since the old assembly is not "destroyed" when it is no longer needed, if you fail to unsubscribe from events, unpatch your harmony instance, kill coroutines, etc, that code will continue to run aswell as the new version's code.
