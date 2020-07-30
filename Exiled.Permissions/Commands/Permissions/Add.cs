@@ -64,6 +64,8 @@ namespace Exiled.Permissions.Commands.Permissions
 
             Extensions.Permissions.Save();
 
+            Extensions.Permissions.Reload();
+
             response = $"Permission {arguments.At(0)} for group {arguments.At(1)} added successfully!.";
             return true;
         }

@@ -9,8 +9,6 @@ namespace Exiled.Permissions.Features
 {
     using System.Collections.Generic;
 
-    using System.Linq;
-
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -18,11 +16,6 @@ namespace Exiled.Permissions.Features
     /// </summary>
     public class Group
     {
-        /// <summary>
-        /// Private field for the combined permissions of the group and inherited groups.
-        /// </summary>
-        private IEnumerable<string> inheritedPermissions = null;
-
         /// <summary>
         /// Gets or sets a value indicating whether group is the default one or not.
         /// </summary>
@@ -43,20 +36,6 @@ namespace Exiled.Permissions.Features
         /// Gets the combined permissions of the group plus all inherited groups.
         /// </summary>
         [YamlIgnore]
-        public List<string> CombinedPermissions
-        {
-            get
-            {
-                if (inheritedPermissions != null)
-                    return Permissions.Union(inheritedPermissions).ToList();
-
-                IEnumerable<string> inheritedPerms = new List<string>();
-                inheritedPerms = Extensions.Permissions.Groups.Where(pair => Inheritance.Contains(pair.Key)).Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.Permissions));
-
-                inheritedPermissions = inheritedPerms.ToList();
-
-                return Permissions.Union(inheritedPermissions).ToList();
-            }
-        }
+        public List<string> CombinedPermissions { get; internal set; } = new List<string>();
     }
 }

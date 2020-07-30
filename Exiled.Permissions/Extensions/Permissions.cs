@@ -81,7 +81,20 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Reloads permissions.
         /// </summary>
-        public static void Reload() => Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+        public static void Reload()
+        {
+            Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+
+            foreach (KeyValuePair<string, Group> group in Groups.Reverse())
+            {
+                IEnumerable<string> inheritedPerms = new List<string>();
+
+                inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
+                    .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
+
+                group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+            }
+        }
 
         /// <summary>
         /// Save permissions.
