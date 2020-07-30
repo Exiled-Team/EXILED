@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!ev.IsAllowed)
                     return false;
 
-                if (ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
+                if (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth)
                 {
                     var dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
 
