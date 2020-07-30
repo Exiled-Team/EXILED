@@ -750,9 +750,6 @@ namespace Exiled.API.Features
                 }
                 else
                 {
-                    if (args == "WORLD" || args == "SCP-018" || args == "SCP-575" || args == "SCP-207")
-                        return null;
-
                     int maxNameLength = 31, lastnameDifference = 31;
                     string firstString = args.ToLower();
 
@@ -927,7 +924,7 @@ namespace Exiled.API.Features
         /// <param name="attackerId">The attacker player id.</param>
         public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0)
         {
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(-1f, attackerName, damageType ?? DamageTypes.None, attackerId), GameObject);
+            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId), GameObject);
         }
 
         /// <summary>
@@ -942,7 +939,7 @@ namespace Exiled.API.Features
         /// Kills the player.
         /// </summary>
         /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f);
+        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
 
         /// <summary>
         /// Bans a the player.
