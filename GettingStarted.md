@@ -152,9 +152,9 @@ You can add any config option in there and reference it like so:
 And then congratulations! You have made your very first Exiled Plugin!
 
 ### What now?
-If you want more information you should join our [Discord!](https://discord.gg/SXnFZez)
+If you want more information you should join our [Discord!](https://discord.gg/nDQk84m)
 
 We have a #resources channel that you might find useful.
 
-Or you could read all the events that we have! If you want to check them out [here!](https://github.com/galaxy119/EXILED/blob/master/EXILED_Events/Events/EventArgs.cs)
+Or you could read all the events that we have! If you want to check them out [here!](https://github.com/galaxy119/EXILED/tree/master/Exiled.Events/EventArgs)
 
