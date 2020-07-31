@@ -182,8 +182,15 @@ namespace Exiled.Installer
                     fileName = fileName.Substring(EXILED_FOLDER_NAME.Length + 1);
                 }
 
-                ResolvePath(fileName, out var path);
-                ExtractEntry(tarInputStream, entry, path);
+                if (fileName.Contains(TARGET_FILE_NAME, StringComparison.OrdinalIgnoreCase))
+                {
+                    ExtractEntry(tarInputStream, entry, targetFilePath);
+                }
+                else
+                {
+                    ResolvePath(fileName, out var path);
+                    ExtractEntry(tarInputStream, entry, path);
+                }
             }
         }
 
