@@ -44,10 +44,7 @@ namespace Exiled.Installer
             try
             {
                 if (!ProcessTargetFilePath(args?.Path, out var targetFilePath))
-                {
-                    Console.WriteLine(string.Join(Environment.NewLine, args));
                     throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
-                }
 
                 EnsureDirExists(ExiledTargetPath);
 
