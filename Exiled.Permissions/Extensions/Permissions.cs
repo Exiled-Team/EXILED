@@ -81,7 +81,20 @@ namespace Exiled.Permissions.Extensions
         /// <summary>
         /// Reloads permissions.
         /// </summary>
-        public static void Reload() => Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+        public static void Reload()
+        {
+            Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+
+            foreach (KeyValuePair<string, Group> group in Groups.Reverse())
+            {
+                IEnumerable<string> inheritedPerms = new List<string>();
+
+                inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
+                    .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
+
+                group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+            }
+        }
 
         /// <summary>
         /// Save permissions.
@@ -183,20 +196,20 @@ namespace Exiled.Permissions.Extensions
                 {
                     Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
 
-                    if (group.Permissions.Any(s => s == ".*"))
+                    if (group.CombinedPermissions.Any(s => s == ".*"))
                     {
                         Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);
                         return true;
                     }
 
-                    if (group.Permissions.Contains(permission.Split('.')[0] + ".*"))
+                    if (group.CombinedPermissions.Contains(permission.Split('.')[0] + ".*"))
                     {
                         Log.Debug("Check 1: True, returning.", Loader.ShouldDebugBeShown);
                         return true;
                     }
                 }
 
-                if (group.Permissions.Contains(permission) || group.Permissions.Contains("*"))
+                if (group.CombinedPermissions.Contains(permission) || group.CombinedPermissions.Contains("*"))
                 {
                     Log.Debug("Check 2: True, returning.", Loader.ShouldDebugBeShown);
                     return true;
