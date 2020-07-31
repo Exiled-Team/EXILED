@@ -35,24 +35,20 @@ namespace Exiled.Installer
         private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
 
-        /// <summary>
-        /// Entry point of the program.
-        /// </summary>
-        /// <param name="args">Extra arguments, not required.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            await MainSafe(args).ConfigureAwait(false);
+            await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        private static async Task MainSafe(string[] args)
+#pragma warning disable SA1202 // Elements should be ordered by access
+#pragma warning disable SA1600 // Elements should be documented
+        internal static async Task MainSafe(CommandSettings args)
+#pragma warning restore SA1600 // Elements should be documented
+#pragma warning restore SA1202 // Elements should be ordered by access
         {
             try
             {
-                if (args.Length == 0)
-                    args = new[] { "--pre-release" };
-
-                if (!ProcessTargetFilePath(args.FirstOrDefault(a => !a.Contains("--pre-release", StringComparison.OrdinalIgnoreCase)), out var targetFilePath))
+                if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
                 {
                     Console.WriteLine(string.Join(Environment.NewLine, args));
                     throw new FileNotFoundException("Requires an argument with the path to Assembly/game");
@@ -61,13 +57,12 @@ namespace Exiled.Installer
                 EnsureDirExists(ExiledTargetPath);
 
                 Console.WriteLine("Getting latest download URL...");
-                var includePrerelease = args.Any(a => a.Contains("--pre-release", StringComparison.OrdinalIgnoreCase));
-                if (includePrerelease)
+                if (args.IncludePreReleases)
                     Console.WriteLine("Including pre-releases");
 
                 var client = new GitHubClient(new ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
                 var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false)).OrderByDescending(r => r.CreatedAt.Ticks);
-                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && includePrerelease) || !r.Prerelease);
+                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && args.IncludePreReleases) || !r.Prerelease);
                 if (latestRelease is null)
                 {
                     Console.Write("RELEASES:");
@@ -141,7 +136,7 @@ namespace Exiled.Installer
             }
             else
             {
-                Console.WriteLine($"Processing: {entry.Name}");
+                Console.WriteLine($"Processing: '{entry.Name.Replace('/', Path.DirectorySeparatorChar)}'");
                 if (entry.Name.StartsWith(EXILED_FOLDER_NAME, StringComparison.OrdinalIgnoreCase))
                 {
                     // Remeber about the separator char
@@ -161,7 +156,9 @@ namespace Exiled.Installer
         {
             Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name.Replace('/', Path.DirectorySeparatorChar))}' into '{path}'...");
 
-            EnsureDirExists(Path.GetPathRoot(path) !);
+#pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
+            EnsureDirExists(Path.GetPathRoot(path)!);
+#pragma warning restore SA1009 // Closing parenthesis should be spaced correctly
 
             FileStream? fs = null;
             try
@@ -180,12 +177,12 @@ namespace Exiled.Installer
             }
         }
 
-        private static bool ProcessTargetFilePath(string argTargetPath, out string path)
+        private static bool ProcessTargetFilePath(string? argTargetPath, out string path)
         {
             var linkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
 
             // can be null if couldn't be found
-            if (string.IsNullOrEmpty(argTargetPath))
+            if (!string.IsNullOrEmpty(argTargetPath))
             {
                 var combined = Path.Combine(argTargetPath, linkedSubfolders, TARGET_FILE_NAME);
                 if (File.Exists(combined))
