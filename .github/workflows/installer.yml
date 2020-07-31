@@ -88,10 +88,10 @@ jobs:
       run: chmod +x ${{ env.TARGET_FILE }}
 
     - name: Packing with warp-packer
-      run: ./${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output ${{ env.ENTRY_POINT }}
+      run: ./${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output builds/${{ env.ENTRY_POINT }}
 
     - name: Upload packed ${{ matrix.target }} build
       uses: actions/upload-artifact@v2
       with:
         name: Exiled.Installer-packed-${{ matrix.target }}
-        path: ${{ env.ENTRY_POINT }}
+        path: builds/${{ env.ENTRY_POINT }}
