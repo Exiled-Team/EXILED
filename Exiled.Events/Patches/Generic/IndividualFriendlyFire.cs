@@ -22,9 +22,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static bool Prefix(WeaponManager __instance, ref bool forceFriendlyFire, ref bool __result)
         {
-            __result = Player.Get(__instance.gameObject).IsFriendlyFireEnabled || forceFriendlyFire;
-
-            return !__result;
+            return !(__result = Player.Get(__instance.gameObject).IsFriendlyFireEnabled || forceFriendlyFire);
         }
     }
 }
