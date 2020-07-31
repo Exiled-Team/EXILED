@@ -20,6 +20,10 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
+            API.Features.Player.IdsCache.Clear();
+            API.Features.Player.UserIdsCache.Clear();
+            API.Features.Player.Dictionary.Clear();
+
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
                 ConfigManager.Reload();
 
@@ -29,9 +33,6 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnRestartingRound"/>
         public void OnRestartingRound()
         {
-            API.Features.Player.IdsCache.Clear();
-            API.Features.Player.UserIdsCache.Clear();
-            API.Features.Player.Dictionary.Clear();
             API.Features.Map.ClearCache();
         }
 
