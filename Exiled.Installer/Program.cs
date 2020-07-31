@@ -42,13 +42,13 @@ namespace Exiled.Installer
 
 #pragma warning disable SA1202 // Elements should be ordered by access
 #pragma warning disable SA1600 // Elements should be documented
-        internal static async Task MainSafe(CommandSettings args)
+        internal static async Task MainSafe(CommandSettings? args)
 #pragma warning restore SA1600 // Elements should be documented
 #pragma warning restore SA1202 // Elements should be ordered by access
         {
             try
             {
-                if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
+                if (!ProcessTargetFilePath(args?.Path, out var targetFilePath))
                 {
                     Console.WriteLine(string.Join(Environment.NewLine, args));
                     throw new FileNotFoundException("Requires an argument with the path to Assembly/game");
@@ -57,12 +57,13 @@ namespace Exiled.Installer
                 EnsureDirExists(ExiledTargetPath);
 
                 Console.WriteLine("Getting latest download URL...");
-                if (args.IncludePreReleases)
+                var indcludePrereleases = args?.IncludePreReleases ?? true; // remember, after the release of EXILED 2.0, replace it with false
+                if (indcludePrereleases)
                     Console.WriteLine("Including pre-releases");
 
                 var client = new GitHubClient(new ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
                 var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false)).OrderByDescending(r => r.CreatedAt.Ticks);
-                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && args.IncludePreReleases) || !r.Prerelease);
+                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && indcludePrereleases) || !r.Prerelease);
                 if (latestRelease is null)
                 {
                     Console.Write("RELEASES:");

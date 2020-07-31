@@ -43,7 +43,8 @@ namespace Exiled.Installer
 
         public static async Task Parse(string[] args)
         {
-            RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args));
+            RootCommand.Handler = CommandHandler.Create<CommandSettings?>(async args => await Program.MainSafe(args).ConfigureAwait(false));
+            RootCommand.TreatUnmatchedTokensAsErrors = false;
 
             await RootCommand.InvokeAsync(args).ConfigureAwait(false);
         }
