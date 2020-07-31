@@ -32,7 +32,8 @@ namespace Exiled.Events.Patches.Events.Map
         {
             try
             {
-                List<Exiled.API.Features.Player> players = new List<Exiled.API.Features.Player>();
+                List<API.Features.Player> players = new List<API.Features.Player>();
+
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
                     Vector3 position = __instance.transform.position;
@@ -64,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Map
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {e}\n{e.StackTrace}");
 
                 return true;
             }

@@ -28,8 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (__instance.hub.characterClassManager.IsHost ||
-                    string.IsNullOrEmpty(__instance.hub.characterClassManager.UserId))
+                if (__instance.hub.characterClassManager.IsHost)
                     return;
 
                 if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
@@ -39,8 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
                     API.Features.Player.Dictionary.Add(__instance.gameObject, player);
                 }
 
-                API.Features.Log.Debug(
-                    $"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
+                API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     API.Features.Log.Debug($"Server is full!");

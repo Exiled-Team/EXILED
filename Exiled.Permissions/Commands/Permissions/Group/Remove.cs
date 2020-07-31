@@ -49,6 +49,8 @@ namespace Exiled.Permissions.Commands.Permissions.Group
                 Permissions.Groups.Remove(arguments.At(0));
                 Permissions.Save();
 
+                Permissions.Reload();
+
                 response = $"Group {arguments.At(0)} has been removed.";
                 return true;
             }

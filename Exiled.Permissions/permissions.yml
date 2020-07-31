@@ -4,7 +4,8 @@
     permissions:
         - testplugin.user
 admin:
-    inheritance: []
+    inheritance:
+        - moderator
     permissions:
         - testplugin.admin
         - testplugin.*

@@ -67,6 +67,7 @@
     <Compile Include="Enums\LogLevel.cs" />
     <Compile Include="Enums\AuthenticationType.cs" />
     <Compile Include="Enums\PluginPriority.cs" />
+    <Compile Include="Enums\RespawnEffectType.cs" />
     <Compile Include="Enums\Side.cs" />
     <Compile Include="Enums\ZoneType.cs" />
     <Compile Include="Extensions\Item.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Features\Cassie.cs" />
     <Compile Include="Features\Log.cs" />
     <Compile Include="Features\Map.cs" />
+    <Compile Include="Features\Respawn.cs" />
     <Compile Include="Features\Round.cs" />
     <Compile Include="Features\Warhead.cs" />
     <Compile Include="Features\Paths.cs" />
