@@ -8,10 +8,12 @@
 namespace Exiled.Installer
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
 
     using ICSharpCode.SharpZipLib.GZip;
@@ -34,6 +36,9 @@ namespace Exiled.Installer
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly Version VersionLimit = new Version(2, 0, 0);
 
+        private static readonly GitHubClient GitHubClient = new GitHubClient(
+            new ProductHeaderValue($"({Assembly.GetExecutingAssembly().GetName().Name}@{Assembly.GetExecutingAssembly().GetName().Version})"));
+
         private static async Task Main(string[] args)
         {
             await CommandSettings.Parse(args).ConfigureAwait(false);
@@ -43,6 +48,16 @@ namespace Exiled.Installer
         {
             try
             {
+                if (args.GetVersions)
+                {
+                    var releases1 = await GetReleases().ConfigureAwait(false);
+                    Console.WriteLine("--- AVAILABLE VERSIONS ---");
+                    foreach (var r in releases1)
+                        Console.WriteLine(FormatRelease(r, true));
+
+                    return;
+                }
+
                 if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
                     throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
 
@@ -51,14 +66,18 @@ namespace Exiled.Installer
                 Console.WriteLine("Receiving releases...");
                 Console.WriteLine($"Prereleases included - {args.PreReleases}");
 
-                var client = new GitHubClient(new ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
-                var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                    .Where(r => Version.TryParse(r.TagName, out var version) && version >= VersionLimit)
-                    .OrderByDescending(r => r.CreatedAt.Ticks);
+                var releases = await GetReleases().ConfigureAwait(false);
 
                 Console.WriteLine("Searching for the latest release that matches the parameters...");
 
-                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && args.PreReleases) || !r.Prerelease);
+                var latestRelease = releases.FirstOrDefault(r =>
+                {
+                    if (!(args.TargetVersion is null))
+                        return r.TagName.Equals(args.TargetVersion, StringComparison.Ordinal);
+
+                    return (r.Prerelease && args.PreReleases) || !r.Prerelease;
+                });
+
                 if (latestRelease is null)
                 {
                     Console.WriteLine("--- RELEASES ---");
@@ -90,7 +109,10 @@ namespace Exiled.Installer
 
                 TarEntry entry;
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
+                {
+                    entry.Name = entry.Name.Replace('/', Path.DirectorySeparatorChar);
                     ProcessTarEntry(targetFilePath, tarInputStream, entry);
+                }
 
                 Console.WriteLine("Installation complete.");
             }
@@ -102,14 +124,29 @@ namespace Exiled.Installer
             }
         }
 
+        private static async Task<IEnumerable<Release>> GetReleases() =>
+            (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+                .Where(r => Version.TryParse(r.TagName, out var version) && version >= VersionLimit)
+                .OrderByDescending(r => r.CreatedAt.Ticks);
+
         private static string FormatRelease(Release r)
+            => FormatRelease(r, false);
+
+        private static string FormatRelease(Release r, bool includeAssets)
         {
-            return $"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}";
+            var builder = new StringBuilder($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
+            if (includeAssets)
+            {
+                foreach (var asset in r.Assets)
+                    builder.AppendLine(FormatAsset(asset));
+            }
+
+            return builder.ToString();
         }
 
         private static string FormatAsset(ReleaseAsset a)
         {
-            return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url}";
+            return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url} | SIZE: {a.Size}";
         }
 
         private static void ResolvePath(string fileName, out string path)
@@ -129,7 +166,7 @@ namespace Exiled.Installer
             }
             else
             {
-                Console.WriteLine($"Processing '{entry.Name.Replace('/', Path.DirectorySeparatorChar)}'");
+                Console.WriteLine($"Processing '{entry.Name}'");
 
                 if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
@@ -137,8 +174,13 @@ namespace Exiled.Installer
                     return;
                 }
 
-                // Remeber about the separator char
-                var fileName = entry.Name.Substring(EXILED_FOLDER_NAME.Length + 1);
+                var fileName = entry.Name;
+                if (fileName.StartsWith(EXILED_FOLDER_NAME, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Remeber about the separator char
+                    fileName = fileName.Substring(EXILED_FOLDER_NAME.Length + 1);
+                }
+
                 ResolvePath(fileName, out var path);
                 ExtractEntry(tarInputStream, entry, path);
             }
@@ -146,7 +188,7 @@ namespace Exiled.Installer
 
         private static void ExtractEntry(TarInputStream tarInputStream, TarEntry entry, string path)
         {
-            Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name.Replace('/', Path.DirectorySeparatorChar))}' into '{path}'...");
+            Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name)}' into '{path}'...");
 
 #pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
             EnsureDirExists(Path.GetDirectoryName(path)!);

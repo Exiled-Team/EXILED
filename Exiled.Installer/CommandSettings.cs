@@ -21,19 +21,34 @@ namespace Exiled.Installer
         {
             new Option<string?>(
                 new[] { "-p", "--path" },
-                "Path to the folder with the SL server")
+                description: "Path to the folder with the SL server")
             { IsRequired = false, },
 
             new Option<bool>(
                 "--pre-releases",
-                () => false,
-                "Includes pre-releases")
+                getDefaultValue: () => false,
+                description: "Includes pre-releases")
             { IsRequired = false, },
+
+            new Option<string?>(
+                "--target-version",
+                description: "Target version for installation")
+            { IsRequired = false },
+
+            new Option<bool>(
+                "--get-versions",
+                getDefaultValue: () => false,
+                description: "Gets all possible versions for installation")
+            { IsRequired = false },
         };
 
         public string? Path { get; set; }
 
         public bool PreReleases { get; set; }
+
+        public string? TargetVersion { get; set; }
+
+        public bool GetVersions { get; set; }
 
         public static async Task Parse(string[] args)
         {
