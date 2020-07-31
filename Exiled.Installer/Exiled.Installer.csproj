@@ -1,27 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-      <OutputType>Exe</OutputType>
-      <TargetFramework>netcoreapp3.1</TargetFramework>
-      <LangVersion>8.0</LangVersion>
-      <Nullable>enable</Nullable>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
 
-      <AssemblyName>Exiled.Installer</AssemblyName>
-      <Company>Exiled Team</Company>
-      <Copyright>Copyright © Exiled Team $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
-      <Version>3.0.0</Version>
-    </PropertyGroup>
+    <AssemblyName>Exiled.Installer</AssemblyName>
+    <Company>Exiled Team</Company>
+    <Copyright>Copyright © Exiled Team $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
+    <Version>3.0.0</Version>
+    <PackageIcon>Exiled_Icon.ico</PackageIcon>
+    <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <None Remove=".gitignore" />
-      <None Remove="Exiled_Icon.ico" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="Exiled_Icon.ico" />
+    <None Include="Exiled_Icon.ico" Pack="true" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="Octokit" Version="0.48.0" />
-      <PackageReference Include="SharpZipLib" Version="1.2.0" />
-      <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="build; analyzers" PrivateAssets="All" />
-      <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Octokit" Version="0.48.0" />
+    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="build; analyzers" PrivateAssets="All" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+  </ItemGroup>
 
 </Project>

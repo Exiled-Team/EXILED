@@ -19,18 +19,17 @@ namespace Exiled.Installer
 
     using Octokit;
 
-    /// <summary>
-    /// Installs Exiled libraries on a SCP:SL game server.
-    /// </summary>
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1310 // Field names should not contain underscore
+#pragma warning disable SA1202 // Elements should be ordered by access
+
     internal static class Program
     {
-#pragma warning disable SA1310 // Field names should not contain underscore
         private const long REPO_ID = 231269519;
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
         private const string EXILED_FOLDER_NAME = "EXILED";
         private const string DEPENDENCY_FOLDER = "dependencies";
         private const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
-#pragma warning restore SA1310 // Field names should not contain underscore
 
         private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
@@ -40,18 +39,14 @@ namespace Exiled.Installer
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-#pragma warning disable SA1202 // Elements should be ordered by access
-#pragma warning disable SA1600 // Elements should be documented
         internal static async Task MainSafe(CommandSettings? args)
-#pragma warning restore SA1600 // Elements should be documented
-#pragma warning restore SA1202 // Elements should be ordered by access
         {
             try
             {
                 if (!ProcessTargetFilePath(args?.Path, out var targetFilePath))
                 {
                     Console.WriteLine(string.Join(Environment.NewLine, args));
-                    throw new FileNotFoundException("Requires an argument with the path to Assembly/game");
+                    throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
                 }
 
                 EnsureDirExists(ExiledTargetPath);
@@ -103,8 +98,8 @@ namespace Exiled.Installer
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
-                Console.WriteLine("TAKE A SCREENSOT AND SEND TO THE #SUPPORT CHANNEL!1");
+                Console.WriteLine(ex);
+                Console.WriteLine("Read the exception message, read the readme, and if you still don't understand what to do, then contact #support in our discord server with the attached screenshot of the full exception");
                 Console.Read();
             }
         }
