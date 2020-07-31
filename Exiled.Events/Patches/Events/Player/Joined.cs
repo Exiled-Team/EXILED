@@ -52,9 +52,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnJoined(ev);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {exception}\n{exception.StackTrace}");
             }
         }
     }
