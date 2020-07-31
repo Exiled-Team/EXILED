@@ -32,14 +32,9 @@ namespace Exiled.Installer
                 { IsRequired = false, },
         };
 
-        public readonly string? Path;
-        public readonly bool IncludePreReleases;
+        public string? Path { get; set; }
 
-        public CommandSettings(string? path, bool prereleases)
-        {
-            Path = path;
-            IncludePreReleases = prereleases;
-        }
+        public bool IncludePreReleases { get; set; }
 
         public static async Task Parse(string[] args)
         {
