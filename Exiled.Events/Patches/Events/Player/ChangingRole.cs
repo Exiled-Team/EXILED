@@ -44,6 +44,13 @@ namespace Exiled.Events.Patches.Events.Player
 
                 lite = changingRoleEventArgs.ShouldPreservePosition;
                 escape = changingRoleEventArgs.IsEscaped;
+
+                if (classid != RoleType.Spectator && changingRoleEventArgs.NewRole == RoleType.Spectator)
+                {
+                    var diedEventArgs = new DiedEventArgs(API.Features.Server.Host, changingRoleEventArgs.Player, new PlayerStats.HitInfo(-1, "Dedicated Server", DamageTypes.None, 0));
+                    Player.OnDied(diedEventArgs);
+                }
+
                 classid = changingRoleEventArgs.NewRole;
 
                 if (escape)
