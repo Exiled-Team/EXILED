@@ -32,33 +32,36 @@ namespace Exiled.Installer
 
         private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
+        private static readonly Version VersionLimit = new Version(2, 0, 0);
 
         private static async Task Main(string[] args)
         {
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        internal static async Task MainSafe(CommandSettings? args)
+        internal static async Task MainSafe(CommandSettings args)
         {
             try
             {
-                if (!ProcessTargetFilePath(args?.Path, out var targetFilePath))
+                if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
                     throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
 
                 EnsureDirExists(ExiledTargetPath);
 
-                Console.WriteLine("Getting latest download URL...");
-                var indcludePrereleases = args?.IncludePreReleases ?? true; // remember, after the release of EXILED 2.0, replace it with false
-                if (indcludePrereleases)
-                    Console.WriteLine("Including pre-releases");
+                Console.WriteLine("Receiving releases...");
+                Console.WriteLine($"Prereleases included - {args.PreReleases}");
 
-                var client = new GitHubClient(new Octokit.ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
-                var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false)).OrderByDescending(r => r.CreatedAt.Ticks);
-                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && indcludePrereleases) || !r.Prerelease);
+                var client = new GitHubClient(new ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
+                var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+                    .Where(r => Version.TryParse(r.TagName, out var version) && version >= VersionLimit)
+                    .OrderByDescending(r => r.CreatedAt.Ticks);
+
+                Console.WriteLine("Searching for the latest release that matches the parameters...");
+
+                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && args.PreReleases) || !r.Prerelease);
                 if (latestRelease is null)
                 {
-                    Console.Write("RELEASES:");
-                    Console.CursorLeft++;
+                    Console.WriteLine("--- RELEASES ---");
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
                     throw new InvalidOperationException("Couldn't find release");
                 }
@@ -69,8 +72,7 @@ namespace Exiled.Installer
                 var exiledAsset = latestRelease.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
-                    Console.Write("ASSETS:");
-                    Console.CursorLeft++;
+                    Console.WriteLine("--- ASSETS ---");
                     Console.WriteLine(string.Join(Environment.NewLine, latestRelease.Assets.Select(FormatAsset)));
                     throw new InvalidOperationException("Couldn't find asset");
                 }
@@ -102,7 +104,7 @@ namespace Exiled.Installer
 
         private static string FormatRelease(Release r)
         {
-            return $"PR: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}";
+            return $"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}";
         }
 
         private static string FormatAsset(ReleaseAsset a)

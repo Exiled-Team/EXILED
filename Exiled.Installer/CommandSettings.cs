@@ -25,7 +25,7 @@ namespace Exiled.Installer
             { IsRequired = false, },
 
             new Option<bool>(
-                new[] { "--pre-releases" },
+                "--pre-releases",
                 () => false,
                 "Includes pre-releases")
             { IsRequired = false, },
@@ -33,11 +33,11 @@ namespace Exiled.Installer
 
         public string? Path { get; set; }
 
-        public bool IncludePreReleases { get; set; }
+        public bool PreReleases { get; set; }
 
         public static async Task Parse(string[] args)
         {
-            RootCommand.Handler = CommandHandler.Create<CommandSettings?>(async args => await Program.MainSafe(args).ConfigureAwait(false));
+            RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args).ConfigureAwait(false));
             RootCommand.TreatUnmatchedTokensAsErrors = false;
 
             await RootCommand.InvokeAsync(args).ConfigureAwait(false);
