@@ -8,10 +8,12 @@
 namespace Exiled.Installer
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using System.Text;
     using System.Threading.Tasks;
 
     using ICSharpCode.SharpZipLib.GZip;
@@ -32,33 +34,53 @@ namespace Exiled.Installer
 
         private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
+        private static readonly Version VersionLimit = new Version(2, 0, 0);
+
+        private static readonly GitHubClient GitHubClient = new GitHubClient(
+            new ProductHeaderValue($"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}"));
 
         private static async Task Main(string[] args)
         {
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
-        internal static async Task MainSafe(CommandSettings? args)
+        internal static async Task MainSafe(CommandSettings args)
         {
             try
             {
-                if (!ProcessTargetFilePath(args?.Path, out var targetFilePath))
+                if (args.GetVersions)
+                {
+                    var releases1 = await GetReleases().ConfigureAwait(false);
+                    Console.WriteLine("--- AVAILABLE VERSIONS ---");
+                    foreach (var r in releases1)
+                        Console.WriteLine(FormatRelease(r, true));
+
+                    return;
+                }
+
+                if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
                     throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
 
                 EnsureDirExists(ExiledTargetPath);
 
-                Console.WriteLine("Getting latest download URL...");
-                var indcludePrereleases = args?.IncludePreReleases ?? true; // remember, after the release of EXILED 2.0, replace it with false
-                if (indcludePrereleases)
-                    Console.WriteLine("Including pre-releases");
+                Console.WriteLine("Receiving releases...");
+                Console.WriteLine($"Prereleases included - {args.PreReleases}");
 
-                var client = new GitHubClient(new Octokit.ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
-                var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false)).OrderByDescending(r => r.CreatedAt.Ticks);
-                var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && indcludePrereleases) || !r.Prerelease);
+                var releases = await GetReleases().ConfigureAwait(false);
+
+                Console.WriteLine("Searching for the latest release that matches the parameters...");
+
+                var latestRelease = releases.FirstOrDefault(r =>
+                {
+                    if (!(args.TargetVersion is null))
+                        return r.TagName.Equals(args.TargetVersion, StringComparison.Ordinal);
+
+                    return (r.Prerelease && args.PreReleases) || !r.Prerelease;
+                });
+
                 if (latestRelease is null)
                 {
-                    Console.Write("RELEASES:");
-                    Console.CursorLeft++;
+                    Console.WriteLine("--- RELEASES ---");
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
                     throw new InvalidOperationException("Couldn't find release");
                 }
@@ -69,8 +91,7 @@ namespace Exiled.Installer
                 var exiledAsset = latestRelease.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
-                    Console.Write("ASSETS:");
-                    Console.CursorLeft++;
+                    Console.WriteLine("--- ASSETS ---");
                     Console.WriteLine(string.Join(Environment.NewLine, latestRelease.Assets.Select(FormatAsset)));
                     throw new InvalidOperationException("Couldn't find asset");
                 }
@@ -88,7 +109,10 @@ namespace Exiled.Installer
 
                 TarEntry entry;
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
+                {
+                    entry.Name = entry.Name.Replace('/', Path.DirectorySeparatorChar);
                     ProcessTarEntry(targetFilePath, tarInputStream, entry);
+                }
 
                 Console.WriteLine("Installation complete.");
             }
@@ -100,14 +124,30 @@ namespace Exiled.Installer
             }
         }
 
+        private static async Task<IEnumerable<Release>> GetReleases() =>
+            (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+                .Where(r => Version.TryParse(r.TagName, out var version) && version >= VersionLimit)
+                .OrderByDescending(r => r.CreatedAt.Ticks);
+
         private static string FormatRelease(Release r)
+            => FormatRelease(r, false);
+
+        private static string FormatRelease(Release r, bool includeAssets)
         {
-            return $"PR: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}";
+            var builder = new StringBuilder(30);
+            builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
+            if (includeAssets)
+            {
+                foreach (var asset in r.Assets)
+                    builder.Append("   - ").AppendLine(FormatAsset(asset));
+            }
+
+            return builder.ToString();
         }
 
         private static string FormatAsset(ReleaseAsset a)
         {
-            return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url}";
+            return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url} | SIZE: {a.Size}";
         }
 
         private static void ResolvePath(string fileName, out string path)
@@ -127,7 +167,7 @@ namespace Exiled.Installer
             }
             else
             {
-                Console.WriteLine($"Processing '{entry.Name.Replace('/', Path.DirectorySeparatorChar)}'");
+                Console.WriteLine($"Processing '{entry.Name}'");
 
                 if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
@@ -135,8 +175,13 @@ namespace Exiled.Installer
                     return;
                 }
 
-                // Remeber about the separator char
-                var fileName = entry.Name.Substring(EXILED_FOLDER_NAME.Length + 1);
+                var fileName = entry.Name;
+                if (fileName.StartsWith(EXILED_FOLDER_NAME, StringComparison.OrdinalIgnoreCase))
+                {
+                    // Remeber about the separator char
+                    fileName = fileName.Substring(EXILED_FOLDER_NAME.Length + 1);
+                }
+
                 ResolvePath(fileName, out var path);
                 ExtractEntry(tarInputStream, entry, path);
             }
@@ -144,7 +189,7 @@ namespace Exiled.Installer
 
         private static void ExtractEntry(TarInputStream tarInputStream, TarEntry entry, string path)
         {
-            Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name.Replace('/', Path.DirectorySeparatorChar))}' into '{path}'...");
+            Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name)}' into '{path}'...");
 
 #pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
             EnsureDirExists(Path.GetDirectoryName(path)!);
