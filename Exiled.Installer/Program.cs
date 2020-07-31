@@ -150,7 +150,7 @@ namespace Exiled.Installer
             Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name.Replace('/', Path.DirectorySeparatorChar))}' into '{path}'...");
 
 #pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
-            EnsureDirExists(Path.GetPathRoot(path)!);
+            EnsureDirExists(Path.GetDirectoryName(path)!);
 #pragma warning restore SA1009 // Closing parenthesis should be spaced correctly
 
             FileStream? fs = null;
@@ -199,6 +199,11 @@ namespace Exiled.Installer
 
         private static void EnsureDirExists(string pathToDir)
         {
+#if DEBUG
+            Console.WriteLine($"Ensuring directory path: {pathToDir}");
+            Console.WriteLine($"Does it exist? - {Directory.Exists(pathToDir)}");
+#endif
+
             if (!Directory.Exists(pathToDir))
                 Directory.CreateDirectory(pathToDir);
         }
