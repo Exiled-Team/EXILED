@@ -21,15 +21,14 @@ namespace Exiled.Installer
         {
             new Option<string?>(
                 new[] { "-p", "--path" },
-                () => null,
                 "Path to the folder with the SL server")
-                { IsRequired = false, },
+            { IsRequired = false, },
 
             new Option<bool>(
                 new[] { "--pre-releases" },
                 () => false,
                 "Includes pre-releases")
-                { IsRequired = false, },
+            { IsRequired = false, },
         };
 
         public string? Path { get; set; }

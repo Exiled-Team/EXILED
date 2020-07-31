@@ -7,7 +7,7 @@ Usage:
   Exiled.Installer [options] [[--] <additional arguments>...]]
 
 Options:
-  -p, --path <path>    Path to the folder with the SL server [default: ]
+  -p, --path <path>    Path to the folder with the SL server
   --pre-releases       Includes pre-releases [default: False]
   --version            Show version information
   -?, -h, --help       Show help and usage information
