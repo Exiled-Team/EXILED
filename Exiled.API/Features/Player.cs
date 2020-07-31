@@ -177,6 +177,15 @@ namespace Exiled.API.Features
         public List<int> TargetGhosts { get; private set; } = new List<int>();
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player has Remote Admin access.
+        /// </summary>
+        public bool RemoteAdminAccess
+        {
+            get => ReferenceHub.serverRoles.RemoteAdmin;
+            set => ReferenceHub.serverRoles.RemoteAdmin = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
         /// </summary>
         public bool IsOverwatchEnabled
