@@ -28,7 +28,6 @@ namespace Exiled.Installer
         private const long REPO_ID = 231269519;
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
         private const string EXILED_FOLDER_NAME = "EXILED";
-        private const string DEPENDENCY_FOLDER = "dependencies";
         private const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
         private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
@@ -53,7 +52,7 @@ namespace Exiled.Installer
                 if (indcludePrereleases)
                     Console.WriteLine("Including pre-releases");
 
-                var client = new GitHubClient(new ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
+                var client = new GitHubClient(new Octokit.ProductHeaderValue(Assembly.GetExecutingAssembly().GetName().Name));
                 var releases = (await client.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false)).OrderByDescending(r => r.CreatedAt.Ticks);
                 var latestRelease = releases.FirstOrDefault(r => (r.Prerelease && indcludePrereleases) || !r.Prerelease);
                 if (latestRelease is null)
@@ -111,10 +110,9 @@ namespace Exiled.Installer
             return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url}";
         }
 
-        private static bool AllowExtract(string fileName, out string path)
+        private static void ResolvePath(string fileName, out string path)
         {
             path = Path.GetFullPath(Path.Combine(ExiledTargetPath, fileName));
-            return File.Exists(path);
         }
 
         private static void ProcessTarEntry(string targetFilePath, TarInputStream tarInputStream, TarEntry entry)
@@ -129,19 +127,18 @@ namespace Exiled.Installer
             }
             else
             {
-                Console.WriteLine($"Processing: '{entry.Name.Replace('/', Path.DirectorySeparatorChar)}'");
-                if (entry.Name.StartsWith(EXILED_FOLDER_NAME, StringComparison.OrdinalIgnoreCase))
+                Console.WriteLine($"Processing '{entry.Name.Replace('/', Path.DirectorySeparatorChar)}'");
+
+                if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
-                    // Remeber about the separator char
-                    var fileName = entry.Name.Substring(EXILED_FOLDER_NAME.Length + 1);
-                    var allowExtract = AllowExtract(fileName, out var path);
-                    if (allowExtract || entry.Name.Contains(DEPENDENCY_FOLDER, StringComparison.OrdinalIgnoreCase))
-                        ExtractEntry(tarInputStream, entry, path);
+                    Console.WriteLine("Extract for Example is disabled");
+                    return;
                 }
-                else if (entry.Name.Equals(TARGET_FILE_NAME))
-                {
-                    ExtractEntry(tarInputStream, entry, targetFilePath);
-                }
+
+                // Remeber about the separator char
+                var fileName = entry.Name.Substring(EXILED_FOLDER_NAME.Length + 1);
+                ResolvePath(fileName, out var path);
+                ExtractEntry(tarInputStream, entry, path);
             }
         }
 
