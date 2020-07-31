@@ -13,17 +13,17 @@ namespace Exiled.API.Enums
     public enum RespawnEffectType : byte
     {
         /// <summary>
-        /// Play the chaos music to alive Class-D and Chaos.
+        /// Plays the <see cref="RoleType.ChaosInsurgency"/> music to alive <see cref="RoleType.ClassD"/> and <see cref="RoleType.ChaosInsurgency"/>.
         /// </summary>
-        PlayChaosMusic = 0,
+        PlayChaosInsurgencyMusic = 0,
 
         /// <summary>
-        /// Summon the Chaos van
+        /// Summons the <see cref="RoleType.ChaosInsurgency"/> van.
         /// </summary>
-        SummonChaosVan = 128,
+        SummonChaosInsurgencyVan = 128,
 
         /// <summary>
-        /// Summon the NTF chopper.
+        /// Summons the NTF chopper.
         /// </summary>
         SummonNtfChopper = 129,
     }

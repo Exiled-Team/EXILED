@@ -34,5 +34,28 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effects">The effects to be played.</param>
         public static void PlayEffects(RespawnEffectType[] effects) => PlayEffects(effects.Select(effect => (byte)effect).ToArray());
+
+        /// <summary>
+        /// Summons the NTF chopper.
+        /// </summary>
+        public static void SummonNtfChopper() => PlayEffects(new RespawnEffectType[] { RespawnEffectType.SummonNtfChopper });
+
+        /// <summary>
+        /// Summons the <see cref="RoleType.ChaosInsurgency"/> van.
+        /// </summary>
+        /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
+        public static void SummonChaosInsurgencyVan(bool playMusic = true)
+        {
+            PlayEffects(playMusic ? new RespawnEffectType[]
+            {
+                RespawnEffectType.PlayChaosInsurgencyMusic,
+                RespawnEffectType.SummonChaosInsurgencyVan,
+            }
+            :
+            new RespawnEffectType[]
+            {
+                RespawnEffectType.SummonChaosInsurgencyVan,
+            });
+        }
     }
 }

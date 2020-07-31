@@ -36,8 +36,9 @@ namespace Exiled.Events.Patches.Events.Map
                 List<API.Features.Player> players = new List<API.Features.Player>();
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
-                    if (ServerConsole.FriendlyFire || !(gameObject != __instance.thrower.gameObject) || gameObject
-                        .GetComponent<WeaponManager>().GetShootPermission(__instance.throwerTeam, false))
+                    if (ServerConsole.FriendlyFire ||
+                        gameObject == __instance.thrower.gameObject ||
+                        gameObject.GetComponent<WeaponManager>().GetShootPermission(__instance.throwerTeam, false))
                     {
                         PlayerStats component2 = gameObject.GetComponent<PlayerStats>();
                         if (component2 == null || !component2.ccm.InWorld)
