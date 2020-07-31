@@ -28,7 +28,8 @@ jobs:
       env:
         TARGET_RUNTIME: ${{ matrix.target }}
       run: |
-        switch (${{ env.TARGET_RUNTIME }}) {
+        $TARGET_RUNTIME = "${{ env.TARGET_RUNTIME }}"
+        switch ($TARGET_RUNTIME) {
           'linux-x64' {
             $TARGET_LINK = 'https://github.com/dgiagio/warp/releases/download/v0.3.0/linux-x64.warp-packer'
             Break
@@ -64,7 +65,8 @@ jobs:
       env:
         TARGET_RUNTIME: ${{ matrix.target }}
       run: |
-        switch (${{ env.TARGET_RUNTIME }}) {
+        $TARGET_RUNTIME = "${{ env.TARGET_RUNTIME }}"
+        switch ($TARGET_RUNTIME) {
           'linux-x64' {
             $ENTRY_POINT = 'Exiled.Installer'
             Break
@@ -82,7 +84,7 @@ jobs:
         Write-Host "::set-env name=ENTRY_POINT::$ENTRY_POINT"
 
     - name: Packing with warp-packer
-      run: ${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output ${{ env.ENTRY_POINT }}
+      run: ./${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output ${{ env.ENTRY_POINT }}
 
     - name: Upload packed ${{ matrix.target }} build
       uses: actions/upload-artifact@v2
