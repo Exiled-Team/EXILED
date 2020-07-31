@@ -37,7 +37,7 @@ namespace Exiled.Installer
         private static readonly Version VersionLimit = new Version(2, 0, 0);
 
         private static readonly GitHubClient GitHubClient = new GitHubClient(
-            new ProductHeaderValue($"({Assembly.GetExecutingAssembly().GetName().Name}@{Assembly.GetExecutingAssembly().GetName().Version})"));
+            new ProductHeaderValue($"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}"));
 
         private static async Task Main(string[] args)
         {
@@ -134,11 +134,12 @@ namespace Exiled.Installer
 
         private static string FormatRelease(Release r, bool includeAssets)
         {
-            var builder = new StringBuilder($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
+            var builder = new StringBuilder(30);
+            builder.AppendLine($"PRE: {r.Prerelease} | ID: {r.Id} | TAG: {r.TagName}");
             if (includeAssets)
             {
                 foreach (var asset in r.Assets)
-                    builder.AppendLine(FormatAsset(asset));
+                    builder.Append("   - ").AppendLine(FormatAsset(asset));
             }
 
             return builder.ToString();
