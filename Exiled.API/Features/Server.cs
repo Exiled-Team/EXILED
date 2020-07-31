@@ -24,7 +24,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's host of the server.
         /// </summary>
-        public static Player Host => host ?? (host = new Player(ReferenceHub.Hubs[PlayerManager.localPlayer]));
+        public static Player Host
+        {
+            get
+            {
+                if (host == null || host.ReferenceHub == null)
+                    host = new Player(PlayerManager.localPlayer);
+
+                return host;
+            }
+        }
 
         /// <summary>
         /// Gets the cached <see cref="Broadcast"/> component.

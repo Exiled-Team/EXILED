@@ -54,52 +54,46 @@ namespace Exiled.Events.Patches.Generic
                         continue;
 
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
-                    if (player.Role.Is939())
+                    for (int index = 0; index < __instance._usedData; ++index)
                     {
-                        for (int index = 0; index < __instance._usedData; ++index)
+                        PlayerPositionData ppd = __instance._transmitBuffer[index];
+                        Player currentTarget = Player.Get(players[index]);
+                        Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
+                        bool canSee = true;
+                        if (currentTarget == null)
+                            continue;
+
+                        if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))
                         {
-                            if (__instance._transmitBuffer[index].position.y < 800.0)
-                            {
-                                ReferenceHub hub2 = ReferenceHub.GetHub(players[index]);
-                                if (player.IsInvisible || (hub2.characterClassManager.CurRole.team != Team.SCP && hub2.characterClassManager.CurRole.team != Team.RIP && !players[index].GetComponent<Scp939_VisionController>().CanSee(player.ReferenceHub.characterClassManager.Scp939)))
-                                    __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
-                            }
+                            canSee = false;
                         }
-                    }
-                    else if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator)
-                    {
-                        for (int index = 0; index < __instance._usedData; ++index)
+                        else if (player.Role.Is939() && ppd.position.y < 800.0)
                         {
-                            if (Math.Abs(__instance._transmitBuffer[index].position.y - player.Position.y) > 35)
+                            if (currentTarget.Team != Team.SCP && currentTarget.Team != Team.RIP && !currentTarget.GameObject.GetComponent<Scp939_VisionController>().CanSee(player.ReferenceHub.characterClassManager.Scp939))
+                                canSee = false;
+                        }
+                        else if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator)
+                        {
+                            if (Math.Abs(ppd.position.y - player.Position.y) > 35)
                             {
-                                __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0f, __instance._transmitBuffer[index].playerID);
+                                canSee = false;
                             }
                             else
                             {
-                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
+                                if (ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub hub))
                                 {
-                                    if (player.IsInvisible || (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP)))
-                                        __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
-
-                                    if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
-                                    {
-                                        bool flag = false;
-                                        if (player.ReferenceHub.scpsController.CurrentScp is Scp096 curScp &&
-                                            curScp != null)
-                                            flag = curScp.HasTarget(hub2);
-                                        if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator &&
-                                            !flag)
-                                            __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
-                                    }
+                                    if (scp096 != null && scp096.Enraged && !scp096.HasTarget(hub) && hub.characterClassManager.CurRole.team != Team.SCP)
+                                        canSee = false;
+                                    else if (hub.playerEffectsController.GetEffect<Scp268>().Enabled && (scp096 == null || !scp096.HasTarget(hub)))
+                                        canSee = false;
                                 }
                             }
                         }
-                    }
 
-                    for (int i = 0; i < __instance._usedData; i++)
-                    {
-                        if (player.TargetGhosts.Contains(__instance._transmitBuffer[i].playerID))
-                            __instance._transmitBuffer[i] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[i].playerID);
+                        if (!canSee)
+                            ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
+
+                        __instance._transmitBuffer[index] = ppd;
                     }
 
                     NetworkConnection networkConnection = player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer ? NetworkServer.localConnection : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;

@@ -7,12 +7,8 @@
 
 namespace Exiled.Example.Handlers
 {
-    using System;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-
-    using UnityEngine;
 
     using static Example;
 

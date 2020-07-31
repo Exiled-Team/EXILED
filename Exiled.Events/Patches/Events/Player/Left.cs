@@ -26,23 +26,20 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (__instance.characterClassManager.IsHost)
-                    return;
-
                 API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
 
-                if (player == null || string.IsNullOrEmpty(player.UserId))
+                if (player == null || player.IsHost)
                     return;
 
                 var ev = new LeftEventArgs(player);
 
-                API.Features.Log.Debug($"Player {ev.Player?.Nickname} ({ev.Player?.UserId}) disconnected");
+                API.Features.Log.Debug($"Player {ev.Player.Nickname} ({ev.Player.UserId}) disconnected");
 
                 Player.OnLeft(ev);
 
-                API.Features.Player.IdsCache.Remove(__instance.queryProcessor.PlayerId);
-                API.Features.Player.UserIdsCache.Remove(__instance.characterClassManager.UserId);
-                API.Features.Player.Dictionary.Remove(__instance.gameObject);
+                API.Features.Player.IdsCache.Remove(player.Id);
+                API.Features.Player.UserIdsCache.Remove(player.UserId);
+                API.Features.Player.Dictionary.Remove(player.GameObject);
             }
             catch (Exception e)
             {
