@@ -83,6 +83,10 @@ jobs:
 
         Write-Host "::set-env name=ENTRY_POINT::$ENTRY_POINT"
 
+    - name: Resolve permissions
+      if: matrix.os == 'ubuntu-latest'
+      run: chmod +x ${{ env.TARGET_FILE }}
+
     - name: Packing with warp-packer
       run: ./${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output ${{ env.ENTRY_POINT }}
 
