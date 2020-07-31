@@ -90,6 +90,10 @@ jobs:
     - name: Packing with warp-packer
       run: ./${{ env.TARGET_FILE }} --arch ${{ matrix.warp_target }} --input_dir builds/${{ matrix.target }} --exec ${{ env.ENTRY_POINT }} --output builds/${{ env.ENTRY_POINT }}
 
+    - name: Resolve permissions
+      if: matrix.os == 'ubuntu-latest'
+      run: chmod +x builds/${{ env.ENTRY_POINT }}
+
     - name: Upload packed ${{ matrix.target }} build
       uses: actions/upload-artifact@v2
       with:
