@@ -48,7 +48,7 @@ jobs:
       env:
         EXILED_REFERENCES: ./References
       run: |
-        msbuild EXILED.API -p:Configuration=release
+        msbuild Exiled.API -p:Configuration=release
         msbuild Exiled.Bootstrap -p:Configuration=release
         msbuild Exiled.Example -p:Configuration=release
         msbuild Exiled.Loader -p:Configuration=release
