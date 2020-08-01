@@ -16,28 +16,41 @@ namespace Exiled.Installer
     using System.Text;
     using System.Threading.Tasks;
 
+    using Exiled.Installer.Properties;
+
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
 
     using Octokit;
 
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1310 // Field names should not contain underscore
-#pragma warning disable SA1202 // Elements should be ordered by access
+    internal enum PathResolution
+    {
+        UNDEFINED,
+        /// <summary>
+        ///     Absolute path that is routed to AppData.
+        /// </summary>
+        ABSOLUTE,
+        /// <summary>
+        ///     The path that goes through the path of the game passing through the subfolders.
+        /// </summary>
+        GAME
+    }
 
     internal static class Program
     {
         private const long REPO_ID = 231269519;
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
-        private const string EXILED_FOLDER_NAME = "EXILED";
         private const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
-        private static readonly string ExiledTargetPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), EXILED_FOLDER_NAME);
+        private static readonly string ExiledTargetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly Version VersionLimit = new Version(2, 0, 0);
 
         private static readonly GitHubClient GitHubClient = new GitHubClient(
             new ProductHeaderValue($"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}"));
+
+        // Force use of LF because the file uses LF
+        private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
 
         private static async Task Main(string[] args)
         {
@@ -48,6 +61,8 @@ namespace Exiled.Installer
         {
             try
             {
+                Console.WriteLine($"Exiled.Installer@{Assembly.GetExecutingAssembly().GetName().Version}");
+
                 if (args.GetVersions)
                 {
                     var releases1 = await GetReleases().ConfigureAwait(false);
@@ -59,7 +74,10 @@ namespace Exiled.Installer
                 }
 
                 if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
+                {
+                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{targetFilePath}'");
                     throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
+                }
 
                 EnsureDirExists(ExiledTargetPath);
 
@@ -147,12 +165,12 @@ namespace Exiled.Installer
 
         private static string FormatAsset(ReleaseAsset a)
         {
-            return $"ID: {a.Id} | NAME: {a.Name} | URL: {a.Url} | SIZE: {a.Size}";
+            return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url}";
         }
 
-        private static void ResolvePath(string fileName, out string path)
+        private static void ResolvePath(string filePath, out string path)
         {
-            path = Path.GetFullPath(Path.Combine(ExiledTargetPath, fileName));
+            path = Path.Combine(ExiledTargetPath, filePath);
         }
 
         private static void ProcessTarEntry(string targetFilePath, TarInputStream tarInputStream, TarEntry entry)
@@ -171,25 +189,22 @@ namespace Exiled.Installer
 
                 if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine("Extract for Example is disabled");
+                    Console.WriteLine($"Extract for {entry.Name} is disabled");
                     return;
                 }
 
-                var fileName = entry.Name;
-                if (fileName.StartsWith(EXILED_FOLDER_NAME, StringComparison.OrdinalIgnoreCase))
+                switch (ResolveEntry(entry))
                 {
-                    // Remeber about the separator char
-                    fileName = fileName.Substring(EXILED_FOLDER_NAME.Length + 1);
-                }
-
-                if (fileName.Contains(TARGET_FILE_NAME, StringComparison.OrdinalIgnoreCase))
-                {
-                    ExtractEntry(tarInputStream, entry, targetFilePath);
-                }
-                else
-                {
-                    ResolvePath(fileName, out var path);
-                    ExtractEntry(tarInputStream, entry, path);
+                    case PathResolution.ABSOLUTE:
+                        ResolvePath(entry.Name, out var path);
+                        ExtractEntry(tarInputStream, entry, path);
+                        break;
+                    case PathResolution.GAME:
+                        ExtractEntry(tarInputStream, entry, targetFilePath);
+                        break;
+                    default:
+                        Console.WriteLine($"Couldn't resolve path for '{entry.Name}', update installer");
+                        break;
                 }
             }
         }
@@ -198,9 +213,7 @@ namespace Exiled.Installer
         {
             Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name)}' into '{path}'...");
 
-#pragma warning disable SA1009 // Closing parenthesis should be spaced correctly
             EnsureDirExists(Path.GetDirectoryName(path)!);
-#pragma warning restore SA1009 // Closing parenthesis should be spaced correctly
 
             FileStream? fs = null;
             try
@@ -252,9 +265,37 @@ namespace Exiled.Installer
             Console.WriteLine($"Ensuring directory path: {pathToDir}");
             Console.WriteLine($"Does it exist? - {Directory.Exists(pathToDir)}");
 #endif
-
             if (!Directory.Exists(pathToDir))
                 Directory.CreateDirectory(pathToDir);
+        }
+
+        private static PathResolution ResolveEntry(TarEntry entry)
+        {
+            static PathResolution TryParse(string s)
+            {
+                // We'll get UNDEFINED if it cannot be determined
+                Enum.TryParse<PathResolution>(s, true, out var result);
+                return result;
+            }
+
+            var fileName = entry.Name;
+            var fileInFolder = !string.IsNullOrEmpty(Path.GetDirectoryName(fileName));
+            foreach (var pair in Markup)
+            {
+                var isFolder = pair.Key.EndsWith('\\');
+                if (fileInFolder && isFolder &&
+                    pair.Key[0..^1].Equals(fileName.Substring(0, fileName.IndexOf(Path.DirectorySeparatorChar)), StringComparison.OrdinalIgnoreCase))
+                {
+                    return TryParse(pair.Value);
+                }
+                else if (!fileInFolder && !isFolder &&
+                    pair.Key.Equals(fileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return TryParse(pair.Value);
+                }
+            }
+
+            return PathResolution.UNDEFINED;
         }
     }
 }
