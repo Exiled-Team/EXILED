@@ -23,6 +23,8 @@ namespace Exiled.Updater
 
     using Utf8Json;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
     /// <summary>
     /// Automatically updates Exiled to the latest version.
     /// </summary>
