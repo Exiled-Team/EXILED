@@ -9,11 +9,13 @@ namespace Exiled.Installer
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
@@ -54,6 +56,7 @@ namespace Exiled.Installer
 
         private static async Task Main(string[] args)
         {
+            Console.OutputEncoding = new UTF8Encoding(false, false);
             await CommandSettings.Parse(args).ConfigureAwait(false);
         }
 
