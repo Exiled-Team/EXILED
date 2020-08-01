@@ -325,10 +325,10 @@ namespace Exiled.Events.Patches.Events.Player
                                                         request.Accept();
                                                         CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
                                                         ServerConsole.AddLog(
-                                                          $"Player {result3} pre-authenticated from endpoint {request.RemoteEndPoint}.");
+                                                          $"Player {result6} pre-authenticated from endpoint {request.RemoteEndPoint}.");
                                                         ServerLogs.AddLog(
                                                           ServerLogs.Modules.Networking,
-                                                          $"{result3} pre-authenticated from endpoint {request.RemoteEndPoint}.",
+                                                          $"{result6} pre-authenticated from endpoint {request.RemoteEndPoint}.",
                                                           ServerLogs.ServerLogType.ConnectionUpdate);
                                                     }
                                                     else
