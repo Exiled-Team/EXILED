@@ -1,0 +1,2 @@
+EXILED\:ABSOLUTE
+Assembly-CSharp.dll:GAME

@@ -8,101 +8,129 @@
 namespace Exiled.Updater
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
-    using System.IO.Compression;
     using System.Linq;
-    using System.Net;
+    using System.Net.Http;
+    using System.Runtime.InteropServices;
     using System.Text;
+    using System.Threading.Tasks;
 
     using Exiled.API.Features;
+    using Exiled.Updater.Models;
 
     using UnityEngine;
+
+    using Utf8Json;
+
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
     /// Automatically updates Exiled to the latest version.
     /// </summary>
-    public class Updater : Plugin<Config>
+    public sealed class Updater : Plugin<Config>
     {
-        private string versionUpdateUrl;
+#pragma warning disable SA1600 // Elements should be documented
+        public const long REPOID = 231269519;
+        public const string GitHubGetReleasesTemplate = "https://api.github.com/repositories/{0}/releases";
+
+        public static readonly string[] InstallerAssetNamesLinux = { "Exiled.Installer-Linux", "Exiled.Installer" };
+        public static readonly string[] InstallerAssetNamesWin = { "Exiled.Installer-Win.exe", "Exiled.Installer.exe" };
+        public static readonly Encoding ProcessEncidong = new UTF8Encoding(false, false);
+
+        private readonly HttpClient httpClient = new HttpClient();
+#pragma warning restore SA1600 // Elements should be documented
+
+        /// <inheritdoc />
+        public override string Author => "Exiled Team @ iRebbok";
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            httpClient.DefaultRequestHeaders.UserAgent.Clear();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version})");
+
             base.OnEnabled();
 
-            if (IsUpdateAvailable())
-                Start();
+            var result = FindUpdate().ConfigureAwait(false).GetAwaiter().GetResult();
+            if (result.Item1)
+                Update(result.Item2, result.Item3).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            httpClient.Dispose();
         }
 
         /// <summary>
         /// Starts the updater.
         /// </summary>
-        public void Start()
+        /// <param name="asset">
+        /// Installer asset.
+        /// </param>
+        /// <param name="allowPRE">
+        /// Allow '--pre-release' argument passing.
+        /// </param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        public async Task Update(ReleaseAsset asset, bool allowPRE)
         {
             try
             {
-                Log.Info("There is an new version of Exiled available.");
-
-                Log.Info($"Attempting auto-update...");
-                Log.Info($"URL: {versionUpdateUrl ?? "none"}");
-
-                if (versionUpdateUrl == null)
+                Log.Info("Downloading installer...");
+                using (var installer = await httpClient.GetAsync(asset.BrowserDownloadUrl).ConfigureAwait(false))
                 {
-                    Log.Error("Version update was queued but not URL was set. This error should never happen.");
-                    return;
+                    Log.Info("Downloaded!");
+
+                    var serverPath = Environment.CurrentDirectory;
+                    var installerPath = Path.Combine(serverPath, "Exiled.Installer-Win.exe");
+
+                    using (var installerStream = await installer.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await installerStream.CopyToAsync(fs).ConfigureAwait(false);
+                    }
+
+                    if (!File.Exists(installerPath))
+                    {
+                        Log.Error("Couldn't find the downloaded installer!");
+                    }
+
+                    var startInfo = new ProcessStartInfo
+                    {
+                        WorkingDirectory = serverPath,
+                        FileName = installerPath,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                        Arguments = allowPRE ? "--pre-releases --exit" : "--exit",
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        StandardErrorEncoding = ProcessEncidong,
+                        StandardOutputEncoding = ProcessEncidong,
+                    };
+
+                    var installerProcess = Process.Start(startInfo);
+                    installerProcess.OutputDataReceived += (s, args) =>
+                    {
+                        if (!string.IsNullOrEmpty(args.Data))
+                            Log.Info($"[Installer] {args.Data}");
+                    };
+                    installerProcess.BeginOutputReadLine();
+                    installerProcess.ErrorDataReceived += (s, args) =>
+                    {
+                        if (!string.IsNullOrEmpty(args.Data))
+                            Log.Error($"[Installer] {args.Data}");
+                    };
+                    installerProcess.BeginErrorReadLine();
+
+                    installerProcess.WaitForExit();
+
+                    Log.Info($"Installer exit code: {installerProcess.ExitCode}");
+                    Log.Info("Auto-update complete, restarting server...");
+
+                    Application.Quit();
                 }
-
-                string tempDirectory = Path.Combine(Directory.GetCurrentDirectory(), "temp");
-                Log.Info($"Creating temporary directory: {tempDirectory}...");
-
-                if (!Directory.Exists(tempDirectory))
-                    Directory.CreateDirectory(tempDirectory);
-
-                string exiledTempPath = Path.Combine(tempDirectory, "Exiled.tar.gz");
-
-                using (WebClient client = new WebClient())
-                    client.DownloadFile(versionUpdateUrl, exiledTempPath);
-
-                Log.Info("Download successful, extracting contents...");
-                ExtractTarGz(exiledTempPath, tempDirectory);
-                Log.Info($"Extraction complete, moving files...");
-
-                string tempExiledMainPath = Path.Combine(tempDirectory, "EXILED");
-                string tempLoaderPath = Path.Combine(tempExiledMainPath, "Exiled.Loader.dll");
-                string tempPluginsDirectory = Path.Combine(tempExiledMainPath, "Plugins");
-                string tempExiledEventsPath = Path.Combine(tempPluginsDirectory, "Exiled.Events.dll");
-                string tempPermissionsPath = Path.Combine(tempPluginsDirectory, "Exiled.Permissions.dll");
-                string tempUpdaterPath = Path.Combine(tempPluginsDirectory, "Exiled.Updater.dll");
-                string tempAssemblyPath = Path.Combine(tempDirectory, "Assembly-CSharp.dll");
-                string tempPluginDependenciesPath = Path.Combine(tempPluginsDirectory, "dependencies");
-                string tempExiledApiPath = Path.Combine(tempPluginDependenciesPath, "Exiled.API.dll");
-
-                File.Delete(Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
-                File.Delete(Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
-                File.Delete(Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
-                File.Delete(Path.Combine(Paths.Plugins, "Exiled.Idler.dll"));
-                File.Delete(Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
-                File.Delete(Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
-                File.Delete(Path.Combine(Paths.Dependencies, "Exiled.API.dll"));
-                File.Move(tempLoaderPath, Path.Combine(Paths.Exiled, "Exiled.Loader.dll"));
-                File.Move(tempExiledEventsPath, Path.Combine(Paths.Plugins, "Exiled.Events.dll"));
-                File.Move(tempPermissionsPath, Path.Combine(Paths.Plugins, "Exiled.Permissions.dll"));
-                File.Move(tempUpdaterPath, Path.Combine(Paths.Plugins, "Exiled.Updater.dll"));
-                File.Move(tempAssemblyPath, Path.Combine(Paths.ManagedAssemblies, "Assembly-CSharp.dll"));
-                File.Move(tempExiledApiPath, Path.Combine(Paths.Dependencies, "Exiled.API.dll"));
-                Log.Info($"Files moved, cleaning up...");
-                Directory.Delete(tempDirectory, true);
-
-                Log.Info("Auto-update complete, restarting server...");
-
-                Application.Quit();
             }
-            catch (System.UnauthorizedAccessException)
+            catch (Exception ex)
             {
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Auto-update error: {exception}");
+                Log.Error($"{nameof(Update)} throw an exception");
+                Log.Error(ex);
             }
         }
 
@@ -110,152 +138,134 @@ namespace Exiled.Updater
         /// Check if there is an update available.
         /// </summary>
         /// <returns>Returns whether a new version of Exiled is available or not.</returns>
-        public bool IsUpdateAvailable()
+        public async Task<Tuple<bool, ReleaseAsset, bool>> FindUpdate()
         {
             try
             {
-                string url = "https://github.com/galaxy119/EXILED/releases/" + (Config.ShouldDownloadTestingReleases ? string.Empty : "latest/");
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{url}");
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream stream = response.GetResponseStream();
-
-                if (stream == null)
-                    throw new InvalidOperationException("No response from Github. This shouldn't happen, contact the Exiled Team on Discord.");
-
-                StreamReader reader = new StreamReader(stream);
-                string read = reader.ReadToEnd();
-                string[] readArray = read.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                string line = readArray.FirstOrDefault(str => str.Contains("Exiled.tar.gz"));
-
-                if (string.IsNullOrEmpty(line))
-                    return false;
-
-                string version = Between(line, "/galaxy119/EXILED/releases/download/", "/Exiled.tar.gz");
-                string[] versionArray = version.Split('.');
-
-                if (!int.TryParse(versionArray[0], out int major))
+                var url = string.Format(GitHubGetReleasesTemplate, REPOID);
+                using (var result = await httpClient.GetAsync(url).ConfigureAwait(false))
                 {
-                    Log.Error($"Unable to parse Exiled major version.");
-                    return false;
-                }
+                    using (var streamResult = await result.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    {
+                        var releases = JsonSerializer.Deserialize<Release[]>(streamResult)
+                            .Where(r => Version.TryParse(r.TagName, out _))
+                            .OrderByDescending(r => r.CreatedAt.Ticks)
+                            .ToArray();
 
-                if (!int.TryParse(versionArray[1], out int minor))
-                {
-                    Log.Error($"Unable to parse Exiled minor version.");
-                    return false;
-                }
+                        Log.Debug($"Found {releases.Length} releases");
+                        for (int z = 0; z < releases.Length; z++)
+                        {
+                            var release = releases[z];
+                            Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
 
-                if (!int.TryParse(versionArray[2], out int build))
-                {
-                    Log.Error($"Unable to parse Exiled patch version.");
-                    return false;
-                }
+                            for (int x = 0; x < release.Assets.Length; x++)
+                            {
+                                var asset = release.Assets[x];
+                                Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.BrowserDownloadUrl}");
+                            }
+                        }
 
-                versionUpdateUrl = $"{url.Replace("latest/", string.Empty)}download/{version}/Exiled.tar.gz";
-
-                if (RequiredExiledVersion < new Version(major, minor, build))
-                {
-                    Log.Info($"Your version is outdated: Current {RequiredExiledVersion.Major}.{RequiredExiledVersion.Minor}.{RequiredExiledVersion.Build}, New: {major}.{minor}.{build}");
-                    return true;
+                        if (releases.Length != 0 && FindRelease(releases, out var targetRelease, out var includedPRE))
+                        {
+                            var installerNames = GetAvailableInstallerNames();
+                            if (!FindAsset(installerNames, targetRelease, out var asset))
+                            {
+                                // Error: no asset
+                                Log.Warn("Couldn't found the asset, the update will not be installed");
+                            }
+                            else
+                            {
+                                return new Tuple<bool, ReleaseAsset, bool>(true, asset, includedPRE);
+                            }
+                        }
+                        else
+                        {
+                            // No errors
+                            Log.Info("No new versions found, you're using the most recent version of Exiled!");
+                        }
+                    }
                 }
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Log.Error($"Updating error: {exception}");
+                Log.Error($"{nameof(FindUpdate)} throw an exception:");
+                Log.Error(ex);
             }
 
+            return new Tuple<bool, ReleaseAsset, bool>(false, default, false);
+        }
+
+        private string[] GetAvailableInstallerNames()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return InstallerAssetNamesWin;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return InstallerAssetNamesLinux;
+            }
+            else
+            {
+                Log.Error("Can't determine your OS platform");
+                Log.Error($"OSDesc: {RuntimeInformation.OSDescription}");
+                Log.Error($"OSArch: {RuntimeInformation.OSArchitecture}");
+
+                return null;
+            }
+        }
+
+        private bool FindRelease(Release[] releases, out Release release, out bool includedPRE)
+        {
+            includedPRE = Config.ShouldDownloadTestingReleases || releases.Any(r => r.PreRelease && Version.Parse(r.TagName) == Version);
+            for (int z = 0; z < releases.Length; z++)
+            {
+                release = releases[z];
+#if DEBUG
+                var version = Version.Parse(release.TagName);
+                Log.Debug($"TV - {version} | CV - {Version} | TV >= CV - {CustomVersionGreaterOrEquals(version, Version)}");
+#endif
+                if (release.PreRelease && !includedPRE)
+                    continue;
+
+#if DEBUG
+                if (CustomVersionGreaterOrEquals(version, Version))
+#else
+                if (CustomVersionGreater(Version.Parse(release.TagName), Version))
+#endif
+                    return true;
+            }
+
+            release = default;
             return false;
         }
 
-        private string Between(string str, string firstString, string lastString)
+        private bool FindAsset(string[] assetNames, Release release, out ReleaseAsset asset)
         {
-            int firstPosition = str.IndexOf(firstString, StringComparison.Ordinal) + firstString.Length;
-
-            return str.Substring(firstPosition, str.IndexOf(lastString, StringComparison.Ordinal) - firstPosition);
-        }
-
-        private void ExtractTarGz(string filename, string outputDir)
-        {
-            using (FileStream stream = File.OpenRead(filename))
-                ExtractTarGz(stream, outputDir);
-        }
-
-        private void ExtractTarGz(Stream stream, string outputDir)
-        {
-            using (GZipStream gzip = new GZipStream(stream, CompressionMode.Decompress))
+            for (int z = 0; z < release.Assets.Length; z++)
             {
-                const int chunk = 4096;
+                asset = release.Assets[z];
 
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    int read;
-                    byte[] buffer = new byte[chunk];
-
-                    do
-                    {
-                        read = gzip.Read(buffer, 0, chunk);
-                        memoryStream.Write(buffer, 0, read);
-                    }
-                    while (read == chunk);
-
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    ExtractTar(memoryStream, outputDir);
-                }
+                // Cannot use ref, out, or in parameter 'asset' inside an anonymous method, lambda expression, query expression, or local function
+                var a = asset;
+                if (assetNames.Any(an => an.Equals(a.Name, StringComparison.OrdinalIgnoreCase)))
+                    return true;
             }
+
+            asset = default;
+            return false;
         }
 
-        private void ExtractTar(Stream stream, string outputDir)
+#if DEBUG
+        private bool CustomVersionGreaterOrEquals(Version v1, Version v2)
         {
-            byte[] buffer = new byte[100];
+            return v1.Major >= v2.Major || v1.Minor >= v2.Minor || v1.Build >= v2.Build || v1.Revision >= v2.Revision;
+        }
+#endif
 
-            while (true)
-            {
-                try
-                {
-                    stream.Read(buffer, 0, 100);
-
-                    string name = Encoding.ASCII.GetString(buffer).Trim('\0');
-
-                    if (string.IsNullOrWhiteSpace(name))
-                        break;
-
-                    stream.Seek(24, SeekOrigin.Current);
-                    stream.Read(buffer, 0, 12);
-
-                    long size = Convert.ToInt64(Encoding.UTF8.GetString(buffer, 0, 12).Trim('\0').Trim(), 8);
-
-                    stream.Seek(376L, SeekOrigin.Current);
-
-                    string output = Path.Combine(outputDir, name);
-                    if (!Directory.Exists(Path.GetDirectoryName(output)))
-                        Directory.CreateDirectory(Path.GetDirectoryName(output));
-
-                    if (!name.Equals("./", StringComparison.InvariantCulture))
-                    {
-                        using (FileStream str = File.Open(output, FileMode.OpenOrCreate, FileAccess.Write))
-                        {
-                            byte[] buf = new byte[size];
-                            stream.Read(buf, 0, buf.Length);
-                            str.Write(buf, 0, buf.Length);
-                        }
-                    }
-
-                    long position = stream.Position;
-                    long offset = 512 - (position % 512);
-
-                    if (offset == 512)
-                        offset = 0;
-
-                    stream.Seek(offset, SeekOrigin.Current);
-                }
-                catch (UnauthorizedAccessException)
-                {
-                }
-                catch (Exception exception)
-                {
-                    Log.Error($"An error has occurred while extracting Exiled files: {exception}");
-                }
-            }
+        private bool CustomVersionGreater(Version v1, Version v2)
+        {
+            return v1.Major > v2.Major || v1.Minor > v2.Minor || v1.Build > v2.Build || v1.Revision > v2.Revision;
         }
     }
 }

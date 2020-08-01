@@ -5,28 +5,54 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
+    <Optimize>true</Optimize>
+    <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
+    <PlatformTarget>x64</PlatformTarget>
 
     <AssemblyName>Exiled.Installer</AssemblyName>
+    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
+    <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
+    
+    <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Company>Exiled Team</Company>
     <Copyright>Copyright © Exiled Team $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
-    <Version>3.0.0</Version>
-    <PackageIcon>Exiled_Icon.ico</PackageIcon>
+    <Version>3.0.1</Version>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
+    <ApplicationIcon>Resources\Exiled_Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(Configuration) == 'Release'">
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove=".gitignore" />
-    <None Remove="Exiled_Icon.ico" />
-    <None Include="Exiled_Icon.ico" Pack="true" />
+    <None Update="Resources\Exiled_Icon.ico" Pack="true" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Octokit" Version="0.48.0" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="build; analyzers" PrivateAssets="All" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

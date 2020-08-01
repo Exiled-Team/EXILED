@@ -40,6 +40,12 @@ namespace Exiled.Installer
                 getDefaultValue: () => false,
                 description: "Gets all possible versions for installation")
             { IsRequired = false },
+
+            new Option<bool>(
+                "--exit",
+                getDefaultValue: () => false,
+                description: "Automatically exits the application anyway")
+            { IsRequired = false }
         };
 
         public string? Path { get; set; }
@@ -49,6 +55,8 @@ namespace Exiled.Installer
         public string? TargetVersion { get; set; }
 
         public bool GetVersions { get; set; }
+
+        public bool Exit { get; set; }
 
         public static async Task Parse(string[] args)
         {
