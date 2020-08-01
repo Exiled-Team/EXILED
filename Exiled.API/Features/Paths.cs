@@ -20,12 +20,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets AppData path.
         /// </summary>
-        public static string AppData { get; private set; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+        public static string AppData { get; } = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
 
         /// <summary>
         /// Gets managed assemblies directory path.
         /// </summary>
-        public static string ManagedAssemblies { get; private set; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
+        public static string ManagedAssemblies { get; } = Path.Combine(Path.Combine(Environment.CurrentDirectory, "SCPSL_Data"), "Managed");
 
         /// <summary>
         /// Gets or sets exiled directory path.
