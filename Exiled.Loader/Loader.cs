@@ -122,7 +122,7 @@ namespace Exiled.Loader
         {
             try
             {
-                return Assembly.LoadFrom(path);
+                return Assembly.Load(File.ReadAllBytes(path));
             }
             catch (Exception exception)
             {
