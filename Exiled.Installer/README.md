@@ -4,7 +4,7 @@ EXILED.Installer - EXILED online installer. Downloads the latest release from th
 #### Usage
 ```
 Usage:
-  Exiled.Installer-Win [options] [[--] <additional arguments>...]]
+  Exiled.Installer [options] [[--] <additional arguments>...]]
 
 Options:
   -p, --path <path>                    Path to the folder with the SL server
