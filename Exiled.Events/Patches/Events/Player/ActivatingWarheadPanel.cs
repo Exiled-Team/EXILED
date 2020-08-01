@@ -41,15 +41,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
 
-                if (!__instance._sr.BypassMode &&
-                    (itemById == null || !Enumerable.Contains(itemById.permissions, "CONT_LVL_3")))
+                if (!__instance._sr.BypassMode && itemById == null)
                     return false;
 
                 var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string> { "CONT_LVL_3" });
 
                 Player.OnActivatingWarheadPanel(ev);
 
-                if (!ev.IsAllowed)
+                if (!ev.IsAllowed || !itemById.permissions.Intersect(ev.Permissions).Any())
                     return false;
 
                 gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
