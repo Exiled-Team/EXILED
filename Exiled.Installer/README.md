@@ -4,13 +4,14 @@ EXILED.Installer - EXILED online installer. Downloads the latest release from th
 #### Usage
 ```
 Usage:
-  Exiled.Installer [options] [[--] <additional arguments>...]]
+  Exiled.Installer-Win [options] [[--] <additional arguments>...]]
 
 Options:
   -p, --path <path>                    Path to the folder with the SL server
   --pre-releases                       Includes pre-releases [default: False]
   --target-version <target-version>    Target version for installation
   --get-versions                       Gets all possible versions for installation [default: False]
+  --exit                               Automatically exits the application anyway [default: False]
   --version                            Show version information
   -?, -h, --help                       Show help and usage information
 
@@ -19,8 +20,3 @@ Additional Arguments:
 ```
 
 **You can just run EXILED.Installer in the game directory.**
-
-#### Arguments
-`-p`/`--path` - path to the game directory, in case the application is launched from another directory.
-
-`--pre-releases` - Includes pre-releases EXILED (if launched without arguments (from the game folder) true by default, after release 2.0.0 it'll be false).
