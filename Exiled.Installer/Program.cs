@@ -138,8 +138,12 @@ namespace Exiled.Installer
             {
                 Console.WriteLine(ex);
                 Console.WriteLine("Read the exception message, read the readme, and if you still don't understand what to do, then contact #support in our discord server with the attached screenshot of the full exception");
-                Console.Read();
+                if (!args.Exit)
+                    Console.Read();
             }
+
+            if (args.Exit)
+                Environment.Exit(0);
         }
 
         private static async Task<IEnumerable<Release>> GetReleases() =>
