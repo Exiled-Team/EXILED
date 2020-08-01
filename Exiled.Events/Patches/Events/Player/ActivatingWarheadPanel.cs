@@ -47,16 +47,19 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string> { "CONT_LVL_3" });
 
-                Handlers.Player.OnActivatingWarheadPanel(ev);
+                Player.OnActivatingWarheadPanel(ev);
+
+                if (!ev.IsAllowed)
+                    return false;
 
                 gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
                 __instance.OnInteract();
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ActivatingWarheadPanel: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ActivatingWarheadPanel: {exception}\n{exception.StackTrace}");
 
                 return true;
             }
