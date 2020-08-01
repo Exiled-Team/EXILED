@@ -86,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// </remarks>
     /// <summary>
     /// Method decompiled by dnSpy v6.1.1 .NET Core.
-    /// A call to our <see cref="Server.OnLocalReporting(LocalReportingEventArgs)"/> method
+    /// A call to our <see cref="Handlers.Server.OnLocalReporting"/> method
     /// is inserted into it which returns the bool value that determines further processing of the report.
     /// </summary>
     [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.CallCmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]

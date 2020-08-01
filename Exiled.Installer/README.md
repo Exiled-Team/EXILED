@@ -7,10 +7,12 @@ Usage:
   Exiled.Installer [options] [[--] <additional arguments>...]]
 
 Options:
-  -p, --path <path>    Path to the folder with the SL server
-  --pre-releases       Includes pre-releases [default: False]
-  --version            Show version information
-  -?, -h, --help       Show help and usage information
+  -p, --path <path>                    Path to the folder with the SL server
+  --pre-releases                       Includes pre-releases [default: False]
+  --target-version <target-version>    Target version for installation
+  --get-versions                       Gets all possible versions for installation [default: False]
+  --version                            Show version information
+  -?, -h, --help                       Show help and usage information
 
 Additional Arguments:
   Arguments passed to the application that is being run.

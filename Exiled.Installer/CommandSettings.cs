@@ -21,23 +21,38 @@ namespace Exiled.Installer
         {
             new Option<string?>(
                 new[] { "-p", "--path" },
-                "Path to the folder with the SL server")
+                description: "Path to the folder with the SL server")
             { IsRequired = false, },
 
             new Option<bool>(
-                new[] { "--pre-releases" },
-                () => false,
-                "Includes pre-releases")
+                "--pre-releases",
+                getDefaultValue: () => false,
+                description: "Includes pre-releases")
             { IsRequired = false, },
+
+            new Option<string?>(
+                "--target-version",
+                description: "Target version for installation")
+            { IsRequired = false },
+
+            new Option<bool>(
+                "--get-versions",
+                getDefaultValue: () => false,
+                description: "Gets all possible versions for installation")
+            { IsRequired = false },
         };
 
         public string? Path { get; set; }
 
-        public bool IncludePreReleases { get; set; }
+        public bool PreReleases { get; set; }
+
+        public string? TargetVersion { get; set; }
+
+        public bool GetVersions { get; set; }
 
         public static async Task Parse(string[] args)
         {
-            RootCommand.Handler = CommandHandler.Create<CommandSettings?>(async args => await Program.MainSafe(args).ConfigureAwait(false));
+            RootCommand.Handler = CommandHandler.Create<CommandSettings>(async args => await Program.MainSafe(args).ConfigureAwait(false));
             RootCommand.TreatUnmatchedTokensAsErrors = false;
 
             await RootCommand.InvokeAsync(args).ConfigureAwait(false);

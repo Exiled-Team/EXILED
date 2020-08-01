@@ -234,7 +234,7 @@ namespace Exiled.API.Features
         public RoleType Role
         {
             get => ReferenceHub.characterClassManager.NetworkCurClass;
-            set => ReferenceHub.characterClassManager.SetPlayersClass(value, GameObject);
+            set => SetRole(value);
         }
 
         /// <summary>
@@ -508,7 +508,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="global::Stamina"/> class.
+        /// Gets the <see cref="Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
