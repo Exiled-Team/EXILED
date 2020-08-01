@@ -14,7 +14,7 @@ namespace Exiled.Boostrap
     /// <summary>
     /// The assembly loader class for Exiled.
     /// </summary>
-    public class Bootstrap
+    public sealed class Bootstrap
     {
         /// <summary>
         /// Gets a value indicating whether exiled has already been loaded or not.
@@ -39,7 +39,7 @@ namespace Exiled.Boostrap
                 string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
                 string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
-                if (Environment.CurrentDirectory.ToLower().Contains("testing"))
+                if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                     rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
 
                 if (!Directory.Exists(rootPath))
@@ -51,10 +51,21 @@ namespace Exiled.Boostrap
                     {
                         if (File.Exists(Path.Combine(dependenciesPath, "YamlDotNet.dll")))
                         {
-                            Assembly.LoadFrom(Path.Combine(rootPath, "Exiled.Loader.dll"))
+                            Assembly.Load(File.ReadAllBytes(Path.Combine(rootPath, "Exiled.Loader.dll")))
                                 .GetType("Exiled.Loader.Loader")
                                 .GetMethod("Run")
-                                ?.Invoke(null, new object[] { new Assembly[] { Assembly.LoadFrom(Path.Combine(dependenciesPath, "Exiled.API.dll")), Assembly.LoadFrom(Path.Combine(dependenciesPath, "YamlDotNet.dll")) } });
+                                ?.Invoke(
+                                    null,
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+                                    new object[]
+                                    {
+                                        new Assembly[]
+                                        {
+                                            Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "Exiled.API.dll"))),
+                                            Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "YamlDotNet.dll"))),
+                                        },
+                                    });
+#pragma warning restore SA1118 // Parameter should not span multiple lines
 
                             IsLoaded = true;
                         }
