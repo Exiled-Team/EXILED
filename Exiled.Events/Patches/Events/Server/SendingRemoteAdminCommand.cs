@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
                 }
             }
 
-            if (q.Contains("REQUEST_DATA PLAYER_LIST SILENT"))
+            if (q == "REQUEST_DATA PLAYER_LIST SILENT")
                 return true;
 
             Handlers.Server.OnSendingRemoteAdminCommand(ev);
