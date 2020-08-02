@@ -23,32 +23,35 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="PlayerManager.AddPlayer(GameObject)"/>.
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.AddPlayer))]
+    [HarmonyPatch(typeof(CharacterClassManager), "set_" + nameof(CharacterClassManager.NetworkIsVerified))]
     internal static class Joined
     {
-        private static void Postfix(GameObject player)
+        private static void Prefix(CharacterClassManager __instance)
         {
             try
             {
-                if (!API.Features.Player.Dictionary.TryGetValue(player, out API.Features.Player newPlayer))
-                {
-                    newPlayer = new API.Features.Player(ReferenceHub.GetHub(player));
+                if (string.IsNullOrEmpty(__instance?.UserId))
+                    return;
 
-                    API.Features.Player.Dictionary.Add(player, newPlayer);
+                if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
+                {
+                    player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+
+                    API.Features.Player.Dictionary.Add(__instance.gameObject, player);
                 }
 
-                API.Features.Log.Debug($"Player {newPlayer?.Nickname} ({newPlayer?.UserId}) connected with the IP: {newPlayer?.IPAddress}");
+                API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
 
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     API.Features.Log.Debug($"Server is full!");
 
                 Timing.CallDelayed(0.25f, () =>
                 {
-                    if (newPlayer != null && newPlayer.IsMuted)
-                        newPlayer.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
+                    if (player != null && player.IsMuted)
+                        player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
                 });
 
-                var ev = new JoinedEventArgs(API.Features.Player.Get(player));
+                var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
 
                 Player.OnJoined(ev);
             }
