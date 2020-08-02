@@ -10,10 +10,10 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game badge.
     /// </summary>
-    public class Badge
+    public struct Badge
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Badge"/> class.
+        /// Initializes a new instance of the <see cref="Badge"/> struct.
         /// </summary>
         /// <param name="text">The badge text.</param>
         /// <param name="color">The badge color.</param>
@@ -30,21 +30,21 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the badge text.
         /// </summary>
-        public string Text { get; private set; }
+        public string Text { get; }
 
         /// <summary>
         /// Gets the badge color.
         /// </summary>
-        public string Color { get; private set; }
+        public string Color { get; }
 
         /// <summary>
         /// Gets the badge type.
         /// </summary>
-        public int Type { get; private set; }
+        public int Type { get; }
 
         /// <summary>
         /// Gets a value indicating whether the badge is global or not.
         /// </summary>
-        public bool IsGlobal { get; private set; }
+        public bool IsGlobal { get; }
     }
 }

@@ -631,21 +631,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the global badge of the player, can be null if none.
         /// </summary>
-        public Badge GlobalBadge
+        public Badge? GlobalBadge
         {
             get
             {
-                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                Dictionary<string, string> dictionary = (from target in token.Split(new string[] { "<br>" }, StringSplitOptions.None)
-                                                         select target.Split(
-                                                             new string[] { ": " },
-                                                             StringSplitOptions.None)).ToDictionary(split => split[0], split => split[1]);
-
-                return int.TryParse(dictionary["Badge type"], out int badgeType) ? null : new Badge(dictionary["Badge text"], dictionary["Badge color"], badgeType, true);
+                var serverRoles = ReferenceHub.serverRoles;
+                return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
 
@@ -755,7 +751,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.Nickname.ToLower().Contains(args.ToLower()))
+                        if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         if (firstString.Length < maxNameLength)
