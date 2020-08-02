@@ -30,21 +30,21 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the badge text.
         /// </summary>
-        public string Text { get; }
+        public string Text { get; private set; }
 
         /// <summary>
         /// Gets the badge color.
         /// </summary>
-        public string Color { get; }
+        public string Color { get; private set; }
 
         /// <summary>
         /// Gets the badge type.
         /// </summary>
-        public int Type { get; }
+        public int Type { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the badge is global or not.
         /// </summary>
-        public bool IsGlobal { get; }
+        public bool IsGlobal { get; private set; }
     }
 }
