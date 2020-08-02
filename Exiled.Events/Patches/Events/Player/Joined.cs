@@ -23,14 +23,14 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="PlayerManager.AddPlayer(GameObject)"/>.
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), "set_" + nameof(CharacterClassManager.NetworkIsVerified))]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIsVerified), MethodType.Setter)]
     internal static class Joined
     {
-        private static void Prefix(CharacterClassManager __instance)
+        private static void Prefix(CharacterClassManager __instance, bool value)
         {
             try
             {
-                if (string.IsNullOrEmpty(__instance?.UserId))
+                if (!value || string.IsNullOrEmpty(__instance?.UserId))
                     return;
 
                 if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
                     API.Features.Player.Dictionary.Add(__instance.gameObject, player);
                 }
 
-                API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
+                API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
 
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     API.Features.Log.Debug($"Server is full!");

@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var ev = new LeftEventArgs(player);
 
-                API.Features.Log.Debug($"Player {ev.Player.Nickname} ({ev.Player.UserId}) disconnected");
+                API.Features.Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({player?.Id}) disconnected", ConsoleColor.Green);
 
                 Player.OnLeft(ev);
 
