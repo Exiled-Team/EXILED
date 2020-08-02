@@ -10,10 +10,10 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game badge.
     /// </summary>
-    public class Badge
+    public struct Badge
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Badge"/> class.
+        /// Initializes a new instance of the <see cref="Badge"/> struct.
         /// </summary>
         /// <param name="text">The badge text.</param>
         /// <param name="color">The badge color.</param>
