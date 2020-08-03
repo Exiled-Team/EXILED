@@ -16,13 +16,13 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUseLocker(int, int)"/>.
+    /// Patches <see cref="PlayerInteract.CallCmdUseLocker(byte, byte)"/>.
     /// Adds the <see cref="Player.InteractingLocker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
     internal static class InteractingLocker
     {
-        private static bool Prefix(PlayerInteract __instance, int lockerId, int chamberNumber)
+        private static bool Prefix(PlayerInteract __instance, byte lockerId, byte chamberNumber)
         {
             try
             {
@@ -66,17 +66,17 @@ namespace Exiled.Events.Patches.Events.Player
                     bool flag = (singleton.openLockers[lockerId] & 1 << chamberNumber) != 1 << chamberNumber;
                     singleton.ModifyOpen(lockerId, chamberNumber, flag);
                     singleton.RpcDoSound(lockerId, chamberNumber, flag);
-                    bool state = true;
+                    bool anyOpen = true;
                     for (int i = 0; i < singleton.lockers[lockerId].chambers.Length; i++)
                     {
                         if ((singleton.openLockers[lockerId] & 1 << i) == 1 << i)
                         {
-                            state = false;
+                            anyOpen = false;
                             break;
                         }
                     }
 
-                    singleton.lockers[lockerId].LockPickups(state);
+                    singleton.lockers[lockerId].LockPickups(!flag, (uint)chamberNumber, anyOpen);
                     if (!string.IsNullOrEmpty(accessToken))
                     {
                         singleton.RpcChangeMaterial(lockerId, chamberNumber, false);

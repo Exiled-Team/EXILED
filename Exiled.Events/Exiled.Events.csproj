@@ -55,6 +55,9 @@
     <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
     </Reference>
+    <Reference Include="NorthwoodLib">
+      <HintPath>..\..\References\NorthwoodLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />

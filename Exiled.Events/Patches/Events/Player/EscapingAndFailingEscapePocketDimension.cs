@@ -102,7 +102,7 @@ namespace Exiled.Events.Patches.Events.Player
                     Vector3 tpPosition = __instance.tpPositions[Random.Range(0, __instance.tpPositions.Count)];
                     tpPosition.y += 2f;
                     PlayerMovementSync component2 = other.GetComponent<PlayerMovementSync>();
-                    component2.SetSafeTime(2f);
+                    component2.AddSafeTime(2f);
 
                     var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(component2.gameObject), tpPosition);
 
@@ -117,7 +117,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                if (!__instance.RefreshExit)
+                if (!PocketDimensionTeleport.RefreshExit)
                     return false;
                 ImageGenerator.pocketDimensionGenerator.GenerateRandom();
                 return false;

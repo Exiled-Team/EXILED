@@ -124,9 +124,7 @@ namespace Exiled.Events
         public void ReloadDisabledPatches()
         {
             foreach ((Type type, string methodName) in DisabledPatches)
-            {
                 Harmony.Unpatch(type.GetMethod(methodName), HarmonyPatchType.All, Harmony.Id);
-            }
         }
 
         /// <summary>

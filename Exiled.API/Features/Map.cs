@@ -141,7 +141,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
 
         /// <summary>
         ///     Clears the lazy loading game object cache.

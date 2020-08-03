@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                             var itemPerms = __instance._inv.GetItemByID(__instance._inv.curItem).permissions;
 
                             ev.IsAllowed = itemPerms.Any(p =>
-                                ev.Door.backwardsCompatPermissions.TryGetValue(p, out var flag) &&
+                                Door.backwardsCompatPermissions.TryGetValue(p, out var flag) &&
                                 ev.Door.PermissionLevels.HasPermission(flag)) || false;
                         }
                         else

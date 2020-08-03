@@ -16,6 +16,8 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using Respawning;
     using Respawning.NamingRules;
 
@@ -61,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                     int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);
 
-                    List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Rent();
+                    List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Shared.Rent();
 
                     var ev = new RespawningTeamEventArgs(list, num, __instance.NextKnownTeam);
                     Handlers.Server.OnRespawningTeam(ev);
