@@ -200,7 +200,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initializing plugin at {assembly.Location}! {exception}");
+                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
             }
 
             return null;
