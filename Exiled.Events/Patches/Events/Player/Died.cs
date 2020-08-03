@@ -7,47 +7,86 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
-    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool)"/>.
-    /// Adds the <see cref="Player.Died"/> event.
+    /// Adds the <see cref="Handlers.Player.Died"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal static class Died
     {
-        private static void Postfix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = new List<CodeInstruction>(instructions);
+
+            // The index offset.
+            var offset = -2;
+
+            // Find the index of "playerStats.SetHpAmount" method and add the offset.
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
+
+            // Define the return label and add it to the starting instruction.
+            var returnLabel = generator.DefineLabel();
+            newInstructions[index].labels.Add(returnLabel);
+
+            // Declare the attacker local variable.
+            var attacker = generator.DeclareLocal(typeof(Player));
+
+            // Declare the target local variable.
+            var target = generator.DeclareLocal(typeof(Player));
+
+            // Player attacker = Player.Get(__instance.gameObject);
+            // Player target = Player.Get(go);
+            //
+            // if (target == null || attacker == null || target.IsGodModeEnabled)
+            //  return;
+            //
+            // var ev = new DiedEventArgs(attacker, target, info, true);
+            //
+            // Handlers.Player.OnDied(ev);
+            //
+            // info = ev.HitInformations;
+            newInstructions.InsertRange(index, new[]
             {
-                API.Features.Player attacker = API.Features.Player.Get(__instance.gameObject);
-                API.Features.Player target = API.Features.Player.Get(go);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Stloc_S, attacker.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, target.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, attacker.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, target.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsGodModeEnabled))),
+                new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, attacker.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, target.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DiedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDied))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(DiedEventArgs), nameof(DiedEventArgs.HitInformations))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+            });
 
-                if ((target != null &&
-                     (target.Role != RoleType.Spectator || target.IsGodModeEnabled || target.IsHost)) ||
-                    attacker == null)
-                    return;
-
-                var ev = new DiedEventArgs(API.Features.Player.Get(__instance.gameObject), target, info);
-
-                target.Position = Vector3.zero;
-
-                Player.OnDied(ev);
-
-                info = ev.HitInformations;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Died: {e}\n{e.StackTrace}");
-            }
+            return newInstructions;
         }
     }
 }

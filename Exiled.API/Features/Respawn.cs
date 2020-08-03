@@ -24,6 +24,18 @@ namespace Exiled.API.Features
         public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.Where(controller => controller != null).FirstOrDefault();
 
         /// <summary>
+        /// Play an effect when a certain class spawns.
+        /// </summary>
+        /// <param name="effect">The effect to be played.</param>
+        public static void PlayEffect(byte effect) => PlayEffects(new[] { effect });
+
+        /// <summary>
+        /// Play an effect when a certain class spawns.
+        /// </summary>
+        /// <param name="effect">The effect to be played.</param>
+        public static void PlayEffect(RespawnEffectType effect) => PlayEffects(new[] { effect });
+
+        /// <summary>
         /// Play effects when a certain class spawns.
         /// </summary>
         /// <param name="effects">The effects to be played.</param>

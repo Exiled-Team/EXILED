@@ -20,7 +20,7 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            Log.Info($"{ev.Target?.Nickname} died from {ev.HitInformations.GetDamageName()}! {ev.Killer?.Nickname} killed him!");
+            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.GetDamageName()}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
