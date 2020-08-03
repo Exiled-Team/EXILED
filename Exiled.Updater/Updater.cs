@@ -171,7 +171,7 @@ namespace Exiled.Updater
                             if (!FindAsset(installerNames, targetRelease, out var asset))
                             {
                                 // Error: no asset
-                                Log.Warn("Couldn't found the asset, the update will not be installed");
+                                Log.Warn("Couldn't find the asset, the update will not be installed");
                             }
                             else
                             {
