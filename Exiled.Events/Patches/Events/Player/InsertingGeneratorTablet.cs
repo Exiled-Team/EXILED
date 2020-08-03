@@ -15,112 +15,79 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="Generator079.Interact(GameObject, string)"/>.
+    /// Patches <see cref="Generator079.Interact(GameObject, PlayerInteract.Generator079Operations)"/>.
     /// Adds the <see cref="Player.InsertingGeneratorTablet"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
     internal static class InsertingGeneratorTablet
     {
-        private static bool Prefix(Generator079 __instance, GameObject person, string command)
+        private static bool Prefix(Generator079 __instance, GameObject person, PlayerInteract.Generator079Operations command)
         {
             try
             {
-                if (command.StartsWith("EPS_TABLET"))
+                switch (command)
                 {
-                    if (__instance.isTabletConnected || !__instance.isDoorOpen || __instance._localTime <= 0.0 ||
-                        Generator079.mainGenerator.forcedOvercharge)
-                        return false;
-                    Inventory component = person.GetComponent<Inventory>();
-                    foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
-                    {
-                        if (syncItemInfo.id == ItemType.WeaponManagerTablet)
+                    case PlayerInteract.Generator079Operations.Door:
+                        bool isAllowed = true;
+                        switch (__instance.isDoorOpen)
                         {
-                            var ev = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                            case false:
+                                var openingEventArgs = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                Exiled.Events.Handlers.Player.OnOpeningGenerator(openingEventArgs);
+                                break;
+                            case true:
+                                var closingEventArgs = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                Exiled.Events.Handlers.Player.OnClosingGenerator(closingEventArgs);
+                                break;
+                        }
 
-                            Player.OnInsertingGeneratorTablet(ev);
+                        if (isAllowed)
+                            __instance.OpenClose(person);
+                        else
+                            __instance.RpcDenied();
+                        break;
 
-                            if (!ev.IsAllowed)
-                                return false;
+                    case PlayerInteract.Generator079Operations.Tablet:
+                        if (__instance.isTabletConnected || !__instance.isDoorOpen || (__instance._localTime <= 0.0 || Generator079.mainGenerator.forcedOvercharge))
+                            break;
+                        Inventory component = person.GetComponent<Inventory>();
+                        using (SyncList<Inventory.SyncItemInfo>.SyncListEnumerator enumerator = component.items.GetEnumerator())
+                        {
+                            while (enumerator.MoveNext())
+                            {
+                                Inventory.SyncItemInfo current = enumerator.Current;
+                                if (current.id == ItemType.WeaponManagerTablet)
+                                {
+                                    var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                                    Exiled.Events.Handlers.Player.OnInsertingGeneratorTablet(insertingEventAgrs);
 
-                            component.items.Remove(syncItemInfo);
-                            __instance.NetworkisTabletConnected = true;
+                                    if (insertingEventAgrs.IsAllowed)
+                                    {
+                                        component.items.Remove(current);
+                                        __instance.NetworkisTabletConnected = true;
+                                    }
+
+                                    break;
+                                }
+                            }
+
                             break;
                         }
-                    }
-                }
-                else if (command.StartsWith("EPS_CANCEL"))
-                {
-                    if (!__instance.isTabletConnected)
-                        return false;
 
-                    var ev = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
-
-                    Player.OnEjectingGeneratorTablet(ev);
-
-                    if (ev.IsAllowed)
-                        __instance.EjectTablet();
-                }
-                else if (command.StartsWith("EPS_DOOR"))
-                {
-                    Inventory component = person.GetComponent<Inventory>();
-                    if (component == null || __instance._doorAnimationCooldown > 0.0 ||
-                        __instance._deniedCooldown > 0.0)
-                        return false;
-                    if (!__instance.isDoorUnlocked)
-                    {
-                        var ev = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, person.GetComponent<ServerRoles>().BypassMode);
-
-                        if (component.curItem > ItemType.KeycardJanitor)
+                    case PlayerInteract.Generator079Operations.Cancel:
+                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                        Exiled.Events.Handlers.Player.OnEjectingGeneratorTablet(ejectingEventArgs);
+                        if (ejectingEventArgs.IsAllowed)
                         {
-                            foreach (string permission in component.GetItemByID(component.curItem).permissions)
-                            {
-                                if (permission == "ARMORY_LVL_2")
-                                    ev.IsAllowed = true;
-                            }
+                            __instance.EjectTablet();
                         }
 
-                        Player.OnUnlockingGenerator(ev);
-
-                        if (ev.IsAllowed)
-                        {
-                            __instance.NetworkisDoorUnlocked = true;
-                            __instance._doorAnimationCooldown = 0.5f;
-                        }
-                        else
-                        {
-                            __instance.RpcDenied();
-                        }
-                    }
-                    else
-                    {
-                        OpeningGeneratorEventArgs ev;
-
-                        if (!__instance.NetworkisDoorOpen)
-                        {
-                            ev = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance);
-
-                            Player.OnOpeningGenerator(ev);
-                        }
-                        else
-                        {
-                            ev = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance);
-
-                            Player.OnClosingGenerator((ClosingGeneratorEventArgs)ev);
-                        }
-
-                        if (!ev.IsAllowed)
-                        {
-                            __instance.RpcDenied();
-                            return false;
-                        }
-
-                        __instance._doorAnimationCooldown = 1.5f;
-                        __instance.NetworkisDoorOpen = !__instance.isDoorOpen;
-                        __instance.RpcDoSound(__instance.isDoorOpen);
-                    }
+                        break;
                 }
 
                 return false;

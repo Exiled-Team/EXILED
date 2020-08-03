@@ -10,17 +10,11 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
-
     using CustomPlayerEffects;
-
     using Exiled.API.Features;
-
     using HarmonyLib;
-
     using Mirror;
-
     using PlayableScps;
-
     using UnityEngine;
 
     /// <summary>
@@ -49,62 +43,99 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in players)
                 {
                     Player player = Player.Get(gameObject);
-
-                    if (player == null)
-                        continue;
-
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
-                    for (int index = 0; index < __instance._usedData; ++index)
-                    {
-                        PlayerPositionData ppd = __instance._transmitBuffer[index];
-                        Player currentTarget = Player.Get(players[index]);
-                        Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
-                        bool canSee = true;
-                        if (currentTarget == null)
-                            continue;
 
-                        if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))
+                    if (player.Role.Is939())
+                    {
+                        for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            canSee = false;
+                            if (__instance._transmitBuffer[index].position.y < 800.0)
+                            {
+                                ReferenceHub hub2 = ReferenceHub.GetHub(players[index]);
+                                if (hub2.characterClassManager.CurRole.team != Team.SCP &&
+                                    hub2.characterClassManager.CurRole.team != Team.RIP && !players[index]
+                                        .GetComponent<Scp939_VisionController>()
+                                        .CanSee(player.ReferenceHub.characterClassManager.Scp939))
+                                    __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
+                            }
                         }
-                        else if (player.Role.Is939() && ppd.position.y < 800.0)
+                    }
+                    else if (player.Role != RoleType.Spectator && player.Role != RoleType.Scp079)
+                    {
+                        for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            if (currentTarget.Team != Team.SCP && currentTarget.Team != Team.RIP && !currentTarget.GameObject.GetComponent<Scp939_VisionController>().CanSee(player.ReferenceHub.characterClassManager.Scp939))
+                            PlayerPositionData ppd = __instance._transmitBuffer[index];
+                            Player currentTarget = Player.Get(players[index]);
+                            Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
+                            bool canSee = true;
+
+                            if (currentTarget == null)
+                                continue;
+
+                            if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))
                                 canSee = false;
-                        }
-                        else if (player.Role != RoleType.Scp079 && player.Role != RoleType.Spectator)
-                        {
-                            if (Math.Abs(ppd.position.y - player.Position.y) > 35)
+
+                            Vector3 vector3 = __instance._transmitBuffer[index].position - player.ReferenceHub.playerMovementSync.RealModelPosition;
+                            if (Math.Abs(vector3.y) > 35.0)
                             {
                                 canSee = false;
                             }
                             else
                             {
-                                if (ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub hub))
+                                float sqrMagnitude = vector3.sqrMagnitude;
+                                if (player.ReferenceHub.playerMovementSync.RealModelPosition.y < 800.0)
                                 {
-                                    if (scp096 != null && scp096.Enraged && !scp096.HasTarget(hub) && hub.characterClassManager.CurRole.team != Team.SCP)
+                                    if (sqrMagnitude >= 1764.0)
+                                    {
                                         canSee = false;
-                                    else if (hub.playerEffectsController.GetEffect<Scp268>().Enabled && (scp096 == null || !scp096.HasTarget(hub)))
-                                        canSee = false;
+                                        continue;
+                                    }
                                 }
+                                else if (sqrMagnitude >= 7225.0)
+                                {
+                                    canSee = false;
+                                    continue;
+                                }
+
+                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
+                                {
+                                    if (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP))
+                                    {
+                                        canSee = false;
+                                    }
+                                    else if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                    {
+                                        bool flag = false;
+                                        if (scp096 != null)
+                                            flag = scp096.HasTarget(hub2);
+
+                                        if (player.ReferenceHub.characterClassManager.CurClass != RoleType.Scp079 &&
+                                            player.ReferenceHub.characterClassManager.CurClass != RoleType.Spectator &&
+                                            !flag)
+                                            canSee = false;
+                                    }
+                                }
+
+                                if (!canSee)
+                                    ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
+
+                                __instance._transmitBuffer[index] = ppd;
                             }
                         }
-
-                        if (!canSee)
-                            ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
-
-                        __instance._transmitBuffer[index] = ppd;
                     }
 
-                    NetworkConnection networkConnection = player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer ? NetworkServer.localConnection : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
+                    NetworkConnection networkConnection = player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer
+                        ? NetworkServer.localConnection
+                        : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
                     if (__instance._usedData <= 20)
                     {
-                        networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
+                        networkConnection.Send(
+                            new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
                     }
                     else
                     {
                         byte part;
-                        for (part = 0; part < __instance._usedData / 20; ++part)
+                        for (part = (byte)0; (int)part < __instance._usedData / 20; ++part)
                             networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, 20, part), 1);
                         byte count = (byte)(__instance._usedData % (part * 20));
                         if (count > 0)

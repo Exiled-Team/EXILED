@@ -17,7 +17,7 @@ namespace Exiled.Events.Patches.Events.Map
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="WeaponManager.RpcPlaceDecal(bool, int, Vector3, Quaternion)"/>.
+    /// Patches <see cref="WeaponManager.RpcPlaceDecal(bool, sbyte, Vector3, Quaternion)"/>.
     /// Adds the <see cref="Map.PlacingDecal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.RpcPlaceDecal))]
