@@ -295,10 +295,11 @@ namespace Exiled.Installer
             {
                 release = r;
 
-                if (args.TargetVersion != null)
-                    return r.TagName.Equals(args.TargetVersion, StringComparison.OrdinalIgnoreCase);
+                if (args.TargetVersion != null && r.TagName.Equals(args.TargetVersion, StringComparison.OrdinalIgnoreCase))
+                    return true;
 
-                return (r.Prerelease && args.PreReleases) || !r.Prerelease;
+                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
+                    return true;
             }
 
             release = null;
