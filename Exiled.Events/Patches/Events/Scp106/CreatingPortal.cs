@@ -9,13 +9,19 @@ namespace Exiled.Events.Patches.Events.Scp106
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1313
+    using System.Collections.Generic;
 
+    using System.Reflection.Emit;
+    using System.Text;
+
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.CallCmdMakePortal"/>.
@@ -24,23 +30,54 @@ namespace Exiled.Events.Patches.Events.Scp106
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMakePortal))]
     internal static class CreatingPortal
     {
-        private static bool Prefix(Scp106PlayerScript __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!__instance._interactRateLimit.CanExecute(true) || !__instance.hub.falldamage.isGrounded)
-                return false;
-            Transform transform = __instance.transform;
-            Debug.DrawRay(transform.position, -transform.up, Color.red, 10f);
-            RaycastHit hitInfo;
-            if (!__instance.iAm106 || __instance.goingViaThePortal || !Physics.Raycast(new Ray(__instance.transform.position, -__instance.transform.up), out hitInfo, 10f, __instance.teleportPlacementMask))
-                return false;
+            var newInstructions = new List<CodeInstruction>(instructions);
 
-            var creatingPortalEventArgs = new CreatingPortalEventArgs(API.Features.Player.Get(__instance.gameObject), hitInfo.point);
-            Exiled.Events.Handlers.Scp106.OnCreatingPortal(creatingPortalEventArgs);
+            // Search for the last "ldarg.0".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            if (creatingPortalEventArgs.IsAllowed)
-                __instance.SetPortalPosition(hitInfo.point - Vector3.up);
+            // Get the return label.
+            var returnLabel = newInstructions[index - 1].operand;
 
-            return false;
+            // Declare CreatingPortalEventArgs, to be able to store its instance with "stloc.1".
+            var ev = generator.DeclareLocal(typeof(CreatingPortalEventArgs));
+
+            // var ev = new CreatingPortalEventArgs(API.Features.Player.Get(this.gameObject), raycastHit.point - Vector3.up, true);
+            //
+            // Scp106.OnCreatingPortal(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            //
+            // this.SetPortalPosition(ev.Position);
+            //
+            // return;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldloca_S, 1),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(RaycastHit), nameof(RaycastHit.point))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.up))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Vector3), "op_Subtraction")),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(CreatingPortalEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnCreatingPortal))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.Position))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.SetPortalPosition))),
+                new CodeInstruction(OpCodes.Ret),
+            });
+
+            return newInstructions;
         }
     }
 }
