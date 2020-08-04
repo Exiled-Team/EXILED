@@ -10,6 +10,7 @@ namespace Exiled.Installer
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.Parsing;
+    using System.IO;
     using System.Threading.Tasks;
 
 #pragma warning disable SA1401 // Fields should be private
@@ -19,7 +20,7 @@ namespace Exiled.Installer
     {
         public static readonly RootCommand RootCommand = new RootCommand
         {
-            new Option<string?>(
+            new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
                 description: "Path to the folder with the SL server")
             { IsRequired = false, },
@@ -36,19 +37,17 @@ namespace Exiled.Installer
             { IsRequired = false },
 
             new Option<bool>(
-                "--get-versions",
-                getDefaultValue: () => false,
-                description: "Gets all possible versions for installation")
+                "--exit",
+                description: "Automatically exits the application anyway")
             { IsRequired = false },
 
             new Option<bool>(
-                "--exit",
-                getDefaultValue: () => false,
-                description: "Automatically exits the application anyway")
+                "--get-versions",
+                description: "Gets all possible versions for installation")
             { IsRequired = false }
         };
 
-        public string? Path { get; set; }
+        public DirectoryInfo? Path { get; set; }
 
         public bool PreReleases { get; set; }
 

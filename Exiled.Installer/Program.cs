@@ -9,13 +9,11 @@ namespace Exiled.Installer
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
     using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
@@ -46,10 +44,17 @@ namespace Exiled.Installer
 
         private static readonly string ExiledTargetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
+        private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
+        private static readonly string?[] PatchesToProcess = new string?[2]
+        {
+            Directory.GetCurrentDirectory(),
+            null // reserved for arg
+        };
         private static readonly Version VersionLimit = new Version(2, 0, 0);
 
+        private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
         private static readonly GitHubClient GitHubClient = new GitHubClient(
-            new ProductHeaderValue($"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}"));
+            new ProductHeaderValue($"{Header}"));
 
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
@@ -64,7 +69,7 @@ namespace Exiled.Installer
         {
             try
             {
-                Console.WriteLine($"Exiled.Installer@{Assembly.GetExecutingAssembly().GetName().Version}");
+                Console.WriteLine(Header);
 
                 if (args.GetVersions)
                 {
@@ -73,33 +78,25 @@ namespace Exiled.Installer
                     foreach (var r in releases1)
                         Console.WriteLine(FormatRelease(r, true));
 
-                    return;
+                    if (args.Exit)
+                        Environment.Exit(0);
                 }
 
-                if (!ProcessTargetFilePath(args.Path, out var targetFilePath))
+                PatchesToProcess[1] = args.Path?.FullName;
+                if (!ProcessServerPath(out var targetFilePath))
                 {
-                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{targetFilePath}'");
-                    throw new FileNotFoundException("Requires --path argument with the path to the game, read readme or invoke with --help");
+                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in \"{string.Join("\", or \"", PatchesToProcess)}\"");
+                    throw new FileNotFoundException("Requires --path argument with the path to the server, read readme or invoke with --help");
                 }
-
-                EnsureDirExists(ExiledTargetPath);
 
                 Console.WriteLine("Receiving releases...");
                 Console.WriteLine($"Prereleases included - {args.PreReleases}");
+                Console.WriteLine($"Target release version - {(string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion)}");
 
                 var releases = await GetReleases().ConfigureAwait(false);
-
                 Console.WriteLine("Searching for the latest release that matches the parameters...");
 
-                var latestRelease = releases.FirstOrDefault(r =>
-                {
-                    if (!(args.TargetVersion is null))
-                        return r.TagName.Equals(args.TargetVersion, StringComparison.Ordinal);
-
-                    return (r.Prerelease && args.PreReleases) || !r.Prerelease;
-                });
-
-                if (latestRelease is null)
+                if (!TryFindRelease(args, releases, out var targetRelease))
                 {
                     Console.WriteLine("--- RELEASES ---");
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
@@ -107,13 +104,13 @@ namespace Exiled.Installer
                 }
 
                 Console.WriteLine("Release found!");
-                Console.WriteLine(FormatRelease(latestRelease));
+                Console.WriteLine(FormatRelease(targetRelease!));
 
-                var exiledAsset = latestRelease.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
+                var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
                     Console.WriteLine("--- ASSETS ---");
-                    Console.WriteLine(string.Join(Environment.NewLine, latestRelease.Assets.Select(FormatAsset)));
+                    Console.WriteLine(string.Join(Environment.NewLine, targetRelease.Assets.Select(FormatAsset)));
                     throw new InvalidOperationException("Couldn't find asset");
                 }
 
@@ -122,6 +119,7 @@ namespace Exiled.Installer
 
                 var downloadUrl = exiledAsset.BrowserDownloadUrl;
                 using var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
                 var downloadResult = await httpClient.GetAsync(downloadUrl).ConfigureAwait(false);
                 var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
@@ -135,7 +133,7 @@ namespace Exiled.Installer
                     ProcessTarEntry(targetFilePath, tarInputStream, entry);
                 }
 
-                Console.WriteLine("Installation complete.");
+                Console.WriteLine("Installation complete");
             }
             catch (Exception ex)
             {
@@ -239,27 +237,20 @@ namespace Exiled.Installer
             }
         }
 
-        private static bool ProcessTargetFilePath(string? argTargetPath, out string path)
+        private static bool ProcessServerPath(out string path)
         {
-            var linkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
-
-            // can be null if couldn't be found
-            if (!string.IsNullOrEmpty(argTargetPath))
+            for (var z = 0; z < PatchesToProcess.Length; z++)
             {
-                var combined = Path.Combine(argTargetPath, linkedSubfolders, TARGET_FILE_NAME);
-                if (File.Exists(combined))
+                var tp = PatchesToProcess[z];
+                if (tp != null)
                 {
-                    path = combined;
-                    return true;
+                    var cp = Path.Combine(tp, LinkedSubfolders, TARGET_FILE_NAME);
+                    if (File.Exists(cp))
+                    {
+                        path = tp;
+                        return true;
+                    }
                 }
-            }
-
-            var curDir = Directory.GetCurrentDirectory();
-            var combined2 = Path.Combine(curDir, linkedSubfolders, TARGET_FILE_NAME);
-            if (File.Exists(combined2))
-            {
-                path = combined2;
-                return true;
             }
 
             path = string.Empty;
@@ -303,6 +294,22 @@ namespace Exiled.Installer
             }
 
             return PathResolution.UNDEFINED;
+        }
+
+        private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
+        {
+            foreach (var r in releases)
+            {
+                release = r;
+
+                if (args.TargetVersion != null)
+                    return r.TagName.Equals(args.TargetVersion, StringComparison.OrdinalIgnoreCase);
+
+                return (r.Prerelease && args.PreReleases) || !r.Prerelease;
+            }
+
+            release = null;
+            return false;
         }
     }
 }
