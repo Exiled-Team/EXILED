@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="RespawningTeamEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -33,9 +33,9 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the list of players that are going to be respawned.
+        /// Gets the list of players that are going to be respawned.
         /// </summary>
-        public List<Player> Players { get; set; }
+        public List<Player> Players { get; }
 
         /// <summary>
         /// Gets or sets the maximum amount of respawnable players.

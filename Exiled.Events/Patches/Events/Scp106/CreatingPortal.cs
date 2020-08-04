@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Get the return label.
             var returnLabel = newInstructions[index - 1].operand;
 
-            // Declare CreatingPortalEventArgs, to be able to store its instance with "stloc.1".
+            // Declare CreatingPortalEventArgs local variable.
             var ev = generator.DeclareLocal(typeof(CreatingPortalEventArgs));
 
             // var ev = new CreatingPortalEventArgs(API.Features.Player.Get(this.gameObject), raycastHit.point - Vector3.up, true);

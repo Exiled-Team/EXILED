@@ -53,9 +53,9 @@ namespace Exiled.Events.EventArgs
         public string Name { get; }
 
         /// <summary>
-        /// Gets or sets the command arguments.
+        /// Gets the command arguments.
         /// </summary>
-        public List<string> Arguments { get; set; }
+        public List<string> Arguments { get; }
 
         /// <summary>
         /// Gets or sets the message that will be returned back to the <see cref="CommandSender"/>.

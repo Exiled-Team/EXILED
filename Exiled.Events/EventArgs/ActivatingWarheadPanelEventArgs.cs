@@ -36,9 +36,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a list of permissions, required to activate the warhead panel.
+        /// Gets a list of permissions, required to activate the warhead panel.
         /// </summary>
-        public List<string> Permissions { get; set; }
+        public List<string> Permissions { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
