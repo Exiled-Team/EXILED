@@ -141,7 +141,7 @@ namespace Exiled.Events.Handlers
 
             lock (ServerLogs.LockObject)
             {
-                File.AppendAllText(Paths.Log, $"[{DateTime.Now}] {ev.Sender?.Nickname ?? "Server Console"} ({ev.Sender?.UserId ?? "Server Console"}) ran command: {ev?.Name ?? "Unknown"}. Command Permitted: {(ev.IsAllowed ? "[YES]" : "[NO]")}" + Environment.NewLine);
+                File.AppendAllText(Paths.Log, $"[{DateTime.Now}] {ev.Sender?.Nickname ?? "Server Console"} ({ev.Sender?.UserId ?? "Server Console"}) ran command: {ev?.Name ?? "Unknown"} {string.Join(" ", ev?.Arguments)}. Command Permitted: {(ev.IsAllowed ? "[YES]" : "[NO]")}" + Environment.NewLine);
             }
         }
 
