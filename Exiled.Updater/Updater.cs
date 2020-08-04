@@ -8,10 +8,12 @@
 namespace Exiled.Updater
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading.Tasks;
@@ -47,8 +49,7 @@ namespace Exiled.Updater
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            httpClient.DefaultRequestHeaders.UserAgent.Clear();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd($"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version})");
+            httpClient.DefaultRequestHeaders.Add("User-Agent", $"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version})");
 
             base.OnEnabled();
 
@@ -62,14 +63,14 @@ namespace Exiled.Updater
         /// <summary>
         /// Starts the updater.
         /// </summary>
+        /// <param name="release">
+        /// Release with installer.
+        /// </param>
         /// <param name="asset">
         /// Installer asset.
         /// </param>
-        /// <param name="allowPRE">
-        /// Allow '--pre-release' argument passing.
-        /// </param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task Update(ReleaseAsset asset, bool allowPRE)
+        public async Task Update(Release release, ReleaseAsset asset)
         {
             try
             {
@@ -98,7 +99,7 @@ namespace Exiled.Updater
                         FileName = installerPath,
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        Arguments = allowPRE ? "--pre-releases --exit" : "--exit",
+                        Arguments = $"--exit --pre-releases {release.PreRelease} --target-release {release.TagName} --appdata \"{Paths.AppData}\"",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         StandardErrorEncoding = ProcessEncidong,
@@ -138,7 +139,7 @@ namespace Exiled.Updater
         /// Check if there is an update available.
         /// </summary>
         /// <returns>Returns whether a new version of Exiled is available or not.</returns>
-        public async Task<Tuple<bool, ReleaseAsset, bool>> FindUpdate()
+        public async Task<Tuple<bool, Release, ReleaseAsset>> FindUpdate()
         {
             try
             {
@@ -161,7 +162,7 @@ namespace Exiled.Updater
                             for (int x = 0; x < release.Assets.Length; x++)
                             {
                                 var asset = release.Assets[x];
-                                Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.BrowserDownloadUrl}");
+                                Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
                             }
                         }
 
@@ -175,7 +176,7 @@ namespace Exiled.Updater
                             }
                             else
                             {
-                                return new Tuple<bool, ReleaseAsset, bool>(true, asset, includedPRE);
+                                return new Tuple<bool, Release, ReleaseAsset>(true, targetRelease, asset);
                             }
                         }
                         else
@@ -192,7 +193,7 @@ namespace Exiled.Updater
                 Log.Error(ex);
             }
 
-            return new Tuple<bool, ReleaseAsset, bool>(false, default, false);
+            return new Tuple<bool, Release, ReleaseAsset>(false, default, default);
         }
 
         private string[] GetAvailableInstallerNames()
@@ -217,23 +218,34 @@ namespace Exiled.Updater
 
         private bool FindRelease(Release[] releases, out Release release, out bool includedPRE)
         {
-            includedPRE = Config.ShouldDownloadTestingReleases || releases.Any(r => r.PreRelease && Version.Parse(r.TagName) == Version);
-            for (int z = 0; z < releases.Length; z++)
+            var smallestExiledVersion = FindSmallestExiledVersion();
+            if (smallestExiledVersion != null)
             {
-                release = releases[z];
+                Log.Info($"Found the smallest version of Exiled - {smallestExiledVersion.FullName}");
+
+                includedPRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease(releases);
+                for (int z = 0; z < releases.Length; z++)
+                {
+                    release = releases[z];
 #if DEBUG
-                var version = Version.Parse(release.TagName);
-                Log.Debug($"TV - {version} | CV - {Version} | TV >= CV - {CustomVersionGreaterOrEquals(version, Version)}");
+                    var version = Version.Parse(release.TagName);
+                    Log.Debug($"TV - {version} | CV - {Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(version, Version)}");
 #endif
-                if (release.PreRelease && !includedPRE)
-                    continue;
+                    if (release.PreRelease && !includedPRE)
+                        continue;
 
 #if DEBUG
-                if (CustomVersionGreaterOrEquals(version, Version))
+                    if (VersionComparer.CustomVersionGreaterOrEquals(version, Version))
 #else
-                if (CustomVersionGreater(Version.Parse(release.TagName), Version))
+                    if (VersionComparer.CustomVersionGreater(Version.Parse(release.TagName), Version))
 #endif
-                    return true;
+                        return true;
+                }
+            }
+            else
+            {
+                Log.Error("Couldn't find smallest version of Exiled!");
+                includedPRE = false;
             }
 
             release = default;
@@ -256,16 +268,24 @@ namespace Exiled.Updater
             return false;
         }
 
-#if DEBUG
-        private bool CustomVersionGreaterOrEquals(Version v1, Version v2)
+        private AssemblyName FindSmallestExiledVersion()
         {
-            return v1.Major >= v2.Major || v1.Minor >= v2.Minor || v1.Build >= v2.Build || v1.Revision >= v2.Revision;
+            return GetExiledLibs().OrderBy(name => name.Version, VersionComparer.Instance).FirstOrDefault();
         }
-#endif
 
-        private bool CustomVersionGreater(Version v1, Version v2)
+        private bool OneOfExiledIsPrerelease(Release[] releases)
         {
-            return v1.Major > v2.Major || v1.Minor > v2.Minor || v1.Build > v2.Build || v1.Revision > v2.Revision;
+            var libs = GetExiledLibs();
+            return releases.Any(r => r.PreRelease && libs.Any(lib => VersionComparer.CustomVersionEquals(Version.Parse(r.TagName), lib.Version)));
+        }
+
+        private IEnumerable<AssemblyName> GetExiledLibs()
+        {
+            return from a in AppDomain.CurrentDomain.GetAssemblies()
+                    let name = a.GetName()
+                    where name.Name.StartsWith("Exiled", StringComparison.OrdinalIgnoreCase) &&
+                    (Config.ExcludeAssemblies?.Contains(name.Name, StringComparison.OrdinalIgnoreCase) ?? false)
+                    select name;
         }
     }
 }

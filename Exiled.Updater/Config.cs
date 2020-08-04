@@ -7,6 +7,7 @@
 
 namespace Exiled.Updater
 {
+    using System;
     using System.ComponentModel;
 
     using Exiled.API.Interfaces;
@@ -16,12 +17,18 @@ namespace Exiled.Updater
     {
         /// <inheritdoc/>
         [Description("Indicates whether the plugin is enabled or not")]
-        public bool IsEnabled { get; set; }
+        public bool IsEnabled { get; set; } = true;
 
         /// <summary>
         /// Gets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>
         [Description("Indicates whether testing releases have to be downloaded or not")]
-        public bool ShouldDownloadTestingReleases { get; internal set; }
+        public bool ShouldDownloadTestingReleases { get; internal set; } = false;
+
+        /// <summary>
+        /// Gets a value that indicates which assemblies should be excluded from the update.
+        /// </summary>
+        [Description("Indicates which assemblies should be excluded from the update")]
+        public string[] ExcludeAssemblies { get; internal set; } = Array.Empty<string>();
     }
 }
