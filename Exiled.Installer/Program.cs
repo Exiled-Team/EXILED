@@ -118,10 +118,9 @@ namespace Exiled.Installer
                 Console.WriteLine("Asset found!");
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                var downloadUrl = exiledAsset.BrowserDownloadUrl;
                 using var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
-                var downloadResult = await httpClient.GetAsync(downloadUrl).ConfigureAwait(false);
+                var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
                 var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using var gzInputStream = new GZipInputStream(downloadArchiveStream);
@@ -171,7 +170,7 @@ namespace Exiled.Installer
 
         private static string FormatAsset(ReleaseAsset a)
         {
-            return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url}";
+            return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url} | DownloadURL: {a.BrowserDownloadUrl}";
         }
 
         private static void ResolvePath(CommandSettings args, string filePath, out string path)
