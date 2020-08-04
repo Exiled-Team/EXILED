@@ -45,11 +45,6 @@ namespace Exiled.Installer
         private static readonly string ExiledTargetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
-        private static readonly string?[] PatchesToProcess = new string?[2]
-        {
-            Directory.GetCurrentDirectory(),
-            null // reserved for arg
-        };
         private static readonly Version VersionLimit = new Version(2, 0, 0);
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -82,10 +77,9 @@ namespace Exiled.Installer
                         Environment.Exit(0);
                 }
 
-                PatchesToProcess[1] = args.Path?.FullName;
-                if (!ProcessServerPath(out var targetFilePath))
+                if (!ProcessServerPath(args, out var targetFilePath))
                 {
-                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in \"{string.Join("\", or \"", PatchesToProcess)}\"");
+                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{args.Path?.FullName ?? Directory.GetCurrentDirectory()}'");
                     throw new FileNotFoundException("Requires --path argument with the path to the server, read readme or invoke with --help");
                 }
 
@@ -237,24 +231,23 @@ namespace Exiled.Installer
             }
         }
 
-        private static bool ProcessServerPath(out string path)
+        private static bool ProcessServerPath(CommandSettings args, out string path)
         {
-            for (var z = 0; z < PatchesToProcess.Length; z++)
-            {
-                var tp = PatchesToProcess[z];
-                if (tp != null)
-                {
-                    var cp = Path.Combine(tp, LinkedSubfolders, TARGET_FILE_NAME);
-                    if (File.Exists(cp))
-                    {
-                        path = tp;
-                        return true;
-                    }
-                }
-            }
+            var tp = args.Path;
+            if (!(tp is null))
+                return CombineAndCheckForExistence(tp.FullName, out path);
+
+            if (CombineAndCheckForExistence(Directory.GetCurrentDirectory(), out path))
+                return true;
 
             path = string.Empty;
             return false;
+        }
+
+        private static bool CombineAndCheckForExistence(string path, out string outPath)
+        {
+            outPath = Path.Combine(path, LinkedSubfolders, TARGET_FILE_NAME);
+            return File.Exists(outPath);
         }
 
         private static void EnsureDirExists(string pathToDir)
