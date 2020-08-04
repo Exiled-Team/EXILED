@@ -229,15 +229,15 @@ namespace Exiled.Updater
                     release = releases[z];
 #if DEBUG
                     var version = Version.Parse(release.TagName);
-                    Log.Debug($"TV - {version} | CV - {Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(version, Version)}");
+                    Log.Debug($"TV - {version} | CV - {smallestExiledVersion.Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(version, smallestExiledVersion.Version)}");
 #endif
                     if (release.PreRelease && !includedPRE)
                         continue;
 
 #if DEBUG
-                    if (VersionComparer.CustomVersionGreaterOrEquals(version, Version))
+                    if (VersionComparer.CustomVersionGreaterOrEquals(version, smallestExiledVersion.Version))
 #else
-                    if (VersionComparer.CustomVersionGreater(Version.Parse(release.TagName), Version))
+                    if (VersionComparer.CustomVersionGreater(Version.Parse(release.TagName), smallestExiledVersion.Version))
 #endif
                         return true;
                 }
@@ -282,10 +282,10 @@ namespace Exiled.Updater
         private IEnumerable<AssemblyName> GetExiledLibs()
         {
             return from a in AppDomain.CurrentDomain.GetAssemblies()
-                    let name = a.GetName()
-                    where name.Name.StartsWith("Exiled", StringComparison.OrdinalIgnoreCase) &&
-                    (Config.ExcludeAssemblies?.Contains(name.Name, StringComparison.OrdinalIgnoreCase) ?? false)
-                    select name;
+                   let name = a.GetName()
+                   where name.Name.StartsWith("Exiled", StringComparison.OrdinalIgnoreCase) &&
+                   !(Config.ExcludeAssemblies?.Contains(name.Name, StringComparison.OrdinalIgnoreCase) ?? false)
+                   select name;
         }
     }
 }
