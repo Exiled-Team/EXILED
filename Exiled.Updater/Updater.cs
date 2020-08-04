@@ -42,6 +42,7 @@ namespace Exiled.Updater
         public static readonly Encoding ProcessEncidong = new UTF8Encoding(false, false);
         public static readonly uint SecondsWaitForAPI = 60;
         public static readonly uint SecondsWaitForDownload = 480;
+        public static readonly PlatformID PlatformID = Environment.OSVersion.Platform;
 
         private readonly HttpClient httpClient = new HttpClient();
 #pragma warning restore SA1600 // Elements should be documented
@@ -52,6 +53,8 @@ namespace Exiled.Updater
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            Log.Debug($"PlatformId: {PlatformID}");
+
             httpClient.DefaultRequestHeaders.Add("User-Agent", $"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version})");
 
             base.OnEnabled();
@@ -84,7 +87,7 @@ namespace Exiled.Updater
                     Log.Info("Downloaded!");
 
                     var serverPath = Environment.CurrentDirectory;
-                    var installerPath = Path.Combine(serverPath, "Exiled.Installer-Win.exe");
+                    var installerPath = Path.Combine(serverPath, asset.Name);
 
                     using (var installerStream = await installer.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -181,6 +184,7 @@ namespace Exiled.Updater
                         }
                         else
                         {
+                            Log.Info($"Found asset - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
                             return new Tuple<bool, Release, ReleaseAsset>(true, targetRelease, asset);
                         }
                     }
@@ -202,12 +206,14 @@ namespace Exiled.Updater
 
         private string[] GetAvailableInstallerNames()
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (PlatformID == PlatformID.Win32NT)
             {
+                Log.Debug("Using Win installer");
                 return InstallerAssetNamesWin;
             }
-            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            else if (PlatformID == PlatformID.Unix)
             {
+                Log.Debug("Using Linux installer");
                 return InstallerAssetNamesLinux;
             }
             else
