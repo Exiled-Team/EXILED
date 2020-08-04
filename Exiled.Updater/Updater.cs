@@ -16,6 +16,7 @@ namespace Exiled.Updater
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Exiled.API.Features;
@@ -39,6 +40,8 @@ namespace Exiled.Updater
         public static readonly string[] InstallerAssetNamesLinux = { "Exiled.Installer-Linux", "Exiled.Installer" };
         public static readonly string[] InstallerAssetNamesWin = { "Exiled.Installer-Win.exe", "Exiled.Installer.exe" };
         public static readonly Encoding ProcessEncidong = new UTF8Encoding(false, false);
+        public static readonly uint SecondsWaitForAPI = 60;
+        public static readonly uint SecondsWaitForDownload = 480;
 
         private readonly HttpClient httpClient = new HttpClient();
 #pragma warning restore SA1600 // Elements should be documented
@@ -75,7 +78,8 @@ namespace Exiled.Updater
             try
             {
                 Log.Info("Downloading installer...");
-                using (var installer = await httpClient.GetAsync(asset.BrowserDownloadUrl).ConfigureAwait(false))
+                using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForDownload)))
+                using (var installer = await httpClient.GetAsync(asset.BrowserDownloadUrl, cancellationToken.Token).ConfigureAwait(false))
                 {
                     Log.Info("Downloaded!");
 
@@ -144,46 +148,46 @@ namespace Exiled.Updater
             try
             {
                 var url = string.Format(GitHubGetReleasesTemplate, REPOID);
-                using (var result = await httpClient.GetAsync(url).ConfigureAwait(false))
+
+                using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForAPI)))
+                using (var result = await httpClient.GetAsync(url, cancellationToken.Token).ConfigureAwait(false))
+                using (var streamResult = await result.Content.ReadAsStreamAsync().ConfigureAwait(false))
                 {
-                    using (var streamResult = await result.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    var releases = JsonSerializer.Deserialize<Release[]>(streamResult)
+                        .Where(r => Version.TryParse(r.TagName, out _))
+                        .OrderByDescending(r => r.CreatedAt.Ticks)
+                        .ToArray();
+
+                    Log.Debug($"Found {releases.Length} releases");
+                    for (int z = 0; z < releases.Length; z++)
                     {
-                        var releases = JsonSerializer.Deserialize<Release[]>(streamResult)
-                            .Where(r => Version.TryParse(r.TagName, out _))
-                            .OrderByDescending(r => r.CreatedAt.Ticks)
-                            .ToArray();
+                        var release = releases[z];
+                        Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
 
-                        Log.Debug($"Found {releases.Length} releases");
-                        for (int z = 0; z < releases.Length; z++)
+                        for (int x = 0; x < release.Assets.Length; x++)
                         {
-                            var release = releases[z];
-                            Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
-
-                            for (int x = 0; x < release.Assets.Length; x++)
-                            {
-                                var asset = release.Assets[x];
-                                Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
-                            }
+                            var asset = release.Assets[x];
+                            Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
                         }
+                    }
 
-                        if (releases.Length != 0 && FindRelease(releases, out var targetRelease, out var includedPRE))
+                    if (releases.Length != 0 && FindRelease(releases, out var targetRelease, out var includedPRE))
+                    {
+                        var installerNames = GetAvailableInstallerNames();
+                        if (!FindAsset(installerNames, targetRelease, out var asset))
                         {
-                            var installerNames = GetAvailableInstallerNames();
-                            if (!FindAsset(installerNames, targetRelease, out var asset))
-                            {
-                                // Error: no asset
-                                Log.Warn("Couldn't find the asset, the update will not be installed");
-                            }
-                            else
-                            {
-                                return new Tuple<bool, Release, ReleaseAsset>(true, targetRelease, asset);
-                            }
+                            // Error: no asset
+                            Log.Warn("Couldn't find the asset, the update will not be installed");
                         }
                         else
                         {
-                            // No errors
-                            Log.Info("No new versions found, you're using the most recent version of Exiled!");
+                            return new Tuple<bool, Release, ReleaseAsset>(true, targetRelease, asset);
                         }
+                    }
+                    else
+                    {
+                        // No errors
+                        Log.Info("No new versions found, you're using the most recent version of Exiled!");
                     }
                 }
             }

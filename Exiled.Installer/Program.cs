@@ -14,6 +14,7 @@ namespace Exiled.Installer
     using System.Net.Http;
     using System.Reflection;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
@@ -45,6 +46,8 @@ namespace Exiled.Installer
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
         private static readonly Version VersionLimit = new Version(2, 0, 0);
+        public static readonly uint SecondsWaitForAPI = 60;
+        private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
         private static readonly GitHubClient GitHubClient = new GitHubClient(
@@ -120,8 +123,10 @@ namespace Exiled.Installer
 
                 using var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
-                var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
-                var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
+
+                using var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForDownload));
+                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
+                using var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using var gzInputStream = new GZipInputStream(downloadArchiveStream);
                 using var tarInputStream = new TarInputStream(gzInputStream);
