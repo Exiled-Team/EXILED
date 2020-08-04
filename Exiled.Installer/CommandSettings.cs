@@ -12,6 +12,7 @@ namespace Exiled.Installer
     using System.CommandLine.Invocation;
     using System.CommandLine.Parsing;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
 #pragma warning disable SA1401 // Fields should be private
@@ -21,10 +22,24 @@ namespace Exiled.Installer
     {
         public static readonly RootCommand RootCommand = new RootCommand
         {
-            new Option<DirectoryInfo?>(
+            new Option<DirectoryInfo>(
                 new[] { "-p", "--path" },
+                parseArgument: (parsed) =>
+                {
+                    var path = parsed.Tokens.SingleOrDefault()?.Value ?? Directory.GetCurrentDirectory();
+
+                    if (File.Exists(path))
+                        parsed.ErrorMessage = "Can't be a file!";
+                    else if (!Directory.Exists(path))
+                        parsed.ErrorMessage = "Directory doesn't exist!";
+                    else if (!Program.ValidateServerPath(path, out var targetFilePath))
+                        parsed.ErrorMessage = $"Couldn't find '{Program.TARGET_FILE_NAME}' in '{targetFilePath}'";
+
+                    return new DirectoryInfo(path); // return for default value
+                },
+                isDefault: true,
                 description: "Path to the folder with the SL server")
-            { IsRequired = false, },
+            { IsRequired = true },
 
             new Option<DirectoryInfo>(
                 "--appdata",
@@ -59,9 +74,9 @@ namespace Exiled.Installer
             { IsRequired = false }
         };
 
-        public DirectoryInfo? Path { get; set; }
-
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        public DirectoryInfo Path { get; set; }
+
         public DirectoryInfo AppData { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 

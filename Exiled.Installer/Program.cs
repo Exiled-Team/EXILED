@@ -40,7 +40,7 @@ namespace Exiled.Installer
     {
         private const long REPO_ID = 231269519;
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
-        private const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
+        internal const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
@@ -78,15 +78,15 @@ namespace Exiled.Installer
 
                 Console.WriteLine($"AppData folder: {args.AppData.FullName}");
 
-                if (!ProcessServerPath(args, out var targetFilePath))
+                if (!ValidateServerPath(args.Path.FullName, out var targetFilePath))
                 {
-                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{args.Path?.FullName ?? Directory.GetCurrentDirectory()}'");
-                    throw new FileNotFoundException("Requires --path argument with the path to the server, read readme or invoke with --help");
+                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{targetFilePath}'");
+                    throw new FileNotFoundException("Check the validation of the path parameter");
                 }
 
                 if (!(args.GitHubToken is null))
                 {
-                    Console.WriteLine($"Token detected! Using the token...");
+                    Console.WriteLine("Token detected! Using the token...");
                     GitHubClient.Credentials = new Credentials(args.GitHubToken, AuthenticationType.Bearer);
                 }
 
@@ -237,23 +237,10 @@ namespace Exiled.Installer
             }
         }
 
-        private static bool ProcessServerPath(CommandSettings args, out string path)
+        internal static bool ValidateServerPath(string serverPath, out string targetFilePath)
         {
-            var tp = args.Path;
-            if (!(tp is null))
-                return CombineAndCheckForExistence(tp.FullName, out path);
-
-            if (CombineAndCheckForExistence(Directory.GetCurrentDirectory(), out path))
-                return true;
-
-            path = string.Empty;
-            return false;
-        }
-
-        private static bool CombineAndCheckForExistence(string path, out string outPath)
-        {
-            outPath = Path.Combine(path, LinkedSubfolders, TARGET_FILE_NAME);
-            return File.Exists(outPath);
+            targetFilePath = Path.Combine(serverPath, LinkedSubfolders, TARGET_FILE_NAME);
+            return File.Exists(targetFilePath);
         }
 
         private static void EnsureDirExists(string pathToDir)
