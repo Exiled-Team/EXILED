@@ -36,6 +36,11 @@ namespace Exiled.Installer
                 description: "Target version for installation")
             { IsRequired = false },
 
+            new Option<string?>(
+                "--github--token",
+                description: "Uses a token for auth in case the rate limit is exceeded (no permissions required)")
+            { IsRequired = false },
+
             new Option<bool>(
                 "--exit",
                 description: "Automatically exits the application anyway")
@@ -52,6 +57,8 @@ namespace Exiled.Installer
         public bool PreReleases { get; set; }
 
         public string? TargetVersion { get; set; }
+
+        public string? GitHubToken { get; set; }
 
         public bool GetVersions { get; set; }
 

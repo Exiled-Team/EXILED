@@ -83,6 +83,12 @@ namespace Exiled.Installer
                     throw new FileNotFoundException("Requires --path argument with the path to the server, read readme or invoke with --help");
                 }
 
+                if (!(args.GitHubToken is null))
+                {
+                    Console.WriteLine($"Token detected! Using the token...");
+                    GitHubClient.Credentials = new Credentials(args.GitHubToken, AuthenticationType.Bearer);
+                }
+
                 Console.WriteLine("Receiving releases...");
                 Console.WriteLine($"Prereleases included - {args.PreReleases}");
                 Console.WriteLine($"Target release version - {(string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion)}");
