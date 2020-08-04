@@ -7,6 +7,7 @@
 
 namespace Exiled.Installer
 {
+    using System;
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.CommandLine.Parsing;
@@ -24,6 +25,12 @@ namespace Exiled.Installer
                 new[] { "-p", "--path" },
                 description: "Path to the folder with the SL server")
             { IsRequired = false, },
+
+            new Option<DirectoryInfo>(
+                "--appdata",
+                getDefaultValue: () => new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)),
+                description: "Forces the folder to be the AppData folder (useful for containers when pterodactyl runs as root)")
+            { IsRequired = true },
 
             new Option<bool>(
                 "--pre-releases",
@@ -53,6 +60,10 @@ namespace Exiled.Installer
         };
 
         public DirectoryInfo? Path { get; set; }
+
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        public DirectoryInfo AppData { get; set; }
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public bool PreReleases { get; set; }
 

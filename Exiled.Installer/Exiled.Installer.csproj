@@ -16,7 +16,7 @@
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Company>Exiled Team</Company>
     <Copyright>Copyright © Exiled Team $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
-    <Version>3.0.2</Version>
+    <Version>3.1.0</Version>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>

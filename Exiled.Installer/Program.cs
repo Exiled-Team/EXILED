@@ -42,7 +42,6 @@ namespace Exiled.Installer
         private const string EXILED_ASSET_NAME = "exiled.tar.gz";
         private const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
-        private static readonly string ExiledTargetPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
         private static readonly Version VersionLimit = new Version(2, 0, 0);
@@ -76,6 +75,8 @@ namespace Exiled.Installer
                     if (args.Exit)
                         Environment.Exit(0);
                 }
+
+                Console.WriteLine($"AppData folder: {args.AppData.FullName}");
 
                 if (!ProcessServerPath(args, out var targetFilePath))
                 {
@@ -130,7 +131,7 @@ namespace Exiled.Installer
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
                 {
                     entry.Name = entry.Name.Replace('/', Path.DirectorySeparatorChar);
-                    ProcessTarEntry(targetFilePath, tarInputStream, entry);
+                    ProcessTarEntry(args, targetFilePath, tarInputStream, entry);
                 }
 
                 Console.WriteLine("Installation complete");
@@ -165,7 +166,7 @@ namespace Exiled.Installer
                     builder.Append("   - ").AppendLine(FormatAsset(asset));
             }
 
-            return builder.ToString();
+            return builder.ToString().Trim('\r', '\n');
         }
 
         private static string FormatAsset(ReleaseAsset a)
@@ -173,19 +174,19 @@ namespace Exiled.Installer
             return $"ID: {a.Id} | NAME: {a.Name} | SIZE: {a.Size} | URL: {a.Url}";
         }
 
-        private static void ResolvePath(string filePath, out string path)
+        private static void ResolvePath(CommandSettings args, string filePath, out string path)
         {
-            path = Path.Combine(ExiledTargetPath, filePath);
+            path = Path.Combine(args.AppData.FullName, filePath);
         }
 
-        private static void ProcessTarEntry(string targetFilePath, TarInputStream tarInputStream, TarEntry entry)
+        private static void ProcessTarEntry(CommandSettings args, string targetFilePath, TarInputStream tarInputStream, TarEntry entry)
         {
             if (entry.IsDirectory)
             {
                 var entries = entry.GetDirectoryEntries();
                 for (int z = 0; z < entries.Length; z++)
                 {
-                    ProcessTarEntry(targetFilePath, tarInputStream, entries[z]);
+                    ProcessTarEntry(args, targetFilePath, tarInputStream, entries[z]);
                 }
             }
             else
@@ -201,7 +202,7 @@ namespace Exiled.Installer
                 switch (ResolveEntry(entry))
                 {
                     case PathResolution.ABSOLUTE:
-                        ResolvePath(entry.Name, out var path);
+                        ResolvePath(args, entry.Name, out var path);
                         ExtractEntry(tarInputStream, entry, path);
                         break;
                     case PathResolution.GAME:
