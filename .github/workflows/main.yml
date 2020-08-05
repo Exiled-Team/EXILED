@@ -42,11 +42,11 @@ jobs:
         file-name: '7zip.exe'
 
     - name: Extract Refs
-      run: ./7zip.exe e References.zip -obin/Release -r -y
+      run: ./7zip.exe e References.zip -oReferences -r -y
 
     - name: Build
       env:
-        EXILED_REFERENCES: ./References
+        EXILED_REFERENCES: ${{ github.workspace }}/References
       run: |
         msbuild Exiled.API -p:Configuration=release
         msbuild Exiled.Bootstrap -p:Configuration=release

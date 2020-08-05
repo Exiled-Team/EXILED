@@ -21,6 +21,8 @@ namespace Exiled.Updater.Models
         public string Name;
         [DataMember(Name = "size")]
         public int Size;
+        [DataMember(Name = "url")]
+        public string Url;
         [DataMember(Name = "browser_download_url")]
         public string BrowserDownloadUrl;
     }

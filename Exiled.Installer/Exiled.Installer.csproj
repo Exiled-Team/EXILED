@@ -5,7 +5,6 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
-    <Optimize>true</Optimize>
     <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
     <PlatformTarget>x64</PlatformTarget>
 
@@ -15,8 +14,8 @@
     
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Company>Exiled Team</Company>
-    <Copyright>Copyright © Exiled Team $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
-    <Version>3.0.1</Version>
+    <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
+    <Version>3.1.0</Version>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
