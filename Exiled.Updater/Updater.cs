@@ -89,11 +89,17 @@ namespace Exiled.Updater
                     var serverPath = Environment.CurrentDirectory;
                     var installerPath = Path.Combine(serverPath, asset.Name);
 
+                    if (File.Exists(installerPath) && PlatformID == PlatformID.Unix)
+                        LinuxPermissionNative.SetExecutionAccess(installerPath);
+
                     using (var installerStream = await installer.Content.ReadAsStreamAsync().ConfigureAwait(false))
                     using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
                         await installerStream.CopyToAsync(fs).ConfigureAwait(false);
                     }
+
+                    if (PlatformID == PlatformID.Unix)
+                        LinuxPermissionNative.SetExecutionAccess(installerPath);
 
                     if (!File.Exists(installerPath))
                     {

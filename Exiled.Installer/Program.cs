@@ -46,7 +46,6 @@ namespace Exiled.Installer
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
         private static readonly Version VersionLimit = new Version(2, 0, 0);
-        public static readonly uint SecondsWaitForAPI = 60;
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -125,7 +124,7 @@ namespace Exiled.Installer
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForDownload));
-                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
+                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl, cancellationToken.Token).ConfigureAwait(false);
                 using var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using var gzInputStream = new GZipInputStream(downloadArchiveStream);
