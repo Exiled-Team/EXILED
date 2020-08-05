@@ -67,7 +67,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                     return false;
                 }
 
-
                 List<string> list = ListPool<string>.Shared.Rent();
                 ConfigFile.ServerConfig.GetStringCollection("scp079_door_blacklist", list);
 
