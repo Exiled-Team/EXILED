@@ -22,10 +22,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        private static readonly List<Room> RoomsValue = new List<Room>();
-        private static readonly List<Door> DoorsValue = new List<Door>();
-        private static readonly List<Lift> LiftsValue = new List<Lift>();
-        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>();
+        private static readonly List<Room> RoomsValue = new List<Room>(250);
+        private static readonly List<Door> DoorsValue = new List<Door>(250);
+        private static readonly List<Lift> LiftsValue = new List<Lift>(10);
+        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();

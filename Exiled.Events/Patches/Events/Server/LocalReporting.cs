@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
 #pragma warning disable RCS1139 // Add summary element to documentation comment.
 #pragma warning disable CS1570 // XML comment has badly formed XML
     /// <remarks>
@@ -101,8 +103,8 @@ namespace Exiled.Events.Patches.Events.Server
             // Moving 2 indexes forward skipping the access itself and 'brtrue'
             const sbyte skipOpcodes = 2;
 
-            var list = new List<CodeInstruction>(instructions);
-            var patchIndex = list.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            var patchIndex = newInstructions.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
 
 #if DEBUG
             LogL($"Patch index: {patchIndex}");
@@ -111,21 +113,21 @@ namespace Exiled.Events.Patches.Events.Server
             if (patchIndex == -1)
             {
                 API.Features.Log.Warn($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: Couldn't find index for patching!");
-                return null;
+                yield break;
             }
 
             patchIndex += skipOpcodes;
 
             var retEnd = generator.DefineLabel();
-            list[patchIndex].labels.Add(retEnd);
+            newInstructions[patchIndex].labels.Add(retEnd);
 
             var call_PlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
             var new_LocalReportingEventArgs = AccessTools.Constructor(
                 typeof(EventArgs.LocalReportingEventArgs),
                 new[] { typeof(API.Features.Player), typeof(API.Features.Player), typeof(string), typeof(bool) });
 
-            generator.DeclareLocal(typeof(EventArgs.LocalReportingEventArgs));
-            const byte loc_index_LocalReportEventArgs = 5;
+            var loc_LocalReportEventArgs = generator.DeclareLocal(typeof(EventArgs.LocalReportingEventArgs));
+            var loc_index_LocalReportEventArgs = loc_LocalReportEventArgs.LocalIndex;
             const byte arg_index_reason = 2;
 
             var call_OnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(EventArgs.LocalReportingEventArgs) });
@@ -167,7 +169,7 @@ namespace Exiled.Events.Patches.Events.Server
 #endif
 
 #pragma warning disable SA1118 // Parameter should not span multiple lines
-            list.InsertRange(patchIndex, new[]
+            newInstructions.InsertRange(patchIndex, new[]
             {
                 // Issuer: Player
                 new CodeInstruction(OpCodes.Ldloc_3), // reporter: ReferenceHub
@@ -228,7 +230,10 @@ namespace Exiled.Events.Patches.Events.Server
             });
 #pragma warning restore SA1118 // Parameter should not span multiple lines
 
-            return list;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
         // Try to replace the reason as a field,

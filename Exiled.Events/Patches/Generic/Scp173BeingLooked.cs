@@ -9,13 +9,14 @@ namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1313
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -31,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for the last "br.s".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Br_S) + 1;
@@ -72,7 +73,10 @@ namespace Exiled.Events.Patches.Generic
             // Add the start label.
             newInstructions[index].labels.Add(startLabel);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-}
+    }
 }

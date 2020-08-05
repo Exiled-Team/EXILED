@@ -19,6 +19,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     /// <summary>
@@ -38,7 +40,8 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!ply.GetComponent<CharacterClassManager>().IsVerified)
                     return false;
 
-                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, __instance.Classes.SafeGet(classid).startItems.ToList(), lite, escape);
+                var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
+                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
 
                 Player.OnChangingRole(changingRoleEventArgs);
 
@@ -69,10 +72,13 @@ namespace Exiled.Events.Patches.Events.Player
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
 
                 if (lite)
+                {
+                    ListPool<ItemType>.Shared.Return(startItemsList);
                     return false;
+                }
 
                 Inventory component = ply.GetComponent<Inventory>();
-                List<Inventory.SyncItemInfo> list = new List<Inventory.SyncItemInfo>();
+                List<Inventory.SyncItemInfo> list = ListPool<Inventory.SyncItemInfo>.Shared.Rent();
                 if (escape && __instance.KeepItemsAfterEscaping)
                 {
                     foreach (Inventory.SyncItemInfo item in component.items)
@@ -84,6 +90,8 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     component.AddNewItem(id, -4.65664672E+11f, 0, 0, 0);
                 }
+
+                ListPool<ItemType>.Shared.Return(startItemsList);
 
                 if (escape && __instance.KeepItemsAfterEscaping)
                 {
@@ -142,6 +150,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
+                ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
                 return false;
             }
             catch (Exception e)

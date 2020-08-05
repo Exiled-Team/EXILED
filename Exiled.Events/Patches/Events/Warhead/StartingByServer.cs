@@ -17,6 +17,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
@@ -28,13 +30,13 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for the last "ldarg.0".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
             // Copy [Label2] from "ldarg.0" and then remove it.
-            var labels = new List<Label>(newInstructions[index].labels);
+            var labels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
             // var ev = new StartingEventArgs(API.Features.Server.Host, true);
@@ -57,7 +59,11 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Add [Label2] to "call".
             newInstructions[index].labels.AddRange(labels);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(labels);
         }
     }
 }

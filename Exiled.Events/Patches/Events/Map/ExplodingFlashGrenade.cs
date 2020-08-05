@@ -19,6 +19,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     /// <summary>
@@ -32,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             try
             {
-                List<API.Features.Player> players = new List<API.Features.Player>();
+                List<API.Features.Player> players = ListPool<API.Features.Player>.Shared.Rent();
 
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
@@ -60,6 +62,8 @@ namespace Exiled.Events.Patches.Events.Map
                 ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, false, __instance.gameObject);
 
                 Handlers.Map.OnExplodingGrenade(ev);
+
+                ListPool<API.Features.Player>.Shared.Return(players);
 
                 return ev.IsAllowed;
             }

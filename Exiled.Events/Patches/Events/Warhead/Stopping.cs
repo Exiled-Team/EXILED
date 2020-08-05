@@ -18,6 +18,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = new List<CodeInstruction>(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
@@ -40,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             var returnLabel = generator.DefineLabel();
 
             // Copy [Label3, Label4] from "ldc.i4.0" and then clear them.
-            var startLabels = new List<Label>(newInstructions[index].labels);
+            var startLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
             // var ev = new StoppingEventArgs(API.Features.Player.Get(disabler), true);
@@ -69,7 +71,11 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Add the label to the last "ret".
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(startLabels);
         }
     }
 }
