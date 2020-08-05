@@ -32,8 +32,14 @@ namespace Exiled.Events.Patches.Events.Scp106
         {
             var newInstructions = new List<CodeInstruction>(instructions);
 
+            // The index offset.
+            var offset = 1;
+
             // Search for the last "bne.un.s" and add 1 to get the index of the last "ldloca.s".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + 1;
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
+
+            // Get the return label.
+            var returnLabel = newInstructions[index - 1].operand;
 
             // var ev = new ContainingEventArgs(API.Features.Player.Get(keyValuePair.Key), true);
             //
@@ -51,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnContaining))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ContainingEventArgs), nameof(ContainingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             return newInstructions;

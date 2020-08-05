@@ -7,6 +7,7 @@
 
 namespace Exiled.Example.Handlers
 {
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -57,6 +58,18 @@ namespace Exiled.Example.Handlers
         public void OnActivating(ActivatingEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} is activating SCP-914!");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs)"/>
+        public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is failing to escape from the pocket dimension!");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnEscapingPocketDimension(EscapingPocketDimensionEventArgs)"/>
+        public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is escaping from the pocket dimension and will be teleported at {ev.TeleportPosition}");
         }
 
         /// <inheritdoc cref="Events.Handlers.Scp914.OnChangingKnobSetting(ChangingKnobSettingEventArgs)"/>
