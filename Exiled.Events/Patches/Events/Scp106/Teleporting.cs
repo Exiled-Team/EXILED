@@ -18,6 +18,8 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 to get the index of the third "ldarg.0".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
@@ -44,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             var returnLabel = generator.DefineLabel();
 
             // Copy [Label1] from "ldarg.0" and then clear them.
-            var startLabels = new List<Label>(newInstructions[index].labels);
+            var startLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
             // TeleportingEventArgs ev = new TeleportingEventArgs(API.Features.Player.Get(this.gameObject), this.portalPosition, true);
@@ -82,7 +84,11 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Add the label to the last "ret".
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(startLabels);
         }
     }
 }

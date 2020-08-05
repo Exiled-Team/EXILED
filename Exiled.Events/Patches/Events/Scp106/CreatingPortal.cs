@@ -18,6 +18,8 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for the last "ldarg.0".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
@@ -76,7 +78,10 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new CodeInstruction(OpCodes.Ret),
             });
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

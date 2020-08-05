@@ -17,6 +17,8 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -30,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for the last "ldsfld".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
@@ -80,7 +82,10 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Add the start label [Label6].
             newInstructions[index].labels.Add(startLabel);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using Console = GameCore.Console;
@@ -65,11 +67,12 @@ namespace Exiled.Events.Patches.Events.Scp079
                     return false;
                 }
 
-                List<string> list = ConfigFile.ServerConfig.GetStringList("scp079_door_blacklist") ??
-                                    new List<string>();
-                string s = array[0];
 
-                switch (s)
+                List<string> list = ListPool<string>.Shared.Rent();
+                ConfigFile.ServerConfig.GetStringCollection("scp079_door_blacklist", list);
+
+                bool result = true;
+                switch (array[0])
                 {
                     case "TESLA":
                         {
@@ -77,7 +80,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                             if (manaFromLabel > __instance.curMana)
                             {
                                 __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             GameObject gameObject =
@@ -87,35 +91,39 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 gameObject.GetComponent<TeslaGate>().RpcInstantBurst();
                                 __instance.AddInteractionToHistory(gameObject, array[0], true);
                                 __instance.Mana -= manaFromLabel;
-                                return false;
                             }
 
-                            return false;
+                            result = false;
+                            break;
                         }
 
                     case "DOOR":
                         {
                             if (AlphaWarheadController.Host.inProgress)
                             {
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             if (target == null)
                             {
                                 Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant);
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             Door component = target.GetComponent<Door>();
                             if (component == null)
                             {
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
                             {
                                 Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             float manaFromLabel = __instance.GetManaFromLabel(
@@ -126,7 +134,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                             {
                                 Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
                                 __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                return false;
+                                result = false;
+                                break;
                             }
 
                             if (component != null && component.ChangeState079())
@@ -134,16 +143,22 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 __instance.Mana -= manaFromLabel;
                                 __instance.AddInteractionToHistory(target, array[0], true);
                                 Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                                return true;
+                                result = true;
+                                break;
                             }
 
                             Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
-                            return false;
+                            result = false;
+                            break;
                         }
 
                     default:
-                        return true;
+                        result = true;
+                        break;
                 }
+
+                ListPool<string>.Shared.Return(list);
+                return result;
             }
             catch (Exception e)
             {

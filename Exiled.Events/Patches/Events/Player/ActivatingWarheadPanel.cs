@@ -9,13 +9,14 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -44,16 +45,19 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!__instance._sr.BypassMode && itemById == null)
                     return false;
 
-                var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string> { "CONT_LVL_3" });
+                var list = ListPool<string>.Shared.Rent();
+                list.Add("CONT_LVL_3");
+                var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), list);
 
                 Player.OnActivatingWarheadPanel(ev);
 
-                if (!ev.IsAllowed || !itemById.permissions.Intersect(ev.Permissions).Any())
-                    return false;
+                if (ev.IsAllowed || itemById.permissions.Intersect(ev.Permissions).Any())
+                {
+                    gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
+                    __instance.OnInteract();
+                }
 
-                gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
-                __instance.OnInteract();
-
+                ListPool<string>.Shared.Return(list);
                 return false;
             }
             catch (Exception exception)

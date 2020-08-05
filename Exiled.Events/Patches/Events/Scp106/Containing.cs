@@ -17,6 +17,8 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
@@ -30,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             var offset = 1;
@@ -60,7 +62,10 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
