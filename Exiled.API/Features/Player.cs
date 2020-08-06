@@ -24,7 +24,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
-    public class Player
+    public class Player : IEquatable<Player>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -1062,5 +1062,17 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId}";
+
+        /// <inheritdoc/>
+        public bool Equals(Player other)
+        {
+            return this.UserId == other.UserId && this.IPAddress == other.IPAddress && this.Id == other.Id;
+        }
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj)
+        {
+            return obj is Player ply && ply.Equals(this);
+        }
     }
 }
