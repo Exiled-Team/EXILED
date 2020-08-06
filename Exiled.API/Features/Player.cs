@@ -1076,5 +1076,15 @@ namespace Exiled.API.Features
         {
             return obj is Player ply && ply.Equals(this);
         }
+
+        /// <inheritdoc/>
+        public override int GetHashCode()
+        {
+            int hash = base.GetHashCode();
+            hash ^= UserId.GetHashCode();
+            hash ^= IPAddress.GetHashCode();
+            hash ^= Id.GetHashCode();
+            return hash;
+        }
     }
 }
