@@ -1066,7 +1066,9 @@ namespace Exiled.API.Features
         /// <inheritdoc/>
         public bool Equals(Player other)
         {
-            return this.UserId == other.UserId && this.IPAddress == other.IPAddress && this.Id == other.Id;
+            if (other == null)
+                return false;
+            return UserId == other.UserId && IPAddress == other.IPAddress && Id == other.Id;
         }
 
         /// <inheritdoc/>
