@@ -42,7 +42,7 @@ namespace Exiled.Updater
         public static readonly Encoding ProcessEncidong = new UTF8Encoding(false, false);
         public static readonly uint SecondsWaitForAPI = 60;
         public static readonly uint SecondsWaitForDownload = 480;
-        public static readonly PlatformID PlatformID = Environment.OSVersion.Platform;
+        public static readonly PlatformID PlatformId = Environment.OSVersion.Platform;
 
         private readonly HttpClient httpClient = new HttpClient();
 #pragma warning restore SA1600 // Elements should be documented
@@ -53,17 +53,103 @@ namespace Exiled.Updater
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            Log.Debug($"PlatformId: {PlatformID}");
+            Log.Debug($"PlatformId: {PlatformId}");
+
+            // Here is a HttpProxy workaround provided by SL, it's their solution, we just fix it.
+            // https://github.com/mono/mono/pull/12595
+            if (PlatformId == PlatformID.Win32NT)
+            {
+                var proxyEnabled = (int)Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "ProxyEnable", 0);
+                var strProxy = (string)Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "ProxyServer", null);
+                if (proxyEnabled > 0 && strProxy == null)
+                {
+                    Log.Info("HttpProxy detected, bypassing...");
+                    Microsoft.Win32.Registry.SetValue("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings", "ProxyEnable", 0);
+                    Log.Info("Bypassed!");
+
+                    GameCore.Console.HttpMode = HttpQueryMode.HttpClient;
+                    GameCore.Console.LockHttpMode = false;
+                }
+            }
 
             httpClient.DefaultRequestHeaders.Add("User-Agent", $"Exiled.Updater (https://github.com/galaxy119/EXILED, {Assembly.GetName().Version})");
 
             base.OnEnabled();
 
-            var result = FindUpdate().ConfigureAwait(false).GetAwaiter().GetResult();
-            if (result.Item1)
-                Update(result.Item2, result.Item3).ConfigureAwait(false).GetAwaiter().GetResult();
+            if (FindUpdate(out var targetRelease, out var asset))
+                Update(targetRelease, asset);
 
             httpClient.Dispose();
+        }
+
+        /// <summary>
+        /// Check if there is an update available.
+        /// </summary>
+        /// <param name="targetRelease">
+        /// Release with installer.
+        /// </param>
+        /// <param name="asset">
+        /// Installer itself.
+        /// </param>
+        /// <returns>Returns whether a new version of Exiled is available or not.</returns>
+        public bool FindUpdate(out Release targetRelease, out ReleaseAsset asset)
+        {
+            try
+            {
+                var url = string.Format(GitHubGetReleasesTemplate, REPOID);
+
+                using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForAPI)))
+                using (var result = httpClient.GetAsync(url, cancellationToken.Token).ConfigureAwait(false).GetAwaiter().GetResult())
+                using (var streamResult = result.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
+                {
+                    var releases = JsonSerializer.Deserialize<Release[]>(streamResult)
+                        .Where(r => Version.TryParse(r.TagName, out _))
+                        .OrderByDescending(r => r.CreatedAt.Ticks)
+                        .ToArray();
+
+                    Log.Debug($"Found {releases.Length} releases");
+                    for (int z = 0; z < releases.Length; z++)
+                    {
+                        var release = releases[z];
+                        Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
+
+                        for (int x = 0; x < release.Assets.Length; x++)
+                        {
+                            asset = release.Assets[x];
+                            Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
+                        }
+                    }
+
+                    if (releases.Length != 0 && FindRelease(releases, out targetRelease))
+                    {
+                        var installerNames = GetAvailableInstallerNames();
+                        if (!FindAsset(installerNames, targetRelease, out asset))
+                        {
+                            // Error: no asset
+                            Log.Warn("Couldn't find the asset, the update will not be installed");
+                        }
+                        else
+                        {
+                            Log.Info($"Found asset - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        // No errors
+                        Log.Info("No new versions found, you're using the most recent version of Exiled!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{nameof(FindUpdate)} throw an exception:");
+                Log.Error(ex);
+            }
+
+            targetRelease = default;
+            asset = default;
+            return false;
         }
 
         /// <summary>
@@ -75,30 +161,29 @@ namespace Exiled.Updater
         /// <param name="asset">
         /// Installer asset.
         /// </param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        public async Task Update(Release release, ReleaseAsset asset)
+        public void Update(Release release, ReleaseAsset asset)
         {
             try
             {
                 Log.Info("Downloading installer...");
                 using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForDownload)))
-                using (var installer = await httpClient.GetAsync(asset.BrowserDownloadUrl, cancellationToken.Token).ConfigureAwait(false))
+                using (var installer = httpClient.GetAsync(asset.BrowserDownloadUrl, cancellationToken.Token).ConfigureAwait(false).GetAwaiter().GetResult())
                 {
                     Log.Info("Downloaded!");
 
                     var serverPath = Environment.CurrentDirectory;
                     var installerPath = Path.Combine(serverPath, asset.Name);
 
-                    if (File.Exists(installerPath) && PlatformID == PlatformID.Unix)
+                    if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
                         LinuxPermissionNative.SetExecutionAccess(installerPath);
 
-                    using (var installerStream = await installer.Content.ReadAsStreamAsync().ConfigureAwait(false))
+                    using (var installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
                     using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
-                        await installerStream.CopyToAsync(fs).ConfigureAwait(false);
+                        installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
 
-                    if (PlatformID == PlatformID.Unix)
+                    if (PlatformId == PlatformID.Unix)
                         LinuxPermissionNative.SetExecutionAccess(installerPath);
 
                     if (!File.Exists(installerPath))
@@ -148,76 +233,14 @@ namespace Exiled.Updater
             }
         }
 
-        /// <summary>
-        /// Check if there is an update available.
-        /// </summary>
-        /// <returns>Returns whether a new version of Exiled is available or not.</returns>
-        public async Task<Tuple<bool, Release, ReleaseAsset>> FindUpdate()
-        {
-            try
-            {
-                var url = string.Format(GitHubGetReleasesTemplate, REPOID);
-
-                using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForAPI)))
-                using (var result = await httpClient.GetAsync(url, cancellationToken.Token).ConfigureAwait(false))
-                using (var streamResult = await result.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                {
-                    var releases = JsonSerializer.Deserialize<Release[]>(streamResult)
-                        .Where(r => Version.TryParse(r.TagName, out _))
-                        .OrderByDescending(r => r.CreatedAt.Ticks)
-                        .ToArray();
-
-                    Log.Debug($"Found {releases.Length} releases");
-                    for (int z = 0; z < releases.Length; z++)
-                    {
-                        var release = releases[z];
-                        Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
-
-                        for (int x = 0; x < release.Assets.Length; x++)
-                        {
-                            var asset = release.Assets[x];
-                            Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
-                        }
-                    }
-
-                    if (releases.Length != 0 && FindRelease(releases, out var targetRelease, out var includedPRE))
-                    {
-                        var installerNames = GetAvailableInstallerNames();
-                        if (!FindAsset(installerNames, targetRelease, out var asset))
-                        {
-                            // Error: no asset
-                            Log.Warn("Couldn't find the asset, the update will not be installed");
-                        }
-                        else
-                        {
-                            Log.Info($"Found asset - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
-                            return new Tuple<bool, Release, ReleaseAsset>(true, targetRelease, asset);
-                        }
-                    }
-                    else
-                    {
-                        // No errors
-                        Log.Info("No new versions found, you're using the most recent version of Exiled!");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"{nameof(FindUpdate)} throw an exception:");
-                Log.Error(ex);
-            }
-
-            return new Tuple<bool, Release, ReleaseAsset>(false, default, default);
-        }
-
         private string[] GetAvailableInstallerNames()
         {
-            if (PlatformID == PlatformID.Win32NT)
+            if (PlatformId == PlatformID.Win32NT)
             {
                 Log.Debug("Using Win installer");
                 return InstallerAssetNamesWin;
             }
-            else if (PlatformID == PlatformID.Unix)
+            else if (PlatformId == PlatformID.Unix)
             {
                 Log.Debug("Using Linux installer");
                 return InstallerAssetNamesLinux;
@@ -232,14 +255,14 @@ namespace Exiled.Updater
             }
         }
 
-        private bool FindRelease(Release[] releases, out Release release, out bool includedPRE)
+        private bool FindRelease(Release[] releases, out Release release)
         {
             var smallestExiledVersion = FindSmallestExiledVersion();
             if (smallestExiledVersion != null)
             {
                 Log.Info($"Found the smallest version of Exiled - {smallestExiledVersion.FullName}");
 
-                includedPRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease(releases);
+                var includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease(releases);
                 for (int z = 0; z < releases.Length; z++)
                 {
                     release = releases[z];
@@ -247,7 +270,7 @@ namespace Exiled.Updater
                     var version = Version.Parse(release.TagName);
                     Log.Debug($"TV - {version} | CV - {smallestExiledVersion.Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(version, smallestExiledVersion.Version)}");
 #endif
-                    if (release.PreRelease && !includedPRE)
+                    if (release.PreRelease && !includePRE)
                         continue;
 
 #if DEBUG
@@ -261,7 +284,6 @@ namespace Exiled.Updater
             else
             {
                 Log.Error("Couldn't find smallest version of Exiled!");
-                includedPRE = false;
             }
 
             release = default;
