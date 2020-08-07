@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Generic
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
                             bool canSee = true;
 
-                            if (currentTarget == null)
+                            if (currentTarget?.ReferenceHub == null)
                                 continue;
 
                             if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))

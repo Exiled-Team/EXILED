@@ -12,6 +12,7 @@ namespace Exiled.Events.Commands
     using CommandSystem;
 
     using Exiled.API.Features;
+    using Exiled.Permissions.Extensions;
 
     using MEC;
 
@@ -35,12 +36,17 @@ namespace Exiled.Events.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reconnectrestart"))
+            {
+                response = "You can't reconnect and restart the server, you don't have \"ee.reconnectrestart\" permission.";
+                return false;
+            }
+
             Round.Restart();
 
             Timing.CallDelayed(1.5f, Application.Quit);
 
             response = "The server is restarting...";
-
             return true;
         }
     }

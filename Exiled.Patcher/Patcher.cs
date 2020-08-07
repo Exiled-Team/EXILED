@@ -104,7 +104,7 @@ namespace Exiled.Patcher
 
                 start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(call));
 
-                module.Write("Assembly-CSharp-Exiled.dll");
+                module.Write(Path.Combine(path, "Assembly-CSharp-Exiled.dll"));
 
                 Console.WriteLine("[Exiled.Patcher] Patching completed successfully!");
             }
@@ -130,13 +130,13 @@ namespace Exiled.Patcher
             return null;
         }
 
-        private static TypeDef FindType(AssemblyDef asm, string classPath)
+        private static TypeDef FindType(AssemblyDef assembly, string path)
         {
-            foreach (var module in asm.Modules)
+            foreach (var module in assembly.Modules)
             {
                 foreach (var type in module.Types)
                 {
-                    if (type.FullName == classPath)
+                    if (type.FullName == path)
                         return type;
                 }
             }

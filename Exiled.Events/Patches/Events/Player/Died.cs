@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -36,10 +35,11 @@ namespace Exiled.Events.Patches.Events.Player
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -2;
+            const int offset = -2;
 
             // Find the index of "playerStats.SetHpAmount" method and add the offset.
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+            (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
 
             // Define the return label and add it to the starting instruction.
             var returnLabel = generator.DefineLabel();

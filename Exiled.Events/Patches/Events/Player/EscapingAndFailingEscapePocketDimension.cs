@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -44,8 +43,8 @@ namespace Exiled.Events.Patches.Events.Player
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
             (FieldInfo)instruction.operand == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
 
-            // Get the starting label and remove all of them from the original instruction.
-            var startingLabel = newInstructions[index].labels[0];
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
             // Get the return label from the last instruction.
@@ -71,8 +70,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            // Add the starting label to the first injected instruction.
-            newInstructions[index].labels.Add(startingLabel);
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
+
+            ListPool<Label>.Shared.Return(startingLabels);
 
             // --------- EscapingPocketDimension ---------
 

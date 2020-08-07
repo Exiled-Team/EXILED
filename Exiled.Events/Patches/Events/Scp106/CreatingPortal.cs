@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp106
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
 
     using System.Reflection.Emit;
@@ -26,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.CallCmdMakePortal"/>.
-    /// Adds the <see cref="Scp106.CreatingPortal"/> event.
+    /// Adds the <see cref="Handlers.Scp106.CreatingPortal"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMakePortal))]
     internal static class CreatingPortal
@@ -35,8 +34,11 @@ namespace Exiled.Events.Patches.Events.Scp106
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            // The index offset;
+            const int offset = 0;
+
             // Search for the last "ldarg.0".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
             // Get the return label.
             var returnLabel = newInstructions[index - 1].operand;
@@ -44,9 +46,9 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Declare CreatingPortalEventArgs local variable.
             var ev = generator.DeclareLocal(typeof(CreatingPortalEventArgs));
 
-            // var ev = new CreatingPortalEventArgs(API.Features.Player.Get(this.gameObject), raycastHit.point - Vector3.up, true);
+            // var ev = new CreatingPortalEventArgs(Player.Get(this.gameObject), raycastHit.point - Vector3.up, true);
             //
-            // Scp106.OnCreatingPortal(ev);
+            // Handlers.Scp106.OnCreatingPortal(ev);
             //
             // if (!ev.IsAllowed)
             //   return;

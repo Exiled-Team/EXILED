@@ -12,6 +12,7 @@ namespace Exiled.Events.Commands.Reload
     using CommandSystem;
 
     using Exiled.Loader;
+    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The reload plugins command.
@@ -30,12 +31,17 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadplugins"))
+            {
+                response = "You can't reload plugins, you don't have \"ee.reloadplugins\" permission.";
+                return false;
+            }
+
             sender.Respond("Reloading plugins...");
 
             Loader.LoadPlugins();
 
             response = "Plugins have been reloaded successfully!";
-
             return true;
         }
     }

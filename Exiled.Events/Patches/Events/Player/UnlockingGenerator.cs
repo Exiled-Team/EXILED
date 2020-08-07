@@ -1,14 +1,15 @@
 // -----------------------------------------------------------------------
-// <copyright file="Activating.cs" company="Exiled Team">
+// <copyright file="UnlockingGenerator.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp914
+namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -23,46 +24,43 @@ namespace Exiled.Events.Patches.Events.Scp914
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUse914"/>.
-    /// Adds the <see cref="Handlers.Scp914.Activating"/> event.
+    /// Patches <see cref="Generator079.OpenClose(GameObject)"/>.
+    /// Adds the <see cref="Handlers.Player.UnlockingGenerator"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUse914))]
-    internal static class Activating
+    [HarmonyPatch(typeof(Generator079), nameof(Generator079.OpenClose))]
+    internal static class UnlockingGenerator
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            const int offset = 0;
+            const int offset = -4;
 
-            // Search for the last "ldsfld".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            // Find the starting index by searching for "call" of "set_NetworkisDoorUnlocked".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == PropertySetter(typeof(Generator079), nameof(Generator079.NetworkisDoorUnlocked))) + offset;
 
             // Get the starting labels and remove all of them from the original instruction.
             var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
-            // Get the return label from the last instruction.
-            var returnLabel = newInstructions[index - 1].labels[0];
-
-            // var ev = new ActivatingEventArgs(Player.Get(this.gameObject));
+            // var ev = new UnlockingGeneratorEventArgs(Player.Get(person), this, flag);
             //
-            // Handlers.Scp914.OnActivating(ev);
+            // Handlers.Player.OnUnlockingGenerator(ev);
             //
-            // if (!ev.IsAllowed)
-            //   return;
+            // flag = ev.IsAllowed
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UnlockingGeneratorEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnActivating))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ActivatingEventArgs), nameof(ActivatingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUnlockingGenerator))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UnlockingGeneratorEventArgs), nameof(UnlockingGeneratorEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Stloc_1),
             });
 
             // Add the starting labels to the first injected instruction.

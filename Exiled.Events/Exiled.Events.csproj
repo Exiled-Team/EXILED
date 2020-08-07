@@ -215,6 +215,7 @@
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Handlers\Warhead.cs" />
     <Compile Include="Patches\Events\Player\EscapingAndFailingEscapePocketDimension.cs" />
+    <Compile Include="Patches\Events\Player\UnlockingGenerator.cs" />
     <Compile Include="Patches\Events\Scp049\StartingAndFinishingRecall.cs" />
     <Compile Include="Patches\Events\Scp914\Activating.cs" />
     <Compile Include="Patches\Events\Map\AnnouncingDecontamination.cs" />
@@ -309,6 +310,10 @@
     <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj">
       <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
       <Name>Exiled.Loader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj">
+      <Project>{4ffb9ceb-2956-4f62-88b3-6416db8a8ed7}</Project>
+      <Name>Exiled.Permissions</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

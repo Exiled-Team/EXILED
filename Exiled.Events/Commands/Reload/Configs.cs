@@ -12,6 +12,7 @@ namespace Exiled.Events.Commands.Reload
     using CommandSystem;
 
     using Exiled.Loader;
+    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The reload configs command.
@@ -30,12 +31,17 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadconfigs"))
+            {
+                response = "You can't reload configs, you don't have \"ee.reloadconfigs\" permission.";
+                return false;
+            }
+
             bool haveBeenReloaded = ConfigManager.Reload();
 
             Handlers.Server.OnReloadedConfigs();
 
             response = "Plugin configs have been reloaded successfully!";
-
             return haveBeenReloaded;
         }
     }

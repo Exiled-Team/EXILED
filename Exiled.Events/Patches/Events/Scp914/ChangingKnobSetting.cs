@@ -8,14 +8,13 @@
 namespace Exiled.Events.Patches.Events.Scp914
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System;
 
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -27,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdChange914Knob"/>.
-    /// Adds the <see cref="Scp914.ChangingKnobSetting"/> event.
+    /// Adds the <see cref="Handlers.Scp914.ChangingKnobSetting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdChange914Knob))]
     internal static class ChangingKnobSetting
@@ -36,25 +35,31 @@ namespace Exiled.Events.Patches.Events.Scp914
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Search for the last "ldsfld".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
+            // The index offset.
+            const int offset = 0;
 
-            // Get the start label [Label4] and remove it.
-            var startLabel = newInstructions[index].labels[0];
+            // Search for the last "ldsfld".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+
+            // Declare ChangingKnobSettingEventArgs local variable.
+            var ev = generator.DeclareLocal(typeof(ChangingKnobSettingEventArgs));
+
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
+
+            // Get the return label from the last instruction.
+            var returnLabel = newInstructions[index - 1].labels[0];
 
             // Remove "Scp914.Scp914Machine.singleton.ChangeKnobStatus()".
             newInstructions.RemoveRange(index, 2);
 
-            // Declare ChangingKnobSettingEventArgs, to be able to store its instance with "stloc.0".
-            generator.DeclareLocal(typeof(ChangingKnobSettingEventArgs));
-
             // if (Math.Abs(Scp914.Scp914Machine.singleton.curKnobCooldown) > 0.001f)
             //   return;
             //
-            //  var ev = new ChangingKnobSettingEventArgs(API.Features.Player.Get(this.gameObject), Scp914Machine.singleton.knobState + 1);
+            //  var ev = new ChangingKnobSettingEventArgs(Player.Get(this.gameObject), Scp914Machine.singleton.knobState + 1);
             //
-            // Scp914.OnChangingKnobSetting(ev);
+            // Handlers.Scp914.OnChangingKnobSetting(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -67,10 +72,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.curKnobCooldown))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Math), nameof(Math.Abs), new[] { typeof(float) })),
                 new CodeInstruction(OpCodes.Ldc_R4, 0.001f),
-                new CodeInstruction(OpCodes.Bgt_Un_S, newInstructions[index - 1].labels[0]),
+                new CodeInstruction(OpCodes.Bgt_Un_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.singleton))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.knobState))),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -79,27 +84,28 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingKnobSettingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnChangingKnobSetting))),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnChangingKnobSetting))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingKnobSettingEventArgs), nameof(ChangingKnobSettingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].labels[0]),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.singleton))),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.knobCooldown))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.curKnobCooldown))),
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingKnobSettingEventArgs), nameof(ChangingKnobSettingEventArgs.KnobSetting))),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(global::Scp914.Scp914Machine), nameof(global::Scp914.Scp914Machine.NetworkknobState))),
             });
 
-            // Add the start label [Label4].
-            newInstructions[index].labels.Add(startLabel);
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

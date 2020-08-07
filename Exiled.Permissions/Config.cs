@@ -26,6 +26,12 @@ namespace Exiled.Permissions
         }
 
         /// <summary>
+        /// Gets a value indicating whether the debug should be shown or not.
+        /// </summary>
+        [Description("Indicates whether the debug should be shown or not")]
+        public bool ShouldDebugBeShown { get; private set; }
+
+        /// <summary>
         /// Gets the permissions folder path.
         /// </summary>
         [Description("The permissions folder path")]

@@ -50,6 +50,10 @@
     <Reference Include="Mirror">
       <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
     </Reference>
+    <Reference Include="NorthwoodLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\NorthwoodLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="UnityEngine">
       <HintPath>$(EXILED_REFERENCES)\UnityEngine.dll</HintPath>
@@ -64,7 +68,6 @@
   <ItemGroup>
     <Compile Include="Enums\AmmoType.cs" />
     <Compile Include="Enums\EnvironmentType.cs" />
-    <Compile Include="Enums\LogLevel.cs" />
     <Compile Include="Enums\AuthenticationType.cs" />
     <Compile Include="Enums\PluginPriority.cs" />
     <Compile Include="Enums\RespawnEffectType.cs" />

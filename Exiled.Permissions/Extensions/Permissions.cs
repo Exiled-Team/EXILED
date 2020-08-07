@@ -12,8 +12,9 @@ namespace Exiled.Permissions.Extensions
     using System.Linq;
     using System.Text;
 
+    using CommandSystem;
+
     using Exiled.API.Features;
-    using Exiled.Loader;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
 
@@ -107,6 +108,14 @@ namespace Exiled.Permissions.Extensions
         /// <param name="sender">The sender to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
         /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this ICommandSender sender, string permission) => CheckPermission(sender as CommandSender, permission);
+
+        /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
         public static bool CheckPermission(this CommandSender sender, string permission)
         {
             if (sender.FullPermissions || sender is ServerConsoleSender || sender is GameCore.ConsoleCommandSender)
@@ -137,10 +146,10 @@ namespace Exiled.Permissions.Extensions
             if (player == null)
                 return false;
 
-            if (player.GameObject == PlayerManager.localPlayer)
+            if (player.GameObject == Server.Host.GameObject)
                 return true;
 
-            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
+            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Instance.Config.ShouldDebugBeShown);
 
             if (string.IsNullOrEmpty(permission))
             {
@@ -148,18 +157,18 @@ namespace Exiled.Permissions.Extensions
                 return false;
             }
 
-            Log.Debug($"Permission string: {permission}", Loader.ShouldDebugBeShown);
+            Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
             UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(player.UserId);
             Group group = null;
 
             if (userGroup != null)
             {
-                Log.Debug($"UserGroup: {userGroup.BadgeText}", Loader.ShouldDebugBeShown);
+                Log.Debug($"UserGroup: {userGroup.BadgeText}", Instance.Config.ShouldDebugBeShown);
 
                 string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key;
 
-                Log.Debug($"GroupName: {groupName}", Loader.ShouldDebugBeShown);
+                Log.Debug($"GroupName: {groupName}", Instance.Config.ShouldDebugBeShown);
 
                 if (Groups == null)
                 {
@@ -179,49 +188,49 @@ namespace Exiled.Permissions.Extensions
                     return false;
                 }
 
-                Log.Debug($"Got group.", Loader.ShouldDebugBeShown);
+                Log.Debug($"Got group.", Instance.Config.ShouldDebugBeShown);
             }
             else
             {
-                Log.Debug("Player group is null, getting default..", Loader.ShouldDebugBeShown);
+                Log.Debug("Player group is null, getting default..", Instance.Config.ShouldDebugBeShown);
 
                 group = DefaultGroup;
             }
 
             if (group != null)
             {
-                Log.Debug("Group is not null!", Loader.ShouldDebugBeShown);
+                Log.Debug("Group is not null!", Instance.Config.ShouldDebugBeShown);
 
                 if (permission.Contains("."))
                 {
-                    Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
+                    Log.Debug("Group contains permission separator", Instance.Config.ShouldDebugBeShown);
 
                     if (group.CombinedPermissions.Any(s => s == ".*"))
                     {
-                        Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);
+                        Log.Debug("All permissions have been granted for all nodes.", Instance.Config.ShouldDebugBeShown);
                         return true;
                     }
 
                     if (group.CombinedPermissions.Contains(permission.Split('.')[0] + ".*"))
                     {
-                        Log.Debug("Check 1: True, returning.", Loader.ShouldDebugBeShown);
+                        Log.Debug("Check 1: True, returning.", Instance.Config.ShouldDebugBeShown);
                         return true;
                     }
                 }
 
                 if (group.CombinedPermissions.Contains(permission) || group.CombinedPermissions.Contains("*"))
                 {
-                    Log.Debug("Check 2: True, returning.", Loader.ShouldDebugBeShown);
+                    Log.Debug("Check 2: True, returning.", Instance.Config.ShouldDebugBeShown);
                     return true;
                 }
             }
             else
             {
-                Log.Debug("Group is null, returning false.", Loader.ShouldDebugBeShown);
+                Log.Debug("Group is null, returning false.", Instance.Config.ShouldDebugBeShown);
                 return false;
             }
 
-            Log.Debug("No permissions found.", Loader.ShouldDebugBeShown);
+            Log.Debug("No permissions found.", Instance.Config.ShouldDebugBeShown);
 
             return false;
         }

@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnActivatingWarheadPanel(ev);
 
-                if (ev.IsAllowed || itemById.permissions.Intersect(ev.Permissions).Any())
+                if (ev.IsAllowed && itemById.permissions.Intersect(ev.Permissions).Any())
                 {
                     gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
                     __instance.OnInteract();

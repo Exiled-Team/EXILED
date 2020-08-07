@@ -8,8 +8,12 @@
 namespace Exiled.API.Extensions
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
     using System.Text.RegularExpressions;
+
+    using NorthwoodLib.Pools;
 
     /// <summary>
     /// A set of extensions for <see cref="string"/>.
@@ -78,6 +82,38 @@ namespace Exiled.API.Extensions
             string snakeCaseString = string.Concat(str.Select((ch, i) => i > 0 && char.IsUpper(ch) ? "_" + ch.ToString() : ch.ToString())).ToLower();
 
             return shouldReplaceSpecialChars ? Regex.Replace(snakeCaseString, @"[^0-9a-zA-Z_]+", string.Empty) : snakeCaseString;
+        }
+
+        /// <summary>
+        /// Converts an <see cref="IEnumerable{T}"/> into a string.
+        /// </summary>
+        /// <typeparam name="T">The type of the IEnumerable.</typeparam>
+        /// <param name="enumerable">The instance.</param>
+        /// <param name="showIndex">Indicates whether the enumerator index should be shown or not.</param>
+        /// <returns>Returns the converted <see cref="IEnumerable{T}"/>.</returns>
+        public static string ToString<T>(this IEnumerable<T> enumerable, bool showIndex = true)
+        {
+            StringBuilder stringBuilder = StringBuilderPool.Shared.Rent();
+            int index = 0;
+
+            stringBuilder.AppendLine(string.Empty);
+
+            foreach (var enumerator in enumerable)
+            {
+                if (showIndex)
+                {
+                    stringBuilder.Append(index++);
+                    stringBuilder.Append(' ');
+                }
+
+                stringBuilder.AppendLine(enumerator.ToString());
+            }
+
+            string result = stringBuilder.ToString();
+
+            StringBuilderPool.Shared.Return(stringBuilder);
+
+            return result;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("ep.reload"))
+            if (!sender.CheckPermission("ep.reload"))
             {
                 response = "You can't reload permissions, you don't have \"ep.reload\" permission.";
                 return false;
@@ -39,7 +39,6 @@ namespace Exiled.Permissions.Commands.Permissions
             Extensions.Permissions.Reload();
 
             response = "Permissions have been successfully reloaded!";
-
             return true;
         }
     }

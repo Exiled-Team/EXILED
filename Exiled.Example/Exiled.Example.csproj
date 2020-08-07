@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\bin\Release\Exiled.Example.xml</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Commands\Test.cs" />
@@ -54,10 +55,6 @@
     <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj">
       <Project>{1e6c4350-5067-4ce7-91db-6420d027a4fc}</Project>
       <Name>Exiled.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj">
-      <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
-      <Name>Exiled.Loader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -238,9 +238,6 @@ namespace Exiled.Events.Patches.Events.Server
 
         // Try to replace the reason as a field,
         // it didn't work for me
-        private static void SuperReasonReplacer(EventArgs.LocalReportingEventArgs ev, ref string reason)
-        {
-            reason = ev.Reason;
-        }
+        private static void SuperReasonReplacer(EventArgs.LocalReportingEventArgs ev, ref string reason) => reason = ev.Reason;
     }
 }

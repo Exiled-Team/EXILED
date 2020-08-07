@@ -19,6 +19,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using RemoteAdmin;
+
     using UnityEngine;
 
     /// <summary>
@@ -66,7 +68,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform PlayerCamera => ReferenceHub.PlayerCameraReference;
+        [Obsolete("Use CameraTransform instead", true)]
+        public Transform PlayerCamera => CameraTransform;
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// </summary>
+        public Transform CameraTransform => ReferenceHub.PlayerCameraReference;
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
@@ -113,6 +121,11 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId2;
             set => ReferenceHub.characterClassManager.UserId2 = value;
         }
+
+        /// <summary>
+        /// Gets the player's user id without the authentication.
+        /// </summary>
+        public string RawUserId => UserId.Substring(0, UserId.LastIndexOf('@'));
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -279,7 +292,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's command sender instance.
         /// </summary>
-        public CommandSender CommandSender => ReferenceHub.queryProcessor._sender;
+        [Obsolete("Use Sender instead", true)]
+        public CommandSender CommandSender => Sender;
+
+        /// <summary>
+        /// Gets the player's command sender instance.
+        /// </summary>
+        public PlayerCommandSender Sender => ReferenceHub.queryProcessor._sender;
 
         /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
@@ -290,6 +309,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is the host or not.
         /// </summary>
         public bool IsHost => ReferenceHub.characterClassManager.IsHost;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is alive or not.
+        /// </summary>
+        public bool IsAlive => !IsDead;
 
         /// <summary>
         /// Gets a value indicating whether the player is dead or not.
@@ -789,10 +813,26 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the camera with the given ID.
+        /// </summary>
+        /// <param name="cameraId">The camera id to be searched for.</param>
+        /// <returns><see cref="Camera079"/>.</returns>
+        public Camera079 GetCameraById(ushort cameraId)
+        {
+            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            {
+                if (camera.cameraId == cameraId)
+                    return camera;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Sets the SCP-079 camera, if the player is SCP-079.
         /// </summary>
-        /// <param name="id">Camera ID.</param>
-        public void SetCamera(ushort id) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(id, false);
+        /// <param name="cameraId">Camera ID.</param>
+        public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
         /// Sets the player's rank.
@@ -824,30 +864,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the camera with the given ID.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns><see cref="Camera079"/>.</returns>
-        public Camera079 GetCameraById(ushort cameraId)
-        {
-            Camera079[] cameras = UnityEngine.Object.FindObjectsOfType<Camera079>();
-
-            foreach (Camera079 camera in cameras)
-            {
-                if (camera.cameraId == cameraId)
-                    return camera;
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Handcuff the player.
         /// </summary>
         /// <param name="cuffer">The cuffer player.</param>
         public void Handcuff(Player cuffer)
         {
-            if (cuffer.ReferenceHub == null)
+            if (cuffer?.ReferenceHub == null)
                 return;
 
             if (!IsCuffed &&
@@ -975,7 +997,7 @@ namespace Exiled.API.Features
         /// <param name="pluginName">The plugin name.</param>
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
-            ReferenceHub.queryProcessor._sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
+            Sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
         }
 
         /// <summary>
@@ -1057,10 +1079,11 @@ namespace Exiled.API.Features
             {
                 new StringHintParameter(message),
             };
+
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Id} {Nickname} {UserId}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
 }

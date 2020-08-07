@@ -38,11 +38,17 @@ namespace Exiled.Events.Patches.Events.Player
                         {
                             case false:
                                 var openingEventArgs = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
-                                Exiled.Events.Handlers.Player.OnOpeningGenerator(openingEventArgs);
+
+                                Player.OnOpeningGenerator(openingEventArgs);
+
+                                isAllowed = openingEventArgs.IsAllowed;
                                 break;
                             case true:
                                 var closingEventArgs = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
-                                Exiled.Events.Handlers.Player.OnClosingGenerator(closingEventArgs);
+
+                                Player.OnClosingGenerator(closingEventArgs);
+
+                                isAllowed = closingEventArgs.IsAllowed;
                                 break;
                         }
 
@@ -64,7 +70,8 @@ namespace Exiled.Events.Patches.Events.Player
                                 if (current.id == ItemType.WeaponManagerTablet)
                                 {
                                     var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
-                                    Exiled.Events.Handlers.Player.OnInsertingGeneratorTablet(insertingEventAgrs);
+
+                                    Player.OnInsertingGeneratorTablet(insertingEventAgrs);
 
                                     if (insertingEventAgrs.IsAllowed)
                                     {
@@ -81,20 +88,20 @@ namespace Exiled.Events.Patches.Events.Player
 
                     case PlayerInteract.Generator079Operations.Cancel:
                         var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
-                        Exiled.Events.Handlers.Player.OnEjectingGeneratorTablet(ejectingEventArgs);
+
+                        Player.OnEjectingGeneratorTablet(ejectingEventArgs);
+
                         if (ejectingEventArgs.IsAllowed)
-                        {
                             __instance.EjectTablet();
-                        }
 
                         break;
                 }
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet: {exception}\n{exception.StackTrace}");
 
                 return true;
             }

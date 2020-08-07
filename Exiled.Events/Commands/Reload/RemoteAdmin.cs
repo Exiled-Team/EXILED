@@ -12,6 +12,7 @@ namespace Exiled.Events.Commands.Reload
     using CommandSystem;
 
     using Exiled.Loader;
+    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The reload remoteadmin command.
@@ -30,12 +31,17 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!sender.CheckPermission("ee.reloadremoteadmin"))
+            {
+                response = "You can't reload remote admin configs, you don't have \"ee.reloadremoteadmin\" permission.";
+                return false;
+            }
+
             ConfigManager.ReloadRemoteAdmin();
 
             Handlers.Server.OnReloadedRA();
 
             response = "Remote admin configs reloaded.";
-
             return true;
         }
     }

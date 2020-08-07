@@ -34,7 +34,7 @@ namespace Exiled.Example
         public static Example Instance => LazyInstance.Value;
 
         /// <inheritdoc/>
-        public override PluginPriority Priority { get; } = PluginPriority.Medium;
+        public override PluginPriority Priority { get; } = PluginPriority.First;
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -74,6 +74,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Joined += player.OnJoined;
             Events.Handlers.Player.FailingEscapePocketDimension += player.OnFailingEscapePocketDimension;
             Events.Handlers.Player.EscapingPocketDimension += player.OnEscapingPocketDimension;
+            Events.Handlers.Player.UnlockingGenerator += player.OnUnlockingGenerator;
 
             Events.Handlers.Warhead.Stopping += warhead.OnStopping;
             Events.Handlers.Warhead.Starting += warhead.OnStarting;
@@ -100,6 +101,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Joined -= player.OnJoined;
             Events.Handlers.Player.FailingEscapePocketDimension -= player.OnFailingEscapePocketDimension;
             Events.Handlers.Player.EscapingPocketDimension -= player.OnEscapingPocketDimension;
+            Events.Handlers.Player.UnlockingGenerator -= player.OnUnlockingGenerator;
 
             Events.Handlers.Warhead.Stopping -= warhead.OnStopping;
             Events.Handlers.Warhead.Starting -= warhead.OnStarting;

@@ -7,6 +7,8 @@
 
 namespace Exiled.Example.Handlers
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -84,6 +86,12 @@ namespace Exiled.Example.Handlers
                 return;
 
             ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type);
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
+        public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is trying to unlock a generator in {ev.Generator?.CurRoom} room");
         }
     }
 }

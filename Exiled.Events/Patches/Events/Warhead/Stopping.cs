@@ -8,13 +8,12 @@
 namespace Exiled.Events.Patches.Events.Warhead
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -26,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     /// <summary>
     /// Patches <see cref="AlphaWarheadController.CancelDetonation(GameObject)"/>.
-    /// Adds the <see cref="Warhead.Stopping"/> event.
+    /// Adds the <see cref="Handlers.Warhead.Stopping"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.CancelDetonation), new Type[] { typeof(GameObject) })]
     internal static class Stopping
@@ -38,44 +37,44 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
 
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
+            newInstructions[index].labels.Clear();
+
             // Generate the return label.
             var returnLabel = generator.DefineLabel();
 
-            // Copy [Label3, Label4] from "ldc.i4.0" and then clear them.
-            var startLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
-
-            // var ev = new StoppingEventArgs(API.Features.Player.Get(disabler), true);
+            // var ev = new StoppingEventArgs(Player.Get(disabler), true);
             //
-            // Warhead.OnStopping(ev);
+            // Handlers.Warhead.OnStopping(ev);
             //
-            // if(!ev.IsAllowed || API.Features.Warhead.IsWarheadLocked)
+            // if(!ev.IsAllowed || Warhead.IsWarheadLocked)
             //   return;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStopping))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStopping))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Warhead), nameof(API.Features.Warhead.IsLocked))),
                 new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
             });
 
-            // Add [Label3, Label4] to "ldc.i4.0".
-            newInstructions[index].labels.AddRange(startLabels);
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
 
-            // Add the label to the last "ret".
+            // Add the label to the last instruction.
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startLabels);
+            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

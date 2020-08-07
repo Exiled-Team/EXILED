@@ -43,7 +43,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("ep.groupinfo"))
+            if (!sender.CheckPermission("ep.groupinfo"))
             {
                 response = "You can't see group information, you don't have \"ep.groupinfo\" permission.";
                 return false;
@@ -93,7 +93,6 @@ namespace Exiled.Permissions.Commands.Permissions.Group
             }
 
             response = stringBuilder.ToString();
-
             return true;
         }
     }
