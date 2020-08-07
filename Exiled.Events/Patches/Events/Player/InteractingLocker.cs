@@ -32,14 +32,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 LockerManager singleton = LockerManager.singleton;
 
-                if (lockerId < 0 || lockerId >= singleton.lockers.Length)
+                if (lockerId >= singleton.lockers.Length)
                     return false;
 
                 if (!__instance.ChckDis(singleton.lockers[lockerId].gameObject.position) ||
                     !singleton.lockers[lockerId].supportsStandarizedAnimation)
                     return false;
 
-                if (chamberNumber < 0 || chamberNumber >= singleton.lockers[lockerId].chambers.Length)
+                if (chamberNumber >= singleton.lockers[lockerId].chambers.Length)
                     return false;
 
                 if (singleton.lockers[lockerId].chambers[chamberNumber].doorAnimator == null)
@@ -51,13 +51,14 @@ namespace Exiled.Events.Patches.Events.Player
                 singleton.lockers[lockerId].chambers[chamberNumber].SetCooldown();
 
                 string accessToken = singleton.lockers[lockerId].chambers[chamberNumber].accessToken;
-                Item itemByID = __instance._inv.GetItemByID(__instance._inv.curItem);
+                Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
 
                 var ev = new InteractingLockerEventArgs(
                     API.Features.Player.Get(__instance.gameObject),
                     singleton.lockers[lockerId],
                     lockerId,
-                    string.IsNullOrEmpty(accessToken) || (itemByID != null && itemByID.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
+                    string.IsNullOrEmpty(accessToken) ? string.Empty : accessToken,
+                    string.IsNullOrEmpty(accessToken) || (itemById != null && itemById.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
 
                 Player.OnInteractingLocker(ev);
 
@@ -76,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
                     }
 
-                    singleton.lockers[lockerId].LockPickups(!flag, (uint)chamberNumber, anyOpen);
+                    singleton.lockers[lockerId].LockPickups(!flag, chamberNumber, anyOpen);
                     if (!string.IsNullOrEmpty(accessToken))
                     {
                         singleton.RpcChangeMaterial(lockerId, chamberNumber, false);
