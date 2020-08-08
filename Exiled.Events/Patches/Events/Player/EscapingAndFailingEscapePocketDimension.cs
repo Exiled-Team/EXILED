@@ -39,10 +39,10 @@ namespace Exiled.Events.Patches.Events.Player
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
             // Find the first null check of the NetworkIdentity component
-            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse && i.operand is Label);
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
 
-            // return label
-            var label = (Label)newInstructions[index].operand;
+            // Get the return label from the instruction at the index.
+            var returnLabel = newInstructions[index].operand;
 
             newInstructions.InsertRange(index + 1, new[]
             {
@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(ReferenceHub), nameof(ReferenceHub.GetHub), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldnull),
                 new CodeInstruction(OpCodes.Call, Method(typeof(ReferenceHub), "op_Equality", new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Brtrue, label),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
             });
 
             // --------- FailingEscapePocketDimension ---------
@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[index].labels.Clear();
 
             // Get the return label from the last instruction.
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // var ev = new FailingEscapePocketDimensionEventArgs(Player.Get(other.gameObject), this);
             //
