@@ -11,7 +11,6 @@ namespace Exiled.Example
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Extensions;
 
     /// <summary>
     /// The example plugin.
@@ -23,6 +22,7 @@ namespace Exiled.Example
         private Handlers.Server server;
         private Handlers.Player player;
         private Handlers.Warhead warhead;
+        private Handlers.Map map;
 
         private Example()
         {
@@ -64,6 +64,7 @@ namespace Exiled.Example
             server = new Handlers.Server();
             player = new Handlers.Player();
             warhead = new Handlers.Warhead();
+            map = new Handlers.Map();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound += server.OnEndingRound;
@@ -85,6 +86,8 @@ namespace Exiled.Example
 
             Events.Handlers.Scp914.Activating += player.OnActivating;
             Events.Handlers.Scp914.ChangingKnobSetting += player.OnChangingKnobSetting;
+
+            Events.Handlers.Map.ExplodingGrenade += map.OnExplodingGrenade;
         }
 
         /// <summary>
@@ -113,9 +116,12 @@ namespace Exiled.Example
             Events.Handlers.Scp914.Activating -= player.OnActivating;
             Events.Handlers.Scp914.ChangingKnobSetting -= player.OnChangingKnobSetting;
 
+            Events.Handlers.Map.ExplodingGrenade -= map.OnExplodingGrenade;
+
             server = null;
             player = null;
             warhead = null;
+            map = null;
         }
     }
 }

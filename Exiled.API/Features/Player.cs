@@ -15,7 +15,11 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Grenades;
+
     using Hints;
+
+    using MEC;
 
     using Mirror;
 
@@ -28,6 +32,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+        private ReferenceHub referenceHub;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -63,7 +69,44 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
-        public ReferenceHub ReferenceHub { get; }
+        public ReferenceHub ReferenceHub
+        {
+            get => referenceHub;
+            private set
+            {
+                referenceHub = value;
+
+                if (value == null)
+                    return;
+
+                GameObject = value.gameObject;
+                Ammo = value.ammoBox;
+                HintDisplay = value.hints;
+                Inventory = value.inventory;
+                CameraTransform = value.PlayerCameraReference;
+                GrenadeManager = value.GetComponent<GrenadeManager>();
+            }
+        }
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject { get; private set; }
+
+        /// <summary>
+        /// Gets the player's ammo.
+        /// </summary>
+        public AmmoBox Ammo { get; private set; }
+
+        /// <summary>
+        /// Gets the HintDisplay of the player.
+        /// </summary>
+        public HintDisplay HintDisplay { get; private set; }
+
+        /// <summary>
+        /// Gets the player's inventory.
+        /// </summary>
+        public Inventory Inventory { get; private set; }
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
@@ -74,23 +117,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform CameraTransform => ReferenceHub.PlayerCameraReference;
+        public Transform CameraTransform { get; private set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
+        /// Gets the player's grenade manager.
         /// </summary>
-        public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
-
-        /// <summary>
-        /// Gets the HintDisplay of the players ReferenceHub.
-        /// </summary>
-        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
-        public HintDisplay HintDisplay => ReferenceHub.hints;
-
-        /// <summary>
-        /// Gets the player's inventory.
-        /// </summary>
-        public Inventory Inventory => ReferenceHub.inventory;
+        public GrenadeManager GrenadeManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -703,7 +735,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
         /// <returns>Returns a player or null if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => Get(referenceHub?.gameObject);
+        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
@@ -727,7 +759,7 @@ namespace Exiled.API.Features
         /// <returns>Returns the player found or null if not found.</returns>
         public static Player Get(int id)
         {
-            if (IdsCache.TryGetValue(id, out Player player) && player != null)
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
                 return player;
 
             foreach (Player playerFound in Dictionary.Values)
@@ -752,7 +784,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound != null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
@@ -765,6 +797,7 @@ namespace Exiled.API.Features
                         if (player.UserId == args)
                         {
                             playerFound = player;
+                            break;
                         }
                     }
                 }
@@ -980,11 +1013,11 @@ namespace Exiled.API.Features
         /// <returns>Used to wait.</returns>
         public IEnumerator<float> BlinkTag()
         {
-            yield return MEC.Timing.WaitForOneFrame;
+            yield return Timing.WaitForOneFrame;
 
             BadgeHidden = !BadgeHidden;
 
-            yield return MEC.Timing.WaitForOneFrame;
+            yield return Timing.WaitForOneFrame;
 
             BadgeHidden = !BadgeHidden;
         }
@@ -1059,6 +1092,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
+        [Obsolete("Use Ammo instead", true)]
         public void SetAmmo(AmmoType ammoType, uint amount) => ReferenceHub.ammoBox[(int)ammoType] = amount;
 
         /// <summary>
@@ -1066,6 +1100,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
+        [Obsolete("Use Ammo instead", true)]
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
 
         /// <summary>

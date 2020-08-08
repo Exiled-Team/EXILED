@@ -39,6 +39,7 @@
     <Compile Include="Commands\Test.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Example.cs" />
+    <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
     <Compile Include="Handlers\Server.cs" />
     <Compile Include="Handlers\Warhead.cs" />
