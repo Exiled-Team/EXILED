@@ -5,10 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
+namespace Exiled.Events.InternalHandlers
 {
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
+    using Exiled.Loader.Features;
 
     using MEC;
 
@@ -20,6 +21,8 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
+
             API.Features.Player.IdsCache.Clear();
             API.Features.Player.UserIdsCache.Clear();
             API.Features.Player.Dictionary.Clear();
@@ -33,12 +36,16 @@ namespace Exiled.Events.Handlers
         /// <inheritdoc cref="Server.OnRestartingRound"/>
         public void OnRestartingRound()
         {
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
+
             API.Features.Map.ClearCache();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
+
             foreach (API.Features.Player player in API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)

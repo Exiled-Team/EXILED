@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+    using Exiled.Loader.Features;
 
     using HarmonyLib;
 
@@ -43,11 +44,11 @@ namespace Exiled.Events.Patches.Events.Player
                 API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
 
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                    API.Features.Log.Debug($"Server is full!");
+                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
                 Timing.CallDelayed(0.25f, () =>
                 {
-                    if (player != null && player.IsMuted)
+                    if (player?.IsMuted == true)
                         player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
                 });
 
