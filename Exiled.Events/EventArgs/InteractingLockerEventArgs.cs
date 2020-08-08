@@ -21,15 +21,17 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="locker"><inheritdoc cref="Locker"/></param>
-        /// <param name="id"><inheritdoc cref="Id"/></param>
-        /// <param name="accessToken"><inheritdoc cref="AccessToken"/></param>
+        /// <param name="lockerChamber"><inheritdoc cref="Chamber"/></param>
+        /// <param name="lockerId"><inheritdoc cref="LockerId"/></param>
+        /// <param name="chamberId"><inheritdoc cref="ChamberId"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingLockerEventArgs(Player player, Locker locker, int id, string accessToken, bool isAllowed)
+        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte lockerId, byte chamberId, bool isAllowed)
         {
             Player = player;
             Locker = locker;
-            Id = id;
-            AccessToken = accessToken;
+            Chamber = lockerChamber;
+            LockerId = lockerId;
+            ChamberId = chamberId;
             IsAllowed = isAllowed;
         }
 
@@ -44,14 +46,29 @@ namespace Exiled.Events.EventArgs
         public Locker Locker { get; }
 
         /// <summary>
+        /// Gets the interacting chamber.
+        /// </summary>
+        public LockerChamber Chamber { get; }
+
+        /// <inheritdoc cref="LockerId" />
+        [Obsolete("Use LockerId instead", true)]
+        public int Id => LockerId;
+
+        /// <summary>
         /// Gets the locker id.
         /// </summary>
-        public int Id { get; }
+        public byte LockerId { get; }
+
+        /// <summary>
+        /// Gets the chamber id.
+        /// </summary>
+        public byte ChamberId { get; }
 
         /// <summary>
         /// Gets the locker access token. Can be empty.
         /// </summary>
-        public string AccessToken { get; }
+        [Obsolete("Use Chamber.accessToken instead", true)]
+        public string AccessToken => Chamber.accessToken;
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
