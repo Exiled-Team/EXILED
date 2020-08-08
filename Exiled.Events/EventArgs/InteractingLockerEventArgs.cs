@@ -65,12 +65,6 @@ namespace Exiled.Events.EventArgs
         public byte ChamberId { get; }
 
         /// <summary>
-        /// Gets the locker access token. Can be empty.
-        /// </summary>
-        [Obsolete("Use Chamber.accessToken instead", true)]
-        public string AccessToken => Chamber.accessToken;
-
-        /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
