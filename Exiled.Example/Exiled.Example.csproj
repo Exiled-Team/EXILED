@@ -53,6 +53,10 @@
       <Project>{46a0afa9-d73a-4131-93ea-0ca7b7a1a101}</Project>
       <Name>Exiled.API</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj">
+      <Project>{1e6c4350-5067-4ce7-91db-6420d027a4fc}</Project>
+      <Name>Exiled.Events</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp-Publicized, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
