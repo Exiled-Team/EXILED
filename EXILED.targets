@@ -6,7 +6,7 @@
     <LangVersion>7.3</LangVersion>
     <PlatformTarget>x64</PlatformTarget>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>..\bin\$(Configuration)\</OutputPath>
+    <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
 
     <!-- This is the global version and is used for all projects that don't have a version -->
     <Version>2.0.11</Version>

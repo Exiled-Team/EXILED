@@ -10,11 +10,11 @@
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);SA0001</NoWarn>
   
-    <ApplicationIcon>Exiled_Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
   </PropertyGroup>
   
   <ItemGroup>
-    <None Update="Exiled_Icon.ico" Pack="true" />
+    <None Update="..\assets\Exiled_Icon.ico" Pack="true" />
   </ItemGroup>
 
   <ItemGroup>

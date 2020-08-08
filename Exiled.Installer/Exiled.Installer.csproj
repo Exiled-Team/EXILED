@@ -17,7 +17,7 @@
     
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Version>3.1.0</Version>
-    <ApplicationIcon>Resources\Exiled_Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">
@@ -27,8 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Update="Resources\Exiled_Icon.ico" Pack="true" />
+    <None Update="..\assets\Exiled_Icon.ico" Pack="true" />
   </ItemGroup>
 
   <ItemGroup>
