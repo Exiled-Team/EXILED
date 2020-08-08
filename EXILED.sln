@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Events", "Exiled.Eve
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Loader", "Exiled.Loader\Exiled.Loader.csproj", "{1ABEC6CE-E209-4C38-AB45-2F3B7F6091CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Installer", "Exiled.Installer\Exiled.Installer.csproj", "{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Installer", "Exiled.Installer\Exiled.Installer.csproj", "{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Permissions", "Exiled.Permissions\Exiled.Permissions.csproj", "{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Updater", "Exiled.Updater\Exiled.Updater.csproj", "{DFED2F89-8C43-40AE-84FF-8A0057D2FA5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Updater", "Exiled.Updater\Exiled.Updater.csproj", "{DFED2F89-8C43-40AE-84FF-8A0057D2FA5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.API", "Exiled.API\Exiled.API.csproj", "{46A0AFA9-D73A-4131-93EA-0CA7B7A1A101}"
 EndProject
@@ -38,7 +38,6 @@ Global
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10A8BFEC-B9E2-4119-BB21-2CF1EA820D19}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FFB9CEB-2956-4F62-88B3-6416DB8A8ED7}.Release|Any CPU.ActiveCfg = Release|Any CPU

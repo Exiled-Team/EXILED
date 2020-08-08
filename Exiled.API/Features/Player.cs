@@ -74,10 +74,10 @@ namespace Exiled.API.Features
             get => referenceHub;
             private set
             {
-                referenceHub = value;
-
                 if (value == null)
-                    return;
+                    throw new NullReferenceException("Player's ReferenceHub cannot be null!");
+
+                referenceHub = value;
 
                 GameObject = value.gameObject;
                 Ammo = value.ammoBox;
