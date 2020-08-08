@@ -58,6 +58,7 @@
     <Compile Include="Features\Configs\CommentsObjectGraphVisitor.cs" />
     <Compile Include="Features\Configs\CommentsPropertyDescriptor.cs" />
     <Compile Include="Features\Configs\ValidatingNodeDeserializer.cs" />
+    <Compile Include="Features\MultiAdminFeatures.cs" />
     <Compile Include="Loader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

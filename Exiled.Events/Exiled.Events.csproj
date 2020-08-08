@@ -206,7 +206,7 @@
     <Compile Include="Extensions\Event.cs" />
     <Compile Include="Handlers\Map.cs" />
     <Compile Include="Handlers\Player.cs" />
-    <Compile Include="Handlers\Round.cs" />
+    <Compile Include="InternalHandlers\Round.cs" />
     <Compile Include="Handlers\Scp079.cs" />
     <Compile Include="Handlers\Scp096.cs" />
     <Compile Include="Handlers\Scp106.cs" />
