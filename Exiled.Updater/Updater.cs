@@ -17,7 +17,6 @@ namespace Exiled.Updater
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;
-    using System.Threading.Tasks;
 
     using Exiled.API.Features;
     using Exiled.Updater.Models;

@@ -10,14 +10,14 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     /// <summary>
     /// Patches <see cref="ReferenceHub.OnDestroy"/>.
-    /// Adds the <see cref="Player.Left"/> event.
+    /// Adds the <see cref="Handlers.Player.Left"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
     internal static class Left
@@ -26,24 +26,24 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                API.Features.Player player = API.Features.Player.Get(__instance.gameObject);
+                Player player = Player.Get(__instance.gameObject);
 
                 if (player == null || player.IsHost)
                     return;
 
                 var ev = new LeftEventArgs(player);
 
-                API.Features.Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({player?.Id}) disconnected", ConsoleColor.Green);
+                Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({player?.Id}) disconnected", ConsoleColor.Green);
 
-                Player.OnLeft(ev);
+                Handlers.Player.OnLeft(ev);
 
-                API.Features.Player.IdsCache.Remove(player.Id);
-                API.Features.Player.UserIdsCache.Remove(player.UserId);
-                API.Features.Player.Dictionary.Remove(player.GameObject);
+                Player.IdsCache.Remove(player.Id);
+                Player.UserIdsCache.Remove(player.UserId);
+                Player.Dictionary.Remove(player.GameObject);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Left: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.Left: {exception}\n{exception.StackTrace}");
             }
         }
     }

@@ -10,14 +10,11 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
 
@@ -34,9 +31,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!NetworkServer.active)
-                    return false;
-
                 if (!ply.GetComponent<CharacterClassManager>().IsVerified)
                     return false;
 

@@ -264,8 +264,8 @@ namespace Exiled.Events.Patches.Events.Player
                                                 if (keyValuePair.Key != null || keyValuePair.Value != null)
                                                 {
                                                     ServerConsole.AddLog(
-                                                      $"{(keyValuePair.Key == null ? "Player" : (object)"Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : (object)"banned ")} endpoint {request.RemoteEndPoint}.");
-                                                    ServerLogs.AddLog(ServerLogs.Modules.Networking, $"{(keyValuePair.Key == null ? "Player" : (object)"Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : (object)"banned ")} endpoint {request.RemoteEndPoint}.", ServerLogs.ServerLogType.ConnectionUpdate);
+                                                      $"{(keyValuePair.Key == null ? "Player" : "Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : "banned ")} endpoint {request.RemoteEndPoint}.");
+                                                    ServerLogs.AddLog(ServerLogs.Modules.Networking, $"{(keyValuePair.Key == null ? "Player" : "Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : "banned ")} endpoint {request.RemoteEndPoint}.", ServerLogs.ServerLogType.ConnectionUpdate);
                                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)6);
                                                     NetDataWriter requestWriter = CustomLiteNetLib4MirrorTransport.RequestWriter;

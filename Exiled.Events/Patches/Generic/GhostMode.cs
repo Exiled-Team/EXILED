@@ -10,11 +10,17 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+
     using CustomPlayerEffects;
+
     using Exiled.API.Features;
+
     using HarmonyLib;
+
     using Mirror;
+
     using PlayableScps;
+
     using UnityEngine;
 
     /// <summary>
@@ -135,7 +141,7 @@ namespace Exiled.Events.Patches.Generic
                     else
                     {
                         byte part;
-                        for (part = (byte)0; (int)part < __instance._usedData / 20; ++part)
+                        for (part = 0; part < __instance._usedData / 20; ++part)
                             networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, 20, part), 1);
                         byte count = (byte)(__instance._usedData % (part * 20));
                         if (count > 0)
