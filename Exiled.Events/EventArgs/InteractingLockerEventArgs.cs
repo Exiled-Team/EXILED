@@ -22,12 +22,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="locker"><inheritdoc cref="Locker"/></param>
         /// <param name="id"><inheritdoc cref="Id"/></param>
+        /// <param name="accessToken"><inheritdoc cref="AccessToken"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingLockerEventArgs(Player player, Locker locker, int id, bool isAllowed)
+        public InteractingLockerEventArgs(Player player, Locker locker, int id, string accessToken, bool isAllowed)
         {
             Player = player;
             Locker = locker;
             Id = id;
+            AccessToken = accessToken;
             IsAllowed = isAllowed;
         }
 
@@ -45,6 +47,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the locker id.
         /// </summary>
         public int Id { get; }
+
+        /// <summary>
+        /// Gets the locker access token. Can be empty.
+        /// </summary>
+        public string AccessToken { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

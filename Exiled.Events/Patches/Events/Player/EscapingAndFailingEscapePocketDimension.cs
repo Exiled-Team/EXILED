@@ -34,13 +34,33 @@ namespace Exiled.Events.Patches.Events.Player
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            // --------- Player check ---------
+            // The check is a check that this is a player, if it isn't a player, then we simply call return
+            // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
+
+            // Find the first null check of the NetworkIdentity component
+            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse && i.operand is Label);
+
+            // return label
+            var label = (Label)newInstructions[index].operand;
+
+            newInstructions.InsertRange(index + 1, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ReferenceHub), nameof(ReferenceHub.GetHub), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ReferenceHub), "op_Equality", new[] { typeof(ReferenceHub), typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Brtrue, label),
+            });
+
             // --------- FailingEscapePocketDimension ---------
 
             // The index offset.
             var offset = 2;
 
             // Find the starting index by searching for "ldfld" of "BlastDoor.isClosed".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
             (FieldInfo)instruction.operand == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
 
             // Get the starting labels and remove all of them from the original instruction.
