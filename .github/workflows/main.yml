@@ -68,6 +68,7 @@ jobs:
       run: |
         [XML]$TargetsFile = Get-Content Exiled.targets
         $Version = $TargetsFile.Project.PropertyGroup.Version
+        $Version = $Version[0].Trim()
         Write-Host "Generating for version $Version"
         nuget pack Exiled/Exiled.nuspec -Version $Version
         Write-Host "::set-env name=PackageFile::Exiled.$Version.nupkg"
