@@ -17,6 +17,7 @@ namespace Exiled.Events.Patches.Events.Server
 
 #pragma warning disable RCS1139 // Add summary element to documentation comment.
 #pragma warning disable CS1570 // XML comment has badly formed XML
+
     /// <remarks>
     /// <para>
     ///     Code before patching:

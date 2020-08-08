@@ -1,25 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <Import Project="../EXILED.targets" />
+
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <RuntimeIdentifiers>linux-x64;win-x64</RuntimeIdentifiers>
-    <PlatformTarget>x64</PlatformTarget>
 
     <AssemblyName>Exiled.Installer</AssemblyName>
     <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
     <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
+
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
-    <Company>Exiled Team</Company>
-    <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <Version>3.1.0</Version>
-    <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
-    <ApplicationIcon>Resources\Exiled_Icon.ico</ApplicationIcon>
+    <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">
@@ -29,8 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Update="Resources\Exiled_Icon.ico" Pack="true" />
+    <None Update="..\assets\Exiled_Icon.ico" Pack="true" />
   </ItemGroup>
 
   <ItemGroup>

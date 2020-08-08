@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+
+    <id>EXILED</id>
+    <version>$version$</version>
+    <title>EXILED</title>
+    <authors>The Exiled Team</authors>
+    <owners>Galaxy119</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="file">LICENSE.md</license>
+    <projectUrl>https://github.com/galaxy119/EXILED</projectUrl>
+    <icon>images\Exiled_Icon.jpg</icon>
+    <description>Plugin framework for SCP: Secret Laboratory.</description>
+
+    <dependencies>
+      <group targetFramework="net472" />
+    </dependencies>
+
+  </metadata>
+
+  <files>
+    <!-- Project files -->
+    <file src="..\bin\Release\Exiled.API.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.API.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.Bootstrap.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.Bootstrap.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.Events.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.Events.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.Loader.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.Loader.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.Permissions.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.Permissions.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.Updater.dll" target="lib\net472" />
+    <file src="..\bin\Release\Exiled.Updater.xml" target="lib\net472" />
+    <!-- Project files -->
+
+    <!-- License -->
+    <file src="..\LICENSE.md" target="" />
+    <!-- Icon -->
+    <file src="..\assets\Exiled_Icon.jpg" target="images" />
+  </files>
+
+</package>

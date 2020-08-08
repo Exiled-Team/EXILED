@@ -2,7 +2,6 @@
 <Project>
     <!-- StyleCop Analyzers configuration -->
     <PropertyGroup>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
