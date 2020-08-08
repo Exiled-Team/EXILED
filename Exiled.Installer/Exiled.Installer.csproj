@@ -13,7 +13,7 @@
     <AssemblyName Condition="'$(RuntimeIdentifier)' == 'linux-x64'">$(AssemblyName)-Linux</AssemblyName>
     <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
 
-    <OutputPath>\bin\$(Configuration)\</OutputPath>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
     
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Version>3.1.0</Version>
