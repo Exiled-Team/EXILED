@@ -47,15 +47,24 @@ jobs:
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
+      shell: pwsh
       run: |
         dotnet build Exiled.API -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Bootstrap -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Events -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Example -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Loader -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Patcher -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Permissions -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Updater -c release
+        if ($? -eq $false) { Exit 1 }
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
