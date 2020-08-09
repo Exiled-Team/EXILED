@@ -8,6 +8,7 @@
 namespace Exiled.Events.InternalHandlers
 {
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 

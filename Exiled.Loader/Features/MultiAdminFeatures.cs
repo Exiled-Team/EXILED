@@ -14,6 +14,7 @@ namespace Exiled.Loader.Features
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1201 // Elements should appear in the correct order
 #pragma warning disable SA1310 // Field names should not contain underscore
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 
     /// <summary>
     /// This class implements all possible MultiAdmin features.
