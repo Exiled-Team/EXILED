@@ -56,8 +56,9 @@ namespace Exiled.Events.Patches.Events.Player
                 var ev = new InteractingLockerEventArgs(
                     API.Features.Player.Get(__instance.gameObject),
                     singleton.lockers[lockerId],
+                    singleton.lockers[lockerId].chambers[chamberNumber],
                     lockerId,
-                    string.IsNullOrEmpty(accessToken) ? string.Empty : accessToken,
+                    chamberNumber,
                     string.IsNullOrEmpty(accessToken) || (itemById != null && itemById.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
 
                 Player.OnInteractingLocker(ev);
@@ -94,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingLocker: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingLocker:\n{e}");
 
                 return true;
             }

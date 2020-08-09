@@ -3,3 +3,6 @@
 
 # Custom for Visual Studio
 *.cs diff=csharp
+*.ico binary
+*.jpg binary
+*.png binary

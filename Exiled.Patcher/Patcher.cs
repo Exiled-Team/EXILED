@@ -17,7 +17,7 @@ namespace Exiled.Patcher
     /// Takes a file path to your assembly as input, and will patch the assembly with the EXILED ModLoader class.
     /// Original Patcher created by KadeDev.
     /// </summary>
-    internal class Patcher
+    internal static class Patcher
     {
         private static void Main(string[] args)
         {

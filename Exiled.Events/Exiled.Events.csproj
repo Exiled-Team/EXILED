@@ -1,341 +1,38 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="../EXILED.targets" />
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1E6C4350-5067-4CE7-91DB-6420D027A4FC}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Exiled.Events</RootNamespace>
     <AssemblyName>Exiled.Events</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>7.1</LangVersion>
-    <DocumentationFile>..\bin\Release\Exiled.Events.xml</DocumentationFile>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Assembly-CSharp-Publicized">
-      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)\BouncyCastle.Crypto.dll</HintPath>
-    </Reference>
-    <Reference Include="CommandSystem.Core, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(EXILED_REFERENCES)\CommandSystem.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Mirror, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
-    </Reference>
-    <Reference Include="NorthwoodLib">
-      <HintPath>$(EXILED_REFERENCES)\NorthwoodLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
-    <Reference Include="Unity.TextMeshPro, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AIModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.AIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AnimationModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.AnimationModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.AudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.AudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.GridModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.GridModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.InputLegacyModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.PhysicsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.SharedInternalsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.SharedInternalsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TerrainModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.TerrainModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TextCoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.TextCoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TilemapModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.TilemapModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UIElementsModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.UIElementsModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UNETModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.UNETModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestAudioModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UnityWebRequestWWWModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.VideoModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.VideoModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(EXILED_REFERENCES)\UnityEngine.XRModule.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Exiled.API\Exiled.API.csproj"                 />
+    <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj"           />
+    <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Commands\ReconnectRestart.cs" />
-    <Compile Include="Commands\Reload\GamePlay.cs" />
-    <Compile Include="Commands\Reload\Plugins.cs" />
-    <Compile Include="Commands\Reload\Reload.cs" />
-    <Compile Include="Commands\Reload\Configs.cs" />
-    <Compile Include="Commands\Reload\RemoteAdmin.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="EventArgs\DyingEventArgs.cs" />
-    <Compile Include="EventArgs\StartingEventArgs.cs" />
-    <Compile Include="EventArgs\StoppingEventArgs.cs" />
-    <Compile Include="EventArgs\ActivatingEventArgs.cs" />
-    <Compile Include="EventArgs\ActivatingWarheadPanelEventArgs.cs" />
-    <Compile Include="EventArgs\AnnouncingDecontaminationEventArgs.cs" />
-    <Compile Include="EventArgs\AnnouncingNtfEntranceEventArgs.cs" />
-    <Compile Include="EventArgs\AnnouncingScpTerminationEventArgs.cs" />
-    <Compile Include="EventArgs\BannedEventArgs.cs" />
-    <Compile Include="EventArgs\BanningEventArgs.cs" />
-    <Compile Include="EventArgs\CalmingDownEventArgs.cs" />
-    <Compile Include="EventArgs\ChangingGroupEventArgs.cs" />
-    <Compile Include="EventArgs\ChangingItemEventArgs.cs" />
-    <Compile Include="EventArgs\ChangingKnobSettingEventArgs.cs" />
-    <Compile Include="EventArgs\ChangingRoleEventArgs.cs" />
-    <Compile Include="EventArgs\ChangingWarheadLeverStatusEventArgs.cs" />
-    <Compile Include="EventArgs\ClosingGeneratorEventArgs.cs" />
-    <Compile Include="EventArgs\ContainingEventArgs.cs" />
-    <Compile Include="EventArgs\CreatingPortalEventArgs.cs" />
-    <Compile Include="EventArgs\DecontaminatingEventArgs.cs" />
-    <Compile Include="EventArgs\DiedEventArgs.cs" />
-    <Compile Include="EventArgs\DroppingItemEventArgs.cs" />
-    <Compile Include="EventArgs\EjectingGeneratorTabletEventArgs.cs" />
-    <Compile Include="EventArgs\EndingRoundEventArgs.cs" />
-    <Compile Include="EventArgs\EnragingEventArgs.cs" />
-    <Compile Include="EventArgs\EnteringFemurBreakerEventArgs.cs" />
-    <Compile Include="EventArgs\EnteringPocketDimensionEventArgs.cs" />
-    <Compile Include="EventArgs\EscapingEventArgs.cs" />
-    <Compile Include="EventArgs\EscapingPocketDimensionEventArgs.cs" />
-    <Compile Include="EventArgs\GainingExperienceEventArgs.cs" />
-    <Compile Include="EventArgs\GainingLevelEventArgs.cs" />
-    <Compile Include="EventArgs\GeneratorActivatedEventArgs.cs" />
-    <Compile Include="EventArgs\ExplodingGrenadeEventArgs.cs" />
-    <Compile Include="EventArgs\HandcuffingEventArgs.cs" />
-    <Compile Include="EventArgs\HurtingEventArgs.cs" />
-    <Compile Include="EventArgs\InsertingGeneratorTabletEventArgs.cs" />
-    <Compile Include="EventArgs\InteractedEventArgs.cs" />
-    <Compile Include="EventArgs\InteractingDoorEventArgs.cs" />
-    <Compile Include="EventArgs\InteractingElevatorEventArgs.cs" />
-    <Compile Include="EventArgs\InteractingLockerEventArgs.cs" />
-    <Compile Include="EventArgs\InteractingTeslaEventArgs.cs" />
-    <Compile Include="EventArgs\IntercomSpeakingEventArgs.cs" />
-    <Compile Include="EventArgs\ItemDroppedEventArgs.cs" />
-    <Compile Include="EventArgs\JoinedEventArgs.cs" />
-    <Compile Include="EventArgs\KickedEventArgs.cs" />
-    <Compile Include="EventArgs\KickingEventArgs.cs" />
-    <Compile Include="EventArgs\LeftEventArgs.cs" />
-    <Compile Include="EventArgs\LocalReportingEventArgs.cs" />
-    <Compile Include="EventArgs\OpeningGeneratorEventArgs.cs" />
-    <Compile Include="EventArgs\PickingUpItemEventArgs.cs" />
-    <Compile Include="EventArgs\PlacingBloodEventArgs.cs" />
-    <Compile Include="EventArgs\PlacingDecalEventArgs.cs" />
-    <Compile Include="EventArgs\PreAuthenticatingEventArgs.cs" />
-    <Compile Include="EventArgs\ReloadingWeaponEventArgs.cs" />
-    <Compile Include="EventArgs\RemovingHandcuffsEventArgs.cs" />
-    <Compile Include="EventArgs\ReportingCheaterEventArgs.cs" />
-    <Compile Include="EventArgs\RespawningTeamEventArgs.cs" />
-    <Compile Include="EventArgs\RoundEndedEventArgs.cs" />
-    <Compile Include="EventArgs\SendingConsoleCommandEventArgs.cs" />
-    <Compile Include="EventArgs\SendingRemoteAdminCommandEventArgs.cs" />
-    <Compile Include="EventArgs\ShootingEventArgs.cs" />
-    <Compile Include="EventArgs\ShotEventArgs.cs" />
-    <Compile Include="EventArgs\SpawningEventArgs.cs" />
-    <Compile Include="EventArgs\SpawningRagdollEventArgs.cs" />
-    <Compile Include="EventArgs\StoppingMedicalItemEventArgs.cs" />
-    <Compile Include="EventArgs\SyncingDataEventArgs.cs" />
-    <Compile Include="EventArgs\TeleportingEventArgs.cs" />
-    <Compile Include="EventArgs\ThrowingGrenadeEventArgs.cs" />
-    <Compile Include="EventArgs\TriggeringTeslaEventArgs.cs" />
-    <Compile Include="EventArgs\UnlockingGeneratorEventArgs.cs" />
-    <Compile Include="EventArgs\UpgradingItemsEventArgs.cs" />
-    <Compile Include="EventArgs\UsedMedicalItemEventArgs.cs" />
-    <Compile Include="EventArgs\UsingMedicalItemEventArgs.cs" />
-    <Compile Include="EventArgs\FailingEscapePocketDimensionEventArgs.cs" />
-    <Compile Include="EventArgs\StartingRecallEventArgs.cs" />
-    <Compile Include="EventArgs\FinishingRecallEventArgs.cs" />
-    <Compile Include="Extensions\Event.cs" />
-    <Compile Include="Handlers\Map.cs" />
-    <Compile Include="Handlers\Player.cs" />
-    <Compile Include="InternalHandlers\Round.cs" />
-    <Compile Include="Handlers\Scp079.cs" />
-    <Compile Include="Handlers\Scp096.cs" />
-    <Compile Include="Handlers\Scp106.cs" />
-    <Compile Include="Handlers\Scp049.cs" />
-    <Compile Include="Handlers\Scp914.cs" />
-    <Compile Include="Handlers\Server.cs" />
-    <Compile Include="Handlers\Warhead.cs" />
-    <Compile Include="Patches\Events\Player\EscapingAndFailingEscapePocketDimension.cs" />
-    <Compile Include="Patches\Events\Player\UnlockingGenerator.cs" />
-    <Compile Include="Patches\Events\Scp049\StartingAndFinishingRecall.cs" />
-    <Compile Include="Patches\Events\Scp914\Activating.cs" />
-    <Compile Include="Patches\Events\Map\AnnouncingDecontamination.cs" />
-    <Compile Include="Patches\Events\Map\AnnouncingNtfEntrance.cs" />
-    <Compile Include="Patches\Events\Map\AnnouncingScpTermination.cs" />
-    <Compile Include="Patches\Events\Player\Banned.cs" />
-    <Compile Include="Patches\Events\Player\BanningAndKicking.cs" />
-    <Compile Include="Patches\Events\Scp096\CalmingDown.cs" />
-    <Compile Include="Patches\Events\Player\ChangingGroup.cs" />
-    <Compile Include="Patches\Events\Player\ChangingItem.cs" />
-    <Compile Include="Patches\Events\Scp914\ChangingKnobSetting.cs" />
-    <Compile Include="Patches\Events\Player\ChangingRole.cs" />
-    <Compile Include="Patches\Events\Scp106\Containing.cs" />
-    <Compile Include="Patches\Events\Scp106\CreatingPortal.cs" />
-    <Compile Include="Patches\Events\Map\Decontaminating.cs" />
-    <Compile Include="Patches\Events\Player\Died.cs" />
-    <Compile Include="Patches\Events\Scp096\Enraging.cs" />
-    <Compile Include="Patches\Events\Player\EnteringFemurBreaker.cs" />
-    <Compile Include="Patches\Events\Player\EnteringPocketDimension.cs" />
-    <Compile Include="Patches\Events\Scp079\GainingExperience.cs" />
-    <Compile Include="Patches\Events\Scp079\GainingLevel.cs" />
-    <Compile Include="Patches\Events\Map\GeneratorActivated.cs" />
-    <Compile Include="Patches\Events\Player\Handcuffing.cs" />
-    <Compile Include="Patches\Events\Player\Hurting.cs" />
-    <Compile Include="Patches\Events\Player\InsertingGeneratorTablet.cs" />
-    <Compile Include="Patches\Events\Player\Interacted.cs" />
-    <Compile Include="Patches\Events\Player\InteractingDoor.cs" />
-    <Compile Include="Patches\Events\Player\InteractingElevator.cs" />
-    <Compile Include="Patches\Events\Player\InteractingLocker.cs" />
-    <Compile Include="Patches\Events\Scp079\Interacting.cs" />
-    <Compile Include="Patches\Events\Player\IntercomSpeaking.cs" />
-    <Compile Include="Patches\Events\Player\ItemDrop.cs" />
-    <Compile Include="Patches\Events\Player\Joined.cs" />
-    <Compile Include="Patches\Events\Player\Kicked.cs" />
-    <Compile Include="Patches\Events\Player\Left.cs" />
-    <Compile Include="Patches\Events\Server\LocalReporting.cs" />
-    <Compile Include="Patches\Events\Player\PickingUpItem.cs" />
-    <Compile Include="Patches\Events\Map\PlacingBlood.cs" />
-    <Compile Include="Patches\Events\Map\PlacingBloodAndDecal.cs" />
-    <Compile Include="Patches\Events\Map\ExplodingFlashGrenade.cs" />
-    <Compile Include="Patches\Events\Map\ExplodingFragGrenade.cs" />
-    <Compile Include="Patches\Events\Player\PreAuthenticating.cs" />
-    <Compile Include="Patches\Events\Player\ReloadingWeapon.cs" />
-    <Compile Include="Patches\Events\Player\RemovingHandcuffs.cs" />
-    <Compile Include="Patches\Events\Player\RemovingHandcuffsByTeammate.cs" />
-    <Compile Include="Patches\Events\Server\ReportingCheater.cs" />
-    <Compile Include="Patches\Events\Server\RestartingRound.cs" />
-    <Compile Include="Patches\Events\Server\RoundEnd.cs" />
-    <Compile Include="Patches\Events\Server\RoundStarted.cs" />
-    <Compile Include="Patches\Events\Server\SendingConsoleCommand.cs" />
-    <Compile Include="Patches\Events\Server\SendingRemoteAdminCommand.cs" />
-    <Compile Include="Patches\Events\Server\ServerSendingConsoleCommand.cs" />
-    <Compile Include="Patches\Events\Player\Shoot.cs" />
-    <Compile Include="Patches\Events\Player\Spawning.cs" />
-    <Compile Include="Patches\Events\Player\SpawningRagdoll.cs" />
-    <Compile Include="Patches\Events\Warhead\Starting.cs" />
-    <Compile Include="Patches\Events\Warhead\StartingByServer.cs" />
-    <Compile Include="Patches\Events\Player\StoppingMedicalItem.cs" />
-    <Compile Include="Patches\Events\Scp106\Teleporting.cs" />
-    <Compile Include="Patches\Events\Player\ThrowingGrenade.cs" />
-    <Compile Include="Patches\Events\Scp914\UpgradingItems.cs" />
-    <Compile Include="Patches\Events\Player\UsedMedicalItem.cs" />
-    <Compile Include="Patches\Events\Warhead\Stopping.cs" />
-    <Compile Include="Patches\Fixes\CharacterClassManagerLoadSpam.cs" />
-    <Compile Include="Patches\Fixes\DoubleSpawn.cs" />
-    <Compile Include="Patches\Generic\IndividualFriendlyFire.cs" />
-    <Compile Include="Patches\Generic\AntiFly.cs" />
-    <Compile Include="Patches\Fixes\MuteHandlerClear.cs" />
-    <Compile Include="Patches\Events\Player\SyncingData.cs" />
-    <Compile Include="Patches\Events\Server\RespawningTeam.cs" />
-    <Compile Include="Patches\Generic\GhostMode.cs" />
-    <Compile Include="Patches\Generic\Scp173BeingLooked.cs" />
-    <Compile Include="Patches\Events\Player\TriggeringTesla.cs" />
-    <Compile Include="Patches\Events\Player\UsingMedicalItem.cs" />
-    <Compile Include="Patches\Events\Server\WaitingForPlayers.cs" />
-    <Compile Include="Patches\Events\Warhead\Detonated.cs" />
-    <Compile Include="Patches\Events\Player\ActivatingWarheadPanel.cs" />
-    <Compile Include="Events.cs" />
-    <Compile Include="Patches\Generic\ServerNamePatch.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="Lib.Harmony" Version="2.0.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Reference Include="Assembly-CSharp" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-Publicized.dll"                 Private="false" />
+    <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll"        Private="false" />
+    <Reference Include="BouncyCastle.Crypto" HintPath="$(EXILED_REFERENCES)\BouncyCastle.Crypto.dll"                    Private="false" />
+    <Reference Include="CommandSystem.Core" HintPath="$(EXILED_REFERENCES)\CommandSystem.Core.dll"                      Private="false" />
+    <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll"                                              Private="false" />
+    <Reference Include="NorthwoodLib" HintPath="$(EXILED_REFERENCES)\NorthwoodLib.dll"                                  Private="false" />
+    <Reference Include="UnityEngine" HintPath="$(EXILED_REFERENCES)\UnityEngine.dll"                                    Private="false" />
+    <Reference Include="UnityEngine.AudioModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AudioModule.dll"            Private="false" />
+    <Reference Include="UnityEngine.AnimationModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AnimationModule.dll"    Private="false" />
+    <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll"              Private="false" />
+    <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll"        Private="false" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Exiled.API\Exiled.API.csproj">
-      <Project>{46a0afa9-d73a-4131-93ea-0ca7b7a1a101}</Project>
-      <Name>Exiled.API</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj">
-      <Project>{1abec6ce-e209-4c38-ab45-2f3b7f6091ca}</Project>
-      <Name>Exiled.Loader</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj">
-      <Project>{4ffb9ceb-2956-4f62-88b3-6416db8a8ed7}</Project>
-      <Name>Exiled.Permissions</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Lib.Harmony">
-      <Version>2.0.1</Version>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers">
-      <Version>1.1.118</Version>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="YamlDotNet">
-      <Version>8.1.2</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
+
 </Project>
