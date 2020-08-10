@@ -218,8 +218,6 @@ namespace Exiled.Events.Patches.Events.Map
             // Add the return label to the penultimate instruction.
             newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
 
-            Log.Error(newInstructions.ToString<CodeInstruction>());
-
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
