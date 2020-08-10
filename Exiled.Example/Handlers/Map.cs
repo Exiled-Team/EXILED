@@ -22,7 +22,7 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
         public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            Log.Info($"A frag grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.Targets.Select(player => $"[{player.Key.Nickname} ({player.Value} HP)]"))}");
+            Log.Info($"A frag grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetToDamages.Select(player => $"[{player.Key.Nickname} ({player.Value} HP)]"))}");
         }
     }
 }
