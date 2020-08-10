@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using Grenades;
@@ -34,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             try
             {
-                List<API.Features.Player> players = ListPool<API.Features.Player>.Shared.Rent();
+                Dictionary<Player, float> players = new Dictionary<Player, float>();
 
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
@@ -55,15 +56,13 @@ namespace Exiled.Events.Patches.Events.Map
                     byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
                     if (b >= effect.Intensity && num > 0f)
                     {
-                        players.Add(API.Features.Player.Get(gameObject));
+                        players.Add(Player.Get(gameObject), num);
                     }
                 }
 
-                ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, false, __instance.gameObject);
+                ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.throwerGameObject), players, false, __instance.gameObject);
 
                 Handlers.Map.OnExplodingGrenade(ev);
-
-                ListPool<API.Features.Player>.Shared.Return(players);
 
                 return ev.IsAllowed;
             }
