@@ -167,6 +167,9 @@ namespace Exiled.Permissions.Extensions
             if (!Groups.TryGetValue(plyGroupKey, out var group))
                 group = DefaultGroup;
 
+            if (group is null)
+                return false;
+
             const char PERM_SEPARATOR = '.';
             const string ALL_PERMS = ".*";
 
