@@ -36,11 +36,11 @@ namespace Exiled.Events.Patches.Events.Player
                         bool isAllowed = true;
                         if (!__instance.isDoorUnlocked)
                         {
-                            isAllowed = person.GetComponent<ServerRoles>().BypassMode;
-                            
-                            if (person.GetComponent<Inventory>().curItem > 0)
+                            isAllowed = API.Features.Player.Get(person).IsBypassModeEnabled;
+                            Inventory inv = API.Features.Player.Get(person).Inventory;
+                            if (inv.curItem > 0)
                             {
-                                foreach (string permission in person.GetComponent<Inventory>().GetItemByID(person.GetComponent<Inventory>().curItem).permissions)
+                                foreach (string permission in inv.GetItemByID(inv.curItem).permissions)
                                 {
                                     if (permission == "ARMORY_LVL_2")
                                         isAllowed = true;
@@ -48,9 +48,7 @@ namespace Exiled.Events.Patches.Events.Player
                             }
 
                             var unlockingEventArgs = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
-                            
                             Player.OnUnlockingGenerator(unlockingEventArgs);
-                            
                             isAllowed = unlockingEventArgs.IsAllowed;
 
                             if (isAllowed)
