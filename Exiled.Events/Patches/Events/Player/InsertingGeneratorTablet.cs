@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Player
                             
                             var unlockingEventArgs = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
                             Player.OnUnlockingGenerator(unlockingEventArgs);
-                            isAllowed = unlockingEventArgs.IsAllowed;                            
+                            isAllowed = unlockingEventArgs.IsAllowed;
                             if (isAllowed)
                             {
                                 __instance.NetworkisDoorUnlocked = true;
