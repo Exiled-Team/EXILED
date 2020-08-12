@@ -16,7 +16,7 @@
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
-    <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
+    <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

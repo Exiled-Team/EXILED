@@ -3,12 +3,14 @@
   <metadata>
 
     <id>EXILED</id>
-    <version>$version$</version>
     <title>EXILED</title>
+    <version>$version$</version>
     <authors>The Exiled Team</authors>
     <owners>Galaxy119</owners>
+    <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="file">LICENSE.md</license>
+    <license type="expression">CC-BY-SA-3.0</license>
+    <repository type="Git" url="https://github.com/galaxy119/EXILED" />
     <projectUrl>https://github.com/galaxy119/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
@@ -40,8 +42,6 @@
     <file src="..\bin\Release\Exiled.Updater.xml" target="lib\net472" />
     <!-- Project files -->
 
-    <!-- License -->
-    <file src="..\LICENSE.md" target="" />
     <!-- Icon -->
     <file src="..\assets\Exiled_Icon.jpg" target="images" />
   </files>
