@@ -43,20 +43,27 @@ jobs:
         dotnet restore Exiled.Patcher
         dotnet restore Exiled.Permissions
         dotnet restore Exiled.Updater
-
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
+      shell: pwsh
       run: |
         dotnet build Exiled.API -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Bootstrap -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Events -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Example -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Loader -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Patcher -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Permissions -c release
+        if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Updater -c release
-
+        if ($? -eq $false) { Exit 1 }
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
@@ -72,10 +79,8 @@ jobs:
         Write-Host "Generating for version $Version"
         nuget pack Exiled/Exiled.nuspec -Version $Version
         Write-Host "::set-env name=PackageFile::Exiled.$Version.nupkg"
-
     - name: Upload nuget package
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.PackageFile }}
         path: ${{ env.PackageFile }}
-
