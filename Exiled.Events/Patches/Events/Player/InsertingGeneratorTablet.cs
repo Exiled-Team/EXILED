@@ -46,10 +46,10 @@ namespace Exiled.Events.Patches.Events.Player
                                         isAllowed = true;
                                 }
                             }
+                            
                             var unlockingEventArgs = new UnlockingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
                             Player.OnUnlockingGenerator(unlockingEventArgs);
-                            isAllowed = unlockingEventArgs.IsAllowed;
-                            
+                            isAllowed = unlockingEventArgs.IsAllowed;                            
                             if (isAllowed)
                             {
                                 __instance.NetworkisDoorUnlocked = true;
@@ -61,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Player
                             }
 
                             break;
-                        } 
+                        }
                         
                         switch (__instance.isDoorOpen)
                         {
