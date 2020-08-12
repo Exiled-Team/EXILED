@@ -7,6 +7,7 @@
 
 namespace Exiled.Permissions.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -17,6 +18,8 @@ namespace Exiled.Permissions.Extensions
     using Exiled.API.Features;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
+
+    using NorthwoodLib.Pools;
 
     using RemoteAdmin;
 
@@ -140,99 +143,84 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         /// <param name="player">The player to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
-        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        /// <returns>true if the player's current or native group has permissions; otherwise, false.</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
-            if (player == null)
+            if (string.IsNullOrEmpty(permission))
                 return false;
 
-            if (player.GameObject == Server.Host.GameObject)
+            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
+                return false;
+
+            if (player.ReferenceHub.isDedicatedServer)
                 return true;
 
-            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Instance.Config.ShouldDebugBeShown);
-
-            if (string.IsNullOrEmpty(permission))
-            {
-                Log.Error("Permission checked was null.");
-                return false;
-            }
-
+            Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
             Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
-            UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(player.UserId);
-            Group group = null;
-
-            if (userGroup != null)
-            {
-                Log.Debug($"UserGroup: {userGroup.BadgeText}", Instance.Config.ShouldDebugBeShown);
-
-                string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key;
-
-                Log.Debug($"GroupName: {groupName}", Instance.Config.ShouldDebugBeShown);
-
-                if (Groups == null)
-                {
-                    Log.Error("Permissions config is null.");
-                    return false;
-                }
-
-                if (!Groups.Any())
-                {
-                    Log.Error("No permission config groups.");
-                    return false;
-                }
-
-                if (!Groups.TryGetValue(groupName, out group))
-                {
-                    Log.Error($"Could not get \"{groupName}\" permission");
-                    return false;
-                }
-
-                Log.Debug($"Got group.", Instance.Config.ShouldDebugBeShown);
-            }
-            else
-            {
-                Log.Debug("Player group is null, getting default..", Instance.Config.ShouldDebugBeShown);
-
-                group = DefaultGroup;
-            }
-
-            if (group != null)
-            {
-                Log.Debug("Group is not null!", Instance.Config.ShouldDebugBeShown);
-
-                if (permission.Contains("."))
-                {
-                    Log.Debug("Group contains permission separator", Instance.Config.ShouldDebugBeShown);
-
-                    if (group.CombinedPermissions.Any(s => s == ".*"))
-                    {
-                        Log.Debug("All permissions have been granted for all nodes.", Instance.Config.ShouldDebugBeShown);
-                        return true;
-                    }
-
-                    if (group.CombinedPermissions.Contains(permission.Split('.')[0] + ".*"))
-                    {
-                        Log.Debug("Check 1: True, returning.", Instance.Config.ShouldDebugBeShown);
-                        return true;
-                    }
-                }
-
-                if (group.CombinedPermissions.Contains(permission) || group.CombinedPermissions.Contains("*"))
-                {
-                    Log.Debug("Check 2: True, returning.", Instance.Config.ShouldDebugBeShown);
-                    return true;
-                }
-            }
-            else
-            {
-                Log.Debug("Group is null, returning false.", Instance.Config.ShouldDebugBeShown);
+            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : player.GroupName;
+            if (string.IsNullOrEmpty(plyGroupKey))
                 return false;
+
+            Log.Debug($"GroupKey: {plyGroupKey}", Instance.Config.ShouldDebugBeShown);
+
+            if (!Groups.TryGetValue(plyGroupKey, out var group))
+                group = DefaultGroup;
+
+            if (group is null)
+                return false;
+
+            const char PERM_SEPARATOR = '.';
+            const string ALL_PERMS = ".*";
+
+            if (group.CombinedPermissions.Contains(ALL_PERMS))
+                return true;
+
+            if (permission.Contains(PERM_SEPARATOR))
+            {
+                var strBuilder = StringBuilderPool.Shared.Rent();
+                var seraratedPermissions = permission.Split(PERM_SEPARATOR);
+
+                bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
+
+                var result = false;
+                for (var z = 0; z < seraratedPermissions.Length; z++)
+                {
+                    if (z != 0)
+                    {
+                        // We need to clear the last ALL_PERMS line
+                        // or it'll be like 'permission.*.subpermission'.
+                        strBuilder.Length -= ALL_PERMS.Length;
+
+                        // Separate permission groups by using its separator.
+                        strBuilder.Append(PERM_SEPARATOR);
+                    }
+
+                    strBuilder.Append(seraratedPermissions[z]);
+
+                    // If it's the last index,
+                    // then we don't need to check for all permissions of the subpermission.
+                    if (z == seraratedPermissions.Length - 1)
+                    {
+                        result = Check(strBuilder.ToString());
+                        break;
+                    }
+
+                    strBuilder.Append(ALL_PERMS);
+                    if (Check(strBuilder.ToString()))
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+
+                StringBuilderPool.Shared.Return(strBuilder);
+
+                return result;
             }
 
-            Log.Debug("No permissions found.", Instance.Config.ShouldDebugBeShown);
-
-            return false;
+            // It'll work when there is no dot in the permission.
+            return group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
