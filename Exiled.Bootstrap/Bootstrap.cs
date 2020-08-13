@@ -41,7 +41,7 @@ namespace Exiled.Boostrap
                 string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
                 string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
-                if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
+                if (Environment.CurrentDirectory.Contains("testing"))
                     rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
 
                 if (!Directory.Exists(rootPath))
