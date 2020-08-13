@@ -44,10 +44,8 @@ namespace Exiled.Events.Patches.Events.Player
                             if (player.IsBypassModeEnabled)
                             {
                                 isAllowed = true;
-                                break;
                             }
-
-                            if (player.Inventory.curItem > ItemType.KeycardJanitor)
+                            else if (player.Inventory.curItem > ItemType.KeycardJanitor)
                             {
                                 foreach (string permission in player.Inventory.GetItemByID(player.Inventory.curItem).permissions)
                                 {
