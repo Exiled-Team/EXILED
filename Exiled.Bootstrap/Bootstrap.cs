@@ -11,6 +11,8 @@ namespace Exiled.Boostrap
     using System.IO;
     using System.Reflection;
 
+    using NorthwoodLib;
+
     /// <summary>
     /// The assembly loader class for Exiled.
     /// </summary>

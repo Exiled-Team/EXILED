@@ -23,6 +23,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using NorthwoodLib;
+
     using RemoteAdmin;
 
     using UnityEngine;
