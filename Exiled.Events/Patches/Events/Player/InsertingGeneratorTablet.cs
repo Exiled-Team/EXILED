@@ -111,11 +111,11 @@ namespace Exiled.Events.Patches.Events.Player
                                 Inventory.SyncItemInfo current = enumerator.Current;
                                 if (current.id == ItemType.WeaponManagerTablet)
                                 {
-                                    var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(player, __instance);
+                                    var insertingEventArgs = new InsertingGeneratorTabletEventArgs(player, __instance);
 
-                                    Player.OnInsertingGeneratorTablet(insertingEventAgrs);
+                                    Player.OnInsertingGeneratorTablet(insertingEventArgs);
 
-                                    if (insertingEventAgrs.IsAllowed)
+                                    if (insertingEventArgs.IsAllowed)
                                     {
                                         component.items.Remove(current);
                                         __instance.NetworkisTabletConnected = true;
