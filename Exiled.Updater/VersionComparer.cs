@@ -59,28 +59,22 @@ namespace Exiled.Updater
         {
             return CustomNumberCompare(v1.Major, v2.Major, CompareType.More)
                 || (CustomNumberCompare(v1.Minor, v2.Minor, CompareType.More) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.More))
+                    CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals))
                 || (CustomNumberCompare(v1.Build, v2.Build, CompareType.More | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.More) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.More))
+                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.MoreOrEquals) &&
+                    CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals))
                 || (CustomNumberCompare(v2.Revision, v2.Revision, CompareType.More | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Build, v2.Build, CompareType.More | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.More) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.More));
+                    CustomNumberCompare(v1.Build, v2.Build, CompareType.MoreOrEquals | CompareType.AllowLessThanZero) &&
+                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.MoreOrEquals) &&
+                    CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals));
         }
 
         internal static bool CustomVersionEquals(Version v1, Version v2)
         {
             return CustomNumberCompare(v1.Major, v2.Major, CompareType.Equals)
-                || (CustomNumberCompare(v1.Minor, v2.Minor, CompareType.Equals) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.Equals))
-                || (CustomNumberCompare(v1.Build, v2.Build, CompareType.Equals | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.Equals) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.Equals))
-                || (CustomNumberCompare(v2.Revision, v2.Revision, CompareType.Equals | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Build, v2.Build, CompareType.Equals | CompareType.AllowLessThanZero) &&
-                    CustomNumberCompare(v1.Minor, v2.Minor, CompareType.Equals) &&
-                    CustomNumberCompare(v1.Major, v2.Major, CompareType.Equals));
+                && CustomNumberCompare(v1.Minor, v2.Minor, CompareType.Equals)
+                && CustomNumberCompare(v1.Build, v2.Build, CompareType.Equals | CompareType.AllowLessThanZero)
+                && CustomNumberCompare(v2.Revision, v2.Revision, CompareType.Equals | CompareType.AllowLessThanZero);
         }
 
         internal static bool CustomNumberCompare(int value1, int value2, CompareType compareType)

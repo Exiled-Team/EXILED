@@ -30,21 +30,24 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                API.Features.Player player = API.Features.Player.Get(person);
+
                 switch (command)
                 {
                     case PlayerInteract.Generator079Operations.Door:
                         bool isAllowed = true;
+
                         switch (__instance.isDoorOpen)
                         {
                             case false:
-                                var openingEventArgs = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                var openingEventArgs = new OpeningGeneratorEventArgs(player, __instance, isAllowed);
 
                                 Player.OnOpeningGenerator(openingEventArgs);
 
                                 isAllowed = openingEventArgs.IsAllowed;
                                 break;
                             case true:
-                                var closingEventArgs = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                var closingEventArgs = new ClosingGeneratorEventArgs(player, __instance, isAllowed);
 
                                 Player.OnClosingGenerator(closingEventArgs);
 
@@ -69,11 +72,11 @@ namespace Exiled.Events.Patches.Events.Player
                                 Inventory.SyncItemInfo current = enumerator.Current;
                                 if (current.id == ItemType.WeaponManagerTablet)
                                 {
-                                    var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                                    var insertingEventArgs = new InsertingGeneratorTabletEventArgs(player, __instance);
 
-                                    Player.OnInsertingGeneratorTablet(insertingEventAgrs);
+                                    Player.OnInsertingGeneratorTablet(insertingEventArgs);
 
-                                    if (insertingEventAgrs.IsAllowed)
+                                    if (insertingEventArgs.IsAllowed)
                                     {
                                         component.items.Remove(current);
                                         __instance.NetworkisTabletConnected = true;
@@ -87,7 +90,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
 
                     case PlayerInteract.Generator079Operations.Cancel:
-                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(player, __instance);
 
                         Player.OnEjectingGeneratorTablet(ejectingEventArgs);
 

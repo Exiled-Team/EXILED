@@ -12,15 +12,17 @@ namespace Exiled.Example.Handlers
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
+    using UnityEngine;
+
     /// <summary>
-    /// Asd.
+    /// Handles Map events.
     /// </summary>
-    internal class Map
+    internal sealed class Map
     {
         /// <inheritdoc cref="Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
         public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            Log.Info($"A frag grenade is exploding: {ev.Grenade.name}, targets: {string.Join(", ", ev.Targets.Select(player => player.Nickname))}");
+            Log.Info($"A frag grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetToDamages.Select(player => $"[{player.Key.Nickname} ({player.Value} HP)]"))}");
         }
     }
 }

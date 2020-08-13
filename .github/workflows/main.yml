@@ -43,7 +43,6 @@ jobs:
         dotnet restore Exiled.Patcher
         dotnet restore Exiled.Permissions
         dotnet restore Exiled.Updater
-
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
@@ -78,8 +77,9 @@ jobs:
         [XML]$TargetsFile = Get-Content Exiled.targets
         $Version = $TargetsFile.Project.PropertyGroup.Version
         $Version = $Version[0].Trim()
+        $Year = [System.DateTime]::Now.ToString("yyyy")
         Write-Host "Generating for version $Version"
-        nuget pack Exiled/Exiled.nuspec -Version $Version
+        nuget pack Exiled/Exiled.nuspec -Version $Version -Properties Year=$Year
         Write-Host "::set-env name=PackageFile::Exiled.$Version.nupkg"
 
     - name: Upload nuget package
@@ -87,4 +87,3 @@ jobs:
       with:
         name: ${{ env.PackageFile }}
         path: ${{ env.PackageFile }}
-

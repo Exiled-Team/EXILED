@@ -9,14 +9,14 @@
     <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
 
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version>2.0.11</Version>
+    <Version>2.0.12</Version>
 
     <Company>Exiled Team</Company>
     <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
-    <PackageLicenseExpression>CC BY-SA 3.0</PackageLicenseExpression>
+    <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

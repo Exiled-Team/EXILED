@@ -361,3 +361,6 @@ FodyWeavers.xsd
 
 # Executing programs
 *.exe
+
+# NuGet
+NuGet.config

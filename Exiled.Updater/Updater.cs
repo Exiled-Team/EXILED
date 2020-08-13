@@ -174,7 +174,7 @@ namespace Exiled.Updater
                     var installerPath = Path.Combine(serverPath, asset.Name);
 
                     if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
-                        LinuxPermissionNative.SetExecutionAccess(installerPath);
+                        LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
                     using (var installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
                     using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -183,7 +183,7 @@ namespace Exiled.Updater
                     }
 
                     if (PlatformId == PlatformID.Unix)
-                        LinuxPermissionNative.SetExecutionAccess(installerPath);
+                        LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
                     if (!File.Exists(installerPath))
                     {
@@ -196,7 +196,7 @@ namespace Exiled.Updater
                         FileName = installerPath,
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        Arguments = $"--exit --pre-releases {release.PreRelease} --target-release {release.TagName} --appdata \"{Paths.AppData}\"",
+                        Arguments = $"--exit --pre-releases {release.PreRelease} --target-version {release.TagName} --appdata \"{Paths.AppData}\"",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         StandardErrorEncoding = ProcessEncidong,

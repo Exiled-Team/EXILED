@@ -55,7 +55,15 @@ namespace Exiled.API.Features
             get
             {
                 if (RoomsValue.Count == 0)
-                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
+                {
+                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room")
+                        .Select(r => new Room(r.name, r.transform, r.transform.position)));
+
+                    // Add the surface as a room.
+                    const string surfaceRoomName = "Root_*&*Outside Cams";
+                    var surfaceTransform = GameObject.Find(surfaceRoomName).transform;
+                    RoomsValue.Add(new Room(surfaceRoomName, surfaceTransform, surfaceTransform.position));
+                }
 
                 return ReadOnlyRoomsValue;
             }
