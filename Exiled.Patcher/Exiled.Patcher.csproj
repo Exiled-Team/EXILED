@@ -9,7 +9,9 @@
     <!-- Since this is a program and no documentation is required in the .xml files -->
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);SA0001</NoWarn>
-  
+
+    <FodyGenerateXsd>False</FodyGenerateXsd>
+    
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
   </PropertyGroup>
   
