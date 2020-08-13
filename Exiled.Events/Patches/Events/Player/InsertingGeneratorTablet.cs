@@ -36,41 +36,6 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     case PlayerInteract.Generator079Operations.Door:
                         bool isAllowed = true;
-                        if (!__instance.isDoorUnlocked)
-                        {
-                            isAllowed = false;
-                            if (player.IsBypassModeEnabled)
-                            {
-                                isAllowed = true;
-                            }
-                            else if (player.Inventory.curItem > ItemType.KeycardJanitor)
-                            {
-                                foreach (string permission in player.Inventory.GetItemByID(player.Inventory.curItem).permissions)
-                                {
-                                    if (permission == "ARMORY_LVL_2")
-                                    {
-                                        isAllowed = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            var unlockingGeneratorEventArgs = new UnlockingGeneratorEventArgs(player, __instance, isAllowed);
-                            Player.OnUnlockingGenerator(unlockingGeneratorEventArgs);
-                            isAllowed = unlockingGeneratorEventArgs.IsAllowed;
-
-                            if (isAllowed)
-                            {
-                                __instance.NetworkisDoorUnlocked = true;
-                                __instance._doorAnimationCooldown = 0.5f;
-
-                                return false;
-                            }
-
-                            __instance.RpcDenied();
-
-                            return false;
-                        }
 
                         switch (__instance.isDoorOpen)
                         {
