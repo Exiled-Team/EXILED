@@ -810,7 +810,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.Nickname.Contains(args))
+                        if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         if (firstString.Length < maxNameLength)
