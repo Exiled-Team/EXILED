@@ -9,8 +9,8 @@
     <owners>Galaxy119</owners>
     <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <license type="expression">CC-BY-SA-3.0</license>
     <repository type="Git" url="https://github.com/galaxy119/EXILED" />
+    <licenseUrl>https://github.com/galaxy119/EXILED/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/galaxy119/EXILED</projectUrl>
     <icon>images\Exiled_Icon.jpg</icon>
     <description>Plugin framework for SCP: Secret Laboratory.</description>
