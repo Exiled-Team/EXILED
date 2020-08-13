@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Utf8Json.Resolvers.Internal;
+
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
@@ -30,21 +32,61 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                API.Features.Player player = API.Features.Player.Get(person);
+
                 switch (command)
                 {
                     case PlayerInteract.Generator079Operations.Door:
                         bool isAllowed = true;
+                        if (!__instance.isDoorUnlocked)
+                        {
+                            isAllowed = false;
+                            if (player.IsBypassModeEnabled)
+                            {
+                                isAllowed = true;
+                                break;
+                            }
+
+                            if (player.Inventory.curItem > ItemType.KeycardJanitor)
+                            {
+                                foreach (string permission in player.Inventory.GetItemByID(player.Inventory.curItem).permissions)
+                                {
+                                    if (permission == "ARMORY_LVL_2")
+                                    {
+                                        isAllowed = true;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            var unlockingGeneratorEventArgs = new UnlockingGeneratorEventArgs(player, __instance, isAllowed);
+                            Player.OnUnlockingGenerator(unlockingGeneratorEventArgs);
+                            isAllowed = unlockingGeneratorEventArgs.IsAllowed;
+
+                            if (isAllowed)
+                            {
+                                __instance.NetworkisDoorUnlocked = true;
+                                __instance._doorAnimationCooldown = 0.5f;
+
+                                return false;
+                            }
+
+                            __instance.RpcDenied();
+
+                            return false;
+                        }
+
                         switch (__instance.isDoorOpen)
                         {
                             case false:
-                                var openingEventArgs = new OpeningGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                var openingEventArgs = new OpeningGeneratorEventArgs(player, __instance, isAllowed);
 
                                 Player.OnOpeningGenerator(openingEventArgs);
 
                                 isAllowed = openingEventArgs.IsAllowed;
                                 break;
                             case true:
-                                var closingEventArgs = new ClosingGeneratorEventArgs(API.Features.Player.Get(person), __instance, isAllowed);
+                                var closingEventArgs = new ClosingGeneratorEventArgs(player, __instance, isAllowed);
 
                                 Player.OnClosingGenerator(closingEventArgs);
 
@@ -69,7 +111,7 @@ namespace Exiled.Events.Patches.Events.Player
                                 Inventory.SyncItemInfo current = enumerator.Current;
                                 if (current.id == ItemType.WeaponManagerTablet)
                                 {
-                                    var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                                    var insertingEventAgrs = new InsertingGeneratorTabletEventArgs(player, __instance);
 
                                     Player.OnInsertingGeneratorTablet(insertingEventAgrs);
 
@@ -87,7 +129,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
 
                     case PlayerInteract.Generator079Operations.Cancel:
-                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(API.Features.Player.Get(person), __instance);
+                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(player, __instance);
 
                         Player.OnEjectingGeneratorTablet(ejectingEventArgs);
 
