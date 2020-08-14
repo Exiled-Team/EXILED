@@ -57,7 +57,7 @@ namespace Exiled.Events
         public static List<Tuple<Type, string>> DisabledPatches { get; } = new List<Tuple<Type, string>>();
 
         /// <inheritdoc/>
-        public override PluginPriority Priority { get; } = PluginPriority.Last;
+        public override PluginPriority Priority { get; } = PluginPriority.First;
 
         /// <summary>
         /// Gets the <see cref="HarmonyLib.Harmony"/> instance.

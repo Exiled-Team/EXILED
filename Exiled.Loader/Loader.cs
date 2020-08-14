@@ -110,7 +110,7 @@ namespace Exiled.Loader
                 Plugins.Add(plugin);
             }
 
-            Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
+            Plugins.Sort();
         }
 
         /// <summary>

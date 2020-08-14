@@ -137,5 +137,8 @@ namespace Exiled.API.Features
                 }
             }
         }
+
+        /// <inheritdoc/>
+        public int CompareTo(IPlugin<IConfig> other) => -Priority.CompareTo(other.Priority);
     }
 }

@@ -34,7 +34,7 @@ namespace Exiled.Example
         public static Example Instance => LazyInstance.Value;
 
         /// <inheritdoc/>
-        public override PluginPriority Priority { get; } = PluginPriority.First;
+        public override PluginPriority Priority { get; } = PluginPriority.Last;
 
         /// <inheritdoc/>
         public override void OnEnabled()
