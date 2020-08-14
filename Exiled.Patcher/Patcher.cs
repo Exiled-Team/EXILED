@@ -55,7 +55,7 @@ namespace Exiled.Patcher
 
                 Console.WriteLine("[Injection] Injecting the Bootstrap Class.");
 
-                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Exiled.Bootstrap.dll"));
+                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Directory.GetCurrentDirectory(), "Exiled.Bootstrap.dll"));
 
                 Console.WriteLine("[Injection] Loaded " + bootstrap.Name);
 
@@ -104,7 +104,7 @@ namespace Exiled.Patcher
 
                 start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(call));
 
-                module.Write(Path.Combine(Path.GetDirectoryName(path), "Assembly-CSharp-Exiled.dll"));
+                module.Write(Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)), "Assembly-CSharp-Exiled.dll"));
 
                 Console.WriteLine("[Exiled.Patcher] Patching completed successfully!");
             }
