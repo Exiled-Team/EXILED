@@ -1,4 +1,4 @@
-name: EXILED CI
+name: Exiled Main CI
 
 on: [push, pull_request]
 
