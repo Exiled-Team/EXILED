@@ -52,6 +52,7 @@ namespace Exiled.API.Features
             { "HCZ_ChkpB", RoomType.HczChkpB },
             { "HCZ_Room3", RoomType.HczTCross },
             { "HCZ_457", RoomType.Hcz096 },
+            { "HCZ_Curve", RoomType.HczCurve },
             { "EZ_Endoof", RoomType.EzVent },
             { "EZ_Intercom", RoomType.EzIntercom },
             { "EZ_GateA", RoomType.EzGateA },
