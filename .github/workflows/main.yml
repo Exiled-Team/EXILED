@@ -40,7 +40,6 @@ jobs:
         dotnet restore Exiled.Events
         dotnet restore Exiled.Example
         dotnet restore Exiled.Loader
-        dotnet restore Exiled.Patcher
         dotnet restore Exiled.Permissions
         dotnet restore Exiled.Updater
     - name: Build
@@ -57,8 +56,6 @@ jobs:
         dotnet build Exiled.Example -c release
         if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Loader -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Patcher -c release
         if ($? -eq $false) { Exit 1 }
         dotnet build Exiled.Permissions -c release
         if ($? -eq $false) { Exit 1 }
