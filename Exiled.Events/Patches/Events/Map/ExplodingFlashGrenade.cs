@@ -64,9 +64,9 @@ namespace Exiled.Events.Patches.Events.Map
 
                 return ev.IsAllowed;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {exception}\n{exception.StackTrace}");
 
                 return true;
             }

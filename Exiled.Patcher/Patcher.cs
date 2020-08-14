@@ -104,7 +104,7 @@ namespace Exiled.Patcher
 
                 start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(call));
 
-                module.Write(Path.Combine(path, "Assembly-CSharp-Exiled.dll"));
+                module.Write(Path.Combine(Path.GetDirectoryName(path), "Assembly-CSharp-Exiled.dll"));
 
                 Console.WriteLine("[Exiled.Patcher] Patching completed successfully!");
             }
