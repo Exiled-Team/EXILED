@@ -168,6 +168,11 @@ public enum RoomType
         HczTCross,
 
         /// <summary>
+        /// Heavy Containment L-Shaped Room.
+        /// </summary>
+        HczCurve,
+
+        /// <summary>
         /// Heavy Containment SCP 096 Room.
         /// </summary>
         Hcz096,
