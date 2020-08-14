@@ -22,11 +22,16 @@ namespace Exiled.Installer
     {
         public static readonly RootCommand RootCommand = new RootCommand
         {
-            new Option<DirectoryInfo>(
+            new Option<DirectoryInfo?>(
                 new[] { "-p", "--path" },
                 parseArgument: (parsed) =>
                 {
                     var path = parsed.Tokens.SingleOrDefault()?.Value ?? Directory.GetCurrentDirectory();
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        parsed.ErrorMessage = "--path is null or empty";
+                        return null;
+                    }
 
                     if (File.Exists(path))
                         parsed.ErrorMessage = "Can't be a file!";
@@ -41,9 +46,26 @@ namespace Exiled.Installer
                 description: "Path to the folder with the SL server")
             { IsRequired = true },
 
-            new Option<DirectoryInfo>(
+            new Option<DirectoryInfo?>(
                 "--appdata",
-                getDefaultValue: () => new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)),
+                parseArgument: (parsed) =>
+                {
+                    var appdataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                    if (string.IsNullOrEmpty(appdataPath))
+                    {
+                        Console.Error.WriteLine("Your appdata path is null, make sure it exists");
+                    }
+
+                    var path = parsed.Tokens.SingleOrDefault()?.Value ?? appdataPath;
+                    if (string.IsNullOrEmpty(path))
+                    {
+                        parsed.ErrorMessage = "--appdata is null or empty, make sure your appdata folder exists";
+                        return null;
+                    }
+
+                    return new DirectoryInfo(path);
+                },
+                isDefault: true,
                 description: "Forces the folder to be the AppData folder (useful for containers when pterodactyl runs as root)")
             { IsRequired = true },
 
@@ -74,11 +96,11 @@ namespace Exiled.Installer
             { IsRequired = false }
         };
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#nullable disable
         public DirectoryInfo Path { get; set; }
 
         public DirectoryInfo AppData { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+#nullable restore
 
         public bool PreReleases { get; set; }
 
