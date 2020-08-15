@@ -143,7 +143,7 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId;
             set
             {
-                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException($"UserId cannot be set to null.");
+                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException("UserId cannot be set to null.");
             }
         }
 
@@ -196,13 +196,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's nickname.
+        /// Gets or sets the player's display nickname.
+        /// May be null.
         /// </summary>
-        public string Nickname
+        public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName ?? ReferenceHub.nicknameSync.Network_myNickSync;
+            get => ReferenceHub.nicknameSync.Network_displayName;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
+
+        /// <summary>
+        /// Gets the player's nickname.
+        /// </summary>
+        public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invisible or not.
