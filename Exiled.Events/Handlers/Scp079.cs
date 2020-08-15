@@ -38,6 +38,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
 
         /// <summary>
+        /// Invoked after Scp079 recontainment.
+        /// </summary>
+        public static event CustomEventHandler<RecontainmentedEventArgs> Recontainmented;
+
+        /// <summary>
         /// Invoked before gaining experience with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="GainingExperienceEventArgs"/> instance.</param>
@@ -60,5 +65,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after 079 recontainment.
+        /// </summary>
+        /// <param name="ev">The <see cref="RecontainmentedEventArgs"/> instance.</param>
+        public static void OnRecontainmented(RecontainmentedEventArgs ev) => Recontainmented.InvokeSafely(ev);
     }
 }
