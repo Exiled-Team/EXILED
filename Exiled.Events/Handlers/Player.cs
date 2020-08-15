@@ -243,11 +243,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<EjectingGeneratorTabletEventArgs> EjectingGeneratorTablet;
 
         /// <summary>
-        /// Invoked after Scp079 recontainment.
-        /// </summary>
-        public static event CustomEventHandler Scp079Recontainment;
-
-        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -516,10 +511,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
         public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after 079 recontainment.
-        /// </summary>
-        public static void OnScp079Recontainment() => Scp079Recontainment.InvokeSafely();
     }
 }
