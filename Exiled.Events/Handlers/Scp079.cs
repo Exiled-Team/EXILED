@@ -38,6 +38,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
 
         /// <summary>
+        /// Invoked before triggering a speaker with SCP-079.
+        /// </summary>
+        public static event CustomEventHandler<StartingSpeakerEventArgs> StartingSpeaker;
+
+        /// <summary>
+        /// Invoked before stopping a speaker with SCP-079.
+        /// </summary>
+        public static event CustomEventHandler<StoppingSpeakerEventArgs> StoppingSpeaker;
+
+        /// <summary>
         /// Invoked before gaining experience with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="GainingExperienceEventArgs"/> instance.</param>
@@ -60,5 +70,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before interacting with a speaker with SCP-079.
+        /// </summary>
+        /// <param name="ev">The <see cref="StartingSpeakerEventArgs"/> instance.</param>
+        public static void OnStartingSpeaker(StartingSpeakerEventArgs ev) => StartingSpeaker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before stopping with a speaker with SCP-079.
+        /// </summary>
+        /// <param name="ev">The <see cref="StoppingEventArgs"/> instance.</param>
+        public static void OnStoppingSpeaker(StoppingSpeakerEventArgs ev) => StoppingSpeaker.InvokeSafely(ev);
     }
 }
