@@ -136,16 +136,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's user id.
+        /// Gets the player's user id.
         /// </summary>
-        public string UserId
-        {
-            get => ReferenceHub.characterClassManager.UserId;
-            set
-            {
-                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException("UserId cannot be set to null.");
-            }
-        }
+        public string UserId => referenceHub.characterClassManager.UserId;
 
         /// <summary>
         /// Gets or sets the player's custom user id.
@@ -216,13 +209,9 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the players can be tracked or not.
+        /// Gets a value indicating whether the players can be tracked or not.
         /// </summary>
-        public bool DoNotTrack
-        {
-            get => ReferenceHub.serverRoles.DoNotTrack;
-            set => ReferenceHub.serverRoles.DoNotTrack = value;
-        }
+        public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
