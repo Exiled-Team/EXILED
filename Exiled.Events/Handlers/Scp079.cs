@@ -40,7 +40,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after Scp079 recontainment.
         /// </summary>
-        public static event CustomEventHandler<RecontainmentedEventArgs> Recontainmented;
+        public static event CustomEventHandler<RecontainedEventArgs> Recontained;
 
         /// <summary>
         /// Invoked before gaining experience with SCP-079.
@@ -69,7 +69,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after 079 recontainment.
         /// </summary>
-        /// <param name="ev">The <see cref="RecontainmentedEventArgs"/> instance.</param>
-        public static void OnRecontainmented(RecontainmentedEventArgs ev) => Recontainmented.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="RecontainedEventArgs"/> instance.</param>
+        public static void OnRecontained(RecontainedEventArgs ev) => Recontained.InvokeSafely(ev);
     }
 }
