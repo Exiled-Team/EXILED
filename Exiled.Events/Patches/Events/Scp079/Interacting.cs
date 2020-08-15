@@ -70,21 +70,37 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     case "TESLA":
                         {
-                            float manaFromLabel = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-                            if (manaFromLabel > __instance.curMana)
+                            GameObject gameObject3 = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
+                            if (gameObject3 == null)
                             {
-                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
                                 result = false;
                                 break;
                             }
 
-                            GameObject gameObject =
-                                GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
-                            if (gameObject != null)
+                            Player player = Player.Get(__instance.gameObject);
+                            TeslaGate teslaGate = gameObject3.GetComponent<TeslaGate>();
+                            float apDrain = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
+                            bool isAllowed = apDrain <= __instance.curMana;
+
+                            InteractingTeslaEventArgs ev = new InteractingTeslaEventArgs(player, teslaGate, isAllowed);
+                            Handlers.Scp079.OnInteractingTesla(ev);
+
+                            if (!ev.IsAllowed)
                             {
-                                gameObject.GetComponent<TeslaGate>().RpcInstantBurst();
-                                __instance.AddInteractionToHistory(gameObject, array[0], true);
-                                __instance.Mana -= manaFromLabel;
+                                if (apDrain > __instance.curMana)
+                                {
+                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                teslaGate.RpcInstantBurst();
+                                __instance.AddInteractionToHistory(gameObject3, array[0], addMana: true);
+                                __instance.Mana -= apDrain;
+                                result = true;
+                                break;
                             }
 
                             result = false;
@@ -106,42 +122,50 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Door component = target.GetComponent<Door>();
-                            if (component == null)
+                            Door door = target.GetComponent<Door>();
+                            if (door == null)
                             {
                                 result = false;
                                 break;
                             }
 
-                            if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
+                            if (list != null && list.Count > 0 && list != null && list.Contains(door.DoorName))
                             {
                                 Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
                                 result = false;
                                 break;
                             }
 
-                            float manaFromLabel = __instance.GetManaFromLabel(
-                                "Door Interaction " + (string.IsNullOrEmpty(component.permissionLevel)
-                                    ? "DEFAULT"
-                                    : component.permissionLevel), __instance.abilities);
-                            if (manaFromLabel > __instance.curMana)
-                            {
-                                Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
-                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                result = false;
-                                break;
-                            }
+                            Player player = Player.Get(__instance.gameObject);
+                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (string.IsNullOrEmpty(door.permissionLevel) ? "DEFAULT" : door.permissionLevel), __instance.abilities);
+                            bool isAllowed = apDrain <= __instance.curMana;
 
-                            if (component != null && component.ChangeState079())
+                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, door, isAllowed);
+                            Handlers.Scp079.OnInteractingDoor(ev);
+
+                            if (!ev.IsAllowed)
                             {
-                                __instance.Mana -= manaFromLabel;
-                                __instance.AddInteractionToHistory(target, array[0], true);
+                                if (apDrain > __instance.curMana)
+                                {
+                                    Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
+                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else if (door != null && door.ChangeState079())
+                            {
+                                __instance.Mana -= apDrain;
+                                __instance.AddInteractionToHistory(target, array[0], addMana: true);
                                 Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
                                 result = true;
                                 break;
                             }
+                            else
+                            {
+                                Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                            }
 
-                            Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
                             result = false;
                             break;
                         }
