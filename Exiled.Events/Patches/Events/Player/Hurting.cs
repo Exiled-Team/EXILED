@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (info.GetDamageType() == DamageTypes.Recontainment && target.Role == RoleType.Scp079)
                 {
-                    Scp079.OnScp079Recontainmented(new RecontainmentedEventArgs(target));
+                    Scp079.OnRecontainmented(new RecontainmentedEventArgs(target));
                     var eventArgs = new DiedEventArgs(null, target, info);
                     Player.OnDied(eventArgs);
                 }
