@@ -516,7 +516,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
         public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
-        
+
         /// <summary>
         /// Called after 079 recontainment.
         /// </summary>
