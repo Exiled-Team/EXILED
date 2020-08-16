@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<StoppingSpeakerEventArgs> StoppingSpeaker;
 
         /// <summary>
+        /// Invoked after Scp079 recontainment.
+        /// </summary>
+        public static event CustomEventHandler<RecontainedEventArgs> Recontained;
+
+        /// <summary>
         /// Invoked before gaining experience with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="GainingExperienceEventArgs"/> instance.</param>
@@ -82,5 +87,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="StoppingEventArgs"/> instance.</param>
         public static void OnStoppingSpeaker(StoppingSpeakerEventArgs ev) => StoppingSpeaker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after 079 recontainment.
+        /// </summary>
+        /// <param name="ev">The <see cref="RecontainedEventArgs"/> instance.</param>
+        public static void OnRecontained(RecontainedEventArgs ev) => Recontained.InvokeSafely(ev);
     }
 }
