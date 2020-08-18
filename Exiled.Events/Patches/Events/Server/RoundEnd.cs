@@ -106,7 +106,7 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(RoundSummary.LeadingTeam.Draw, roundSummary._roundEnded);
+                var endingRoundEventArgs = new EndingRoundEventArgs(newList, RoundSummary.LeadingTeam.Draw, roundSummary._roundEnded);
 
                 if (num1 > 0)
                 {
