@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam"/></param>
         /// <param name="isRoundEnded"><inheritdoc cref="IsRoundEnded"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EndingRoundEventArgs(RoundSummary.SumInfo_ClassList classList, RoundSummary.LeadingTeam leadingTeam, bool isRoundEnded, bool isAllowed = true)
+        public EndingRoundEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, bool isRoundEnded, bool isAllowed = true)
         {
             ClassList = classList;
             LeadingTeam = leadingTeam;
@@ -30,9 +30,9 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the Class List created for this update.
+        /// Gets or sets the round summary class list.
         /// </summary>
-        public RoundSummary.SumInfo_ClassList ClassList { get; }
+        public RoundSummary.SumInfo_ClassList ClassList { get; set; }
 
         /// <summary>
         /// Gets or sets the leading team.
