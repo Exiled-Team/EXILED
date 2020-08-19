@@ -12,9 +12,9 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
-    using Exiled.API.Enums;
 
     using GameCore;
 
