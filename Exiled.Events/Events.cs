@@ -9,6 +9,7 @@ namespace Exiled.Events
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -54,7 +55,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets a list of types and methods for which EXILED patches should not be run.
         /// </summary>
-        public static List<Tuple<Type, string>> DisabledPatches { get; } = new List<Tuple<Type, string>>();
+        public static List<MethodBase> DisabledPatches { get; } = new List<MethodBase>();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
@@ -123,8 +124,11 @@ namespace Exiled.Events
         /// </summary>
         public void ReloadDisabledPatches()
         {
-            foreach ((Type type, string methodName) in DisabledPatches)
-                Harmony.Unpatch(type.GetMethod(methodName), HarmonyPatchType.All, Harmony.Id);
+            foreach (MethodBase method in DisabledPatches)
+            {
+                Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+                Log.Info($"Unpatched {method.Name}");
+            }
         }
 
         /// <summary>
