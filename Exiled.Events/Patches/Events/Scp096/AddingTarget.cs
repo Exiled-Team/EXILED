@@ -19,9 +19,10 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     /// <summary>
     /// Patches <see cref="Scp096.AddTarget"/>.
+    /// Adds the <see cref="Handlers.Scp096.AddingTarget"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
-    public class AddingTarget
+    internal static class AddingTarget
     {
         private static bool Prefix(Scp096 __instance, GameObject target)
         {
