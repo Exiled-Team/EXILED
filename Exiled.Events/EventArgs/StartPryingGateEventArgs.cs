@@ -1,8 +1,15 @@
-using Exiled.API.Features;
+// -----------------------------------------------------------------------
+// <copyright file="StartPryingGateEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.EventArgs
 {
     using System;
+
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all information before SCP-096 starts prying a gate open.
@@ -33,6 +40,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or Sets a value indicating whether or not they should be allowed to pry the gate open.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

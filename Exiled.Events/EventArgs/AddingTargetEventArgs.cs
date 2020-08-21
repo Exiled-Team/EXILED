@@ -1,10 +1,15 @@
-using Exiled.API.Features;
+// -----------------------------------------------------------------------
+// <copyright file="AddingTargetEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
 
 namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using UnityEngine;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Contains all information before adding a target to SCP-096.
@@ -39,7 +44,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether or not the target is allowed to be added.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
 
         /// <summary>
         /// Gets or sets the amount of AHP to add to 096 if <see cref="IsAllowed"/> is true.

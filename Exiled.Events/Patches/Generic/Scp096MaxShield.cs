@@ -1,3 +1,10 @@
+// -----------------------------------------------------------------------
+// <copyright file="Scp096MaxShield.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
@@ -6,7 +13,10 @@ namespace Exiled.Events.Patches.Generic
 
     using Scp096 = PlayableScps.Scp096;
 
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.MaxSpeed), MethodType.Getter)]
+    /// <summary>
+    /// Patches the <see cref="Scp096.MaxShield"/> property.
+    /// </summary>
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.MaxShield), MethodType.Getter)]
     internal static class Scp096MaxShield
     {
         private static bool Prefix(Scp096 __instance, ref int __result)

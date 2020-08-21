@@ -243,6 +243,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<EjectingGeneratorTabletEventArgs> EjectingGeneratorTablet;
 
         /// <summary>
+        /// Invoked before receiving an effect.
+        /// </summary>
+        public static event CustomEventHandler<ReceivingEffectEventArgs> ReceivingEffect;
+
+        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -511,5 +516,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
         public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before receiving an effect.
+        /// </summary>
+        /// <param name="ev">The <see cref="ReceivingEffectEventArgs"/> instance.</param>
+        public static void OnReceivingEffect(ReceivingEffectEventArgs ev) => ReceivingEffect.InvokeSafely(ev);
     }
 }
