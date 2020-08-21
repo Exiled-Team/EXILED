@@ -13,9 +13,9 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using HarmonyLib;
 
-    using PlayableScps;
-
     using UnityEngine;
+
+    using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
     /// Patches <see cref="Scp096.AddTarget"/>.

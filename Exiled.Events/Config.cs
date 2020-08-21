@@ -76,5 +76,11 @@ namespace Exiled.Events
         /// </summary>
         [Description("Indicates whether bans should be logged or not")]
         public bool ShouldLogBans { get; private set; } = true;
+
+        /// <summary>
+        /// Gets or sets a value indicating the max shield amount for Scp096.
+        /// </summary>
+        [Description("The maximum shield amount for Scp096")]
+        public int Scp096MaxShieldAmount { get; set; } = 500;
     }
 }
