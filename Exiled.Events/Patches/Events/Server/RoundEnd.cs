@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Server
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -106,16 +107,16 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(RoundSummary.LeadingTeam.Draw, newList, roundSummary._roundEnded);
+                var endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary._roundEnded);
 
                 if (num1 > 0)
                 {
                     if (RoundSummary.escaped_ds == 0 && RoundSummary.escaped_scientists != 0)
-                        endingRoundEventArgs.LeadingTeam = RoundSummary.LeadingTeam.FacilityForces;
+                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
                 }
                 else
                 {
-                    endingRoundEventArgs.LeadingTeam = RoundSummary.escaped_ds != 0 ? RoundSummary.LeadingTeam.ChaosInsurgency : RoundSummary.LeadingTeam.Anomalies;
+                    endingRoundEventArgs.LeadingTeam = RoundSummary.escaped_ds != 0 ? LeadingTeam.ChaosInsurgency : LeadingTeam.Anomalies;
                 }
 
                 Server.OnEndingRound(endingRoundEventArgs);
@@ -141,7 +142,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
-                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, roundEndedEventArgs.LeadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, roundEndedEventArgs.TimeToRestart);
+                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, roundEndedEventArgs.TimeToRestart);
                     }
 
                     for (int i2 = 0; i2 < 50 * (timeToRoundRestart - 1); ++i2)
