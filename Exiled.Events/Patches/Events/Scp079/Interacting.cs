@@ -12,23 +12,18 @@ namespace Exiled.Events.Patches.Events.Scp079
 #pragma warning disable CS0436
     using System;
     using System.Collections.Generic;
-
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-
     using GameCore;
-
     using HarmonyLib;
-
     using NorthwoodLib.Pools;
-
     using UnityEngine;
-
     using Console = GameCore.Console;
     using Log = Exiled.API.Features.Log;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
-    /// Adds the <see cref="InteractingTeslaEventArgs"/> and <see cref="InteractingDoorEventArgs"/> event for SCP-079.
+    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
     internal static class Interacting
@@ -75,21 +70,37 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     case "TESLA":
                         {
-                            float manaFromLabel = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-                            if (manaFromLabel > __instance.curMana)
+                            GameObject gameObject3 = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
+                            if (gameObject3 == null)
                             {
-                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
                                 result = false;
                                 break;
                             }
 
-                            GameObject gameObject =
-                                GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
-                            if (gameObject != null)
+                            Player player = Player.Get(__instance.gameObject);
+                            TeslaGate teslaGate = gameObject3.GetComponent<TeslaGate>();
+                            float apDrain = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
+                            bool isAllowed = apDrain <= __instance.curMana;
+
+                            InteractingTeslaEventArgs ev = new InteractingTeslaEventArgs(player, teslaGate, isAllowed);
+                            Handlers.Scp079.OnInteractingTesla(ev);
+
+                            if (!ev.IsAllowed)
                             {
-                                gameObject.GetComponent<TeslaGate>().RpcInstantBurst();
-                                __instance.AddInteractionToHistory(gameObject, array[0], true);
-                                __instance.Mana -= manaFromLabel;
+                                if (apDrain > __instance.curMana)
+                                {
+                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                teslaGate.RpcInstantBurst();
+                                __instance.AddInteractionToHistory(gameObject3, array[0], addMana: true);
+                                __instance.Mana -= apDrain;
+                                result = true;
+                                break;
                             }
 
                             result = false;
@@ -111,42 +122,113 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Door component = target.GetComponent<Door>();
-                            if (component == null)
+                            Door door = target.GetComponent<Door>();
+                            if (door == null)
                             {
                                 result = false;
                                 break;
                             }
 
-                            if (list != null && list.Count > 0 && list != null && list.Contains(component.DoorName))
+                            if (list != null && list.Count > 0 && list != null && list.Contains(door.DoorName))
                             {
                                 Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
                                 result = false;
                                 break;
                             }
 
-                            float manaFromLabel = __instance.GetManaFromLabel(
-                                "Door Interaction " + (string.IsNullOrEmpty(component.permissionLevel)
-                                    ? "DEFAULT"
-                                    : component.permissionLevel), __instance.abilities);
-                            if (manaFromLabel > __instance.curMana)
-                            {
-                                Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
-                                __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                result = false;
-                                break;
-                            }
+                            Player player = Player.Get(__instance.gameObject);
+                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (string.IsNullOrEmpty(door.permissionLevel) ? "DEFAULT" : door.permissionLevel), __instance.abilities);
+                            bool isAllowed = apDrain <= __instance.curMana;
 
-                            if (component != null && component.ChangeState079())
+                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, door, isAllowed);
+                            Handlers.Scp079.OnInteractingDoor(ev);
+
+                            if (!ev.IsAllowed)
                             {
-                                __instance.Mana -= manaFromLabel;
-                                __instance.AddInteractionToHistory(target, array[0], true);
+                                if (apDrain > __instance.curMana)
+                                {
+                                    Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
+                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else if (door != null && door.ChangeState079())
+                            {
+                                __instance.Mana -= apDrain;
+                                __instance.AddInteractionToHistory(target, array[0], addMana: true);
                                 Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
                                 result = true;
                                 break;
                             }
+                            else
+                            {
+                                Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                            }
 
-                            Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                            result = false;
+                            break;
+                        }
+
+                    case "SPEAKER":
+                        {
+                            GameObject scp079SpeakerObject = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Scp079Speaker");
+                            if (scp079SpeakerObject == null)
+                            {
+                                result = false;
+                                break;
+                            }
+
+                            Transform roomTransform = scp079SpeakerObject.transform.parent;
+
+                            Player player = Player.Get(__instance.gameObject);
+                            Room room = new Room(roomTransform.name, roomTransform.transform, roomTransform.position);
+
+                            float apDrain = __instance.GetManaFromLabel("Speaker Start", __instance.abilities);
+                            bool isAllowed = apDrain * 1.5f <= __instance.curMana;
+
+                            StartingSpeakerEventArgs ev = new StartingSpeakerEventArgs(player, room, apDrain, isAllowed);
+                            Handlers.Scp079.OnStartingSpeaker(ev);
+
+                            if (!ev.IsAllowed)
+                            {
+                                if (ev.APDrain * 1.5f > __instance.curMana)
+                                {
+                                    __instance.RpcNotEnoughMana(ev.APDrain, __instance.curMana);
+                                    result = false;
+                                    break;
+                                }
+                            }
+                            else if (scp079SpeakerObject != null)
+                            {
+                                __instance.Mana -= ev.APDrain;
+                                __instance.Speaker = __instance.currentZone + "/" + __instance.currentRoom + "/Scp079Speaker";
+                                __instance.AddInteractionToHistory(scp079SpeakerObject, array[0], addMana: true);
+                                result = true;
+                                break;
+                            }
+
+                            result = false;
+                            break;
+                        }
+
+                    case "STOPSPEAKER":
+                        {
+                            string[] array7 = __instance.Speaker.Substring(0, __instance.Speaker.Length - 14).Split('/');
+                            GameObject roomObject = GameObject.Find(array7[0] + "/" + array7[1]);
+
+                            StoppingSpeakerEventArgs ev = new StoppingSpeakerEventArgs(
+                                Player.Get(__instance.gameObject),
+                                new Room(roomObject.name, roomObject.transform, roomObject.transform.position));
+                            Handlers.Scp079.OnStoppingSpeaker(ev);
+
+                            if (ev.IsAllowed)
+                            {
+                                __instance.Speaker = string.Empty;
+                                result = true;
+                                break;
+                            }
+
                             result = false;
                             break;
                         }

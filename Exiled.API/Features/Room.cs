@@ -19,6 +19,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Room
     {
+        private readonly FlickerableLightController flickerableLightController;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
         /// </summary>
@@ -32,6 +34,7 @@ namespace Exiled.API.Features
             Position = position;
             Zone = FindZone();
             Type = FindType(name);
+            flickerableLightController = transform.GetComponentInChildren<FlickerableLightController>();
         }
 
         /// <summary>
@@ -63,6 +66,12 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
+
+        /// <summary>
+        /// Flickers the room's lights off for a duration.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        public void TurnOffLights(float duration) => flickerableLightController?.ServerFlickerLights(duration);
 
         private ZoneType FindZone()
         {

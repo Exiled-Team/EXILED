@@ -19,9 +19,9 @@ namespace Exiled.Events.Patches.Generic
 
     using Mirror;
 
-    using PlayableScps;
-
     using UnityEngine;
+
+    using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
     /// Patches <see cref="PlayerPositionManager.TransmitData"/>.
@@ -74,6 +74,7 @@ namespace Exiled.Events.Patches.Generic
                             Player currentTarget = Player.Get(players[index]);
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
                             bool canSee = true;
+                            bool shouldRotate = false;
 
                             if (currentTarget?.ReferenceHub == null)
                                 continue;
@@ -113,17 +114,30 @@ namespace Exiled.Events.Patches.Generic
                                     {
                                         bool flag = false;
                                         if (scp096 != null)
-                                            flag = scp096.HasTarget(hub2);
+                                            flag = scp096._targets.Contains(hub2);
 
-                                        if (player.ReferenceHub.characterClassManager.CurClass != RoleType.Scp079 &&
-                                            player.ReferenceHub.characterClassManager.CurClass != RoleType.Spectator &&
-                                            !flag)
-                                            canSee = false;
+                                        canSee = flag;
                                     }
                                 }
 
+                                switch (player.Role)
+                                {
+                                    case RoleType.Scp173 when !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173:
+                                        shouldRotate = true;
+                                        break;
+                                    case RoleType.Scp096 when !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096:
+                                        shouldRotate = true;
+                                        break;
+                                }
+
                                 if (!canSee)
+                                {
                                     ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
+                                }
+                                else if (shouldRotate)
+                                {
+                                    ppd = new PlayerPositionData(ppd.position, Quaternion.Inverse(Quaternion.LookRotation(FindLookRotation(player.Position, currentTarget.Position))).eulerAngles.y, ppd.playerID);
+                                }
 
                                 __instance._transmitBuffer[index] = ppd;
                             }
@@ -157,5 +171,7 @@ namespace Exiled.Events.Patches.Generic
                 return true;
             }
         }
+
+        private static Vector3 FindLookRotation(Vector3 player, Vector3 target) => (player - target).normalized;
     }
 }
