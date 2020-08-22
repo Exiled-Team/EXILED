@@ -15,6 +15,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or Sets a value indicating the max shield amount Scp096 can have.
         /// </summary>
-        public static int MaxShield { get; set; } = 500;
+        public static float MaxShield { get; set; } = 500;
     }
 }

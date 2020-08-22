@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.MaxShield), MethodType.Getter)]
     internal static class Scp096MaxShield
     {
-        private static bool Prefix(Scp096 __instance, ref int __result)
+        private static bool Prefix(Scp096 __instance, ref float __result)
         {
             __result = Exiled.API.Features.Scp096.MaxShield;
             return false;
