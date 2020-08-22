@@ -87,16 +87,32 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Reload()
         {
-            Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+            try
+            {
+                Groups = Deserializer.Deserialize<Dictionary<string, Group>>(
+                    File.ReadAllText(Instance.Config.FullPath));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Unable to parse role config: {e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+            }
 
             foreach (KeyValuePair<string, Group> group in Groups.Reverse())
             {
-                IEnumerable<string> inheritedPerms = new List<string>();
+                try
+                {
+                    IEnumerable<string> inheritedPerms = new List<string>();
 
-                inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
-                    .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
+                    inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
+                        .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
 
-                group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+                    group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Failed to handle inheritence for: {group.Key}. Enable Debug to see stacktrace.");
+                    Log.Debug($"{e.Message}\n{e.StackTrace}");
+                }
             }
         }
 
