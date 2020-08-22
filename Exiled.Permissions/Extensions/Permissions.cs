@@ -23,6 +23,7 @@ namespace Exiled.Permissions.Extensions
 
     using RemoteAdmin;
 
+    using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
 
@@ -89,12 +90,40 @@ namespace Exiled.Permissions.Extensions
         {
             try
             {
-                Groups = Deserializer.Deserialize<Dictionary<string, Group>>(
-                    File.ReadAllText(Instance.Config.FullPath));
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
+                Dictionary<string, Group> deserializedPerms = new Dictionary<string, Group>();
+                foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
+                {
+                    try
+                    {
+                        if (rawDeserializedPerms.TryGetValue(group.Key, out object rawDeserializedPerm))
+                        {
+                            if (group.Key.ToLower() == "user" || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
+                            {
+                                deserializedPerms.Add(group.Key, (Group)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedPerm), typeof(Group)));
+                            }
+                            else
+                            {
+                                Log.Warn($"{group.Key} is not a valid permission group.");
+                            }
+                        }
+                        else
+                        {
+                            Log.Error($"{group.Key}'s permissions were unable to be obtained.");
+                        }
+                    }
+                    catch (YamlException exception)
+                    {
+                        Log.Error($"Unable to parse permission config for: {group.Key}.\n{exception.Message}.\nEnable debug to see stacktrace.");
+                        Log.Debug($"{exception.Message}\n{exception.StackTrace}");
+                    }
+                }
+
+                Groups = deserializedPerms;
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to parse role config: {e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+                Log.Error($"Unable to parse permission config: {e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
             }
 
             foreach (KeyValuePair<string, Group> group in Groups.Reverse())
@@ -107,11 +136,13 @@ namespace Exiled.Permissions.Extensions
                         .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
 
                     group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+
+                    Log.Debug($"{group.Key} permissions loaded.", Instance.Config.ShouldDebugBeShown);
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"Failed to handle inheritence for: {group.Key}. Enable Debug to see stacktrace.");
-                    Log.Debug($"{e.Message}\n{e.StackTrace}");
+                    Log.Error($"Failed to load permissions/inheritance for: {group.Key}.\n{e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+                    Log.Debug($"{e.Message}\n{e.StackTrace}", Instance.Config.ShouldDebugBeShown);
                 }
             }
         }
