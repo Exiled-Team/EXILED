@@ -122,10 +122,10 @@ namespace Exiled.Events.Patches.Generic
 
                                 switch (player.Role)
                                 {
-                                    case RoleType.Scp173 when !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173:
+                                    case RoleType.Scp173 when !Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173 && currentTarget.Role == RoleType.Tutorial:
                                         shouldRotate = true;
                                         break;
-                                    case RoleType.Scp096 when !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096:
+                                    case RoleType.Scp096 when !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && currentTarget.Role == RoleType.Tutorial:
                                         shouldRotate = true;
                                         break;
                                 }
