@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp096
 {
 #pragma warning disable SA1313
-
     using HarmonyLib;
 
     using PlayableScps;
@@ -23,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.ParseVisionInformation))]
     internal static class ParseVisionInformation
     {
-        public static bool Prefix(Scp096 __instance, VisionInformation info)
+        private static bool Prefix(Scp096 __instance, VisionInformation info)
         {
             PlayableScpsController playableScpsController = info.RaycastResult.transform.gameObject.GetComponent<PlayableScpsController>();
             if (!info.Looking || !info.RaycastHit || playableScpsController == null || playableScpsController.CurrentScp == null || playableScpsController.CurrentScp != __instance)
