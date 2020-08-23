@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System.Collections.Generic;
+
     /// <summary>
     /// Represents the general role of Scp096.
     /// </summary>
@@ -16,5 +18,10 @@ namespace Exiled.API.Features
         /// Gets or Sets a value indicating the max shield amount Scp096 can have.
         /// </summary>
         public static float MaxShield { get; set; } = 500;
+
+        /// <summary>
+        /// Gets a list of player ids who will be turned away from SCP-096.
+        /// </summary>
+        public static List<int> TurnedPlayers { get; private set; } = new List<int>();
     }
 }
