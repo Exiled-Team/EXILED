@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Scp096
+namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
     using HarmonyLib;
