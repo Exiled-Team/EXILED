@@ -207,26 +207,26 @@ namespace Exiled.API.Features
 
         private List<Door> FindDoors()
         {
-            List<Door> list2 = new List<Door>();
-            foreach (global::Scp079Interactable scp079Interactable2 in global::Interface079.singleton.allInteractables)
+            List<Door> door_List = new List<Door>();
+            foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
             {
-                foreach (global::Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable2.currentZonesAndRooms)
+                foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
                 {
                     if (zoneAndRoom.currentRoom == Name && zoneAndRoom.currentZone == Transform.parent.name)
                     {
-                        if (scp079Interactable2.type == Scp079Interactable.InteractableType.Door)
+                        if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
                         {
-                            Door door = scp079Interactable2.GetComponent<Door>();
-                            if (!list2.Contains(door))
+                            Door door = scp079Interactable.GetComponent<Door>();
+                            if (!door_List.Contains(door))
                             {
-                                list2.Add(door);
+                                door_List.Add(door);
                             }
                         }
                     }
                 }
             }
 
-            return list2;
+            return door_List;
         }
     }
 }
