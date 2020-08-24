@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         {
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
-            Author = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly, typeof(AssemblyCompanyAttribute), false))?.Company;
+            Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
             Version = Assembly.GetName().Version;
         }
 
@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         public virtual Version Version { get; }
 
         /// <inheritdoc/>
-        public virtual Version RequiredExiledVersion { get; } = new Version(2, 1, 2);
+        public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
 
         /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new Dictionary<Type, Dictionary<Type, ICommand>>()
