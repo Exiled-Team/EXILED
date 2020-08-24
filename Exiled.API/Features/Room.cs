@@ -34,6 +34,7 @@ namespace Exiled.API.Features
             Position = position;
             Zone = FindZone();
             Type = FindType(name);
+            Doors = FindDoors();
             flickerableLightController = transform.GetComponentInChildren<FlickerableLightController>();
         }
 
@@ -66,6 +67,11 @@ namespace Exiled.API.Features
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Door> Doors { get; }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
@@ -197,6 +203,30 @@ namespace Exiled.API.Features
                 default:
                     return RoomType.Unknown;
             }
+        }
+
+        private List<Door> FindDoors()
+        {
+            List<Door> list2 = new List<Door>();
+            foreach (global::Scp079Interactable scp079Interactable2 in global::Interface079.singleton.allInteractables)
+            {
+                foreach (global::Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable2.currentZonesAndRooms)
+                {
+                    if (zoneAndRoom.currentRoom == Name && zoneAndRoom.currentZone == Transform.parent.name)
+                    {
+                        if (scp079Interactable2.type == Scp079Interactable.InteractableType.Door)
+                        {
+                            Door door = scp079Interactable2.GetComponent<Door>();
+                            if (!list2.Contains(door))
+                            {
+                                list2.Add(door);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return list2;
         }
     }
 }
