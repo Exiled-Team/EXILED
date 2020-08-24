@@ -207,7 +207,7 @@ namespace Exiled.API.Features
 
         private List<Door> FindDoors()
         {
-            List<Door> door_List = new List<Door>();
+            List<Door> door_list = new List<Door>();
             foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
             {
                 foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
@@ -217,16 +217,16 @@ namespace Exiled.API.Features
                         if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
                         {
                             Door door = scp079Interactable.GetComponent<Door>();
-                            if (!door_List.Contains(door))
+                            if (!door_list.Contains(door))
                             {
-                                door_List.Add(door);
+                                door_list.Add(door);
                             }
                         }
                     }
                 }
             }
 
-            return door_List;
+            return door_list;
         }
     }
 }
