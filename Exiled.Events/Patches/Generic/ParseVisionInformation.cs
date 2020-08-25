@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Generic
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="Scp096.ParseVisionInformation"/>.
+    /// Patches <see cref="PlayableScps.Scp096.ParseVisionInformation"/>.
     /// </summary>
     [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ParseVisionInformation))]
     internal static class ParseVisionInformation
