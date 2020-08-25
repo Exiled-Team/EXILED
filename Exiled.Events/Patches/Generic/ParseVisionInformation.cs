@@ -34,7 +34,8 @@ namespace Exiled.Events.Patches.Generic
 
             CharacterClassManager ccm = info.Source.GetComponent<CharacterClassManager>();
             QueryProcessor qp = info.Source.GetComponent<QueryProcessor>();
-            if (ccm == null || qp == null || API.Features.Scp096.TurnedPlayers.Contains(Player.Get(info.Source)) || (!Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && ccm.CurClass == RoleType.Tutorial))
+            Player player = Player.Get(info.Source);
+            if (ccm == null || qp == null || player == null || API.Features.Scp096.TurnedPlayers.Contains(player) || (!Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && ccm.CurClass == RoleType.Tutorial))
             {
                 return false;
             }
