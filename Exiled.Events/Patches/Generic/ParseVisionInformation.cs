@@ -8,6 +8,8 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
+    using Exiled.API.Features;
+
     using HarmonyLib;
 
     using PlayableScps;
@@ -19,10 +21,10 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="Scp096.ParseVisionInformation"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.ParseVisionInformation))]
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ParseVisionInformation))]
     internal static class ParseVisionInformation
     {
-        private static bool Prefix(Scp096 __instance, VisionInformation info)
+        private static bool Prefix(PlayableScps.Scp096 __instance, VisionInformation info)
         {
             PlayableScpsController playableScpsController = info.RaycastResult.transform.gameObject.GetComponent<PlayableScpsController>();
             if (!info.Looking || !info.RaycastHit || playableScpsController == null || playableScpsController.CurrentScp == null || playableScpsController.CurrentScp != __instance)
@@ -32,7 +34,7 @@ namespace Exiled.Events.Patches.Generic
 
             CharacterClassManager ccm = info.Source.GetComponent<CharacterClassManager>();
             QueryProcessor qp = info.Source.GetComponent<QueryProcessor>();
-            if (ccm == null || qp == null || API.Features.Scp096.TurnedPlayers.Contains(qp.PlayerId) || (!Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && ccm.CurClass == RoleType.Tutorial))
+            if (ccm == null || qp == null || API.Features.Scp096.TurnedPlayers.Contains(Player.Get(info.Source)) || (!Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && ccm.CurClass == RoleType.Tutorial))
             {
                 return false;
             }

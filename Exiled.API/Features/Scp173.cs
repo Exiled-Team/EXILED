@@ -17,6 +17,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-173.
         /// </summary>
-        public static List<int> TurnedPlayers { get; private set; } = new List<int>();
+        public static List<Player> TurnedPlayers { get; private set; } = new List<Player>();
     }
 }
