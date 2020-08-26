@@ -14,197 +14,197 @@ namespace Exiled.API.Enums
     {
         /// <summary>
         /// Represents the 012 door.
-        /// <summary>
+        /// </summary>
         Scp012,
 
         /// <summary>
         /// Represents the 012_BOTTOM door.
-        /// <summary>
+        /// </summary>
         Scp012Bottom,
 
         /// <summary>
         /// Represents the 012_LOCKER door.
-        /// <summary>
+        /// </summary>
         Scp012Locker,
 
         /// <summary>
         /// Represents the 049_ARMORY door.
-        /// <summary>
+        /// </summary>
         Scp049Armory,
 
         /// <summary>
         /// Represents the 079_FIRST door.
-        /// <summary>
+        /// </summary>
         Scp079First,
 
         /// <summary>
         /// Represents the 079_SECOND door.
-        /// <summary>
+        /// </summary>
         Scp079Second,
 
         /// <summary>
         /// Represents the 096 door.
-        /// <summary>
+        /// </summary>
         Scp096,
 
         /// <summary>
         /// Represents the 106_BOTTOM door.
-        /// <summary>
+        /// </summary>
         Scp106Bottom,
 
         /// <summary>
         /// Represents the 106_PRIMARY door.
-        /// <summary>
+        /// </summary>
         Scp106Primary,
 
         /// <summary>
         /// Represents the 106_SECONDARY door.
-        /// <summary>
+        /// </summary>
         Scp106Secondary,
 
         /// <summary>
         /// Represents the 173 door.
-        /// <summary>
+        /// </summary>
         Scp173,
 
         /// <summary>
         /// Represents the 173_ARMORY door.
-        /// <summary>
+        /// </summary>
         Scp173Armory,
 
         /// <summary>
         /// Represents the 173_BOTTOM door.
-        /// <summary>
+        /// </summary>
         Scp173Bottom,
 
         /// <summary>
         /// Represents the 372 door.
-        /// <summary>
+        /// </summary>
         Scp372,
 
         /// <summary>
         /// Represents the 914 door.
-        /// <summary>
+        /// </summary>
         Scp914,
 
         /// <summary>
         /// Represents the Airlocks door.
-        /// <summary>
+        /// </summary>
         Airlocks,
 
         /// <summary>
         /// Represents the CHECKPOINT_ENT door.
-        /// <summary>
+        /// </summary>
         CheckpointEntrance,
 
         /// <summary>
         /// Represents the CHECKPOINT_LCZ_A door.
-        /// <summary>
+        /// </summary>
         CheckpointLczA,
 
         /// <summary>
         /// Represents the CHECKPOINT_LCZ_B door.
-        /// <summary>
+        /// </summary>
         CheckpointLczB,
 
         /// <summary>
         /// Represents the ContDoor door.
-        /// <summary>
+        /// </summary>
         ContDoor,
 
         /// <summary>
         /// Represents the EntrDoor door.
-        /// <summary>
+        /// </summary>
         EntranceDoor,
 
         /// <summary>
         /// Represents the ESCAPE door.
-        /// <summary>
+        /// </summary>
         Escape,
 
         /// <summary>
         /// Represents the ESCAPE_INNER door.
-        /// <summary>
+        /// </summary>
         EscapeInner,
 
         /// <summary>
         /// Represents the GATE_A door.
-        /// <summary>
+        /// </summary>
         GateA,
 
         /// <summary>
         /// Represents the GATE_B door.
-        /// <summary>
+        /// </summary>
         GateB,
 
         /// <summary>
         /// Represents the HCZ_ARMORY door.
-        /// <summary>
+        /// </summary>
         HczArmory,
 
         /// <summary>
         /// Represents the HeavyContainmentDoor door.
-        /// <summary>
+        /// </summary>
         HeavyContainmentDoor,
 
         /// <summary>
         /// Represents the HID door.
-        /// <summary>
+        /// </summary>
         HID,
 
         /// <summary>
         /// Represents the HID_LEFT door.
-        /// <summary>
+        /// </summary>
         HIDLeft,
 
         /// <summary>
         /// Represents the HID_RIGHT door.
-        /// <summary>
+        /// </summary>
         HIDRight,
 
         /// <summary>
         /// Represents the INTERCOM door.
-        /// <summary>
+        /// </summary>
         Intercom,
 
         /// <summary>
         /// Represents the LCZ_ARMORY door.
-        /// <summary>
+        /// </summary>
         LczArmory,
 
         /// <summary>
         /// Represents the LCZ_CAFE door.
-        /// <summary>
+        /// </summary>
         LczCafe,
 
         /// <summary>
         /// Represents the LCZ_WC door.
-        /// <summary>
+        /// </summary>
         LczWc,
 
         /// <summary>
         /// Represents the LightContainmentDoor door.
-        /// <summary>
+        /// </summary>
         LightContainmentDoor,
 
         /// <summary>
         /// Represents the NUKE_ARMORY door.
-        /// <summary>
+        /// </summary>
         NukeArmory,
 
         /// <summary>
         /// Represents the NUKE_SURFACE door.
-        /// <summary>
+        /// </summary>
         NukeSurface,
 
         /// <summary>
         /// Represents the PrisonDoor door.
-        /// <summary>
+        /// </summary>
         PrisonDoor,
 
         /// <summary>
         /// Represents the SURFACE_GATE door.
-        /// <summary>
+        /// </summary>
         SurfaceGate,
 
         /// <summary>
