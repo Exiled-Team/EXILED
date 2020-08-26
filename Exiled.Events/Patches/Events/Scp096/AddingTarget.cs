@@ -44,8 +44,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             }
 
             AddingTargetEventArgs ev = new AddingTargetEventArgs(scp096, targetPlayer, 200, __instance.EnrageTimePerReset);
-            if (targetPlayer.Role == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096)
-                ev.IsAllowed = false;
             Exiled.Events.Handlers.Scp096.OnAddingTarget(ev);
 
             if (ev.IsAllowed)
