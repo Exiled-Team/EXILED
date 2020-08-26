@@ -11,6 +11,7 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
 
     using UnityEngine;
 
@@ -94,9 +95,7 @@ namespace Exiled.API.Features
         private RoomType FindType(string rawName)
         {
             // Try to remove brackets if they exist.
-            var bracketStart = rawName.IndexOf('(') - 1;
-            if (bracketStart > 0)
-                rawName = rawName.Remove(bracketStart, rawName.Length - bracketStart);
+            rawName = rawName.RemoveBracketsOnEndOfName();
 
             switch (rawName)
             {
