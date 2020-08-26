@@ -176,12 +176,16 @@ namespace Exiled.API.Features
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
@@ -712,6 +716,11 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
