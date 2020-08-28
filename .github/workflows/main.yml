@@ -43,6 +43,7 @@ jobs:
         dotnet restore Exiled.Patcher
         dotnet restore Exiled.Permissions
         dotnet restore Exiled.Updater
+
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
