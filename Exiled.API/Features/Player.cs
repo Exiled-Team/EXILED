@@ -246,7 +246,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
