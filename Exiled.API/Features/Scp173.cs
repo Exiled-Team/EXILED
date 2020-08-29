@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp096.cs" company="Exiled Team">
+// <copyright file="Scp173.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -10,17 +10,12 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents the general role of Scp096.
+    /// A set of tools to modify SCP-173's behaviour.
     /// </summary>
-    public class Scp096
+    public static class Scp173
     {
         /// <summary>
-        /// Gets or Sets a value indicating the max shield amount Scp096 can have.
-        /// </summary>
-        public static float MaxShield { get; set; } = 500;
-
-        /// <summary>
-        /// Gets a list of player ids who will be turned away from SCP-096.
+        /// Gets a list of player ids who will be turned away from SCP-173.
         /// </summary>
         public static List<Player> TurnedPlayers { get; private set; } = new List<Player>();
     }
