@@ -242,12 +242,16 @@ namespace Exiled.Loader
                     plugin.Config.IsEnabled = false;
 
                     plugin.OnDisabled();
+
+                    plugin.OnUnregisteringCommands();
                 }
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
+
+            Plugins.Clear();
 
             LoadPlugins();
 
