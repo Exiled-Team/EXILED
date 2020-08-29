@@ -241,9 +241,9 @@ namespace Exiled.Loader
 
                     plugin.Config.IsEnabled = false;
 
-                    plugin.OnDisabled();
-
                     plugin.OnUnregisteringCommands();
+
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {
@@ -270,8 +270,8 @@ namespace Exiled.Loader
                 try
                 {
                     plugin.Config.IsEnabled = false;
-                    plugin.OnDisabled();
                     plugin.OnUnregisteringCommands();
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {
