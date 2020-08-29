@@ -17,8 +17,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using RemoteAdmin;
-
     using UnityEngine;
 
     /// <summary>
@@ -32,46 +30,47 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!__instance._iawRateLimit.CanExecute(true))
-                    return false;
-                if (ply == null)
+                if (!__instance._iawRateLimit.CanExecute(true) || ply == null)
                     return false;
 
                 ReferenceHub hub = ReferenceHub.GetHub(ply);
-                CharacterClassManager component = hub.characterClassManager;
-                if (component == null)
-                    return false;
-                if (!ServerTime.CheckSynchronization(t) || !__instance.iAm106 ||
-                    Vector3.Distance(__instance.GetComponent<PlayerMovementSync>().RealModelPosition, ply.transform.position) >= 3f || !component.IsHuman())
+                CharacterClassManager ccm = hub?.characterClassManager;
+
+                if (ccm == null)
                     return false;
 
-                if (component.GodMode)
+                if (!ServerTime.CheckSynchronization(t)
+                    || !__instance.iAm106
+                    || Vector3.Distance(hub.playerMovementSync.RealModelPosition, ply.transform.position) >= 3f
+                    || !ccm.IsHuman()
+                    || ccm.GodMode
+                    || ccm.CurRole.team == Team.SCP)
+                {
                     return false;
-                if (component.Classes.SafeGet(component.CurClass).team == Team.SCP)
-                    return false;
+                }
 
-                __instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
+                var instanceHub = ReferenceHub.GetHub(__instance.gameObject);
+                instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+
                 if (Scp106PlayerScript._blastDoor.isClosed)
                 {
-                    __instance.GetComponent<CharacterClassManager>().RpcPlaceBlood(ply.transform.position, 1, 2f);
-                    __instance.GetComponent<PlayerStats>().HurtPlayer(
-                        new PlayerStats.HitInfo(500f, __instance.GetComponent<NicknameSync>().MyNick + " (" + __instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106, __instance.GetComponent<QueryProcessor>().PlayerId), ply);
+                    instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+                    instanceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(500f, instanceHub.LoggedNameFromRefHub(), DamageTypes.Scp106, instanceHub.playerId), ply);
                 }
                 else
                 {
-                    CharacterClassManager component3 = ply.GetComponent<CharacterClassManager>();
-
-                    foreach (Scp079PlayerScript scp079PlayerScript in Scp079PlayerScript.instances)
+                    Scp079Interactable.ZoneAndRoom otherRoom = hub.scp079PlayerScript.GetOtherRoom();
+                    Scp079Interactable.InteractableType[] filter = new Scp079Interactable.InteractableType[]
                     {
-                        Scp079Interactable.ZoneAndRoom
-                            otherRoom = ply.GetComponent<Scp079PlayerScript>().GetOtherRoom();
-                        Scp079Interactable.InteractableType[] filter = new Scp079Interactable.InteractableType[]
-                        {
                             Scp079Interactable.InteractableType.Door, Scp079Interactable.InteractableType.Light,
                             Scp079Interactable.InteractableType.Lockdown, Scp079Interactable.InteractableType.Tesla,
                             Scp079Interactable.InteractableType.ElevatorUse,
-                        };
+                    };
+
+                    foreach (Scp079PlayerScript scp079PlayerScript in Scp079PlayerScript.instances)
+                    {
                         bool flag = false;
+
                         foreach (Scp079Interaction scp079Interaction in scp079PlayerScript.ReturnRecentHistory(12f, filter))
                         {
                             foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interaction.interactable
@@ -87,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         if (flag)
                         {
-                            scp079PlayerScript.RpcGainExp(ExpGainType.PocketAssist, component3.CurClass);
+                            scp079PlayerScript.RpcGainExp(ExpGainType.PocketAssist, ccm.CurClass);
                         }
                     }
 
@@ -98,10 +97,9 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!ev.IsAllowed)
                         return false;
 
-                    ply.GetComponent<PlayerMovementSync>().OverridePosition(ev.Position, 0f, true);
+                    hub.playerMovementSync.OverridePosition(ev.Position, 0f, true);
 
-                    __instance.GetComponent<PlayerStats>().HurtPlayer(
-                        new PlayerStats.HitInfo(40f, __instance.GetComponent<NicknameSync>().MyNick + " (" + __instance.GetComponent<CharacterClassManager>().UserId + ")", DamageTypes.Scp106, __instance.GetComponent<QueryProcessor>().PlayerId), ply);
+                    instanceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(40f, instanceHub.LoggedNameFromRefHub(), DamageTypes.Scp106, instanceHub.playerId), ply);
                 }
 
                 PlayerEffectsController effectsController = hub.playerEffectsController;
@@ -112,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EnteringPocketDimension: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"{typeof(EnteringPocketDimension).FullName}:\n{e}");
 
                 return true;
             }
