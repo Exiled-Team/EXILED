@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Generic
     {
         private static bool Prefix(Stamina __instance)
         {
-            return Player.Get(__instance._hub).IsUsingStamina;
+            return Player.Get(__instance._hub)?.IsUsingStamina ?? true;
         }
     }
 }
