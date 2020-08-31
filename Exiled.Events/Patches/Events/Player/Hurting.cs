@@ -34,7 +34,17 @@ namespace Exiled.Events.Patches.Events.Player
                 API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
-                if (attacker == null || target == null || attacker.IsHost || target.IsHost)
+                if (target == null || target.IsHost)
+                    return true;
+
+                if (info.GetDamageType() == DamageTypes.Recontainment && target.Role == RoleType.Scp079)
+                {
+                    Scp079.OnRecontained(new RecontainedEventArgs(target));
+                    var eventArgs = new DiedEventArgs(null, target, info);
+                    Player.OnDied(eventArgs);
+                }
+
+                if (attacker == null || attacker.IsHost)
                     return true;
 
                 var ev = new HurtingEventArgs(attacker, target, info);

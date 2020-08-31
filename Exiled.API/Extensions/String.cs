@@ -115,5 +115,20 @@ namespace Exiled.API.Extensions
 
             return result;
         }
+
+        /// <summary>
+        /// Removes the prefab-generated brackets (#) on <see cref="UnityEngine.GameObject"/> names.
+        /// </summary>
+        /// <param name="name">Name of the <see cref="UnityEngine.GameObject"/>.</param>
+        /// <returns>Name without brackets.</returns>
+        public static string RemoveBracketsOnEndOfName(this string name)
+        {
+            var bracketStart = name.IndexOf('(') - 1;
+
+            if (bracketStart > 0)
+                name = name.Remove(bracketStart, name.Length - bracketStart);
+
+            return name;
+        }
     }
 }

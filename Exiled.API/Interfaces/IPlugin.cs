@@ -19,7 +19,7 @@ namespace Exiled.API.Interfaces
     /// Defines the contract for basic plugin features.
     /// </summary>
     /// <typeparam name="TConfig">The config type.</typeparam>
-    public interface IPlugin<out TConfig>
+    public interface IPlugin<out TConfig> : IComparable<IPlugin<IConfig>>
         where TConfig : IConfig
     {
         /// <summary>

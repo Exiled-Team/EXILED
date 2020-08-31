@@ -23,6 +23,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using NorthwoodLib;
+
     using RemoteAdmin;
 
     using UnityEngine;
@@ -134,16 +136,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's user id.
+        /// Gets the player's user id.
         /// </summary>
-        public string UserId
-        {
-            get => ReferenceHub.characterClassManager.UserId;
-            set
-            {
-                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException($"UserId cannot be set to null.");
-            }
-        }
+        public string UserId => referenceHub.characterClassManager.UserId;
 
         /// <summary>
         /// Gets or sets the player's custom user id.
@@ -181,12 +176,16 @@ namespace Exiled.API.Features
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
@@ -194,13 +193,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's nickname.
+        /// Gets or sets the player's display nickname.
+        /// May be null.
         /// </summary>
-        public string Nickname
+        public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName ?? ReferenceHub.nicknameSync.Network_myNickSync;
+            get => ReferenceHub.nicknameSync.Network_displayName;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
+
+        /// <summary>
+        /// Gets the player's nickname.
+        /// </summary>
+        public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invisible or not.
@@ -208,13 +213,9 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the players can be tracked or not.
+        /// Gets a value indicating whether the players can be tracked or not.
         /// </summary>
-        public bool DoNotTrack
-        {
-            get => ReferenceHub.serverRoles.DoNotTrack;
-            set => ReferenceHub.serverRoles.DoNotTrack = value;
-        }
+        public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
@@ -245,7 +246,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
@@ -715,6 +716,11 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.

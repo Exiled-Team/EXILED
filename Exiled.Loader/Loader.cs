@@ -118,7 +118,7 @@ namespace Exiled.Loader
                 Plugins.Add(plugin);
             }
 
-            Plugins.Sort((left, right) => -left.Priority.CompareTo(right.Priority));
+            Plugins.Sort();
         }
 
         /// <summary>
@@ -249,6 +249,8 @@ namespace Exiled.Loader
 
                     plugin.Config.IsEnabled = false;
 
+                    plugin.OnUnregisteringCommands();
+
                     plugin.OnDisabled();
                 }
                 catch (Exception exception)
@@ -256,6 +258,8 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
+
+            Plugins.Clear();
 
             LoadPlugins();
 
@@ -274,8 +278,8 @@ namespace Exiled.Loader
                 try
                 {
                     plugin.Config.IsEnabled = false;
-                    plugin.OnDisabled();
                     plugin.OnUnregisteringCommands();
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {

@@ -40,6 +40,8 @@ namespace Exiled.Events.InternalHandlers
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
             API.Features.Map.ClearCache();
+            API.Features.Scp173.TurnedPlayers.Clear();
+            API.Features.Scp096.TurnedPlayers.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>

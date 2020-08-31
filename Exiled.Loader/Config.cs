@@ -30,7 +30,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets or sets the environment type.
         /// </summary>
-        [Description("The working environment type")]
+        [Description("The working environment type (Development, Testing, Production, Ptb)")]
         public EnvironmentType Environment { get; set; } = EnvironmentType.Production;
     }
 }

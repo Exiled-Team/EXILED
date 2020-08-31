@@ -31,7 +31,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!value || string.IsNullOrEmpty(__instance?.UserId))
+                // UserId will always be empty/null if it's not in online mode
+                if (!value || (string.IsNullOrEmpty(__instance.UserId) && CharacterClassManager.OnlineMode))
                     return;
 
                 if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
@@ -49,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Timing.CallDelayed(0.25f, () =>
                 {
                     if (player?.IsMuted == true)
-                        player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
+                        player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
                 });
 
                 var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
@@ -58,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {exception}\n{exception.StackTrace}");
+                API.Features.Log.Error($"{typeof(Joined).FullName}:\n{exception}");
             }
         }
     }

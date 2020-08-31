@@ -45,13 +45,32 @@ namespace Exiled.Events.Patches.Events.Player
             var returnLabel = generator.DefineLabel();
             newInstructions[index].labels.Add(returnLabel);
 
+            // Used to identify the real attacker,
+            // if `info.IsPlayer` is true, transfers control to the label `attacterPlayerGetAfterInstance`
+            var attackerInstanceVsHitInfoSource = generator.DefineLabel();
+            var attacterPlayerGetAfterInstance = generator.DefineLabel();
+
             // Declare the attacker local variable.
             var attacker = generator.DeclareLocal(typeof(Player));
 
             // Declare the target local variable.
             var target = generator.DeclareLocal(typeof(Player));
 
-            // Player attacker = Player.Get(__instance.gameObject);
+            CodeInstruction PlayerGetWithLabel()
+            {
+                var ci = new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) }));
+                ci.labels.Add(attacterPlayerGetAfterInstance);
+                return ci;
+            }
+
+            CodeInstruction Ldarg_1WithLabel()
+            {
+                var ci = new CodeInstruction(OpCodes.Ldarg_1);
+                ci.labels.Add(attackerInstanceVsHitInfoSource);
+                return ci;
+            }
+
+            // Player attacker = Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
             // Player target = Player.Get(go);
             //
             // if (target == null || attacker == null || target.IsGodModeEnabled)
@@ -64,9 +83,16 @@ namespace Exiled.Events.Patches.Events.Player
             // info = ev.HitInformations;
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldarga_S, 1),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.IsPlayer))),
+                new CodeInstruction(OpCodes.Brtrue_S, attackerInstanceVsHitInfoSource),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Br_S, attacterPlayerGetAfterInstance),
+                Ldarg_1WithLabel(),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.RHub))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                PlayerGetWithLabel(),
                 new CodeInstruction(OpCodes.Stloc_S, attacker.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_2),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),

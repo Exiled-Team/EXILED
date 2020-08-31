@@ -20,8 +20,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
     /// <summary>
@@ -45,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Map
                     Deafened effect2 = hub.playerEffectsController.GetEffect<Deafened>();
                     if (effect == null || __instance.thrower == null ||
                         (!__instance.Network_friendlyFlash && !effect.Flashable(
-                            ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance.viewLayerMask)))
+                            ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance._ignoredLayers)))
                         continue;
 
                     float num = __instance.powerOverDistance.Evaluate(
@@ -66,9 +64,9 @@ namespace Exiled.Events.Patches.Events.Map
 
                 return ev.IsAllowed;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {exception}\n{exception.StackTrace}");
 
                 return true;
             }

@@ -39,7 +39,7 @@ namespace Exiled.Events.Commands.Reload
 
             sender.Respond("Reloading plugins...");
 
-            Loader.LoadPlugins();
+            Loader.ReloadPlugins();
 
             response = "Plugins have been reloaded successfully!";
             return true;

@@ -1,0 +1,35 @@
+name: Exiled Programs CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: .Net Core ${{ matrix.framework }} on ${{ matrix.os }} for ${{ matrix.proj_name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        proj_name: [Exiled.Installer, Exiled.Patcher]
+        include:
+        - os: ubuntu-latest
+          target: linux-x64
+        - os: windows-latest
+          target: win-x64
+    timeout-minutes: 30
+
+    steps:
+    - uses: actions/setup-dotnet@v1.5.0
+
+    - uses: actions/checkout@v2.3.1
+
+    - name: Install dependencies for ${{ matrix.proj_name }}@${{ matrix.target }}
+      run: dotnet restore ${{ matrix.proj_name }} -r ${{ matrix.target }}
+
+    - name: Build ${{ matrix.proj_name }}@${{ matrix.target }}
+      run: dotnet publish ${{ matrix.proj_name }} -r ${{ matrix.target }} -c release -o builds/${{ matrix.target }}
+
+    - name: Upload ${{ matrix.proj_name }}@${{ matrix.target }} build
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ matrix.proj_name }}-${{ matrix.target }}
+        path: builds/${{ matrix.target }}

@@ -7,9 +7,12 @@
 
 namespace Exiled.Boostrap
 {
+#pragma warning disable SA1118
     using System;
     using System.IO;
     using System.Reflection;
+
+    using NorthwoodLib;
 
     /// <summary>
     /// The assembly loader class for Exiled.
@@ -56,7 +59,6 @@ namespace Exiled.Boostrap
                                 .GetMethod("Run")
                                 ?.Invoke(
                                     null,
-#pragma warning disable SA1118 // Parameter should not span multiple lines
                                     new object[]
                                     {
                                         new Assembly[]
@@ -65,7 +67,6 @@ namespace Exiled.Boostrap
                                             Assembly.Load(File.ReadAllBytes(Path.Combine(dependenciesPath, "YamlDotNet.dll"))),
                                         },
                                     });
-#pragma warning restore SA1118 // Parameter should not span multiple lines
 
                             IsLoaded = true;
                         }
