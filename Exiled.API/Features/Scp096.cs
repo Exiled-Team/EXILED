@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// Represents the general role of Scp096.
     /// </summary>
-    public class Scp096
+    public static class Scp096
     {
         /// <summary>
         /// Gets or Sets a value indicating the max shield amount Scp096 can have.
@@ -22,6 +22,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-096.
         /// </summary>
-        public static List<Player> TurnedPlayers { get; private set; } = new List<Player>();
+        public static HashSet<Player> TurnedPlayers { get; } = new HashSet<Player>(20);
     }
 }
