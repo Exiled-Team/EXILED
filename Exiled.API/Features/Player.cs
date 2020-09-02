@@ -301,7 +301,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
+        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
         /// Gets or sets the player's IP address.
