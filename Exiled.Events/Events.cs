@@ -23,7 +23,7 @@ namespace Exiled.Events
     public sealed class Events : Plugin<Config>
     {
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
-        private readonly Handlers.Round round = new Handlers.Round();
+        private readonly InternalHandlers.Round round = new InternalHandlers.Round();
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
