@@ -186,7 +186,10 @@ namespace Exiled.API.Extensions
                     int weaponMod = wep.mod_sights.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
                     weapon.modSight = weaponMod;
-                    player.Inventory.items[weaponId] = weapon;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
                 }
             }
         }
@@ -261,7 +264,10 @@ namespace Exiled.API.Extensions
                     int weaponMod = wep.mod_barrels.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
                     weapon.modBarrel = weaponMod;
-                    player.Inventory.items[weaponId] = weapon;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
                 }
             }
         }
@@ -331,7 +337,10 @@ namespace Exiled.API.Extensions
                     int weaponMod = wep.mod_others.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
                     weapon.modOther = weaponMod;
-                    player.Inventory.items[weaponId] = weapon;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
                 }
             }
         }
