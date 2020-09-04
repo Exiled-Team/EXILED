@@ -98,7 +98,7 @@ namespace Exiled.Permissions.Extensions
                     {
                         if (rawDeserializedPerms.TryGetValue(group.Key, out object rawDeserializedPerm))
                         {
-                            if (group.Key.ToLower() == "user" || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
+                            if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
                             {
                                 deserializedPerms.Add(group.Key, (Group)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedPerm), typeof(Group)));
                             }
@@ -142,7 +142,7 @@ namespace Exiled.Permissions.Extensions
                 catch (Exception e)
                 {
                     Log.Error($"Failed to load permissions/inheritance for: {group.Key}.\n{e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
-                    Log.Debug($"{e.Message}\n{e.StackTrace}", Instance.Config.ShouldDebugBeShown);
+                    Log.Debug($"{e}", Instance.Config.ShouldDebugBeShown);
                 }
             }
         }
@@ -196,22 +196,23 @@ namespace Exiled.Permissions.Extensions
             if (string.IsNullOrEmpty(permission))
                 return false;
 
-            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
+            if (player == null
+                || player.GameObject == null
+                || Groups == null
+                || Groups.Count == 0
+                || player.ReferenceHub.isDedicatedServer)
+            {
                 return false;
-
-            if (player.ReferenceHub.isDedicatedServer)
-                return true;
+            }
 
             Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
             Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
-            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : player.GroupName;
-            if (string.IsNullOrEmpty(plyGroupKey))
-                return false;
+            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : null;
+            Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
-            Log.Debug($"GroupKey: {plyGroupKey}", Instance.Config.ShouldDebugBeShown);
-
-            if (!Groups.TryGetValue(plyGroupKey, out var group))
+            Group group = null;
+            if (plyGroupKey != null && !Groups.TryGetValue(plyGroupKey, out group))
                 group = DefaultGroup;
 
             if (group is null)

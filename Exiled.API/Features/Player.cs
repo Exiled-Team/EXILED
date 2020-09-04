@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -61,12 +61,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>();
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.

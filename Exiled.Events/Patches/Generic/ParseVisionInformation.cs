@@ -7,51 +7,77 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.API.Features;
 
     using HarmonyLib;
 
-    using PlayableScps;
+    using NorthwoodLib.Pools;
 
-    using RemoteAdmin;
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 
-    using UnityEngine;
-
-    /// <summary>
-    /// Patches <see cref="PlayableScps.Scp096.ParseVisionInformation"/>.
-    /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ParseVisionInformation))]
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ParseVisionInformation), new[] { typeof(PlayableScps.VisionInformation) })]
     internal static class ParseVisionInformation
     {
-        private static bool Prefix(PlayableScps.Scp096 __instance, VisionInformation info)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            PlayableScpsController playableScpsController = info.RaycastResult.transform.gameObject.GetComponent<PlayableScpsController>();
-            if (!info.Looking || !info.RaycastHit || playableScpsController == null || playableScpsController.CurrentScp == null || playableScpsController.CurrentScp != __instance)
+            const int offset = 1;
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var index = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Ret);
+
+            // Quick check if it's the end
+            if (index + 1 >= newInstructions.Count)
             {
-                return false;
+                Log.Error($"Couldn't path '{typeof(PlayableScps.Scp096).FullName}.{nameof(PlayableScps.Scp096.ParseVisionInformation)}': invalid index - {index}");
+                ListPool<CodeInstruction>.Shared.Return(newInstructions);
+                yield break;
             }
 
-            CharacterClassManager ccm = info.Source.GetComponent<CharacterClassManager>();
-            QueryProcessor qp = info.Source.GetComponent<QueryProcessor>();
-            Player player = Player.Get(info.Source);
-            if (ccm == null || qp == null || player == null || API.Features.Scp096.TurnedPlayers.Contains(player) || (!Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && ccm.CurClass == RoleType.Tutorial))
-            {
-                return false;
-            }
+            index += offset;
 
-            float delay = (1f - info.DotProduct) / 0.25f * (Vector3.Distance(info.Source.transform.position, info.Target.transform.position) * 0.1f);
-            if (!__instance.Calming)
-            {
-                __instance.AddTarget(info.Source);
-            }
+            var continueLabel = generator.DefineLabel();
+            newInstructions[index].labels.Add(continueLabel);
 
-            if (__instance.CanEnrage && info.Source != null)
+            newInstructions.InsertRange(index, new[]
             {
-                __instance.PreWindup(delay);
-            }
+                // if (PlayableScpsController.hub.characterClassManager.CurClass == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096)
+                //      return;
+                // START
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController.hub))),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
+                new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
+                new CodeInstruction(OpCodes.Bne_Un_S, continueLabel),
 
-            return false;
+                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin<Exiled.Events.Config>), nameof(Plugin<Exiled.Events.Config>.Config))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Exiled.Events.Config), nameof(Exiled.Events.Config.CanTutorialTriggerScp096))),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Ret),
+                // END
+                // if (API.Features.Scp096.TurnedPlayers.Contsins(Player.Get(PlayableScpsController.Hub)))
+                //      return;
+                // START
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController.hub))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
+                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
+                new CodeInstruction(OpCodes.Ret),
+                // END
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
