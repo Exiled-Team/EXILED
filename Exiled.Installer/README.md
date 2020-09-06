@@ -32,7 +32,7 @@ Exiled.Installer-Win-3.1.0.0
 AppData folder: YourAppDataPath
 Receiving releases...
 Prereleases included - True
-Target release version - 2.1.2
+Target release version - 2.1.3
 Searching for the latest release that matches the parameters...
 Release found!
 PRE: True | ID: 29240140 | TAG: 2.0.10
