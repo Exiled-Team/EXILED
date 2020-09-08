@@ -248,6 +248,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReceivingEffectEventArgs> ReceivingEffect;
 
         /// <summary>
+        /// Invoked before activating workstation.
+        /// </summary>
+        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
+
+        /// <summary>
+        /// Invoked before deactivating workstation.
+        /// </summary>
+        public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
+
+        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -522,5 +532,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingEffectEventArgs"/> instance.</param>
         public static void OnReceivingEffect(ReceivingEffectEventArgs ev) => ReceivingEffect.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before activating workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingWorkstationEventArgs"/> instance.</param>
+        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before deactivating workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
+        public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
     }
 }

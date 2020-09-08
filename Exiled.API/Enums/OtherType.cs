@@ -25,7 +25,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Gyroscopic Stabilizer.
         /// </summary>
-        GyroStabilizer,
+        GyroscopicStabilizer,
 
         /// <summary>
         /// Ammo Counter.

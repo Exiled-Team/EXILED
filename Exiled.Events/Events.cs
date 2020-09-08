@@ -53,9 +53,9 @@ namespace Exiled.Events
         public static Events Instance => LazyInstance.Value;
 
         /// <summary>
-        /// Gets a list of types and methods for which EXILED patches should not be run.
+        /// Gets a set of types and methods for which EXILED patches should not be run.
         /// </summary>
-        public static List<MethodBase> DisabledPatches { get; } = new List<MethodBase>();
+        public static HashSet<MethodBase> DisabledPatches { get; } = new HashSet<MethodBase>();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
@@ -88,6 +88,8 @@ namespace Exiled.Events
             base.OnDisabled();
 
             Unpatch();
+
+            DisabledPatches.Clear();
 
             Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= round.OnRestartingRound;
