@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Inventory component = tabletOwner.GetComponent<Inventory>();
                 foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
                 {
-                    if (syncItemInfo.id == global::ItemType.WeaponManagerTablet)
+                    if (syncItemInfo.id == ItemType.WeaponManagerTablet)
                     {
                         ActivatingWorkstationEventArgs ev = new ActivatingWorkstationEventArgs(Exiled.API.Features.Player.Get(tabletOwner), __instance);
                         Player.OnActivatingWorkstation(ev);
