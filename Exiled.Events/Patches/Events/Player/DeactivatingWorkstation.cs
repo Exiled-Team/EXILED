@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (ev.IsAllowed)
                 {
-                    taker.GetComponent<global::Inventory>().AddNewItem(global::ItemType.WeaponManagerTablet, -4.65664672E+11f, 0, 0, 0);
+                    taker.GetComponent<Inventory>().AddNewItem(ItemType.WeaponManagerTablet, -4.65664672E+11f, 0, 0, 0);
                     __instance.Network_playerConnected = null;
                     __instance.NetworkisTabletConnected = false;
                     __instance._animationCooldown = 3.5f;

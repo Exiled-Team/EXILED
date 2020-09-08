@@ -33,8 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
-                global::Inventory component = tabletOwner.GetComponent<global::Inventory>();
-                foreach (global::Inventory.SyncItemInfo syncItemInfo in component.items)
+                Inventory component = tabletOwner.GetComponent<Inventory>();
+                foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
                 {
                     if (syncItemInfo.id == global::ItemType.WeaponManagerTablet)
                     {
