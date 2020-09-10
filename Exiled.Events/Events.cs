@@ -9,7 +9,6 @@ namespace Exiled.Events
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
 
     using Exiled.API.Enums;
