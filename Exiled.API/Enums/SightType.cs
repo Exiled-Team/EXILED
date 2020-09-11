@@ -25,26 +25,26 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Holo Sight
         /// </summary>
-        Holo,
+        HoloSight,
 
         /// <summary>
         /// Blue Dot Sight
         /// </summary>
-        BlueDot,
+        BlueDotSight,
 
         /// <summary>
-        /// Red Dot Sight
+        /// Red Dot
         /// </summary>
         RedDot,
 
         /// <summary>
         /// Night Vision Sight
         /// </summary>
-        NightVision,
+        NightVisionSight,
 
         /// <summary>
         /// Sniper Scope
         /// </summary>
-        Sniper,
+        SniperScope,
     }
 }

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Extensions
 {
+    using System;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -125,20 +126,13 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    switch (wep.mod_sights[weapon.modSight].name)
+                    try
                     {
-                        case "Collimator":
-                            return SightType.Collimator;
-                        case "Holo Sight":
-                            return SightType.Holo;
-                        case "Red Dot":
-                            return SightType.RedDot;
-                        case "Blue Dot Sight":
-                            return SightType.BlueDot;
-                        case "Night Vision Sight":
-                            return SightType.NightVision;
-                        case "Sniper Scope":
-                            return SightType.Sniper;
+                        string name = wep.mod_sights[weapon.modSight].name.RemoveSpaces();
+                        return (SightType)Enum.Parse(typeof(SightType), name);
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
             }
@@ -160,28 +154,7 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    string name = "None";
-                    switch (type)
-                    {
-                        case SightType.Collimator:
-                            name = "Collimator";
-                            break;
-                        case SightType.Holo:
-                            name = "Holo Sight";
-                            break;
-                        case SightType.BlueDot:
-                            name = "Blue Dot Sight";
-                            break;
-                        case SightType.RedDot:
-                            name = "Red Dot";
-                            break;
-                        case SightType.NightVision:
-                            name = "Night Vision Sight";
-                            break;
-                        case SightType.Sniper:
-                            name = "Sniper Scope";
-                            break;
-                    }
+                    string name = type.ToString("g").SplitCamelCase();
 
                     int weaponMod = wep.mod_sights.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
@@ -208,18 +181,13 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    switch (wep.mod_barrels[weapon.modBarrel].name)
+                    try
                     {
-                        case "Suppressor":
-                            return BarrelType.Suppressor;
-                        case "Silencer":
-                            return BarrelType.Silencer;
-                        case "Muzzle Brake":
-                            return BarrelType.MuzzleBrake;
-                        case "Heavy Barrel":
-                            return BarrelType.HeavyBarrel;
-                        case "Muzzle Booster":
-                            return BarrelType.MuzzleBooster;
+                        string name = wep.mod_barrels[weapon.modBarrel].name.RemoveSpaces();
+                        return (BarrelType)Enum.Parse(typeof(BarrelType), name);
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
             }
@@ -241,25 +209,7 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    string name = "None";
-                    switch (type)
-                    {
-                        case BarrelType.HeavyBarrel:
-                            name = "Heavy Barrel";
-                            break;
-                        case BarrelType.MuzzleBooster:
-                            name = "Muzzle Booster";
-                            break;
-                        case BarrelType.MuzzleBrake:
-                            name = "Muzzle Brake";
-                            break;
-                        case BarrelType.Silencer:
-                            name = "Silencer";
-                            break;
-                        case BarrelType.Suppressor:
-                            name = "Suppressor";
-                            break;
-                    }
+                    string name = type.ToString("g").SplitCamelCase();
 
                     int weaponMod = wep.mod_barrels.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
@@ -286,16 +236,13 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    switch (wep.mod_others[weapon.modOther].name)
+                    try
                     {
-                        case "Flashlight":
-                            return OtherType.Flashlight;
-                        case "Ammo Counter":
-                            return OtherType.AmmoCounter;
-                        case "Gyroscopic Stabilizer":
-                            return OtherType.GyroStabilizer;
-                        case "Laser":
-                            return OtherType.Laser;
+                        string name = wep.mod_others[weapon.modOther].name.RemoveSpaces();
+                        return (OtherType)Enum.Parse(typeof(OtherType), name);
+                    }
+                    catch (Exception)
+                    {
                     }
                 }
             }
@@ -317,22 +264,7 @@ namespace Exiled.API.Extensions
                 WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
-                    string name = "None";
-                    switch (type)
-                    {
-                        case OtherType.AmmoCounter:
-                            name = "Ammo Counter";
-                            break;
-                        case OtherType.Flashlight:
-                            name = "Flashlight";
-                            break;
-                        case OtherType.GyroStabilizer:
-                            name = "Gyroscopic Stabilizer";
-                            break;
-                        case OtherType.Laser:
-                            name = "Laser";
-                            break;
-                    }
+                    string name = type.ToString("g").SplitCamelCase();
 
                     int weaponMod = wep.mod_others.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
                     int weaponId = player.Inventory.items.FindIndex(s => s == weapon);

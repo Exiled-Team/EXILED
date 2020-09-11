@@ -22,6 +22,7 @@ namespace Exiled.Events
     /// </summary>
     public sealed class Events : Plugin<Config>
     {
+#pragma warning disable 0618
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
         private readonly InternalHandlers.Round round = new InternalHandlers.Round();
 
@@ -55,7 +56,13 @@ namespace Exiled.Events
         /// <summary>
         /// Gets a list of types and methods for which EXILED patches should not be run.
         /// </summary>
+        [Obsolete("Use DisabledPatchesHashSet instead.")]
         public static List<MethodBase> DisabledPatches { get; } = new List<MethodBase>();
+
+        /// <summary>
+        /// Gets a set of types and methods for which EXILED patches should not be run.
+        /// </summary>
+        public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new HashSet<MethodBase>();
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.First;
@@ -88,6 +95,9 @@ namespace Exiled.Events
             base.OnDisabled();
 
             Unpatch();
+
+            DisabledPatchesHashSet.Clear();
+            DisabledPatches.Clear();
 
             Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= round.OnRestartingRound;
@@ -126,6 +136,11 @@ namespace Exiled.Events
         public void ReloadDisabledPatches()
         {
             foreach (MethodBase method in DisabledPatches)
+            {
+                DisabledPatchesHashSet.Add(method);
+            }
+
+            foreach (MethodBase method in DisabledPatchesHashSet)
             {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
                 Log.Info($"Unpatched {method.Name}");

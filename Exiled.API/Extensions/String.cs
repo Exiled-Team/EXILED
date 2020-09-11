@@ -130,5 +130,25 @@ namespace Exiled.API.Extensions
 
             return name;
         }
+
+        /// <summary>
+        /// Splits camel case string to space-separated words. Ex: SomeCamelCase -> Some Camel Case.
+        /// </summary>
+        /// <param name="input">Camel case string.</param>
+        /// <returns>Splitted string.</returns>
+        public static string SplitCamelCase(this string input)
+        {
+            return Regex.Replace(input, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
+        }
+
+        /// <summary>
+        /// Removes all space symbols from string.
+        /// </summary>
+        /// <param name="input">Input string.</param>
+        /// <returns>String without spaces.</returns>
+        public static string RemoveSpaces(this string input)
+        {
+            return Regex.Replace(input, @"\s+", string.Empty);
+        }
     }
 }
