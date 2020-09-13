@@ -47,6 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 const string PANEL_PERM = "CONT_LVL_3";
 
+                // Deprecated
                 var list = ListPool<string>.Shared.Rent();
                 list.Add(PANEL_PERM);
 
@@ -56,6 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
                     __instance._sr.BypassMode || itemById.permissions.Contains(PANEL_PERM));
 
                 Player.OnActivatingWarheadPanel(ev);
+                ListPool<string>.Shared.Return(list);
 
                 if (ev.IsAllowed)
                 {
@@ -63,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Player
                     __instance.OnInteract();
                 }
 
-                ListPool<string>.Shared.Return(list);
                 return false;
             }
             catch (Exception exception)
