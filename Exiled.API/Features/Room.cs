@@ -95,6 +95,7 @@ namespace Exiled.API.Features
         {
             // Try to remove brackets if they exist.
             var bracketStart = rawName.IndexOf('(') - 1;
+
             if (bracketStart > 0)
                 rawName = rawName.Remove(bracketStart, rawName.Length - bracketStart);
 
