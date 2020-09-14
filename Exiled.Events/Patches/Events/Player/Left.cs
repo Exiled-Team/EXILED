@@ -15,18 +15,21 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     /// <summary>
-    /// Patches <see cref="ReferenceHub.OnDestroy"/>.
+    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(Mirror.NetworkConnection)"/>.
     /// Adds the <see cref="Handlers.Player.Left"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
+    [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), new[] { typeof(NetworkConnection) })]
     internal static class Left
     {
-        private static void Prefix(ReferenceHub __instance)
+        private static void Prefix(NetworkConnection conn)
         {
             try
             {
-                Player player = Player.Get(__instance.gameObject);
+                // The game checks for null NetworkIdentity, do the same
+                Player player = Player.Get(conn.identity?.gameObject);
 
                 if (player == null || player.IsHost)
                     return;

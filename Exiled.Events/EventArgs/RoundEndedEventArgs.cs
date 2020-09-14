@@ -9,8 +9,10 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
+
     /// <summary>
-    /// Contains all informations before ending a round.
+    /// Contains all information before ending a round.
     /// </summary>
     public class RoundEndedEventArgs : EventArgs
     {
@@ -20,7 +22,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="leadingTeam"><inheritdoc cref="LeadingTeam"/></param>
         /// <param name="classList"><inheritdoc cref="ClassList"/></param>
         /// <param name="timeToRestart"><inheritdoc cref="TimeToRestart"/></param>
-        public RoundEndedEventArgs(RoundSummary.LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, int timeToRestart)
+        public RoundEndedEventArgs(LeadingTeam leadingTeam, RoundSummary.SumInfo_ClassList classList, int timeToRestart)
         {
             LeadingTeam = leadingTeam;
             ClassList = classList;
@@ -30,7 +32,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the leading team.
         /// </summary>
-        public RoundSummary.LeadingTeam LeadingTeam { get; }
+        public LeadingTeam LeadingTeam { get; }
 
         /// <summary>
         /// Gets or sets the round summary class list.

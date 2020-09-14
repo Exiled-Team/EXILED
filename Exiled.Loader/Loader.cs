@@ -16,6 +16,7 @@ namespace Exiled.Loader
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+    using Exiled.Loader.Features;
 
     /// <summary>
     /// Used to handle plugins.
@@ -25,7 +26,14 @@ namespace Exiled.Loader
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
-            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.Major}.{Version.Minor}.{Version.Build}", ConsoleColor.DarkRed);
+            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.ToString(3)}", ConsoleColor.DarkRed);
+
+            if (MultiAdminFeatures.MultiAdminUsed)
+            {
+                Log.SendRaw($"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}", ConsoleColor.Cyan);
+                MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_START);
+                MultiAdminFeatures.CallAction(MultiAdminFeatures.ActionType.SET_SUPPORTED_FEATURES, MultiAdminFeatures.ModFeatures.All);
+            }
 
             CustomNetworkManager.Modded = true;
 
@@ -79,7 +87,7 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
-            if (dependencies != null && dependencies.Length > 0)
+            if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
             LoadDependencies();
@@ -241,6 +249,8 @@ namespace Exiled.Loader
 
                     plugin.Config.IsEnabled = false;
 
+                    plugin.OnUnregisteringCommands();
+
                     plugin.OnDisabled();
                 }
                 catch (Exception exception)
@@ -248,6 +258,8 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
+
+            Plugins.Clear();
 
             LoadPlugins();
 
@@ -266,8 +278,8 @@ namespace Exiled.Loader
                 try
                 {
                     plugin.Config.IsEnabled = false;
-                    plugin.OnDisabled();
                     plugin.OnUnregisteringCommands();
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {

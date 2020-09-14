@@ -51,7 +51,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -61,12 +61,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>();
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
@@ -176,12 +176,16 @@ namespace Exiled.API.Features
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
@@ -242,7 +246,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
@@ -297,7 +301,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
+        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
         /// Gets or sets the player's IP address.
@@ -712,6 +716,11 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.

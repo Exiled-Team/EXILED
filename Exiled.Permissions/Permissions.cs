@@ -11,6 +11,8 @@ namespace Exiled.Permissions
 
     using Exiled.API.Features;
 
+    using MEC;
+
     /// <summary>
     /// Handles all plugin-related permissions, for executing commands, doing actions and so on.
     /// </summary>
@@ -32,8 +34,11 @@ namespace Exiled.Permissions
         {
             base.OnEnabled();
 
-            Extensions.Permissions.Create();
-            Extensions.Permissions.Reload();
+            Timing.CallDelayed(5f, () =>
+            {
+                Extensions.Permissions.Create();
+                Extensions.Permissions.Reload();
+            });
         }
 
         /// <inheritdoc/>

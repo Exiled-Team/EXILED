@@ -11,6 +11,8 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using Exiled.API.Extensions;
+
     using LightContainmentZoneDecontamination;
 
     using UnityEngine;
@@ -77,7 +79,10 @@ namespace Exiled.API.Features
             get
             {
                 if (DoorsValue.Count == 0)
+                {
                     DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
+                    DoorTypeExtension.RegisterDoorTypesOnLevelLoad();
+                }
 
                 return ReadOnlyDoorsValue;
             }
