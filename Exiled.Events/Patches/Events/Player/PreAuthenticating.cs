@@ -231,7 +231,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         }
-                                        else if (TimeBehaviour.CurrentUnixTimestamp > result7)
+                                        else if ((ulong)TimeBehaviour.CurrentUnixTimestamp > result7)
                                         {
                                             ServerConsole.AddLog(
                                               $"Player from endpoint {request.RemoteEndPoint} sent expired pre-authentication token.");

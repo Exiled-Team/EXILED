@@ -91,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
                                 spawnPoint = randomPosition.transform.position;
                                 rotY = randomPosition.transform.rotation.eulerAngles.y;
                                 AmmoBox component1 = __instance.GetComponent<AmmoBox>();
-                                if (escape && __instance.KeepItemsAfterEscaping)
+                                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                                 {
                                     Inventory component2 = PlayerManager.localPlayer.GetComponent<Inventory>();
                                     for (ushort index = 0; index < 3; ++index)
@@ -118,8 +118,8 @@ namespace Exiled.Events.Patches.Events.Player
                             __instance._pms.OnPlayerClassChange(ev.Position, ev.RotationY);
                         }
 
-                        if (!__instance.SpawnProtected && __instance.EnableSP &&
-                            __instance.SProtectedTeam.Contains((int)role.team))
+                        if (!__instance.SpawnProtected && CharacterClassManager.EnableSP &&
+                            CharacterClassManager.SProtectedTeam.Contains((int)role.team))
                         {
                             __instance.GodMode = true;
                             __instance.SpawnProtected = true;

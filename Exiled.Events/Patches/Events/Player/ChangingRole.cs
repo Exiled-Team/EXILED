@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Inventory component = ply.GetComponent<Inventory>();
                 List<Inventory.SyncItemInfo> list = ListPool<Inventory.SyncItemInfo>.Shared.Rent();
-                if (escape && __instance.KeepItemsAfterEscaping)
+                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
                     foreach (Inventory.SyncItemInfo item in component.items)
                         list.Add(item);
@@ -87,11 +87,11 @@ namespace Exiled.Events.Patches.Events.Player
 
                 ListPool<ItemType>.Shared.Return(startItemsList);
 
-                if (escape && __instance.KeepItemsAfterEscaping)
+                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
                     foreach (Inventory.SyncItemInfo syncItemInfo in list)
                     {
-                        if (__instance.PutItemsInInvAfterEscaping)
+                        if (CharacterClassManager.PutItemsInInvAfterEscaping)
                         {
                             Item itemByID = component.GetItemByID(syncItemInfo.id);
                             bool flag = false;

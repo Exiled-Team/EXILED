@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Generic
                 //      return;
                 // START
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController.hub))),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController._hub))),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Generic
                 //      return;
                 // START
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController.hub))),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController._hub))),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),

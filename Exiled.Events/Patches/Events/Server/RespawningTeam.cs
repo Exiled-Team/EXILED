@@ -57,8 +57,8 @@ namespace Exiled.Events.Patches.Events.Server
                     int a = singleton.GetAvailableTickets(__instance.NextKnownTeam);
                     if (a == 0)
                     {
-                        a = singleton.DefaultTeamAmount;
-                        RespawnTickets.Singleton.GrantTickets(singleton.DefaultTeam, singleton.DefaultTeamAmount, true);
+                        a = RespawnTickets.DefaultTeamAmount;
+                        RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
                     }
 
                     int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);

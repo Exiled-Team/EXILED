@@ -86,7 +86,7 @@ namespace Exiled.Events
             Handlers.Player.ChangingRole += round.OnChangingRole;
 
             ServerConsole.ReloadServerName();
-            Exiled.API.Features.Scp096.MaxShield = Config.Scp096MaxShieldAmount;
+            Scp096.MaxShield = Config.Scp096MaxShieldAmount;
         }
 
         /// <inheritdoc/>
