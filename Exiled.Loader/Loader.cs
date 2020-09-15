@@ -134,7 +134,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while loading a plugin at {path}! {exception}");
+                Log.Error($"Error while loading an assembly at {path}! {exception}");
             }
 
             return null;
