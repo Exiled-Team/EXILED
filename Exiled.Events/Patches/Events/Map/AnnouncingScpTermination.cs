@@ -26,6 +26,9 @@ namespace Exiled.Events.Patches.Events.Map
 
             Map.OnAnnouncingScpTermination(ev);
 
+            hit = ev.HitInfo;
+            groupId = ev.TerminationCause;
+
             return ev.IsAllowed;
         }
     }
