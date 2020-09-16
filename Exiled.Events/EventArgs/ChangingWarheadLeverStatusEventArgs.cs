@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player changes the warhead lever.
+    /// Contains all informations before a player changes the warhead lever status.
     /// </summary>
     public class ChangingWarheadLeverStatusEventArgs : EventArgs
     {
