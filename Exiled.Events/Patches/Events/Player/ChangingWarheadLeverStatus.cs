@@ -31,13 +31,17 @@ namespace Exiled.Events.Patches.Events.Player
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = 2; // offset variable
+            // offset variable
+            const int offset = 2;
 
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset; // Find last brtrue.s
+            // Find last brtrue.s
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset;
 
+            // Remove old labels
             var startLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear(); // Remove old labels
+            newInstructions[index].labels.Clear();
 
+            // Add the return label
             var returnLabel = generator.DefineLabel();
             newInstructions[index - 1].labels.Add(returnLabel);
 
@@ -59,7 +63,8 @@ namespace Exiled.Events.Patches.Events.Player
                  new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            newInstructions[index].labels.AddRange(startLabels); // Restore labels on the first injected instructions
+            // Restore labels on the first injected instructions
+            newInstructions[index].labels.AddRange(startLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
