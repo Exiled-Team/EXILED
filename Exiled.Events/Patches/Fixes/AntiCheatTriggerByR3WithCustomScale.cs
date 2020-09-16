@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="AntiCheatTriggerWithCustomScale.cs" company="Exiled Team">
+// <copyright file="AntiCheatTriggerByR3WithCustomScale.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Fixes triggering due to the R.3 code by using the Y coordinate from the player's scale to multiply the offset.
     /// </summary>
     [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.AnticheatIsIntersecting), new[] { typeof(Vector3) })]
-    internal static class AntiCheatTriggerWithCustomScale
+    internal static class AntiCheatTriggerByR3WithCustomScale
     {
         private static bool Prefix(PlayerMovementSync __instance, Vector3 pos, bool __result)
         {
@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Fixes
             }
             catch (Exception ex)
             {
-                Log.Error($"{typeof(AntiCheatTriggerWithCustomScale).FullName}.{nameof(Prefix)}:\n{ex}");
+                Log.Error($"{typeof(AntiCheatTriggerByR3WithCustomScale).FullName}.{nameof(Prefix)}:\n{ex}");
                 return true;
             }
         }
