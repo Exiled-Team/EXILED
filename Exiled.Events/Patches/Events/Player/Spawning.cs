@@ -17,6 +17,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
+    using Respawning;
+    using Respawning.NamingRules;
+
     using UnityEngine;
 
     /// <summary>
@@ -30,9 +33,10 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Role role = __instance.Classes.SafeGet(__instance.CurClass);
-                if (!__instance._wasAnytimeAlive && __instance.CurClass != RoleType.Spectator &&
-                    __instance.CurClass != RoleType.None)
+                Role role = __instance.CurRole;
+                if (!__instance._wasAnytimeAlive
+                    && __instance.CurClass != RoleType.Spectator
+                    && __instance.CurClass != RoleType.None)
                 {
                     __instance._wasAnytimeAlive = true;
                 }
@@ -53,10 +57,9 @@ namespace Exiled.Events.Patches.Events.Player
                         break;
                 }
 
-                __instance.GetComponent<Inventory>();
                 try
                 {
-                    __instance.GetComponent<FootstepSync>().SetLoudness(role.team, role.roleId.Is939());
+                    __instance._hub.footstepSync.SetLoudness(role.team, role.roleId.Is939());
                 }
                 catch
                 {
@@ -64,9 +67,25 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (NetworkServer.active)
                 {
-                    Handcuffs component = __instance.GetComponent<Handcuffs>();
+                    Handcuffs component = __instance._hub.handcuffs;
                     component.ClearTarget();
                     component.NetworkCufferId = -1;
+                    component.NetworkForceCuff = false;
+
+                    if (role.roleId != RoleType.Spectator
+                        && RespawnManager.CurrentSequence() != RespawnManager.RespawnSequencePhase.SpawningSelectedTeam
+                        && UnitNamingManager.RolesWithEnforcedDefaultName.TryGetValue(role.roleId, out SpawnableTeamType value)
+                        && RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup((byte)value, out string[] names)
+                        && names.Length != 0)
+                    {
+                        __instance.NetworkCurSpawnableTeamType = (byte)value;
+                        __instance.NetworkCurUnitName = names[0];
+                    }
+                    else if (__instance.CurSpawnableTeamType != 0)
+                    {
+                        __instance.NetworkCurSpawnableTeamType = 0;
+                        __instance.NetworkCurUnitName = string.Empty;
+                    }
                 }
 
                 if (role.team != Team.RIP)
@@ -78,22 +97,24 @@ namespace Exiled.Events.Patches.Events.Player
                         if (constantRespawnPoint != Vector3.zero)
                         {
                             __instance._pms.OnPlayerClassChange(constantRespawnPoint, 0f);
+                            __instance._pms.IsAFK = true;
                         }
                         else
                         {
                             GameObject randomPosition =
                                 CharacterClassManager._spawnpointManager.GetRandomPosition(__instance.CurClass);
+
                             Vector3 spawnPoint;
                             float rotY;
-
                             if (randomPosition != null)
                             {
                                 spawnPoint = randomPosition.transform.position;
                                 rotY = randomPosition.transform.rotation.eulerAngles.y;
-                                AmmoBox component1 = __instance.GetComponent<AmmoBox>();
+
+                                AmmoBox component1 = __instance._hub.ammoBox;
                                 if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                                 {
-                                    Inventory component2 = PlayerManager.localPlayer.GetComponent<Inventory>();
+                                    Inventory component2 = ReferenceHub.HostHub.inventory;
                                     for (ushort index = 0; index < 3; ++index)
                                     {
                                         if (component1[index] >= 15U)
@@ -118,8 +139,9 @@ namespace Exiled.Events.Patches.Events.Player
                             __instance._pms.OnPlayerClassChange(ev.Position, ev.RotationY);
                         }
 
-                        if (!__instance.SpawnProtected && CharacterClassManager.EnableSP &&
-                            CharacterClassManager.SProtectedTeam.Contains((int)role.team))
+                        if (!__instance.SpawnProtected
+                            && CharacterClassManager.EnableSP
+                            && CharacterClassManager.SProtectedTeam.Contains((int)role.team))
                         {
                             __instance.GodMode = true;
                             __instance.SpawnProtected = true;
@@ -129,7 +151,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (!__instance.isLocalPlayer)
                     {
-                        __instance.GetComponent<PlayerStats>().maxHP = role.maxHP;
+                        __instance._hub.playerStats.maxHP = role.maxHP;
                     }
                 }
 
@@ -143,7 +165,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Spawning: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"({typeof(Spawning).FullName}.{nameof(Prefix)}):\n{e}");
 
                 return true;
             }
