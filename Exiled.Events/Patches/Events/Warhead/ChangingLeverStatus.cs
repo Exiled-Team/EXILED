@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangingWarheadLeverStatus.cs" company="Exiled Team">
+// <copyright file="ChangingLeverStatus.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdUsePanel"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingWarheadLeverStatus"/> event.
+    /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUsePanel))]
-    internal static class ChangingWarheadLeverStatus
+    internal static class ChangingLeverStatus
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -56,10 +56,10 @@ namespace Exiled.Events.Patches.Events.Player
                  new CodeInstruction(OpCodes.Ldloc_0),
                  new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                  new CodeInstruction(OpCodes.Ldc_I4_1),
-                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingWarheadLeverStatusEventArgs))[0]),
+                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
                  new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingWarheadLeverStatus))),
-                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingWarheadLeverStatusEventArgs), nameof(ChangingWarheadLeverStatusEventArgs.IsAllowed))),
+                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
+                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
                  new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
