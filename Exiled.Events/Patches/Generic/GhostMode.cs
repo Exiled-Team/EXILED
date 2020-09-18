@@ -33,18 +33,28 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                ++__instance._frame;
-                if (__instance._frame != __instance._syncFrequency)
+                if (++__instance._frame != __instance._syncFrequency)
                     return false;
+
                 __instance._frame = 0;
+
                 List<GameObject> players = PlayerManager.players;
                 __instance._usedData = players.Count;
-                if (__instance._receivedData == null || __instance._receivedData.Length < __instance._usedData)
+
+                if (__instance._receivedData == null
+                    || __instance._receivedData.Length < __instance._usedData)
+                {
                     __instance._receivedData = new PlayerPositionData[__instance._usedData * 2];
+                }
+
                 for (int index = 0; index < __instance._usedData; ++index)
                     __instance._receivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
-                if (__instance._transmitBuffer == null || __instance._transmitBuffer.Length < __instance._usedData)
+
+                if (__instance._transmitBuffer == null
+                    || __instance._transmitBuffer.Length < __instance._usedData)
+                {
                     __instance._transmitBuffer = new PlayerPositionData[__instance._usedData * 2];
+                }
 
                 foreach (GameObject gameObject in players)
                 {
@@ -55,14 +65,18 @@ namespace Exiled.Events.Patches.Generic
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
-                            if (__instance._transmitBuffer[index].position.y < 800.0)
+                            if (__instance._transmitBuffer[index].position.y < 800f)
                             {
                                 ReferenceHub hub2 = ReferenceHub.GetHub(players[index]);
-                                if (hub2.characterClassManager.CurRole.team != Team.SCP &&
-                                    hub2.characterClassManager.CurRole.team != Team.RIP && !players[index]
+
+                                if (hub2.characterClassManager.CurRole.team != Team.SCP
+                                    && hub2.characterClassManager.CurRole.team != Team.RIP
+                                    && !players[index]
                                         .GetComponent<Scp939_VisionController>()
                                         .CanSee(player.ReferenceHub.characterClassManager.Scp939))
+                                {
                                     __instance._transmitBuffer[index] = new PlayerPositionData(Vector3.up * 6000f, 0.0f, __instance._transmitBuffer[index].playerID);
+                                }
                             }
                         }
                     }
@@ -73,6 +87,7 @@ namespace Exiled.Events.Patches.Generic
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
                             Player currentTarget = Player.Get(players[index]);
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
+
                             bool canSee = true;
                             bool shouldRotate = false;
 
@@ -82,57 +97,69 @@ namespace Exiled.Events.Patches.Generic
                             if (currentTarget.IsInvisible || player.TargetGhosts.Contains(ppd.playerID))
                                 canSee = false;
 
-                            Vector3 vector3 = __instance._transmitBuffer[index].position - player.ReferenceHub.playerMovementSync.RealModelPosition;
-                            if (Math.Abs(vector3.y) > 35.0)
+                            Vector3 vector3 = ppd.position - player.ReferenceHub.playerMovementSync.RealModelPosition;
+                            if (Math.Abs(vector3.y) > 35f)
                             {
                                 canSee = false;
                             }
                             else
                             {
                                 float sqrMagnitude = vector3.sqrMagnitude;
-                                if (player.ReferenceHub.playerMovementSync.RealModelPosition.y < 800.0)
+                                if (player.ReferenceHub.playerMovementSync.RealModelPosition.y < 800f)
                                 {
-                                    if (sqrMagnitude >= 1764.0)
+                                    if (sqrMagnitude >= 1764f)
                                     {
                                         canSee = false;
-                                        continue;
                                     }
                                 }
-                                else if (sqrMagnitude >= 7225.0)
+                                else if (sqrMagnitude >= 7225f)
                                 {
                                     canSee = false;
-                                    continue;
                                 }
 
-                                if (ReferenceHub.TryGetHub(__instance._transmitBuffer[index].playerID, out ReferenceHub hub2))
+                                if (canSee)
                                 {
-                                    if (player.ReferenceHub.scpsController.CurrentScp is Scp096 currentScp && currentScp.Enraged && (!currentScp.HasTarget(hub2) && hub2.characterClassManager.CurRole.team != Team.SCP))
+                                    if (ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub hub2))
                                     {
-                                        canSee = false;
+                                        if (scp096 != null
+                                            && scp096.Enraged
+                                            && !scp096.HasTarget(hub2)
+                                            && hub2.characterClassManager.CurRole.team != Team.SCP)
+                                        {
+#if DEBUG
+                                            Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {hub2.characterClassManager.UserId}");
+#endif
+                                            canSee = false;
+                                        }
+                                        else if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                        {
+                                            bool flag = false;
+                                            if (scp096 != null)
+                                                flag = scp096.HasTarget(hub2);
+
+                                            if (player.Role != RoleType.Scp079
+                                                && player.Role != RoleType.Spectator
+                                                && !flag)
+                                            {
+                                                canSee = false;
+                                            }
+                                        }
                                     }
-                                    else if (hub2.playerEffectsController.GetEffect<Scp268>().Enabled)
+
+                                    switch (player.Role)
                                     {
-                                        bool flag = false;
-                                        if (scp096 != null)
-                                            flag = scp096._targets.Contains(hub2);
-
-                                        canSee = flag;
+                                        case RoleType.Scp173 when (!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173 && currentTarget.Role == RoleType.Tutorial) || Scp173.TurnedPlayers.Contains(currentTarget):
+                                            shouldRotate = true;
+                                            break;
+                                        case RoleType.Scp096 when !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && currentTarget.Role == RoleType.Tutorial:
+                                            shouldRotate = true;
+                                            break;
                                     }
-                                }
-
-                                switch (player.Role)
-                                {
-                                    case RoleType.Scp173 when (!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173 && currentTarget.Role == RoleType.Tutorial) || Scp173.TurnedPlayers.Contains(currentTarget):
-                                        shouldRotate = true;
-                                        break;
-                                    case RoleType.Scp096 when !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096 && currentTarget.Role == RoleType.Tutorial:
-                                        shouldRotate = true;
-                                        break;
                                 }
 
                                 if (!canSee)
                                 {
-                                    ppd = new PlayerPositionData(Vector3.up * 6000f, 0.0f, ppd.playerID);
+                                    ppd = new PlayerPositionData(Vector3.up * 6000f, 0f, ppd.playerID);
                                 }
                                 else if (shouldRotate)
                                 {
