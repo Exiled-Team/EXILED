@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangingWarheadLeverStatusEventArgs.cs" company="Exiled Team">
+// <copyright file="ChangingLeverStatusEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,14 +14,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before a player changes the warhead lever status.
     /// </summary>
-    public class ChangingWarheadLeverStatusEventArgs : EventArgs
+    public class ChangingLeverStatusEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingWarheadLeverStatusEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingLeverStatusEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingWarheadLeverStatusEventArgs(Player player, bool isAllowed = true)
+        public ChangingLeverStatusEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
             IsAllowed = isAllowed;

@@ -68,11 +68,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel;
 
         /// <summary>
-        /// Invoked before changing the warhead lever status.
-        /// </summary>
-        public static event CustomEventHandler<ChangingWarheadLeverStatusEventArgs> ChangingWarheadLeverStatus;
-
-        /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
         public static event CustomEventHandler<UsingMedicalItemEventArgs> UsingMedicalItem;
@@ -321,12 +316,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWarheadPanelEventArgs"/> instance.</param>
         public static void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev) => ActivatingWarheadPanel.InvokeSafely(ev);
-
-        /// <summary>
-        /// Invoked before changing the warhead lever status.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangingWarheadLeverStatusEventArgs"/> instance.</param>
-        public static void OnChangingWarheadLeverStatus(ChangingWarheadLeverStatusEventArgs ev) => ChangingWarheadLeverStatus.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked before using a medical item.

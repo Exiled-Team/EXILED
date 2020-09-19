@@ -13,6 +13,8 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
 
+    using CommandSystem.Commands;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -26,6 +28,7 @@ namespace Exiled.Loader
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
+
             Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.ToString(3)}", ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
@@ -96,6 +99,12 @@ namespace Exiled.Loader
             ConfigManager.Reload();
 
             EnablePlugins();
+
+            BuildInfoCommand.ModDescription = string.Join(
+                "\n",
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
+                    .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
         }
 
         /// <summary>

@@ -24,6 +24,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     using NorthwoodLib;
+    using NorthwoodLib.Pools;
 
     using RemoteAdmin;
 
@@ -47,6 +48,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
         public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
+#pragma warning disable CS0618 // Type or member is obsolete
+            ListPool<int>.Shared.Return(TargetGhosts);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
@@ -220,7 +232,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
-        public List<int> TargetGhosts { get; private set; } = new List<int>();
+        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases")]
+        public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a list of player ids who can't see the player.
+        /// </summary>
+        public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.

@@ -99,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 teslaGate.RpcInstantBurst();
                                 __instance.AddInteractionToHistory(gameObject3, array[0], addMana: true);
                                 __instance.Mana -= apDrain;
-                                result = true;
+                                result = false;
                                 break;
                             }
 
@@ -158,7 +158,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 __instance.Mana -= apDrain;
                                 __instance.AddInteractionToHistory(target, array[0], addMana: true);
                                 Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                                result = true;
+                                result = false;
                                 break;
                             }
                             else
@@ -204,7 +204,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 __instance.Mana -= ev.APDrain;
                                 __instance.Speaker = __instance.currentZone + "/" + __instance.currentRoom + "/Scp079Speaker";
                                 __instance.AddInteractionToHistory(scp079SpeakerObject, array[0], addMana: true);
-                                result = true;
+                                result = false;
                                 break;
                             }
 
@@ -214,6 +214,16 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                     case "STOPSPEAKER":
                         {
+                            void ResetSpeaker() => __instance.Speaker = string.Empty;
+
+                            // Somehow it can be empty
+                            if (string.IsNullOrEmpty(__instance.Speaker))
+                            {
+                                ResetSpeaker();
+                                result = false;
+                                break;
+                            }
+
                             string[] array7 = __instance.Speaker.Substring(0, __instance.Speaker.Length - 14).Split('/');
                             GameObject roomObject = GameObject.Find(array7[0] + "/" + array7[1]);
 
@@ -224,8 +234,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
                             if (ev.IsAllowed)
                             {
-                                __instance.Speaker = string.Empty;
-                                result = true;
+                                ResetSpeaker();
+                                result = false;
                                 break;
                             }
 
@@ -243,7 +253,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             }
             catch (Exception e)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Scp079.Interacting: {e}\n{e.StackTrace}");
+                Log.Error($"{typeof(Interacting).FullName}.{nameof(Prefix)}:\n{e}");
 
                 return true;
             }

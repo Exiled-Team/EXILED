@@ -33,6 +33,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler Detonated;
 
         /// <summary>
+        /// Invoked before changing the warhead lever status.
+        /// </summary>
+        public static event CustomEventHandler<ChangingLeverStatusEventArgs> ChangingLeverStatus;
+
+        /// <summary>
         /// Called before stopping the warhead.
         /// </summary>
         /// <param name="ev">The <see cref="StoppingEventArgs"/> instance.</param>
@@ -48,5 +53,11 @@ namespace Exiled.Events.Handlers
         /// Called after the warhead has been detonated.
         /// </summary>
         public static void OnDetonated() => Detonated.InvokeSafely();
+
+        /// <summary>
+        /// Invoked before changing the warhead lever status.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingLeverStatusEventArgs"/> instance.</param>
+        public static void OnChangingLeverStatus(ChangingLeverStatusEventArgs ev) => ChangingLeverStatus.InvokeSafely(ev);
     }
 }
