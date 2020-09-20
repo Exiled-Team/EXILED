@@ -28,14 +28,29 @@ namespace Exiled.Events.Patches.Fixes
         {
             try
             {
-                var point0 = pos - (PlayerMovementSync._yAxisOffset * __instance.transform.localScale.y);
-                var point1 = pos + (PlayerMovementSync._yAxisOffset * __instance.transform.localScale.y);
+                int num = 0;
+                switch (__instance._hub.characterClassManager.CurClass)
+                {
+                    case RoleType.Scp93953:
+                    case RoleType.Scp93989:
+                        var scp939Offset = PlayerMovementSync._yAxisOffset939 * __instance.transform.localScale.y;
+                        num = Physics.OverlapCapsuleNonAlloc(pos - scp939Offset, pos + scp939Offset, 0.15f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        break;
+                    case RoleType.ChaosInsurgency:
+                        var ciOffset = PlayerMovementSync._yAxisOffsetCi * __instance.transform.localScale.y;
+                        num = Physics.OverlapCapsuleNonAlloc(pos - ciOffset, pos + ciOffset, 0.32f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        break;
+                    default:
+                        var defOffset = PlayerMovementSync._yAxisOffset * __instance.transform.localScale.y;
+                        num = Physics.OverlapCapsuleNonAlloc(pos - defOffset, pos + defOffset, 0.38f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        break;
+                }
 
-                int num = Physics.OverlapCapsuleNonAlloc(point0, point1, 0.38f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
                 for (int i = 0; i < num; i++)
                 {
                     PlayableScps.Scp096 scp;
-                    if ((__instance._hub.characterClassManager.CurClass == RoleType.Scp106
+                    if (
+                        (__instance._hub.characterClassManager.CurClass == RoleType.Scp106
                         && (PlayerMovementSync._sphereHits[i].gameObject.layer == 27
                             || PlayerMovementSync._sphereHits[i].gameObject.layer == 14))
                         || (PlayerMovementSync._sphereHits[i].gameObject.layer == 27
