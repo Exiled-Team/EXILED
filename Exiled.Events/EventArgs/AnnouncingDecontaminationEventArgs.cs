@@ -9,26 +9,23 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using UnityEngine;
-
     /// <summary>
     /// Contains all informations before starting the decontamination.
     /// </summary>
     public class AnnouncingDecontaminationEventArgs : EventArgs
     {
-        private int id;
+        private readonly int id;
+        private readonly bool isGlobal;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs"/> class.
         /// </summary>
         /// <param name="announcementId"><inheritdoc cref="Id"/></param>
         /// <param name="isGlobal"><inheritdoc cref="IsGlobal"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal, bool isAllowed = true)
+        public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
         {
-            Id = announcementId;
-            IsGlobal = isGlobal;
-            IsAllowed = isAllowed;
+            id = announcementId;
+            this.isGlobal = isGlobal;
         }
 
         /// <summary>
@@ -37,17 +34,22 @@ namespace Exiled.Events.EventArgs
         public int Id
         {
             get => id;
-            set => id = Mathf.Clamp(value, 0, 6);
+            set { /* Setter will be removed */ }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether the announcement is going to be global or not.
         /// </summary>
-        public bool IsGlobal { get; set; }
+        public bool IsGlobal
+        {
+            get => isGlobal;
+            set { /* Setter will be removed */ }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
+        [Obsolete("Doesn't work", true)]
         public bool IsAllowed { get; set; }
     }
 }
