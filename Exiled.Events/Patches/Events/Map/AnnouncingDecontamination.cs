@@ -22,16 +22,11 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.UpdateSpeaker))]
     internal static class AnnouncingDecontamination
     {
-        private static bool Prefix(DecontaminationController __instance, ref bool hard)
+        private static void Prefix(DecontaminationController __instance, ref bool hard)
         {
             var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
-
-            hard = ev.IsGlobal;
-            __instance._nextPhase = ev.Id;
-
-            return ev.IsAllowed;
         }
     }
 }
