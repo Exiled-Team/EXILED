@@ -18,6 +18,7 @@
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
     <Version>3.1.0</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+    <DisableIncludingCommit>true</DisableIncludingCommit>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">

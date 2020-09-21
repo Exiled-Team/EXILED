@@ -19,6 +19,7 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
 
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+    <DisableIncludingCommit>true</DisableIncludingCommit>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">

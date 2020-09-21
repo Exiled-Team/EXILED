@@ -46,6 +46,7 @@ jobs:
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
+        GIT_COMMIT_SHA: ${{ github.sha }}
       shell: pwsh
       run: |
         dotnet build Exiled.API -c release
