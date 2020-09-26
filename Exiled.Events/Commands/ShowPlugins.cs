@@ -66,8 +66,9 @@ namespace Exiled.Events.Commands
                 AppendNewRow().Append("- Prefix: ").Append(plugin.Prefix);
                 AppendNewRow().Append("- Priority: ").Append(plugin.Priority);
 
-                // Finalize a plugin row
-                sb.AppendLine();
+                // Finalize a plugin row if it's not the end
+                if (z + 1 != plugins.Count)
+                    sb.AppendLine();
             }
 
             response = sb.ToString();
