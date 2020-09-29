@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ShowPlugins.cs" company="Exiled Team">
+// <copyright file="Plugins.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,9 +19,7 @@ namespace Exiled.Events.Commands
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
-    [CommandHandler(typeof(GameConsoleCommandHandler))]
-    public sealed class ShowPlugins : ICommand
+    public sealed class Plugins : ICommand
     {
         /// <inheritdoc/>
         public string Command { get; } = "plugins";
