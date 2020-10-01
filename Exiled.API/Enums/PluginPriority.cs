@@ -12,48 +12,48 @@ namespace Exiled.API.Enums
     /// </summary>
     public enum PluginPriority
     {
-        /// <summary>
-        /// Execute the plugin first, before other ones.
-        /// </summary>
-        First = int.MinValue,
-
-        /// <inheritdoc cref="First"/>
-        Lowest = First,
-
-        /// <inheritdoc cref="Lower"/>
-        Default = Lower,
-
-        /// <summary>
-        /// Default plugin priority.
-        /// </summary>
-        Lower = 0,
-
-        /// <summary>
-        /// Low plugin priority.
-        /// </summary>
-        Low = 250,
-
-        /// <summary>
-        /// Medium plugin priority.
-        /// </summary>
-        Medium = 500,
-
-        /// <summary>
-        /// Higher plugin priority.
-        /// </summary>
-        High = 750,
-
-        /// <summary>
-        /// Higher plugin priority.
-        /// </summary>
-        Higher = 1000,
-
-        /// <inheritdoc cref="Last"/>
-        Highest = Last,
+        /// <inheritdoc cref="Medium"/>
+        Default = Medium,
 
         /// <summary>
         /// Execute the plugin last, after other ones.
         /// </summary>
-        Last = int.MaxValue,
+        Last = int.MinValue,
+
+        /// <inheritdoc cref="Last"/>
+        Lowest = Last,
+
+        /// <summary>
+        /// Default plugin priority.
+        /// </summary>
+        Lower = -500,
+
+        /// <summary>
+        /// Low plugin priority.
+        /// </summary>
+        Low = -250,
+
+        /// <summary>
+        /// Medium plugin priority.
+        /// </summary>
+        Medium = 0,
+
+        /// <summary>
+        /// Higher plugin priority.
+        /// </summary>
+        High = 250,
+
+        /// <summary>
+        /// Higher plugin priority.
+        /// </summary>
+        Higher = 500,
+
+        /// <inheritdoc cref="First"/>
+        Highest = First,
+
+        /// <summary>
+        /// Execute the plugin first, before other ones.
+        /// </summary>
+        First = int.MaxValue,
     }
 }

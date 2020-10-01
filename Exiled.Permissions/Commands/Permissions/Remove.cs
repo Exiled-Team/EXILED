@@ -30,7 +30,7 @@ namespace Exiled.Permissions.Commands.Permissions
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("ep.removepermission"))
+            if (!sender.CheckPermission("ep.removepermission"))
             {
                 response = "You can't remove a permission, you don't have \"ep.removepermission\" permission.";
                 return false;
@@ -63,7 +63,6 @@ namespace Exiled.Permissions.Commands.Permissions
             }
 
             Extensions.Permissions.Save();
-
             Extensions.Permissions.Reload();
 
             response = $"Permission {arguments.At(0)} for group {arguments.At(1)} removed successfully!.";

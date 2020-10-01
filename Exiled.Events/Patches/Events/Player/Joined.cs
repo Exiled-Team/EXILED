@@ -12,23 +12,27 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
+    using Exiled.Loader.Features;
 
     using HarmonyLib;
 
     using MEC;
 
+    using UnityEngine;
+
     /// <summary>
-    /// Patches <see cref="NicknameSync.SetNick(string)"/>.
+    /// Patches <see cref="PlayerManager.AddPlayer(GameObject)"/>.
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(NicknameSync), nameof(NicknameSync.SetNick))]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIsVerified), MethodType.Setter)]
     internal static class Joined
     {
-        private static void Postfix(NicknameSync __instance)
+        private static void Prefix(CharacterClassManager __instance, bool value)
         {
             try
             {
-                if (__instance.hub.characterClassManager.IsHost)
+                // UserId will always be empty/null if it's not in online mode
+                if (!value || (string.IsNullOrEmpty(__instance.UserId) && CharacterClassManager.OnlineMode))
                     return;
 
                 if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
@@ -38,24 +42,24 @@ namespace Exiled.Events.Patches.Events.Player
                     API.Features.Player.Dictionary.Add(__instance.gameObject, player);
                 }
 
-                API.Features.Log.Debug($"Player {player?.Nickname} ({player?.UserId}) connected with the IP: {player?.IPAddress}");
+                API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
 
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                    API.Features.Log.Debug($"Server is full!");
+                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
                 Timing.CallDelayed(0.25f, () =>
                 {
-                    if (player != null && player.IsMuted)
-                        player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
+                    if (player?.IsMuted == true)
+                        player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
                 });
 
                 var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
 
                 Player.OnJoined(ev);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"{typeof(Joined).FullName}:\n{exception}");
             }
         }
     }

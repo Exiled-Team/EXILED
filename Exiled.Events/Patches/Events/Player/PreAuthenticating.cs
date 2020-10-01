@@ -231,7 +231,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         }
-                                        else if (TimeBehaviour.CurrentUnixTimestamp > result7)
+                                        else if ((ulong)TimeBehaviour.CurrentUnixTimestamp > result7)
                                         {
                                             ServerConsole.AddLog(
                                               $"Player from endpoint {request.RemoteEndPoint} sent expired pre-authentication token.");
@@ -264,8 +264,8 @@ namespace Exiled.Events.Patches.Events.Player
                                                 if (keyValuePair.Key != null || keyValuePair.Value != null)
                                                 {
                                                     ServerConsole.AddLog(
-                                                      $"{(keyValuePair.Key == null ? "Player" : (object)"Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : (object)"banned ")} endpoint {request.RemoteEndPoint}.");
-                                                    ServerLogs.AddLog(ServerLogs.Modules.Networking, $"{(keyValuePair.Key == null ? "Player" : (object)"Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : (object)"banned ")} endpoint {request.RemoteEndPoint}.", ServerLogs.ServerLogType.ConnectionUpdate);
+                                                      $"{(keyValuePair.Key == null ? "Player" : "Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : "banned ")} endpoint {request.RemoteEndPoint}.");
+                                                    ServerLogs.AddLog(ServerLogs.Modules.Networking, $"{(keyValuePair.Key == null ? "Player" : "Banned player")} {result6} tried to connect from {(keyValuePair.Value == null ? string.Empty : "banned ")} endpoint {request.RemoteEndPoint}.", ServerLogs.ServerLogType.ConnectionUpdate);
                                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)6);
                                                     NetDataWriter requestWriter = CustomLiteNetLib4MirrorTransport.RequestWriter;
@@ -325,10 +325,10 @@ namespace Exiled.Events.Patches.Events.Player
                                                         request.Accept();
                                                         CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
                                                         ServerConsole.AddLog(
-                                                          $"Player {result3} pre-authenticated from endpoint {request.RemoteEndPoint}.");
+                                                          $"Player {result6} pre-authenticated from endpoint {request.RemoteEndPoint}.");
                                                         ServerLogs.AddLog(
                                                           ServerLogs.Modules.Networking,
-                                                          $"{result3} pre-authenticated from endpoint {request.RemoteEndPoint}.",
+                                                          $"{result6} pre-authenticated from endpoint {request.RemoteEndPoint}.",
                                                           ServerLogs.ServerLogType.ConnectionUpdate);
                                                     }
                                                     else

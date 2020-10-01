@@ -7,18 +7,23 @@
 
 namespace Exiled.Permissions.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Text;
 
+    using CommandSystem;
+
     using Exiled.API.Features;
-    using Exiled.Loader;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
 
+    using NorthwoodLib.Pools;
+
     using RemoteAdmin;
 
+    using YamlDotNet.Core;
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
 
@@ -83,16 +88,62 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Reload()
         {
-            Groups = Deserializer.Deserialize<Dictionary<string, Group>>(File.ReadAllText(Instance.Config.FullPath));
+            try
+            {
+                Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
+                Dictionary<string, Group> deserializedPerms = new Dictionary<string, Group>();
+                foreach (KeyValuePair<string, object> group in rawDeserializedPerms)
+                {
+                    try
+                    {
+                        if (rawDeserializedPerms.TryGetValue(group.Key, out object rawDeserializedPerm))
+                        {
+                            if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
+                            {
+                                deserializedPerms.Add(group.Key, (Group)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedPerm), typeof(Group)));
+                            }
+                            else
+                            {
+                                Log.Warn($"{group.Key} is not a valid permission group.");
+                            }
+                        }
+                        else
+                        {
+                            Log.Error($"{group.Key}'s permissions were unable to be obtained.");
+                        }
+                    }
+                    catch (YamlException exception)
+                    {
+                        Log.Error($"Unable to parse permission config for: {group.Key}.\n{exception.Message}.\nEnable debug to see stacktrace.");
+                        Log.Debug($"{exception.Message}\n{exception.StackTrace}");
+                    }
+                }
+
+                Groups = deserializedPerms;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Unable to parse permission config: {e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+            }
 
             foreach (KeyValuePair<string, Group> group in Groups.Reverse())
             {
-                IEnumerable<string> inheritedPerms = new List<string>();
+                try
+                {
+                    IEnumerable<string> inheritedPerms = new List<string>();
 
-                inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
-                    .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
+                    inheritedPerms = Groups.Where(pair => group.Value.Inheritance.Contains(pair.Key))
+                        .Aggregate(inheritedPerms, (current, pair) => current.Union(pair.Value.CombinedPermissions));
 
-                group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+                    group.Value.CombinedPermissions = group.Value.Permissions.Union(inheritedPerms).ToList();
+
+                    Log.Debug($"{group.Key} permissions loaded.", Instance.Config.ShouldDebugBeShown);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Failed to load permissions/inheritance for: {group.Key}.\n{e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+                    Log.Debug($"{e}", Instance.Config.ShouldDebugBeShown);
+                }
             }
         }
 
@@ -100,6 +151,14 @@ namespace Exiled.Permissions.Extensions
         /// Save permissions.
         /// </summary>
         public static void Save() => File.WriteAllText(Instance.Config.FullPath, Serializer.Serialize(Groups));
+
+        /// <summary>
+        /// Checks a sender's permission.
+        /// </summary>
+        /// <param name="sender">The sender to be checked.</param>
+        /// <param name="permission">The permission to be checked.</param>
+        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        public static bool CheckPermission(this ICommandSender sender, string permission) => CheckPermission(sender as CommandSender, permission);
 
         /// <summary>
         /// Checks a sender's permission.
@@ -131,99 +190,85 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         /// <param name="player">The player to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
-        /// <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        /// <returns>true if the player's current or native group has permissions; otherwise, false.</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
-            if (player == null)
+            if (string.IsNullOrEmpty(permission))
                 return false;
 
-            if (player.GameObject == PlayerManager.localPlayer)
+            if (player == null
+                || player.GameObject == null
+                || Groups == null
+                || Groups.Count == 0
+                || player.ReferenceHub.isDedicatedServer)
+            {
+                return false;
+            }
+
+            Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
+            Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
+
+            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : null;
+            Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
+
+            Group group = null;
+            if (plyGroupKey != null && !Groups.TryGetValue(plyGroupKey, out group))
+                group = DefaultGroup;
+
+            if (group is null)
+                return false;
+
+            const char PERM_SEPARATOR = '.';
+            const string ALL_PERMS = ".*";
+
+            if (group.CombinedPermissions.Contains(ALL_PERMS))
                 return true;
 
-            Log.Debug($"Player: {player.Nickname} UserID: {player.UserId}", Loader.ShouldDebugBeShown);
-
-            if (string.IsNullOrEmpty(permission))
+            if (permission.Contains(PERM_SEPARATOR))
             {
-                Log.Error("Permission checked was null.");
-                return false;
-            }
+                var strBuilder = StringBuilderPool.Shared.Rent();
+                var seraratedPermissions = permission.Split(PERM_SEPARATOR);
 
-            Log.Debug($"Permission string: {permission}", Loader.ShouldDebugBeShown);
+                bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
 
-            UserGroup userGroup = ServerStatic.GetPermissionsHandler().GetUserGroup(player.UserId);
-            Group group = null;
-
-            if (userGroup != null)
-            {
-                Log.Debug($"UserGroup: {userGroup.BadgeText}", Loader.ShouldDebugBeShown);
-
-                string groupName = ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key;
-
-                Log.Debug($"GroupName: {groupName}", Loader.ShouldDebugBeShown);
-
-                if (Groups == null)
+                var result = false;
+                for (var z = 0; z < seraratedPermissions.Length; z++)
                 {
-                    Log.Error("Permissions config is null.");
-                    return false;
-                }
-
-                if (!Groups.Any())
-                {
-                    Log.Error("No permission config groups.");
-                    return false;
-                }
-
-                if (!Groups.TryGetValue(groupName, out group))
-                {
-                    Log.Error($"Could not get \"{groupName}\" permission");
-                    return false;
-                }
-
-                Log.Debug($"Got group.", Loader.ShouldDebugBeShown);
-            }
-            else
-            {
-                Log.Debug("Player group is null, getting default..", Loader.ShouldDebugBeShown);
-
-                group = DefaultGroup;
-            }
-
-            if (group != null)
-            {
-                Log.Debug("Group is not null!", Loader.ShouldDebugBeShown);
-
-                if (permission.Contains("."))
-                {
-                    Log.Debug("Group contains permission separator", Loader.ShouldDebugBeShown);
-
-                    if (group.CombinedPermissions.Any(s => s == ".*"))
+                    if (z != 0)
                     {
-                        Log.Debug("All permissions have been granted for all nodes.", Loader.ShouldDebugBeShown);
-                        return true;
+                        // We need to clear the last ALL_PERMS line
+                        // or it'll be like 'permission.*.subpermission'.
+                        strBuilder.Length -= ALL_PERMS.Length;
+
+                        // Separate permission groups by using its separator.
+                        strBuilder.Append(PERM_SEPARATOR);
                     }
 
-                    if (group.CombinedPermissions.Contains(permission.Split('.')[0] + ".*"))
+                    strBuilder.Append(seraratedPermissions[z]);
+
+                    // If it's the last index,
+                    // then we don't need to check for all permissions of the subpermission.
+                    if (z == seraratedPermissions.Length - 1)
                     {
-                        Log.Debug("Check 1: True, returning.", Loader.ShouldDebugBeShown);
-                        return true;
+                        result = Check(strBuilder.ToString());
+                        break;
+                    }
+
+                    strBuilder.Append(ALL_PERMS);
+                    if (Check(strBuilder.ToString()))
+                    {
+                        result = true;
+                        break;
                     }
                 }
 
-                if (group.CombinedPermissions.Contains(permission) || group.CombinedPermissions.Contains("*"))
-                {
-                    Log.Debug("Check 2: True, returning.", Loader.ShouldDebugBeShown);
-                    return true;
-                }
-            }
-            else
-            {
-                Log.Debug("Group is null, returning false.", Loader.ShouldDebugBeShown);
-                return false;
+                StringBuilderPool.Shared.Return(strBuilder);
+
+                return result;
             }
 
-            Log.Debug("No permissions found.", Loader.ShouldDebugBeShown);
-
-            return false;
+            // It'll work when there is no dot in the permission.
+            return group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
         }
     }
 }

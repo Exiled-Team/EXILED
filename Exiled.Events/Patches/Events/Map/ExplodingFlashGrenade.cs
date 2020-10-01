@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using Grenades;
@@ -32,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             try
             {
-                List<API.Features.Player> players = new List<API.Features.Player>();
+                Dictionary<Player, float> players = new Dictionary<Player, float>();
 
                 foreach (GameObject gameObject in PlayerManager.players)
                 {
@@ -42,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Map
                     Deafened effect2 = hub.playerEffectsController.GetEffect<Deafened>();
                     if (effect == null || __instance.thrower == null ||
                         (!__instance.Network_friendlyFlash && !effect.Flashable(
-                            ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance.viewLayerMask)))
+                            ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance._ignoredLayers)))
                         continue;
 
                     float num = __instance.powerOverDistance.Evaluate(
@@ -53,19 +54,19 @@ namespace Exiled.Events.Patches.Events.Map
                     byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
                     if (b >= effect.Intensity && num > 0f)
                     {
-                        players.Add(API.Features.Player.Get(gameObject));
+                        players.Add(Player.Get(gameObject), num);
                     }
                 }
 
-                ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(players, false, __instance.gameObject);
+                ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.throwerGameObject), players, false, __instance.gameObject);
 
                 Handlers.Map.OnExplodingGrenade(ev);
 
                 return ev.IsAllowed;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Map.ExplodingFlashGrenade: {exception}\n{exception.StackTrace}");
 
                 return true;
             }

@@ -16,13 +16,13 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUseLocker(int, int)"/>.
+    /// Patches <see cref="PlayerInteract.CallCmdUseLocker(byte, byte)"/>.
     /// Adds the <see cref="Player.InteractingLocker"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
     internal static class InteractingLocker
     {
-        private static bool Prefix(PlayerInteract __instance, int lockerId, int chamberNumber)
+        private static bool Prefix(PlayerInteract __instance, byte lockerId, byte chamberNumber)
         {
             try
             {
@@ -32,14 +32,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 LockerManager singleton = LockerManager.singleton;
 
-                if (lockerId < 0 || lockerId >= singleton.lockers.Length)
+                if (lockerId >= singleton.lockers.Length)
                     return false;
 
                 if (!__instance.ChckDis(singleton.lockers[lockerId].gameObject.position) ||
                     !singleton.lockers[lockerId].supportsStandarizedAnimation)
                     return false;
 
-                if (chamberNumber < 0 || chamberNumber >= singleton.lockers[lockerId].chambers.Length)
+                if (chamberNumber >= singleton.lockers[lockerId].chambers.Length)
                     return false;
 
                 if (singleton.lockers[lockerId].chambers[chamberNumber].doorAnimator == null)
@@ -51,13 +51,15 @@ namespace Exiled.Events.Patches.Events.Player
                 singleton.lockers[lockerId].chambers[chamberNumber].SetCooldown();
 
                 string accessToken = singleton.lockers[lockerId].chambers[chamberNumber].accessToken;
-                Item itemByID = __instance._inv.GetItemByID(__instance._inv.curItem);
+                Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
 
                 var ev = new InteractingLockerEventArgs(
                     API.Features.Player.Get(__instance.gameObject),
                     singleton.lockers[lockerId],
+                    singleton.lockers[lockerId].chambers[chamberNumber],
                     lockerId,
-                    string.IsNullOrEmpty(accessToken) || (itemByID != null && itemByID.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
+                    chamberNumber,
+                    string.IsNullOrEmpty(accessToken) || (itemById != null && itemById.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
 
                 Player.OnInteractingLocker(ev);
 
@@ -66,17 +68,17 @@ namespace Exiled.Events.Patches.Events.Player
                     bool flag = (singleton.openLockers[lockerId] & 1 << chamberNumber) != 1 << chamberNumber;
                     singleton.ModifyOpen(lockerId, chamberNumber, flag);
                     singleton.RpcDoSound(lockerId, chamberNumber, flag);
-                    bool state = true;
+                    bool anyOpen = true;
                     for (int i = 0; i < singleton.lockers[lockerId].chambers.Length; i++)
                     {
                         if ((singleton.openLockers[lockerId] & 1 << i) == 1 << i)
                         {
-                            state = false;
+                            anyOpen = false;
                             break;
                         }
                     }
 
-                    singleton.lockers[lockerId].LockPickups(state);
+                    singleton.lockers[lockerId].LockPickups(!flag, chamberNumber, anyOpen);
                     if (!string.IsNullOrEmpty(accessToken))
                     {
                         singleton.RpcChangeMaterial(lockerId, chamberNumber, false);
@@ -93,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingLocker: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingLocker:\n{e}");
 
                 return true;
             }

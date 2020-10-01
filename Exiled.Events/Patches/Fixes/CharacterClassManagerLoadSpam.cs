@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Fixes
                     && methodBase.Name == "get_" + nameof(NetworkBehaviour.isServer))
                 {
                     isFirst = true;
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CharacterClassManager), "get_" + nameof(CharacterClassManager.isLocalPlayer)));
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.isLocalPlayer)));
                 }
                 else
                 {

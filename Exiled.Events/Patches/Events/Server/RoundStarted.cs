@@ -19,6 +19,6 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.CmdStartRound))]
     internal static class RoundStarted
     {
-        private static void Prefix() => Server.OnRoundStarted();
+        private static void Postfix() => Server.OnRoundStarted();
     }
 }

@@ -79,7 +79,7 @@ namespace Exiled.Events.Patches.Events.Player
                             ? "(no nick)"
                             : targetPlayer.Nickname;
                         long issuanceTime = TimeBehaviour.CurrentTimestamp();
-                        long banExpieryTime = TimeBehaviour.GetBanExpieryTime((uint)duration);
+                        long banExpieryTime = TimeBehaviour.GetBanExpirationTime((uint)duration);
                         try
                         {
                             if (userId != null && !isGlobalBan)

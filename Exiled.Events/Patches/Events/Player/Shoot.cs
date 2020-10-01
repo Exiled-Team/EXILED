@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
                      __instance._hub.inventory.items[itemIndex].durability <= 0.0))
                     return false;
 
-                Log.Debug("Invoking shoot event", Loader.ShouldDebugBeShown);
+                Log.Debug("Invoking shooting event", Loader.ShouldDebugBeShown);
 
                 var shootingEventArgs = new ShootingEventArgs(Player.Get(__instance.gameObject), target, targetPos);
 
@@ -108,8 +108,10 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                     CharacterClassManager c = null;
+
                     if (target != null)
                         c = target.GetComponent<CharacterClassManager>();
+
                     if (c != null && __instance.GetShootPermission(c, false))
                     {
                         if (Math.Abs(__instance.camera.transform.position.y - c.transform.position.y) > 40.0)

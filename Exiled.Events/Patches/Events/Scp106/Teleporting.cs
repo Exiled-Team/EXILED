@@ -8,15 +8,16 @@
 namespace Exiled.Events.Patches.Events.Scp106
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -31,25 +32,28 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            const int offset = -1;
 
             // Search for "ldfld bool Scp106PlayerScript::iAm106" and subtract 1 to get the index of the third "ldarg.0".
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) - 1;
+                (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
 
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
-            generator.DeclareLocal(typeof(TeleportingEventArgs));
+            var ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
 
-            // Generate the return label.
-            var returnLabel = generator.DefineLabel();
-
-            // Copy [Label1] from "ldarg.0" and then clear them.
-            var startLabels = new List<Label>(newInstructions[index].labels);
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
-            // TeleportingEventArgs ev = new TeleportingEventArgs(API.Features.Player.Get(this.gameObject), this.portalPosition, true);
+            // Get the return label from the last instruction.
+            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+
+            // TeleportingEventArgs ev = new TeleportingEventArgs(Player.Get(this.gameObject), this.portalPosition, true);
             //
-            // Scp106.OnTeleporting(ev);
+            // Handlers.Scp106.OnTeleporting(ev);
             //
             // this.portalPosition = ev.PortalPosition;
             //
@@ -59,30 +63,31 @@ namespace Exiled.Events.Patches.Events.Scp106
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TeleportingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Stloc_0),
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Scp106), nameof(Scp106.OnTeleporting))),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp106), nameof(Handlers.Scp106.OnTeleporting))),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.PortalPosition))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.portalPosition))),
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TeleportingEventArgs), nameof(TeleportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            // Add [Label1] to "ldarg.0".
-            newInstructions[index].labels.AddRange(startLabels);
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
 
-            // Add the label to the last "ret".
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-            return newInstructions;
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

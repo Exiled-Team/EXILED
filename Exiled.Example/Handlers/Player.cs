@@ -20,7 +20,7 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            Log.Info($"{ev.Target?.Nickname} died from {ev.HitInformations.GetDamageName()}! {ev.Killer?.Nickname} killed him!");
+            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.GetDamageName()}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
@@ -59,6 +59,18 @@ namespace Exiled.Example.Handlers
             Log.Info($"{ev.Player?.Nickname} is activating SCP-914!");
         }
 
+        /// <inheritdoc cref="Events.Handlers.Player.OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs)"/>
+        public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is failing to escape from the pocket dimension!");
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnEscapingPocketDimension(EscapingPocketDimensionEventArgs)"/>
+        public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is escaping from the pocket dimension and will be teleported at {ev.TeleportPosition}");
+        }
+
         /// <inheritdoc cref="Events.Handlers.Scp914.OnChangingKnobSetting(ChangingKnobSettingEventArgs)"/>
         public void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev)
         {
@@ -72,6 +84,12 @@ namespace Exiled.Example.Handlers
                 return;
 
             ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type);
+        }
+
+        /// <inheritdoc cref="Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
+        public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
+        {
+            Log.Info($"{ev.Player?.Nickname} is trying to unlock a generator in {ev.Generator?.CurRoom} room");
         }
     }
 }

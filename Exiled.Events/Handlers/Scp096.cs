@@ -28,6 +28,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<CalmingDownEventArgs> CalmingDown;
 
         /// <summary>
+        /// Invoked before adding a target to SCP-096.
+        /// </summary>
+        public static event CustomEventHandler<AddingTargetEventArgs> AddingTarget;
+
+        /// <summary>
+        /// Invoked before Scp096 starts prying open a gate.
+        /// </summary>
+        public static event CustomEventHandler<StartPryingGateEventArgs> StartPryingGate;
+
+        /// <summary>
         /// Invoked before enraging with SCP-096.
         /// </summary>
         /// <param name="ev">The <see cref="EnragingEventArgs"/> instance.</param>
@@ -38,5 +48,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="CalmingDownEventArgs"/> instance.</param>
         public static void OnCalmingDown(CalmingDownEventArgs ev) => CalmingDown.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before adding a target to SCP-096.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingTargetEventArgs"/> instance.</param>
+        public static void OnAddingTarget(AddingTargetEventArgs ev) => AddingTarget.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before Scp096 starts prying open a gate.
+        /// </summary>
+        /// <param name="ev">The <see cref="StartPryingGateEventArgs"/> instance.</param>
+        public static void OnStartPryingGate(StartPryingGateEventArgs ev) => StartPryingGate.InvokeSafely(ev);
     }
 }

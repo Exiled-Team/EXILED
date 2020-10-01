@@ -15,9 +15,18 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Grenades;
+
     using Hints;
 
+    using MEC;
+
     using Mirror;
+
+    using NorthwoodLib;
+    using NorthwoodLib.Pools;
+
+    using RemoteAdmin;
 
     using UnityEngine;
 
@@ -26,6 +35,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+        private ReferenceHub referenceHub;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
@@ -39,9 +50,20 @@ namespace Exiled.API.Features
         public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
+#pragma warning disable CS0618 // Type or member is obsolete
+            ListPool<int>.Shared.Return(TargetGhosts);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -51,38 +73,70 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>();
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
-        public ReferenceHub ReferenceHub { get; }
+        public ReferenceHub ReferenceHub
+        {
+            get => referenceHub;
+            private set
+            {
+                if (value == null)
+                    throw new NullReferenceException("Player's ReferenceHub cannot be null!");
 
-        /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
-        /// </summary>
-        public Transform PlayerCamera => ReferenceHub.PlayerCameraReference;
+                referenceHub = value;
+
+                GameObject = value.gameObject;
+                Ammo = value.ammoBox;
+                HintDisplay = value.hints;
+                Inventory = value.inventory;
+                CameraTransform = value.PlayerCameraReference;
+                GrenadeManager = value.GetComponent<GrenadeManager>();
+            }
+        }
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => ReferenceHub == null ? null : ReferenceHub.gameObject;
+        public GameObject GameObject { get; private set; }
 
         /// <summary>
-        /// Gets the HintDisplay of the players ReferenceHub.
+        /// Gets the player's ammo.
         /// </summary>
-        /// <returns>Returns the HintDisplay of ReferenceHub.</returns>
-        public HintDisplay HintDisplay => ReferenceHub.hints;
+        public AmmoBox Ammo { get; private set; }
+
+        /// <summary>
+        /// Gets the HintDisplay of the player.
+        /// </summary>
+        public HintDisplay HintDisplay { get; private set; }
 
         /// <summary>
         /// Gets the player's inventory.
         /// </summary>
-        public Inventory Inventory => ReferenceHub.inventory;
+        public Inventory Inventory { get; private set; }
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// </summary>
+        [Obsolete("Use CameraTransform instead", true)]
+        public Transform PlayerCamera => CameraTransform;
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// </summary>
+        public Transform CameraTransform { get; private set; }
+
+        /// <summary>
+        /// Gets the player's grenade manager.
+        /// </summary>
+        public GrenadeManager GrenadeManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -94,16 +148,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's user id.
+        /// Gets the player's user id.
         /// </summary>
-        public string UserId
-        {
-            get => ReferenceHub.characterClassManager.UserId;
-            set
-            {
-                ReferenceHub.characterClassManager.UserId = value ?? throw new ArgumentNullException($"UserId cannot be set to null.");
-            }
-        }
+        public string UserId => referenceHub.characterClassManager.UserId;
 
         /// <summary>
         /// Gets or sets the player's custom user id.
@@ -113,6 +160,11 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.UserId2;
             set => ReferenceHub.characterClassManager.UserId2 = value;
         }
+
+        /// <summary>
+        /// Gets the player's user id without the authentication.
+        /// </summary>
+        public string RawUserId => UserId.Substring(0, UserId.LastIndexOf('@'));
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -136,12 +188,16 @@ namespace Exiled.API.Features
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
@@ -149,13 +205,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's nickname.
+        /// Gets or sets the player's display nickname.
+        /// May be null.
         /// </summary>
-        public string Nickname
+        public string DisplayNickname
         {
-            get => ReferenceHub.nicknameSync.Network_displayName ?? ReferenceHub.nicknameSync.Network_myNickSync;
+            get => ReferenceHub.nicknameSync.Network_displayName;
             set => ReferenceHub.nicknameSync.Network_displayName = value;
         }
+
+        /// <summary>
+        /// Gets the player's nickname.
+        /// </summary>
+        public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player is invisible or not.
@@ -163,18 +225,20 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the players can be tracked or not.
+        /// Gets a value indicating whether the players can be tracked or not.
         /// </summary>
-        public bool DoNotTrack
-        {
-            get => ReferenceHub.serverRoles.DoNotTrack;
-            set => ReferenceHub.serverRoles.DoNotTrack = value;
-        }
+        public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
-        public List<int> TargetGhosts { get; private set; } = new List<int>();
+        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases")]
+        public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a list of player ids who can't see the player.
+        /// </summary>
+        public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player has Remote Admin access.
@@ -209,7 +273,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
@@ -243,7 +307,7 @@ namespace Exiled.API.Features
         public RoleType Role
         {
             get => ReferenceHub.characterClassManager.NetworkCurClass;
-            set => ReferenceHub.characterClassManager.SetPlayersClass(value, GameObject);
+            set => SetRole(value);
         }
 
         /// <summary>
@@ -264,7 +328,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
+        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
         /// Gets or sets the player's IP address.
@@ -288,7 +352,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's command sender instance.
         /// </summary>
-        public CommandSender CommandSender => ReferenceHub.queryProcessor._sender;
+        [Obsolete("Use Sender instead", true)]
+        public CommandSender CommandSender => Sender;
+
+        /// <summary>
+        /// Gets the player's command sender instance.
+        /// </summary>
+        public PlayerCommandSender Sender => ReferenceHub.queryProcessor._sender;
 
         /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
@@ -299,6 +369,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is the host or not.
         /// </summary>
         public bool IsHost => ReferenceHub.characterClassManager.IsHost;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is alive or not.
+        /// </summary>
+        public bool IsAlive => !IsDead;
 
         /// <summary>
         /// Gets a value indicating whether the player is dead or not.
@@ -517,7 +592,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="global::Stamina"/> class.
+        /// Gets the <see cref="Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
@@ -640,21 +715,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the global badge of the player, can be null if none.
         /// </summary>
-        public Badge GlobalBadge
+        public Badge? GlobalBadge
         {
             get
             {
-                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                Dictionary<string, string> dictionary = (from target in token.Split(new string[] { "<br>" }, StringSplitOptions.None)
-                                                         select target.Split(
-                                                             new string[] { ": " },
-                                                             StringSplitOptions.None)).ToDictionary(split => split[0], split => split[1]);
-
-                return int.TryParse(dictionary["Badge type"], out int badgeType) ? null : new Badge(dictionary["Badge text"], dictionary["Badge color"], badgeType, true);
+                var serverRoles = ReferenceHub.serverRoles;
+                return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
 
@@ -672,6 +743,11 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
@@ -692,7 +768,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
         /// <returns>Returns a player or null if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => Get(referenceHub?.gameObject);
+        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
@@ -716,7 +792,7 @@ namespace Exiled.API.Features
         /// <returns>Returns the player found or null if not found.</returns>
         public static Player Get(int id)
         {
-            if (IdsCache.TryGetValue(id, out Player player) && player != null)
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
                 return player;
 
             foreach (Player playerFound in Dictionary.Values)
@@ -741,7 +817,7 @@ namespace Exiled.API.Features
         {
             try
             {
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound != null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
@@ -754,6 +830,7 @@ namespace Exiled.API.Features
                         if (player.UserId == args)
                         {
                             playerFound = player;
+                            break;
                         }
                     }
                 }
@@ -764,7 +841,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.Nickname.ToLower().Contains(args.ToLower()))
+                        if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
                         if (firstString.Length < maxNameLength)
@@ -802,10 +879,26 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the camera with the given ID.
+        /// </summary>
+        /// <param name="cameraId">The camera id to be searched for.</param>
+        /// <returns><see cref="Camera079"/>.</returns>
+        public Camera079 GetCameraById(ushort cameraId)
+        {
+            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            {
+                if (camera.cameraId == cameraId)
+                    return camera;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Sets the SCP-079 camera, if the player is SCP-079.
         /// </summary>
-        /// <param name="id">Camera ID.</param>
-        public void SetCamera(ushort id) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(id, false);
+        /// <param name="cameraId">Camera ID.</param>
+        public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
         /// Sets the player's rank.
@@ -837,30 +930,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the camera with the given ID.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns><see cref="Camera079"/>.</returns>
-        public Camera079 GetCameraById(ushort cameraId)
-        {
-            Camera079[] cameras = UnityEngine.Object.FindObjectsOfType<Camera079>();
-
-            foreach (Camera079 camera in cameras)
-            {
-                if (camera.cameraId == cameraId)
-                    return camera;
-            }
-
-            return null;
-        }
-
-        /// <summary>
         /// Handcuff the player.
         /// </summary>
         /// <param name="cuffer">The cuffer player.</param>
         public void Handcuff(Player cuffer)
         {
-            if (cuffer.ReferenceHub == null)
+            if (cuffer?.ReferenceHub == null)
                 return;
 
             if (!IsCuffed &&
@@ -971,11 +1046,11 @@ namespace Exiled.API.Features
         /// <returns>Used to wait.</returns>
         public IEnumerator<float> BlinkTag()
         {
-            yield return MEC.Timing.WaitForOneFrame;
+            yield return Timing.WaitForOneFrame;
 
             BadgeHidden = !BadgeHidden;
 
-            yield return MEC.Timing.WaitForOneFrame;
+            yield return Timing.WaitForOneFrame;
 
             BadgeHidden = !BadgeHidden;
         }
@@ -988,7 +1063,7 @@ namespace Exiled.API.Features
         /// <param name="pluginName">The plugin name.</param>
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
-            ReferenceHub.queryProcessor._sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
+            Sender.RaReply((pluginName ?? Assembly.GetCallingAssembly().GetName().Name) + "#" + message, success, true, string.Empty);
         }
 
         /// <summary>
@@ -1050,6 +1125,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
+        [Obsolete("Use Ammo instead", true)]
         public void SetAmmo(AmmoType ammoType, uint amount) => ReferenceHub.ammoBox[(int)ammoType] = amount;
 
         /// <summary>
@@ -1057,6 +1133,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
+        [Obsolete("Use Ammo instead", true)]
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
 
         /// <summary>
@@ -1070,10 +1147,11 @@ namespace Exiled.API.Features
             {
                 new StringHintParameter(message),
             };
+
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Id} {Nickname} {UserId}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
 }

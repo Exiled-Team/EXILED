@@ -10,14 +10,13 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using Mirror;
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -32,18 +31,23 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!NetworkServer.active)
-                    return false;
-
                 if (!ply.GetComponent<CharacterClassManager>().IsVerified)
                     return false;
 
-                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, __instance.Classes.SafeGet(classid).startItems.ToList(), lite, escape);
+                var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
+                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
 
                 Player.OnChangingRole(changingRoleEventArgs);
 
                 lite = changingRoleEventArgs.ShouldPreservePosition;
                 escape = changingRoleEventArgs.IsEscaped;
+
+                if (classid != RoleType.Spectator && changingRoleEventArgs.NewRole == RoleType.Spectator)
+                {
+                    var diedEventArgs = new DiedEventArgs(API.Features.Server.Host, changingRoleEventArgs.Player, new PlayerStats.HitInfo(-1, "Dedicated Server", DamageTypes.None, 0));
+                    Player.OnDied(diedEventArgs);
+                }
+
                 classid = changingRoleEventArgs.NewRole;
 
                 if (escape)
@@ -62,11 +66,14 @@ namespace Exiled.Events.Patches.Events.Player
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
 
                 if (lite)
+                {
+                    ListPool<ItemType>.Shared.Return(startItemsList);
                     return false;
+                }
 
                 Inventory component = ply.GetComponent<Inventory>();
-                List<Inventory.SyncItemInfo> list = new List<Inventory.SyncItemInfo>();
-                if (escape && __instance.KeepItemsAfterEscaping)
+                List<Inventory.SyncItemInfo> list = ListPool<Inventory.SyncItemInfo>.Shared.Rent();
+                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
                     foreach (Inventory.SyncItemInfo item in component.items)
                         list.Add(item);
@@ -78,11 +85,13 @@ namespace Exiled.Events.Patches.Events.Player
                     component.AddNewItem(id, -4.65664672E+11f, 0, 0, 0);
                 }
 
-                if (escape && __instance.KeepItemsAfterEscaping)
+                ListPool<ItemType>.Shared.Return(startItemsList);
+
+                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
                     foreach (Inventory.SyncItemInfo syncItemInfo in list)
                     {
-                        if (__instance.PutItemsInInvAfterEscaping)
+                        if (CharacterClassManager.PutItemsInInvAfterEscaping)
                         {
                             Item itemByID = component.GetItemByID(syncItemInfo.id);
                             bool flag = false;
@@ -135,6 +144,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
+                ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
                 return false;
             }
             catch (Exception e)

@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             API.Features.Player player = API.Features.Player.Get(Console._ccs.SenderId);
 
-            var ev = new SendingRemoteAdminCommandEventArgs(player?.CommandSender ?? API.Features.Server.Host.CommandSender, player ?? API.Features.Server.Host, name, arguments.ToList());
+            var ev = new SendingRemoteAdminCommandEventArgs(player?.Sender ?? API.Features.Server.Host.Sender, player ?? API.Features.Server.Host, name, arguments.ToList());
 
             Server.OnSendingRemoteAdminCommand(ev);
 

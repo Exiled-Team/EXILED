@@ -7,127 +7,137 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-
-    using GameCore;
 
     using HarmonyLib;
 
-    using LightContainmentZoneDecontamination;
-
-    using Mirror;
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
-    using Object = UnityEngine.Object;
-    using Random = UnityEngine.Random;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="PocketDimensionTeleport.OnTriggerEnter(Collider)"/>.
-    /// Adds the <see cref="Player.EscapingPocketDimension"/> and <see cref="Player.FailingEscapePocketDimension"/> event.
+    /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> and <see cref="Handlers.Player.FailingEscapePocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.OnTriggerEnter))]
     internal static class EscapingAndFailingEscapePocketDimension
     {
-        private static bool Prefix(PocketDimensionTeleport __instance, Collider other)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var exiledPlayerLocal = generator.DeclareLocal(typeof(Player));
+
+            // --------- Player check ---------
+            // The check is a check that this is a player, if it isn't a player, then we simply call return
+            // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
+
+            // Find the first null check of the NetworkIdentity component
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
+
+            // Get the return label from the instruction at the index.
+            var returnLabel = newInstructions[index].operand;
+
+            newInstructions.InsertRange(index + 1, new[]
             {
-                NetworkIdentity component1 = other.GetComponent<NetworkIdentity>();
-                if (!(component1 != null))
-                    return false;
-                if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer || BlastDoor.OneDoor.isClosed)
-                {
-                    if (__instance.type == PocketDimensionTeleport.PDTeleportType.Killer)
-                    {
-                        var ev = new FailingEscapePocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), __instance);
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, exiledPlayerLocal.LocalIndex),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, Method(typeof(object), nameof(Equals), new[] { typeof(object), typeof(object) })),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+            });
 
-                        Player.OnFailingEscapePocketDimension(ev);
+            // --------- FailingEscapePocketDimension ---------
 
-                        if (!ev.IsAllowed)
-                            return false;
-                    }
-                    else
-                    {
-                        // warhead larry event goes here
-                    }
+            // The index offset.
+            var offset = 2;
 
-                    component1.GetComponent<PlayerStats>()
-                        .HurtPlayer(new PlayerStats.HitInfo(999990f, "WORLD", DamageTypes.Pocket, 0), other.gameObject);
-                }
-                else if (__instance.type == PocketDimensionTeleport.PDTeleportType.Exit)
-                {
-                    __instance.tpPositions.Clear();
-                    bool flag = false;
-                    DecontaminationController.DecontaminationPhase[] decontaminationPhases =
-                        DecontaminationController.Singleton.DecontaminationPhases;
-                    if (DecontaminationController.GetServerTime >
-                        decontaminationPhases[decontaminationPhases.Length - 2].TimeTrigger)
-                        flag = true;
-                    List<string> stringList =
-                        ConfigFile.ServerConfig.GetStringList(flag
-                            ? "pd_random_exit_rids_after_decontamination"
-                            : "pd_random_exit_rids");
-                    if (stringList.Count > 0)
-                    {
-                        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("RoomID"))
-                        {
-                            if (gameObject.GetComponent<Rid>() != null &&
-                                stringList.Contains(gameObject.GetComponent<Rid>().id))
-                                __instance.tpPositions.Add(gameObject.transform.position);
-                        }
+            // Find the starting index by searching for "ldfld" of "BlastDoor.isClosed".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
+            instruction.operand is FieldInfo finfo && finfo == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
 
-                        if (stringList.Contains("PORTAL"))
-                        {
-                            foreach (Scp106PlayerScript scp106PlayerScript in Object
-                                .FindObjectsOfType<Scp106PlayerScript>())
-                            {
-                                if (scp106PlayerScript.portalPosition != Vector3.zero)
-                                    __instance.tpPositions.Add(scp106PlayerScript.portalPosition);
-                            }
-                        }
-                    }
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
+            newInstructions[index].labels.Clear();
 
-                    if (__instance.tpPositions == null || __instance.tpPositions.Count == 0)
-                    {
-                        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("PD_EXIT"))
-                            __instance.tpPositions.Add(gameObject.transform.position);
-                    }
+            // Get the return label from the last instruction.
+            returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-                    Vector3 tpPosition = __instance.tpPositions[Random.Range(0, __instance.tpPositions.Count)];
-                    tpPosition.y += 2f;
-                    PlayerMovementSync component2 = other.GetComponent<PlayerMovementSync>();
-                    component2.SetSafeTime(2f);
-
-                    var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(component2.gameObject), tpPosition);
-
-                    Player.OnEscapingPocketDimension(ev);
-
-                    if (ev.IsAllowed)
-                    {
-                        component2.OverridePosition(ev.TeleportPosition, 0.0f, false);
-                        __instance.RemoveCorrosionEffect(other.gameObject);
-                        PlayerManager.localPlayer.GetComponent<PlayerStats>()
-                            .TargetAchieve(component1.connectionToClient, "larryisyourfriend");
-                    }
-                }
-
-                if (!__instance.RefreshExit)
-                    return false;
-                ImageGenerator.pocketDimensionGenerator.GenerateRandom();
-                return false;
-            }
-            catch (Exception e)
+            // var ev = new FailingEscapePocketDimensionEventArgs(Player.Get(other.gameObject), this);
+            //
+            // Handlers.Player.OnFailingEscapePocketDimension(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EscapingAndFailingEscapePocketDimension: {e}\n{e.StackTrace}");
+                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(FailingEscapePocketDimensionEventArgs), new[] { typeof(Player), typeof(PocketDimensionTeleport), typeof(bool) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFailingEscapePocketDimension))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FailingEscapePocketDimensionEventArgs), nameof(FailingEscapePocketDimensionEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                return true;
-            }
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
+
+            ListPool<Label>.Shared.Return(startingLabels);
+
+            // --------- EscapingPocketDimension ---------
+
+            // The index offset.
+            offset = -1;
+
+            // Find the starting index by searching for "callvirt" of "Component.GetComponent<PlayerMovementSync>()".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+            (MethodInfo)instruction.operand == Method(typeof(Component), nameof(Component.GetComponent), generics: new[] { typeof(PlayerMovementSync) })) + offset;
+
+            // Declare EscapingPocketDimensionEventArgs local variable.
+            var ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
+
+            // var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), tpPosition);
+            //
+            // Player.OnEscapingPocketDimension(ev);
+            //
+            // if (!ev.IsAllowed)
+            //  return;
+            //
+            // tpPosition = ev.TeleportPosition;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(EscapingPocketDimensionEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(bool) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEscapingPocketDimension))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
+                new CodeInstruction(OpCodes.Stloc_S, 4),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

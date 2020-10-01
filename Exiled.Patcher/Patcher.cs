@@ -14,10 +14,10 @@ namespace Exiled.Patcher
     using dnlib.DotNet.Emit;
 
     /// <summary>
-    /// Takes a file path to your assembly as input, and will patch the assembly with the EXILED ModLoader class.
+    /// Takes a file path to your assembly as input, and will patch the assembly with the Bootstrap class.
     /// Original Patcher created by KadeDev.
     /// </summary>
-    internal class Patcher
+    internal static class Patcher
     {
         private static void Main(string[] args)
         {
@@ -27,7 +27,6 @@ namespace Exiled.Patcher
 
                 if (args.Length != 1)
                 {
-                    Console.WriteLine("Missing file location argument!");
                     Console.WriteLine("Provide the location of Assembly-CSharp.dll:");
 
                     path = Console.ReadLine();
@@ -41,23 +40,23 @@ namespace Exiled.Patcher
 
                 if (module == null)
                 {
-                    Console.WriteLine("File not found!");
+                    Console.WriteLine($"File {path} not found!");
                     return;
                 }
 
-                Console.WriteLine($"[Exiled.Patcher] Loaded {module.Name}");
+                Console.WriteLine($"Loaded {module.Name}");
 
-                Console.WriteLine("[Exiled.Patcher] Resolving References...");
+                Console.WriteLine("Resolving References...");
 
                 module.Context = ModuleDef.CreateModuleContext();
 
                 ((AssemblyResolver)module.Context.AssemblyResolver).AddToCache(module);
 
-                Console.WriteLine("[Injection] Injecting the Bootstrap Class.");
+                Console.WriteLine("Injecting the Bootstrap Class.");
 
-                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Exiled.Bootstrap.dll"));
+                ModuleDefMD bootstrap = ModuleDefMD.Load(Path.Combine(Directory.GetCurrentDirectory(), "Exiled.Bootstrap.dll"));
 
-                Console.WriteLine("[Injection] Loaded " + bootstrap.Name);
+                Console.WriteLine("Loaded " + bootstrap.Name);
 
                 TypeDef modClass = bootstrap.Types[0];
 
@@ -66,7 +65,7 @@ namespace Exiled.Patcher
                     if (type.Name == "Bootstrap")
                     {
                         modClass = type;
-                        Console.WriteLine("[Injection] Hooked to: " + type.Namespace + "." + type.Name);
+                        Console.WriteLine($"[Injection] Hooked to: \"{type.Namespace}.{type.Name}\"");
                     }
                 }
 
@@ -86,11 +85,9 @@ namespace Exiled.Patcher
                     return;
                 }
 
-                Console.WriteLine("[Injection] Injected!");
-
-                Console.WriteLine("[Exiled.Patcher] Injection completed!");
-
-                Console.WriteLine("[Exiled.Patcher] Patching code...");
+                Console.WriteLine("Injected!");
+                Console.WriteLine("Injection completed!");
+                Console.WriteLine("Patching code...");
 
                 TypeDef typeDef = FindType(module.Assembly, "ServerConsole");
 
@@ -104,13 +101,13 @@ namespace Exiled.Patcher
 
                 start.Body.Instructions.Insert(0, OpCodes.Call.ToInstruction(call));
 
-                module.Write("Assembly-CSharp-Exiled.dll");
+                module.Write(Path.Combine(Path.GetDirectoryName(Path.GetFullPath(path)), "Assembly-CSharp-Exiled.dll"));
 
-                Console.WriteLine("[Exiled.Patcher] Patching completed successfully!");
+                Console.WriteLine("Patching completed successfully!");
             }
             catch (Exception exception)
             {
-                Console.WriteLine($"[Exiled.Patcher] An error has occurred while patching: {exception}");
+                Console.WriteLine($"An error has occurred while patching: {exception}");
             }
 
             Console.Read();
@@ -130,13 +127,13 @@ namespace Exiled.Patcher
             return null;
         }
 
-        private static TypeDef FindType(AssemblyDef asm, string classPath)
+        private static TypeDef FindType(AssemblyDef assembly, string path)
         {
-            foreach (var module in asm.Modules)
+            foreach (var module in assembly.Modules)
             {
                 foreach (var type in module.Types)
                 {
-                    if (type.FullName == classPath)
+                    if (type.FullName == path)
                         return type;
                 }
             }

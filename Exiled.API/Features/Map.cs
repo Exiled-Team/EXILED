@@ -11,6 +11,8 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using Exiled.API.Extensions;
+
     using LightContainmentZoneDecontamination;
 
     using UnityEngine;
@@ -22,10 +24,10 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        private static readonly List<Room> RoomsValue = new List<Room>();
-        private static readonly List<Door> DoorsValue = new List<Door>();
-        private static readonly List<Lift> LiftsValue = new List<Lift>();
-        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>();
+        private static readonly List<Room> RoomsValue = new List<Room>(250);
+        private static readonly List<Door> DoorsValue = new List<Door>(250);
+        private static readonly List<Lift> LiftsValue = new List<Lift>(10);
+        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
@@ -55,7 +57,15 @@ namespace Exiled.API.Features
             get
             {
                 if (RoomsValue.Count == 0)
-                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room").Select(r => new Room(r.name, r.transform, r.transform.position)));
+                {
+                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room")
+                        .Select(r => new Room(r.name, r.transform, r.transform.position)));
+
+                    // Add the surface as a room.
+                    const string surfaceRoomName = "Root_*&*Outside Cams";
+                    var surfaceTransform = GameObject.Find(surfaceRoomName).transform;
+                    RoomsValue.Add(new Room(surfaceRoomName, surfaceTransform, surfaceTransform.position));
+                }
 
                 return ReadOnlyRoomsValue;
             }
@@ -69,7 +79,10 @@ namespace Exiled.API.Features
             get
             {
                 if (DoorsValue.Count == 0)
+                {
                     DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
+                    DoorTypeExtension.RegisterDoorTypesOnLevelLoad();
+                }
 
                 return ReadOnlyDoorsValue;
             }
@@ -141,7 +154,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].RpcCustomOverchargeForOurBeautifulModCreators(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
 
         /// <summary>
         ///     Clears the lazy loading game object cache.

@@ -9,13 +9,14 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -30,33 +31,45 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!__instance._playerInteractRateLimit.CanExecute() ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+                if (!__instance._playerInteractRateLimit.CanExecute()
+                    || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+                {
                     return false;
+                }
 
                 GameObject gameObject = GameObject.Find("OutsitePanelScript");
-
                 if (!__instance.ChckDis(gameObject.transform.position))
                     return false;
 
                 Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
-
-                if (!__instance._sr.BypassMode &&
-                    (itemById == null || !Enumerable.Contains(itemById.permissions, "CONT_LVL_3")))
+                if (!__instance._sr.BypassMode && itemById == null)
                     return false;
 
-                var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), new List<string> { "CONT_LVL_3" });
+                const string PANEL_PERM = "CONT_LVL_3";
 
-                Handlers.Player.OnActivatingWarheadPanel(ev);
+                // Deprecated
+                var list = ListPool<string>.Shared.Rent();
+                list.Add(PANEL_PERM);
 
-                gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
-                __instance.OnInteract();
+                var ev = new ActivatingWarheadPanelEventArgs(
+                    API.Features.Player.Get(__instance.gameObject),
+                    list,
+                    __instance._sr.BypassMode || itemById.permissions.Contains(PANEL_PERM));
+
+                Player.OnActivatingWarheadPanel(ev);
+                ListPool<string>.Shared.Return(list);
+
+                if (ev.IsAllowed)
+                {
+                    gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
+                    __instance.OnInteract();
+                }
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ActivatingWarheadPanel: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"{typeof(ActivatingWarheadPanel).FullName}.{nameof(Prefix)}:\n{exception}");
 
                 return true;
             }

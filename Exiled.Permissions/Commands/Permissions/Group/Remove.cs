@@ -30,7 +30,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!(sender as CommandSender).CheckPermission("ep.removegroup"))
+            if (!sender.CheckPermission("ep.removegroup"))
             {
                 response = "You can't add a new group, you don't have \"ep.removegroup\" permission.";
                 return false;

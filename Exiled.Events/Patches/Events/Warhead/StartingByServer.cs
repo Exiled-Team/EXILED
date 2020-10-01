@@ -8,56 +8,66 @@
 namespace Exiled.Events.Patches.Events.Warhead
 {
 #pragma warning disable SA1118
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patch the <see cref="AlphaWarheadController.StartDetonation"/>.
-    /// Adds the <see cref="Warhead.Starting"/> event.
+    /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
     internal static class StartingByServer
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = new List<CodeInstruction>(instructions);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 0;
 
             // Search for the last "ldarg.0".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
-            // Copy [Label2] from "ldarg.0" and then remove it.
-            var labels = new List<Label>(newInstructions[index].labels);
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
             newInstructions[index].labels.Clear();
 
-            // var ev = new StartingEventArgs(API.Features.Server.Host, true);
+            // Get the return label from the last instruction.
+            var returnLabel = newInstructions[index - 1].operand;
+
+            // var ev = new StartingEventArgs(Server.Host, true);
             //
-            // Warhead.OnStarting(ev);
+            // Handlers.Warhead.OnStarting(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Server), nameof(API.Features.Server.Host))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Server), nameof(Server.Host))),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnStarting))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            // Add [Label2] to "call".
-            newInstructions[index].labels.AddRange(labels);
+            // Add the starting labels to the first injected instruction.
+            newInstructions[index].labels.AddRange(startingLabels);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

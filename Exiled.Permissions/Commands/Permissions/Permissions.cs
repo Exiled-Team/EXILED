@@ -54,7 +54,6 @@ namespace Exiled.Permissions.Commands.Permissions
             stringBuilder.AppendLine("- EP ADD <PERMISSION> <GROUP> - Removes a permission from a group.");
 
             response = stringBuilder.ToString();
-
             return false;
         }
     }

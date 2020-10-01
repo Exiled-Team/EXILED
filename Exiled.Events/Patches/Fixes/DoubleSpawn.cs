@@ -16,7 +16,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Fixes <see cref="CharacterClassManager.NetworkCurClass"/> property.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), "set_" + nameof(CharacterClassManager.NetworkCurClass))]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurClass), MethodType.Setter)]
     internal static class DoubleSpawn
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
