@@ -16,6 +16,10 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
+    using PlayableScps;
+
+    using UnityEngine;
+
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
@@ -40,16 +44,26 @@ namespace Exiled.Events.Patches.Generic
 
             index += offset;
 
-            var continueLabel = generator.DefineLabel();
-            newInstructions[index].labels.Add(continueLabel);
+            var continueLabel = newInstructions[index].labels[0];
+
+            var newPointer = generator.DefineLabel();
+            newInstructions[index - 2].operand = newPointer;
+
+            CodeInstruction Get__Ldarg_1__WithLabel()
+            {
+                var ci = new CodeInstruction(OpCodes.Ldarg_1);
+                ci.labels.Add(newPointer);
+                return ci;
+            }
 
             newInstructions.InsertRange(index, new[]
             {
-                // if (PlayableScpsController.hub.characterClassManager.CurClass == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096)
+                // if (ReferenceHub.GetHub(info.Source).characterClassManager.CurClass == RoleType.Tutorial && !Exiled.Events.Events.Instance.Config.CanTutorialTriggerScp096)
                 //      return;
                 // START
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController._hub))),
+                Get__Ldarg_1__WithLabel(),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(VisionInformation), nameof(VisionInformation.Source))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ReferenceHub), nameof(ReferenceHub.GetHub), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
@@ -61,12 +75,12 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                 new CodeInstruction(OpCodes.Ret),
                 // END
-                // if (API.Features.Scp096.TurnedPlayers.Contsins(Player.Get(PlayableScpsController.Hub)))
+                // if (API.Features.Scp096.TurnedPlayers.Contsins(Player.Get(info.Source)))
                 //      return;
                 // START
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(PlayableScpsController), nameof(PlayableScpsController._hub))),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(VisionInformation), nameof(VisionInformation.Source))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                 new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
