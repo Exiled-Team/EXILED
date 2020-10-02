@@ -242,6 +242,38 @@ namespace Exiled.Events.Patches.Events.Scp079
                             result = false;
                             break;
                         }
+                    case "ELEVATORTELEPORT":
+                        {
+                            float manaFromLabel = this.GetManaFromLabel("Elevator Teleport", this.abilities);
+					        if (manaFromLabel > this.curMana)
+					        {
+						        this.RpcNotEnoughMana(manaFromLabel, this.curMana);
+						        result = false;
+                                break;
+					        }
+					        Camera079 camera = null;
+					        foreach (Scp079Interactable scp079Interactable in this.nearbyInteractables)
+					        {
+						        if (scp079Interactable.type == Scp079Interactable.InteractableType.ElevatorTeleport)
+						        {
+							        camera = scp079Interactable.optionalObject.GetComponent<Camera079>();
+						        }
+					        }
+					        if (camera != null)
+					        {
+                                bool isAllowed = true;
+                                ElevatorTeleportingEventArgs ev = new ElevatorTeleportingEventArgs(player, camera, isAllowed);
+                                Handlers.Scp079.OnElevatorTeleporting(ev);
+
+                                if (ev.isAllowed){
+						            this.RpcSwitchCamera(camera.cameraId, false);
+						            this.Mana -= manaFromLabel;
+						            this.AddInteractionToHistory(target, array[0], true);
+						            result = false;
+                                    break;
+                                }
+					        }
+                        }
 
                     default:
                         result = true;
