@@ -241,13 +241,9 @@ namespace Exiled.API.Features
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has Remote Admin access.
+        /// Gets a value indicating whether the player has Remote Admin access.
         /// </summary>
-        public bool RemoteAdminAccess
-        {
-            get => ReferenceHub.serverRoles.RemoteAdmin;
-            set => ReferenceHub.serverRoles.RemoteAdmin = value;
-        }
+        public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
@@ -329,6 +325,16 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
+
+        /// <summary>
+        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// </summary>
+        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is jumping or not.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
         /// Gets or sets the player's IP address.
