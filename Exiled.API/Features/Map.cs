@@ -34,6 +34,8 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
 
+        private static SpawnpointManager spawnpointManager;
+
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
         /// </summary>
@@ -139,7 +141,14 @@ namespace Exiled.API.Features
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
-            GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(roleType);
+            GameObject randomPosition;
+
+            if (spawnpointManager == null)
+            {
+                spawnpointManager = Object.FindObjectOfType<SpawnpointManager>();
+            }
+
+            randomPosition = spawnpointManager.GetRandomPosition(roleType);
 
             return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
         }
