@@ -132,19 +132,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shows a Hint to all players.
         /// </summary>
-        /// <param name="duration">The duration in seconds.</param>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
-        public static void ShowHint(float duration, string message)
-        {
-            foreach (Player player in Player.List)
-            {
-                player.ShowHint(message, duration);
-            }
-        }
-
-        /// <summary>
-        /// Shows a Hint to all players.
-        /// </summary>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
         public static void ShowHint(string message, float duration)
