@@ -200,6 +200,8 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
+            spawnpointManager = null;
+
             RoomsValue.Clear();
             DoorsValue.Clear();
             LiftsValue.Clear();
