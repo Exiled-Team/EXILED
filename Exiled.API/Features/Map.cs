@@ -48,7 +48,7 @@ namespace Exiled.API.Features
         /// Gets all cameras of SCP-079.
         /// </summary>
         public static Camera079[] Cameras => Scp079PlayerScript.allCameras;
-        
+
         /// <summary>
         /// Gets the map's seed.
         /// </summary>
