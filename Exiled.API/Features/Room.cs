@@ -85,6 +85,10 @@ namespace Exiled.API.Features
 
         private static uint IdCounter { get; set; }
 
+        public static bool operator ==(Room lhs, Room rhs) => lhs != null && lhs.Equals(rhs);
+
+        public static bool operator !=(Room lhs, Room rhs) => lhs != null && !lhs.Equals(rhs);
+
         /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
