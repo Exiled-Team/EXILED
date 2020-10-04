@@ -112,49 +112,20 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="other">Other Room.</param>
         /// <returns>If the rooms are equal.</returns>
-        public bool Equals(Room other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return Id == other.Id;
-        }
+        public bool Equals(Room other) => other is Room room && this == room;
 
         /// <summary>
         /// Equality Comparer.
         /// </summary>
         /// <param name="obj">Other object.</param>
         /// <returns>If the rooms are equal.</returns>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return obj.GetType() == this.GetType() && Equals((Room)obj);
-        }
+        public override bool Equals(object obj) => obj is Room room && this == room;
 
         /// <summary>
         /// Gets the unique room Id.
         /// </summary>
         /// <returns>The unique Room Id.</returns>
-        public override int GetHashCode()
-        {
-            return (int)Id;
-        }
+        public override int GetHashCode() => Id.GetHashCode();
 
         /// <summary>
         /// Used to reset the <see cref="IdCounter"/> to 0 for a new map.
@@ -169,101 +140,101 @@ namespace Exiled.API.Features
             switch (rawName)
             {
                 case "LCZ_Armory":
-                return RoomType.LczArmory;
+                    return RoomType.LczArmory;
                 case "LCZ_Curve":
-                return RoomType.LczCurve;
+                    return RoomType.LczCurve;
                 case "LCZ_Straight":
-                return RoomType.LczStraight;
+                    return RoomType.LczStraight;
                 case "LCZ_012":
-                return RoomType.Lcz012;
+                    return RoomType.Lcz012;
                 case "LCZ_914":
-                return RoomType.Lcz914;
+                    return RoomType.Lcz914;
                 case "LCZ_Crossing":
-                return RoomType.LczCrossing;
+                    return RoomType.LczCrossing;
                 case "LCZ_TCross":
-                return RoomType.LczTCross;
+                    return RoomType.LczTCross;
                 case "LCZ_Cafe":
-                return RoomType.LczCafe;
+                    return RoomType.LczCafe;
                 case "LCZ_Plants":
-                return RoomType.LczPlants;
+                    return RoomType.LczPlants;
                 case "LCZ_Toilets":
-                return RoomType.LczToilets;
+                    return RoomType.LczToilets;
                 case "LCZ_Airlock":
-                return RoomType.LczAirlock;
+                    return RoomType.LczAirlock;
                 case "LCZ_173":
-                return RoomType.Lcz173;
+                    return RoomType.Lcz173;
                 case "LCZ_ClassDSpawn":
-                return RoomType.LczClassDSpawn;
+                    return RoomType.LczClassDSpawn;
                 case "LCZ_ChkpB":
-                return RoomType.LczChkpB;
+                    return RoomType.LczChkpB;
                 case "LCZ_372":
-                return RoomType.LczGlassBox;
+                    return RoomType.LczGlassBox;
                 case "LCZ_ChkpA":
-                return RoomType.LczChkpA;
+                    return RoomType.LczChkpA;
                 case "HCZ_079":
-                return RoomType.Hcz079;
+                    return RoomType.Hcz079;
                 case "HCZ_EZ_Checkpoint":
-                return RoomType.HczEzCheckpoint;
+                    return RoomType.HczEzCheckpoint;
                 case "HCZ_Room3ar":
-                return RoomType.HczArmory;
+                    return RoomType.HczArmory;
                 case "HCZ_Testroom":
-                return RoomType.Hcz939;
+                    return RoomType.Hcz939;
                 case "HCZ_Hid":
-                return RoomType.HczHid;
+                    return RoomType.HczHid;
                 case "HCZ_049":
-                return RoomType.Hcz049;
+                    return RoomType.Hcz049;
                 case "HCZ_ChkpA":
-                return RoomType.HczChkpA;
+                    return RoomType.HczChkpA;
                 case "HCZ_Crossing":
-                return RoomType.HczCrossing;
+                    return RoomType.HczCrossing;
                 case "HCZ_106":
-                return RoomType.Hcz106;
+                    return RoomType.Hcz106;
                 case "HCZ_Nuke":
-                return RoomType.HczNuke;
+                    return RoomType.HczNuke;
                 case "HCZ_Tesla":
-                return RoomType.HczTesla;
+                    return RoomType.HczTesla;
                 case "HCZ_Servers":
-                return RoomType.HczServers;
+                    return RoomType.HczServers;
                 case "HCZ_ChkpB":
-                return RoomType.HczChkpB;
+                    return RoomType.HczChkpB;
                 case "HCZ_Room3":
-                return RoomType.HczTCross;
+                    return RoomType.HczTCross;
                 case "HCZ_457":
-                return RoomType.Hcz096;
+                    return RoomType.Hcz096;
                 case "HCZ_Curve":
-                return RoomType.HczCurve;
+                    return RoomType.HczCurve;
                 case "EZ_Endoof":
-                return RoomType.EzVent;
+                    return RoomType.EzVent;
                 case "EZ_Intercom":
-                return RoomType.EzIntercom;
+                    return RoomType.EzIntercom;
                 case "EZ_GateA":
-                return RoomType.EzGateA;
+                    return RoomType.EzGateA;
                 case "EZ_PCs_small":
-                return RoomType.EzDownstairsPcs;
+                    return RoomType.EzDownstairsPcs;
                 case "EZ_Curve":
-                return RoomType.EzCurve;
+                    return RoomType.EzCurve;
                 case "EZ_PCs":
-                return RoomType.EzPcs;
+                    return RoomType.EzPcs;
                 case "EZ_Crossing":
-                return RoomType.EzCrossing;
+                    return RoomType.EzCrossing;
                 case "EZ_CollapsedTunnel":
-                return RoomType.EzCollapsedTunnel;
+                    return RoomType.EzCollapsedTunnel;
                 case "EZ_Smallrooms2":
-                return RoomType.EzConference;
+                    return RoomType.EzConference;
                 case "EZ_Straight":
-                return RoomType.EzStraight;
+                    return RoomType.EzStraight;
                 case "EZ_Cafeteria":
-                return RoomType.EzCafeteria;
+                    return RoomType.EzCafeteria;
                 case "EZ_upstairs":
-                return RoomType.EzUpstairsPcs;
+                    return RoomType.EzUpstairsPcs;
                 case "EZ_GateB":
-                return RoomType.EzGateB;
+                    return RoomType.EzGateB;
                 case "EZ_Shelter":
-                return RoomType.EzShelter;
+                    return RoomType.EzShelter;
                 case "Root_*&*Outside Cams":
-                return RoomType.Surface;
+                    return RoomType.Surface;
                 default:
-                return RoomType.Unknown;
+                    return RoomType.Unknown;
             }
         }
 
@@ -275,17 +246,17 @@ namespace Exiled.API.Features
             switch (Transform.parent.name)
             {
                 case "HeavyRooms":
-                return ZoneType.HeavyContainment;
+                    return ZoneType.HeavyContainment;
                 case "LightRooms":
-                return ZoneType.LightContainment;
+                    return ZoneType.LightContainment;
                 case "EntranceRooms":
-                return ZoneType.Entrance;
+                    return ZoneType.Entrance;
                 default:
-                return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
+                    return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
             }
         }
 
-        private IEnumerable<Door> FindDoors()
+        private List<Door> FindDoors()
         {
             List<Door> doorList = new List<Door>();
             foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
