@@ -674,16 +674,18 @@ namespace Exiled.API.Features
             get
             {
                 Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
-                Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore);
 
-                var sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
-
-                if (sector != null)
+                if (Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                 {
-                    foreach (Room room in Map.Rooms)
+                    SECTR_Sector sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
+
+                    if (sector != null)
                     {
-                        if (room.Transform.gameObject == sector.gameObject)
-                            return room;
+                        foreach (Room room in Map.Rooms)
+                        {
+                            if (room.Transform.gameObject == sector.gameObject)
+                                return room;
+                        }
                     }
                 }
 
@@ -726,12 +728,12 @@ namespace Exiled.API.Features
         {
             get
             {
-                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                var serverRoles = ReferenceHub.serverRoles;
+                ServerRoles serverRoles = ReferenceHub.serverRoles;
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
