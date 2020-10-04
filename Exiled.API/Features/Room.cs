@@ -112,7 +112,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="other">Other Room.</param>
         /// <returns>If the rooms are equal.</returns>
-        public bool Equals(Room other) => other is Room room && this == room;
+        public bool Equals(Room other) => other != null && this.Id == other.Id;
 
         /// <summary>
         /// Equality Comparer.
