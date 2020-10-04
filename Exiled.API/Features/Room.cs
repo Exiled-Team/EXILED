@@ -39,14 +39,14 @@ namespace Exiled.API.Features
             Doors = FindDoors();
             flickerableLightController = transform.GetComponentInChildren<FlickerableLightController>();
 
-            RoomId = IdCounter;
+            Id = IdCounter;
             IdCounter++;
         }
 
         /// <summary>
         /// Gets the room's index in <see cref="Map.Rooms"/>.
         /// </summary>
-        public uint RoomId { get; }
+        public uint Id { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
@@ -124,7 +124,7 @@ namespace Exiled.API.Features
                 return true;
             }
 
-            return RoomId == other.RoomId;
+            return Id == other.Id;
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Exiled.API.Features
         /// <returns>The unique Room Id.</returns>
         public override int GetHashCode()
         {
-            return (int)RoomId;
+            return (int)Id;
         }
 
         /// <summary>
