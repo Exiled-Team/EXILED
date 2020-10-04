@@ -38,15 +38,7 @@ namespace Exiled.API.Features
             Type = FindType(name);
             Doors = FindDoors();
             flickerableLightController = transform.GetComponentInChildren<FlickerableLightController>();
-
-            Id = IdCounter;
-            IdCounter++;
         }
-
-        /// <summary>
-        /// Gets the room's index in <see cref="Map.Rooms"/>.
-        /// </summary>
-        public uint Id { get; }
 
         /// <summary>
         /// Gets the <see cref="Room"/> name.
@@ -83,8 +75,6 @@ namespace Exiled.API.Features
         /// </summary>
         public IEnumerable<Door> Doors { get; }
 
-        private static uint IdCounter { get; set; }
-
         /// <summary>
         /// Equality Comparer.
         /// </summary>
@@ -112,7 +102,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="other">Other Room.</param>
         /// <returns>If the rooms are equal.</returns>
-        public bool Equals(Room other) => other != null && this.Id == other.Id;
+        public bool Equals(Room other) => other != null && this.Transform.gameObject == other.Transform.gameObject;
 
         /// <summary>
         /// Equality Comparer.
@@ -125,12 +115,7 @@ namespace Exiled.API.Features
         /// Gets the unique room Id.
         /// </summary>
         /// <returns>The unique Room Id.</returns>
-        public override int GetHashCode() => Id.GetHashCode();
-
-        /// <summary>
-        /// Used to reset the <see cref="IdCounter"/> to 0 for a new map.
-        /// </summary>
-        internal static void ResetRoomIds() => IdCounter = 0;
+        public override int GetHashCode() => this.Transform.gameObject.GetHashCode();
 
         private static RoomType FindType(string rawName)
         {

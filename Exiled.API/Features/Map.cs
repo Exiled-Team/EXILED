@@ -63,8 +63,6 @@ namespace Exiled.API.Features
             {
                 if (RoomsValue.Count == 0)
                 {
-                    Room.ResetRoomIds();
-
                     List<Transform> roomTransforms = ListPool<Transform>.Shared.Rent();
 
                     // Search for SECTR_Sector instead of tag. It is faster and includes Pocket dimension.
