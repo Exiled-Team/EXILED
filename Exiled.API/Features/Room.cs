@@ -85,8 +85,20 @@ namespace Exiled.API.Features
 
         private static uint IdCounter { get; set; }
 
+        /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="lhs">Left comparer.</param>
+        /// <param name="rhs">Right comparer.</param>
+        /// <returns>If the rooms are equal.</returns>
         public static bool operator ==(Room lhs, Room rhs) => lhs != null && lhs.Equals(rhs);
 
+        /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="lhs">Left comparer.</param>
+        /// <param name="rhs">Right comparer.</param>
+        /// <returns>If the rooms are not equal.</returns>
         public static bool operator !=(Room lhs, Room rhs) => lhs != null && !lhs.Equals(rhs);
 
         /// <summary>
