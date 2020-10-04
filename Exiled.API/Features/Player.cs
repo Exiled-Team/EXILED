@@ -35,6 +35,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+        private static readonly RaycastHit[] CachedGetCurrentRoomRaycast = new RaycastHit[1];
+
         private ReferenceHub referenceHub;
 
         /// <summary>
@@ -671,23 +673,22 @@ namespace Exiled.API.Features
         {
             get
             {
-                Vector3 end = Position - new Vector3(0f, 10f, 0f);
-                bool flag = Physics.Linecast(Position, end, out RaycastHit raycastHit, -84058629);
+                Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
+                Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore);
 
-                if (!flag || raycastHit.transform == null)
-                    return null;
+                var sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
 
-                Transform latestParent = raycastHit.transform;
-                while (latestParent.parent?.parent != null)
-                    latestParent = latestParent.parent;
-
-                foreach (Room room in Map.Rooms)
+                if (sector != null)
                 {
-                    if (room.Transform == latestParent)
-                        return room;
+                    foreach (Room room in Map.Rooms)
+                    {
+                        if (room.Transform.gameObject == sector.gameObject)
+                            return room;
+                    }
                 }
 
-                return new Room(latestParent.name, latestParent, latestParent.position);
+                // Default is the surface, since it doesn't have a SECTR_Sector.
+                return Map.Rooms[Map.Rooms.Count - 1];
             }
         }
 
