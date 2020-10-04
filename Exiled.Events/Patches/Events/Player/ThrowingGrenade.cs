@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -28,11 +29,11 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, id, slowThrow, time);
+                var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, (GrenadeType)id, slowThrow, time);
 
                 Player.OnThrowingGrenade(ev);
 
-                id = ev.Id;
+                id = (int)ev.Type;
                 slowThrow = ev.IsSlow;
                 time = ev.FuseTime;
 
