@@ -60,6 +60,7 @@ namespace Exiled.API.Features
             {
                 if (RoomsValue.Count == 0)
                 {
+                    Room.ResetRoomIds();
                     RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room")
                         .Select(r => new Room(r.name, r.transform, r.transform.position)));
 
