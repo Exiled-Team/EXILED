@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -14,6 +15,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
 
     using LightContainmentZoneDecontamination;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -61,13 +64,29 @@ namespace Exiled.API.Features
                 if (RoomsValue.Count == 0)
                 {
                     Room.ResetRoomIds();
-                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room")
-                        .Select(r => new Room(r.name, r.transform, r.transform.position)));
 
-                    // Add the surface as a room.
-                    const string surfaceRoomName = "Root_*&*Outside Cams";
-                    var surfaceTransform = GameObject.Find(surfaceRoomName).transform;
-                    RoomsValue.Add(new Room(surfaceRoomName, surfaceTransform, surfaceTransform.position));
+                    List<Transform> roomTransforms = ListPool<Transform>.Shared.Rent();
+
+                    // Search for SECTR_Sector instead of tag. It is faster and includes Pocket dimension.
+                    roomTransforms.AddRange(
+                        Object.FindObjectsOfType<SECTR_Sector>()
+                            .Select(sector => sector.transform));
+
+                    // If no rooms were found, it means a plugin is trying to access this before the map is created.
+                    if (roomTransforms.Count == 0)
+                    {
+                        ListPool<Transform>.Shared.Return(roomTransforms);
+                        throw new NullReferenceException("Plugin is trying to access Rooms before they are created.");
+                    }
+
+                    // Add the surface transform "room".
+                    const string surfaceRoomName = "Outside";
+                    roomTransforms.Add(GameObject.Find(surfaceRoomName).transform);
+
+                    RoomsValue.AddRange(roomTransforms.Select(roomTransform =>
+                        new Room(roomTransform.name, roomTransform, roomTransform.position)));
+
+                    ListPool<Transform>.Shared.Return(roomTransforms);
                 }
 
                 return ReadOnlyRoomsValue;

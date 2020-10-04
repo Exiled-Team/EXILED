@@ -231,7 +231,9 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
-                case "Root_*&*Outside Cams":
+                case "PocketWorld":
+                    return RoomType.Pocket;
+                case "Outside":
                     return RoomType.Surface;
                 default:
                     return RoomType.Unknown;

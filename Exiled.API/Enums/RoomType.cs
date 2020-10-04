@@ -248,6 +248,11 @@ public enum RoomType
         EzShelter,
 
         /// <summary>
+        /// Pocket Dimension.
+        /// </summary>
+        Pocket,
+
+        /// <summary>
         /// The Surface.
         /// </summary>
         Surface,
