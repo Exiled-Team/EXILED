@@ -63,28 +63,38 @@ namespace Exiled.API.Features
             {
                 if (RoomsValue.Count == 0)
                 {
-                    List<Transform> roomTransforms = ListPool<Transform>.Shared.Rent();
+                    List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent();
 
-                    // Search for SECTR_Sector instead of tag. It is faster and includes Pocket dimension.
-                    roomTransforms.AddRange(
-                        Object.FindObjectsOfType<SECTR_Sector>()
-                            .Select(sector => sector.transform));
+                    // Get bulk of rooms.
+                    roomObjects.AddRange(GameObject.FindGameObjectsWithTag("Room"));
 
                     // If no rooms were found, it means a plugin is trying to access this before the map is created.
-                    if (roomTransforms.Count == 0)
+                    if (roomObjects.Count == 0)
                     {
-                        ListPool<Transform>.Shared.Return(roomTransforms);
+                        ListPool<GameObject>.Shared.Return(roomObjects);
                         throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
                     }
 
-                    // Add the surface transform "room".
+                    // Add the pocket dimension.
+                    const string PocketPath = "HeavyRooms/PocketWorld";
+                    var pocket = GameObject.Find(PocketPath);
+                    if (pocket == null)
+                        throw new NullReferenceException("Pocket Dimension not found. The name or location in the game's hierarchy might have changed.");
+                    roomObjects.Add(pocket);
+
+                    // Add the surface.
                     const string surfaceRoomName = "Outside";
-                    roomTransforms.Add(GameObject.Find(surfaceRoomName).transform);
+                    var surface = GameObject.Find(surfaceRoomName);
+                    if (surface == null)
+                        throw new NullReferenceException("Surface not found. The name in the game's hierarchy might have changed.");
+                    roomObjects.Add(surface);
 
-                    RoomsValue.AddRange(roomTransforms.Select(roomTransform =>
-                        new Room(roomTransform.name, roomTransform, roomTransform.position)));
+                    foreach (var roomObject in roomObjects)
+                    {
+                        RoomsValue.Add(Room.CreateComponent(roomObject));
+                    }
 
-                    ListPool<Transform>.Shared.Return(roomTransforms);
+                    ListPool<GameObject>.Shared.Return(roomObjects);
                 }
 
                 return ReadOnlyRoomsValue;

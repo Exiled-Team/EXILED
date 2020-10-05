@@ -673,23 +673,16 @@ namespace Exiled.API.Features
         {
             get
             {
-                Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
+                Ray ray = new Ray(Position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                 {
-                    SECTR_Sector sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
-
-                    if (sector != null)
-                    {
-                        foreach (Room room in Map.Rooms)
-                        {
-                            if (room.Transform.gameObject == sector.gameObject)
-                                return room;
-                        }
-                    }
+                    var room = CachedGetCurrentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
+                    if (room != null)
+                        return room;
                 }
 
-                // Default is the surface, since it doesn't have a SECTR_Sector.
+                // Default is surface.
                 return Map.Rooms[Map.Rooms.Count - 1];
             }
         }
