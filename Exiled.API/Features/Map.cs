@@ -74,7 +74,7 @@ namespace Exiled.API.Features
                     if (roomTransforms.Count == 0)
                     {
                         ListPool<Transform>.Shared.Return(roomTransforms);
-                        throw new NullReferenceException("Plugin is trying to access Rooms before they are created.");
+                        throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
                     }
 
                     // Add the surface transform "room".
