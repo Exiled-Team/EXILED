@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.EventArgs
 {
-#pragma warning disable SA1623 // Property summary documentation should match accessors
     using System;
 
     /// <summary>
@@ -32,7 +31,7 @@ namespace Exiled.Events.EventArgs
         public BreakableWindow Window { get; }
 
         /// <summary>
-        /// Get or set the damage the window will receive.
+        /// Gets or sets the damage the window will receive.
         /// </summary>
         public float Damage { get; set; }
     }
