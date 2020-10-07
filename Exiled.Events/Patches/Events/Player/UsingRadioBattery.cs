@@ -7,8 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1600 // Elements should be documented
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+#pragma warning disable SA1313
     using Exiled.Events.Handlers;
     using HarmonyLib;
 
@@ -19,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(Radio), nameof(Radio.UseBattery))]
     internal static class UsingRadioBattery
     {
-        internal static bool Prefix(Radio __instance)
+        private static bool Prefix(Radio __instance)
         {
             var ply = API.Features.Player.Get(__instance.gameObject);
             if (ply != null && __instance.CheckRadio() && __instance.inv.items[__instance.myRadio].id == ItemType.Radio)
