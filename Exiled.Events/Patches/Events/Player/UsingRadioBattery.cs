@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using Exiled.Events.Handlers;
     using HarmonyLib;
 
@@ -27,6 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!ev.IsAllowed)
                     return false;
             }
+
             return true;
         }
     }
