@@ -53,6 +53,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DecontaminatingEventArgs> Decontaminating;
 
         /// <summary>
+        /// Invoked before damaging a window.
+        /// </summary>
+        public static event CustomEventHandler<DamagingWindowEventArgs> DamagingWindow;
+
+        /// <summary>
         /// Invoked before a grenade explodes.
         /// </summary>
         public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
@@ -98,6 +103,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DecontaminatingEventArgs"/> instance.</param>
         public static void OnDecontaminating(DecontaminatingEventArgs ev) => Decontaminating.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before damaging a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
+        public static void OnDamagingWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a grenade explodes.
