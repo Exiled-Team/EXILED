@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.EventArgs
 {
-#pragma warning disable SA1600 // Elements should be documented
     using System;
     using Exiled.API.Features;
 
@@ -31,12 +30,24 @@ namespace Exiled.Events.EventArgs
             IsAllowed = isAllowed;
         }
 
+        /// <summary>
+        /// Gets the player who's using the radio (if transmitting).
+        /// </summary>
         public Player Player { get; }
 
+        /// <summary>
+        /// Gets the Radio object.
+        /// </summary>
         public Radio Radio { get; }
 
+        /// <summary>
+        /// Gets a value indicating whether if the player is transmitting.
+        /// </summary>
         public bool IsTransmitting { get; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// </summary>
         public bool IsAllowed { get; set; }
     }
 }
