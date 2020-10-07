@@ -1,5 +1,13 @@
+// -----------------------------------------------------------------------
+// <copyright file="DamagingWindowEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable SA1623 // Property summary documentation should match accessors
     using System;
 
     /// <summary>
@@ -10,6 +18,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="DamagingWindowEventArgs"/> class.
         /// </summary>
+        /// <param name="window"><inheritdoc cref="Window"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
         public DamagingWindowEventArgs(BreakableWindow window, float damage)
         {
