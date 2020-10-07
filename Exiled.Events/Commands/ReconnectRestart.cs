@@ -22,6 +22,7 @@ namespace Exiled.Events.Commands
     /// The ReconnectRestart command.
     /// </summary>
     [CommandHandler(typeof(RemoteAdminCommandHandler))]
+    [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class ReconnectRestart : ICommand
     {
         /// <inheritdoc/>

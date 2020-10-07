@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
-    using PlayableScps;
+    using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
     /// Contains all informations before SCP-096 gets enraged.

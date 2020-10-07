@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Item.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,6 +7,10 @@
 
 namespace Exiled.API.Extensions
 {
+    using System;
+    using System.Linq;
+
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using UnityEngine;
@@ -107,5 +111,170 @@ namespace Exiled.API.Extensions
             type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
             type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
             type == ItemType.KeycardScientistMajor || type == ItemType.KeycardSeniorGuard || type == ItemType.KeycardZoneManager;
+
+        /// <summary>
+        /// Gets sight modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <returns>Returns <see cref="SightType"/>.</returns>
+        public static SightType GetSight(this Player player, Inventory.SyncItemInfo weapon)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    try
+                    {
+                        string name = wep.mod_sights[weapon.modSight].name.RemoveSpaces();
+                        return (SightType)Enum.Parse(typeof(SightType), name);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            return SightType.None;
+        }
+
+        /// <summary>
+        /// Sets sight modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <param name="type">Type of the sight.</param>
+        public static void SetSight(this Player player, Inventory.SyncItemInfo weapon, SightType type)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    string name = type.ToString("g").SplitCamelCase();
+
+                    int weaponMod = wep.mod_sights.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
+                    int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
+                    weapon.modSight = weaponMod;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets barrel modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <returns>Returns <see cref="BarrelType"/>.</returns>
+        public static BarrelType GetBarrel(this Player player, Inventory.SyncItemInfo weapon)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    try
+                    {
+                        string name = wep.mod_barrels[weapon.modBarrel].name.RemoveSpaces();
+                        return (BarrelType)Enum.Parse(typeof(BarrelType), name);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            return BarrelType.None;
+        }
+
+        /// <summary>
+        /// Sets barrel modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <param name="type">Type of the barrel.</param>
+        public static void SetBarrel(this Player player, Inventory.SyncItemInfo weapon, BarrelType type)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    string name = type.ToString("g").SplitCamelCase();
+
+                    int weaponMod = wep.mod_barrels.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
+                    int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
+                    weapon.modBarrel = weaponMod;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets other modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <returns>Returns <see cref="OtherType"/>.</returns>
+        public static OtherType GetOther(this Player player, Inventory.SyncItemInfo weapon)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    try
+                    {
+                        string name = wep.mod_others[weapon.modOther].name.RemoveSpaces();
+                        return (OtherType)Enum.Parse(typeof(OtherType), name);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
+            }
+
+            return OtherType.None;
+        }
+
+        /// <summary>
+        /// Sets other modification of the weapon.
+        /// </summary>
+        /// <param name="player">The player instance.</param>
+        /// <param name="weapon">The weapon with attachment.</param>
+        /// <param name="type">Type of the other.</param>
+        public static void SetOther(this Player player, Inventory.SyncItemInfo weapon, OtherType type)
+        {
+            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            if (weapon.id.IsWeapon())
+            {
+                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                if (wep != null)
+                {
+                    string name = type.ToString("g").SplitCamelCase();
+
+                    int weaponMod = wep.mod_others.Select((s, i) => new { s, i }).Where(e => e.s.name == name).Select(e => e.i).FirstOrDefault();
+                    int weaponId = player.Inventory.items.FindIndex(s => s == weapon);
+                    weapon.modOther = weaponMod;
+                    if (weaponId > -1)
+                    {
+                        player.Inventory.items[weaponId] = weapon;
+                    }
+                }
+            }
+        }
     }
 }

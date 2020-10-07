@@ -32,6 +32,10 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnPickingUpItem(ev);
 
+                // Allow future pick up of this item
+                if (!ev.IsAllowed)
+                    __instance.TargetPickup.InUse = false;
+
                 return ev.IsAllowed;
             }
             catch (Exception e)

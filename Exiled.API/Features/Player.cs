@@ -24,6 +24,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     using NorthwoodLib;
+    using NorthwoodLib.Pools;
 
     using RemoteAdmin;
 
@@ -34,6 +35,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+        private static readonly RaycastHit[] CachedGetCurrentRoomRaycast = new RaycastHit[1];
+
         private ReferenceHub referenceHub;
 
         /// <summary>
@@ -49,9 +52,20 @@ namespace Exiled.API.Features
         public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
+#pragma warning disable CS0618 // Type or member is obsolete
+            ListPool<int>.Shared.Return(TargetGhosts);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -61,12 +75,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>();
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
@@ -176,12 +190,16 @@ namespace Exiled.API.Features
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
@@ -216,7 +234,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
-        public List<int> TargetGhosts { get; private set; } = new List<int>();
+        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases")]
+        public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a list of player ids who can't see the player.
+        /// </summary>
+        public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a value indicating whether the player has Remote Admin access.
+        /// </summary>
+        public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
@@ -242,7 +271,7 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
@@ -297,7 +326,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
+        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
+
+        /// <summary>
+        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// </summary>
+        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is jumping or not.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
         /// Gets or sets the player's IP address.
@@ -634,23 +673,24 @@ namespace Exiled.API.Features
         {
             get
             {
-                Vector3 end = Position - new Vector3(0f, 10f, 0f);
-                bool flag = Physics.Linecast(Position, end, out RaycastHit raycastHit, -84058629);
+                Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
 
-                if (!flag || raycastHit.transform == null)
-                    return null;
-
-                Transform latestParent = raycastHit.transform;
-                while (latestParent.parent?.parent != null)
-                    latestParent = latestParent.parent;
-
-                foreach (Room room in Map.Rooms)
+                if (Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                 {
-                    if (room.Transform == latestParent)
-                        return room;
+                    SECTR_Sector sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
+
+                    if (sector != null)
+                    {
+                        foreach (Room room in Map.Rooms)
+                        {
+                            if (room.Transform.gameObject == sector.gameObject)
+                                return room;
+                        }
+                    }
                 }
 
-                return new Room(latestParent.name, latestParent, latestParent.position);
+                // Default is the surface, since it doesn't have a SECTR_Sector.
+                return Map.Rooms[Map.Rooms.Count - 1];
             }
         }
 
@@ -688,12 +728,12 @@ namespace Exiled.API.Features
         {
             get
             {
-                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                var serverRoles = ReferenceHub.serverRoles;
+                ServerRoles serverRoles = ReferenceHub.serverRoles;
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
@@ -712,6 +752,11 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
