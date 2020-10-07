@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable SA1600 // Elements should be documented
     using System;
     using Exiled.API.Features;
 
@@ -37,6 +38,5 @@ namespace Exiled.Events.EventArgs
         public bool IsTransmitting { get; }
 
         public bool IsAllowed { get; set; }
-
     }
 }
