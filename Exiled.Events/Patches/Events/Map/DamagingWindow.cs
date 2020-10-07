@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
     using HarmonyLib;
     using Mirror;
 
@@ -29,6 +31,7 @@ namespace Exiled.Events.Patches.Events.Map
                     __instance.StartCoroutine(__instance.BreakWindow());
                 }
             }
+
             return false;
         }
     }
