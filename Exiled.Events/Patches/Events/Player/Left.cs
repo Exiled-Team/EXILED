@@ -29,7 +29,11 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 // The game checks for null NetworkIdentity, do the same
-                Player player = Player.Get(conn.identity?.gameObject);
+                // GameObjects don't support the null-conditional operator (?) and the null-coalescing operator (??)
+                if (conn.identity == null || conn.identity.gameObject == null)
+                    return;
+
+                Player player = Player.Get(conn.identity.gameObject);
 
                 if (player == null || player.IsHost)
                     return;
@@ -46,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.Left:\n{exception}");
+                Log.Error($"{typeof(Left).FullName}.{nameof(Prefix)}:\n{exception}");
             }
         }
     }
