@@ -23,38 +23,38 @@ If you choose to use the installer it will, if run correctly, take care of insta
 
 # Windows
 ## Automatic installation
-  - Download the `Exiled.Installer.exe` [from here](https://github.com/galaxy119/EXILED/releases) (click on Assets -> click the Installer)
+  - Download the **`Exiled.Installer.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
-  - Double click the `Exiled.Installer.exe` or [download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1) and place it in the server folder to install the latest pre-release
+  - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
 **Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
 
 ## Manual installation
-  - Download the `Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)
+  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
-  - Move ``Assembly-CSharp.dll`` to: `<Your Server Folder>\SCPSL_Data\Managed` and replace the file.
-  - Move the ``EXILED`` folder to `%appdata%` *Note: This folder needs to go in ``C:\Users\<Your_User>\AppData\Roaming``, and ***NOT*** ``C:\Users\<Your_User>\AppData\Roaming\SCP Secret Laboratory``
+  - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
+  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\*
     - Windows 10:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
     - Any other Windows version:
       Press Win + R and type `%appdata%`
 
-That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``C:\Users\<Your_User>\AppData\Roaming\EXILED\Plugins``.
+That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins``.
 
 # Linux
 ## Automatic installation
-  - Download the `Exiled.Installer.exe` [from here](https://github.com/galaxy119/EXILED/releases) (click on Assets -> download the Installer)
-  - Install it by either typing `mono Exiled.Installer.exe /path/to/server` or move it inside the server folder directly, move to it with the terminal and type: `mono Exiled.Installer.exe`.
-  - If you want the latest pre-release, simply add `--pre-releases`. Example: `mono Exiled.Installer.exe /home/scp/server --pre-releases`
+  - Download the **`Exiled.Installer.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
+  - Install it by either typing **`mono Exiled.Installer.exe /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`mono Exiled.Installer.exe`**.
+  - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`mono Exiled.Installer.exe /home/scp/server --pre-releases`**
 **Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or root)
 
 ## Manual installation
   - **Ensure** you are logged in on the user that runs the SCP servers.
-  - Download the `Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases) (if using SSH, you can use `wget <link_to_download>` to directly download it, just right click the link in the "Assets" part)
-  - To extract it to your current folder, type ``tar -xzvf EXILED.tar.gz``
-  - Move the included ``Assembly-CSharp.dll`` file into the ``SCPSL_Data/Managed`` folder of your server installation (command: `mv Assembly-CSharp.dll <path_to_server>/SCPSL_Data/Managed`).
-  - Move the `EXILED` folder to ``~/.config`` *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (command: `mv EXILED ~/.config/`)
+  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
+  - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
+  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
+  - Move the **`EXILED`** folder to **``~/.config``** *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
 
-That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``~/.config/EXILED/Plugins`` (``%AppData%\EXILED\Plugins`` on Windows).
+That's it, EXILED should now be installed and active the next time you boot up your server. It should be noted, that EXILED by themselves will do almost nothing, you must have plugins installed in order to use EXILED. Plugin .dll files go into the `Plugins` folder that should now be located at ``~/.config/EXILED/Plugins``.
 
 # Config
 EXILED by itself offers some config options.
