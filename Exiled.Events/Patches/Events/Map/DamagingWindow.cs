@@ -22,6 +22,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             var ev = new EventArgs.DamagingWindowEventArgs(__instance, damage);
             Handlers.Map.OnDamagingWindow(ev);
+            damage = ev.Damage;
         }
     }
 }
