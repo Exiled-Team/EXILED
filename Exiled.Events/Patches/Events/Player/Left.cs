@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.Left: {exception}\n{exception.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.Left:\n{exception}");
             }
         }
     }
