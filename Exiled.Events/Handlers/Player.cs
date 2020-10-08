@@ -258,17 +258,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
-        /// Invoked when using radio battery.
-        /// </summary>
-        public static event CustomEventHandler<UsingRadioBatteryEventArgs> UsingRadioBattery;
-
-        /// <summary>
-        /// Invoked when using radio battery.
-        /// </summary>
-        /// <param name="ev">The <see cref="UsingRadioBatteryEventArgs"/> instance.</param>
-        public static void OnRadioBatteryUsing(UsingRadioBatteryEventArgs ev) => UsingRadioBattery.InvokeSafely(ev);
-
-        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
