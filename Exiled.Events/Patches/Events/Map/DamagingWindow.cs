@@ -18,20 +18,10 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(BreakableWindow), nameof(BreakableWindow.ServerDamageWindow))]
     internal static class DamagingWindow
     {
-        private static bool Prefix(BreakableWindow __instance, ref float damage)
+        private static void Prefix(BreakableWindow __instance, ref float damage)
         {
-            if (NetworkServer.active)
-            {
-                var ev = new EventArgs.DamagingWindowEventArgs(__instance, damage);
-                Handlers.Map.OnDamagingWindow(ev);
-                __instance.health -= ev.Damage;
-                if (__instance.health <= 0f)
-                {
-                    __instance.StartCoroutine(__instance.BreakWindow());
-                }
-            }
-
-            return false;
+            var ev = new EventArgs.DamagingWindowEventArgs(__instance, damage);
+            Handlers.Map.OnDamagingWindow(ev);
         }
     }
 }
