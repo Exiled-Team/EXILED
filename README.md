@@ -23,10 +23,12 @@ If you choose to use the installer it will, if run correctly, take care of insta
 
 # Windows
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+**Note**: Make sure you're on the user that runs the server, or else you have Admin privileges.
+
   - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
   - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
-  - To install and get plugins, check the [Installing plugins](#installing-plugins section down below.
+  - To install and get plugins, check the [Installing plugins](#installing-plugins) section down below.
 **Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
 
 ### Manual installation
@@ -47,19 +49,21 @@ That's it, EXILED should now be installed and active the next time you boot up y
 
 # Linux
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+
+**Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or root)
+
   - Download the **`Exiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
   - Install it by either typing **`./Exiled.Installer-Linux.exe /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux.exe`**.
   - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
   - Another example, if you placed `Exiled.Installer-Linux` in your server folder: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
-**Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or root)
+  - To install and get plugins, check the [Installing plugins](#installing-plugins-1) section down below.
 
 ### Manual installation
   - **Ensure** you are logged in on the user that runs the SCP servers.
   - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
   - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
-  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
-  - Move the **`EXILED`** folder to **``~/.config``** *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
-
+  - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**). *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Move the **`EXILED`** folder to **``~/.config``** 
 
 ### Installing plugins
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
