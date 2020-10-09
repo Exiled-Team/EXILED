@@ -23,7 +23,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
 
 # Windows
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
-**Note**: Make sure you're on the user that runs the server, or else you have Admin privileges.
+**Note**: Make sure you're on the user that runs the server or you have Admin privileges before running the Installer.
 
   - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
@@ -50,7 +50,7 @@ That's it, EXILED should now be installed and active the next time you boot up y
 # Linux
 ### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
 
-**Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or root)
+**Note:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
 
   - Download the **`Exiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
   - Install it by either typing **`./Exiled.Installer-Linux /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
