@@ -46,16 +46,9 @@ namespace Exiled.Events.Patches.Events.Server
                             .Where(p => p.IsDead && !p.IsOverwatchEnabled));
 
                     if (__instance._prioritySpawn)
-                    {
-                        var tempList = ListPool<API.Features.Player>.Shared.Rent();
-                        tempList.AddRange(list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime));
-                        ListPool<API.Features.Player>.Shared.Return(list);
-                        list = tempList;
-                    }
+                        list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime).ToList();
                     else
-                    {
                         list.ShuffleList();
-                    }
 
                     RespawnTickets singleton = RespawnTickets.Singleton;
                     int a = singleton.GetAvailableTickets(__instance.NextKnownTeam);
@@ -67,12 +60,20 @@ namespace Exiled.Events.Patches.Events.Server
 
                     int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);
 
-                    var ev = new RespawningTeamEventArgs(list, __instance.NextKnownTeam);
+                    var tempNum = num;
+                    var tempNextTeam = __instance.NextKnownTeam;
+
+                    var ev = new RespawningTeamEventArgs(list, num, __instance.NextKnownTeam);
                     Handlers.Server.OnRespawningTeam(ev);
+
+                    num = ev.MaximumRespawnAmount;
 
                     if (ev.IsAllowed && ev.SpawnableTeam != null)
                     {
-                        while (list.Count > ev.MaximumRespawnAmount)
+                        if (tempNum == num && tempNextTeam != ev.NextKnownTeam)
+                            num = Mathf.Min(singleton.GetAvailableTickets(ev.NextKnownTeam), ev.SpawnableTeam.Value.MaxWaveSize);
+
+                        while (list.Count > num)
                             list.RemoveAt(list.Count - 1);
 
                         list.ShuffleList();
