@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -18,7 +19,7 @@ namespace Exiled.API.Features
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room
+    public class Room : IEquatable<Room>
     {
         private readonly FlickerableLightController flickerableLightController;
 
@@ -75,30 +76,48 @@ namespace Exiled.API.Features
         public IEnumerable<Door> Doors { get; }
 
         /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="lhs">Left comparer.</param>
+        /// <param name="rhs">Right comparer.</param>
+        /// <returns>If the rooms are equal.</returns>
+        public static bool operator ==(Room lhs, Room rhs) => lhs != null && lhs.Equals(rhs);
+
+        /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="lhs">Left comparer.</param>
+        /// <param name="rhs">Right comparer.</param>
+        /// <returns>If the rooms are not equal.</returns>
+        public static bool operator !=(Room lhs, Room rhs) => lhs != null && !lhs.Equals(rhs);
+
+        /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         public void TurnOffLights(float duration) => flickerableLightController?.ServerFlickerLights(duration);
 
-        private ZoneType FindZone()
-        {
-            if (Transform.parent == null)
-                return ZoneType.Unspecified;
+        /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="other">Other Room.</param>
+        /// <returns>If the rooms are equal.</returns>
+        public bool Equals(Room other) => other != null && this.Transform.gameObject == other.Transform.gameObject;
 
-            switch (Transform.parent.name)
-            {
-                case "HeavyRooms":
-                    return ZoneType.HeavyContainment;
-                case "LightRooms":
-                    return ZoneType.LightContainment;
-                case "EntranceRooms":
-                    return ZoneType.Entrance;
-                default:
-                    return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
-            }
-        }
+        /// <summary>
+        /// Equality Comparer.
+        /// </summary>
+        /// <param name="obj">Other object.</param>
+        /// <returns>If the rooms are equal.</returns>
+        public override bool Equals(object obj) => obj is Room room && this == room;
 
-        private RoomType FindType(string rawName)
+        /// <summary>
+        /// Gets the unique room Id.
+        /// </summary>
+        /// <returns>The unique Room Id.</returns>
+        public override int GetHashCode() => this.Transform.gameObject.GetHashCode();
+
+        private static RoomType FindType(string rawName)
         {
             // Try to remove brackets if they exist.
             rawName = rawName.RemoveBracketsOnEndOfName();
@@ -197,10 +216,30 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
-                case "Root_*&*Outside Cams":
+                case "PocketWorld":
+                    return RoomType.Pocket;
+                case "Outside":
                     return RoomType.Surface;
                 default:
                     return RoomType.Unknown;
+            }
+        }
+
+        private ZoneType FindZone()
+        {
+            if (Transform.parent == null)
+                return ZoneType.Unspecified;
+
+            switch (Transform.parent.name)
+            {
+                case "HeavyRooms":
+                    return ZoneType.HeavyContainment;
+                case "LightRooms":
+                    return ZoneType.LightContainment;
+                case "EntranceRooms":
+                    return ZoneType.Entrance;
+                default:
+                    return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
             }
         }
 

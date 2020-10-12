@@ -16,7 +16,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Basic configs validation.
     /// </summary>
-    internal sealed class ValidatingNodeDeserializer : INodeDeserializer
+    public sealed class ValidatingNodeDeserializer : INodeDeserializer
     {
         private readonly INodeDeserializer nodeDeserializer;
 
