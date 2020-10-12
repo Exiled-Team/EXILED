@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Server
                             .Where(p => p.IsDead && !p.IsOverwatchEnabled));
 
                     if (__instance._prioritySpawn)
-                        list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime).ToList();
+                        list = list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime).ToList();
                     else
                         list.ShuffleList();
 
