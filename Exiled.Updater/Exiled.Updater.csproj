@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\Exiled\SemVer2Version.cs" Link ="Models\SemVer2Version.cs" />
+    <Compile Include="..\Exiled\SemVer2Version.cs" Link="Models\SemVer2Version.cs" />
     <Compile Include="..\Exiled\VersionComparer.cs" />
   </ItemGroup>
   
