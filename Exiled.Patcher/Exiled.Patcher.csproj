@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.targets;../EXILED.props" />
+  <Import Project="../EXILED.props" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -19,7 +19,6 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
 
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
-    <DisableIncludingCommit>true</DisableIncludingCommit>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">
