@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater
+namespace Exiled
 {
     using System;
     using System.Collections.Generic;

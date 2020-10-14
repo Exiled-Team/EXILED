@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater.Models
+namespace Exiled
 {
     using System;
     using System.Text.RegularExpressions;
