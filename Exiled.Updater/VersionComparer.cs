@@ -39,7 +39,6 @@ namespace Exiled.Updater
             return x.CompareTo(y);
         }
 
-#if DEBUG
         internal static bool CustomVersionGreaterOrEquals(Version v1, Version v2)
         {
             return CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals)
@@ -53,7 +52,6 @@ namespace Exiled.Updater
                     CustomNumberCompare(v1.Minor, v2.Minor, CompareType.MoreOrEquals) &&
                     CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals));
         }
-#endif
 
         internal static bool CustomVersionGreater(Version v1, Version v2)
         {
