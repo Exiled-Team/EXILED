@@ -49,24 +49,6 @@ namespace Exiled.Events
         public bool CanSpawnBlood { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the anti-fly treshold.
-        /// </summary>
-        [Description("The anti-fly treshold")]
-        public int AntiFlyThreshold { get; set; } = 5;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the anti fly is enabled or not.
-        /// </summary>
-        [Description("Indicates whether the anti-fly is enabled or not")]
-        public bool IsAntiFlyEnabled { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the teams have to be respawned at random or not.
-        /// </summary>
-        [Description("Indicates whether the teams have to be respawned at random or not")]
-        public bool IsRespawnRandom { get; set; }
-
-        /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
         public bool ShouldReloadConfigsAtRoundRestart { get; set; }

@@ -35,6 +35,8 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+        private static readonly RaycastHit[] CachedGetCurrentRoomRaycast = new RaycastHit[1];
+
         private ReferenceHub referenceHub;
 
         /// <summary>
@@ -241,6 +243,11 @@ namespace Exiled.API.Features
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
+        /// Gets a value indicating whether the player has Remote Admin access.
+        /// </summary>
+        public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
+
+        /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
         /// </summary>
         public bool IsOverwatchEnabled
@@ -320,6 +327,16 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
+
+        /// <summary>
+        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// </summary>
+        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is jumping or not.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
         /// Gets or sets the player's IP address.
@@ -656,23 +673,24 @@ namespace Exiled.API.Features
         {
             get
             {
-                Vector3 end = Position - new Vector3(0f, 10f, 0f);
-                bool flag = Physics.Linecast(Position, end, out RaycastHit raycastHit, -84058629);
+                Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
 
-                if (!flag || raycastHit.transform == null)
-                    return null;
-
-                Transform latestParent = raycastHit.transform;
-                while (latestParent.parent?.parent != null)
-                    latestParent = latestParent.parent;
-
-                foreach (Room room in Map.Rooms)
+                if (Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
                 {
-                    if (room.Transform == latestParent)
-                        return room;
+                    SECTR_Sector sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
+
+                    if (sector != null)
+                    {
+                        foreach (Room room in Map.Rooms)
+                        {
+                            if (room.Transform.gameObject == sector.gameObject)
+                                return room;
+                        }
+                    }
                 }
 
-                return new Room(latestParent.name, latestParent, latestParent.position);
+                // Default is the surface, since it doesn't have a SECTR_Sector.
+                return Map.Rooms[Map.Rooms.Count - 1];
             }
         }
 
@@ -710,12 +728,12 @@ namespace Exiled.API.Features
         {
             get
             {
-                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                var serverRoles = ReferenceHub.serverRoles;
+                ServerRoles serverRoles = ReferenceHub.serverRoles;
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -14,6 +15,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
 
     using LightContainmentZoneDecontamination;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -33,6 +36,8 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
+
+        private static SpawnpointManager spawnpointManager;
 
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
@@ -58,13 +63,28 @@ namespace Exiled.API.Features
             {
                 if (RoomsValue.Count == 0)
                 {
-                    RoomsValue.AddRange(GameObject.FindGameObjectsWithTag("Room")
-                        .Select(r => new Room(r.name, r.transform, r.transform.position)));
+                    List<Transform> roomTransforms = ListPool<Transform>.Shared.Rent();
 
-                    // Add the surface as a room.
-                    const string surfaceRoomName = "Root_*&*Outside Cams";
-                    var surfaceTransform = GameObject.Find(surfaceRoomName).transform;
-                    RoomsValue.Add(new Room(surfaceRoomName, surfaceTransform, surfaceTransform.position));
+                    // Search for SECTR_Sector instead of tag. It is faster and includes Pocket dimension.
+                    roomTransforms.AddRange(
+                        Object.FindObjectsOfType<SECTR_Sector>()
+                            .Select(sector => sector.transform));
+
+                    // If no rooms were found, it means a plugin is trying to access this before the map is created.
+                    if (roomTransforms.Count == 0)
+                    {
+                        ListPool<Transform>.Shared.Return(roomTransforms);
+                        throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
+                    }
+
+                    // Add the surface transform "room".
+                    const string surfaceRoomName = "Outside";
+                    roomTransforms.Add(GameObject.Find(surfaceRoomName).transform);
+
+                    RoomsValue.AddRange(roomTransforms.Select(roomTransform =>
+                        new Room(roomTransform.name, roomTransform, roomTransform.position)));
+
+                    ListPool<Transform>.Shared.Return(roomTransforms);
                 }
 
                 return ReadOnlyRoomsValue;
@@ -128,6 +148,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Shows a Hint to all players.
+        /// </summary>
+        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="duration">The duration in seconds.</param>
+        public static void ShowHint(string message, float duration)
+        {
+            foreach (Player player in Player.List)
+            {
+                player.ShowHint(message, duration);
+            }
+        }
+
+        /// <summary>
         /// Clears all players' broadcasts.
         /// </summary>
         public static void ClearBroadcasts() => Server.Broadcast.RpcClearElements();
@@ -139,7 +172,14 @@ namespace Exiled.API.Features
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
-            GameObject randomPosition = Object.FindObjectOfType<SpawnpointManager>().GetRandomPosition(roleType);
+            GameObject randomPosition;
+
+            if (spawnpointManager == null)
+            {
+                spawnpointManager = Object.FindObjectOfType<SpawnpointManager>();
+            }
+
+            randomPosition = spawnpointManager.GetRandomPosition(roleType);
 
             return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
         }
@@ -147,7 +187,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Starts the Decontamination process.
         /// </summary>
-        public static void StartDecontamination() => DecontaminationController.Singleton._nextPhase = DecontaminationController.Singleton.DecontaminationPhases.Length - 1;
+        public static void StartDecontamination()
+        {
+            DecontaminationController.Singleton.FinishDecontamination();
+            DecontaminationController.Singleton.NetworkRoundStartTime = -1f;
+        }
 
         /// <summary>
         /// Turns off all lights of the facility (except for the entrance zone).
@@ -161,6 +205,8 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
+            spawnpointManager = null;
+
             RoomsValue.Clear();
             DoorsValue.Clear();
             LiftsValue.Clear();
