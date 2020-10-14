@@ -826,6 +826,9 @@ namespace Exiled.API.Features
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(args))
+                    return null;
+
                 if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 
