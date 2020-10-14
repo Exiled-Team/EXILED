@@ -34,7 +34,10 @@ namespace Exiled
         public static readonly VersionComparer Instance = new VersionComparer();
 
         /// <inheritdoc />
+// For Exiled.Installer which uses C# 8.0
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public int Compare(Version x, Version y)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             return x.CompareTo(y);
         }
