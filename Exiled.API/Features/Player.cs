@@ -186,7 +186,7 @@ namespace Exiled.API.Features
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Substring(index))
+                switch (UserId.Substring(index + 1))
                 {
                     case "steam":
                         return AuthenticationType.Steam;
