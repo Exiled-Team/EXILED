@@ -170,7 +170,7 @@ namespace Exiled.Events.Patches.Generic
                         if (target?.ReferenceHub == null)
                             continue;
 
-                        if (player.IsInvisible || !PlayerCanSee(player, target.Id))
+                        if (player.IsInvisible || PlayerCannotSee(player, target.Id))
                         {
                             MakeGhost(z, __instance._transmitBuffer);
                         }
@@ -216,7 +216,12 @@ namespace Exiled.Events.Patches.Generic
 
         private static Vector3 FindLookRotation(Vector3 player, Vector3 target) => (target - player).normalized;
 
-        private static bool PlayerCanSee(Player source, int playerId) => source.TargetGhostsHashSet.Contains(playerId) || source.TargetGhosts.Contains(playerId);
+        // It's called when the player checks to see a player,
+        // as the method called that the player CANNOT see another player
+        // so an execution result will be:
+        // true -> the player can't see another player
+        // false -> the player can see another player
+        private static bool PlayerCannotSee(Player source, int playerId) => source.TargetGhostsHashSet.Contains(playerId) || source.TargetGhosts.Contains(playerId);
 
         private static void MakeGhost(int index, PlayerPositionData[] buff) => buff[index] = new PlayerPositionData(GhostPos, buff[index].rotation, buff[index].playerID);
 
