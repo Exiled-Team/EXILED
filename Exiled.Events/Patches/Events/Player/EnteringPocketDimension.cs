@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 ReferenceHub hub = ReferenceHub.GetHub(ply);
-                CharacterClassManager ccm = hub?.characterClassManager;
+                CharacterClassManager ccm = hub != null ? hub.characterClassManager : null;
 
                 if (ccm == null)
                     return false;

@@ -17,7 +17,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Spurce: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    internal sealed class CommentGatheringTypeInspector : TypeInspectorSkeleton
+    public sealed class CommentGatheringTypeInspector : TypeInspectorSkeleton
     {
         private readonly ITypeInspector innerTypeDescriptor;
 

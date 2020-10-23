@@ -14,6 +14,8 @@ namespace Exiled.Events.EventArgs
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
     /// Contains all informations before spawning a wave of <see cref="Team.CHI"/> or <see cref="Team.MTF"/>..
     /// </summary>
@@ -72,7 +74,15 @@ namespace Exiled.Events.EventArgs
             var team = SpawnableTeam;
             if (team != null)
             {
-                MaximumRespawnAmount = team.Value.MaxWaveSize;
+                // Refer to the game code
+                int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
+                if (a == 0)
+                {
+                    a = RespawnTickets.DefaultTeamAmount;
+                    RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
+                }
+
+                MaximumRespawnAmount = Mathf.Min(a, team.Value.MaxWaveSize);
             }
         }
     }

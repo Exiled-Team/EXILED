@@ -184,7 +184,7 @@ namespace Exiled.API.Features
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Substring(index))
+                switch (UserId.Substring(index + 1))
                 {
                     case "steam":
                         return AuthenticationType.Steam;
@@ -239,6 +239,11 @@ namespace Exiled.API.Features
         /// Gets a list of player ids who can't see the player.
         /// </summary>
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a value indicating whether the player has Remote Admin access.
+        /// </summary>
+        public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
@@ -320,6 +325,16 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is zooming or not.
         /// </summary>
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
+
+        /// <summary>
+        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// </summary>
+        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+
+        /// <summary>
+        /// Gets a value indicating whether the player is jumping or not.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
         /// Gets or sets the player's IP address.
@@ -652,29 +667,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current room the player is in.
         /// </summary>
-        public Room CurrentRoom
-        {
-            get
-            {
-                Vector3 end = Position - new Vector3(0f, 10f, 0f);
-                bool flag = Physics.Linecast(Position, end, out RaycastHit raycastHit, -84058629);
-
-                if (!flag || raycastHit.transform == null)
-                    return null;
-
-                Transform latestParent = raycastHit.transform;
-                while (latestParent.parent?.parent != null)
-                    latestParent = latestParent.parent;
-
-                foreach (Room room in Map.Rooms)
-                {
-                    if (room.Transform == latestParent)
-                        return room;
-                }
-
-                return new Room(latestParent.name, latestParent, latestParent.position);
-            }
-        }
+        public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the player's group.
@@ -710,12 +703,12 @@ namespace Exiled.API.Features
         {
             get
             {
-                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
+                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
 
                 if (string.IsNullOrEmpty(token))
                     return null;
 
-                var serverRoles = ReferenceHub.serverRoles;
+                ServerRoles serverRoles = ReferenceHub.serverRoles;
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
@@ -808,6 +801,9 @@ namespace Exiled.API.Features
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(args))
+                    return null;
+
                 if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 

@@ -16,7 +16,7 @@ namespace Exiled.Loader.Features.Configs
     /// <summary>
     /// Source: https://dotnetfiddle.net/8M6iIE.
     /// </summary>
-    internal sealed class CommentsPropertyDescriptor : IPropertyDescriptor
+    public sealed class CommentsPropertyDescriptor : IPropertyDescriptor
     {
         private readonly IPropertyDescriptor baseDescriptor;
 
