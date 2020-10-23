@@ -35,8 +35,6 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
-        private static readonly RaycastHit[] CachedGetCurrentRoomRaycast = new RaycastHit[1];
-
         private ReferenceHub referenceHub;
 
         /// <summary>
@@ -669,30 +667,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current room the player is in.
         /// </summary>
-        public Room CurrentRoom
-        {
-            get
-            {
-                Ray ray = new Ray(Position, Vector3.down); // Shoot down, it's faster.
-
-                if (Physics.RaycastNonAlloc(ray, CachedGetCurrentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
-                {
-                    SECTR_Sector sector = CachedGetCurrentRoomRaycast[0].transform.GetComponentInParent<SECTR_Sector>();
-
-                    if (sector != null)
-                    {
-                        foreach (Room room in Map.Rooms)
-                        {
-                            if (room.Transform.gameObject == sector.gameObject)
-                                return room;
-                        }
-                    }
-                }
-
-                // Default is the surface, since it doesn't have a SECTR_Sector.
-                return Map.Rooms[Map.Rooms.Count - 1];
-            }
-        }
+        public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the player's group.

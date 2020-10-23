@@ -12,12 +12,18 @@ namespace Exiled.Events.Patches.Events.Scp079
 #pragma warning disable CS0436
     using System;
     using System.Collections.Generic;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
+
     using UnityEngine;
+
     using Console = GameCore.Console;
     using Log = Exiled.API.Features.Log;
 
@@ -179,10 +185,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Transform roomTransform = scp079SpeakerObject.transform.parent;
-
                             Player player = Player.Get(__instance.gameObject);
-                            Room room = new Room(roomTransform.name, roomTransform.transform, roomTransform.position);
+                            Room room = Map.FindParentRoom(__instance.currentCamera.gameObject);
 
                             float apDrain = __instance.GetManaFromLabel("Speaker Start", __instance.abilities);
                             bool isAllowed = apDrain * 1.5f <= __instance.curMana;
@@ -225,11 +229,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                             }
 
                             string[] array7 = __instance.Speaker.Substring(0, __instance.Speaker.Length - 14).Split('/');
-                            GameObject roomObject = GameObject.Find(array7[0] + "/" + array7[1]);
 
                             StoppingSpeakerEventArgs ev = new StoppingSpeakerEventArgs(
                                 Player.Get(__instance.gameObject),
-                                new Room(roomObject.name, roomObject.transform, roomObject.transform.position));
+                                Map.FindParentRoom(__instance.currentCamera.gameObject));
+
                             Handlers.Scp079.OnStoppingSpeaker(ev);
 
                             if (ev.IsAllowed)
