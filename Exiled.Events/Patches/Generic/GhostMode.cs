@@ -19,6 +19,8 @@ namespace Exiled.Events.Patches.Generic
 
     using Mirror;
 
+    using RemoteAdmin;
+
     using UnityEngine;
 
     using Scp096 = PlayableScps.Scp096;
@@ -160,6 +162,15 @@ namespace Exiled.Events.Patches.Generic
                     for (var z = 0; z < __instance._usedData; z++)
                     {
                         var ppd = __instance._transmitBuffer[z];
+
+                        // Do you remember the bug
+                        // when you can't pick up any item?
+                        // - Me too;
+                        // It was because for a reason
+                        // we made the source player
+                        // invisible to themself
+                        if (player.Id == ppd.playerID)
+                            continue;
 
                         // If it's already has the ghost position
                         if (ppd.position == GhostPos)
