@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.targets" />
+  <Import Project="../EXILED.props" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -16,8 +16,9 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Release'">
@@ -34,6 +35,11 @@
     <PackageReference Include="Octokit" Version="0.48.0" />
     <PackageReference Include="SharpZipLib" Version="1.2.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Exiled\SemVer2Version.cs" Link ="Models\SemVer2Version.cs" />
+    <Compile Include="..\Exiled\VersionComparer.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -46,6 +46,7 @@ jobs:
     - name: Build
       env:
         EXILED_REFERENCES: ${{ github.workspace }}/References
+        GIT_COMMIT_SHA: ${{ github.sha }}
       shell: pwsh
       run: |
         dotnet build Exiled.API -c release
@@ -72,7 +73,7 @@ jobs:
     - name: Generate nuget package
       shell: pwsh
       run: |
-        [XML]$TargetsFile = Get-Content Exiled.targets
+        [XML]$TargetsFile = Get-Content Exiled.props
         $Version = $TargetsFile.Project.PropertyGroup.Version
         $Version = $Version[0].Trim()
         $Year = [System.DateTime]::Now.ToString("yyyy")

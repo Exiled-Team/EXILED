@@ -1,8 +1,8 @@
 # EditorConfig is awesome: https://EditorConfig.org
 root = true
-############################### 
-# Basic conventions           # 
-############################### 
+###############################
+# Basic conventions           #
+###############################
 [*]
 charset = utf-8
 end_of_line = lf
@@ -11,15 +11,15 @@ indent_size = 4
 indent_style = space
 trim_trailing_whitespace = true
 # Project files
-[*.{csproj,json,md,nuspec,yml}]
+[*.{csproj,json,md,nuspec,yml,props,targets}]
 indent_size = 2
 indent_style = space
 # Solution Files
 [*.{sln,xml}]
 indent_style = tab
-############################### 
-# .NET Coding Conventions     # 
-############################### 
+###############################
+# .NET Coding Conventions     #
+###############################
 [*.cs]
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true

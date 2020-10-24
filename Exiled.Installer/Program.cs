@@ -14,7 +14,6 @@ namespace Exiled.Installer
     using System.Net.Http;
     using System.Reflection;
     using System.Text;
-    using System.Threading;
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
@@ -50,7 +49,7 @@ namespace Exiled.Installer
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
         private static readonly GitHubClient GitHubClient = new GitHubClient(
-            new ProductHeaderValue($"{Header}"));
+            new ProductHeaderValue(Header));
 
         // Force use of LF because the file uses LF
         private static readonly Dictionary<string, string> Markup = Resources.Markup.Trim().Split('\n').ToDictionary(s => s.Split(':')[0], s => s.Split(':', 2)[1]);
@@ -121,10 +120,10 @@ namespace Exiled.Installer
                 Console.WriteLine(FormatAsset(exiledAsset));
 
                 using var httpClient = new HttpClient();
+                httpClient.Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload);
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
-                using var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(SecondsWaitForDownload));
-                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl, cancellationToken.Token).ConfigureAwait(false);
+                using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);
                 using var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using var gzInputStream = new GZipInputStream(downloadArchiveStream);
@@ -153,7 +152,7 @@ namespace Exiled.Installer
 
         private static async Task<IEnumerable<Release>> GetReleases() =>
             (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                .Where(r => Version.TryParse(r.TagName, out var version) && version >= VersionLimit)
+                .Where(r => VersionComparer.CustomVersionGreaterOrEquals(SemVer2Version.Parse(r.TagName).Backwards, VersionLimit))
                 .OrderByDescending(r => r.CreatedAt.Ticks);
 
         private static string FormatRelease(Release r)

@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Updater
+namespace Exiled
 {
     using System;
     using System.Collections.Generic;
@@ -34,12 +34,14 @@ namespace Exiled.Updater
         public static readonly VersionComparer Instance = new VersionComparer();
 
         /// <inheritdoc />
+// For Exiled.Installer which uses C# 8.0
+#pragma warning disable CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         public int Compare(Version x, Version y)
+#pragma warning restore CS8767 // Nullability of reference types in type of parameter doesn't match implicitly implemented member (possibly because of nullability attributes).
         {
             return x.CompareTo(y);
         }
 
-#if DEBUG
         internal static bool CustomVersionGreaterOrEquals(Version v1, Version v2)
         {
             return CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals)
@@ -53,7 +55,6 @@ namespace Exiled.Updater
                     CustomNumberCompare(v1.Minor, v2.Minor, CompareType.MoreOrEquals) &&
                     CustomNumberCompare(v1.Major, v2.Major, CompareType.MoreOrEquals));
         }
-#endif
 
         internal static bool CustomVersionGreater(Version v1, Version v2)
         {
