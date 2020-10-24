@@ -740,11 +740,10 @@ namespace Exiled.API.Features
         /// </summary>
         public int Scp330Usages
         {
-            get => Map.Scp330._usages[Id].Uses;
+            get => Map.Scp330._usages.TryGetValue(Id, out var usage) ? usage.Uses : -1;
             set
             {
-                Scp330.Usage usage;
-                if (!Map.Scp330._usages.TryGetValue(Id, out usage))
+                if (!Map.Scp330._usages.TryGetValue(Id, out var usage))
                 {
                     usage = new Scp330.Usage
                     {
