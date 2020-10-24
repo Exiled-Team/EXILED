@@ -759,6 +759,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether player has hands.
+        /// </summary>
+        public bool HasHands
+        {
+            get
+            {
+                Scp330.Usage usage;
+                if (Map.Scp330._usages.TryGetValue(Id, out usage))
+                {
+                    return !usage.Severed;
+                }
+
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
