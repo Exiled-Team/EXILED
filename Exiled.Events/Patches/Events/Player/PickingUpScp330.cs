@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Player p = Player.Get(ply);
 
                 int index = UnityEngine.Random.Range(0, __instance._candyHints.Keys.Count);
-                KeyValuePair<global::ItemType, string> keyValuePair = __instance._candyHints.ElementAt(index);
+                KeyValuePair<ItemType, string> keyValuePair = __instance._candyHints.ElementAt(index);
 
                 PickingUpScp330EventArgs ev = new PickingUpScp330EventArgs(p, usage.Uses + 1, keyValuePair.Key, true);
 
@@ -76,8 +76,8 @@ namespace Exiled.Events.Patches.Events.Player
                 if ((usage.Uses > 2 && ev.IsSevere) || ev.IsSevere)
                 {
                     usage.Severed = true;
-                    ply.GetComponent<global::ConsumableAndWearableItems>().CompleteCancelUsage();
-                    if (ply.inventory.curItem != global::ItemType.None)
+                    ply.GetComponent<ConsumableAndWearableItems>().CompleteCancelUsage();
+                    if (ply.inventory.curItem != ItemType.None)
                     {
                         ply.inventory.DropCurrentItem();
                     }
