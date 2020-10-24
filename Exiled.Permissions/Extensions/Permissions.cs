@@ -96,20 +96,13 @@ namespace Exiled.Permissions.Extensions
                 {
                     try
                     {
-                        if (rawDeserializedPerms.TryGetValue(group.Key, out object rawDeserializedPerm))
+                        if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
                         {
-                            if (string.Equals(group.Key, "user", StringComparison.OrdinalIgnoreCase) || ServerStatic.PermissionsHandler._groups.ContainsKey(group.Key))
-                            {
-                                deserializedPerms.Add(group.Key, (Group)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedPerm), typeof(Group)));
-                            }
-                            else
-                            {
-                                Log.Warn($"{group.Key} is not a valid permission group.");
-                            }
+                            deserializedPerms.Add(group.Key, Deserializer.Deserialize<Group>(Serializer.Serialize(group.Value)));
                         }
                         else
                         {
-                            Log.Error($"{group.Key}'s permissions were unable to be obtained.");
+                            Log.Warn($"{group.Key} is not a valid permission group.");
                         }
                     }
                     catch (YamlException exception)
@@ -123,7 +116,7 @@ namespace Exiled.Permissions.Extensions
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to parse permission config: {e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+                Log.Error($"Unable to parse permission config:\n{e}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
             }
 
             foreach (KeyValuePair<string, Group> group in Groups.Reverse())
@@ -212,11 +205,17 @@ namespace Exiled.Permissions.Extensions
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
             Group group = null;
-            if (plyGroupKey != null && !Groups.TryGetValue(plyGroupKey, out group))
+            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out group))
+            {
+                Log.Debug("The source group is null, the default group is used");
                 group = DefaultGroup;
+            }
 
-            if (group is null)
+            if (group == null)
+            {
+                Log.Debug("There's no default group, returning false...");
                 return false;
+            }
 
             const char PERM_SEPARATOR = '.';
             const string ALL_PERMS = ".*";
@@ -264,11 +263,14 @@ namespace Exiled.Permissions.Extensions
 
                 StringBuilderPool.Shared.Return(strBuilder);
 
+                Log.Debug($"Result in the block: {result}");
                 return result;
             }
 
             // It'll work when there is no dot in the permission.
-            return group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
+            var result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
+            Log.Debug($"Result outside the block: {result2}");
+            return result2;
         }
     }
 }
