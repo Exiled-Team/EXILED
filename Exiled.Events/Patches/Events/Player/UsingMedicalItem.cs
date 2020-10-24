@@ -32,7 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 __instance._cancel = false;
-                if (__instance.cooldown > 0.0)
+                __instance._fullyCancel = false;
+                if (__instance.cooldown > 0f)
                     return false;
 
                 for (int i = 0; i < __instance.usableItems.Length; ++i)
