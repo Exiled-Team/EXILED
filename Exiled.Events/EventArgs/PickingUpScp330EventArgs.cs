@@ -7,24 +7,35 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System;
+
     using Exiled.API.Features;
 
     /// <summary>
     /// Contains all informations before a player picks up an item.
     /// </summary>
-    public class PickingUpScp330EventArgs : ItemDroppedEventArgs
+    public class PickingUpScp330EventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PickingUpScp330EventArgs"/> class.
         /// </summary>
-        /// <param name="player">The player who's picking up the item.</param>
-        /// <param name="pickup">The pickup to be picked up.</param>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="usage"><inheritdoc cref="Usage"/></param>
+        /// <param name="item"><inheritdoc cref="ItemId"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PickingUpScp330EventArgs(Player player, Pickup pickup, bool isAllowed = true)
-            : base(player, pickup)
+        public PickingUpScp330EventArgs(Player player, int usage, ItemType item, bool isAllowed = true)
         {
+            Player = player;
+            Usage = usage;
+            IsSevere = usage > 2;
+            ItemId = item;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the player who picking up the scp330.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
@@ -32,7 +43,12 @@ namespace Exiled.Events.EventArgs
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this pickup should be severe or not.
+        /// Gets or sets player's pickup counter.
+        /// </summary>
+        public int Usage { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether pickup should be severe.
         /// </summary>
         public bool IsSevere { get; set; }
 

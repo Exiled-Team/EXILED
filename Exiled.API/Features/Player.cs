@@ -1166,9 +1166,20 @@ namespace Exiled.API.Features
         /// <summary>
         /// Removes the player's hands.
         /// </summary>
-        /// <param name="playEffects">Indicates whether player should receive negative effects and hands should be dropped.</param>
-        public void RemoveHands(bool playEffects = true)
+        public void RemoveHands()
         {
+            Scp330.Usage usage;
+            if (!Map.Scp330._usages.TryGetValue(Id, out usage))
+            {
+                usage = new Scp330.Usage
+                {
+                    Role = Role,
+                    Uses = 0,
+                };
+            }
+
+            usage.Severed = true;
+
             Map.Scp330.RpcRemoveHands(Id);
             GameObject.GetComponent<global::ConsumableAndWearableItems>().CompleteCancelUsage();
             if (Inventory.curItem != global::ItemType.None)
@@ -1176,15 +1187,12 @@ namespace Exiled.API.Features
                 Inventory.DropCurrentItem();
             }
 
-            if (playEffects)
-            {
-                ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
-                ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
-                ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
-                ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
-                Map.Scp330.SpawnHands(ReferenceHub);
-                ReferenceHub.characterClassManager.RpcPlaceBlood(ReferenceHub.transform.position, 0, 3f);
-            }
+            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
+            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
+            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
+            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
+            Map.Scp330.SpawnHands(ReferenceHub);
+            ReferenceHub.characterClassManager.RpcPlaceBlood(ReferenceHub.transform.position, 0, 3f);
         }
 
         /// <inheritdoc/>
