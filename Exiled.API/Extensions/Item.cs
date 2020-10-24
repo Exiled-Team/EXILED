@@ -74,11 +74,18 @@ namespace Exiled.API.Extensions
             type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP || (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
+        /// Check if an <see cref="ItemType">item</see> is an SCP-330.
+        /// </summary>
+        /// <param name="type">The item to be checked.</param>
+        /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
+        public static bool IsSCP330(this ItemType type) => type == ItemType.BlueCandy || type == ItemType.GreenCandy || type == ItemType.PinkCandy || type == ItemType.PurpleCandy || type == ItemType.RedCandy || type == ItemType.YellowCandy;
+
+        /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
-        public static bool IsSCP(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207;
+        public static bool IsSCP(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207 || type.IsSCP330();
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.

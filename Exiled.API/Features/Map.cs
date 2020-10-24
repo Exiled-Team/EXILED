@@ -15,7 +15,11 @@ namespace Exiled.API.Features
 
     using LightContainmentZoneDecontamination;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using SCPSL.Halloween;
 
     using UnityEngine;
 
@@ -39,6 +43,8 @@ namespace Exiled.API.Features
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         private static SpawnpointManager spawnpointManager;
+
+        private static Scp330 scp330;
 
         /// <summary>
         /// Gets a value indicating whether the decontamination has been completed or not.
@@ -150,6 +156,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets <see cref="Scp330"/> instance.
+        /// </summary>
+        public static Scp330 Scp330
+        {
+            get
+            {
+                if (scp330 == null)
+                {
+                    scp330 = Object.FindObjectOfType<Scp330>();
+                }
+
+                return scp330;
+            }
+        }
+
+        /// <summary>
         /// Tries to find the room that a Game Object is inside, first using the transform's parents, then using a Raycast if no room was found.
         /// </summary>
         /// <param name="objectInRoom">The Game Object inside the room.</param>
@@ -179,6 +201,23 @@ namespace Exiled.API.Features
                 room = rooms[1];
 
             return room;
+        }
+
+        /// <summary>
+        /// Spawns hands at the specified position with specified rotation.
+        /// </summary>
+        /// <param name="position">Hands position.</param>
+        /// <param name="rotation">Hands rotation.</param>
+        public static void SpawnHands(Vector3 position, Quaternion rotation)
+        {
+            bool flag = false;
+            for (int i = 0; i < 2; i++)
+            {
+                GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(Scp330._severedHand, position, rotation);
+                flag = !flag;
+                gameObject.transform.localScale = new Vector3(flag ? 1.5f : -1.5f, 1.5f, 1.5f);
+                NetworkServer.Spawn(gameObject);
+            }
         }
 
         /// <summary>

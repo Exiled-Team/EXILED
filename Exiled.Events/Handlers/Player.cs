@@ -123,6 +123,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
 
         /// <summary>
+        /// Invoked before picking up an scp330
+        /// </summary>
+        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
+
+        /// <summary>
         /// Invoked before handcuffing a player.
         /// </summary>
         public static event CustomEventHandler<HandcuffingEventArgs> Handcuffing;
@@ -382,6 +387,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpItemEventArgs"/> instance.</param>
         public static void OnPickingUpItem(PickingUpItemEventArgs ev) => PickingUpItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked before picking up an item.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        public static void OnPickingUpScp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked before handcuffing a player.
