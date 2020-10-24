@@ -79,7 +79,7 @@ jobs:
         $Year = [System.DateTime]::Now.ToString("yyyy")
         Write-Host "Generating for version $Version"
         nuget pack Exiled/Exiled.nuspec -Version $Version -Properties Year=$Year
-        Write-Host "::set-env name=PackageFile::Exiled.$Version.nupkg"
+        Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=Exiled.$Version.nupkg" -Encoding utf-8 -Append
 
     - name: Upload nuget package
       uses: actions/upload-artifact@v2
