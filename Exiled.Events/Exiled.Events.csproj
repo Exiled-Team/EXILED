@@ -10,15 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-    <PackageReference Include="Lib.Harmony" Version="2.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
     <ProjectReference Include="..\Exiled.Loader\Exiled.Loader.csproj" />
     <ProjectReference Include="..\Exiled.Permissions\Exiled.Permissions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="Lib.Harmony" Version="2.0.1" />
   </ItemGroup>
 
   <ItemGroup>
