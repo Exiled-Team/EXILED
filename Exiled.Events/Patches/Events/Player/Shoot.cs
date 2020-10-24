@@ -132,6 +132,7 @@ namespace Exiled.Events.Patches.Events.Player
                     referenceHub = ReferenceHub.GetHub(target);
                 }
 
+                ShotPosSwapper component3;
                 if (referenceHub != null && __instance.GetShootPermission(referenceHub.characterClassManager, false))
                 {
                     if (Math.Abs(__instance._hub.playerMovementSync.RealModelPosition.y - referenceHub.playerMovementSync.RealModelPosition.y) > 35f)
@@ -257,6 +258,11 @@ namespace Exiled.Events.Patches.Events.Player
                     float damage = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(time);
                     target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
                     __instance.RpcConfirmShot(hitmarker: true, __instance.curWeapon);
+                }
+                else if (target != null && hitboxType == "swap" && target.TryGetComponent(out component3))
+                {
+                    __instance.RpcConfirmShot(hitmarker: true, __instance.curWeapon);
+                    component3.ServerWasShot();
                 }
                 else
                 {
