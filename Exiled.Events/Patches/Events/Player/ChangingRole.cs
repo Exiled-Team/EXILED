@@ -31,8 +31,16 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!ply.GetComponent<CharacterClassManager>().IsVerified)
+                // Somehow we've seen spam
+                // here with a NullReferenceException,
+                // so there are more null checks here
+                if (ply == null
+                || !ply.TryGetComponent<CharacterClassManager>(out var ccm)
+                || ccm == null
+                || !ccm.IsVerified)
+                {
                     return false;
+                }
 
                 var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
                 var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
