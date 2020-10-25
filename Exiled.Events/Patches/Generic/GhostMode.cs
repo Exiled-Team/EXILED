@@ -19,8 +19,6 @@ namespace Exiled.Events.Patches.Generic
 
     using Mirror;
 
-    using RemoteAdmin;
-
     using UnityEngine;
 
     using Scp096 = PlayableScps.Scp096;
@@ -83,11 +81,11 @@ namespace Exiled.Events.Patches.Generic
                         {
                             if (__instance._transmitBuffer[index].position.y < 800f)
                             {
-                                ReferenceHub hub2 = ReferenceHub.GetHub(players[index]);
+                                ReferenceHub hub2 = ReferenceHub.GetHub(__instance._transmitBuffer[index].playerID);
 
                                 if (hub2.characterClassManager.CurRole.team != Team.SCP
                                     && hub2.characterClassManager.CurRole.team != Team.RIP
-                                    && !players[index]
+                                    && !hub2
                                         .GetComponent<Scp939_VisionController>()
                                         .CanSee(player.ReferenceHub.characterClassManager.Scp939))
                                 {
@@ -101,7 +99,7 @@ namespace Exiled.Events.Patches.Generic
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
-                            Player currentTarget = Player.Get(players[index]);
+                            Player currentTarget = Player.Get(ppd.playerID);
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
 
                             if (currentTarget?.ReferenceHub == null)
@@ -120,36 +118,39 @@ namespace Exiled.Events.Patches.Generic
                                     if (sqrMagnitude >= 1764f)
                                     {
                                         MakeGhost(index, __instance._transmitBuffer);
+                                        continue; // As the target is already ghosted
                                     }
                                 }
                                 else if (sqrMagnitude >= 7225f)
                                 {
                                     MakeGhost(index, __instance._transmitBuffer);
+                                    continue; // As the target is already ghosted
                                 }
-                                else
-                                {
-                                    if (scp096 != null
-                                        && scp096.Enraged
-                                        && !scp096.HasTarget(currentTarget.ReferenceHub)
-                                        && currentTarget.Team != Team.SCP)
-                                    {
-#if DEBUG
-                                        Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");
-#endif
-                                        MakeGhost(index, __instance._transmitBuffer);
-                                    }
-                                    else if (currentTarget.ReferenceHub.playerEffectsController.GetEffect<Scp268>().Enabled)
-                                    {
-                                        bool flag = false;
-                                        if (scp096 != null)
-                                            flag = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                        if (player.Role != RoleType.Scp079
-                                            && player.Role != RoleType.Spectator
-                                            && !flag)
-                                        {
-                                            MakeGhost(index, __instance._transmitBuffer);
-                                        }
+                                // The code below doesn't have to follow a ELSE statement!
+                                // Otherwise Scp268 won't be processed
+
+                                if (scp096 != null
+                                    && scp096.Enraged
+                                    && !scp096.HasTarget(currentTarget.ReferenceHub)
+                                    && currentTarget.Team != Team.SCP)
+                                {
+#if DEBUG
+                                    Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");
+#endif
+                                    MakeGhost(index, __instance._transmitBuffer);
+                                }
+                                else if (currentTarget.ReferenceHub.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                {
+                                    bool flag = false;
+                                    if (scp096 != null)
+                                        flag = scp096.HasTarget(currentTarget.ReferenceHub);
+
+                                    if (player.Role != RoleType.Scp079
+                                        && player.Role != RoleType.Spectator
+                                        && !flag)
+                                    {
+                                        MakeGhost(index, __instance._transmitBuffer);
                                     }
                                 }
                             }
