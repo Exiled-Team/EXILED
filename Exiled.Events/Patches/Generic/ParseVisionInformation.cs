@@ -37,22 +37,41 @@ namespace Exiled.Events.Patches.Generic
             // Quick check if it's the end
             if (index + 1 >= newInstructions.Count)
             {
-                Log.Error($"Couldn't path '{typeof(PlayableScps.Scp096).FullName}.{nameof(PlayableScps.Scp096.ParseVisionInformation)}': invalid index - {index}");
+                Log.Error($"Couldn't patch '{typeof(PlayableScps.Scp096).FullName}.{nameof(PlayableScps.Scp096.ParseVisionInformation)}': invalid index - {index}");
                 ListPool<CodeInstruction>.Shared.Return(newInstructions);
                 yield break;
             }
 
             index += offset;
 
+            // Continuation pointer
+            // Used to continue execution
+            // if both checks fail
             var continueLabel = newInstructions[index].labels[0];
 
+            // First check pointer
+            // We need to change it, otherwise
+            // our code won't be executed
             var newPointer = generator.DefineLabel();
             newInstructions[index - 2].operand = newPointer;
+
+            // Second check pointer
+            // We use it to pass execution
+            // to the second check if the first check fails,
+            // otherwise the second check won't be executed
+            var secondCheckPointer = generator.DefineLabel();
 
             CodeInstruction Get__Ldarg_1__WithLabel()
             {
                 var ci = new CodeInstruction(OpCodes.Ldarg_1);
                 ci.labels.Add(newPointer);
+                return ci;
+            }
+
+            CodeInstruction Get_Call_Scp096_TurnedPlayers_WithLabel()
+            {
+                var ci = new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers)));
+                ci.labels.Add(secondCheckPointer);
                 return ci;
             }
 
@@ -67,21 +86,21 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.characterClassManager))),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
-                new CodeInstruction(OpCodes.Bne_Un_S, continueLabel),
+                new CodeInstruction(OpCodes.Bne_Un_S, secondCheckPointer),
 
                 new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin<Exiled.Events.Config>), nameof(Plugin<Exiled.Events.Config>.Config))),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Exiled.Events.Config), nameof(Exiled.Events.Config.CanTutorialTriggerScp096))),
-                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, secondCheckPointer),
                 new CodeInstruction(OpCodes.Ret),
                 // END
                 // if (API.Features.Scp096.TurnedPlayers.Contsins(Player.Get(info.Source)))
                 //      return;
                 // START
+                Get_Call_Scp096_TurnedPlayers_WithLabel(),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(VisionInformation), nameof(VisionInformation.Source))),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                 new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                 new CodeInstruction(OpCodes.Ret),
