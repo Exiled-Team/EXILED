@@ -207,13 +207,13 @@ namespace Exiled.Permissions.Extensions
             Group group = null;
             if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out group))
             {
-                Log.Debug("The source group is null, the default group is used");
+                Log.Debug("The source group is null, the default group is used", Instance.Config.ShouldDebugBeShown);
                 group = DefaultGroup;
             }
 
             if (group == null)
             {
-                Log.Debug("There's no default group, returning false...");
+                Log.Debug("There's no default group, returning false...", Instance.Config.ShouldDebugBeShown);
                 return false;
             }
 
@@ -263,13 +263,13 @@ namespace Exiled.Permissions.Extensions
 
                 StringBuilderPool.Shared.Return(strBuilder);
 
-                Log.Debug($"Result in the block: {result}");
+                Log.Debug($"Result in the block: {result}", Instance.Config.ShouldDebugBeShown);
                 return result;
             }
 
             // It'll work when there is no dot in the permission.
             var result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
-            Log.Debug($"Result outside the block: {result2}");
+            Log.Debug($"Result outside the block: {result2}", Instance.Config.ShouldDebugBeShown);
             return result2;
         }
     }
