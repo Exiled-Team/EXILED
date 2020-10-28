@@ -1149,6 +1149,11 @@ namespace Exiled.API.Features
         public void ClearInventory() => Inventory.items.Clear();
 
         /// <summary>
+        /// Drops all items in the player's inventory.
+        /// </summary>
+        public void DropItems() => Inventory.ServerDropAll();
+
+        /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see>.
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
