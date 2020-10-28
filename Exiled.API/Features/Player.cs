@@ -1146,7 +1146,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Clears the player's inventory.
         /// </summary>
-        public void ClearInventory() => Inventory.items.Clear();
+        public void ClearInventory() => Inventory.Clear();
 
         /// <summary>
         /// Drops all items in the player's inventory.
