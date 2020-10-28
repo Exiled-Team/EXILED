@@ -20,6 +20,11 @@ namespace Exiled.Events.Commands.Reload
     /// </summary>
     public class GamePlay : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="GamePlay"/> command.
+        /// </summary>
+        public static GamePlay Instance { get; } = new GamePlay();
+
         /// <inheritdoc/>
         public string Command { get; } = "gameplay";
 

@@ -19,6 +19,11 @@ namespace Exiled.Events.Commands.Reload
     /// </summary>
     public class RemoteAdmin : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="RemoteAdmin"/> command.
+        /// </summary>
+        public static RemoteAdmin Instance { get; } = new RemoteAdmin();
+
         /// <inheritdoc/>
         public string Command { get; } = "remoteadmin";
 

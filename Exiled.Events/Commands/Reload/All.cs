@@ -19,6 +19,11 @@ namespace Exiled.Events.Commands.Reload
     /// </summary>
     public class All : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="All"/> command.
+        /// </summary>
+        public static All Instance { get; } = new All();
+
         /// <inheritdoc/>
         public string Command { get; } = "all";
 
@@ -33,19 +38,19 @@ namespace Exiled.Events.Commands.Reload
         {
             bool success = true;
 
-            if (!new Configs().Execute(arguments, sender, out string responsetemp))
+            if (!Configs.Instance.Execute(arguments, sender, out string responsetemp))
                 success = false;
             sender.Respond(responsetemp);
 
-            if (!new GamePlay().Execute(arguments, sender, out responsetemp))
+            if (!GamePlay.Instance.Execute(arguments, sender, out responsetemp))
                 success = false;
             sender.Respond(responsetemp);
 
-            if (!new RemoteAdmin().Execute(arguments, sender, out responsetemp))
+            if (!RemoteAdmin.Instance.Execute(arguments, sender, out responsetemp))
                 success = false;
             sender.Respond(responsetemp);
 
-            if (!new Plugins().Execute(arguments, sender, out responsetemp))
+            if (!Plugins.Instance.Execute(arguments, sender, out responsetemp))
                 success = false;
             sender.Respond(responsetemp);
 

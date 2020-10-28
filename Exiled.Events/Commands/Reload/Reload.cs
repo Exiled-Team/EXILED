@@ -35,11 +35,11 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new All());
-            RegisterCommand(new Configs());
-            RegisterCommand(new Plugins());
-            RegisterCommand(new GamePlay());
-            RegisterCommand(new RemoteAdmin());
+            RegisterCommand(All.Instance);
+            RegisterCommand(Configs.Instance);
+            RegisterCommand(Plugins.Instance);
+            RegisterCommand(GamePlay.Instance);
+            RegisterCommand(RemoteAdmin.Instance);
         }
 
         /// <inheritdoc/>
