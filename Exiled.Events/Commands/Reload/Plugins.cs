@@ -19,6 +19,11 @@ namespace Exiled.Events.Commands.Reload
     /// </summary>
     public class Plugins : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="Plugins"/> command.
+        /// </summary>
+        public static Plugins Instance { get; } = new Plugins();
+
         /// <inheritdoc/>
         public string Command { get; } = "plugins";
 
