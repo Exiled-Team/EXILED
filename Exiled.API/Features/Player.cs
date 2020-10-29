@@ -1202,20 +1202,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        public void EnableEffect(PlayerEffect effect, float duration = 0f)
-        {
-            ReferenceHub.playerEffectsController.EnableEffect(effect, duration);
-        }
+        public void EnableEffect(PlayerEffect effect, float duration = 0f) => ReferenceHub.playerEffectsController.EnableEffect(effect, duration);
 
         /// <summary>
         /// Enables a status effect on this player.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        public void EnableEffect(string effect, float duration = 0f)
-        {
-            ReferenceHub.playerEffectsController.EnableByString(effect, duration);
-        }
+        public void EnableEffect(string effect, float duration = 0f) => ReferenceHub.playerEffectsController.EnableByString(effect, duration);
 
         /// <summary>
         /// Removes the player's hands.
