@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangingMuteStatusEventArgs.cs" company="Exiled Team">
+// <copyright file="ChangingIntercomMuteStatusEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,17 +12,17 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player's mute status is changed.
+    /// Contains all informations before a player's intercom mute status is changed.
     /// </summary>
-    public class ChangingMuteStatusEventArgs : EventArgs
+    public class ChangingIntercomMuteStatusEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingMuteStatusEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingIntercomMuteStatusEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isMuted"><inheritdoc cref="IsMuted"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMuteStatusEventArgs(Player player, bool isMuted, bool isAllowed = true)
+        public ChangingIntercomMuteStatusEventArgs(Player player, bool isMuted, bool isAllowed = true)
         {
             Player = player;
             IsMuted = isMuted;
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's being muted/unmuted.
+        /// Gets the player who's being intercom muted/unmuted.
         /// </summary>
         public Player Player { get; }
 
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public bool IsAllowed { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the player is being muted or unmuted.
+        /// Gets a value indicating whether the player is being intercom muted or unmuted.
         /// </summary>
         public bool IsMuted { get; }
     }
