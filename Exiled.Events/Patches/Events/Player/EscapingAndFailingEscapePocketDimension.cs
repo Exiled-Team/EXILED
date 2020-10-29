@@ -67,9 +67,8 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
             instruction.operand is FieldInfo finfo && finfo == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
 
-            // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
             returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
@@ -93,9 +92,8 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
-
-            ListPool<Label>.Shared.Return(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // --------- EscapingPocketDimension ---------
 

@@ -124,9 +124,8 @@ namespace Exiled.Events.Patches.Events.Map
             // Get the index of the penultimate instruction;
             var index = newInstructions.Count - 2;
 
-            // Get the return labels from the penultimate instruction and clear them all.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // var ev = new ExplodingGrenadeEventArgs(players, true, grenadeGameObject, true);
             //
@@ -164,8 +163,8 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.GetEnumerator))),
                 new CodeInstruction(OpCodes.Stloc_S, playerEnumerator.LocalIndex),
 
-                new CodeInstruction(OpCodes.Br_S, foreachFirstLabel) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock) } },
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { labels = new List<Label>() { foreachSecondLabel } },
+                new CodeInstruction(OpCodes.Br_S, foreachFirstLabel).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock)),
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachSecondLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.Current))),
                 new CodeInstruction(OpCodes.Stloc_S, playerKeyValuePair.LocalIndex),
             };
@@ -192,16 +191,16 @@ namespace Exiled.Events.Patches.Events.Map
 
             var foreachEnd = new[]
             {
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { labels = new List<Label>() { foreachFirstLabel } },
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachFirstLabel),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.MoveNext))),
                 new CodeInstruction(OpCodes.Brtrue_S, foreachSecondLabel),
                 new CodeInstruction(OpCodes.Leave_S, returnLabel),
 
                 // --- Clean up ---
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.BeginFinallyBlock) } },
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginFinallyBlock)),
                 new CodeInstruction(OpCodes.Constrained, typeof(Dictionary<Player, float>.Enumerator)),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(IDisposable), nameof(IDisposable.Dispose))),
-                new CodeInstruction(OpCodes.Endfinally) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.EndExceptionBlock) } },
+                new CodeInstruction(OpCodes.Endfinally).WithBlocks(new ExceptionBlock(ExceptionBlockType.EndExceptionBlock)),
             };
 
             // Insert all instructions.
@@ -213,7 +212,8 @@ namespace Exiled.Events.Patches.Events.Map
                 .Concat(foreachEnd));
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the return label to the penultimate instruction.
             newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
@@ -222,7 +222,6 @@ namespace Exiled.Events.Patches.Events.Map
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

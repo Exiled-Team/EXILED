@@ -120,7 +120,7 @@ namespace Exiled.Events.Patches.Events.Server
             patchIndex += skipOpcodes;
 
             var retEnd = generator.DefineLabel();
-            newInstructions[patchIndex].labels.Add(retEnd);
+            newInstructions[patchIndex].WithLabels(retEnd);
 
             var call_PlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
             var new_LocalReportingEventArgs = AccessTools.Constructor(

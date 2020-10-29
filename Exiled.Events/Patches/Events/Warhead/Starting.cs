@@ -40,13 +40,12 @@ namespace Exiled.Events.Patches.Events.Warhead
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            var startingLabels = newInstructions[index].labels;
 
             // Get the return label.
             var returnLabel = newInstructions[index - 1].labels[0];
 
-            // Remove "AlphawarheadController.Host.StartDetonation()".
+            // Remove "ldsfld AlphaWarheadController::Host" & "AlphawarheadController.Host.StartDetonation()".
             newInstructions.RemoveRange(index, 2);
 
             // if (!Warhead.CanBeStarted)
@@ -83,13 +82,12 @@ namespace Exiled.Events.Patches.Events.Warhead
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            newInstructions[index].WithLabels(startingLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

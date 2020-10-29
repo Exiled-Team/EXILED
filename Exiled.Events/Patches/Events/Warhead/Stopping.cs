@@ -37,9 +37,8 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
 
-            // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // Generate the return label.
             var returnLabel = generator.DefineLabel();
@@ -65,7 +64,8 @@ namespace Exiled.Events.Patches.Events.Warhead
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the label to the last instruction.
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
@@ -74,7 +74,6 @@ namespace Exiled.Events.Patches.Events.Warhead
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

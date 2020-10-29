@@ -71,7 +71,7 @@ namespace Exiled.Events.Patches.Generic
             });
 
             // Add the start label.
-            newInstructions[index].labels.Add(startLabel);
+            newInstructions[index].WithLabels(startLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
