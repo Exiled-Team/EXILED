@@ -17,9 +17,10 @@ namespace Exiled.Events.EventArgs
     public class ChangingMuteStatusEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ActivatingEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingMuteStatusEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="status"><inheritdoc cref="Status"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ChangingMuteStatusEventArgs(Player player, bool status, bool isAllowed = true)
         {
