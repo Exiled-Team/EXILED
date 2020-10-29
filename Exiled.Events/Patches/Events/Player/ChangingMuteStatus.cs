@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ActivatingWarheadPanel.cs" company="Exiled Team">
+// <copyright file="ChangingMuteStatus.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.CallCmdSwitchAWButton"/>.
+    /// Patch the <see cref="CharacterClassManager.NetworkMuted"/>.
     /// Adds the <see cref="Player.ChangingMuteStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkMuted), MethodType.Setter)]
@@ -43,6 +43,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     MuteHandler.IssuePersistentMute(__instance.UserId);
                 }
+
                 return false;
             }
 

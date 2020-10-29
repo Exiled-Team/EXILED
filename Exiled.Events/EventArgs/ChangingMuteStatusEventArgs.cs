@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ActivatingEventArgs.cs" company="Exiled Team">
+// <copyright file="ChangingMuteStatusEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates SCP-914.
+    /// Contains all informations before a player's mute status is changed.
     /// </summary>
     public class ChangingMuteStatusEventArgs : EventArgs
     {
