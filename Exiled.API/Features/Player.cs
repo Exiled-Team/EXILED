@@ -1144,12 +1144,12 @@ namespace Exiled.API.Features
         public void ResetInventory(List<Inventory.SyncItemInfo> newItems) => ResetInventory(newItems.Select(item => item.id).ToList());
 
         /// <summary>
-        /// Clears the player's inventory.
+        /// Clears the player's inventory, including all ammo and items.
         /// </summary>
         public void ClearInventory() => Inventory.Clear();
 
         /// <summary>
-        /// Drops all items in the player's inventory.
+        /// Drops all items in the player's inventory, including all ammo and items.
         /// </summary>
         public void DropItems() => Inventory.ServerDropAll();
 
