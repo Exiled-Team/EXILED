@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's activating SCP-914.
+        /// Gets the player who's being muted/unmuted.
         /// </summary>
         public Player Player { get; }
 
