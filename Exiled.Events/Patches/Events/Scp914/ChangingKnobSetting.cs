@@ -44,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Scp914
             // Declare ChangingKnobSettingEventArgs local variable.
             var ev = generator.DeclareLocal(typeof(ChangingKnobSettingEventArgs));
 
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = newInstructions[index].labels;
 
             // Get the return label from the last instruction.
             var returnLabel = newInstructions[index - 1].labels[0];
@@ -98,8 +98,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             });
 
             // Add the starting labels to the first injected instruction.
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
+            newInstructions[index].WithLabels(startingLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

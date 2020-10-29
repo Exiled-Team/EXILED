@@ -39,13 +39,13 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Search for the last "ldsfld".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            // Get the starting labels and remove all of them from the original instruction.
+            var startingLabels = newInstructions[index].labels;
 
             // Get the return label.
             var returnLabel = newInstructions[index - 1].labels[0];
 
-            // Remove "AlphawarheadController.Host.StartDetonation()".
+            // Remove "ldsfld AlphaWarheadController::Host" & "AlphawarheadController.Host.StartDetonation()".
             newInstructions.RemoveRange(index, 2);
 
             // if (!Warhead.CanBeStarted)
@@ -82,8 +82,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             });
 
             // Add the starting labels to the first injected instruction.
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
+            newInstructions[index].WithLabels(startingLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
