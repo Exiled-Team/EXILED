@@ -12,6 +12,8 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
@@ -1182,6 +1184,37 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
+
+        /// <summary>
+        ///  Disables all status affects on the player.
+        /// </summary>
+        public void DisableAllEffects()
+        {
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                effect.Value.ServerDisable();
+            }
+        }
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <param name="effect">The <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        public void EnableEffect(PlayerEffect effect, float duration = 0f)
+        {
+            ReferenceHub.playerEffectsController.EnableEffect(effect, duration);
+        }
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        public void EnableEffect(string effect, float duration = 0f)
+        {
+            ReferenceHub.playerEffectsController.EnableByString(effect, duration);
         }
 
         /// <summary>
