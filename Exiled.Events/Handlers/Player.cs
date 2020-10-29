@@ -268,6 +268,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingMuteStatusEventArgs> ChangingMuteStatus;
 
         /// <summary>
+        /// Invoked before changing user intercom mute status.
+        /// </summary>
+        public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
+
+        /// <summary>
         /// Invoked before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -566,5 +571,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMuteStatusEventArgs"/> instance.</param>
         public static void OnChangingMuteStatus(ChangingMuteStatusEventArgs ev) => ChangingMuteStatus.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before changing user intercom mute status.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingIntercomMuteStatusEventArgs"/> instance.</param>
+        public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
     }
 }
