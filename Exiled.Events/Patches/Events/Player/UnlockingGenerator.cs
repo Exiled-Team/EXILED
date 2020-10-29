@@ -41,9 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
             (MethodInfo)instruction.operand == PropertySetter(typeof(Generator079), nameof(Generator079.NetworkisDoorUnlocked))) + offset;
 
-            // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // var ev = new UnlockingGeneratorEventArgs(Player.Get(person), this, flag);
             //
@@ -64,13 +63,13 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

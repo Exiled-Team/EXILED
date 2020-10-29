@@ -37,13 +37,12 @@ namespace Exiled.Events.Patches.Events.Player
             // Find last brtrue.s
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset;
 
-            // Remove old labels
-            var startLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // Add the return label
             var returnLabel = generator.DefineLabel();
-            newInstructions[index - 1].labels.Add(returnLabel);
+            newInstructions[index - 1].WithLabels(returnLabel);
 
             // var ev = new ChangingWarheadLeverStatusEventArgs(Player.Get(component), true);
             //
@@ -64,13 +63,13 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // Restore labels on the first injected instructions
-            newInstructions[index].labels.AddRange(startLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startLabels);
         }
     }
 }
