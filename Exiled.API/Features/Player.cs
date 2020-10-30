@@ -1204,10 +1204,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
-            where T : PlayerEffect
-        {
-            ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
-        }
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a status effect on this player.
