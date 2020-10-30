@@ -1243,10 +1243,11 @@ namespace Exiled.API.Features
                 Inventory.DropCurrentItem();
             }
 
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
+            EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
+            EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
+            EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
+            EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
+
             Map.Scp330.SpawnHands(ReferenceHub);
             ReferenceHub.characterClassManager.RpcPlaceBlood(ReferenceHub.transform.position, 0, 3f);
         }
