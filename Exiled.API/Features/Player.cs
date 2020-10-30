@@ -1200,16 +1200,24 @@ namespace Exiled.API.Features
         /// <summary>
         /// Enables a status effect on this player.
         /// </summary>
-        /// <param name="effect">The <see cref="PlayerEffect"/> to enable.</param>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        public void EnableEffect(PlayerEffect effect, float duration = 0f) => ReferenceHub.playerEffectsController.EnableEffect(effect, duration);
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
+        {
+            PlayerEffect playerEffect;
+            if (!ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out playerEffect))
+                return;
+            ReferenceHub.playerEffectsController.EnableEffect(playerEffect, duration, addDurationIfActive);
+        }
 
         /// <summary>
         /// Enables a status effect on this player.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        public void EnableEffect(string effect, float duration = 0f) => ReferenceHub.playerEffectsController.EnableByString(effect, duration);
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
 
         /// <summary>
         /// Removes the player's hands.
