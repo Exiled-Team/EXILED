@@ -8,6 +8,7 @@
 namespace Exiled.Events.Commands
 {
     using System;
+    using System.Linq;
     using System.Text;
 
     using CommandSystem;
@@ -54,7 +55,7 @@ namespace Exiled.Events.Commands
 
             for (var z = 0; z < plugins.Count; z++)
             {
-                var plugin = plugins[z];
+                var plugin = plugins.ElementAt(z);
 
                 sb.Append(string.IsNullOrEmpty(plugin.Name) ? "(Unknown)" : plugin.Name).Append(":");
 

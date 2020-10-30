@@ -24,7 +24,12 @@ namespace Exiled.Loader.Features
         /// <inheritdoc/>
         public int Compare(IPlugin<IConfig> x, IPlugin<IConfig> y)
         {
-            return x.Priority.CompareTo(y.Priority);
+            var value = x.Priority.CompareTo(y.Priority);
+            if (value == 0)
+                value = x.GetHashCode().CompareTo(y.GetHashCode());
+
+            // Allow duplicate
+            return value == 0 ? 1 : value;
         }
     }
 }
