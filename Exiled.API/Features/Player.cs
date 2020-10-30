@@ -12,6 +12,8 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
@@ -1185,6 +1187,34 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        ///  Disables all status affects on the player.
+        /// </summary>
+        public void DisableAllEffects()
+        {
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                effect.Value.ServerDisable();
+            }
+        }
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
         /// Removes the player's hands.
         /// </summary>
         public void RemoveHands()
@@ -1208,10 +1238,11 @@ namespace Exiled.API.Features
                 Inventory.DropCurrentItem();
             }
 
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
-            ReferenceHub.playerEffectsController.EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
+            EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
+            EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
+            EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
+            EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
+
             Map.Scp330.SpawnHands(ReferenceHub);
             ReferenceHub.characterClassManager.RpcPlaceBlood(ReferenceHub.transform.position, 0, 3f);
         }
