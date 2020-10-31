@@ -25,12 +25,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="id"><inheritdoc cref="Id"/></param>
         /// <param name="pos"><inheritdoc cref="Position"/></param>
         /// <param name="rot"><inheritdoc cref="Rotation"/></param>
+        /// <param name="locked"><inheritdoc cref="Locked"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SpawningItemEventArgs(ItemType id, Vector3 pos, Quaternion rot, bool isAllowed = true)
+        public SpawningItemEventArgs(ItemType id, Vector3 pos, Quaternion rot, bool locked, bool isAllowed = true)
         {
             Id = id;
             Position = pos;
             Rotation = rot;
+            Locked = locked;
             IsAllowed = isAllowed;
         }
 
@@ -48,6 +50,11 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the rotation to spawn the item.
         /// </summary>
         public Quaternion Rotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the Pickup will be locked.
+        /// </summary>
+        public bool Locked { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static IEnumerator<float> Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
         {
-            SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, true);
+            SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, __instance._locked, true);
 
             Handlers.Map.OnSpawningItem(ev);
 
@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Map
                 yield return float.NegativeInfinity;
                 HostItemSpawner.SetPos(pickup, ev.Position, ev.Id, ev.Rotation.eulerAngles);
                 pickup.RefreshDurability(true, true);
-                if (__instance._locked)
+                if (ev.Locked)
                     pickup.Locked = true;
             }
         }
