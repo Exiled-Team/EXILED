@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+    using System.Collections.Generic;
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
@@ -16,26 +17,30 @@ namespace Exiled.Events.Patches.Events.Map
 
     using MEC;
 
+    using UnityEngine;
+
     /// <summary>
     /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger"/>.
     /// Adds the <see cref="Handlers.Map.SpawningItem"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger))]
+    [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]
     internal static class SpawningItem
     {
-        private static bool Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
+        private static IEnumerator<float> Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
         {
             SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, true);
 
             Handlers.Map.OnSpawningItem(ev);
 
-            if (!ev.IsAllowed)
-                return false;
-            if (ev.Id == __instance._id && ev.Position == __instance._pos && ev.Rotation == __instance._rot)
-                return true;
-            RandomItemSpawner.SpawnerItemToSpawn newItem = new RandomItemSpawner.SpawnerItemToSpawn(ev.Id, ev.Position, ev.Rotation, __instance._locked);
-            Timing.RunCoroutine(newItem.Spawn(), Segment.FixedUpdate);
-            return false;
+            if (ev.IsAllowed)
+            {
+                Pickup pickup = ReferenceHub.GetHub(PlayerManager.localPlayer).inventory.SetPickup(ev.Id, 0.0f, Vector3.zero, Quaternion.identity, 0, 0, 0);
+                yield return float.NegativeInfinity;
+                HostItemSpawner.SetPos(pickup, ev.Position, ev.Id, ev.Rotation.eulerAngles);
+                pickup.RefreshDurability(true, true);
+                if (__instance._locked)
+                    pickup.Locked = true;
+            }
         }
     }
 }
