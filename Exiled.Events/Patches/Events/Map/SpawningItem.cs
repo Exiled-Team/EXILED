@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]
     internal static class SpawningItem
     {
-        private static IEnumerator<float> Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
+        private static IEnumerator<float> Postfix(IEnumerator<float> values, RandomItemSpawner.SpawnerItemToSpawn __instance)
         {
             SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, __instance._locked, true);
 
