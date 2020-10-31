@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-096.
+        /// Gets the player who's controlling SCP-106.
         /// </summary>
         public Player Player { get; }
 
