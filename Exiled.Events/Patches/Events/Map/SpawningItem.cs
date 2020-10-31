@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger))]
     internal static class SpawningItem
     {
-        public static bool Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
+        private static bool Prefix(RandomItemSpawner.SpawnerItemToSpawn __instance)
         {
             SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, true);
 
