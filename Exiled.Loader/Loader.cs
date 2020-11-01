@@ -112,7 +112,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            foreach (string pluginPath in Directory.GetFiles(Path.Combine(Paths.Plugins, "*.dll")))
+            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(pluginPath);
 
@@ -304,7 +304,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
 
-                foreach (string dependency in Directory.GetFiles(Path.Combine(Paths.Dependencies, "*.dll")))
+                foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {
                     Assembly assembly = LoadAssembly(dependency);
 
