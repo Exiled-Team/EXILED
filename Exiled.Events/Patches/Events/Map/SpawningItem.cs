@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger"/>.
-    /// Adds the <see cref="Handlers.Map.SpawningItem"/> event.
+    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawnedItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]
     internal static class SpawningItem
@@ -40,6 +40,9 @@ namespace Exiled.Events.Patches.Events.Map
                 pickup.RefreshDurability(true, true);
                 if (ev.Locked)
                     pickup.Locked = true;
+
+                SpawnedItemEventArgs spawned_ev = new SpawnedItemEventArgs(pickup);
+                Handlers.Map.OnSpawnedItem(spawned_ev);
             }
         }
     }
