@@ -284,7 +284,6 @@ namespace Exiled.Loader
             {
                 try
                 {
-                    plugin.Config.IsEnabled = false;
                     plugin.OnUnregisteringCommands();
                     plugin.OnDisabled();
                 }
