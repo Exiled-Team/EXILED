@@ -58,15 +58,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the lights in this room are currently flickered off.
         /// </summary>
-        public bool LightsOff
-        {
-            get
-            {
-                if (!FlickerableLightController)
-                    return false;
-                return FlickerableLightController.IsEnabled();
-            }
-        }
+        public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
 
         private FlickerableLightController FlickerableLightController { get; set; }
 
