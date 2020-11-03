@@ -30,8 +30,6 @@ namespace Exiled.API.Features
 
     using RemoteAdmin;
 
-    using SCPSL.Halloween;
-
     using UnityEngine;
 
     /// <summary>
@@ -740,41 +738,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a player's scp330 usages counter.
         /// </summary>
+        [Obsolete("Was removed", true)]
         public int Scp330Usages
         {
-            get => Map.Scp330._usages.TryGetValue(Id, out var usage) ? usage.Uses : -1;
-            set
-            {
-                if (!Map.Scp330._usages.TryGetValue(Id, out var usage))
-                {
-                    usage = new Scp330.Usage
-                    {
-                        Role = Role,
-                        Uses = 0,
-                    };
-                }
-
-                usage.Uses = value;
-                Map.Scp330._usages[Id] = usage;
-            }
+            get => -1;
+            set { }
         }
 
         /// <summary>
         /// Gets a value indicating whether player has hands.
         /// </summary>
-        public bool HasHands
-        {
-            get
-            {
-                Scp330.Usage usage;
-                if (Map.Scp330._usages.TryGetValue(Id, out usage))
-                {
-                    return !usage.Severed;
-                }
-
-                return true;
-            }
-        }
+        [Obsolete("Was removed", true)]
+        public bool HasHands => false;
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
@@ -1217,34 +1192,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Removes the player's hands.
         /// </summary>
+        [Obsolete("Was removed", true)]
         public void RemoveHands()
         {
-            Scp330.Usage usage;
-            if (!Map.Scp330._usages.TryGetValue(Id, out usage))
-            {
-                usage = new Scp330.Usage
-                {
-                    Role = Role,
-                    Uses = 0,
-                };
-            }
-
-            usage.Severed = true;
-
-            Map.Scp330.RpcRemoveHands(Id);
-            GameObject.GetComponent<global::ConsumableAndWearableItems>().CompleteCancelUsage();
-            if (Inventory.curItem != global::ItemType.None)
-            {
-                Inventory.DropCurrentItem();
-            }
-
-            EnableEffect<CustomPlayerEffects.Amnesia>(0f, false);
-            EnableEffect<CustomPlayerEffects.Exsanguination>(0f, false);
-            EnableEffect<CustomPlayerEffects.Hemorrhage>(0f, false);
-            EnableEffect<CustomPlayerEffects.Disarmed>(0f, false);
-
-            Map.Scp330.SpawnHands(ReferenceHub);
-            ReferenceHub.characterClassManager.RpcPlaceBlood(ReferenceHub.transform.position, 0, 3f);
         }
 
         /// <inheritdoc/>
