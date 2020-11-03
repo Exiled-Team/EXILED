@@ -60,7 +60,12 @@ namespace Exiled.API.Features
         /// </summary>
         public bool LightsOff
         {
-            get => FlickerableLightController?.IsEnabled();
+            get
+            {
+                if (!FlickerableLightController)
+                    return false;
+                return FlickerableLightController.IsEnabled();
+            }
         }
 
         private FlickerableLightController FlickerableLightController { get; set; }
