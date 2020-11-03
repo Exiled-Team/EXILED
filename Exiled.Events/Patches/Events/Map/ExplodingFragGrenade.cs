@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Map
             {
                 Player thrower = Player.Get(__instance.thrower.gameObject);
 
-                Dictionary<Player, float> damages = new Dictionary<Player, float>();
+                Dictionary<Player, float> players = new Dictionary<Player, float>();
 
                 Vector3 position = ((EffectGrenade)__instance).transform.position;
 
@@ -50,12 +50,12 @@ namespace Exiled.Events.Patches.Events.Map
                         PlayerStats component = obj2.GetComponent<PlayerStats>();
                         if ((component != null) && component.ccm.InWorld)
                         {
-                            damages.Add(Player.Get(obj2), (float)(__instance.damageOverDistance.Evaluate(Vector3.Distance(position, component.transform.position)) * (component.ccm.IsHuman() ? humanMultiplier : scpMultiplier)));
+                            players.Add(Player.Get(obj2), (float)(__instance.damageOverDistance.Evaluate(Vector3.Distance(position, component.transform.position)) * (component.ccm.IsHuman() ? humanMultiplier : scpMultiplier)));
                         }
                     }
                 }
 
-                var ev = new ExplodingGrenadeEventArgs(thrower, damages, true, __instance.gameObject);
+                var ev = new ExplodingGrenadeEventArgs(thrower, players, true, __instance.gameObject);
 
                 Handlers.Map.OnExplodingGrenade(ev);
 
