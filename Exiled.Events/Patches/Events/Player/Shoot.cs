@@ -19,13 +19,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="WeaponManager.CallCmdShoot(GameObject, string, Vector3, Vector3, Vector3)"/>.
+    /// Patches <see cref="WeaponManager.CallCmdShoot(GameObject, HitBoxType, Vector3, Vector3, Vector3)"/>.
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
     internal static class Shoot
     {
-        private static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
+        private static bool Prefix(WeaponManager __instance, GameObject target, HitBoxType hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
         {
             try
             {
@@ -132,7 +132,6 @@ namespace Exiled.Events.Patches.Events.Player
                     referenceHub = ReferenceHub.GetHub(target);
                 }
 
-                ShotPosSwapper component3;
                 if (referenceHub != null && __instance.GetShootPermission(referenceHub.characterClassManager, false))
                 {
                     if (Math.Abs(__instance._hub.playerMovementSync.RealModelPosition.y - referenceHub.playerMovementSync.RealModelPosition.y) > 35f)
@@ -181,59 +180,70 @@ namespace Exiled.Events.Patches.Events.Player
 
                     __instance._lastRotationReset = 0.35f;
                     __instance._lastRotation = __instance.camera.rotation;
-                    float num = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                    float num2 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num);
-
-                    switch (referenceHub.characterClassManager.CurClass)
+                    float num2 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
+                    float num3 = __instance.weapons[(int)__instance.curWeapon].damageOverDistance.Evaluate(num2);
+                    RoleType curClass = referenceHub.characterClassManager.CurClass;
+                    if (curClass != RoleType.Scp173)
                     {
-                        case RoleType.Scp106:
-                            num2 /= 10f;
-                            break;
-                        default:
-                            string a = hitboxType.ToUpper();
-                            if (a != "HEAD")
-                            {
-                                if (a == "LEG")
+                        switch (curClass)
+                        {
+                            case RoleType.Scp106:
+                                num3 /= 10f;
+                                goto IL_6D1;
+                            case RoleType.NtfScientist:
+                            case RoleType.Scientist:
+                            case RoleType.ChaosInsurgency:
+                                break;
+                            case RoleType.Scp049:
+                            case RoleType.Scp079:
+                            case RoleType.Scp096:
+                                goto IL_6D1;
+                            default:
+                                if (curClass - RoleType.Scp93953 <= 1)
                                 {
-                                    num2 /= 2f;
+                                    goto IL_6D1;
                                 }
 
                                 break;
-                            }
+                        }
 
-                            num2 *= 4f;
-                            float num3 = 1f / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier);
-                            __instance._headshotsL++;
-                            __instance._headshotsS++;
-                            __instance._headshotsResetS = num3 * 1.86f;
-                            __instance._headshotsResetL = num3 * 2.9f;
-                            if (__instance._headshotsS >= 3)
+                        if (hitboxType > HitBoxType.ARM)
+                        {
+                            if (hitboxType == HitBoxType.HEAD)
                             {
-                                __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window A\n(debug code: W.10)", "W.10");
-                                return false;
+                                num3 *= 4f;
+                                float num4 = 1f / (__instance.weapons[(int)__instance.curWeapon].shotsPerSecond * __instance.weapons[(int)__instance.curWeapon].allEffects.firerateMultiplier);
+                                __instance._headshotsL += 1U;
+                                __instance._headshotsS += 1U;
+                                __instance._headshotsResetS = num4 * 1.86f;
+                                __instance._headshotsResetL = num4 * 2.9f;
+                                if (__instance._headshotsS >= 3U)
+                                {
+                                    __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window A\n(debug code: W.10)", "W.10");
+                                    return false;
+                                }
+
+                                if (__instance._headshotsL >= 4U)
+                                {
+                                    __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window B\n(debug code: W.11)", "W.11");
+                                    return false;
+                                }
                             }
-
-                            if (__instance._headshotsL < 4)
-                                break;
-
-                            __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window B\n(debug code: W.11)", "W.11");
-                            return false;
-                        case RoleType.Scp173:
-                        case RoleType.Scp049:
-                        case RoleType.Scp079:
-                        case RoleType.Scp096:
-                        case RoleType.Scp93953:
-                        case RoleType.Scp93989:
-                            break;
+                        }
+                        else
+                        {
+                            num3 /= 2f;
+                        }
                     }
 
-                    num2 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
-                    num2 *= __instance.overallDamagerFactor;
+                IL_6D1:
+                    num3 *= __instance.weapons[(int)__instance.curWeapon].allEffects.damageMultiplier;
+                    num3 *= __instance.overallDamagerFactor;
 
                     // >Exiled
                     Log.Debug("Invoking late shoot.", Loader.ShouldDebugBeShown);
 
-                    var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num, num2);
+                    var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num2, num3);
 
                     Handlers.Player.OnShot(shotEventArgs);
 
@@ -241,36 +251,26 @@ namespace Exiled.Events.Patches.Events.Player
                         return false;
 
                     // <Exiled
-                    __instance._hub.playerStats.HurtPlayer(
-                        new PlayerStats.HitInfo(
-                            shotEventArgs.Damage,
-                            __instance._hub.LoggedNameFromRefHub(),
-                            DamageTypes.FromWeaponId(__instance.curWeapon),
-                            __instance._hub.queryProcessor.PlayerId),
-                        referenceHub.gameObject);
-
-                    __instance.RpcConfirmShot(hitmarker: true, __instance.curWeapon);
-                    __instance.PlaceDecal(isBlood: true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num);
-                }
-                else if (target != null && hitboxType == "window" && target.GetComponent<BreakableWindow>() != null)
-                {
-                    float time = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                    float damage = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(time);
-                    target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
-                    __instance.RpcConfirmShot(hitmarker: true, __instance.curWeapon);
-                }
-                else if (target != null && hitboxType == "swap" && target.TryGetComponent(out component3))
-                {
-                    __instance.RpcConfirmShot(hitmarker: true, __instance.curWeapon);
-                    component3.ServerWasShot();
+                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(num3, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId((int)__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
+                    __instance.RpcConfirmShot(true, (int)__instance.curWeapon);
+                    __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num2);
+                    return false;
                 }
                 else
                 {
-                    __instance.PlaceDecal(isBlood: false, new Ray(__instance.camera.position, dir), __instance.curWeapon, 0f);
-                    __instance.RpcConfirmShot(hitmarker: false, __instance.curWeapon);
-                }
+                    if (target != null && hitboxType == HitBoxType.WINDOW && target.GetComponent<BreakableWindow>() != null)
+                    {
+                        float time = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
+                        float damage = __instance.weapons[(int)__instance.curWeapon].damageOverDistance.Evaluate(time);
+                        target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
+                        __instance.RpcConfirmShot(true, (int)__instance.curWeapon);
+                        return false;
+                    }
 
-                return false;
+                    __instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), (int)__instance.curWeapon, 0f);
+                    __instance.RpcConfirmShot(false, (int)__instance.curWeapon);
+                    return false;
+                }
             }
             catch (Exception e)
             {

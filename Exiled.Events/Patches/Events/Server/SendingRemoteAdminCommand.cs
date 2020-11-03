@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             if (q.ToLower().StartsWith("gban-kick"))
             {
-                if (queryProcessor == null || !queryProcessor._sender.SR.RaEverywhere)
+                if (queryProcessor == null || !queryProcessor._sender.ServerRoles.RaEverywhere)
                 {
                     sender.RaReply(
                         $"GBAN-KICK# Permission to run command denied by the server. If this is an unexpected error, contact EXILED developers.",
