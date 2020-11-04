@@ -50,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             AddingTargetEventArgs ev = new AddingTargetEventArgs(scp096, targetPlayer, 70, __instance.EnrageTimePerReset);
             Exiled.Events.Handlers.Scp096.OnAddingTarget(ev);
-            
             if (ev.IsAllowed)
             {
                 if (!__instance._targets.IsEmpty())
