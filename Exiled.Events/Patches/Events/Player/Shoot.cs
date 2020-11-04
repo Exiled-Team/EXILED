@@ -251,7 +251,7 @@ namespace Exiled.Events.Patches.Events.Player
                         return false;
 
                     // <Exiled
-                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(num3, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId((int)__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
+                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(shotEventArgs.Damage, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId((int)__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
                     __instance.RpcConfirmShot(true, (int)__instance.curWeapon);
                     __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num2);
                     return false;
