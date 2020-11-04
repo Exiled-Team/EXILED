@@ -1199,5 +1199,22 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
+
+        /// <summary>
+        /// Use this when you really need it.
+        /// </summary>
+        /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
+        /// <returns>Returns a player or creates new one if not found.</returns>
+        internal static Player GetOrCreate(GameObject gameObject)
+        {
+            var result = Get(gameObject);
+            if (result == null && gameObject != null)
+            {
+                result = new Player(gameObject);
+                Dictionary[gameObject] = result;
+            }
+
+            return result;
+        }
     }
 }
