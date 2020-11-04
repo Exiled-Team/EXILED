@@ -63,6 +63,6 @@ namespace Exiled.Events
         /// Gets or sets a value indicating the max shield amount for Scp096.
         /// </summary>
         [Description("The maximum shield amount for Scp096")]
-        public int Scp096MaxShieldAmount { get; set; } = 500;
+        public int Scp096MaxShieldAmount { get; set; } = 350;
     }
 }
