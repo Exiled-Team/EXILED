@@ -170,10 +170,13 @@ namespace Exiled.Events.Patches.Events.Scp049
                             __instance._recallProgressServer = 0f;
                             return false;
                         }
+
                     default:
                         Log.Send($"{typeof(StartingAndFinishingRecall).FullName}-{nameof(Prefix)}: Invalid number received - {num}", Discord.LogLevel.Error, ConsoleColor.DarkRed);
                         return true;
                 }
+
+                return false;
             }
             catch (Exception e)
             {
