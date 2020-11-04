@@ -14,7 +14,7 @@ jobs:
       uses: actions/setup-dotnet@v1.5.0
 
     - name: Setup Nuget
-      uses: dylan-smith/setup-nuget@master
+      uses: olight/setup-nuget@dependabot/npm_and_yarn/lodash-4.17.19
 
     - uses: actions/checkout@v2.3.1
 
