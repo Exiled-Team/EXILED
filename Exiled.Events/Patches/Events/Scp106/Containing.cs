@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             //   return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloca_S, 3),
+                new CodeInstruction(OpCodes.Ldloca_S, 2),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
