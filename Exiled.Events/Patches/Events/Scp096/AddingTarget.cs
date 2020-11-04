@@ -10,12 +10,17 @@ namespace Exiled.Events.Patches.Events.Scp096
 #pragma warning disable SA1313
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    
+    using Mirror;
 
     using HarmonyLib;
 
     using UnityEngine;
 
+    using PlayableScps.Messages;
+    
     using Scp096 = PlayableScps.Scp096;
+    
 
     /// <summary>
     /// Patches <see cref="Scp096.AddTarget"/>.
@@ -43,15 +48,16 @@ namespace Exiled.Events.Patches.Events.Scp096
                 return true;
             }
 
-            AddingTargetEventArgs ev = new AddingTargetEventArgs(scp096, targetPlayer, 200, __instance.EnrageTimePerReset);
+            AddingTargetEventArgs ev = new AddingTargetEventArgs(scp096, targetPlayer, 70, __instance.EnrageTimePerReset);
             Exiled.Events.Handlers.Scp096.OnAddingTarget(ev);
-
+            
             if (ev.IsAllowed)
             {
                 if (!__instance._targets.IsEmpty())
                     __instance.EnrageTimeLeft += ev.EnrageTimeToAdd;
                 __instance._targets.Add(hub);
                 __instance.AdjustShield(ev.AhpToAdd);
+                NetworkServer.SendToClientOfPlayer<Scp096ToTargetMessage>(hub.characterClassManager.netIdentity, new Scp096ToTargetMessage(hub));
             }
 
             return false;
