@@ -24,7 +24,8 @@ namespace Exiled.Loader.Features
         /// <inheritdoc/>
         public int Compare(IPlugin<IConfig> x, IPlugin<IConfig> y)
         {
-            var value = x.Priority.CompareTo(y.Priority);
+            // Reverse to make int.MaxValue first than int.MinValue
+            var value = y.Priority.CompareTo(x.Priority);
             if (value == 0)
                 value = x.GetHashCode().CompareTo(y.GetHashCode());
 
