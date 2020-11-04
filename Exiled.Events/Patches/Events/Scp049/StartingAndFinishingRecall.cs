@@ -10,11 +10,14 @@ namespace Exiled.Events.Patches.Events.Scp049
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
     using Mirror;
+
+    using PlayableScps;
 
     using UnityEngine;
 
@@ -31,126 +34,145 @@ namespace Exiled.Events.Patches.Events.Scp049
         {
             try
             {
-                if (num == 2)
+                switch (num)
                 {
-                    if (!__instance._interactRateLimit.CanExecute() || go == null)
-                        return false;
-
-                    Ragdoll component = go.GetComponent<Ragdoll>();
-                    if (component == null)
-                        return false;
-
-                    ReferenceHub referenceHub = null;
-                    foreach (GameObject player in PlayerManager.players)
-                    {
-                        ReferenceHub hub = ReferenceHub.GetHub(player);
-                        if (hub.queryProcessor.PlayerId == component.owner.PlayerId)
+                    case 1:
                         {
-                            referenceHub = hub;
-                            break;
+                            if (!__instance._interactRateLimit.CanExecute())
+                                return false;
+
+                            if (go == null)
+                                return false;
+
+                            Ragdoll component2 = go.GetComponent<Ragdoll>();
+                            if (component2 == null)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object is not a dead body", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            if (!component2.allowRecall)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object can't be recalled", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            if (component2.CurrentTime > Scp049.ReviveEligibilityDuration)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object has decayed too far", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            // Removed useless FOREACH
+                            ReferenceHub referenceHub2 = ReferenceHub.GetHub(component2.owner.PlayerId);
+
+                            if (referenceHub2 == null)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; target not found", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            bool flag = false;
+                            Rigidbody[] componentsInChildren = component2.GetComponentsInChildren<Rigidbody>();
+                            for (int i = 0; i < componentsInChildren.Length; i++)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' accepted", MessageImportance.LessImportant);
+
+                                if (Vector3.Distance(componentsInChildren[i].transform.position, __instance.Hub.PlayerCameraReference.transform.position) <= Scp049.ReviveDistance * 1.3f)
+                                {
+                                    flag = true;
+                                    referenceHub2.characterClassManager.NetworkDeathPosition = __instance.Hub.playerMovementSync.RealModelPosition;
+                                    break;
+                                }
+                            }
+
+                            if (!flag)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP - 049 | Request 'start recalling' rejected; Distance was too great.", MessageImportance.LessImportant);
+                                break;
+                            }
+
+                            var ev = new StartingRecallEventArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+
+                            Handlers.Scp049.OnStartingRecall(ev);
+
+                            if (!ev.IsAllowed)
+                                return false;
+
+                            Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' accepted", MessageImportance.LessImportant);
+                            __instance._recallObjectServer = referenceHub2.gameObject;
+                            __instance._recallProgressServer = 0f;
+                            __instance._recallInProgressServer = true;
+                            return false;
                         }
-                    }
 
-                    if (referenceHub == null)
-                    {
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' rejected; no target found", MessageImportance.LessImportant);
-                        return false;
-                    }
-
-                    if (!__instance._recallInProgressServer ||
-                        referenceHub.gameObject != __instance._recallObjectServer ||
-                        __instance._recallProgressServer < 0.85f)
-                    {
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' rejected; Debug code: ", MessageImportance.LessImportant);
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#1 " + (__instance._recallInProgressServer ? "<color=green>PASSED</color>" : ("<color=red>ERROR</color> - " + __instance._recallInProgressServer)), MessageImportance.LessImportant, true);
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#2 " + ((referenceHub.gameObject == __instance._recallObjectServer) ? "<color=green>PASSED</color>" : string.Concat("<color=red>ERROR</color> - ", referenceHub.queryProcessor.PlayerId, "-", (__instance._recallObjectServer == null) ? "null" : ReferenceHub.GetHub(__instance._recallObjectServer).queryProcessor.PlayerId.ToString())), MessageImportance.LessImportant);
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#3 " + ((__instance._recallProgressServer >= 0.85f) ? "<color=green>PASSED</color>" : ("<color=red>ERROR</color> - " + __instance._recallProgressServer)), MessageImportance.LessImportant, true);
-                        return false;
-                    }
-
-                    if (referenceHub.characterClassManager.CurClass != RoleType.Spectator)
-                    {
-                        return false;
-                    }
-
-                    var ev = new FinishingRecallEventArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
-
-                    Handlers.Scp049.OnFinishingRecall(ev);
-
-                    if (!ev.IsAllowed)
-                        return false;
-
-                    Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' accepted", MessageImportance.LessImportant);
-                    RoundSummary.changed_into_zombies++;
-                    referenceHub.characterClassManager.SetClassID(RoleType.Scp0492);
-                    referenceHub.GetComponent<PlayerStats>().Health =
-                        referenceHub.characterClassManager.Classes.Get(RoleType.Scp0492).maxHP;
-                    if (component.CompareTag("Ragdoll"))
-                    {
-                        NetworkServer.Destroy(component.gameObject);
-                    }
-
-                    __instance._recallInProgressServer = false;
-                    __instance._recallObjectServer = null;
-                    __instance._recallProgressServer = 0f;
-                    return false;
-                }
-
-                if (num != 1)
-                    return true;
-                {
-                    if (!__instance._interactRateLimit.CanExecute())
-                        return false;
-
-                    if (go == null)
-                        return false;
-
-                    Ragdoll component2 = go.GetComponent<Ragdoll>();
-                    if (component2 == null)
-                    {
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object is not a dead body", MessageImportance.LessImportant);
-                        return false;
-                    }
-
-                    if (!component2.allowRecall)
-                    {
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; provided object can't be recalled", MessageImportance.LessImportant);
-                        return false;
-                    }
-
-                    ReferenceHub referenceHub2 = null;
-                    foreach (GameObject player2 in PlayerManager.players)
-                    {
-                        ReferenceHub hub2 = ReferenceHub.GetHub(player2);
-                        if (hub2 != null && hub2.queryProcessor.PlayerId == component2.owner.PlayerId)
+                    case 2:
                         {
-                            referenceHub2 = hub2;
-                            break;
+                            if (!__instance._interactRateLimit.CanExecute() || go == null)
+                                return false;
+
+                            Ragdoll component = go.GetComponent<Ragdoll>();
+                            if (component == null)
+                                return false;
+
+                            ReferenceHub referenceHub = null;
+                            foreach (GameObject player in PlayerManager.players)
+                            {
+                                ReferenceHub hub = ReferenceHub.GetHub(player);
+                                if (hub.queryProcessor.PlayerId == component.owner.PlayerId)
+                                {
+                                    referenceHub = hub;
+                                    break;
+                                }
+                            }
+
+                            if (referenceHub == null)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' rejected; no target found", MessageImportance.LessImportant);
+                                return false;
+                            }
+
+                            if (!__instance._recallInProgressServer ||
+                                referenceHub.gameObject != __instance._recallObjectServer ||
+                                __instance._recallProgressServer < 0.85f)
+                            {
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' rejected; Debug code: ", MessageImportance.LessImportant);
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#1 " + (__instance._recallInProgressServer ? "<color=green>PASSED</color>" : ("<color=red>ERROR</color> - " + __instance._recallInProgressServer)), MessageImportance.LessImportant, true);
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#2 " + ((referenceHub.gameObject == __instance._recallObjectServer) ? "<color=green>PASSED</color>" : string.Concat("<color=red>ERROR</color> - ", referenceHub.queryProcessor.PlayerId, "-", (__instance._recallObjectServer == null) ? "null" : ReferenceHub.GetHub(__instance._recallObjectServer).queryProcessor.PlayerId.ToString())), MessageImportance.LessImportant);
+                                Console.AddDebugLog("SCPCTRL", "SCP-049 | CONDITION#3 " + ((__instance._recallProgressServer >= 0.85f) ? "<color=green>PASSED</color>" : ("<color=red>ERROR</color> - " + __instance._recallProgressServer)), MessageImportance.LessImportant, true);
+                                return false;
+                            }
+
+                            if (referenceHub.characterClassManager.CurClass != RoleType.Spectator)
+                            {
+                                return false;
+                            }
+
+                            var ev = new FinishingRecallEventArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+
+                            Handlers.Scp049.OnFinishingRecall(ev);
+
+                            if (!ev.IsAllowed)
+                                return false;
+
+                            Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'finish recalling' accepted", MessageImportance.LessImportant);
+                            RoundSummary.changed_into_zombies++;
+                            referenceHub.characterClassManager.SetClassID(RoleType.Scp0492);
+                            referenceHub.GetComponent<PlayerStats>().Health =
+                                referenceHub.characterClassManager.Classes.Get(RoleType.Scp0492).maxHP;
+                            if (component.CompareTag("Ragdoll"))
+                            {
+                                NetworkServer.Destroy(component.gameObject);
+                            }
+
+                            __instance._recallInProgressServer = false;
+                            __instance._recallObjectServer = null;
+                            __instance._recallProgressServer = 0f;
+                            return false;
                         }
-                    }
-
-                    if (referenceHub2 == null)
-                    {
-                        Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' rejected; target not found", MessageImportance.LessImportant);
-                        return false;
-                    }
-
-                    if (Vector3.Distance(component2.transform.position, __instance.Hub.PlayerCameraReference.transform.position) >=
-                        PlayableScps.Scp049.ReviveDistance * 1.3f)
-                        return false;
-
-                    var ev = new StartingRecallEventArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
-
-                    Handlers.Scp049.OnStartingRecall(ev);
-
-                    if (!ev.IsAllowed)
-                        return false;
-
-                    Console.AddDebugLog("SCPCTRL", "SCP-049 | Request 'start recalling' accepted", MessageImportance.LessImportant);
-                    __instance._recallObjectServer = referenceHub2.gameObject;
-                    __instance._recallProgressServer = 0f;
-                    __instance._recallInProgressServer = true;
-                    return false;
+                    default:
+                        Log.Send($"{typeof(StartingAndFinishingRecall).FullName}-{nameof(Prefix)}: Invalid number received - {num}", Discord.LogLevel.Error, ConsoleColor.DarkRed);
+                        return true;
                 }
             }
             catch (Exception e)
