@@ -113,7 +113,6 @@ namespace Exiled.Events.Patches.Generic
                             else
                             {
                                 float sqrMagnitude = vector3.sqrMagnitude;
-                                bool flag = false;
                                 if (player.ReferenceHub.playerMovementSync.RealModelPosition.y < 800f)
                                 {
                                     if (sqrMagnitude >= 1764f)
@@ -123,7 +122,6 @@ namespace Exiled.Events.Patches.Generic
                                             MakeGhost(ppd.playerID, __instance._transmitBuffer);
                                             continue;
                                         }
-                                        flag = true;
                                         if (!(currentTarget.ReferenceHub.scpsController.CurrentScp is Scp096 scp) || !scp.EnragedOrEnraging)
                                         {
                                             MakeGhost(ppd.playerID, __instance._transmitBuffer);
