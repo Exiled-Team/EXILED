@@ -9,7 +9,7 @@
     <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
 
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version>2.1.12</Version>
+    <Version>2.1.13</Version>
 
     <Company>Exiled Team</Company>
     <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
