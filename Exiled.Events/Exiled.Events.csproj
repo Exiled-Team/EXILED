@@ -16,9 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-    <PackageReference Include="Lib.Harmony" Version="2.0.3" />
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
   </ItemGroup>
 
   <ItemGroup>

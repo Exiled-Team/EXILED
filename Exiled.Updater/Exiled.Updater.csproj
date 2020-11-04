@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <Import Project="../EXILED.props" />
 
@@ -12,8 +12,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
   </ItemGroup>
 
   <ItemGroup>

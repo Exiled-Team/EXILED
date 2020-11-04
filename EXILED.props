@@ -11,6 +11,10 @@
     <!-- This is the global version and is used for all projects that don't have a version -->
     <Version>2.1.13</Version>
 
+    <HarmonyVersion>2.0.4</HarmonyVersion>
+    <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
+    <StyleCopVersion>1.1.118</StyleCopVersion>
+
     <Company>Exiled Team</Company>
     <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
