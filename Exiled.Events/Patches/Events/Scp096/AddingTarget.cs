@@ -10,17 +10,16 @@ namespace Exiled.Events.Patches.Events.Scp096
 #pragma warning disable SA1313
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    
-    using Mirror;
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using Mirror;
 
     using PlayableScps.Messages;
-    
+
+    using UnityEngine;
+
     using Scp096 = PlayableScps.Scp096;
-    
 
     /// <summary>
     /// Patches <see cref="Scp096.AddTarget"/>.
