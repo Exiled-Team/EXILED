@@ -182,58 +182,53 @@ namespace Exiled.Events.Patches.Events.Player
                     __instance._lastRotation = __instance.camera.rotation;
                     float num2 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
                     float num3 = __instance.weapons[(int)__instance.curWeapon].damageOverDistance.Evaluate(num2);
-                    RoleType curClass = referenceHub.characterClassManager.CurClass;
-                    if (curClass != RoleType.Scp173)
+
+                    switch (referenceHub.characterClassManager.CurClass)
                     {
-                        switch (curClass)
-                        {
-                            case RoleType.Scp106:
-                                num3 /= 10f;
-                                goto IL_6D1;
-                            case RoleType.NtfScientist:
-                            case RoleType.Scientist:
-                            case RoleType.ChaosInsurgency:
-                                break;
-                            case RoleType.Scp049:
-                            case RoleType.Scp079:
-                            case RoleType.Scp096:
-                                goto IL_6D1;
-                            default:
-                                if (curClass - RoleType.Scp93953 <= 1)
-                                {
-                                    goto IL_6D1;
-                                }
+                        case RoleType.Scp106:
+                            num3 /= 10f;
+                            goto IL_6D1;
 
-                                break;
-                        }
+                        case RoleType.Scp049:
+                        case RoleType.Scp079:
+                        case RoleType.Scp096:
+                        case RoleType.Scp173:
+                        case RoleType.Scp93953:
+                        case RoleType.Scp93989:
+                            break;
 
-                        if (hitboxType > HitBoxType.ARM)
-                        {
-                            if (hitboxType == HitBoxType.HEAD)
+                        default:
+                            switch (hitboxType)
                             {
-                                num3 *= 4f;
-                                float num4 = 1f / (__instance.weapons[(int)__instance.curWeapon].shotsPerSecond * __instance.weapons[(int)__instance.curWeapon].allEffects.firerateMultiplier);
-                                __instance._headshotsL += 1U;
-                                __instance._headshotsS += 1U;
-                                __instance._headshotsResetS = num4 * 1.86f;
-                                __instance._headshotsResetL = num4 * 2.9f;
-                                if (__instance._headshotsS >= 3U)
-                                {
-                                    __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window A\n(debug code: W.10)", "W.10");
-                                    return false;
-                                }
+                                case HitBoxType.HEAD:
+                                    num3 *= 4;
+                                    float num4 = 1 / (__instance.weapons[(int)__instance.curWeapon].shotsPerSecond * __instance.weapons[(int)__instance.curWeapon].allEffects.firerateMultiplier);
+                                    __instance._headshotsL++;
+                                    __instance._headshotsS++;
+                                    __instance._headshotsResetS = num4 * 1.86f;
+                                    __instance._headshotsResetL = num4 * 2.9f;
 
-                                if (__instance._headshotsL >= 4U)
-                                {
-                                    __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window B\n(debug code: W.11)", "W.11");
-                                    return false;
-                                }
+                                    if (__instance._headshotsS >= 3)
+                                    {
+                                        __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window A\n(debug code: W.10)", "W.10");
+                                        return false;
+                                    }
+
+                                    if (__instance._headshotsL >= 4)
+                                    {
+                                        __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window B\n(debug code: W.11)", "W.11");
+                                        return false;
+                                    }
+
+                                    break;
+
+                                case HitBoxType.ARM:
+                                case HitBoxType.LEG:
+                                    num3 /= 2;
+                                    break;
                             }
-                        }
-                        else
-                        {
-                            num3 /= 2f;
-                        }
+
+                            break;
                     }
 
                 IL_6D1:
