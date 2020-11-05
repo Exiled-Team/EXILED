@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Cassie.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -16,6 +16,11 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Cassie
     {
+        /// <summary>
+        /// Gets a value indicating whether or not a C.A.S.S.I.E announcement is currently playing. Does not include decontamination messages.
+        /// </summary>
+        public static bool IsSpeaking => !NineTailedFoxAnnouncer.singleton.Free;
+
         /// <summary>
         /// Reproduce a C.A.S.S.I.E message.
         /// </summary>
