@@ -72,11 +72,7 @@ namespace Exiled.Events.Patches.Generic
 
                 foreach (GameObject gameObject in players)
                 {
-                    // Somehow here we get a NullReferenceException
-                    Player player = Player.GetOrCreate(gameObject);
-                    if (player == null)
-                        continue;
-
+                    Player player = Player.Get(gameObject);
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
 
                     if (player.Role.Is939())
