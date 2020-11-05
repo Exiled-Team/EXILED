@@ -195,7 +195,7 @@ namespace Exiled.Events.Patches.Events.Player
                         case RoleType.Scp173:
                         case RoleType.Scp93953:
                         case RoleType.Scp93989:
-                            break;
+                            goto IL_6D1;
 
                         default:
                             switch (hitboxType)
