@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Generic
 
                 foreach (GameObject gameObject in players)
                 {
-                    Player player = Player.Get(gameObject);
+                    Player player = GetPlayerOrServer(gameObject);
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
 
                     if (player.Role.Is939())
@@ -99,11 +99,11 @@ namespace Exiled.Events.Patches.Generic
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
-                            Player currentTarget = Player.Get(ppd.playerID);
-                            Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
-
-                            if (currentTarget?.ReferenceHub == null)
+                            if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
                                 continue;
+
+                            Player currentTarget = GetPlayerOrServer(targetHub.gameObject);
+                            Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
 
                             Vector3 vector3 = ppd.position - player.ReferenceHub.playerMovementSync.RealModelPosition;
                             if (Math.Abs(vector3.y) > 35f)
@@ -185,7 +185,10 @@ namespace Exiled.Events.Patches.Generic
                         if (ppd.position == GhostPos)
                             continue;
 
-                        var target = Player.Get(ppd.playerID);
+                        if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
+                            continue;
+
+                        var target = GetPlayerOrServer(targetHub.gameObject);
                         // If for some reason the player/their ref hub is null
                         if (target?.ReferenceHub == null)
                             continue;
@@ -247,5 +250,18 @@ namespace Exiled.Events.Patches.Generic
 
         private static void RotatePlayer(int index, PlayerPositionData[] buff, Vector3 rotation) => buff[index]
             = new PlayerPositionData(buff[index].position, Quaternion.LookRotation(rotation).eulerAngles.y, buff[index].playerID);
+
+        private static Player GetPlayerOrServer(GameObject gameObject)
+        {
+            if (gameObject == null)
+                return null;
+
+            var refHub = ReferenceHub.GetHub(gameObject);
+
+            // The only reason is that the server is also a player,
+            // and we've seen a lot of NullRef exceptions at the place
+            // where we call this method
+            return refHub.isLocalPlayer ? Server.Host : Player.Get(gameObject);
+        }
     }
 }
