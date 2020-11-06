@@ -72,6 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
+                ply.GetComponent<FirstPersonController>().ModifyStamina(100f);
 
                 if (lite)
                 {
