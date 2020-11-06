@@ -16,7 +16,6 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ContainingEventArgs : EventArgs
     {
-
 #pragma warning disable SA1625 // Element documentation should not be copied and pasted
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainingEventArgs"/> class.
