@@ -17,7 +17,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or Sets a value indicating the max shield amount Scp096 can have.
         /// </summary>
-        public static float MaxShield { get; set; } = 500;
+        public static float MaxShield { get; set; } = 350;
 
         /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-096.
