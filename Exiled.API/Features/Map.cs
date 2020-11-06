@@ -15,6 +15,8 @@ namespace Exiled.API.Features
 
     using LightContainmentZoneDecontamination;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -159,8 +161,27 @@ namespace Exiled.API.Features
             // Avoid errors by forcing Map.Rooms to populate when this is called.
             var rooms = Rooms;
 
+            Room room = null;
+
+            const string playerTag = "Player";
+
             // First try to find the room owner quickly.
-            var room = objectInRoom.GetComponentInParent<Room>();
+            if (!objectInRoom.CompareTag(playerTag))
+            {
+                room = objectInRoom.GetComponentInParent<Room>();
+            }
+            else
+            {
+                // Check for Scp079 if it's a player
+                var ply = Player.Get(objectInRoom);
+                if (ply.Role == RoleType.Scp079)
+                {
+                    // Raycasting doesn't make sence,
+                    // Scp079 position is constant,
+                    // let it be 'Outside' instead
+                    room = FindParentRoom(ply.ReferenceHub.scp079PlayerScript.currentCamera.gameObject);
+                }
+            }
 
             if (room == null)
             {
@@ -174,11 +195,21 @@ namespace Exiled.API.Features
             }
 
             // Always default to surface transform, since it's static.
-            // The current index of the 'Outsise' room is one (count from zero)
+            // The current index of the 'Outsise' room is the last one
             if (room == null && rooms.Count != 0)
-                room = rooms[1];
+                room = rooms[rooms.Count - 1];
 
             return room;
+        }
+
+        /// <summary>
+        /// Spawns hands at the specified position with specified rotation.
+        /// </summary>
+        /// <param name="position">Hands position.</param>
+        /// <param name="rotation">Hands rotation.</param>
+        [Obsolete("Was removed", true)]
+        public static void SpawnHands(Vector3 position, Quaternion rotation)
+        {
         }
 
         /// <summary>

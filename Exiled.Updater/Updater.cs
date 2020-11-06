@@ -31,13 +31,15 @@ namespace Exiled.Updater
     {
         private enum Stage
         {
+            Free,
             Start,
             Installing,
             Installed,
-            Finish,
         }
 
         public const long REPOID = 231269519;
+
+        public static Updater Instance { get; } = new Updater();
 
         public static readonly string[] InstallerAssetNamesLinux = { "Exiled.Installer-Linux" };
         public static readonly string[] InstallerAssetNamesWin = { "Exiled.Installer-Win.exe" };
@@ -49,6 +51,10 @@ namespace Exiled.Updater
 
         /// <inheritdoc />
         public override string Author => "Exiled Team @ iRebbok";
+
+        private Updater()
+        {
+        }
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -63,9 +69,20 @@ namespace Exiled.Updater
 
             _firstLaunch = false;
 
-            Log.Debug($"PlatformId: {PlatformId}");
+            CheckUpdate(false);
+        }
+
+        public bool CheckUpdate(bool forced)
+        {
             FixInvalidProxyHandling();
-            Timing.RunCoroutine(CheckUpdate(), Segment.EndOfFrame);
+
+            if (_stage == Stage.Free)
+            {
+                Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
+                return true;
+            }
+
+            return false;
         }
 
         private void FixInvalidProxyHandling()
@@ -101,13 +118,17 @@ namespace Exiled.Updater
             return client;
         }
 
-        private IEnumerator<float> CheckUpdate()
+#pragma warning disable SA1300 // Element should begin with upper-case letter
+        private IEnumerator<float> _CheckUpdate(bool forced)
+#pragma warning restore SA1300 // Element should begin with upper-case letter
         {
+            _stage = Stage.Start;
+
             var updateThread = new Thread(() =>
             {
                 using (var client = CreateHttpClient())
                 {
-                    if (FindUpdate(client, out var newVersion))
+                    if (FindUpdate(client, forced, out var newVersion))
                     {
                         _stage = Stage.Installing;
                         Update(client, newVersion);
@@ -134,10 +155,10 @@ namespace Exiled.Updater
             if (_stage == Stage.Installed)
                 Application.Quit();
 
-            _stage = Stage.Finish;
+            _stage = Stage.Free;
         }
 
-        private bool FindUpdate(HttpClient client, out NewVersion newVersion)
+        private bool FindUpdate(HttpClient client, bool forced, out NewVersion newVersion)
         {
             try
             {
@@ -160,7 +181,7 @@ namespace Exiled.Updater
                 #endregion
 
                 var taggedReleases = TagReleases(releases);
-                if (FindRelease(taggedReleases, out var targetRelease, smallestExiledVersion.GetName()))
+                if (FindRelease(taggedReleases, out var targetRelease, smallestExiledVersion.GetName(), forced))
                 {
                     if (!FindAsset(GetAvailableInstallerNames(), targetRelease, out var asset))
                     {

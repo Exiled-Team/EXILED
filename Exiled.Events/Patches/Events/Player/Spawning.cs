@@ -45,12 +45,6 @@ namespace Exiled.Events.Patches.Events.Player
                 __instance.AliveTime = 0f;
                 switch (role.team)
                 {
-                    case Team.MTF:
-                        AchievementManager.Achieve("arescue");
-                        break;
-                    case Team.CHI:
-                        AchievementManager.Achieve("chaos");
-                        break;
                     case Team.RSC:
                     case Team.CDP:
                         __instance.EscapeStartTime = (int)Time.realtimeSinceStartup;

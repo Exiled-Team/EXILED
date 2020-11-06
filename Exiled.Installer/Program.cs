@@ -152,7 +152,8 @@ namespace Exiled.Installer
 
         private static async Task<IEnumerable<Release>> GetReleases() =>
             (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                .Where(r => VersionComparer.CustomVersionGreaterOrEquals(SemVer2Version.Parse(r.TagName).Backwards, VersionLimit))
+                .Where(r => SemVer2Version.TryParse(r.TagName, out var version)
+                && VersionComparer.CustomVersionGreaterOrEquals(version.Backwards, VersionLimit))
                 .OrderByDescending(r => r.CreatedAt.Ticks);
 
         private static string FormatRelease(Release r)

@@ -12,6 +12,8 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
@@ -734,6 +736,22 @@ namespace Exiled.API.Features
         public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
+        /// Gets or sets a player's scp330 usages counter.
+        /// </summary>
+        [Obsolete("Was removed", true)]
+        public int Scp330Usages
+        {
+            get => -1;
+            set { }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether player has hands.
+        /// </summary>
+        [Obsolete("Was removed", true)]
+        public bool HasHands => false;
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
@@ -1103,9 +1121,14 @@ namespace Exiled.API.Features
         public void ResetInventory(List<Inventory.SyncItemInfo> newItems) => ResetInventory(newItems.Select(item => item.id).ToList());
 
         /// <summary>
-        /// Clears the player's inventory.
+        /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        public void ClearInventory() => Inventory.items.Clear();
+        public void ClearInventory() => Inventory.Clear();
+
+        /// <summary>
+        /// Drops all items in the player's inventory, including all ammo and items.
+        /// </summary>
+        public void DropItems() => Inventory.ServerDropAll();
 
         /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see>.
@@ -1136,6 +1159,49 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
+
+        /// <summary>
+        ///  Disables all status affects on the player.
+        /// </summary>
+        public void DisableAllEffects()
+        {
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                effect.Value.ServerDisable();
+            }
+        }
+
+        /// <summary>
+        /// Disables a status effect on this player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disale.</typeparam>
+        public void DisableEffect<T>()
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a status effect on this player.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Removes the player's hands.
+        /// </summary>
+        [Obsolete("Was removed", true)]
+        public void RemoveHands()
+        {
         }
 
         /// <inheritdoc/>

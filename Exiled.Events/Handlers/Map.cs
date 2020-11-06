@@ -63,6 +63,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
 
         /// <summary>
+        /// Invoked before an item is spawned.
+        /// </summary>
+        public static event CustomEventHandler<SpawningItemEventArgs> SpawningItem;
+
+        /// <summary>
+        /// Invoked after an item is spawned.
+        /// </summary>
+        public static event CustomEventHandler<SpawnedItemEventArgs> SpawnedItem;
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
@@ -115,5 +125,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ExplodingGrenadeEventArgs"/> instance.</param>
         public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) => ExplodingGrenade.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
+        public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after an item is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawnedItemEventArgs"/> instance.</param>
+        public static void OnSpawnedItem(SpawnedItemEventArgs ev) => SpawnedItem.InvokeSafely(ev);
     }
 }

@@ -32,10 +32,20 @@ namespace Exiled
 
         public static SemVer2Version Parse(string version)
         {
+            if (!TryParse(version, out var output))
+                throw new ArgumentException();
+
+            return output;
+        }
+
+        public static bool TryParse(string version, out SemVer2Version output)
+        {
+            output = default;
+
             var match = SemVerRegex.Match(version);
 
             if (!match.Success)
-                throw new ArgumentException();
+                return false;
 
             int major, minor, patch = -1;
 
@@ -45,7 +55,8 @@ namespace Exiled
 
             var backwards = new Version(major, minor, patch);
 
-            return new SemVer2Version(major, minor, patch, backwards);
+            output = new SemVer2Version(major, minor, patch, backwards);
+            return true;
         }
     }
 }

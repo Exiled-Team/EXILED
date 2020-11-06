@@ -74,6 +74,14 @@ namespace Exiled.API.Extensions
             type == ItemType.GunMP7 || type == ItemType.GunProject90 || type == ItemType.GunUSP || (checkMicro && type == ItemType.MicroHID);
 
         /// <summary>
+        /// Check if an <see cref="ItemType">item</see> is an SCP-330.
+        /// </summary>
+        /// <param name="type">The item to be checked.</param>
+        /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
+        [Obsolete("Was removed", true)]
+        public static bool IsSCP330(this ItemType type) => false;
+
+        /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
