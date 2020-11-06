@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Get the return label.
             var returnLabel = newInstructions[index - 1].operand;
 
-            // var ev = new ContainingEventArgs(Player.Get(keyValuePair.Key), true);
+            // var ev = new ContainingEventArgs(Player.Get(keyValuePair.Key), Player.Get(PlayerInteract._hub), true);
             //
             // Handlers.Scp106.OnContaining(ev);
             //
@@ -53,6 +53,9 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new CodeInstruction(OpCodes.Ldloca_S, 2),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ContainingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
