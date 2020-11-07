@@ -164,7 +164,9 @@ namespace Exiled.Events.Patches.Events.Player
                         return false;
                     }
 
-                    if (Vector3.Angle(referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition, __instance.transform.forward) > 45f)
+                    Vector3 positionOffset = referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition;
+
+                    if (Vector3.Angle(positionOffset, __instance.transform.forward) > 45 && Math.Abs(positionOffset.y) > 10f && positionOffset.sqrMagnitude < 0.25f)
                     {
                         __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.12 (too big angle)", "gray");
                         return false;
