@@ -166,16 +166,16 @@ namespace Exiled.Updater
 
                 var releases = client.GetReleases(REPOID).GetAwaiter().GetResult();
                 #region Debug code
-                Log.Debug($"Found {releases.Length} releases");
+                Log.Debug($"Found {releases.Length} releases", Config.ShouldDebugBeShown);
                 for (var z = 0; z < releases.Length; z++)
                 {
                     var release = releases[z];
-                    Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}");
+                    Log.Debug($"PRE: {release.PreRelease} | ID: {release.Id} | TAG: {release.TagName}", Config.ShouldDebugBeShown);
 
                     for (int x = 0; x < release.Assets.Length; x++)
                     {
                         var asset = release.Assets[x];
-                        Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}");
+                        Log.Debug($"   - ID: {asset.Id} | NAME: {asset.Name} | SIZE: {asset.Size} | URL: {asset.Url} | DownloadURL: {asset.BrowserDownloadUrl}", Config.ShouldDebugBeShown);
                     }
                 }
                 #endregion
@@ -322,7 +322,7 @@ namespace Exiled.Updater
             {
                 var taggedRelease = releases[z];
 #if DEBUG
-                Log.Debug($"TV - {taggedRelease.Version.Backwards} | CV - {smallestExiledVersion.Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(taggedRelease.Version.Backwards, smallestExiledVersion.Version)}");
+                Log.Debug($"TV - {taggedRelease.Version.Backwards} | CV - {smallestExiledVersion.Version} | TV >= CV - {VersionComparer.CustomVersionGreaterOrEquals(taggedRelease.Version.Backwards, smallestExiledVersion.Version)}", Config.ShouldDebugBeShown);
 #endif
                 if (taggedRelease.Release.PreRelease && !includePRE)
                     continue;
