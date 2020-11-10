@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     public static class Cassie
     {
         /// <summary>
-        /// Gets a value indicating whether or not a C.A.S.S.I.E announcement is currently playing or if a C.A.S.S.I.E announcement is queued. Does not include decontamination messages.
+        /// Gets a value indicating whether or not a C.A.S.S.I.E announcement is currently playing. Does not include decontamination messages.
         /// </summary>
         public static bool IsSpeaking => !NineTailedFoxAnnouncer.singleton.Free;
 
