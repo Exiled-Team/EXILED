@@ -14,7 +14,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     using UnityEngine;
-    
+
     using Utils.ConfigHandler;
 
     /// <summary>
