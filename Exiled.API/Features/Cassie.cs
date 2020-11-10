@@ -17,7 +17,7 @@ namespace Exiled.API.Features
     public static class Cassie
     {
         /// <summary>
-        /// Gets a value indicating whether or not a C.A.S.S.I.E announcement is currently playing. Does not include decontamination messages.
+        /// Gets a value indicating whether or not a C.A.S.S.I.E announcement is currently playing or if a C.A.S.S.I.E announcement is queued. Does not include decontamination messages.
         /// </summary>
         public static bool IsSpeaking => !NineTailedFoxAnnouncer.singleton.Free;
 
@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         /// Reproduce a C.A.S.S.I.E message after a certain amount of seconds.
         /// </summary>
         /// <param name="message">The message to be reproduced.</param>
-        /// <param name="delay">The seconds that have to pass, before reproducing the message.</param>
+        /// <param name="delay">The seconds that have to pass before reproducing the message.</param>
         /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
         /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
         public static void DelayedMessage(string message, float delay, bool isHeld = false, bool isNoisy = true)

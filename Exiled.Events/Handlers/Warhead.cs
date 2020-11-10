@@ -55,7 +55,7 @@ namespace Exiled.Events.Handlers
         public static void OnDetonated() => Detonated.InvokeSafely();
 
         /// <summary>
-        /// Invoked before changing the warhead lever status.
+        /// Called before changing the warhead lever status.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingLeverStatusEventArgs"/> instance.</param>
         public static void OnChangingLeverStatus(ChangingLeverStatusEventArgs ev) => ChangingLeverStatus.InvokeSafely(ev);

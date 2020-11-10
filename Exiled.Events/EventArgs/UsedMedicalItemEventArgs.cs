@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations after a player uses a medical item on himself.
+    /// Contains all informations after a player uses a medical item.
     /// </summary>
     public class UsedMedicalItemEventArgs : EventArgs
     {

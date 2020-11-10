@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using UnityEngine;
@@ -37,7 +38,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who thrown the grenade.
+        /// Gets the player who threw the grenade.
         /// </summary>
         public Player Thrower { get; }
 

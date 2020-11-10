@@ -8,7 +8,7 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// The team that is winning the round.
+    /// The team that is currently leading the round.
     /// </summary>
     public enum LeadingTeam : byte
     {
@@ -18,12 +18,12 @@ namespace Exiled.API.Enums
         FacilityForces,
 
         /// <summary>
-        /// Represents Class D and Chaos Insurgency.
+        /// Represents Class-D and Chaos Insurgency.
         /// </summary>
         ChaosInsurgency,
 
         /// <summary>
-        /// Represents SCP.
+        /// Represents SCPs.
         /// </summary>
         Anomalies,
 

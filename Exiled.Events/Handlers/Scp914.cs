@@ -18,7 +18,7 @@ namespace Exiled.Events.Handlers
     public static class Scp914
     {
         /// <summary>
-        /// Invoked before upgrading items in the SCP-914 machine.
+        /// Invoked before SCP-914 upgrades players and items.
         /// </summary>
         public static event CustomEventHandler<UpgradingItemsEventArgs> UpgradingItems;
 
@@ -33,19 +33,19 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingKnobSettingEventArgs> ChangingKnobSetting;
 
         /// <summary>
-        /// Called before upgrading items in the SCP-914 machine.
+        /// Called before SCP-914 upgrades players and items.
         /// </summary>
         /// <param name="ev">The <see cref="UpgradingItemsEventArgs"/> instance.</param>
         public static void OnUpgradingItems(UpgradingItemsEventArgs ev) => UpgradingItems.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before activating the SCP-914 machine.
+        /// Called before activating the SCP-914 machine.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingEventArgs"/> instance.</param>
         public static void OnActivating(ActivatingEventArgs ev) => Activating.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before changing the SCP-914 machine knob setting.
+        /// Called before changing the SCP-914 machine knob setting.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingKnobSettingEventArgs"/> instance.</param>
         public static void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev) => ChangingKnobSetting.InvokeSafely(ev);

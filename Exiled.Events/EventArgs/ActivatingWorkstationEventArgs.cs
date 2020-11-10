@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates the workstation.
+    /// Contains all informations before a player activates a workstation.
     /// </summary>
     public class ActivatingWorkstationEventArgs : EventArgs
     {

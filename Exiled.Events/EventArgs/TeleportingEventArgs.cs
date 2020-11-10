@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before teleporting an SCP-106.
+    /// Contains all informations before SCP-106 teleports using a portal.
     /// </summary>
     public class TeleportingEventArgs : EventArgs
     {

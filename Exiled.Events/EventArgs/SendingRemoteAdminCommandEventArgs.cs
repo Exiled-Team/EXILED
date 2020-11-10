@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before the SCP-914 machine upgrades items inside it.
+    /// Contains all informations before sending a remote admin message.
     /// </summary>
     public class SendingRemoteAdminCommandEventArgs : EventArgs
     {
