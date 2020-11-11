@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who picking up SCP-330.
+        /// Gets the player who's interacting with SCP-330.
         /// </summary>
         public Player Player { get; }
 
