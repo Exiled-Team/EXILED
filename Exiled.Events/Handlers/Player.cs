@@ -266,12 +266,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
-        /// Invoked before a user's mute status is changed.
+        /// Invoked before an user's mute status is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingMuteStatusEventArgs> ChangingMuteStatus;
 
         /// <summary>
-        /// Invoked before a user's intercom mute status is changed.
+        /// Invoked before an user's intercom mute status is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
 
@@ -570,13 +570,13 @@ namespace Exiled.Events.Handlers
         public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a user's mute status is changed.
+        /// Called before an user's mute status is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMuteStatusEventArgs"/> instance.</param>
         public static void OnChangingMuteStatus(ChangingMuteStatusEventArgs ev) => ChangingMuteStatus.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a user's intercom mute status is changed.
+        /// Called before an user's intercom mute status is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntercomMuteStatusEventArgs"/> instance.</param>
         public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
