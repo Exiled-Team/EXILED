@@ -24,7 +24,7 @@ namespace Exiled.API.Features
     using Object = UnityEngine.Object;
 
     /// <summary>
-    /// A set of tools to handle the in-game map more easily.
+    /// A set of tools to easily handle the in-game map.
     /// </summary>
     public static class Map
     {
@@ -43,7 +43,7 @@ namespace Exiled.API.Features
         private static SpawnpointManager spawnpointManager;
 
         /// <summary>
-        /// Gets a value indicating whether the decontamination has been completed or not.
+        /// Gets a value indicating whether decontamination has begun in light containment.
         /// </summary>
         public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
@@ -53,7 +53,7 @@ namespace Exiled.API.Features
         public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
 
         /// <summary>
-        /// Gets all cameras of SCP-079.
+        /// Gets all SCP-079 cameras.
         /// </summary>
         public static Camera079[] Cameras => Scp079PlayerScript.allCameras;
 
@@ -207,7 +207,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">Hands position.</param>
         /// <param name="rotation">Hands rotation.</param>
-        [Obsolete("Was removed", true)]
+        [Obsolete("This API was removed with SCP-330 and is no longer available.", true)]
         public static void SpawnHands(Vector3 position, Quaternion rotation)
         {
         }
@@ -261,7 +261,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Starts the Decontamination process.
+        /// Starts the light containment decontamination process.
         /// </summary>
         public static void StartDecontamination()
         {
@@ -277,7 +277,7 @@ namespace Exiled.API.Features
         public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
 
         /// <summary>
-        ///     Clears the lazy loading game object cache.
+        /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
         {

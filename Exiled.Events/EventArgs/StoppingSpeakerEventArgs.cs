@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player stopping a speaker through SCP-079.
+    /// Contains all informations before SCP-079 finishes using a speaker.
     /// </summary>
     public class StoppingSpeakerEventArgs : EventArgs
     {

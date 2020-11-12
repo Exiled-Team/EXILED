@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player changes the item in his hand.
+    /// Contains all informations before a player's held item changes.
     /// </summary>
     public class ChangingItemEventArgs : System.EventArgs
     {

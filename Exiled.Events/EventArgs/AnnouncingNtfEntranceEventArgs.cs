@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains all informations before announcing the ntf entrance.
+    /// Contains all informations before announcing the NTF entrance.
     /// </summary>
     public class AnnouncingNtfEntranceEventArgs : EventArgs
     {
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the number of scps left.
+        /// Gets the number of SCPs left.
         /// </summary>
         public int ScpsLeft { get; }
 

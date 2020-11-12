@@ -10,12 +10,12 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents the general role of Scp096.
+    /// A set of tools to modify SCP-096's behaviour.
     /// </summary>
     public static class Scp096
     {
         /// <summary>
-        /// Gets or Sets a value indicating the max shield amount Scp096 can have.
+        /// Gets or Sets a value indicating the max shield amount SCP-096 can have during his docile state.
         /// </summary>
         public static float MaxShield { get; set; } = 350;
 

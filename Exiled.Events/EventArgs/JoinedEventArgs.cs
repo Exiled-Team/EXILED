@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all player's informations, after he joins the server.
+    /// Contains all informations after a player joins the server.
     /// </summary>
     public class JoinedEventArgs : EventArgs
     {
