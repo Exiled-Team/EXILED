@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Scp049 = PlayableScps.Scp049;
+
     /// <summary>
     /// Contains all informations before SCP-049 begins recalling a player.
     /// </summary>
@@ -19,15 +21,22 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="StartingRecallEventArgs"/> class.
         /// </summary>
-        /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartingRecallEventArgs(Player target, Player scp049, bool isAllowed = true)
+        public StartingRecallEventArgs(Scp049 scp049, Player target, Player player, bool isAllowed = true)
         {
             Target = target;
             Scp049 = scp049;
+            Player = player;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the Scp049 object.
+        /// </summary>
+        public Scp049 Scp049 { get; }
 
         /// <summary>
         /// Gets the player who's getting infected.
@@ -35,9 +44,9 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the player who is SCP049.
+        /// Gets the player who is SCP-049.
         /// </summary>
-        public Player Scp049 { get; }
+        public Player Player { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.

@@ -92,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                                 break;
                             }
 
-                            var ev = new StartingRecallEventArgs(API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+                            var ev = new StartingRecallEventArgs(__instance, API.Features.Player.Get(referenceHub2.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
                             Handlers.Scp049.OnStartingRecall(ev);
 
@@ -148,7 +148,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                                 return false;
                             }
 
-                            var ev = new FinishingRecallEventArgs(API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
+                            var ev = new FinishingRecallEventArgs(__instance, API.Features.Player.Get(referenceHub.gameObject), API.Features.Player.Get(__instance.Hub.gameObject));
 
                             Handlers.Scp049.OnFinishingRecall(ev);
 

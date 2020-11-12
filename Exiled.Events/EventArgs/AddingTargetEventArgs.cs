@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
     /// Contains all informations before adding a target to SCP-096.
     /// </summary>
@@ -20,11 +22,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="AddingTargetEventArgs"/> class.
         /// </summary>
         /// <param name="scp096"><see cref="Player"/> who is SCP-096.</param>
+        /// <param name="player">The player who is playing as SCP-096.</param>
         /// <param name="target"><see cref="Player"/> who is the target to be added.</param>
         /// <param name="ahpToAdd"><see cref="int"/> amount of temporary health to add to <see cref="Scp096"/>.</param>
         /// <param name="enrageTimeToAdd"><see cref="float"/> amount of time to add to <see cref="Scp096"/>'s enrage timer. Note: This does not affect anything if he doesn't already have any targets before this event is called.</param>
-        public AddingTargetEventArgs(Player scp096, Player target, int ahpToAdd, float enrageTimeToAdd)
+        public AddingTargetEventArgs(Scp096 scp096, Player player, Player target, int ahpToAdd, float enrageTimeToAdd)
         {
+            Player = player;
             Scp096 = scp096;
             Target = target;
             AhpToAdd = ahpToAdd;
@@ -32,12 +36,17 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> object of the SCP-096.
+        /// Gets the player who is playing SCP-096.
         /// </summary>
-        public Player Scp096 { get; }
+        public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> being added as a target.
+        /// Gets the Scp096 object.
+        /// </summary>
+        public Scp096 Scp096 { get; }
+
+        /// <summary>
+        /// Gets the player being added as a target.
         /// </summary>
         public Player Target { get; }
 

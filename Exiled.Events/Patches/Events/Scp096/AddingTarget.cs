@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 return true;
             }
 
-            AddingTargetEventArgs ev = new AddingTargetEventArgs(scp096, targetPlayer, 70, __instance.EnrageTimePerReset);
+            AddingTargetEventArgs ev = new AddingTargetEventArgs(__instance, scp096, targetPlayer, 70, __instance.EnrageTimePerReset);
             Exiled.Events.Handlers.Scp096.OnAddingTarget(ev);
             if (ev.IsAllowed)
             {
