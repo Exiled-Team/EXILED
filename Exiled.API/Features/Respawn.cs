@@ -69,5 +69,19 @@ namespace Exiled.API.Features
                 RespawnEffectType.SummonChaosInsurgencyVan,
             });
         }
+
+        /// <summary>
+        /// Forces a spawn of the given <see cref="SpawnableTeamType"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
+        /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
+        public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
+        {
+            RespawnManager.Singleton.ForceSpawnTeam(team);
+            if (playEffects)
+            {
+                RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
+            }
+        }
     }
 }
