@@ -19,6 +19,21 @@ namespace Exiled.API.Features
     public static class Respawn
     {
         /// <summary>
+        /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
+        /// </summary>
+        public static SpawnableTeamType NextKnownTeam => RespawnManager.Singleton.NextKnownTeam;
+
+        /// <summary>
+        /// Gets the amount of spawn tickets belonging to the NTF.
+        /// </summary>
+        public static int NtfTickets => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
+
+        /// <summary>
+        /// Gets the amount of spawn tickets belonging to the Chaos Insurgency.
+        /// </summary>
+        public static int ChaosTickets => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
+
+        /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
         public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.Where(controller => controller != null).FirstOrDefault();
@@ -68,6 +83,29 @@ namespace Exiled.API.Features
             {
                 RespawnEffectType.SummonChaosInsurgencyVan,
             });
+        }
+
+        /// <summary>
+        /// Grants tickets to a <see cref="SpawnableTeamType"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to grant tickets to.</param>
+        /// <param name="amount">The amount of tickets to grant.</param>
+        /// <param name="overrideLocks">Whether or not to override ticket locks.</param>
+        /// <returns>Whether or not tickets were granted successfully.</returns>
+        public static bool GrantTickets(SpawnableTeamType team, int amount, bool overrideLocks = false) => RespawnTickets.Singleton.GrantTickets(team, amount, overrideLocks);
+
+        /// <summary>
+        /// Forces a spawn of the given <see cref="SpawnableTeamType"/>.
+        /// </summary>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
+        /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
+        public static void ForceWave(SpawnableTeamType team, bool playEffects = false)
+        {
+            RespawnManager.Singleton.ForceSpawnTeam(team);
+            if (playEffects)
+            {
+                RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
+            }
         }
     }
 }
