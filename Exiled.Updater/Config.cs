@@ -19,6 +19,9 @@ namespace Exiled.Updater
         [Description("Indicates whether the plugin is enabled or not")]
         public bool IsEnabled { get; set; } = true;
 
+        [Description("Indicates whether the debug should be shown or not")]
+        public bool ShouldDebugBeShown { get; internal set; } = false;
+
         /// <summary>
         /// Gets a value indicating whether testing releases have to be downloaded or not.
         /// </summary>

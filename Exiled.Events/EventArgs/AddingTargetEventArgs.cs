@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before adding a target to SCP-096.
+    /// Contains all informations before adding a target to SCP-096.
     /// </summary>
     public class AddingTargetEventArgs : EventArgs
     {
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether or not the target is allowed to be added.
+        /// Gets or sets a value indicating whether or not the target is allowed to be added.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

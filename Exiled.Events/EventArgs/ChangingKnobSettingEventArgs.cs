@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using global::Scp914;
 
     /// <summary>
-    /// Contains all informations before changing the SCP-914 knob setting.
+    /// Contains all informations before a player changes the SCP-914 knob setting.
     /// </summary>
     public class ChangingKnobSettingEventArgs : EventArgs
     {

@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="StoppingMedicalItemEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before the SCP-914 machine upgrades items inside it.
+    /// Contains all informations before a player cancels using a medical item.
     /// </summary>
     public class StoppingMedicalItemEventArgs : UsingMedicalItemEventArgs
     {

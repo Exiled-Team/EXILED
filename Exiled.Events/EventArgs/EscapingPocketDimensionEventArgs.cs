@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the position in which the player is going to be teleported.
+        /// Gets or sets the position in which the player is going to be teleported to.
         /// </summary>
         public Vector3 TeleportPosition { get; set; }
 

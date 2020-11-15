@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public PlayerStats.HitInfo HitInformation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets if the player should be killed or not.
+        /// Gets or sets a value indicating whether or not the player should be killed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     /// <summary>
-    /// A set of tools to work with the server code more easily .
+    /// A set of tools to easily work with the server.
     /// </summary>
     public static class Server
     {

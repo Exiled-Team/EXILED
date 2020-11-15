@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AmmoType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -19,7 +19,7 @@ namespace Exiled.API.Enums
         Nato556,
 
         /// <summary>
-        /// 7.62mm mm Ammunition.
+        /// 7.62mm Ammunition.
         /// Used by <see cref="ItemType.GunMP7"/> and <see cref="ItemType.GunLogicer"/>.
         /// </summary>
         Nato762,

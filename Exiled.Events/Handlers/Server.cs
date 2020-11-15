@@ -32,7 +32,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler RoundStarted;
 
         /// <summary>
-        /// Invoked before ending a round
+        /// Invoked before ending a round.
         /// </summary>
         public static event CustomEventHandler<EndingRoundEventArgs> EndingRound;
 

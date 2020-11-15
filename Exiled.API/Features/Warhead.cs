@@ -10,7 +10,7 @@ namespace Exiled.API.Features
     using System;
 
     /// <summary>
-    /// A set of tools to work with the warhead code more easily.
+    /// A set of tools to easily work with the alpha warhead.
     /// </summary>
     public static class Warhead
     {

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player picks up an item.
+    /// Contains all informations before a player interacts with SCP-330.
     /// </summary>
     public class PickingUpScp330EventArgs : EventArgs
     {
@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who picking up the scp330.
+        /// Gets the player who's interacting with SCP-330.
         /// </summary>
         public Player Player { get; }
 

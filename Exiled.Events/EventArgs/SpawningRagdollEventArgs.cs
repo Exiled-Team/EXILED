@@ -91,7 +91,7 @@ namespace Exiled.Events.EventArgs
         public PlayerStats.HitInfo HitInformations { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can be revived by SCP-049 or not.
+        /// Gets or sets a value indicating whether or not the player can be revived by SCP-049.
         /// </summary>
         public bool IsRecallAllowed { get; set; }
 

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player triggers a tesla through SCP-079.
+    /// Contains all informations before SCP-079 triggers a tesla gate.
     /// </summary>
     public class InteractingTeslaEventArgs : EventArgs
     {
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the tesla game object, that SCP-079 is triggering.
+        /// Gets the <see cref="TeslaGate"/> that SCP-079 is triggering.
         /// </summary>
         public TeslaGate Tesla { get; }
 

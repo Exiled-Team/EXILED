@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using global::Scp914;
 
     /// <summary>
-    /// Contains all informations before the SCP-914 machine upgrades items inside it.
+    /// Contains all informations before SCP-914 upgrades players and items.
     /// </summary>
     public class UpgradingItemsEventArgs : EventArgs
     {

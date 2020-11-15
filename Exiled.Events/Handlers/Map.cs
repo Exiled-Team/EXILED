@@ -43,7 +43,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
 
         /// <summary>
-        /// Invoked after a generator has been activated.
+        /// Invoked after a <see cref="Generator079"/> has been activated.
         /// </summary>
         public static event CustomEventHandler<GeneratorActivatedEventArgs> GeneratorActivated;
 
@@ -103,7 +103,7 @@ namespace Exiled.Events.Handlers
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a generator has been activated.
+        /// Called after a <see cref="Generator079"/> has been activated.
         /// </summary>
         /// <param name="ev">The <see cref="GeneratorActivatedEventArgs"/> instance.</param>
         public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev) => GeneratorActivated.InvokeSafely(ev);
