@@ -15,8 +15,6 @@ namespace Exiled.API.Features
 
     using LightContainmentZoneDecontamination;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;

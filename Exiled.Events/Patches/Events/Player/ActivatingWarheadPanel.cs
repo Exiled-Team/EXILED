@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!__instance.ChckDis(gameObject.transform.position))
                     return false;
 
-                Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
+                var itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
                 if (!__instance._sr.BypassMode && itemById == null)
                     return false;
 

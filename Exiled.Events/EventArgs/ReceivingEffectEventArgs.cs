@@ -8,7 +8,9 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using CustomPlayerEffects;
+
     using Exiled.API.Features;
 
     /// <summary>

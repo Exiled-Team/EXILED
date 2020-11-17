@@ -102,7 +102,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         if (CharacterClassManager.PutItemsInInvAfterEscaping)
                         {
-                            Item itemByID = component.GetItemByID(syncItemInfo.id);
+                            var itemByID = component.GetItemByID(syncItemInfo.id);
                             bool flag = false;
                             InventoryCategory[] categories = __instance._search.categories;
                             int i = 0;

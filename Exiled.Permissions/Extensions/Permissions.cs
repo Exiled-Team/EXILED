@@ -204,8 +204,7 @@ namespace Exiled.Permissions.Extensions
             var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : null;
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
-            Group group = null;
-            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out group))
+            if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group))
             {
                 Log.Debug("The source group is null, the default group is used", Instance.Config.ShouldDebugBeShown);
                 group = DefaultGroup;

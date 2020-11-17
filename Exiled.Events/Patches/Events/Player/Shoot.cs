@@ -184,7 +184,7 @@ namespace Exiled.Events.Patches.Events.Player
                     __instance._lastRotation = __instance._hub.playerMovementSync.Rotations;
 
                     float num2 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                    float num3 = __instance.weapons[(int)__instance.curWeapon].damageOverDistance.Evaluate(num2);
+                    float num3 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num2);
 
                     switch (referenceHub.characterClassManager.CurClass)
                     {
@@ -205,7 +205,7 @@ namespace Exiled.Events.Patches.Events.Player
                             {
                                 case HitBoxType.HEAD:
                                     num3 *= 4;
-                                    float num4 = 1 / (__instance.weapons[(int)__instance.curWeapon].shotsPerSecond * __instance.weapons[(int)__instance.curWeapon].allEffects.firerateMultiplier);
+                                    float num4 = 1 / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier);
                                     __instance._headshotsL++;
                                     __instance._headshotsS++;
                                     __instance._headshotsResetS = num4 * 1.86f;
@@ -235,7 +235,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                 IL_6D1:
-                    num3 *= __instance.weapons[(int)__instance.curWeapon].allEffects.damageMultiplier;
+                    num3 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
                     num3 *= __instance.overallDamagerFactor;
 
                     // >Exiled
@@ -249,8 +249,8 @@ namespace Exiled.Events.Patches.Events.Player
                         return false;
 
                     // <Exiled
-                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(shotEventArgs.Damage, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId((int)__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
-                    __instance.RpcConfirmShot(true, (int)__instance.curWeapon);
+                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(shotEventArgs.Damage, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId(__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
+                    __instance.RpcConfirmShot(true, __instance.curWeapon);
                     __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num2);
                     return false;
                 }
@@ -259,14 +259,14 @@ namespace Exiled.Events.Patches.Events.Player
                     if (target != null && hitboxType == HitBoxType.WINDOW && target.GetComponent<BreakableWindow>() != null)
                     {
                         float time = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                        float damage = __instance.weapons[(int)__instance.curWeapon].damageOverDistance.Evaluate(time);
+                        float damage = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(time);
                         target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
-                        __instance.RpcConfirmShot(true, (int)__instance.curWeapon);
+                        __instance.RpcConfirmShot(true, __instance.curWeapon);
                         return false;
                     }
 
-                    __instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), (int)__instance.curWeapon, 0f);
-                    __instance.RpcConfirmShot(false, (int)__instance.curWeapon);
+                    __instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), __instance.curWeapon, 0f);
+                    __instance.RpcConfirmShot(false, __instance.curWeapon);
                     return false;
                 }
             }

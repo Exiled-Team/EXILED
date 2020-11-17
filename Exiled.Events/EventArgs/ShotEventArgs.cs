@@ -13,8 +13,6 @@ namespace Exiled.Events.EventArgs
 
     using UnityEngine;
 
-    using UnityEngineInternal;
-
     /// <summary>
     /// Contains all informations after a player has shot.
     /// </summary>

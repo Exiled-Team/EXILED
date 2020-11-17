@@ -13,11 +13,9 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Security.Permissions;
 
     using CustomPlayerEffects;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 

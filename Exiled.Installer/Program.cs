@@ -119,8 +119,10 @@ namespace Exiled.Installer
                 Console.WriteLine("Asset found!");
                 Console.WriteLine(FormatAsset(exiledAsset));
 
-                using var httpClient = new HttpClient();
-                httpClient.Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload);
+                using var httpClient = new HttpClient
+                {
+                    Timeout = TimeSpan.FromSeconds(SecondsWaitForDownload)
+                };
                 httpClient.DefaultRequestHeaders.Add("User-Agent", Header);
 
                 using var downloadResult = await httpClient.GetAsync(exiledAsset.BrowserDownloadUrl).ConfigureAwait(false);

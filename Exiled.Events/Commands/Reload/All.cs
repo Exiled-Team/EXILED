@@ -11,9 +11,6 @@ namespace Exiled.Events.Commands.Reload
 
     using CommandSystem;
 
-    using Exiled.Loader;
-    using Exiled.Permissions.Extensions;
-
     /// <summary>
     /// The reload configs command.
     /// </summary>

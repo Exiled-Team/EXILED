@@ -75,18 +75,18 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Bne_Un_S, secondCheckPointer),
 
                 new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin<Exiled.Events.Config>), nameof(Plugin<Exiled.Events.Config>.Config))),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Exiled.Events.Config), nameof(Exiled.Events.Config.CanTutorialTriggerScp096))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                 new CodeInstruction(OpCodes.Brtrue_S, secondCheckPointer),
                 new CodeInstruction(OpCodes.Ret),
                 // END
-                // if (API.Features.Scp096.TurnedPlayers.Contsins(Player.Get(info.Source)))
+                // if (API.Features.Scp096.TurnedPlayers.Contains(Player.Get(info.Source)))
                 //      return;
                 // START
                 new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(VisionInformation), nameof(VisionInformation.Source))),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                 new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                 new CodeInstruction(OpCodes.Ret),

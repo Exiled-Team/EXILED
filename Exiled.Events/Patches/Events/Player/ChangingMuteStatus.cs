@@ -8,17 +8,10 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-    using System;
-    using System.Linq;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.NetworkMuted"/>.
