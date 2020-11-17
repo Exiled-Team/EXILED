@@ -16,7 +16,7 @@ namespace Exiled.Example.Handlers
     /// </summary>
     internal sealed class Item
     {
-        /// <inheritdoc cref="Events.Handlers.Item.OnChangingDurability(ChangingAttributesEventArgs)"/>
+        /// <inheritdoc cref="Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
         public void OnChangingDurability(ChangingAttributesEventArgs ev)
         {
             Log.Info($"The item {ev.OldItem.id} durability of {ev.OldItem.durability} is changing");
@@ -24,7 +24,7 @@ namespace Exiled.Example.Handlers
             ev.NewDurability = 999;
         }
 
-        /// <inheritdoc cref="Events.Handlers.Item.OnChangingAttachments(ChangingAttributesEventArgs)"/>
+        /// <inheritdoc cref="Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
         public void OnChangingAttachments(ChangingAttributesEventArgs ev)
         {
             Log.Info($"Item {ev.NewItem.id} attachments are changing, old ones:\n[SIGHT ({ev.OldItem.modSight})] [BARREL ({ev.OldItem.modBarrel})] [OTHER ({ev.OldItem.modOther})]");

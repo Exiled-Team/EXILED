@@ -21,23 +21,23 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before the durability of an item is changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingAttributesEventArgs> ChangingDurability;
+        public static event CustomEventHandler<ChangingDurabilityEventArgs> ChangingDurability;
 
         /// <summary>
         /// Invoked before item attachments are changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingAttributesEventArgs> ChangingAttachments;
+        public static event CustomEventHandler<ChangingAttachmentsEventArgs> ChangingAttachments;
 
         /// <summary>
         /// Called before the durability of an item is changed.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingAttributesEventArgs"/> instance.</param>
-        public static void OnChangingDurability(ChangingAttributesEventArgs ev) => ChangingDurability.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChangingDurabilityEventArgs"/> instance.</param>
+        public static void OnChangingDurability(ChangingDurabilityEventArgs ev) => ChangingDurability.InvokeSafely(ev);
 
         /// <summary>
         /// Called before item attachments are changed.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangingAttributesEventArgs"/> instance.</param>
-        public static void OnChangingAttachments(ChangingAttributesEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> instance.</param>
+        public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
     }
 }
