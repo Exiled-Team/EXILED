@@ -58,85 +58,85 @@ namespace Exiled.API.Extensions
             switch (doorName)
             {
                 case "012":
-                return DoorType.Scp012;
+                    return DoorType.Scp012;
                 case "012_BOTTOM":
-                return DoorType.Scp012Bottom;
+                    return DoorType.Scp012Bottom;
                 case "012_LOCKER":
-                return DoorType.Scp012Locker;
+                    return DoorType.Scp012Locker;
                 case "049_ARMORY":
-                return DoorType.Scp049Armory;
+                    return DoorType.Scp049Armory;
                 case "079_FIRST":
-                return DoorType.Scp079First;
+                    return DoorType.Scp079First;
                 case "079_SECOND":
-                return DoorType.Scp079Second;
+                    return DoorType.Scp079Second;
                 case "096":
-                return DoorType.Scp096;
+                    return DoorType.Scp096;
                 case "106_BOTTOM":
-                return DoorType.Scp106Bottom;
+                    return DoorType.Scp106Bottom;
                 case "106_PRIMARY":
-                return DoorType.Scp106Primary;
+                    return DoorType.Scp106Primary;
                 case "106_SECONDARY":
-                return DoorType.Scp106Secondary;
+                    return DoorType.Scp106Secondary;
                 case "173":
-                return DoorType.Scp173;
+                    return DoorType.Scp173;
                 case "173_ARMORY":
-                return DoorType.Scp173Armory;
+                    return DoorType.Scp173Armory;
                 case "173_BOTTOM":
-                return DoorType.Scp173Bottom;
+                    return DoorType.Scp173Bottom;
                 case "372":
-                return DoorType.Scp372;
+                    return DoorType.Scp372;
                 case "914":
-                return DoorType.Scp914;
+                    return DoorType.Scp914;
                 case "Airlocks":
-                return DoorType.Airlocks;
+                    return DoorType.Airlocks;
                 case "CHECKPOINT_ENT":
-                return DoorType.CheckpointEntrance;
+                    return DoorType.CheckpointEntrance;
                 case "CHECKPOINT_LCZ_A":
-                return DoorType.CheckpointLczA;
+                    return DoorType.CheckpointLczA;
                 case "CHECKPOINT_LCZ_B":
-                return DoorType.CheckpointLczB;
+                    return DoorType.CheckpointLczB;
                 case "ContDoor":
-                return DoorType.ContDoor;
+                    return DoorType.ContDoor;
                 case "EntrDoor":
-                return DoorType.EntranceDoor;
+                    return DoorType.EntranceDoor;
                 case "ESCAPE":
-                return DoorType.Escape;
+                    return DoorType.Escape;
                 case "ESCAPE_INNER":
-                return DoorType.EscapeInner;
+                    return DoorType.EscapeInner;
                 case "GATE_A":
-                return DoorType.GateA;
+                    return DoorType.GateA;
                 case "GATE_B":
-                return DoorType.GateB;
+                    return DoorType.GateB;
                 case "HCZ_ARMORY":
-                return DoorType.HczArmory;
+                    return DoorType.HczArmory;
                 case "HeavyContainmentDoor":
-                return DoorType.HeavyContainmentDoor;
+                    return DoorType.HeavyContainmentDoor;
                 case "HID":
-                return DoorType.HID;
+                    return DoorType.HID;
                 case "HID_LEFT":
-                return DoorType.HIDLeft;
+                    return DoorType.HIDLeft;
                 case "HID_RIGHT":
-                return DoorType.HIDRight;
+                    return DoorType.HIDRight;
                 case "INTERCOM":
-                return DoorType.Intercom;
+                    return DoorType.Intercom;
                 case "LCZ_ARMORY":
-                return DoorType.LczArmory;
+                    return DoorType.LczArmory;
                 case "LCZ_CAFE":
-                return DoorType.LczCafe;
+                    return DoorType.LczCafe;
                 case "LCZ_WC":
-                return DoorType.LczWc;
+                    return DoorType.LczWc;
                 case "LightContainmentDoor":
-                return DoorType.LightContainmentDoor;
+                    return DoorType.LightContainmentDoor;
                 case "NUKE_ARMORY":
-                return DoorType.NukeArmory;
+                    return DoorType.NukeArmory;
                 case "NUKE_SURFACE":
-                return DoorType.NukeSurface;
+                    return DoorType.NukeSurface;
                 case "PrisonDoor":
-                return DoorType.PrisonDoor;
+                    return DoorType.PrisonDoor;
                 case "SURFACE_GATE":
-                return DoorType.SurfaceGate;
+                    return DoorType.SurfaceGate;
                 default:
-                return DoorType.UnknownDoor;
+                    return DoorType.UnknownDoor;
             }
         }
     }

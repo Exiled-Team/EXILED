@@ -12,8 +12,6 @@ namespace Exiled.Example.Handlers
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
-    using UnityEngine;
-
     /// <summary>
     /// Handles Map events.
     /// </summary>

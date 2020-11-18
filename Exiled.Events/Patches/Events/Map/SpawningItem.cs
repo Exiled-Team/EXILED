@@ -10,12 +10,9 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
 #pragma warning disable SA1313
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
-
-    using MEC;
 
     using UnityEngine;
 

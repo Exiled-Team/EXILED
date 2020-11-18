@@ -9,11 +9,17 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
+
     using CustomPlayerEffects;
+
     using Exiled.Events.EventArgs;
+
     using HarmonyLib;
+
     using MEC;
+
     using Mirror;
+
     using Log = Exiled.API.Features.Log;
 
     /// <summary>

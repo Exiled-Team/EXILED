@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1313
     using HarmonyLib;
-    using Mirror;
 
     /// <summary>
     /// Patches <see cref="BreakableWindow.ServerDamageWindow(float)"/>.

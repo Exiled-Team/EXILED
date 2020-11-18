@@ -23,6 +23,7 @@ namespace Exiled.Example
         private Handlers.Player player;
         private Handlers.Warhead warhead;
         private Handlers.Map map;
+        private Handlers.Item item;
 
         private Example()
         {
@@ -65,6 +66,7 @@ namespace Exiled.Example
             player = new Handlers.Player();
             warhead = new Handlers.Warhead();
             map = new Handlers.Map();
+            item = new Handlers.Item();
 
             Events.Handlers.Server.WaitingForPlayers += server.OnWaitingForPlayers;
             Events.Handlers.Server.EndingRound += server.OnEndingRound;
@@ -88,6 +90,9 @@ namespace Exiled.Example
             Events.Handlers.Scp914.ChangingKnobSetting += player.OnChangingKnobSetting;
 
             Events.Handlers.Map.ExplodingGrenade += map.OnExplodingGrenade;
+
+            Events.Handlers.Item.ChangingDurability += item.OnChangingDurability;
+            Events.Handlers.Item.ChangingAttachments += item.OnChangingAttachments;
         }
 
         /// <summary>
@@ -118,10 +123,14 @@ namespace Exiled.Example
 
             Events.Handlers.Map.ExplodingGrenade -= map.OnExplodingGrenade;
 
+            Events.Handlers.Item.ChangingDurability -= item.OnChangingDurability;
+            Events.Handlers.Item.ChangingAttachments -= item.OnChangingAttachments;
+
             server = null;
             player = null;
             warhead = null;
             map = null;
+            item = null;
         }
     }
 }

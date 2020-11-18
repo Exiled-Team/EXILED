@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 singleton.lockers[lockerId].chambers[chamberNumber].SetCooldown();
 
                 string accessToken = singleton.lockers[lockerId].chambers[chamberNumber].accessToken;
-                Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
+                var itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
 
                 var ev = new InteractingLockerEventArgs(
                     API.Features.Player.Get(__instance.gameObject),
