@@ -19,19 +19,13 @@ namespace Exiled.Example.Handlers
         /// <inheritdoc cref="Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
         public void OnChangingDurability(ChangingDurabilityEventArgs ev)
         {
-            Log.Info($"The item {ev.OldItem.id} durability of {ev.OldItem.durability} is changing");
-
-            ev.NewDurability = 999;
+            Log.Info($"Item {ev.OldItem.id} durability of {ev.OldItem.durability} is changing");
         }
 
         /// <inheritdoc cref="Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
         public void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
         {
             Log.Info($"Item {ev.NewItem.id} attachments are changing, old ones:\n[SIGHT ({ev.OldItem.modSight})] [BARREL ({ev.OldItem.modBarrel})] [OTHER ({ev.OldItem.modOther})]");
-
-            ev.NewSight = SightType.Collimator;
-            ev.NewBarrel = BarrelType.Suppressor;
-            ev.NewOther = OtherType.Flashlight;
         }
     }
 }
