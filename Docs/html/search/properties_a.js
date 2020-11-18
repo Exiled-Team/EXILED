@@ -1,5 +1,0 @@
-var searchData=
-[
-  ['killer_1816',['Killer',['../class_exiled_1_1_events_1_1_event_args_1_1_announcing_scp_termination_event_args.html#a77a503f91e1ced5be9e6b9212b4d9679',1,'Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Killer()'],['../class_exiled_1_1_events_1_1_event_args_1_1_died_event_args.html#aab79efcfb87e7e5440df9e18a9fab9fb',1,'Exiled.Events.EventArgs.DiedEventArgs.Killer()'],['../class_exiled_1_1_events_1_1_event_args_1_1_dying_event_args.html#a6b3b5b630a2c370506e91bd2997c17fd',1,'Exiled.Events.EventArgs.DyingEventArgs.Killer()'],['../class_exiled_1_1_events_1_1_event_args_1_1_spawning_ragdoll_event_args.html#acb8dc7e628be5910a99ab9af71bc1d57',1,'Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer()']]],
-  ['knobsetting_1817',['KnobSetting',['../class_exiled_1_1_events_1_1_event_args_1_1_changing_knob_setting_event_args.html#a0e914da2168bad7aefe3f6f6d30541b0',1,'Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.KnobSetting()'],['../class_exiled_1_1_events_1_1_event_args_1_1_upgrading_items_event_args.html#a42f66bbe9eaf60ea6f0da477dda8179c',1,'Exiled.Events.EventArgs.UpgradingItemsEventArgs.KnobSetting()']]]
-];

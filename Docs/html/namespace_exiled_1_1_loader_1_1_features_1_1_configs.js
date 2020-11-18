@@ -1,8 +1,0 @@
-var namespace_exiled_1_1_loader_1_1_features_1_1_configs =
-[
-    [ "CommentGatheringTypeInspector", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comment_gathering_type_inspector.html", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comment_gathering_type_inspector" ],
-    [ "CommentsObjectDescriptor", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_object_descriptor.html", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_object_descriptor" ],
-    [ "CommentsObjectGraphVisitor", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_object_graph_visitor.html", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_object_graph_visitor" ],
-    [ "CommentsPropertyDescriptor", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_property_descriptor.html", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_comments_property_descriptor" ],
-    [ "ValidatingNodeDeserializer", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_validating_node_deserializer.html", "class_exiled_1_1_loader_1_1_features_1_1_configs_1_1_validating_node_deserializer" ]
-];
