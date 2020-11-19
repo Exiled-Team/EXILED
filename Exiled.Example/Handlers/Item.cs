@@ -7,7 +7,6 @@
 
 namespace Exiled.Example.Handlers
 {
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 

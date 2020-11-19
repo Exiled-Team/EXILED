@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     using HarmonyLib;
@@ -30,7 +29,6 @@ namespace Exiled.Events.Patches.Generic
             const int continueLabelOffset = -3;
 
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
             var index = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Div);
 
             // Quick check if it's the end
@@ -73,7 +71,7 @@ namespace Exiled.Events.Patches.Generic
                 // if (API.Features.Scp096.TurnedPlayers.Contains(Player.Get(referenceHub)))
                 //      continue;
                 // START
-                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(API.Features.Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
+                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),

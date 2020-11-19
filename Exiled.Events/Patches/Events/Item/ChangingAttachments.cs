@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Item
             // Declare ChangingDurabilityEventArgs, to be able to store its instance with "stloc.1".
             var ev = generator.DeclareLocal(typeof(ChangingAttachmentsEventArgs));
 
-            // var ev = new ChangingAttachmentsEventArgs(item, true);
+            // var ev = new ChangingAttachmentsEventArgs(item, sight, barrel, other, true);
             //
             // Handlers.Player.OnChangingAttachments(ev);
             //

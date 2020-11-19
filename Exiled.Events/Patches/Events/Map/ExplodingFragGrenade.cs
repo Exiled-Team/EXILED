@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -40,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Declare Dictionary<Player, float> local variable.
+            /*// Declare Dictionary<Player, float> local variable.
             var players = generator.DeclareLocal(typeof(Dictionary<Player, float>));
 
             // Declare Dictionary<Player, float>.Enumerator local variable.
@@ -214,7 +215,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the return label to the penultimate instruction.
-            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);*/
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
