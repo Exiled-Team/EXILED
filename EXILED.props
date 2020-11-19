@@ -9,7 +9,7 @@
     <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
 
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version>2.1.15</Version>
+    <Version>2.1.16</Version>
 
     <HarmonyVersion>2.0.4</HarmonyVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>

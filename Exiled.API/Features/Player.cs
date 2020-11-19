@@ -28,6 +28,8 @@ namespace Exiled.API.Features
     using NorthwoodLib;
     using NorthwoodLib.Pools;
 
+    using PlayableScps;
+
     using RemoteAdmin;
 
     using UnityEngine;
@@ -127,7 +129,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        [Obsolete("Use CameraTransform instead", true)]
+        [Obsolete("Use CameraTransform instead.", true)]
         public Transform PlayerCamera => CameraTransform;
 
         /// <summary>
@@ -234,7 +236,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
-        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases")]
+        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases.")]
         public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
 
         /// <summary>
@@ -360,7 +362,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's command sender instance.
         /// </summary>
-        [Obsolete("Use Sender instead", true)]
+        [Obsolete("Use Sender instead.", true)]
         public CommandSender CommandSender => Sender;
 
         /// <summary>
@@ -515,6 +517,15 @@ namespace Exiled.API.Features
         {
             get => ReferenceHub.playerStats.maxArtificialHealth;
             set => ReferenceHub.playerStats.maxArtificialHealth = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's current SCP.
+        /// </summary>
+        public PlayableScp CurrentScp
+        {
+            get => ReferenceHub.scpsController.CurrentScp;
+            set => ReferenceHub.scpsController.CurrentScp = value;
         }
 
         /// <summary>
@@ -705,12 +716,11 @@ namespace Exiled.API.Features
         {
             get
             {
-                string token = ReferenceHub.serverRoles.NetworkGlobalBadge;
-
-                if (string.IsNullOrEmpty(token))
+                if (string.IsNullOrEmpty(ReferenceHub.serverRoles.NetworkGlobalBadge))
                     return null;
 
                 ServerRoles serverRoles = ReferenceHub.serverRoles;
+
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
@@ -738,7 +748,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a player's scp330 usages counter.
         /// </summary>
-        [Obsolete("Was removed", true)]
+        [Obsolete("Removed from the base-game.", true)]
         public int Scp330Usages
         {
             get => -1;
@@ -748,7 +758,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether player has hands.
         /// </summary>
-        [Obsolete("Was removed", true)]
+        [Obsolete("Removed from the base-game.", true)]
         public bool HasHands => false;
 
         /// <summary>
@@ -878,7 +888,7 @@ namespace Exiled.API.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"Player.Get error: {exception}");
+                Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
                 return null;
             }
         }
@@ -1135,7 +1145,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
-        [Obsolete("Use Ammo instead", true)]
+        [Obsolete("Use Ammo instead.", true)]
         public void SetAmmo(AmmoType ammoType, uint amount) => ReferenceHub.ammoBox[(int)ammoType] = amount;
 
         /// <summary>
@@ -1143,7 +1153,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
-        [Obsolete("Use Ammo instead", true)]
+        [Obsolete("Use Ammo instead.", true)]
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
 
         /// <summary>
@@ -1167,9 +1177,7 @@ namespace Exiled.API.Features
         public void DisableAllEffects()
         {
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
-            {
                 effect.Value.ServerDisable();
-            }
         }
 
         /// <summary>
@@ -1194,12 +1202,15 @@ namespace Exiled.API.Features
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
-        public void EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+        public void EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
+        {
+            ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+        }
 
         /// <summary>
         /// Removes the player's hands.
         /// </summary>
-        [Obsolete("Was removed", true)]
+        [Obsolete("Removed from the base-game.", true)]
         public void RemoveHands()
         {
         }
