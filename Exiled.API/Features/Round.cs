@@ -55,7 +55,7 @@ namespace Exiled.API.Features
         public static void Restart() => Server.Host.ReferenceHub.playerStats.Roundrestart();
 
         /// <summary>
-        /// Force ends the round.
+        /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
         public static void ForceEnd() => RoundSummary.singleton.ForceEnd();
 
