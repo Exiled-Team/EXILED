@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Linq;
 
     using GameCore;
 
@@ -57,7 +58,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
-        public static void ForceEnd() => RoundSummary.singleton.ForceEnd();
+        public static void ForceEnd()
+        {
+            if (IsStarted && Player.List.Count() > 1 && !IsLocked)
+            {
+                RoundSummary.singleton.ForceEnd();
+            }
+        }
 
         /// <summary>
         /// Start the round.
