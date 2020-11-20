@@ -55,6 +55,11 @@ namespace Exiled.API.Features
         public static void Restart() => Server.Host.ReferenceHub.playerStats.Roundrestart();
 
         /// <summary>
+        /// Force ends the round.
+        /// </summary>
+        public static void ForceEnd() => RoundSummary.singleton.ForceEnd();
+
+        /// <summary>
         /// Start the round.
         /// </summary>
         public static void Start() => CharacterClassManager.ForceRoundStart();
