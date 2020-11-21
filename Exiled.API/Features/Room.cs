@@ -71,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sets the intensity of the lights in the room.
         /// </summary>
-        /// <param name="intensity">Duration in seconds.</param>
+        /// <param name="intensity">The light intensity multiplier.</param>
         public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
 
         /// <summary>
