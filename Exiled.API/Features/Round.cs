@@ -60,7 +60,12 @@ namespace Exiled.API.Features
         /// </summary>
         public static void ForceEnd()
         {
-            if (IsStarted && Player.List.Count() > 1 && !IsLocked)
+            if (RoundSummary.singleton._keepRoundOnOne && Player.List.Count() < 2)
+            {
+                return;
+            }
+
+            if (IsStarted && !IsLocked)
             {
                 RoundSummary.singleton.ForceEnd();
             }
