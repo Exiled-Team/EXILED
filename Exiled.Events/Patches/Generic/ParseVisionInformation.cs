@@ -16,6 +16,8 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
+    using static HarmonyLib.AccessTools;
+
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1118 // Parameter should not span multiple lines
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
@@ -45,7 +47,7 @@ namespace Exiled.Events.Patches.Generic
             // Used to continue execution
             // if both checks fail
             var continueLabel = generator.DefineLabel();
-            newInstructions[newInstructions.FindIndex(ci => ci.opcode == OpCodes.Leave_S) - continueLabelOffset].WithLabels(continueLabel);
+            newInstructions[newInstructions.FindIndex(ci => ci.opcode == OpCodes.Leave_S) + continueLabelOffset].WithLabels(continueLabel);
 
             // Second check pointer
             // We use it to pass execution
@@ -59,22 +61,22 @@ namespace Exiled.Events.Patches.Generic
                 //      continue;
                 // START
                 new CodeInstruction(OpCodes.Ldloc_S, 4),
-                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (sbyte)RoleType.Tutorial),
                 new CodeInstruction(OpCodes.Bne_Un_S, secondCheckPointer),
 
-                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Plugin<Config>), nameof(Plugin<Config>.Config))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialTriggerScp096))),
                 new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                 // END
                 // if (API.Features.Scp096.TurnedPlayers.Contains(Player.Get(referenceHub)))
                 //      continue;
                 // START
-                new CodeInstruction(OpCodes.Call, AccessTools.PropertyGetter(typeof(API.Features.Scp096), nameof(Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.TurnedPlayers))).WithLabels(secondCheckPointer),
                 new CodeInstruction(OpCodes.Ldloc_3),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<Player>), nameof(HashSet<Player>.Contains))),
                 new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                 // END
             });
