@@ -29,11 +29,8 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(RoundSummary), nameof(RoundSummary.Start))]
     internal static class RoundEnd
     {
-        private static readonly MethodInfo CustomProcess = SymbolExtensions.GetMethodInfo(() => Process(null));
-
-        private static IEnumerator<float> Process(RoundSummary instance)
+        private static IEnumerator<float> Process(RoundSummary roundSummary)
         {
-            RoundSummary roundSummary = instance;
             while (roundSummary != null)
             {
                 while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
@@ -170,7 +167,18 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                     else
                     {
-                        yield return new CodeInstruction(OpCodes.Call, CustomProcess);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
+                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        {
+                            var generics = m.GetGenericArguments();
+                            var paramseters = m.GetParameters();
+                            return m.Name == "CancelWith"
+                            && generics.Length == 1
+                            && paramseters.Length == 2
+                            && paramseters[0].ParameterType == typeof(IEnumerator<float>)
+                            && paramseters[1].ParameterType == generics[0];
+                        }).MakeGenericMethod(typeof(RoundSummary)));
                     }
                 }
                 else

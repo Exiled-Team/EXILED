@@ -51,6 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var instanceHub = ReferenceHub.GetHub(__instance.gameObject);
                 instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+                __instance.TargetHitMarker(__instance.connectionToClient);
 
                 if (Scp106PlayerScript._blastDoor.isClosed)
                 {
