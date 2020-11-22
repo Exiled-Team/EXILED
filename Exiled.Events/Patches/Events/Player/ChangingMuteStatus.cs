@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -22,25 +23,33 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(CharacterClassManager __instance, bool value)
         {
-            ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
-
-            Player.OnChangingMuteStatus(ev);
-
-            if (!ev.IsAllowed)
+            try
             {
-                if (value == true)
+                ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+
+                Player.OnChangingMuteStatus(ev);
+
+                if (!ev.IsAllowed)
                 {
-                    MuteHandler.RevokePersistentMute(__instance.UserId);
-                }
-                else
-                {
-                    MuteHandler.IssuePersistentMute(__instance.UserId);
+                    if (value == true)
+                    {
+                        MuteHandler.RevokePersistentMute(__instance.UserId);
+                    }
+                    else
+                    {
+                        MuteHandler.IssuePersistentMute(__instance.UserId);
+                    }
+
+                    return false;
                 }
 
-                return false;
+                return true;
             }
-
-            return true;
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"{typeof(ChangingMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
+                return true;
+            }
         }
     }
 }
