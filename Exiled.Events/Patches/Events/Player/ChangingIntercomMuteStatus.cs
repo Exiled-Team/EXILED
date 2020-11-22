@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingIntercomMuteStatus: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"{typeof(ChangingIntercomMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
                 return true;
             }
         }
