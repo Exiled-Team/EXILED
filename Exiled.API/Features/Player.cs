@@ -224,6 +224,25 @@ namespace Exiled.API.Features
         public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
         /// <summary>
+        /// Gets or sets the player's player info area bitmask.
+        /// You can hide player info elements with this.
+        /// </summary>
+        public PlayerInfoArea PlayerInfoArea
+        {
+            get => ReferenceHub.nicknameSync.Network_playerInfoToShow;
+            set => ReferenceHub.nicknameSync.Network_playerInfoToShow = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's custom player info string.
+        /// </summary>
+        public string CustomPlayerInfo
+        {
+            get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
+            set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the player is invisible or not.
         /// </summary>
         public bool IsInvisible { get; set; }
