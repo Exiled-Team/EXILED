@@ -160,7 +160,7 @@ namespace Exiled.API.Features
         public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
 
         /// <summary>
-        /// Gets the <see cref="Player"/> that is using the intercom. Will be <see cref="null"/> if <see cref="IntercomInUse"/> is false.
+        /// Gets the <see cref="Player"/> that is using the intercom. Will be null if <see cref="IntercomInUse"/> is false.
         /// </summary>
         public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
 
