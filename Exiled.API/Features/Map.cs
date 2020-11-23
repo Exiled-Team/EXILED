@@ -152,12 +152,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
-        public static bool IntercomInUse => Intercom.host.Network_state == Intercom.State.Transmitting || Intercom.host.Network_state == Intercom.State.TransmittingBypass || Intercom.host.Network_state == Intercom.State.AdminSpeaking;
+        public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
 
         /// <summary>
         /// Gets the current state of the intercom.
         /// </summary>
-        public static Intercom.State IntercomState => Intercom.host.Network_state;
+        public static Intercom.State IntercomState => Intercom.host.IntercomState;
 
         /// <summary>
         /// Gets the <see cref="Player"/> that is using the intercom. Will be <see cref="null"/> if <see cref="IntercomInUse"/> is false.
