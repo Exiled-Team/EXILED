@@ -40,5 +40,13 @@ namespace Exiled.API.Features
         {
             Timing.CallDelayed(delay, () => RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy));
         }
+
+        /// <summary>
+        /// Calculates duration of C.A.S.S.I.E message.
+        /// </summary>
+        /// <param name="message">The message, which duration will be calculated.</param>
+        /// <returns>Duration (in seconds) of specified message.</returns>
+        public static float CalculateDuration(string message)
+            => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, false);
     }
 }
