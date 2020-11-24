@@ -16,10 +16,10 @@ namespace Exiled.Events.Patches.Events.Scp173
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="Scp173PlayerScript.CallRpcBlinkTime"/>.
+    /// Patches <see cref="Scp173PlayerScript.RpcBlinkTime"/>.
     /// Adds the <see cref="Handlers.Scp173.Blinking"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.CallRpcBlinkTime))]
+    [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.RpcBlinkTime))]
     internal static class Blinking
     {
         private static bool Prefix(Scp173PlayerScript __instance)
