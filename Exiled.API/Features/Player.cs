@@ -415,6 +415,11 @@ namespace Exiled.API.Features
         public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
+        /// Gets a value indicating whether the player's role type is any SCP type.
+        /// </summary>
+        public bool IsScp => Team == Team.SCP;
+
+        /// <summary>
         /// Gets a value indicating whether the player's role type is a human role type (except the tutorial role).
         /// </summary>
         public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.MTF || Team == Team.RSC;
