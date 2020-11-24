@@ -15,30 +15,35 @@ namespace Exiled.Events.Patches.Events.Scp173
 
     using HarmonyLib;
 
+    using UnityEngine;
+
     /// <summary>
-    /// Patches <see cref="Scp173PlayerScript.RpcBlinkTime"/>.
+    /// Patches <see cref="Scp173PlayerScript.DoBlinkingSequence"/>.
     /// Adds the <see cref="Handlers.Scp173.Blinking"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.RpcBlinkTime))]
+    [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.DoBlinkingSequence))]
     internal static class Blinking
     {
         private static bool Prefix(Scp173PlayerScript __instance)
         {
-            List<Player> triggers = new List<Player>();
-
-            foreach (var player in Player.List)
+            if (Scp173PlayerScript._remainingTime - Time.fixedDeltaTime < 0f)
             {
-                if (player.Team != Team.SCP && player.Team != Team.RIP)
+                List<Player> triggers = new List<Player>();
+
+                foreach (var player in Player.List)
                 {
-                    Scp173PlayerScript playerScript = player.ReferenceHub.characterClassManager.Scp173;
+                    if (player.Team != Team.SCP && player.Team != Team.RIP)
+                    {
+                        Scp173PlayerScript playerScript = player.ReferenceHub.characterClassManager.Scp173;
 
-                    if ((player.Role != RoleType.Tutorial || Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173) && playerScript.LookFor173(__instance.gameObject, true) && __instance.LookFor173(player.GameObject, false))
-                        triggers.Add(player);
+                        if ((player.Role != RoleType.Tutorial || Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173) && playerScript.LookFor173(__instance.gameObject, true) && __instance.LookFor173(player.GameObject, false))
+                            triggers.Add(player);
+                    }
                 }
-            }
 
-            if (triggers.Count > 0)
-                Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers.ToArray(), __instance.blinkDuration_notsee));
+                if (triggers.Count > 0)
+                    Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers.ToArray(), __instance.blinkDuration_notsee));
+            }
 
             return true;
         }
