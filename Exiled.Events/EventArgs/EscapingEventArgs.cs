@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can escape.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public UserGroup NewGroup { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can change groups.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

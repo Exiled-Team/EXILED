@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
         public PlayerEffect Effect { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the effect will be allowed to be applied.
+        /// Gets or sets a value indicating whether or not the effect will be applied.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
 

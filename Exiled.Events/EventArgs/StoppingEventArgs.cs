@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the warhead can be stopped.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

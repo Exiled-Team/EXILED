@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player cancels using a medical item.
+    /// Contains all informations before a player cancels usage of a medical item.
     /// </summary>
     public class StoppingMedicalItemEventArgs : UsingMedicalItemEventArgs
     {
@@ -20,7 +20,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player">The player who's stopping the use of the medical item.</param>
         /// <param name="item">The medical item that won't be consumed.</param>
         /// <param name="cooldown">The cooldown left for completing the use of the medical item.</param>
-        /// <param name="isAllowed"><inheritdoc cref="UsingMedicalItemEventArgs.IsAllowed"/></param>
+        /// <param name="isAllowed">Whether or not the player can cancel usage of the medical item.</param>
         public StoppingMedicalItemEventArgs(Player player, ItemType item, float cooldown, bool isAllowed = true)
             : base(player, item, cooldown, isAllowed)
         {

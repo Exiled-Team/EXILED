@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information before SCP-096 starts prying a gate open.
+    /// Contains all information before SCP-096 begins prying a gate open.
     /// </summary>
     public class StartPryingGateEventArgs : EventArgs
     {
@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> object of the SCP-096.
+        /// Gets the player that is controlling SCP-096.
         /// </summary>
         public Player Player { get; }
 
@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public Door Gate { get; }
 
         /// <summary>
-        /// Gets or Sets a value indicating whether or not they should be allowed to pry the gate open.
+        /// Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }

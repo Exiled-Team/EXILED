@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's triggering the tesla through SCP-079.
+        /// Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public TeslaGate Tesla { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-079 can interact with the tesla gate.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

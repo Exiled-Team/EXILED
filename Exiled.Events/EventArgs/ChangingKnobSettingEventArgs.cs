@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-914's knob setting can be changed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

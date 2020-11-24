@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public int MaximumRespawnAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating what the next respawnable team is..
+        /// Gets or sets a value indicating what the next respawnable team is.
         /// </summary>
         public SpawnableTeamType NextKnownTeam
         {
@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the spawn can occur.
         /// </summary>
         public bool IsAllowed { get; set; }
 

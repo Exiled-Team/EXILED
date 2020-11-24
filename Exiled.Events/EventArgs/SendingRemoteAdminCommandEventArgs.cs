@@ -72,7 +72,7 @@ namespace Exiled.Events.EventArgs
         public bool Success { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the RemoteAdmin command can be sent.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

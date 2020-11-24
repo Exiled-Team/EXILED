@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public float Amount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the experience is successfully granted.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

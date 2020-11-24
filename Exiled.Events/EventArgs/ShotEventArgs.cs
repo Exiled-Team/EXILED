@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations after a player has shot.
+    /// Contains all informations after a player has fired a weapon.
     /// </summary>
     public class ShotEventArgs : EventArgs
     {
@@ -72,7 +72,7 @@ namespace Exiled.Events.EventArgs
         public float Damage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the shot can hurt the target or notc.
+        /// Gets or sets a value indicating whether or not the shot can hurt the target.
         /// </summary>
         public bool CanHurt { get; set; }
     }
