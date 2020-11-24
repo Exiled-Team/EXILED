@@ -20,12 +20,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="BlinkingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="triggers"><inheritdoc cref="Triggers"/></param>
+        /// <param name="targets"><inheritdoc cref="Targets"/></param>
         /// <param name="duration"><inheritdoc cref="Duration"/></param>
-        public BlinkingEventArgs(Player player, Player[] triggers, float duration)
+        public BlinkingEventArgs(Player player, Player[] targets, float duration)
         {
             Player = player;
-            Triggers = triggers;
+            Targets = targets;
             Duration = duration;
         }
 
@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the array of players, who triggered SCP-173.
         /// </summary>
-        public Player[] Triggers { get; }
+        public Player[] Targets { get; }
 
         /// <summary>
         /// Gets the blink duration.
