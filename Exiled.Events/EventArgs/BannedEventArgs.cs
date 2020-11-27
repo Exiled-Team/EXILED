@@ -25,9 +25,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public BannedEventArgs(Player target, Player issuer, BanDetails details, BanHandler.BanType type)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            Player = target;
-#pragma warning restore CS0618 // Type or member is obsolete
             Target = target;
             Details = details;
             Type = type;
