@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         /// Gets the kicked player.
         /// </summary>
         [Obsolete("Use Target instead")]
-        public Player Player { get; }
+        public Player Player => Target;
 
         /// <summary>
         /// Gets the kicked player.
