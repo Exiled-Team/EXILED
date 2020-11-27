@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                 }
 
                 if (triggers.Count > 0)
-                    Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers, __instance.blinkDuration_notsee));
+                    Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers));
 
                 ListPool<Player>.Shared.Return(triggers);
             }

@@ -23,11 +23,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="targets"><inheritdoc cref="Targets"/></param>
         /// <param name="duration"><inheritdoc cref="Duration"/></param>
-        public BlinkingEventArgs(Player player, List<Player> targets, float duration)
+        public BlinkingEventArgs(Player player, List<Player> targets)
         {
             Player = player;
             Targets = targets;
-            Duration = duration;
         }
 
         /// <summary>
@@ -39,10 +38,5 @@ namespace Exiled.Events.EventArgs
         /// Gets a list of players who have triggered SCP-173.
         /// </summary>
         public List<Player> Targets { get; }
-
-        /// <summary>
-        /// Gets the blink duration.
-        /// </summary>
-        public float Duration { get; }
     }
 }
