@@ -24,9 +24,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public KickedEventArgs(Player target, string reason, bool isAllowed = true)
         {
-#pragma warning disable CS0618 // Type or member is obsolete
-            Player = target;
-#pragma warning restore CS0618 // Type or member is obsolete
             Target = target;
             Reason = reason;
             IsAllowed = isAllowed;
