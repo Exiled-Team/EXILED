@@ -22,7 +22,6 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="targets"><inheritdoc cref="Targets"/></param>
-        /// <param name="duration"><inheritdoc cref="Duration"/></param>
         public BlinkingEventArgs(Player player, List<Player> targets)
         {
             Player = player;
