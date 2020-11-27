@@ -8,12 +8,12 @@
 namespace Exiled.Events.Patches.Events.Scp173
 {
 #pragma warning disable SA1313
-    using System.Collections.Generic;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
 
@@ -24,28 +24,27 @@ namespace Exiled.Events.Patches.Events.Scp173
     [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.DoBlinkingSequence))]
     internal static class Blinking
     {
-        private static bool Prefix(Scp173PlayerScript __instance)
+        private static void Prefix(Scp173PlayerScript __instance)
         {
             if (Scp173PlayerScript._remainingTime - Time.fixedDeltaTime < 0f)
             {
-                List<Player> triggers = new List<Player>();
+                var triggers = ListPool<Player>.Shared.Rent();
 
                 foreach (var player in Player.List)
                 {
                     if (player.Team != Team.SCP && player.Team != Team.RIP)
                     {
                         Scp173PlayerScript playerScript = player.ReferenceHub.characterClassManager.Scp173;
-
-                        if ((player.Role != RoleType.Tutorial || Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173) && playerScript.LookFor173(__instance.gameObject, true) && __instance.LookFor173(player.GameObject, false))
+                        if (playerScript.LookFor173(__instance.gameObject, true))
                             triggers.Add(player);
                     }
                 }
 
                 if (triggers.Count > 0)
-                    Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers.ToArray(), __instance.blinkDuration_notsee));
-            }
+                    Handlers.Scp173.OnBlinking(new BlinkingEventArgs(Player.Get(__instance.gameObject), triggers, __instance.blinkDuration_notsee));
 
-            return true;
+                ListPool<Player>.Shared.Return(triggers);
+            }
         }
     }
 }
