@@ -21,7 +21,7 @@ namespace Exiled.API.Extensions
     public static class Item
     {
         /// <summary>
-        /// Spawns an <see cref="ItemType"/> in a desired <see cref="Vector3"/> position.
+        /// Spawns a <see cref="Pickup"/> in a desired <see cref="Vector3"/> position.
         /// </summary>
         /// <param name="itemType">The type of the item to be spawned.</param>
         /// <param name="durability">The durability (or ammo, depends on the weapon) of the item.</param>
@@ -31,7 +31,22 @@ namespace Exiled.API.Extensions
         /// <param name="barrel">The barrel of the weapon (0 is no custom barrel, 1 is the first barrel available, and so on).</param>
         /// <param name="other">Other attachments like flashlight, laser or ammo counter.</param>
         /// <returns>Returns the spawned <see cref="Pickup"/>.</returns>
-        public static Pickup Spawn(this ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0) => Server.Host.Inventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
+        public static Pickup Spawn(this ItemType itemType, float durability, Vector3 position, Quaternion rotation = default, int sight = 0, int barrel = 0, int other = 0)
+        {
+            return Server.Host.Inventory.SetPickup(itemType, durability, position, rotation, sight, barrel, other);
+        }
+
+        /// <summary>
+        /// Spawns an <see cref="Pickup"/> in a desired <see cref="Vector3"/> position.
+        /// </summary>
+        /// <param name="item">The item to be spawned.</param>
+        /// <param name="position">Where the item will be spawned.</param>
+        /// <param name="rotation">The rotation. We recommend you to use <see cref="Quaternion.Euler(float, float, float)"/>.</param>
+        /// <returns>Returns the spawned <see cref="Pickup"/>.</returns>
+        public static Pickup Spawn(this Inventory.SyncItemInfo item, Vector3 position, Quaternion rotation = default)
+        {
+            return item.id.Spawn(item.durability, position, rotation, item.modSight, item.modBarrel, item.modOther);
+        }
 
         /// <summary>
         /// Set the ammo of an <see cref="Inventory.SyncItemInfo">item</see>.
@@ -78,7 +93,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
-        [Obsolete("Was removed", true)]
+        [Obsolete("Removed from the base-game.", true)]
         public static bool IsSCP330(this ItemType type) => false;
 
         /// <summary>
@@ -86,7 +101,15 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
-        public static bool IsSCP(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207;
+        [Obsolete("Use IsScp instead.", true)]
+        public static bool IsSCP(this ItemType type) => type.IsScp();
+
+        /// <summary>
+        /// Check if an <see cref="ItemType">item</see> is an SCP.
+        /// </summary>
+        /// <param name="type">The item to be checked.</param>
+        /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
+        public static bool IsScp(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
@@ -156,10 +179,11 @@ namespace Exiled.API.Extensions
         /// <param name="type">Type of the sight.</param>
         public static void SetSight(this Player player, Inventory.SyncItemInfo weapon, SightType type)
         {
-            WeaponManager wmanager = player.ReferenceHub.weaponManager;
+            WeaponManager weaponManager = player.ReferenceHub.weaponManager;
+
             if (weapon.id.IsWeapon())
             {
-                WeaponManager.Weapon wep = wmanager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
+                WeaponManager.Weapon wep = weaponManager.weapons.Where(wp => wp.inventoryID == weapon.id).FirstOrDefault();
                 if (wep != null)
                 {
                     string name = type.ToString("g").SplitCamelCase();

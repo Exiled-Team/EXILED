@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -36,7 +37,26 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(FragGrenade __instance)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            /*// Declare Dictionary<Player, float> local variable.
+            var players = generator.DeclareLocal(typeof(Dictionary<Player, float>));
+
+            // Declare Dictionary<Player, float>.Enumerator local variable.
+            var playerEnumerator = generator.DeclareLocal(typeof(Dictionary<Player, float>.Enumerator));
+
+            // Declare KeyValuePair<Player, float> local variable.
+            var playerKeyValuePair = generator.DeclareLocal(typeof(KeyValuePair<Player, float>));
+
+            // Define the return label.
+            var returnLabel = generator.DefineLabel();
+
+            // Define the foreach labels.
+            var foreachFirstLabel = generator.DefineLabel();
+            var foreachSecondLabel = generator.DefineLabel();
+
+            // var players = Dictionary<Player, float>();
+            newInstructions.InsertRange(0, new[]
             {
                 Player thrower = Player.Get(__instance.thrower.gameObject);
 
@@ -167,7 +187,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the return label to the penultimate instruction.
-            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);*/
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

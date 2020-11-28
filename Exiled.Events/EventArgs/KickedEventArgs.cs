@@ -19,12 +19,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="KickedEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="target"><inheritdoc cref="Player"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public KickedEventArgs(Player player, string reason, bool isAllowed = true)
+        public KickedEventArgs(Player target, string reason, bool isAllowed = true)
         {
-            Player = player;
+            Target = target;
             Reason = reason;
             IsAllowed = isAllowed;
         }
@@ -32,7 +32,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the kicked player.
         /// </summary>
-        public Player Player { get; }
+        [Obsolete("Use Target instead")]
+        public Player Player => Target;
+
+        /// <summary>
+        /// Gets the kicked player.
+        /// </summary>
+        public Player Target { get; }
 
         /// <summary>
         /// Gets or sets the kick reason.

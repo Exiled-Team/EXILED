@@ -69,6 +69,12 @@ namespace Exiled.API.Features
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
+        /// Sets the intensity of the lights in the room.
+        /// </summary>
+        /// <param name="intensity">The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</param>
+        public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
+
+        /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
         /// We can add parameters to be set privately here.
         /// </summary>

@@ -17,7 +17,7 @@ namespace Exiled.Events.Patches.Events.Map
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.DoorTrigger"/>.
+    /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.Spawn"/>.
     /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawnedItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]

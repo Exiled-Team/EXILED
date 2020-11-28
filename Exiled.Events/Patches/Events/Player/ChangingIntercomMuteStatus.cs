@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -22,25 +23,33 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(CharacterClassManager __instance, bool value)
         {
-            ChangingIntercomMuteStatusEventArgs ev = new ChangingIntercomMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
-
-            Player.OnChangingIntercomMuteStatus(ev);
-
-            if (!ev.IsAllowed)
+            try
             {
-                if (value == true)
+                ChangingIntercomMuteStatusEventArgs ev = new ChangingIntercomMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+
+                Player.OnChangingIntercomMuteStatus(ev);
+
+                if (!ev.IsAllowed)
                 {
-                    MuteHandler.RevokePersistentMute("ICOM-" + __instance.UserId);
-                }
-                else
-                {
-                    MuteHandler.IssuePersistentMute("ICOM-" + __instance.UserId);
+                    if (value == true)
+                    {
+                        MuteHandler.RevokePersistentMute("ICOM-" + __instance.UserId);
+                    }
+                    else
+                    {
+                        MuteHandler.IssuePersistentMute("ICOM-" + __instance.UserId);
+                    }
+
+                    return false;
                 }
 
-                return false;
+                return true;
             }
-
-            return true;
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"{typeof(ChangingIntercomMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
+                return true;
+            }
         }
     }
 }

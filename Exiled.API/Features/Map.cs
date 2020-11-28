@@ -38,8 +38,6 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
-        private static SpawnpointManager spawnpointManager;
-
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in light containment.
         /// </summary>
@@ -78,7 +76,9 @@ namespace Exiled.API.Features
 
                     // Add the pocket dimension since it is not tagged Room.
                     const string PocketPath = "HeavyRooms/PocketWorld";
+
                     var pocket = GameObject.Find(PocketPath);
+
                     if (pocket == null)
                         Log.Send($"[{typeof(Map).FullName}]: Pocket Dimension not found. The name or location in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
                     else
@@ -86,16 +86,16 @@ namespace Exiled.API.Features
 
                     // Add the surface since it is not tagged Room. Add it last so we can use it as a default room since it never changes.
                     const string surfaceRoomName = "Outside";
+
                     var surface = GameObject.Find(surfaceRoomName);
+
                     if (surface == null)
                         Log.Send($"[{typeof(Map).FullName}]: Surface not found. The name in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
                     else
                         roomObjects.Add(surface);
 
                     foreach (var roomObject in roomObjects)
-                    {
                         RoomsValue.Add(Room.CreateComponent(roomObject));
-                    }
 
                     ListPool<GameObject>.Shared.Return(roomObjects);
                 }
@@ -150,7 +150,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Tries to find the room that a Game Object is inside, first using the transform's parents, then using a Raycast if no room was found.
+        /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
         /// </summary>
         /// <param name="objectInRoom">The Game Object inside the room.</param>
         /// <returns>The Room.</returns>
@@ -172,13 +172,12 @@ namespace Exiled.API.Features
             {
                 // Check for Scp079 if it's a player
                 var ply = Player.Get(objectInRoom);
+
+                // Raycasting doesn't make sense,
+                // Scp079 position is constant,
+                // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
-                {
-                    // Raycasting doesn't make sence,
-                    // Scp079 position is constant,
-                    // let it be 'Outside' instead
                     room = FindParentRoom(ply.ReferenceHub.scp079PlayerScript.currentCamera.gameObject);
-                }
             }
 
             if (room == null)
@@ -187,9 +186,7 @@ namespace Exiled.API.Features
                 Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
-                {
                     room = CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
-                }
             }
 
             // Always default to surface transform, since it's static.
@@ -205,7 +202,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="position">Hands position.</param>
         /// <param name="rotation">Hands rotation.</param>
-        [Obsolete("This API was removed with SCP-330 and is no longer available.", true)]
+        [Obsolete("Removed from the base-game.", true)]
         public static void SpawnHands(Vector3 position, Quaternion rotation)
         {
         }
@@ -229,9 +226,7 @@ namespace Exiled.API.Features
         public static void ShowHint(string message, float duration)
         {
             foreach (Player player in Player.List)
-            {
                 player.ShowHint(message, duration);
-            }
         }
 
         /// <summary>
@@ -246,14 +241,7 @@ namespace Exiled.API.Features
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
-            GameObject randomPosition;
-
-            if (spawnpointManager == null)
-            {
-                spawnpointManager = Object.FindObjectOfType<SpawnpointManager>();
-            }
-
-            randomPosition = spawnpointManager.GetRandomPosition(roleType);
+            GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(roleType);
 
             return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
         }
@@ -279,8 +267,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static void ClearCache()
         {
-            spawnpointManager = null;
-
             RoomsValue.Clear();
             DoorsValue.Clear();
             LiftsValue.Clear();
