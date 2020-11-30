@@ -253,6 +253,11 @@ namespace Exiled.API.Features
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
+        /// Gets a value indicating whether the player is connected to the server or not.
+        /// </summary>
+        public bool IsConnected => GameObject != null;
+
+        /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
         [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases.")]
