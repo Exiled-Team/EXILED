@@ -765,6 +765,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is in the pocket dimension.
+        /// </summary>
+        public bool IsInPocketDimension
+        {
+            get => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether player should use stamina system.
         /// </summary>
         public bool IsUsingStamina { get; set; } = true;
