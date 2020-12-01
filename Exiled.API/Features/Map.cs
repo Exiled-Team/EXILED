@@ -129,7 +129,10 @@ namespace Exiled.API.Features
             get
             {
                 if (LiftsValue.Count == 0)
+                {
                     LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
+                    LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
+                }
 
                 return ReadOnlyLiftsValue;
             }
