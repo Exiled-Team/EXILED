@@ -765,11 +765,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not a player is in the pocket dimension.
+        /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
         public bool IsInPocketDimension
         {
-            get => ReferenceHub.transform.position.y < -1995f;
+            get => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
         }
 
         /// <summary>
