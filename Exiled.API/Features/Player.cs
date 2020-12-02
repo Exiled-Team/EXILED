@@ -949,6 +949,13 @@ namespace Exiled.API.Features
         public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
+        /// Sets the camera the player is currently located at.
+        /// Only applies if the player is SCP-079.
+        /// </summary>
+        /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
+        public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
+
+        /// <summary>
         /// Sets the player's rank.
         /// </summary>
         /// <param name="name">The rank name to be set.</param>
