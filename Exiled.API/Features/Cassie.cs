@@ -42,10 +42,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Calculates duration of C.A.S.S.I.E message.
+        /// Calculates duration of a C.A.S.S.I.E message.
         /// </summary>
         /// <param name="message">The message, which duration will be calculated.</param>
-        /// <param name="rawNumber">Determines when a number won't be converted to its full pronunciation.</param>
+        /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false)
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
