@@ -27,7 +27,8 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be reproduced.</param>
         /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
         /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
-        public static void Message(string message, bool isHeld = false, bool isNoisy = true) => RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy);
+        public static void Message(string message, bool isHeld = false, bool isNoisy = true) =>
+            RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy);
 
         /// <summary>
         /// Reproduce a C.A.S.S.I.E message after a certain amount of seconds.
@@ -36,10 +37,8 @@ namespace Exiled.API.Features
         /// <param name="delay">The seconds that have to pass before reproducing the message.</param>
         /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
         /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
-        public static void DelayedMessage(string message, float delay, bool isHeld = false, bool isNoisy = true)
-        {
+        public static void DelayedMessage(string message, float delay, bool isHeld = false, bool isNoisy = true) =>
             Timing.CallDelayed(delay, () => RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy));
-        }
 
         /// <summary>
         /// Calculates duration of a C.A.S.S.I.E message.
