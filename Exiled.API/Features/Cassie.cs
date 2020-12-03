@@ -57,7 +57,7 @@ namespace Exiled.API.Features
         /// <param name="glitchChance">The chance of placing a glitch between each word.</param>
         /// <param name="jamChance">The chance of jamming each word.</param>
         public static void DelayedGlitchyMessage(string message, float delay, float glitchChance, float jamChance) =>
-            Timing.CallDelayed(delay, () => NineTailedFoxAnnouncer.singleton.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance);
+            Timing.CallDelayed(delay, () => NineTailedFoxAnnouncer.singleton.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
 
         /// <summary>
         /// Calculates duration of a C.A.S.S.I.E message.
