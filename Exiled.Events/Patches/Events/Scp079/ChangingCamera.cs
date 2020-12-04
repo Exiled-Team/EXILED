@@ -61,19 +61,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                     __instance.RpcSwitchCamera(ev.Camera.cameraId, lookatRotation);
                     __instance.Mana -= ev.APCost;
                     __instance.currentCamera = ev.Camera;
-
-                    return false;
                 }
-                else
+                else if (ev.APCost > __instance.curMana)
                 {
-                    if (ev.APCost > __instance.curMana)
-                    {
-                        __instance.RpcNotEnoughMana(ev.APCost, __instance.curMana);
-                        return false;
-                    }
-
-                    return false;
+                    __instance.RpcNotEnoughMana(ev.APCost, __instance.curMana);
                 }
+                
+                return false;
             }
             catch (Exception e)
             {
