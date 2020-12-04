@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 {
                     __instance.RpcNotEnoughMana(ev.APCost, __instance.curMana);
                 }
-                
+
                 return false;
             }
             catch (Exception e)
