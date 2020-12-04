@@ -18,6 +18,11 @@ namespace Exiled.Events.Handlers
     public static class Scp079
     {
         /// <summary>
+        /// Invoked before SCP-079 switches cameras.
+        /// </summary>
+        public static event CustomEventHandler<ChangingCameraEventArgs> ChangingCamera;
+
+        /// <summary>
         /// Invoked before gaining experience with SCP-079
         /// </summary>
         public static event CustomEventHandler<GainingExperienceEventArgs> GainingExperience;
@@ -51,6 +56,12 @@ namespace Exiled.Events.Handlers
         /// Invoked after Scp079 recontainment.
         /// </summary>
         public static event CustomEventHandler<RecontainedEventArgs> Recontained;
+
+        /// <summary>
+        /// Called before SCP-079 switches cameras.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingCameraEventArgs"/> instance.</param>
+        public static void OnChangingCamera(ChangingCameraEventArgs ev) => ChangingCamera.InvokeSafely(ev);
 
         /// <summary>
         /// Called before gaining experience with SCP-079.
