@@ -13,7 +13,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player changes his role.
+    /// Contains all informations before a player's <see cref="RoleType"/> changes.
     /// </summary>
     public class ChangingRoleEventArgs : EventArgs
     {
@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who'll change his role.
+        /// Gets the player whose <see cref="RoleType"/> is changing.
         /// </summary>
         public Player Player { get; }
 
@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs
         public List<ItemType> Items { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is escaped or not.
+        /// Gets or sets a value indicating whether the player escaped or not.
         /// </summary>
         public bool IsEscaped { get; set; }
 

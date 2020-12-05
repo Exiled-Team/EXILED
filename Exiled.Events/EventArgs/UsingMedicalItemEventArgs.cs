@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         public float Cooldown { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can use the medical item.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

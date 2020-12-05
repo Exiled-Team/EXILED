@@ -42,12 +42,12 @@ namespace Exiled.Events.EventArgs
         public Scp914Machine Scp914 { get; }
 
         /// <summary>
-        /// Gets all players inside SCP-914.
+        /// Gets a list of players inside SCP-914.
         /// </summary>
         public List<Player> Players { get; }
 
         /// <summary>
-        /// Gets all items to be upgraded inside SCP-914.
+        /// Gets a list of items to be upgraded inside SCP-914.
         /// </summary>
         public List<Pickup> Items { get; }
 
@@ -57,7 +57,7 @@ namespace Exiled.Events.EventArgs
         public Scp914Knob KnobSetting { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the upgrade is successful.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

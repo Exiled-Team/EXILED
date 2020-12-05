@@ -66,7 +66,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; }
 
         /// <summary>
-        /// Gets the player, owner of the ragdoll.
+        /// Gets the owner of the ragdoll (typically the player who died).
         /// </summary>
         public Player Owner { get; }
 
@@ -81,7 +81,7 @@ namespace Exiled.Events.EventArgs
         public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the role type of the ragdoll owner.
+        /// Gets or sets the RoleType of the ragdoll owner.
         /// </summary>
         public RoleType RoleType { get; set; }
 
@@ -106,7 +106,7 @@ namespace Exiled.Events.EventArgs
         public string PlayerNickname { get; set; }
 
         /// <summary>
-        /// Gets or sets the ragdoll playr id.
+        /// Gets or sets the ragdoll player id.
         /// </summary>
         public int PlayerId
         {
@@ -121,7 +121,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the ragdoll will be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

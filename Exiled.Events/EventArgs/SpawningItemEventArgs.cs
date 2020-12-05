@@ -49,12 +49,12 @@ namespace Exiled.Events.EventArgs
         public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the Pickup will be locked.
+        /// Gets or sets a value indicating whether or not the pickup will be locked.
         /// </summary>
         public bool Locked { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the item can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

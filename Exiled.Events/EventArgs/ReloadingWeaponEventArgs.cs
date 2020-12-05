@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player reloads his weapon.
+    /// Contains all informations before a player's weapon is reloaded.
     /// </summary>
     public class ReloadingWeaponEventArgs : EventArgs
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public bool IsAnimationOnly { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the weapon can be reloaded.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

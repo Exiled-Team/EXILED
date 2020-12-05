@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's triggering the speaker through SCP-079.
+        /// Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the room where the camera is located, that SCP-079 is triggering.
+        /// Gets the room that the speaker is located in.
         /// </summary>
         public Room Room { get; }
 
@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public float APDrain { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-079 can use the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

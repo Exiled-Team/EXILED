@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains the damage done to the window.
+    /// Contains all informations before damage is dealt to a <see cref="BreakableWindow"/>.
     /// </summary>
     public class DamagingWindowEventArgs : EventArgs
     {
@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="BreakableWindow"/> object.
+        /// Gets the <see cref="BreakableWindow"/> object that is damaged.
         /// </summary>
         public BreakableWindow Window { get; }
 

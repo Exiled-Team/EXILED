@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs
         public float Multiplier { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the blood can be placed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

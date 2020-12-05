@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs
         public byte CurrentAnimation { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player's data can be synced with the server.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

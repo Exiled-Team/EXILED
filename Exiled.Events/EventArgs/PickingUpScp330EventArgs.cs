@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can interact with SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; }
 
@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs
         public int Usage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether pickup should be severe.
+        /// Gets or sets a value indicating whether or not the interaction should be severe.
         /// </summary>
         public bool IsSevere { get; set; }
 

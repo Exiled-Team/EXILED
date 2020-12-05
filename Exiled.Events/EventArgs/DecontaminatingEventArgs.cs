@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs
         public DecontaminatingEventArgs(bool isAllowed = true) => IsAllowed = isAllowed;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not light containment zone decontamination can begin.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

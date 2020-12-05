@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before shooting with a weapon.
+    /// Contains all informations before a player fires a weapon.
     /// </summary>
     public class ShootingEventArgs : EventArgs
     {
@@ -44,12 +44,12 @@ namespace Exiled.Events.EventArgs
         public GameObject Target { get; }
 
         /// <summary>
-        /// Gets or sets the position of the shoot.
+        /// Gets or sets the position of the shot.
         /// </summary>
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the shot can be fired.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

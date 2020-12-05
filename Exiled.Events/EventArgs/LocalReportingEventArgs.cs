@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the process can be processed or not.
+        /// Gets or sets a value indicating whether the report can be processed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

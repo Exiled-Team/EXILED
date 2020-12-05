@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Player"/> object of the SCP-096.
+        /// Gets the <see cref="Player"/> that is controlling SCP-096.
         /// </summary>
         public Player Scp096 { get; }
 
@@ -47,12 +47,12 @@ namespace Exiled.Events.EventArgs
         public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets the amount of AHP to add to 096 if <see cref="IsAllowed"/> is true.
+        /// Gets or sets the amount of AHP to add to SCP-096 if <see cref="IsAllowed"/> is true.
         /// </summary>
         public int AhpToAdd { get; set; }
 
         /// <summary>
-        /// Gets or sets how much time is added to <see cref="Scp096"/>'s enrage timer if <see cref="IsAllowed"/> is true.
+        /// Gets or sets how much time is added to SCP-096's enrage timer if <see cref="IsAllowed"/> is true.
         /// </summary>
         public float EnrageTimeToAdd { get; set; }
     }

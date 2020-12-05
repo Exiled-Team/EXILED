@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public Generator079 Generator { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the generator can be unlocked.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

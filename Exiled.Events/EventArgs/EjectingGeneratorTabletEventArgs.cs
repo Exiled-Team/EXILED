@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player">The player who's ejecting the tablet.</param>
         /// <param name="generator">The <see cref="Generator079"/> instance.</param>
-        /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+        /// <param name="isAllowed">Indicates whether or not the tablet can be ejected.</param>
         public EjectingGeneratorTabletEventArgs(Player player, Generator079 generator, bool isAllowed = true)
             : base(player, generator, isAllowed)
         {
