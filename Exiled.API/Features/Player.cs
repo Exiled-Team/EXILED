@@ -35,7 +35,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
         {
@@ -243,17 +243,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is invisible or not.
+        /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the players can be tracked or not.
+        /// Gets a value indicating whether or not the player can be tracked.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
-        /// Gets a value indicating whether the player is connected to the server or not.
+        /// Gets a value indicating whether or not the player is connected to the server.
         /// </summary>
         public bool IsConnected => GameObject != null;
 
@@ -269,12 +269,12 @@ namespace Exiled.API.Features
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
-        /// Gets a value indicating whether the player has Remote Admin access.
+        /// Gets a value indicating whether or not the player has Remote Admin access.
         /// </summary>
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
+        /// Gets or sets a value indicating whether or not the player's overwatch is enabled.
         /// </summary>
         public bool IsOverwatchEnabled
         {
@@ -303,7 +303,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's rotations.
         /// </summary>
-        /// <returns>Returns a <see cref="Vector2"/>, representing the directions he's looking at.</returns>
+        /// <returns>Returns a <see cref="Vector2"/> representing the rotation of the player.</returns>
         public Vector2 Rotations
         {
             get => ReferenceHub.playerMovementSync.RotationSync;
@@ -340,17 +340,17 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether the player is cuffed or not.
+        /// Gets a value indicating whether or not the palyer is cuffed.
         /// </summary>
         public bool IsCuffed => CufferId != -1;
 
         /// <summary>
-        /// Gets a value indicating whether the player is reloading or not.
+        /// Gets a value indicating whether or not the player is reloading a weapon.
         /// </summary>
         public bool IsReloading => ReferenceHub.weaponManager.IsReloading();
 
         /// <summary>
-        /// Gets a value indicating whether the player is zooming or not.
+        /// Gets a value indicating whether or not the player is zooming with a weapon.
         /// </summary>
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
@@ -360,7 +360,7 @@ namespace Exiled.API.Features
         public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
 
         /// <summary>
-        /// Gets a value indicating whether the player is jumping or not.
+        /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
         public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
@@ -400,22 +400,23 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
-        /// Gets a value indicating whether the player is the host or not.
+        /// Gets a value indicating whether or not the player is the host.
         /// </summary>
         public bool IsHost => ReferenceHub.characterClassManager.IsHost;
 
         /// <summary>
-        /// Gets a value indicating whether the player is alive or not.
+        /// Gets a value indicating whether or not the player is alive.
         /// </summary>
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether the player is dead or not.
+        /// Gets a value indicating whether or not the player is dead.
         /// </summary>
         public bool IsDead => Team == Team.RIP;
 
         /// <summary>
-        /// Gets or sets the camera of SCP-079.
+        /// Gets or sets the camera SCP-079 is currently controlling.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Camera079 Camera
         {
@@ -424,7 +425,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player's role type is any NTF type <see cref="ReferenceHub"/>.
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
+        /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         public bool IsNTF => Team == Team.MTF;
 
@@ -471,7 +473,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is muted or not.
+        /// Gets or sets a value indicating whether or not the player is muted.
         /// </summary>
         public bool IsMuted
         {
@@ -480,7 +482,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is intercom muted or not.
+        /// Gets or sets a value indicating whether or not the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
         {
@@ -489,7 +491,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's godmode is enabled or not.
+        /// Gets or sets a value indicating whether or not the player has godmode enabled.
         /// </summary>
         public bool IsGodModeEnabled
         {
@@ -499,6 +501,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's health.
+        /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
         public float Health
         {
@@ -522,6 +525,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's adrenaline health.
+        /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
         /// </summary>
         public float AdrenalineHealth
         {
@@ -568,6 +572,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the abilities of SCP-079. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
@@ -581,6 +586,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the levels of SCP-079. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
@@ -593,7 +599,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the speaker of SCP-079. Can be null.
+        /// Gets or sets the speaker this player is currently using. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public string Speaker
         {
@@ -606,7 +613,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the SCP-079 locked doors <see cref="SyncListString"/>. Can be null.
+        /// Gets or sets the doors this player has locked. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public SyncListString LockedDoors
         {
@@ -619,7 +627,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the experience of SCP-079.
+        /// Gets or sets the amount of experience this player has.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float Experience
         {
@@ -635,12 +644,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Stamina"/> class.
+        /// Gets the <see cref="global::Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
         /// <summary>
-        /// Gets or sets the level of SCP-079.
+        /// Gets or sets this player's level.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public byte Level
         {
@@ -657,7 +667,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the SCP-079 max energy.
+        /// Gets or sets this player's max energy.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float MaxEnergy
         {
@@ -673,7 +684,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the energy of SCP-079.
+        /// Gets or sets this player's energy.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float Energy
         {
@@ -778,7 +790,7 @@ namespace Exiled.API.Features
         public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a player's scp330 usages counter.
+        /// Gets or sets a player's SCP-330 usages counter.
         /// </summary>
         [Obsolete("Removed from the base-game.", true)]
         public int Scp330Usages
@@ -925,27 +937,23 @@ namespace Exiled.API.Features
             }
         }
 
-        /// <summary>
-        /// Gets the camera with the given ID.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns><see cref="Camera079"/>.</returns>
-        public Camera079 GetCameraById(ushort cameraId)
-        {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
-            {
-                if (camera.cameraId == cameraId)
-                    return camera;
-            }
-
-            return null;
-        }
+        /// <inheritdoc cref="Map.GetCameraById(ushort)"/>
+        [Obsolete("Use Map.GetCameraById instead.")]
+        public Camera079 GetCameraById(ushort cameraId) => Map.GetCameraById(cameraId);
 
         /// <summary>
-        /// Sets the SCP-079 camera, if the player is SCP-079.
+        /// Sets the camera the player is currently located at.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         /// <param name="cameraId">Camera ID.</param>
         public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
+
+        /// <summary>
+        /// Sets the camera the player is currently located at.
+        /// Only applies if the player is SCP-079.
+        /// </summary>
+        /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
+        public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
 
         /// <summary>
         /// Sets the player's rank.
@@ -1073,7 +1081,7 @@ namespace Exiled.API.Features
         public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
 
         /// <summary>
-        /// Bans a the player.
+        /// Bans the player.
         /// </summary>
         /// <param name="duration">The ban duration.</param>
         /// <param name="reason">The ban reason.</param>

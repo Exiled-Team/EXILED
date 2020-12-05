@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         /// <summary>
-        /// Gets a value indicating whether decontamination has begun in light containment.
+        /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
         public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
@@ -49,12 +49,12 @@ namespace Exiled.API.Features
         public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
 
         /// <summary>
-        /// Gets all SCP-079 cameras.
+        /// Gets all <see cref="Camera079"/> objects.
         /// </summary>
         public static Camera079[] Cameras => Scp079PlayerScript.allCameras;
 
         /// <summary>
-        /// Gets all <see cref="Room"/>.
+        /// Gets all <see cref="Room"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Room> Rooms
         {
@@ -105,7 +105,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets all <see cref="Door"/>.
+        /// Gets all <see cref="Door"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Door> Doors
         {
@@ -122,7 +122,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets all <see cref="Lift"/>.
+        /// Gets all <see cref="Lift"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Lift> Lifts
         {
@@ -139,7 +139,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets all <see cref="TeslaGate"/>.
+        /// Gets all <see cref="TeslaGate"/> objects.
         /// </summary>
         public static ReadOnlyCollection<TeslaGate> TeslaGates
         {
@@ -155,8 +155,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
         /// </summary>
-        /// <param name="objectInRoom">The Game Object inside the room.</param>
-        /// <returns>The Room.</returns>
+        /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
+        /// <returns>The <see cref="Room"/> that the <see cref="GameObject"/> is located inside.</returns>
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
@@ -222,9 +222,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Shows a Hint to all players.
+        /// Shows a hint to all players.
         /// </summary>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
         public static void ShowHint(string message, float duration)
         {
@@ -250,7 +250,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Starts the light containment decontamination process.
+        /// Starts the light containment zone decontamination process.
         /// </summary>
         public static void StartDecontamination()
         {
@@ -259,11 +259,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Turns off all lights of the facility (except for the entrance zone).
+        /// Turns off all lights of the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        /// <param name="isHeavyContainmentZoneOnly">Indicates whether only the heavy containment zone lights have to be turned off or not.</param>
+        /// <param name="isHeavyContainmentZoneOnly">Indicates whether or not only lights in the heavy containment zone will be turned off.</param>
         public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
+
+        /// <summary>
+        /// Gets the camera with the given ID.
+        /// </summary>
+        /// <param name="cameraId">The camera id to be searched for.</param>
+        /// <returns>The <see cref="Camera079"/> with the given ID.</returns>
+        public static Camera079 GetCameraById(ushort cameraId)
+        {
+            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            {
+                if (camera.cameraId == cameraId)
+                    return camera;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Clears the lazy loading game object cache.
