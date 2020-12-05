@@ -16,7 +16,6 @@ namespace Exiled.Events.Patches.Events.Map
 
     using CustomPlayerEffects;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -30,6 +29,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+#pragma warning disable SA1123 // Do not place regions within elements
+
     /// <summary>
     /// Patches <see cref="FragGrenade.ServersideExplosion()"/>.
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
@@ -41,7 +42,9 @@ namespace Exiled.Events.Patches.Events.Map
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            /*// Declare Dictionary<Player, float> local variable.
+            #region Locals
+
+            // Declare Dictionary<Player, float> local variable.
             var players = generator.DeclareLocal(typeof(Dictionary<Player, float>));
 
             // Declare Dictionary<Player, float>.Enumerator local variable.
@@ -50,6 +53,10 @@ namespace Exiled.Events.Patches.Events.Map
             // Declare KeyValuePair<Player, float> local variable.
             var playerKeyValuePair = generator.DeclareLocal(typeof(KeyValuePair<Player, float>));
 
+            #endregion
+
+            #region Labels
+
             // Define the return label.
             var returnLabel = generator.DefineLabel();
 
@@ -57,14 +64,16 @@ namespace Exiled.Events.Patches.Events.Map
             var foreachFirstLabel = generator.DefineLabel();
             var foreachSecondLabel = generator.DefineLabel();
 
-            // var players = Dictionary<Player, float>();
+            #endregion
+
+            // var players = new Dictionary<Player, float>();
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(Dictionary<Player, float>))[0]),
                 new CodeInstruction(OpCodes.Stloc_S, players.LocalIndex),
             });
 
-            ////////// ENABLE EFFECTS INSTRUCTIONS //////////
+            #region ENABLE EFFECTS INSTRUCTIONS
 
             var startOffset = -1;
             var finishOffset = 0;
@@ -88,7 +97,9 @@ namespace Exiled.Events.Patches.Events.Map
             var oldForeachFirstLabel = enableEffectsInstructions[3].operand;
             enableEffectsInstructions[3].operand = foreachFirstLabel;
 
-            /////////////// HURT INSTRUCTIONS ///////////////
+            #endregion
+
+            #region HURT INSTRUCTIONS
 
             startOffset = 2;
             finishOffset = 1;
@@ -112,13 +123,14 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(firstIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, 11),
+                new CodeInstruction(OpCodes.Ldloca_S, 11),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldloc_S, 13),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.Add), new[] { typeof(Player), typeof(float) })),
             });
 
-            ///////////////////////////////////////////////
+            #endregion
 
             // Get the index of the penultimate instruction;
             var index = newInstructions.Count - 2;
@@ -172,7 +184,7 @@ namespace Exiled.Events.Patches.Events.Map
             //
             // damage = playerKeyValuePair.Value;
             // playerStats = playerKeyValuePair.Key.ReferenceHub.playerStats;
-            // gameObject = playerKeyValuePair.Key.ReferenceHub.gameObject;
+            // keyValuePair = playerKeyValuePair.Key.ReferenceHub.gameObject;
             var foreachBody = new[]
             {
                 new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
@@ -182,9 +194,11 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats))),
                 new CodeInstruction(OpCodes.Stloc_S, 12),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(KeyValuePair<GameObject, ReferenceHub>))),
                 new CodeInstruction(OpCodes.Stloc_S, 11),
             };
 
@@ -215,7 +229,28 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the return label to the penultimate instruction.
-            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);*/
+            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
+
+            // We do that to prevent doors and glass being broken if the event wasn't allowed.
+            // Refer to #290 PR.
+            var physicsOverlapLoopStart = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Br);
+            var physicsOverlapLoopEnd = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Blt
+            && ci.operand is Label l
+            && newInstructions[physicsOverlapLoopStart + 1].labels.Contains(l));
+
+            var physicsOverlapLoop = newInstructions.GetRange(
+                physicsOverlapLoopStart,
+                physicsOverlapLoopEnd);
+
+            newInstructions.RemoveRange(physicsOverlapLoopStart, physicsOverlapLoopEnd - physicsOverlapLoopStart + 1);
+
+            // Find the index of the ExplodingGrenadeEventArgs::IsAllowed call we inserted.
+            var foreachStartIndex = newInstructions.FindIndex(ci =>
+            ci.opcode == OpCodes.Callvirt
+            && ci.operand is MethodInfo v
+            && v == PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))) + 2;
+
+            newInstructions.InsertRange(foreachStartIndex, physicsOverlapLoop);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

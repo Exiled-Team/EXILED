@@ -12,6 +12,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     /// <summary>
@@ -34,10 +36,19 @@ namespace Exiled.Events.EventArgs
             IsFrag = isFrag;
             Grenade = grenade;
             IsAllowed = isAllowed;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+            Targets = ListPool<Player>.Shared.Rent(TargetToDamages.Keys);
         }
 
         /// <summary>
-        /// Gets the player who threw the grenade.
+        /// Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
+        /// </summary>
+        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(Targets);
+#pragma warning restore CS0618 // Type or member is obsolete
+
+        /// <summary>
+        /// Gets the player who thrown the grenade.
         /// </summary>
         public Player Thrower { get; }
 
@@ -50,7 +61,7 @@ namespace Exiled.Events.EventArgs
         /// Gets the players who could be affected by the grenade, if any.
         /// </summary>
         [Obsolete("It will be changed to IEnumerable<Player>")]
-        public List<Player> Targets => TargetToDamages.Keys.ToList();
+        public List<Player> Targets { get; }
 
         /// <summary>
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
