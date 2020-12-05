@@ -27,6 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, Lift lift, bool isAllowed = true)
         {
+            Lift = lift;
             Status = lift.status;
             Player = player;
             Elevator = elevator;
@@ -45,6 +46,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the <see cref="Lift.Elevator"/> instance.
         /// </summary>
         public Lift.Elevator Elevator { get; }
+
+        /// <summary>
+        /// Gets the <see cref="global::Lift"/> instance.
+        /// </summary>
+        public Lift Lift { get; }
 
         /// <summary>
         /// Gets the <see cref="Lift"/> current <see cref="Lift.Status"/>.
