@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     /// <summary>
@@ -30,7 +31,9 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Elevator = elevator;
             IsAllowed = isAllowed;
-            Type = GetElevatorType(lift.elevatorName);
+#pragma warning disable CS0618 // Type or member is obsolete
+            Type = lift.Type();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -51,54 +54,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the <see cref="ElevatorType"/>.
         /// </summary>
+        [Obsolete("Use Lift.Type() extension method instead.")]
         public ElevatorType Type { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
-
-        private static ElevatorType GetElevatorType(string name)
-        {
-            switch (name)
-            {
-                case "":
-                {
-                    return ElevatorType.Nuke;
-                }
-
-                case "ElA":
-                case "ElA2":
-                {
-                    return ElevatorType.LczA;
-                }
-
-                case "ElB":
-                case "ElB2":
-                {
-                    return ElevatorType.LczB;
-                }
-
-                case "GateA":
-                {
-                    return ElevatorType.GateA;
-                }
-
-                case "GateB":
-                {
-                    return ElevatorType.GateB;
-                }
-
-                case "SCP-049":
-                {
-                    return ElevatorType.Scp049;
-                }
-
-                default:
-                {
-                    return ElevatorType.Unknown;
-                }
-            }
-        }
     }
 }

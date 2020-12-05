@@ -33,7 +33,7 @@ namespace Exiled.API.Enums
         Nuke,
 
         /// <summary>
-        /// Heavy Containment Zone SCP 049 elevator.
+        /// Heavy Containment Zone SCP-049 elevator.
         /// </summary>
         Scp049,
 

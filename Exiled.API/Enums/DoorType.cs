@@ -198,7 +198,7 @@ namespace Exiled.API.Enums
         NukeSurface,
 
         /// <summary>
-        /// Represents the PrisonDoor door.
+        /// Represents any of the Class-D cell doors.
         /// </summary>
         PrisonDoor,
 
