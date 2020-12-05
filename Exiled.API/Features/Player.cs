@@ -415,6 +415,22 @@ namespace Exiled.API.Features
         public bool IsDead => Team == Team.RIP;
 
         /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
+        /// Equivalent to checking the player's <see cref="Team"/>.
+        /// </summary>
+        public bool IsNTF => Team == Team.MTF;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP rank.
+        /// </summary>
+        public bool IsScp => Team == Team.SCP;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
+        /// </summary>
+        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.MTF || Team == Team.RSC;
+
+        /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
         /// Only applies if the player is SCP-079.
         /// </summary>
@@ -423,12 +439,6 @@ namespace Exiled.API.Features
             get => ReferenceHub.scp079PlayerScript.currentCamera;
             set => SetCamera(value.cameraId);
         }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
-        /// Equivalent to checking the player's <see cref="Team"/>.
-        /// </summary>
-        public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
