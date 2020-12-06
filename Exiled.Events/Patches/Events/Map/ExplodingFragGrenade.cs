@@ -184,21 +184,24 @@ namespace Exiled.Events.Patches.Events.Map
             //
             // damage = playerKeyValuePair.Value;
             // playerStats = playerKeyValuePair.Key.ReferenceHub.playerStats;
-            // keyValuePair = playerKeyValuePair.Key.ReferenceHub.gameObject;
+            // keyValuePair = new KeyValuePair<GameObject, ReferenceHub>(playerKeyValuePair.Key.ReferenceHub.gameObject, playerKeyValuePair.Key.ReferenceHub);
             var foreachBody = new[]
             {
                 new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
                 new CodeInstruction(OpCodes.Stloc_S, 13),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats))),
                 new CodeInstruction(OpCodes.Stloc_S, 12),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(KeyValuePair<GameObject, ReferenceHub>))),
+                new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                new CodeInstruction(OpCodes.Newobj, typeof(KeyValuePair<GameObject, ReferenceHub>).GetConstructor(new[] { typeof(GameObject), typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Stloc_S, 11),
             };
 
@@ -237,12 +240,16 @@ namespace Exiled.Events.Patches.Events.Map
             var physicsOverlapLoopEnd = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Blt
             && ci.operand is Label l
             && newInstructions[physicsOverlapLoopStart + 1].labels.Contains(l));
+            var physicsOverlapLoopCount = physicsOverlapLoopEnd - physicsOverlapLoopStart + 1;
+
+            // Also take 'LDC.I4.0' & 'STLOC.S 4'
+            physicsOverlapLoopStart -= 2;
 
             var physicsOverlapLoop = newInstructions.GetRange(
                 physicsOverlapLoopStart,
-                physicsOverlapLoopEnd);
+                physicsOverlapLoopCount);
 
-            newInstructions.RemoveRange(physicsOverlapLoopStart, physicsOverlapLoopEnd - physicsOverlapLoopStart + 1);
+            newInstructions.RemoveRange(physicsOverlapLoopStart, physicsOverlapLoopCount);
 
             // Find the index of the ExplodingGrenadeEventArgs::IsAllowed call we inserted.
             var foreachStartIndex = newInstructions.FindIndex(ci =>
