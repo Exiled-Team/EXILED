@@ -240,10 +240,11 @@ namespace Exiled.Events.Patches.Events.Map
             var physicsOverlapLoopEnd = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Blt
             && ci.operand is Label l
             && newInstructions[physicsOverlapLoopStart + 1].labels.Contains(l));
-            var physicsOverlapLoopCount = physicsOverlapLoopEnd - physicsOverlapLoopStart + 1;
 
             // Also take 'LDC.I4.0' & 'STLOC.S 4'
             physicsOverlapLoopStart -= 2;
+
+            var physicsOverlapLoopCount = physicsOverlapLoopEnd - physicsOverlapLoopStart + 1;
 
             var physicsOverlapLoop = newInstructions.GetRange(
                 physicsOverlapLoopStart,
