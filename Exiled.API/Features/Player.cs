@@ -1222,7 +1222,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns a list of active status effects on the player.
+        /// Gets an array of active status effects on the player.
         /// </summary>
         /// <returns>A <see cref="PlayerEffect"/> array indicating active status effects.</returns>
         public PlayerEffect[] GetActiveEffects()
@@ -1240,11 +1240,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Returns a <see cref="bool"/> describing whether or not the given effect is currently enabled.
+        /// Gets a <see cref="bool"/> describing whether or not the given effect is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
         /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
-        public bool EffectActive<T>()
+        public bool GetEffectActive<T>()
             where T : PlayerEffect
         {
             if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
@@ -1310,6 +1310,22 @@ namespace Exiled.API.Features
             }
 
             return flag;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="byte"/> indicating the intensity of the given effect.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <returns>The intensity of the effect, or null if the effect is invalid.</returns>
+        public byte? GetEffectIntensity<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+            {
+                return playerEffect.Intensity;
+            }
+
+            return null;
         }
 
         /// <summary>
