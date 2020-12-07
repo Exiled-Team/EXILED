@@ -1268,7 +1268,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Disables a status effect on this player.
         /// </summary>
-        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disale.</typeparam>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disable.</typeparam>
         public void DisableEffect<T>()
             where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
 
