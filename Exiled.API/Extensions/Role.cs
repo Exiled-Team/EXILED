@@ -23,6 +23,12 @@ namespace Exiled.API.Extensions
         public static Color GetColor(this RoleType role) => role == RoleType.None ? Color.white : CharacterClassManager._staticClasses.Get(role).classColor;
 
         /// <summary>
+        /// Check if the role is related to NTF.
+        /// </summary>
+        public static bool isNTF(this RoleType roleType) => roleType == RoleType.NtfCadet || roleType == RoleType.NtfLieutenant || roleType == RoleType.NtfCommander || roleType == RoleType.NtfScientist || roleType == RoleType.FacilityGuard;
+        
+        
+        /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
         /// </summary>
         /// <param name="role">The <see cref="RoleType"/> to check the side of.</param>
