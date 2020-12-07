@@ -1316,7 +1316,7 @@ namespace Exiled.API.Features
         /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
-        /// <returns>The intensity of the effect, or null if the effect is invalid.</returns>
+        /// <returns>The intensity of the effect.</returns>
         public byte? GetEffectIntensity<T>()
             where T : PlayerEffect
         {
