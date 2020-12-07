@@ -54,6 +54,26 @@ namespace Exiled.API.Extensions
                     return Side.None;
             }
         }
+        
+        /// <summary>
+        /// Check if the Role is a NTF Role.
+        /// </summary>
+        /// <param name="roleType">The Role.</param>
+        public static bool isNTF(this Roletype roleType)
+        {
+         switch(roleType)
+         {
+                case RoleType.FacilityGuard:
+                case RoleType.NtfCadet:
+                case RoleType.NtfLieutenant:
+                case RoleType.NtfCommander:
+                case RoleType.NtfScientist:
+                        return true;
+                default:
+                        return false;
+         }
+                 
+        }
 
         /// <summary>
         /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
