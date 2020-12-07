@@ -47,7 +47,9 @@ namespace Exiled.Events.EventArgs
         public float APCost { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can switch cameras. Will default to false if SCP-079 does not have enough mana to switch.
+        /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
+        /// Defaults to a value describing whether or not SCP-079 has enough AP to switch.
+        /// Can be set to true to allow a switch regardless of SCP-079's AP amount.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

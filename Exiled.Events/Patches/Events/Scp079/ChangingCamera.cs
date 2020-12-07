@@ -38,14 +38,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                     return false;
                 }
 
-                Camera079 camera = null;
-                foreach (Camera079 camera2 in Scp079PlayerScript.allCameras)
-                {
-                    if (camera2.cameraId == cameraId)
-                    {
-                        camera = camera2;
-                    }
-                }
+                Camera079 camera = API.Features.Map.GetCameraById(cameraId);
 
                 if (camera == null)
                 {
@@ -59,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 if (ev.IsAllowed)
                 {
                     __instance.RpcSwitchCamera(ev.Camera.cameraId, lookatRotation);
-                    __instance.Mana -= ev.APCost;
+                    __instance.Mana = Mathf.Clamp(__instance.Mana - ev.APCost, 0, __instance.maxMana);
                     __instance.currentCamera = ev.Camera;
                 }
                 else if (ev.APCost > __instance.curMana)
