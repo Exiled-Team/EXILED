@@ -1240,7 +1240,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="bool"/> describing whether or not the given effect is currently enabled.
+        /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
         /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
@@ -1254,7 +1254,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        ///  Disables all status affects on the player.
+        ///  Disables all currently active <see cref="PlayerEffect">status effects</see>.
         /// </summary>
         public void DisableAllEffects()
         {
@@ -1266,14 +1266,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Disables a status effect on this player.
+        /// Disables a specific <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to disable.</typeparam>
         public void DisableEffect<T>()
             where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
 
         /// <summary>
-        /// Enables a status effect on this player.
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
         /// <param name="duration">The amount of time the effect will be active for.</param>
@@ -1282,7 +1282,7 @@ namespace Exiled.API.Features
             where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
 
         /// <summary>
-        /// Enables a status effect on this player.
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
@@ -1291,7 +1291,7 @@ namespace Exiled.API.Features
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
 
         /// <summary>
-        /// Enables a list of effects.
+        /// Enables an array of <see cref="PlayerEffect">status effects</see>.
         /// </summary>
         /// <param name="effects">An array of <see cref="PlayerEffect"/>s by name.</param>
         /// <param name="duration">The duration to apply to all of the effects.</param>
@@ -1313,7 +1313,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="byte"/> indicating the intensity of the given effect.
+        /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
         /// <returns>The intensity of the effect, or null if the effect is invalid.</returns>
@@ -1329,7 +1329,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Changes the intensity of an effect.
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to change the intensity of.</typeparam>
         /// <param name="intensity">The intensity of the effect.</param>
@@ -1337,7 +1337,7 @@ namespace Exiled.API.Features
             where T : PlayerEffect => ReferenceHub.playerEffectsController.ChangeEffectIntensity<T>(intensity);
 
         /// <summary>
-        /// Changes the intensity of an effect.
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="intensity">The intensity of the effect.</param>
