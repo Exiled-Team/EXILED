@@ -28,7 +28,6 @@ namespace Exiled.API.Extensions
         /// <param name="roleType">The <see cref="RoleType"/> checks if it is a NTF role.</param>
         /// <returns>The <see cref="bool"/>.</returns>
         public static bool IsNTF(this RoleType roleType) => roleType == RoleType.NtfCadet || roleType == RoleType.NtfLieutenant || roleType == RoleType.NtfCommander || roleType == RoleType.NtfScientist || roleType == RoleType.FacilityGuard;
-        
         /// <summary>
         /// Get a <see cref="RoleType">role's</see> <see cref="Side"/>.
         /// </summary>
