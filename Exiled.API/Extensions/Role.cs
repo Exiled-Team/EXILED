@@ -54,6 +54,8 @@ namespace Exiled.API.Extensions
                     return Side.None;
             }
         }
+        
+        public static bool isNTF(this RoleType roleType) => roleType == RoleType.NtfCadet || roleType == RoleType.NtfLieutenant || roleType == RoleType.NtfCommander || roleType == RoleType.NtfScientist || roleType == RoleType.FacilityGuard;
 
         /// <summary>
         /// Get the <see cref="Team"/> of the given <see cref="RoleType"/>.
