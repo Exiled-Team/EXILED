@@ -418,6 +418,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
+        [Obsolete("has been moved to the Role class.")]
         public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
