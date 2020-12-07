@@ -29,7 +29,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="ragdoll">The <see cref="Ragdoll"/> to check the role of.</param>
         /// <returns>The <see cref="RoleType"/> of the ragdoll.</returns>
-        public static RoleType Role(this Ragdoll ragdoll) =>
+        public static RoleType GetRole(this Ragdoll ragdoll) =>
             CharacterClassManager._staticClasses.FirstOrDefault(role => role.fullName == ragdoll.owner.FullName).roleId;
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="ragdoll">The <see cref="Ragdoll"/> to get the owner of.</param>
         /// <returns>The owner of the ragdoll, or null if the ragdoll does not have an owner.</returns>
-        public static Player Owner(this Ragdoll ragdoll) =>
+        public static Player GetOwner(this Ragdoll ragdoll) =>
             Player.Get(ragdoll.owner.PlayerId);
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="ragdoll">The <see cref="Ragdoll"/> to get the killer of.</param>
         /// <returns>The killing <see cref="Player"/>, or null if the killer is not a player.</returns>
-        public static Player Killer(this Ragdoll ragdoll) =>
+        public static Player GetKiller(this Ragdoll ragdoll) =>
             ragdoll.owner.DeathCause.IsPlayer ? Player.Get(ragdoll.owner.DeathCause.RHub) : null;
     }
 }
