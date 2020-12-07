@@ -1222,12 +1222,33 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns a list of active status effects on the player.
+        /// </summary>
+        /// <returns>A <see cref="PlayerEffect"/> array indicating active status effects.</returns>
+        public PlayerEffect[] GetActiveEffects()
+        {
+            PlayerEffect[] arr = new PlayerEffect[] { };
+            foreach (KeyValuePair<Type, PlayerEffect> data in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                if (data.Value.Enabled)
+                {
+                    arr.Append(data.Value);
+                }
+            }
+
+            return arr;
+        }
+
+        /// <summary>
         ///  Disables all status affects on the player.
         /// </summary>
         public void DisableAllEffects()
         {
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
-                effect.Value.ServerDisable();
+            {
+                if (effect.Value.Enabled)
+                    effect.Value.ServerDisable();
+            }
         }
 
         /// <summary>
@@ -1254,6 +1275,45 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a list of effects.
+        /// </summary>
+        /// <param name="effects">An array of <see cref="PlayerEffect"/>s by name.</param>
+        /// <param name="duration">The duration to apply to all of the effects.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <returns>A <see cref="bool"/> indicating whether or not all of the effects were applied successfully.</returns>
+        public bool EnableEffects(string[] effects, float duration = 0f, bool addDurationIfActive = false)
+        {
+            bool flag = true;
+            foreach (string str in effects)
+            {
+                bool success = ReferenceHub.playerEffectsController.EnableByString(str, duration, addDurationIfActive);
+                if (!success)
+                {
+                    flag = false;
+                }
+            }
+
+            return flag;
+        }
+
+        /// <summary>
+        /// Changes the intensity of an effect.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to change the intensity of.</typeparam>
+        /// <param name="intensity">The intensity of the effect.</param>
+        public void ChangeEffectIntensity<T>(byte intensity)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.ChangeEffectIntensity<T>(intensity);
+
+        /// <summary>
+        /// Changes the intensity of an effect.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect.</param>
+        /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
+        public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) =>
+            ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
         /// <summary>
         /// Removes the player's hands.
