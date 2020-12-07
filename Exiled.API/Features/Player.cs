@@ -359,11 +359,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player's role type is any NTF type <see cref="ReferenceHub"/>.
-        /// </summary>
-        public bool IsNTF => Team == Team.MTF;
-
-        /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
         /// </summary>
         public Side Side => Team.GetSide();
