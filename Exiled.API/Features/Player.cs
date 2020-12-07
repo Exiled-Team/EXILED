@@ -1240,6 +1240,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns a <see cref="bool"/> describing whether or not the given effect is currently enabled.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
+        public bool EffectActive<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+                return playerEffect.Enabled;
+
+            return false;
+        }
+
+        /// <summary>
         ///  Disables all status affects on the player.
         /// </summary>
         public void DisableAllEffects()
