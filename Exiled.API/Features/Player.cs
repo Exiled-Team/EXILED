@@ -1221,23 +1221,6 @@ namespace Exiled.API.Features
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
 
-        /// <summary>
-        /// Gets an array of active status effects on the player.
-        /// </summary>
-        /// <returns>A <see cref="PlayerEffect"/> array indicating active status effects.</returns>
-        public PlayerEffect[] GetActiveEffects()
-        {
-            PlayerEffect[] arr = new PlayerEffect[] { };
-            foreach (KeyValuePair<Type, PlayerEffect> data in ReferenceHub.playerEffectsController.AllEffects)
-            {
-                if (data.Value.Enabled)
-                {
-                    arr.Append(data.Value);
-                }
-            }
-
-            return arr;
-        }
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
@@ -1289,28 +1272,6 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
-
-        /// <summary>
-        /// Enables an array of <see cref="PlayerEffect">status effects</see>.
-        /// </summary>
-        /// <param name="effects">An array of <see cref="PlayerEffect"/>s by name.</param>
-        /// <param name="duration">The duration to apply to all of the effects.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
-        /// <returns>A <see cref="bool"/> indicating whether or not all of the effects were applied successfully.</returns>
-        public bool EnableEffects(string[] effects, float duration = 0f, bool addDurationIfActive = false)
-        {
-            bool flag = true;
-            foreach (string str in effects)
-            {
-                bool success = ReferenceHub.playerEffectsController.EnableByString(str, duration, addDurationIfActive);
-                if (!success)
-                {
-                    flag = false;
-                }
-            }
-
-            return flag;
-        }
 
         /// <summary>
         /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.
