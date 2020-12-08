@@ -1221,7 +1221,6 @@ namespace Exiled.API.Features
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
 
-
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
