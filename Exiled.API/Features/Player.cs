@@ -1222,23 +1222,40 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        ///  Disables all status affects on the player.
+        /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
+        public bool GetEffectActive<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+                return playerEffect.Enabled;
+
+            return false;
+        }
+
+        /// <summary>
+        ///  Disables all currently active <see cref="PlayerEffect">status effects</see>.
         /// </summary>
         public void DisableAllEffects()
         {
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
-                effect.Value.ServerDisable();
+            {
+                if (effect.Value.Enabled)
+                    effect.Value.ServerDisable();
+            }
         }
 
         /// <summary>
-        /// Disables a status effect on this player.
+        /// Disables a specific <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
-        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disale.</typeparam>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disable.</typeparam>
         public void DisableEffect<T>()
             where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
 
         /// <summary>
-        /// Enables a status effect on this player.
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
         /// <param name="duration">The amount of time the effect will be active for.</param>
@@ -1247,13 +1264,47 @@ namespace Exiled.API.Features
             where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
 
         /// <summary>
-        /// Enables a status effect on this player.
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <exception cref="ArgumentException">Thrown if the given type is not a valid <see cref="PlayerEffect"/>.</exception>
+        /// <returns>The intensity of the effect.</returns>
+        public byte GetEffectIntensity<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+            {
+                return playerEffect.Intensity;
+            }
+
+            throw new ArgumentException("The given type is invalid.");
+        }
+
+        /// <summary>
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to change the intensity of.</typeparam>
+        /// <param name="intensity">The intensity of the effect.</param>
+        public void ChangeEffectIntensity<T>(byte intensity)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.ChangeEffectIntensity<T>(intensity);
+
+        /// <summary>
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect.</param>
+        /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
+        public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) =>
+            ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
         /// <summary>
         /// Removes the player's hands.
