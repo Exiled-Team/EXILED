@@ -241,7 +241,11 @@ namespace Exiled.API.Features
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
         }
-
+        /// <summary>
+        /// Data is a completly customizable string that allows people to easily get players with that certain data.
+        /// </summary>
+        public string data { get; set; }
+        
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
