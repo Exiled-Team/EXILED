@@ -12,7 +12,8 @@ namespace Exiled.API.Enums
     /// </summary>
     public enum CameraType
     {
-        // Light
+#pragma warning disable SA1124 // Do not use regions
+        #region Lcz
 
         /// <summary>
         /// Represents the camera inside the Class-D spawns.
@@ -113,8 +114,9 @@ namespace Exiled.API.Enums
         /// Represents the camera outside of the LCZ B checkpoint (in LCZ).
         /// </summary>
         HczBChkp = 16,
+        #endregion
 
-        // Heavy
+        #region Hcz
 
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in HCZ.
@@ -250,8 +252,9 @@ namespace Exiled.API.Enums
         /// Represents the camera facing toward the entrance zone checkpoint (in HCZ).
         /// </summary>
         ChkpEz = 99,
+        #endregion
 
-        // Entrance
+        #region Ez
 
         /// <summary>
         /// Represents the camera facing toward the heavy containment zone checkpoint (in EZ).
@@ -282,8 +285,9 @@ namespace Exiled.API.Enums
         /// Represents the camera inside of Gate B (entrance zone).
         /// </summary>
         GateBEntrance = 10,
+        #endregion
 
-        // Surface
+        #region Surface
 
         /// <summary>
         /// Represents the camera outside of the Gate A elevator (surface).
@@ -334,5 +338,6 @@ namespace Exiled.API.Enums
         /// Represents an unknown camera.
         /// </summary>
         Unknown = 0,
+        #endregion
     }
 }
