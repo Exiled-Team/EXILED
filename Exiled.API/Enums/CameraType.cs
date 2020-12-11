@@ -5,6 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+#pragma warning disable SA1124 // Do not use regions
 namespace Exiled.API.Enums
 {
     /// <summary>
@@ -16,8 +17,6 @@ namespace Exiled.API.Enums
         /// Represents an unknown camera.
         /// </summary>
         Unknown = 0,
-
-#pragma warning disable SA1124 // Do not use regions
         #region Lcz
 
         /// <summary>
