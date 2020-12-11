@@ -12,6 +12,11 @@ namespace Exiled.API.Enums
     /// </summary>
     public enum CameraType
     {
+        /// <summary>
+        /// Represents an unknown camera.
+        /// </summary>
+        Unknown = 0,
+
 #pragma warning disable SA1124 // Do not use regions
         #region Lcz
 
@@ -333,11 +338,6 @@ namespace Exiled.API.Enums
         /// Represents the camera above the Class-D and Scientist extraction point.
         /// </summary>
         EscapeInner = 31,
-
-        /// <summary>
-        /// Represents an unknown camera.
-        /// </summary>
-        Unknown = 0,
         #endregion
     }
 }
