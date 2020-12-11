@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player's intercom mute status is changed.
+    /// Contains all informations before a SCP-079 changes the current camera.
     /// </summary>
     public class ChangingCameraEventArgs : EventArgs
     {
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's being intercom muted/unmuted.
+        /// Gets the player who is SCP-079.
         /// </summary>
         public Player Player { get; }
 
