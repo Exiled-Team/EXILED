@@ -87,7 +87,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera outside SCP-914.
         /// </summary>
-        Lcz914Outside = 35,
+        Lcz914Hallway = 35,
 
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in LCZ.
@@ -155,12 +155,12 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is in front of the elevator.
         /// </summary>
-        Hcz049Primary = 67,
+        Hcz049Elevator = 67,
 
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is not in front of the elevator.
         /// </summary>
-        Hcz049Secondary = 69,
+        Hcz049Hall = 69,
 
         /// <summary>
         /// Represents the camera that faces toward the 049_ARMORY door.
@@ -195,22 +195,22 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera outside of the alpha warhead <see cref="Lift"/> in HCZ.
         /// </summary>
-        HczNukeElevator = 90,
+        HczWarheadHall = 90,
 
         /// <summary>
         /// Represents the camera inside of the alpha warhead room.
         /// </summary>
-        HczNukeRoom = 89,
+        HczWarheadRoom = 89,
 
         /// <summary>
         /// Represents the camera above the alpha warhead switch.
         /// </summary>
-        HczNukeSwitch = 87,
+        HczWarheadSwitch = 87,
 
         /// <summary>
         /// Represents the camera inside the alpha warhead armory.
         /// </summary>
-        HczNukeArmory = 88,
+        HczWarheadArmory = 88,
 
         /// <summary>
         /// Represents the camera inside SCP-939's containment room.
@@ -223,17 +223,17 @@ namespace Exiled.API.Enums
         HczArmory = 38,
 
         /// <summary>
-        /// Represents the camera above the door leading to SCP-106's room.
+        /// Represents the SCP-106 MAIN CAM camera (above the door leading to SCP-106's room).
         /// </summary>
         Hcz106First = 46,
 
         /// <summary>
-        /// Represents the camera outside the 106_PRIMARY door.
+        /// Represents the SCP-106 SECOND camera (outside the 106_PRIMARY door).
         /// </summary>
         Hcz106Second = 43,
 
         /// <summary>
-        /// Represents the camera above the 106_PRIMARY door (inside the containment room).
+        /// Represents the 106 ENT A camera (above the 106_PRIMARY door inside the containment room).
         /// </summary>
         Hcz106Primary = 45,
 
@@ -301,17 +301,17 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera above the Gate A balcony.
         /// </summary>
-        GateABridge = 32,
+        Bridge = 32,
 
         /// <summary>
         /// Represents the camera on the tower at Gate A.
         /// </summary>
-        GateATower = 28,
+        Tower = 28,
 
         /// <summary>
         /// Represents the camera facing the NUKE_SURFACE door.
         /// </summary>
-        NukeSurface = 29,
+        Backstreet = 29,
 
         /// <summary>
         /// Represents the camera facing the SURFACE_GATE door (Gate B side)
@@ -321,7 +321,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera on the Gate B walkway.
         /// </summary>
-        GateB = 33,
+        Streetcam = 33,
 
         /// <summary>
         /// Represents the HELIPAD camera.
@@ -329,14 +329,14 @@ namespace Exiled.API.Enums
         Helipad = 26,
 
         /// <summary>
-        /// Represents the camera facing toward the ESCAPE door.
+        /// Represents the ESCAPE ZONE camera (facing toward the ESCAPE door).
         /// </summary>
-        EscapeOutside = 25,
+        EscapeZone = 25,
 
         /// <summary>
-        /// Represents the camera above the Class-D and Scientist extraction point.
+        /// Represents the EXIT camera (above the Class-D and Scientist extraction point).
         /// </summary>
-        EscapeInner = 31,
+        Exit = 31,
         #endregion
     }
 }
