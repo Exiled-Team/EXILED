@@ -28,7 +28,7 @@ namespace Exiled.API.Features
     {
         private static readonly List<Room> RoomsValue = new List<Room>(250);
         private static readonly List<Door> DoorsValue = new List<Door>(250);
-        private static readonly List<Camera079> CamerasValue = new List<Camera079>(150);
+        private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
         private static readonly List<Lift> LiftsValue = new List<Lift>(10);
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
