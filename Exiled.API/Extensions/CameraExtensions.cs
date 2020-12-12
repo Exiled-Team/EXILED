@@ -14,25 +14,26 @@ namespace Exiled.API.Extensions
 
     /// <summary>
     /// Contains an extension method to get <see cref="CameraType"/> from <see cref="Camera079"/>, as well as additional methods to get the <see cref="Room"/> and <see cref="ZoneType"/> of a camera.
-    /// Internal class <see cref="RegisterCameraTypesOnLevelLoad"/> to cache the <see cref="CameraType"/> on level load.
+    /// Internal class <see cref="RegisterCameraInfoOnLevelLoad"/> to cache the <see cref="CameraType"/> and <see cref="Room"/> on level load.
     /// </summary>
     public static class CameraExtensions
     {
         private static readonly Dictionary<int, CameraType> OrderedCameraTypes = new Dictionary<int, CameraType>();
+        private static readonly Dictionary<int, Room> OrderedCameraRooms = new Dictionary<int, Room>();
 
         /// <summary>
-        /// Returns the <see cref="Room"/> the camera is in.
+        /// Returns the <see cref="Room"/> the camera is in, or null if not found.
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> to check.</param>
-        /// <returns>A <see cref="Room"/>.</returns>
-        public static Room GetRoom(this Camera079 camera) => Map.FindParentRoom(camera.gameObject);
+        /// <returns>A <see cref="Room"/>, or null if not found.</returns>
+        public static Room GetRoom(this Camera079 camera) => OrderedCameraRooms.TryGetValue(camera.GetInstanceID(), out Room room) ? room : null;
 
         /// <summary>
         /// Gets the <see cref="CameraType"/>.
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> to check.</param>
         /// <returns>The <see cref="CameraType"/>.</returns>
-        public static CameraType Type(this Camera079 camera) => OrderedCameraTypes.TryGetValue(camera.GetInstanceID(), out var cameraType) ? cameraType : CameraType.Unknown;
+        public static CameraType Type(this Camera079 camera) => OrderedCameraTypes.TryGetValue(camera.GetInstanceID(), out CameraType cameraType) ? cameraType : CameraType.Unknown;
 
         /// <summary>
         /// Returns the <see cref="ZoneType"/> the camera is in.
@@ -42,9 +43,9 @@ namespace Exiled.API.Extensions
         public static ZoneType GetZone(this Camera079 camera) => GetRoom(camera).Zone;
 
         /// <summary>
-        /// Gets all the <see cref="CameraType"/> values for for the <see cref="Camera079"/> instances using <see cref="Camera079.cameraId"/> and <see cref="UnityEngine.GameObject"/> name.
+        /// Gets all the <see cref="CameraType"/> and <see cref="Room"/> values for for the <see cref="Camera079"/> instances using <see cref="Camera079.cameraId"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
-        internal static void RegisterCameraTypesOnLevelLoad()
+        internal static void RegisterCameraInfoOnLevelLoad()
         {
             OrderedCameraTypes.Clear();
 
@@ -60,8 +61,10 @@ namespace Exiled.API.Extensions
                 var cameraID = camera.GetInstanceID();
 
                 var cameraType = (CameraType)cameraID;
+                var room = Map.FindParentRoom(camera.gameObject);
 
                 OrderedCameraTypes.Add(cameraID, cameraType);
+                OrderedCameraRooms.Add(cameraID, room);
             }
         }
     }

@@ -128,7 +128,7 @@ namespace Exiled.API.Features
                 if (CamerasValue.Count == 0)
                 {
                     CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
-                    CameraTypeExtension.RegisterCameraTypesOnLevelLoad();
+                    CameraExtensions.RegisterCameraInfoOnLevelLoad();
                 }
 
                 return ReadOnlyCamerasValue;
