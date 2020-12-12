@@ -80,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed && !ev.Door.locked)
+                if (ev.IsAllowed && (!ev.Door.locked || __instance._sr.BypassMode))
                     ev.Door.ChangeState(__instance._sr.BypassMode);
                 else
                     __instance.RpcDenied(doorId);
