@@ -7,16 +7,11 @@
 
 namespace Exiled.API.Extensions
 {
-    using System;
-    using System.Linq;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
-    using UnityEngine;
-
     /// <summary>
-    /// A set of extensions for <see cref="ItemType"/>.
+    /// A set of extensions for <see cref="Camera079"/>.
     /// </summary>
     public static class CameraExtensions
     {
