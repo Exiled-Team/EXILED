@@ -32,22 +32,22 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera outside of SCP-173's containment chamber.
         /// </summary>
-        Scp173Hallway = 11,
+        Lcz173Hallway = 11,
 
         /// <summary>
         /// Represents the camera outside the 173_ARMORY door.
         /// </summary>
-        Scp173Armory = 12,
+        Lcz173Armory = 12,
 
         /// <summary>
         /// Represents the camera inside of SCP-173's containment chamber.
         /// </summary>
-        Scp173Containment = 13,
+        Lcz173Containment = 13,
 
         /// <summary>
         /// Represents the camera above the 173_BOTTOM door.
         /// </summary>
-        Scp173Bottom = 14,
+        Lcz173Bottom = 14,
 
         /// <summary>
         /// Represents the camera outside of SCP-012's room
@@ -82,12 +82,12 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera inside SCP-914.
         /// </summary>
-        Scp914 = 36,
+        Lcz914 = 36,
 
         /// <summary>
         /// Represents the camera outside SCP-914.
         /// </summary>
-        Scp914Outside = 35,
+        Lcz914Outside = 35,
 
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in LCZ.
@@ -135,87 +135,87 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the pre-hallway in front of 079_FIRST door.
         /// </summary>
-        Scp079PreHallway = 77,
+        Hcz079PreHallway = 77,
 
         /// <summary>
         /// Represents the camera in the hallway between the 079_FIRST and 079_SECOND doors.
         /// </summary>
-        Scp079Hallway = 78,
+        Hcz079Hallway = 78,
 
         /// <summary>
         /// Represents the camera inside SCP-079's containment chamber.
         /// </summary>
-        Scp079Interior = 198,
+        Hcz079Interior = 198,
 
         /// <summary>
         /// Represents the camera outside of SCP-096's containment chamber.
         /// </summary>
-        Scp096 = 61,
+        Hcz096 = 61,
 
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is in front of the elevator.
         /// </summary>
-        Scp049Primary = 67,
+        Hcz049Primary = 67,
 
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is not in front of the elevator.
         /// </summary>
-        Scp049Secondary = 69,
+        Hcz049Secondary = 69,
 
         /// <summary>
         /// Represents the camera that faces toward the 049_ARMORY door.
         /// </summary>
-        Scp049Armory = 64,
+        Hcz049Armory = 64,
 
         /// <summary>
         /// Represents the hallway camera in the server room.
         /// </summary>
-        ServerHall = 83,
+        HczServerHall = 83,
 
         /// <summary>
         /// Represents the camera on the bottom level of the server room.
         /// </summary>
-        ServerBottom = 84,
+        HczServerBottom = 84,
 
         /// <summary>
         /// Represents the camera on the top level of the server room.
         /// </summary>
-        ServerTop = 85,
+        HczServerTop = 85,
 
         /// <summary>
         /// Represents the camera in the HID hallway.
         /// </summary>
-        HIDHall = 71,
+        HczHidHall = 71,
 
         /// <summary>
         /// Represents the camera inside the Micro-HID room.
         /// </summary>
-        HIDInterior = 72,
+        HczHidInterior = 72,
 
         /// <summary>
         /// Represents the camera outside of the alpha warhead <see cref="Lift"/> in HCZ.
         /// </summary>
-        NukeElevator = 90,
+        HczNukeElevator = 90,
 
         /// <summary>
         /// Represents the camera inside of the alpha warhead room.
         /// </summary>
-        NukeRoom = 89,
+        HczNukeRoom = 89,
 
         /// <summary>
         /// Represents the camera above the alpha warhead switch.
         /// </summary>
-        NukeSwitch = 87,
+        HczNukeSwitch = 87,
 
         /// <summary>
         /// Represents the camera inside the alpha warhead armory.
         /// </summary>
-        NukeArmory = 88,
+        HczNukeArmory = 88,
 
         /// <summary>
         /// Represents the camera inside SCP-939's containment room.
         /// </summary>
-        Scp939 = 79,
+        Hcz939 = 79,
 
         /// <summary>
         /// Represents the camera above the HCZ_ARMORY door.
@@ -225,37 +225,37 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera above the door leading to SCP-106's room.
         /// </summary>
-        Scp106First = 46,
+        Hcz106First = 46,
 
         /// <summary>
         /// Represents the camera outside the 106_PRIMARY door.
         /// </summary>
-        Scp106Second = 43,
+        Hcz106Second = 43,
 
         /// <summary>
         /// Represents the camera above the 106_PRIMARY door (inside the containment room).
         /// </summary>
-        Scp106Primary = 45,
+        Hcz106Primary = 45,
 
         /// <summary>
         /// Represents the camera above the 106_SECONDARY door (inside the containment room).
         /// </summary>
-        Scp106Secondary = 44,
+        Hcz106Secondary = 44,
 
         /// <summary>
         /// Represents the camera above the femur breaker.
         /// </summary>
-        Scp106Recontainer = 47,
+        Hcz106Recontainer = 47,
 
         /// <summary>
         /// Represents the camera facing toward the stairs in SCP-106's containment chamber.
         /// </summary>
-        Scp106Stairs = 48,
+        Hcz106Stairs = 48,
 
         /// <summary>
         /// Represents the camera facing toward the entrance zone checkpoint (in HCZ).
         /// </summary>
-        ChkpEz = 99,
+        HczChkpEz = 99,
         #endregion
 
         #region Ez
@@ -263,32 +263,32 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera facing toward the heavy containment zone checkpoint (in EZ).
         /// </summary>
-        ChkpHcz = 100,
+        EzChkpHcz = 100,
 
         /// <summary>
         /// Represents the camera outside the INTERCOM door.
         /// </summary>
-        IntercomHall = 50,
+        EzIntercomHall = 50,
 
         /// <summary>
         /// Represents the camera inside the INTERCOM door.
         /// </summary>
-        IntercomStairs = 52,
+        EzIntercomStairs = 52,
 
         /// <summary>
         /// Represents the camera facing the intercom.
         /// </summary>
-        IntercomInside = 49,
+        EzIntercomInterior = 49,
 
         /// <summary>
         /// Represents the camera inside of Gate A (entrance zone).
         /// </summary>
-        GateAEntrance = 62,
+        EzGateA = 62,
 
         /// <summary>
         /// Represents the camera inside of Gate B (entrance zone).
         /// </summary>
-        GateBEntrance = 10,
+        EzGateB = 10,
         #endregion
 
         #region Surface
@@ -301,7 +301,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera above the Gate A balcony.
         /// </summary>
-        GateAOutside = 32,
+        GateABridge = 32,
 
         /// <summary>
         /// Represents the camera on the tower at Gate A.
@@ -326,7 +326,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the HELIPAD camera.
         /// </summary>
-        GateBOutside = 26,
+        Helipad = 26,
 
         /// <summary>
         /// Represents the camera facing toward the ESCAPE door.
