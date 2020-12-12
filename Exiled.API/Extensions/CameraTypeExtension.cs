@@ -39,7 +39,7 @@ namespace Exiled.API.Extensions
             if (cameras == null)
                 return;
 
-            var cameraCount = cameras.Length;
+            var cameraCount = cameras.Count;
             for (int i = 0; i < cameraCount; i++)
             {
                 var camera = cameras[i];

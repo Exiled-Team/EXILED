@@ -51,11 +51,6 @@ namespace Exiled.API.Features
         public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
 
         /// <summary>
-        /// Gets all <see cref="Camera079"/> objects.
-        /// </summary>
-        public static Camera079[] Cameras => Scp079PlayerScript.allCameras;
-
-        /// <summary>
         /// Gets all <see cref="Room"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Room> Rooms
@@ -126,7 +121,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Camera079"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Camera079> CamerasList
+        public static ReadOnlyCollection<Camera079> Cameras
         {
             get
             {
