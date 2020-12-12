@@ -100,7 +100,7 @@ namespace Exiled.API.Enums
         LczBLight = 17,
 
         /// <summary>
-        /// Represents the camera outside of the HCZ A checkpoint (in LCZ).
+        /// Represents the camera facing the LCZ/HCZ A checkpoint, on the Light Containment side.
         /// </summary>
         LczAChkp = 74,
 
