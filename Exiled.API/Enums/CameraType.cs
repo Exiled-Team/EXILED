@@ -238,7 +238,7 @@ namespace Exiled.API.Enums
         Hcz106Primary = 45,
 
         /// <summary>
-        /// Represents the camera above the 106_SECONDARY door (inside the containment room).
+        /// Represents the 106 ENT B camera (above the 106_SECONDARY door inside the containment room).
         /// </summary>
         Hcz106Secondary = 44,
 
