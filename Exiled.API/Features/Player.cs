@@ -1220,156 +1220,6 @@ namespace Exiled.API.Features
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
-        
-        /// <summary>
-        /// Adds a effect via <see cref="EffectType"/>, making it easier and faster to get the <see cref="PlayerEffect">status effect</see>.
-        /// </summary>
-        /// <param name="effect">The <see cref="EffectType"/> to get the <see cref="PlayerEffect">status effect</see>.</param>
-        public void addEffect(EffectType effect, uint duration)
-        {
-            switch(effect)
-            {
-                case EffectType.Amnesia:
-                    ReferenceHub.playerEffectsController.EnableEffect<Amnesia>(duration);
-                    break;
-                case EffectType.Asphyxiated:
-                    ReferenceHub.playerEffectsController.EnableEffect<Asphyxiated>(duration);
-                    break;
-                case EffectType.Bleeding:
-                    ReferenceHub.playerEffectsController.EnableEffect<Bleeding>(duration);
-                    break;
-                case EffectType.Blinded:
-                    ReferenceHub.playerEffectsController.EnableEffect<Blinded>(duration);
-                    break;
-                case EffectType.Burned:
-                    ReferenceHub.playerEffectsController.EnableEffect<Burned>(duration);
-                    break;
-                case EffectType.Concussed:
-                    ReferenceHub.playerEffectsController.EnableEffect<Concussed>(duration);
-                    break;
-                case EffectType.Corroding:
-                    ReferenceHub.playerEffectsController.EnableEffect<Corroding>(duration);
-                    break;
-                case EffectType.Deafened:
-                    ReferenceHub.playerEffectsController.EnableEffect<Deafened>(duration);
-                    break;
-                case EffectType.Decontaminating:
-                    ReferenceHub.playerEffectsController.EnableEffect<Decontaminating>(duration);
-                    break;
-                case EffectType.Disabled:
-                    ReferenceHub.playerEffectsController.EnableEffect<Disabled>(duration);
-                    break;
-                case EffectType.Ensnared:
-                    ReferenceHub.playerEffectsController.EnableEffect<Ensnared>(duration);
-                    break;
-                case EffectType.Exhausted:
-                    ReferenceHub.playerEffectsController.EnableEffect<Exhausted>(duration);
-                    break;
-                case EffectType.Flashed:
-                    ReferenceHub.playerEffectsController.EnableEffect<Flashed>(duration);
-                    break;
-                case EffectType.Hemorrhage:
-                    ReferenceHub.playerEffectsController.EnableEffect<Hemorrhage>(duration);
-                    break;
-                case EffectType.Invigorated:
-                    ReferenceHub.playerEffectsController.EnableEffect<Invigorated>(duration);
-                    break;
-                case EffectType.Panic:
-                    ReferenceHub.playerEffectsController.EnableEffect<Panic>(duration);
-                    break;
-                case EffectType.Poisoned:
-                    ReferenceHub.playerEffectsController.EnableEffect<Poisoned>(duration);
-                    break;
-                case EffectType.Scp207:
-                    ReferenceHub.playerEffectsController.EnableEffect<Scp207>(duration);
-                    break;
-                case EffectType.Scp268:
-                    ReferenceHub.playerEffectsController.EnableEffect<Scp268>(duration);
-                    break;
-                case EffectType.SinkHole:
-                    ReferenceHub.playerEffectsController.EnableEffect<SinkHole>(duration);
-                    break;
-                case EffectType.Visuals939:
-                    ReferenceHub.playerEffectsController.EnableEffect<Visuals939>(duration);
-                    break;
-            }
-            
-        }
-        
-        /// <summary>
-        /// Removes a effect via <see cref="EffectType"/>, making it easier and faster to get the <see cref="PlayerEffect">status effect</see>.
-        /// </summary>
-        /// <param name="effect">The <see cref="EffectType"/> to get the <see cref="PlayerEffect">status effect</see>.</param>
-        public void removeEffect(EffectType effect)
-        {
-            switch (effect)
-            {
-                case EffectType.Amnesia:
-                    ReferenceHub.playerEffectsController.DisableEffect<Amnesia>();
-                    break;
-                case EffectType.Asphyxiated:
-                    ReferenceHub.playerEffectsController.DisableEffect<Asphyxiated>();
-                    break;
-                case EffectType.Bleeding:
-                    ReferenceHub.playerEffectsController.DisableEffect<Bleeding>();
-                    break;
-                case EffectType.Blinded:
-                    ReferenceHub.playerEffectsController.DisableEffect<Blinded>();
-                    break;
-                case EffectType.Burned:
-                    ReferenceHub.playerEffectsController.DisableEffect<Burned>();
-                    break;
-                case EffectType.Concussed:
-                    ReferenceHub.playerEffectsController.DisableEffect<Concussed>();
-                    break;
-                case EffectType.Corroding:
-                    ReferenceHub.playerEffectsController.DisableEffect<Corroding>();
-                    break;
-                case EffectType.Deafened:
-                    ReferenceHub.playerEffectsController.DisableEffect<Deafened>();
-                    break;
-                case EffectType.Decontaminating:
-                    ReferenceHub.playerEffectsController.DisableEffect<Decontaminating>();
-                    break;
-                case EffectType.Disabled:
-                    ReferenceHub.playerEffectsController.DisableEffect<Disabled>();
-                    break;
-                case EffectType.Ensnared:
-                    ReferenceHub.playerEffectsController.DisableEffect<Ensnared>();
-                    break;
-                case EffectType.Exhausted:
-                    ReferenceHub.playerEffectsController.DisableEffect<Exhausted>();
-                    break;
-                case EffectType.Flashed:
-                    ReferenceHub.playerEffectsController.DisableEffect<Flashed>();
-                    break;
-                case EffectType.Hemorrhage:
-                    ReferenceHub.playerEffectsController.DisableEffect<Hemorrhage>();
-                    break;
-                case EffectType.Invigorated:
-                    ReferenceHub.playerEffectsController.DisableEffect<Invigorated>();
-                    break;
-                case EffectType.Panic:
-                    ReferenceHub.playerEffectsController.DisableEffect<Panic>();
-                    break;
-                case EffectType.Poisoned:
-                    ReferenceHub.playerEffectsController.DisableEffect<Poisoned>();
-                    break;
-                case EffectType.Scp207:
-                    ReferenceHub.playerEffectsController.DisableEffect<Scp207>();
-                    break;
-                case EffectType.Scp268:
-                    ReferenceHub.playerEffectsController.DisableEffect<Scp268>();
-                    break;
-                case EffectType.SinkHole:
-                    ReferenceHub.playerEffectsController.DisableEffect<SinkHole>();
-                    break;
-                case EffectType.Visuals939:
-                    ReferenceHub.playerEffectsController.DisableEffect<Visuals939>();
-                    break;
-            }
-
-        }
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
@@ -1405,6 +1255,16 @@ namespace Exiled.API.Features
             where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
 
         /// <summary>
+        /// Disables a specific <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/> to disable.</param>
+        public void DisableEffect(EffectType effect)
+        {
+            if (TryGetEffect(effect, out var pEffect))
+                pEffect.ServerDisable();
+        }
+
+        /// <summary>
         /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
@@ -1420,7 +1280,44 @@ namespace Exiled.API.Features
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
-        public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false) => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+        public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
+            => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
+        {
+            if (TryGetEffect(effect, out var pEffect))
+                ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
+        }
+
+        /// <summary>
+        /// Gets an instance of <see cref="PlayerEffect"/> by <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <returns>The <see cref="PlayerEffect"/>.</returns>
+        public PlayerEffect GetEffect(EffectType effect)
+        {
+            var type = effect.Type();
+            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(type, out var pEffect);
+            return pEffect;
+        }
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="PlayerEffect"/> by <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <param name="playerEffect">The <see cref="PlayerEffect"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="playerEffect"/> was successfully gotten.</returns>
+        public bool TryGetEffect(EffectType effect, out PlayerEffect playerEffect)
+        {
+            playerEffect = GetEffect(effect);
+            return playerEffect != null;
+        }
 
         /// <summary>
         /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.

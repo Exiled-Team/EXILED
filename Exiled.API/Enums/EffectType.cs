@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------
 // <copyright file="EffectType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
@@ -9,109 +8,109 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// StatusEffects from the game.
+    /// Status effects as enum.
     /// </summary>
     public enum EffectType
     {
         /// <summary>
-        /// infinite  sprint
-        /// </summary>
-        Invigorated,
-
-        /// <summary>
-        /// Invisiblity.
-        /// </summary>
-        Scp268,
-
-        /// <summary>
-        /// Not being able to open your inventory nor reload.
+        /// The player isn't able to open their inventory or reload a weapon.
         /// </summary>
         Amnesia,
 
         /// <summary>
-        /// Drain stamina then health.
+        /// Drains the player's stamina and then health.
         /// </summary>
         Asphyxiated,
 
         /// <summary>
-        /// Damage over time.
+        /// Damages the player over time.
         /// </summary>
         Bleeding,
 
         /// <summary>
-        /// Blurry screen.
+        /// Blurs the player's screen.
         /// </summary>
         Blinded,
 
         /// <summary>
-        /// Increase damage the player gets.
+        /// Increases damage the player gets.
         /// </summary>
         Burned,
 
         /// <summary>
-        /// Screen gets blurrier the faster the player turns.
+        /// Blurs the player's screen when rotating.
         /// </summary>
         Concussed,
 
         /// <summary>
-        /// Teleports to PD and drains health.
+        /// Teleports thet player to the pocket dimension and drains health.
         /// </summary>
         Corroding,
 
         /// <summary>
-        /// Noises are harder to hear.
+        /// Deafens the player.
         /// </summary>
         Deafened,
 
         /// <summary>
-        /// Remove 10% HP per second.
+        /// Removes 10% of the player's health per second.
         /// </summary>
         Decontaminating,
 
         /// <summary>
-        /// Slows all movement down.
+        /// Slows down the player's movement.
         /// </summary>
         Disabled,
 
         /// <summary>
-        /// Stops all movement.
+        /// Stops the player's movement.
         /// </summary>
         Ensnared,
 
         /// <summary>
-        /// Halves the maximum stamina and the regeneration rate.
+        /// Halves the player's maximum stamina and stamina regeneration rate.
         /// </summary>
         Exhausted,
 
         /// <summary>
-        /// Player will be unable to see.
+        /// Flashes the player.
         /// </summary>
         Flashed,
 
         /// <summary>
-        /// Drain health while sprinting.
+        /// Drains the player's health while sprinting.
         /// </summary>
         Hemorrhage,
 
         /// <summary>
-        /// Increaste stamina consumption.
+        /// Reduces the player's FOV, gives infinite stamina and gives the effect of underwater sound.
+        /// </summary>
+        Invigorated,
+
+        /// <summary>
+        /// Increases the player's stamina consumption.
         /// </summary>
         Panic,
 
         /// <summary>
-        /// Damage over time. Which gets higher over time.
+        /// Damages the player every 5 seconds, starting low and ramping hight.
         /// </summary>
         Poisoned,
-
-        /// <summary>
-        /// Slows down movement.
-        /// </summary>
-        SinkHole,
 
         /// <summary>
         /// Makes the player faster but also drains health.
         /// </summary>
         Scp207,
+
+        /// <summary>
+        /// Makes the player invisibility.
+        /// </summary>
+        Scp268,
+
+        /// <summary>
+        /// Slows down the player's movement with SCP-106 effect.
+        /// </summary>
+        SinkHole,
 
         /// <summary>
         /// Gives the player the sound vision of SCP-939.
