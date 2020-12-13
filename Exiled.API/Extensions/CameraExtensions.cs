@@ -40,7 +40,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> to check.</param>
         /// <returns>The <see cref="ZoneType"/> of the zone the camera is in.</returns>
-        public static ZoneType GetZone(this Camera079 camera) => GetRoom(camera).Zone;
+        public static ZoneType GetZone(this Camera079 camera) => GetRoom(camera)?.Zone ?? ZoneType.Unspecified;
 
         /// <summary>
         /// Gets all the <see cref="CameraType"/> and <see cref="Room"/> values for for the <see cref="Camera079"/> instances using <see cref="Camera079.cameraId"/> and <see cref="UnityEngine.GameObject"/> name.
