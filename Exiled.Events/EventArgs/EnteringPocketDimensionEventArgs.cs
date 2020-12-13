@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public EnteringPocketDimensionEventArgs(Player player, Vector3 position, Playr scp106, bool isAllowed = true)
+        public EnteringPocketDimensionEventArgs(Player player, Vector3 position, Player scp106, bool isAllowed = true)
         {
             Player = player;
             Position = position;
