@@ -91,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
                     }
 
-                    var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f);
+                    var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f, API.Features.Player.Get(instanceHub));
 
                     Player.OnEnteringPocketDimension(ev);
 
