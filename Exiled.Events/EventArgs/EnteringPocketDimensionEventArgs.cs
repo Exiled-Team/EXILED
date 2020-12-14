@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the Scp106 who sent the player to the pocket dimension.
+        /// Gets the SCP-106 who sent the player to the pocket dimension.
         /// </summary>
         public Player Scp106 { get; }
 
