@@ -38,7 +38,7 @@ namespace Exiled.Example.Commands
             else
                 response = "The command has been sent from the server console!";
 
-            // Return true if command executed successfully, otherwise return false.
+            // Return true if the command was executed successfully; otherwise, false.
             return true;
         }
     }
