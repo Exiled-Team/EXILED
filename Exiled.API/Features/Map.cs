@@ -28,12 +28,14 @@ namespace Exiled.API.Features
     {
         private static readonly List<Room> RoomsValue = new List<Room>(250);
         private static readonly List<Door> DoorsValue = new List<Door>(250);
+        private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
         private static readonly List<Lift> LiftsValue = new List<Lift>(10);
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
@@ -47,11 +49,6 @@ namespace Exiled.API.Features
         /// Gets the number of activated generators.
         /// </summary>
         public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
-
-        /// <summary>
-        /// Gets all <see cref="Camera079"/> objects.
-        /// </summary>
-        public static Camera079[] Cameras => Scp079PlayerScript.allCameras;
 
         /// <summary>
         /// Gets all <see cref="Room"/> objects.
@@ -118,6 +115,23 @@ namespace Exiled.API.Features
                 }
 
                 return ReadOnlyDoorsValue;
+            }
+        }
+
+        /// <summary>
+        /// Gets all <see cref="Camera079"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<Camera079> Cameras
+        {
+            get
+            {
+                if (CamerasValue.Count == 0)
+                {
+                    CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
+                    CameraExtensions.RegisterCameraInfoOnLevelLoad();
+                }
+
+                return ReadOnlyCamerasValue;
             }
         }
 
@@ -305,6 +319,7 @@ namespace Exiled.API.Features
             DoorsValue.Clear();
             LiftsValue.Clear();
             TeslasValue.Clear();
+            CamerasValue.Clear();
         }
     }
 }
