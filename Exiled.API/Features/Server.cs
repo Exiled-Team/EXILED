@@ -95,6 +95,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the Ip address of the server.
+        /// </summary>
+        public static string IpAddress => ServerConsole.Ip;
+
+        /// <summary>
         /// Gets or sets the port of the server.
         /// </summary>
         public static ushort Port
