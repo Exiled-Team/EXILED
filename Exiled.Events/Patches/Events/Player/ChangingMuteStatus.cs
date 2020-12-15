@@ -7,49 +7,80 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.NetworkMuted"/>.
-    /// Adds the <see cref="Player.ChangingMuteStatus"/> event.
+    /// Adds the <see cref="Handlers.Player.ChangingIntercomMuteStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkMuted), MethodType.Setter)]
     internal static class ChangingMuteStatus
     {
-        private static bool Prefix(CharacterClassManager __instance, bool value)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Define the return label.
+            var returnLabel = generator.DefineLabel();
+
+            // Define the continue label.
+            // Used if IsAllowed is true.
+            var continueLabel = generator.DefineLabel();
+
+            // Define the issue mute label.
+            // Used if IsAllowed is false to re-issue a mute.
+            var issueMuteLabel = generator.DefineLabel();
+
+            // Define the labeled instruction.
+            var labeledInstruction = new CodeInstruction(OpCodes.Ldarg_0);
+
+            // Add labels to instructions.
+            newInstructions[0].labels.Add(continueLabel);
+            labeledInstruction.labels.Add(issueMuteLabel);
+
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingMuteStatusEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMuteStatus))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMuteStatusEventArgs), nameof(ChangingMuteStatusEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Brfalse_S, issueMuteLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
+                new CodeInstruction(OpCodes.Ret),
+                labeledInstruction,
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
+                new CodeInstruction(OpCodes.Ret),
+            });
 
-                Player.OnChangingMuteStatus(ev);
+            // Add the return label.
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
-                if (!ev.IsAllowed)
-                {
-                    if (value == true)
-                    {
-                        MuteHandler.RevokePersistentMute(__instance.UserId);
-                    }
-                    else
-                    {
-                        MuteHandler.IssuePersistentMute(__instance.UserId);
-                    }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    return false;
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"{typeof(ChangingMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
