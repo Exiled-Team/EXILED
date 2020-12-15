@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.NetworkMuted"/>.
-    /// Adds the <see cref="Handlers.Player.ChangingIntercomMuteStatus"/> event.
+    /// Adds the <see cref="Handlers.Player.ChangingMuteStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkMuted), MethodType.Setter)]
     internal static class ChangingMuteStatus
