@@ -35,20 +35,14 @@ namespace Exiled.Events.Patches.Events.Player
             // Define the return label.
             var returnLabel = generator.DefineLabel();
 
-            // Define the continue label.
+            // Define the continue label and add it.
             // Used if IsAllowed is true.
             var continueLabel = generator.DefineLabel();
+            newInstructions[0].WithLabels(continueLabel);
 
             // Define the issue mute label.
             // Used if IsAllowed is false to re-issue a mute.
             var issueMuteLabel = generator.DefineLabel();
-
-            // Define the labeled instruction.
-            var labeledInstruction = new CodeInstruction(OpCodes.Ldarg_0);
-
-            // Add labels to instructions.
-            newInstructions[0].labels.Add(continueLabel);
-            labeledInstruction.labels.Add(issueMuteLabel);
 
             newInstructions.InsertRange(0, new CodeInstruction[]
             {
@@ -68,14 +62,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
                 new CodeInstruction(OpCodes.Ret),
-                labeledInstruction,
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(issueMuteLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
                 new CodeInstruction(OpCodes.Ret),
             });
 
             // Add the return label.
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
