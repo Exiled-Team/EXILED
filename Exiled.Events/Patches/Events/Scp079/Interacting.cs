@@ -269,16 +269,12 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 __instance.RpcSwitchCamera(ev.Camera.cameraId, false);
                                 __instance.Mana -= ev.APCost;
                                 __instance.AddInteractionToHistory(target, array[0], true);
-                                result = false;
-                                break;
                             }
                             else
                             {
                                 if (ev.APCost > __instance.curMana)
                                 {
                                     __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                    result = false;
-                                    break;
                                 }
                             }
                         }
