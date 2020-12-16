@@ -311,7 +311,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// gets the camera with the given camera type.
+        /// Gets the camera with the given camera type.
         /// </summary>
         /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
