@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             // Search for the last index of instructions to remove, inside the foreach.
             lastIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer), new[] { typeof(PlayerStats.HitInfo), typeof(GameObject), typeof(bool) })) + finishOffset;
+            (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer), new[] { typeof(PlayerStats.HitInfo), typeof(GameObject), typeof(bool), typeof(bool) })) + finishOffset;
 
             // Redirect "br.s" instruction (break) to the old foreach.
             newInstructions[lastIndex + 1].operand = oldForeachFirstLabel;
