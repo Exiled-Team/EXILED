@@ -18,6 +18,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
+#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
+#pragma warning disable SA1005 // Single line comments should begin with single space
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
+
     /// <summary>
     /// Patches <see cref="WeaponManager.CallCmdShoot(GameObject, HitBoxType, Vector3, Vector3, Vector3)"/>.
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
@@ -63,7 +67,7 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
-                // >Exiled
+                //>Exiled
                 Log.Debug("Invoking shooting event", Loader.ShouldDebugBeShown);
 
                 var shootingEventArgs = new ShootingEventArgs(Player.Get(__instance.gameObject), target, targetPos);
@@ -74,8 +78,8 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 targetPos = shootingEventArgs.Position;
+                //<Exiled
 
-                // <Exiled
                 __instance._hub.inventory.items.ModifyDuration(itemIndex, __instance._hub.inventory.items[itemIndex].durability - 1f);
                 __instance.scp268.ServerDisable();
                 __instance._fireCooldown = 1f / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier) * 0.9f;
@@ -164,32 +168,49 @@ namespace Exiled.Events.Patches.Events.Player
                         return false;
                     }
 
-                    Vector3 positionOffset = referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition;
-
-                    if (Vector3.Angle(positionOffset, __instance.transform.forward) > 45 && Math.Abs(positionOffset.y) > 10f && positionOffset.sqrMagnitude < 0.25f)
+                    Vector3 vector = referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition;
+                    if (Math.Abs(vector.y) < 10f && vector.sqrMagnitude > 0.25f)
                     {
-                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.12 (too big angle)", "gray");
-                        return false;
+                        float num = Math.Abs(Misc.AngleIgnoreY(vector, __instance.transform.forward));
+                        if (num > 45f)
+                        {
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.12 (too big angle)", "gray");
+                            return false;
+                        }
+
+                        if (__instance._lastAngleReset > 0f && num > 25f && Math.Abs(Misc.AngleIgnoreY(vector, __instance._lastAngle)) > 60f)
+                        {
+                            __instance._lastAngle = vector;
+                            __instance._lastAngleReset = 0.4f;
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.13 (too big angle v2)", "gray");
+                            return false;
+                        }
+
+                        __instance._lastAngle = vector;
+                        __instance._lastAngleReset = 0.4f;
                     }
 
-                    Vector2 rotationOffset = __instance._lastRotation - __instance._hub.playerMovementSync.Rotations;
-                    if (rotationOffset.sqrMagnitude < 0.001f)
+                    if (__instance._lastRotationReset > 0f && (__instance._hub.playerMovementSync.Rotations.x < 68f || __instance._hub.playerMovementSync.Rotations.x > 295f))
                     {
-                        __instance._lastRotation = __instance._hub.playerMovementSync.Rotations;
-
-                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.9 (no recoil)", "gray");
-                        return false;
+                        float num2 = __instance._hub.playerMovementSync.Rotations.x - __instance._lastRotation;
+                        if (num2 >= 0f && num2 <= 0.0005f)
+                        {
+                            __instance._lastRotation = __instance._hub.playerMovementSync.Rotations.x;
+                            __instance._lastRotationReset = 0.35f;
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.9 (no recoil)", "gray");
+                            return false;
+                        }
                     }
 
-                    __instance._lastRotation = __instance._hub.playerMovementSync.Rotations;
-
-                    float num2 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                    float num3 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num2);
+                    __instance._lastRotation = __instance._hub.playerMovementSync.Rotations.x;
+                    __instance._lastRotationReset = 0.35f;
+                    float num3 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
+                    float num4 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num3);
 
                     switch (referenceHub.characterClassManager.CurClass)
                     {
                         case RoleType.Scp106:
-                            num3 /= 10f;
+                            num4 /= 10f;
                             goto IL_6D1;
 
                         case RoleType.Scp049:
@@ -204,12 +225,12 @@ namespace Exiled.Events.Patches.Events.Player
                             switch (hitboxType)
                             {
                                 case HitBoxType.HEAD:
-                                    num3 *= 4;
-                                    float num4 = 1 / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier);
+                                    num4 *= 4f;
+                                    float num5 = 1f / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier);
                                     __instance._headshotsL++;
                                     __instance._headshotsS++;
-                                    __instance._headshotsResetS = num4 * 1.86f;
-                                    __instance._headshotsResetL = num4 * 2.9f;
+                                    __instance._headshotsResetS = num5 * 1.86f;
+                                    __instance._headshotsResetL = num5 * 2.9f;
 
                                     if (__instance._headshotsS >= 3)
                                     {
@@ -227,7 +248,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                                 case HitBoxType.ARM:
                                 case HitBoxType.LEG:
-                                    num3 /= 2;
+                                    num4 /= 2f;
                                     break;
                             }
 
@@ -235,13 +256,13 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                 IL_6D1:
-                    num3 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
-                    num3 *= __instance.overallDamagerFactor;
+                    num4 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
+                    num4 *= __instance.overallDamagerFactor;
 
                     // >Exiled
                     Log.Debug("Invoking late shoot.", Loader.ShouldDebugBeShown);
 
-                    var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num2, num3);
+                    var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num3, num4);
 
                     Handlers.Player.OnShot(shotEventArgs);
 
@@ -251,7 +272,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // <Exiled
                     __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(shotEventArgs.Damage, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId(__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
                     __instance.RpcConfirmShot(true, __instance.curWeapon);
-                    __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num2);
+                    __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num3);
                     return false;
                 }
                 else
