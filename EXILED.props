@@ -9,7 +9,9 @@
     <OutputPath>$(MSBuildThisFileDirectory)\bin\$(Configuration)\</OutputPath>
 
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version>2.1.19</Version>
+    <Version>2.1.20</Version>
+    <!-- Enables public beta warning via the PUBLIC_BETA constant -->
+    <PublicBeta>true</PublicBeta>
 
     <HarmonyVersion>2.0.4</HarmonyVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
@@ -21,6 +23,8 @@
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
     <PackageLicenseExpression>CC-BY-SA-3.0</PackageLicenseExpression>
+
+    <DefineConstants Condition="$(PublicBeta) == 'true'">$(DefineConstants);PUBLIC_BETA</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

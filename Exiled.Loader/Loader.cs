@@ -29,6 +29,10 @@ namespace Exiled.Loader
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
 
+#if PUBLIC_BETA
+            Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
+#endif
+
             Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.ToString(3)}", ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
