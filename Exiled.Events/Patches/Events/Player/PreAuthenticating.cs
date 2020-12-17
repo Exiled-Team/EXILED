@@ -226,7 +226,7 @@ namespace Exiled.Events.Patches.Events.Player
                                           $"{result6};{result8};{result9};{result7}", result10, ServerConsole.PublicKey))
                                         {
                                             ServerConsole.AddLog(
-                                              $"Player from endpoint {request.RemoteEndPoint} sent prea-uthentication token with invalid digital signature.");
+                                              $"Player from endpoint {request.RemoteEndPoint} sent pre-authentication token with invalid digital signature.");
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
