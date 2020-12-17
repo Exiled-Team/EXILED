@@ -63,7 +63,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating whether the player can be authenticated or not.
         /// </summary>
-        public bool IsAllowed { get; private set; }
+        public bool IsAllowed { get; set; }
 
         /// <summary>
         /// Delays the connection.
