@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!request.Data.TryGetByte(out b) || b >= 2)
                 {
                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put(2);
+                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                     request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                 }
                 else if (b == 1)
@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Player
                     if (CustomLiteNetLib4MirrorTransport.VerificationChallenge != null && request.Data.TryGetString(out a) && a == CustomLiteNetLib4MirrorTransport.VerificationChallenge)
                     {
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(18);
+                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)18);
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.VerificationResponse);
                         request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
                         CustomLiteNetLib4MirrorTransport.VerificationChallenge = null;
@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Player
                             ServerConsole.AddLog(string.Format("Invalid verification challenge has been received from endpoint {0}.", request.RemoteEndPoint), ConsoleColor.Gray);
                         }
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(19);
+                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)19);
                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                     }
                 }
@@ -96,13 +96,13 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!request.Data.TryGetByte(out cMajor) || !request.Data.TryGetByte(out cMinor) || !request.Data.TryGetByte(out cRevision) || !request.Data.TryGetBool(out flag) || (flag && !request.Data.TryGetByte(out cBackwardRevision)))
                     {
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(3);
+                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)3);
                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                     }
                     else if (!GameCore.Version.CompatibilityCheck(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision, cMajor, cMinor, cRevision, flag, cBackwardRevision))
                     {
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(3);
+                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)3);
                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                     }
                     else
@@ -117,14 +117,14 @@ namespace Exiled.Events.Patches.Events.Player
                         if (!flag2)
                         {
                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(15);
+                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)15);
                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                         }
                         else if (CustomLiteNetLib4MirrorTransport.DelayConnections)
                         {
                             CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(17);
+                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)17);
                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.DelayTime);
                             if (CustomLiteNetLib4MirrorTransport.DelayVolume < 255)
                             {
@@ -168,7 +168,7 @@ namespace Exiled.Events.Patches.Events.Player
                                         if (b2 == 2)
                                         {
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(4);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)4);
                                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                             ServerConsole.AddLog(string.Format("Failed to generate ID for challenge for incoming connection from endpoint {0}.", request.RemoteEndPoint), ConsoleColor.Gray);
                                             return;
@@ -177,31 +177,27 @@ namespace Exiled.Events.Patches.Events.Player
                                     byte[] bytes = RandomGenerator.GetBytes((int)(CustomLiteNetLib4MirrorTransport.ChallengeInitLen + CustomLiteNetLib4MirrorTransport.ChallengeSecretLen), true);
                                     ServerConsole.AddLog(string.Format("Requested challenge for incoming connection from endpoint {0}.", request.RemoteEndPoint), ConsoleColor.Gray);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put(13);
+                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)13);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)CustomLiteNetLib4MirrorTransport.ChallengeMode);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put(num2);
-                                    ChallengeType challengeMode = CustomLiteNetLib4MirrorTransport.ChallengeMode;
-                                    if (challengeMode != ChallengeType.MD5)
+                                    switch (CustomLiteNetLib4MirrorTransport.ChallengeMode)
                                     {
-                                        if (challengeMode != ChallengeType.SHA1)
-                                        {
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes);
-                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes)));
-                                        }
-                                        else
-                                        {
+                                        case ChallengeType.MD5:
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.ChallengeSecretLen);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(Md.Md5(bytes));
+                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen, (int)CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
+                                            break;
+                                        case ChallengeType.SHA1:
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.ChallengeSecretLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(Sha.Sha1(bytes));
                                             CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen, (int)CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
-                                        }
-                                    }
-                                    else
-                                    {
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.ChallengeSecretLen);
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(Md.Md5(bytes));
-                                        CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen, (int)CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
+                                            break;
+                                        case ChallengeType.Reply:
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes);
+                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes)));
+                                            break;
                                     }
                                     request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                     CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
@@ -222,7 +218,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             ServerConsole.AddLog(string.Format("Security challenge response of incoming connection from endpoint {0} has been REJECTED (invalid Challenge ID).", request.RemoteEndPoint), ConsoleColor.Gray);
                                         }
                                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(14);
+                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)14);
                                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         return;
                                     }
@@ -239,7 +235,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             ServerConsole.AddLog(string.Format("Security challenge response of incoming connection from endpoint {0} has been REJECTED (invalid response).", request.RemoteEndPoint), ConsoleColor.Gray);
                                         }
                                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(15);
+                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)15);
                                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         return;
                                     }
@@ -264,7 +260,7 @@ namespace Exiled.Events.Patches.Events.Player
                                 {
                                     ServerConsole.AddLog(string.Format("Player tried to connect from banned endpoint {0}.", request.RemoteEndPoint), ConsoleColor.Gray);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put(6);
+                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)6);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put(keyValuePair.Value.Expires);
                                     NetDataWriter requestWriter = CustomLiteNetLib4MirrorTransport.RequestWriter;
                                     BanDetails value = keyValuePair.Value;
@@ -280,13 +276,13 @@ namespace Exiled.Events.Patches.Events.Player
                             else if (!request.Data.TryGetString(out text) || text == string.Empty)
                             {
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(5);
+                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)5);
                                 request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                             }
                             else if (!request.Data.TryGetLong(out num3) || !request.Data.TryGetByte(out b3) || !request.Data.TryGetString(out text2) || !request.Data.TryGetBytesWithLength(out signature))
                             {
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(4);
+                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)4);
                                 request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                             }
                             else
@@ -306,7 +302,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             ServerConsole.AddLog(string.Format("Player from endpoint {0} sent preauthentication token with invalid digital signature.", request.RemoteEndPoint), ConsoleColor.Gray);
                                         }
                                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(2);
+                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                     }
                                     else if (TimeBehaviour.CurrentUnixTimestamp > num3)
@@ -314,7 +310,7 @@ namespace Exiled.Events.Patches.Events.Player
                                         ServerConsole.AddLog(string.Format("Player from endpoint {0} sent expired preauthentication token.", request.RemoteEndPoint), ConsoleColor.Gray);
                                         ServerConsole.AddLog("Make sure that time and timezone set on server is correct. We recommend synchronizing the time.", ConsoleColor.Gray);
                                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put(11);
+                                        CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)11);
                                         request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                     }
                                     else
@@ -334,7 +330,7 @@ namespace Exiled.Events.Patches.Events.Player
                                                 }
                                                 ServerLogs.AddLog(ServerLogs.Modules.Networking, string.Format("Incoming connection from endpoint {0} ({1}) rejected due to exceeding the rate limit.", text, request.RemoteEndPoint), ServerLogs.ServerLogType.RateLimit, false);
                                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(12);
+                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)12);
                                                 request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                                 return;
                                             }
@@ -357,7 +353,7 @@ namespace Exiled.Events.Patches.Events.Player
                                                     ServerLogs.AddLog(ServerLogs.Modules.Networking, yes, ServerLogs.ServerLogType.ConnectionUpdate, false);
                                                 }
                                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(6);
+                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)6);
                                                 NetDataWriter requestWriter2 = CustomLiteNetLib4MirrorTransport.RequestWriter;
                                                 BanDetails key3 = keyValuePair2.Key;
                                                 requestWriter2.Put((key3 != null) ? key3.Expires : keyValuePair2.Value.Expires);
@@ -378,14 +374,14 @@ namespace Exiled.Events.Patches.Events.Player
                                         {
                                             ServerConsole.AddLog(string.Format("Player {0} ({1}) kicked due to an active global ban.", text, request.RemoteEndPoint), ConsoleColor.Gray);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(8);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)8);
                                             request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         }
                                         else if ((!flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreWhitelist) || !ServerStatic.GetPermissionsHandler().IsVerified) && !WhiteList.IsWhitelisted(text))
                                         {
                                             ServerConsole.AddLog(string.Format("Player {0} tried joined from endpoint {1}, but is not whitelisted.", text, request.RemoteEndPoint), ConsoleColor.Gray);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(7);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)7);
                                             request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         }
                                         else if (CustomLiteNetLib4MirrorTransport.Geoblocking != GeoblockingMode.None && (!flags.HasFlagFast(CentralAuthPreauthFlags.IgnoreGeoblock) || !ServerStatic.PermissionsHandler.BanTeamBypassGeo) && (!CustomLiteNetLib4MirrorTransport.GeoblockIgnoreWhitelisted || !WhiteList.IsOnWhitelist(text)) && ((CustomLiteNetLib4MirrorTransport.Geoblocking == GeoblockingMode.Whitelist && !CustomLiteNetLib4MirrorTransport.GeoblockingList.Contains(text2.ToUpper())) || (CustomLiteNetLib4MirrorTransport.Geoblocking == GeoblockingMode.Blacklist && CustomLiteNetLib4MirrorTransport.GeoblockingList.Contains(text2.ToUpper()))))
@@ -400,7 +396,7 @@ namespace Exiled.Events.Patches.Events.Player
                                                 ServerConsole.AddLog(string.Format("Player {0} ({1}) tried joined from blocked country {2}.", text, request.RemoteEndPoint, text2.ToUpper()), ConsoleColor.Gray);
                                             }
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put(9);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)9);
                                             request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                         }
                                         else
@@ -442,19 +438,19 @@ namespace Exiled.Events.Patches.Events.Player
                                                     request.Accept();
                                                     CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
                                                     ServerConsole.AddLog(
-                                                      $"Player {text} pre-authenticated from endpoint {request.RemoteEndPoint}.");
+                                                      $"Player {text} preauthenticated from endpoint {request.RemoteEndPoint}.");
                                                     ServerLogs.AddLog(
                                                       ServerLogs.Modules.Networking,
-                                                      $"{text} pre-authenticated from endpoint {request.RemoteEndPoint}.",
+                                                      $"{text} preauthenticated from endpoint {request.RemoteEndPoint}.",
                                                       ServerLogs.ServerLogType.ConnectionUpdate);
                                                 }
                                                 else
                                                 {
                                                     ServerConsole.AddLog(
-                                                      $"Player {text} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.");
+                                                      $"Player {text} tried to preauthenticated from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.");
                                                     ServerLogs.AddLog(
                                                       ServerLogs.Modules.Networking,
-                                                      $"{text} tried to pre-authenticate from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.",
+                                                      $"{text} tried to preauthenticated from endpoint {request.RemoteEndPoint}, but the request has been rejected by a plugin.",
                                                       ServerLogs.ServerLogType.ConnectionUpdate);
                                                 }
                                                 //<Exiled
@@ -462,7 +458,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             else
                                             {
                                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(1);
+                                                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)1);
                                                 request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                             }
                                         }
@@ -480,7 +476,7 @@ namespace Exiled.Events.Patches.Events.Player
                                         ServerConsole.AddLog(string.Format("Player from endpoint {0} sent an invalid preauthentication token. {1}", request.RemoteEndPoint, ex.Message), ConsoleColor.Gray);
                                     }
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put(2);
+                                    CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
                                     request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                                 }
                             }
@@ -500,7 +496,7 @@ namespace Exiled.Events.Patches.Events.Player
                     ServerConsole.AddLog(string.Format("Player from endpoint {0} failed to preauthenticate: {1}", request.RemoteEndPoint, ex2.Message), ConsoleColor.Gray);
                 }
                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
-                CustomLiteNetLib4MirrorTransport.RequestWriter.Put(4);
+                CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)4);
                 request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
             }
         }
