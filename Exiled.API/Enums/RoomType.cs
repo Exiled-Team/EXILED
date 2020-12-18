@@ -18,82 +18,82 @@ public enum RoomType
         Unknown,
 
         /// <summary>
-        /// Lower Containment Armory.
+        /// Light Containment Zone Armory.
         /// </summary>
         LczArmory,
 
         /// <summary>
-        /// Lower Containment L-Shaped Room.
+        /// Lower Containment L-Shaped Room. (HC)
         /// </summary>
         LczCurve,
 
         /// <summary>
-        /// Lower Containment |-Shaped Room.
+        /// Lower Containment |-Shaped Room (IT).
         /// </summary>
         LczStraight,
 
         /// <summary>
-        /// Lower Containment SCP 012 Room.
+        /// Light Containment Zone SCP 012 Room.
         /// </summary>
         Lcz012,
 
         /// <summary>
-        /// Lower Containment SCP 914 Room.
+        /// Light Containment Zone SCP 914 Room.
         /// </summary>
         Lcz914,
 
         /// <summary>
-        /// Lower Containment X-Shaped Room.
+        /// Light Containment Zone X-Shaped Room. (IX)
         /// </summary>
         LczCrossing,
 
         /// <summary>
-        /// Lower Containment T-Shaped Room.
+        /// Light Containment Zone T-Shaped Room. (IT)
         /// </summary>
         LczTCross,
 
         /// <summary>
-        /// Lower Containment Cafe Room.
+        /// Light Containment Zone Cafe Room. (PC-15)
         /// </summary>
         LczCafe,
 
         /// <summary>
-        /// Lower Containment T-Shaped Plants Room.
+        /// Light Containment Zone T-Shaped Plants Room.
         /// </summary>
         LczPlants,
 
         /// <summary>
-        /// Lower Containment Toilets Room.
+        /// Light Containment Zone Toilets Room. (bathroom)
         /// </summary>
         LczToilets,
 
         /// <summary>
-        /// Lower Containment Airlock Room.
+        /// Light Containment Zone Airlock Room.
         /// </summary>
         LczAirlock,
 
         /// <summary>
-        /// Lower Containment SCP 173 Room.
+        /// Light Containment Zone SCP 173 Room.
         /// </summary>
         Lcz173,
 
         /// <summary>
-        /// Lower Containment Class D Spawn Room.
+        /// Light Containment Zone Class D Spawn Room.
         /// </summary>
         LczClassDSpawn,
 
         /// <summary>
-        /// Lower Containment Checkpoint B Room.
+        /// Light Containment Zone Checkpoint B Room.
         /// </summary>
         LczChkpB,
 
         /// <summary>
-        /// Lower Containment Glass Box Room.
+        /// Light Containment Zone Glass Box Room.
         /// </summary>
         LczGlassBox,
 
         /// <summary>
-        /// Lower Containment Checkpoint A Room.
+        /// Light Containment Zone Checkpoint A Room.
         /// </summary>
         LczChkpA,
 
