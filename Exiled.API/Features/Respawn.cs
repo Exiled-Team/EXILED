@@ -13,6 +13,8 @@ namespace Exiled.API.Features
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
     /// A set of tools to handle team respawns more easily.
     /// </summary>
@@ -22,6 +24,16 @@ namespace Exiled.API.Features
         /// Gets the next known <see cref="SpawnableTeamType"/> that will spawn.
         /// </summary>
         public static SpawnableTeamType NextKnownTeam => RespawnManager.Singleton.NextKnownTeam;
+
+        /// <summary>
+        /// Gets the amount of seconds before the next respawn will occur.
+        /// </summary>
+        public static int TimeUntilRespawn => Mathf.RoundToInt(RespawnManager.Singleton._timeForNextSequence - (float)RespawnManager.Singleton._stopwatch.Elapsed.TotalSeconds);
+
+        /// <summary>
+        /// Gets a value indicating whether or not a team is currently being spawned or the animations are playing for a team.
+        /// </summary>
+        public static bool IsSpawning => RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.PlayingEntryAnimations || RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
 
         /// <summary>
         /// Gets the amount of spawn tickets belonging to the NTF.
