@@ -43,7 +43,7 @@ namespace Exiled.API.Enums
         Concussed,
 
         /// <summary>
-        /// Teleports thet player to the pocket dimension and drains health.
+        /// Teleports the player to the pocket dimension and drains health.
         /// </summary>
         Corroding,
 
