@@ -43,6 +43,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
 
         /// <summary>
+        /// Invoked before SCP-079 teleports using an elevator.
+        /// </summary>
+        public static event CustomEventHandler<ElevatorTeleportEventArgs> ElevatorTeleport;
+
+        /// <summary>
         /// Invoked before SCP-079 uses a speaker.
         /// </summary>
         public static event CustomEventHandler<StartingSpeakerEventArgs> StartingSpeaker;
@@ -86,6 +91,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-079 teleports using an elevator.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorTeleportEventArgs"/> instance.</param>
+        public static void OnElevatorTeleport(ElevatorTeleportEventArgs ev) => ElevatorTeleport.InvokeSafely(ev);
 
         /// <summary>
         /// Called before interacting with a speaker with SCP-079.

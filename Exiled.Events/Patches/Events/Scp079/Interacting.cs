@@ -247,6 +247,41 @@ namespace Exiled.Events.Patches.Events.Scp079
                             break;
                         }
 
+                    case "ELEVATORTELEPORT":
+                        float manaFromLabel = __instance.GetManaFromLabel("Elevator Teleport", __instance.abilities);
+                        global::Camera079 camera = null;
+                        foreach (global::Scp079Interactable scp079Interactable in __instance.nearbyInteractables)
+                        {
+                            if (scp079Interactable.type == global::Scp079Interactable.InteractableType.ElevatorTeleport)
+                            {
+                                camera = scp079Interactable.optionalObject.GetComponent<global::Camera079>();
+                            }
+                        }
+
+                        if (camera != null)
+                        {
+                            ElevatorTeleportEventArgs ev = new ElevatorTeleportEventArgs(Player.Get(__instance.gameObject), camera, manaFromLabel, manaFromLabel <= __instance.curMana);
+
+                            Handlers.Scp079.OnElevatorTeleport(ev);
+
+                            if (ev.IsAllowed)
+                            {
+                                __instance.RpcSwitchCamera(ev.Camera.cameraId, false);
+                                __instance.Mana -= ev.APCost;
+                                __instance.AddInteractionToHistory(target, array[0], true);
+                            }
+                            else
+                            {
+                                if (ev.APCost > __instance.curMana)
+                                {
+                                    __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                                }
+                            }
+                        }
+
+                        result = false;
+                        break;
+
                     default:
                         result = true;
                         break;
