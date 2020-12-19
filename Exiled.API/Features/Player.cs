@@ -243,6 +243,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the dictionary of player's session variables. It is not being saved on player disconnect.
+        /// </summary>
+        public Dictionary<string, object> SessionVariables { get; } = new Dictionary<string, object>();
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
         public bool IsInvisible { get; set; }
