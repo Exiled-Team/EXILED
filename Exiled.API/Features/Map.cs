@@ -31,6 +31,18 @@ namespace Exiled.API.Features
         private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
         private static readonly List<Lift> LiftsValue = new List<Lift>(10);
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
+        private static readonly Lazy<Ragdoll.Info> LazyDefaultRagdollOwner = new Lazy<Ragdoll.Info>(() =>
+        {
+            return new Ragdoll.Info()
+            {
+                ownerHLAPI_id = PlayerManager.localPlayer.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
+                PlayerId = -1,
+                DeathCause = new PlayerStats.HitInfo(-1f, "Killer", DamageTypes.Com15, -1),
+                ClassColor = new Color(1f, 0.556f, 0f),
+                FullName = "Class-D",
+                Nick = "A Class-D personnel",
+            };
+        });
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
@@ -167,6 +179,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the Default <see cref="Ragdoll.Info"/>, used in <see cref="SpawnRagdoll()"/>.
+        /// </summary>
+        /// <remarks>
+        /// This value can be modified to change the default Ragdoll's info.
+        /// </remarks>
+        public static Ragdoll.Info DefaultRagdollOwner
+        {
+            get => LazyDefaultRagdollOwner.Value;
+        }
+
+        /// <summary>
         /// Gets the current state of the intercom.
         /// </summary>
         public static Intercom.State IntercomState => Intercom.host.IntercomState;
@@ -227,6 +250,112 @@ namespace Exiled.API.Features
                 room = rooms[rooms.Count - 1];
 
             return room;
+        }
+
+        /// <summary>
+        /// Spawns a ragdoll on the map based on the different arguments.
+        /// </summary>
+        /// <remarks>
+        /// Tip: You can do '<paramref name="ownerNick"/>: "MyNick"' to skip parameters.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// // Code to spawn a fake ragdoll
+        /// if (ev.Player == MyPlugin.TheInmortalPlayer)
+        /// {
+        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, ownerNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        /// }
+        /// </code>
+        /// </example>
+        /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
+        /// <param name="position">Where the ragdoll will be spawned.</param>
+        /// <param name="rotation">The rotation for the ragdoll.</param>
+        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
+        /// <param name="hitInfo">The <see cref="PlayerStats.HitInfo"/> that displays who killed this ragdoll, and using which tool.</param>
+        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <param name="ownerNick">The displayed owner's nick (i.e.: the name from the victim).</param>
+        /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
+        /// <param name="mirrorOwnerId">The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
+        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
+        public static global::Ragdoll SpawnRagdoll(
+                RoleType roleType,
+                Vector3 position,
+                Quaternion rotation = default,
+                Vector3 velocity = default,
+                global::PlayerStats.HitInfo hitInfo = default,
+                bool allowRecall = false,
+                string ownerNick = "Dummy",
+                int playerId = -1,
+                string mirrorOwnerId = null)
+        {
+            global::Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
+
+            // Check if there's no ragdoll for this class, or if the class is invalid
+            if (role.model_ragdoll == null)
+                return null;
+            var @default = DefaultRagdollOwner;
+
+            var ragdollInfo = new Ragdoll.Info()
+            {
+                ownerHLAPI_id = mirrorOwnerId != null ? mirrorOwnerId : @default.ownerHLAPI_id,
+                PlayerId = playerId,
+                DeathCause = hitInfo != default ? hitInfo : @default.DeathCause,
+                ClassColor = role.classColor,
+                FullName = role.fullName,
+                Nick = ownerNick,
+            };
+
+            return SpawnRagdollNonAlloc(role, position, ragdollInfo, rotation, velocity, allowRecall);
+        }
+
+        /// <summary>
+        /// Optimized, low-level method to Spawn a ragdoll on the map.
+        /// Will only allocate the newly created GameObject.
+        /// </summary>
+        /// <remarks>
+        /// <list type="number">
+        /// <item>
+        /// <para>
+        /// EXILED already has an internal, default Ragdoll.Info: the use of this method
+        /// to optimize a plugin is absolutely optional.
+        /// </para>
+        /// We recommend using: <see cref="SpawnRagdoll(RoleType, Vector3)"/>
+        /// </item>
+        /// <item>
+        /// This method should only ever be used if you're dealing with massive
+        /// server-sided lag.
+        /// </item>
+        /// <item>
+        /// Ragdoll.Info's "ownerID" isn't the SteamID, but the
+        /// <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.
+        /// </item>
+        /// </list>
+        /// </remarks>
+        /// <param name="role">Main game's <see cref="global::Role"/> thad defines the role to spawn a ragdoll.</param>
+        /// <param name="position">Where the ragdoll will be spawned.</param>
+        /// <param name="ragdollInfo"><see cref="Ragdoll.Info"/> object containing the ragdoll's info.</param>
+        /// <param name="rotation">The rotation for the ragdoll.</param>
+        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
+        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <returns>The <see cref="Ragdoll"/> component created.</returns>
+        public static global::Ragdoll SpawnRagdollNonAlloc(
+                global::Role role,
+                Vector3 position,
+                Ragdoll.Info ragdollInfo,
+                Quaternion rotation = default,
+                Vector3 velocity = default,
+                bool allowRecall = false)
+        {
+            if (role.model_ragdoll == null)
+                return null;
+
+            GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
+            Mirror.NetworkServer.Spawn(gameObject);
+            global::Ragdoll ragdollObject = gameObject.GetComponent<global::Ragdoll>();
+            ragdollObject.Networkowner = ragdollInfo;
+            ragdollObject.NetworkallowRecall = allowRecall;
+            ragdollObject.NetworkPlayerVelo = velocity;
+            return ragdollObject;
         }
 
         /// <summary>
