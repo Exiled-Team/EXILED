@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingSneakEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="isSneaking"><inheritdoc cref="IsSprinting"/></param>
+        /// <param name="isSneaking"><inheritdoc cref="IsSneaking"/></param>
         public ChangingSneakEventArgs(Player player, bool isSneaking)
         {
             Player = player;
