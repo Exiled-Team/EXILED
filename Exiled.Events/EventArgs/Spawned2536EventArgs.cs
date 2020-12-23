@@ -43,6 +43,5 @@ namespace Exiled.Events.EventArgs
         /// Gets a List of <see cref="SCP2536_Present"/>.
         /// </summary>
         public List<SCP2536_Present> Presents { get; }
-
     }
 }

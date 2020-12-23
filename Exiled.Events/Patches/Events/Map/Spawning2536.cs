@@ -98,9 +98,9 @@ namespace Exiled.Events.Patches.Events.Map
 
                 Spawned2536EventArgs ev2 = new Spawned2536EventArgs(API.Features.Player.Get(referenceHub), scp2536_Spawn_Location, presentList);
                 Map.OnSpawned2536(ev2);
-
-                return false;
             }
+
+            return false;
         }
     }
 }

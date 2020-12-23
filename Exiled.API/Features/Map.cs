@@ -301,6 +301,7 @@ namespace Exiled.API.Features
                     }
                 }
             }
+        }
 
         /// <summary>
         /// Broadcasts a message to all players.

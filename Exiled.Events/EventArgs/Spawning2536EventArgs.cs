@@ -42,6 +42,5 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets a value indicating whether or not SCP-2536 can spawn.
         /// </summary>
         public bool IsAllowed { get; set; }
-
     }
 }
