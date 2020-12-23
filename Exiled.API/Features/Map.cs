@@ -290,7 +290,7 @@ namespace Exiled.API.Features
                 scp2536_Spawn_Location.IsTreeActive = true;
                 scp2536_Spawn_Location.RpcSetTreeState(true);
                 SCP2536_Present[] componentsInChildren2 = scp2536_Spawn_Location.GetComponentsInChildren<SCP2536_Present>();
-                List<SCP_2536_Controller.Valid2536Scenario> list = SCP_2536_Controller.singleton.GetAllValid2536Scenarios(referenceHub).ToList<SCP_2536_Controller.Valid2536Scenario>();
+                List<SCP_2536_Controller.Valid2536Scenario> list = SCP_2536_Controller.singleton.GetAllValid2536Scenarios(referenceHub);
                 for (int j = 0; j < 3; j++)
                 {
                     componentsInChildren2[j].RpcResetPresent();
