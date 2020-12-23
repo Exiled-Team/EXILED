@@ -28,7 +28,6 @@ namespace Exiled.Events.EventArgs
         {
             Present = present;
             Player = player;
-            Scenario = present.ThisPresentsScenario;
             IsAllowed = isAllowed;
         }
 
