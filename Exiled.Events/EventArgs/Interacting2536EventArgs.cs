@@ -39,14 +39,17 @@ namespace Exiled.Events.EventArgs
 
         /// <summary>
         /// Gets the <see cref="SCP2536_Present"/> instance.
-        /// Do not change <see cref="SCP2536_Present.ThisPresentsScenario"/> in order to change the outcome, as this will not work. Instead change <see cref="Scenario"/>.
         /// </summary>
         public SCP2536_Present Present { get; }
 
         /// <summary>
         /// Gets or sets the 2536 scenario (which determines the item outcome).
         /// </summary>
-        public SCP_2536_Controller.Valid2536Scenario Scenario { get; set; }
+        public SCP_2536_Controller.Valid2536Scenario Scenario
+        {
+            get => Present.ThisPresentsScenario;
+            set => Present.ThisPresentsScenario = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can open the present.
