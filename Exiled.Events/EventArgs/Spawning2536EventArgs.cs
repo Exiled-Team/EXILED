@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the spawn position of SCP-2536.
         /// </summary>
-        public SCP2536_Spawn_Location Spawn { get; private set; }
+        public SCP2536_Spawn_Location Spawn { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-2536 can spawn.
