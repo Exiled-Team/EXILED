@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ItemSearchCompletor.Complete"/>.
-    /// Adds the <see cref="Player.PickingUpItem"/> event.
+    /// Adds the <see cref="Player.PickingUpItem"/> and <see cref="Player.Interacting2536"/> events.
     /// </summary>
     [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]
     internal static class PickingUpItem

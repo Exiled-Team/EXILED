@@ -39,6 +39,7 @@ namespace Exiled.Events.EventArgs
 
         /// <summary>
         /// Gets the <see cref="SCP2536_Present"/> instance.
+        /// Do not change <see cref="SCP2536_Present.ThisPresentsScenario"/> in order to change the outcome, as this will not work. Instead change <see cref="Scenario"/>.
         /// </summary>
         public SCP2536_Present Present { get; }
 

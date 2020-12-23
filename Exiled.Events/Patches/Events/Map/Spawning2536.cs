@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="SCP_2536_Controller.SelectAndSpawnTree"/>.
-    /// Adds the <see cref="Map.Spawning2536"/> event.
+    /// Adds the <see cref="Map.Spawning2536"/> and <see cref="Map.Spawned2536"/> events.
     /// </summary>
     [HarmonyPatch(typeof(SCP_2536_Controller), nameof(SCP_2536_Controller.SelectAndSpawnTree))]
     internal static class Spawning2536
