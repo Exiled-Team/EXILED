@@ -169,7 +169,9 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                     Vector3 vector = referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition;
-                    if (Math.Abs(vector.y) < 10f && vector.sqrMagnitude > 0.25f)
+                    if (Math.Abs(vector.y) < 10f && vector.sqrMagnitude > 7.84f
+                        && (referenceHub.characterClassManager.CurClass != RoleType.Scp0492 || vector.sqrMagnitude > 9f)
+                        && ((referenceHub.characterClassManager.CurClass != RoleType.Scp93953 && referenceHub.characterClassManager.CurClass != RoleType.Scp93989) || vector.sqrMagnitude > 18.49f))
                     {
                         float num = Math.Abs(Misc.AngleIgnoreY(vector, __instance.transform.forward));
                         if (num > 45f)
