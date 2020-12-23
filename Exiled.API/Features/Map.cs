@@ -10,6 +10,7 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
 
     using Exiled.API.Extensions;
 
@@ -237,6 +238,69 @@ namespace Exiled.API.Features
         [Obsolete("Removed from the base-game.", true)]
         public static void SpawnHands(Vector3 position, Quaternion rotation)
         {
+        }
+
+        /// <summary>
+        /// Force spawns SCP-2536 at a random player.
+        /// </summary>
+        public static void ForceSpawn2536() => SCP_2536_Controller.singleton.SelectAndSpawnTree();
+
+        /// <summary>
+        /// Force spawns SCP-2536 at a specified player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to spawn SCP-2536 at.</param>
+        /// <param name="addToChosenList">If set to true, the player will be added to the chosen list and cannot be automatically selected for the remainder of the round.</param>
+        public static void ForceSpawn2536(Player player, bool addToChosenList = true)
+        {
+            SCP_2536_Controller.singleton.Cooldown = SCP_2536_Controller.singleton.CooldownAmount;
+            ReferenceHub referenceHub = player.ReferenceHub;
+
+            if (addToChosenList)
+            {
+                SCP_2536_Controller.singleton.PlayersAlreadyChosen.Add(referenceHub.characterClassManager.UserId);
+            }
+
+            RoomInformation.ZoneType currentZoneType = referenceHub.localCurrentRoomEffects.PlayersCurrentRoom.CurrentZoneType;
+            if (currentZoneType == RoomInformation.ZoneType.LCZ || currentZoneType == RoomInformation.ZoneType.ENTRANCE || currentZoneType == RoomInformation.ZoneType.HCZ)
+            {
+                SCP2536_Spawn_Location scp2536_Spawn_Location = null;
+                foreach (SCP2536_Spawn_Location scp2536_Spawn_Location2 in referenceHub.localCurrentRoomEffects.LastRoomIn.GetComponentsInChildren<SCP2536_Spawn_Location>())
+                {
+                    if (referenceHub.localCurrentRoomEffects.PlayersCurrentRoom.CurrentRoomType == RoomInformation.RoomType.HCZ_TESLA)
+                    {
+                        if (scp2536_Spawn_Location == null)
+                        {
+                            scp2536_Spawn_Location = scp2536_Spawn_Location2;
+                        }
+                        else if ((scp2536_Spawn_Location.transform.position - referenceHub.playerMovementSync.RealModelPosition).sqrMagnitude < (scp2536_Spawn_Location2.transform.position - referenceHub.playerMovementSync.RealModelPosition).sqrMagnitude)
+                        {
+                            scp2536_Spawn_Location = scp2536_Spawn_Location2;
+                        }
+                    }
+                    else if (scp2536_Spawn_Location == null)
+                    {
+                        scp2536_Spawn_Location = scp2536_Spawn_Location2;
+                    }
+                    else if ((scp2536_Spawn_Location.transform.position - referenceHub.playerMovementSync.RealModelPosition).sqrMagnitude > (scp2536_Spawn_Location2.transform.position - referenceHub.playerMovementSync.RealModelPosition).sqrMagnitude)
+                    {
+                        scp2536_Spawn_Location = scp2536_Spawn_Location2;
+                    }
+                }
+
+                scp2536_Spawn_Location.IsTreeActive = true;
+                scp2536_Spawn_Location.RpcSetTreeState(true);
+                SCP2536_Present[] componentsInChildren2 = scp2536_Spawn_Location.GetComponentsInChildren<SCP2536_Present>();
+                List<SCP_2536_Controller.Valid2536Scenario> list = SCP_2536_Controller.singleton.GetAllValid2536Scenarios(referenceHub);
+                for (int j = 0; j < 3; j++)
+                {
+                    componentsInChildren2[j].RpcResetPresent();
+                    componentsInChildren2[j].ThisPresentsScenario = list[UnityEngine.Random.Range(0, list.Count)];
+                    if (list.Count > 1)
+                    {
+                        list.Remove(componentsInChildren2[j].ThisPresentsScenario);
+                    }
+                }
+            }
         }
 
         /// <summary>

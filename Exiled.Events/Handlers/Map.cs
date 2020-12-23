@@ -73,6 +73,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SpawnedItemEventArgs> SpawnedItem;
 
         /// <summary>
+        /// Invoked before SCP-2536 spawns.
+        /// </summary>
+        public static event CustomEventHandler<Spawning2536EventArgs> Spawning2536;
+
+        /// <summary>
+        /// Invoked after SCP-2536 spawns.
+        /// </summary>
+        public static event CustomEventHandler<Spawned2536EventArgs> Spawned2536;
+
+        /// <summary>
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
@@ -137,5 +147,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SpawnedItemEventArgs"/> instance.</param>
         public static void OnSpawnedItem(SpawnedItemEventArgs ev) => SpawnedItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-2536 spawns.
+        /// </summary>
+        /// <param name="ev">The <see cref="Spawning2536EventArgs"/> instance.</param>
+        public static void OnSpawning2536(Spawning2536EventArgs ev) => Spawning2536.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after SCP-2536 spawns.
+        /// </summary>
+        /// <param name="ev">The <see cref="Spawned2536EventArgs"/> instance.</param>
+        public static void OnSpawned2536(Spawned2536EventArgs ev) => Spawned2536.InvokeSafely(ev);
     }
 }

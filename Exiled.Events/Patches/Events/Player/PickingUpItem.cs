@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ItemSearchCompletor.Complete"/>.
-    /// Adds the <see cref="Player.PickingUpItem"/> event.
+    /// Adds the <see cref="Player.PickingUpItem"/> and <see cref="Player.Interacting2536"/> events.
     /// </summary>
     [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]
     internal static class PickingUpItem
@@ -28,6 +28,23 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                // Remove after christmas update.
+                if (__instance.PresentPickup != null)
+                {
+                    var evPresent = new Interacting2536EventArgs(API.Features.Player.Get(__instance.Hub), __instance.PresentPickup);
+                    Player.OnInteracting2536(evPresent);
+
+                    if (!evPresent.IsAllowed)
+                    {
+                        return false;
+                    }
+
+                    SCP_2536_Controller.singleton.Apply2536Scenario(__instance.Hub, evPresent.Scenario);
+                    __instance.PresentPickup.ThisPresentsScenario = SCP_2536_Controller.Valid2536Scenario.BeenOpened;
+                    __instance.PresentPickup.RpcOpenPresent();
+                    return false;
+                }
+
                 var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
 
                 Player.OnPickingUpItem(ev);
