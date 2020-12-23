@@ -15,8 +15,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using HarmonyLib;
 
-    using UnityEngine;
     using NorthwoodLib.Pools;
+    using UnityEngine;
 
     /// <summary>
     /// Patches <see cref="SCP_2536_Controller.SelectAndSpawnTree"/>.
