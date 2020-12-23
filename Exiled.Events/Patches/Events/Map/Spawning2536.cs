@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Map
     using HarmonyLib;
 
     using UnityEngine;
+    using NorthwoodLib.Pools;
 
     /// <summary>
     /// Patches <see cref="SCP_2536_Controller.SelectAndSpawnTree"/>.
@@ -79,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Map
 
                 __instance.PlayersAlreadyChosen.Add(referenceHub.characterClassManager.UserId);
 
-                List<SCP2536_Present> presentList = new List<SCP2536_Present>();
+                List<SCP2536_Present> presentList = ListPool<SCP2536_Present>.Shared.Rent();
 
                 scp2536_Spawn_Location.IsTreeActive = true;
                 scp2536_Spawn_Location.RpcSetTreeState(true);
@@ -98,6 +99,8 @@ namespace Exiled.Events.Patches.Events.Map
 
                 Spawned2536EventArgs ev2 = new Spawned2536EventArgs(API.Features.Player.Get(referenceHub), scp2536_Spawn_Location, presentList);
                 Map.OnSpawned2536(ev2);
+
+                ListPool<SCP2536_Present>.Shared.Return(presentList);
             }
 
             return false;
