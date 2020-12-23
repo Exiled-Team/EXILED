@@ -11,7 +11,7 @@
     <!-- This is the global version and is used for all projects that don't have a version -->
     <Version>2.1.21</Version>
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
-    <PublicBeta>true</PublicBeta>
+    <PublicBeta>false</PublicBeta>
 
     <HarmonyVersion>2.0.4</HarmonyVersion>
     <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
