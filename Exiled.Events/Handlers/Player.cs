@@ -211,6 +211,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingGroupEventArgs> ChangingGroup;
 
         /// <summary>
+        /// Invoked before a player starts or stops sprinting.
+        /// </summary>
+        public static event CustomEventHandler<ChangingSprintEventArgs> ChangingSprint;
+
+        /// <summary>
+        /// Invoked before a player starts or stops sneaking.
+        /// </summary>
+        public static event CustomEventHandler<ChangingSneakEventArgs> ChangingSneak;
+
+        /// <summary>
         /// Invoked before a player interacts with a door.
         /// </summary>
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
@@ -501,6 +511,18 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingItemEventArgs"/> instance.</param>
         public static void OnChangingItem(ChangingItemEventArgs ev) => ChangingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player starts or stops sprinting.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingSprintEventArgs"/> instance.</param>
+        public static void OnChangingSprint(ChangingSprintEventArgs ev) => ChangingSprint.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player starts or stops sneaking.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingSneakEventArgs"/> instance.</param>
+        public static void OnChangingSneak(ChangingSneakEventArgs ev) => ChangingSneak.InvokeSafely(ev);
 
         /// <summary>
         /// Called before changing a player's group.
