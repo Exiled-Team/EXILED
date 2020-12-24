@@ -18,29 +18,27 @@ namespace Exiled.Events.Patches.Events.Player
 
     using MEC;
 
-    using UnityEngine;
-
     /// <summary>
-    /// Patches <see cref="PlayerManager.AddPlayer(GameObject)"/>.
+    /// Patches <see cref="ServerRoles.CallCmdServerSignatureComplete(string, string, string, bool)"/>.
     /// Adds the <see cref="Player.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIsVerified), MethodType.Setter)]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.CallCmdServerSignatureComplete))]
     internal static class Joined
     {
-        private static void Prefix(CharacterClassManager __instance, bool value)
+        private static void Postfix(ServerRoles __instance)
         {
             try
             {
-                // UserId will always be empty/null if it's not in online mode
-                if (!value || (string.IsNullOrEmpty(__instance.UserId) && CharacterClassManager.OnlineMode))
+                // It means the client has failed the verification
+                if (!__instance.PublicKeyAccepted)
                     return;
 
-                if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
-                {
-                    player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+                // Allow only one call to this event
+                if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
+                    return;
 
-                    API.Features.Player.Dictionary.Add(__instance.gameObject, player);
-                }
+                var player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
+                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
 
                 API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
 
