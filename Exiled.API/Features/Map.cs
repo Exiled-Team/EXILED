@@ -253,6 +253,36 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Spawns a ragdoll for a player on a certain position.
+        /// </summary>
+        /// <param name="victim">Victim, represented as a player.</param>
+        /// <param name="deathCause">The message to be displayed as his death.</param>
+        /// <param name="position">Where the ragdoll will be spawned.</param>
+        /// <param name="rotation">The rotation for the ragdoll.</param>
+        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
+        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
+        public static global::Ragdoll SpawnRagdoll(
+                Player victim,
+                DamageTypes.DamageType deathCause,
+                Vector3 position,
+                Quaternion rotation = default,
+                Vector3 velocity = default,
+                bool allowRecall = true)
+        {
+            return SpawnRagdoll(
+                        victim.Role,
+                        deathCause,
+                        victim.DisplayNickname,
+                        position,
+                        rotation,
+                        velocity,
+                        allowRecall,
+                        victim.Id,
+                        victim.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId);
+        }
+
+        /// <summary>
         /// Spawns a ragdoll on the map based on the different arguments.
         /// </summary>
         /// <remarks>
