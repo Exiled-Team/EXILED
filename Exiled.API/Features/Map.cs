@@ -256,7 +256,52 @@ namespace Exiled.API.Features
         /// Spawns a ragdoll on the map based on the different arguments.
         /// </summary>
         /// <remarks>
-        /// Tip: You can do '<paramref name="ownerNick"/>: "MyNick"' to skip parameters.
+        /// Tip: You can do '<paramref name="allowRecall"/>: true, <paramref name="playerId"/>: MyPlayer.Id' to skip parameters.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// // Code to spawn a fake ragdoll
+        /// if (ev.Player == MyPlugin.TheInmortalPlayer)
+        /// {
+        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, deathCause:DamageTypes.Fall, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        /// }
+        /// </code>
+        /// </example>
+        /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
+        /// <param name="deathCause">The death cause, expressed as a <see cref="DamageTypes.DamageType"/>.</param>
+        /// <param name="victimNick">The name from the victim, who the corpse belongs to.</param>
+        /// <param name="position">Where the ragdoll will be spawned.</param>
+        /// <param name="rotation">The rotation for the ragdoll.</param>
+        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
+        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049. Must have a valid <paramref name="playerId"/>.</param>
+        /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
+        /// <param name="mirrorOwnerId">The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
+        /// <param name="damage">Usually ignored, the killing blow damage.</param>
+        /// <param name="killerName">Usually ignored, the killer's name.</param>
+        /// <param name="killerId">Usually ignored, the killer's ID.</param>
+        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
+        public static global::Ragdoll SpawnRagdoll(
+                RoleType roleType,
+                DamageTypes.DamageType deathCause,
+                string victimNick,
+                Vector3 position,
+                Quaternion rotation = default,
+                Vector3 velocity = default,
+                bool allowRecall = false,
+                int playerId = -1,
+                string mirrorOwnerId = null,
+                float damage = -1f,
+                string killerName = "Killer",
+                int killerId = -1)
+        {
+            return SpawnRagdoll(roleType, victimNick, position, rotation, velocity, new PlayerStats.HitInfo(damage, killerName, deathCause == default ? DamageTypes.Com15 : deathCause, killerId), allowRecall, playerId, mirrorOwnerId);
+        }
+
+        /// <summary>
+        /// Spawns a ragdoll on the map based on the different arguments.
+        /// </summary>
+        /// <remarks>
+        /// Tip: You can do, for example, '<paramref name="velocity"/>: "Vector3.up * 3"' to skip parameters.
         /// </remarks>
         /// <example>
         /// <code>
@@ -268,23 +313,23 @@ namespace Exiled.API.Features
         /// </code>
         /// </example>
         /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
+        /// <param name="victimNick">The name from the victim, who the corpse belongs to.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="hitInfo">The <see cref="PlayerStats.HitInfo"/> that displays who killed this ragdoll, and using which tool.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
-        /// <param name="ownerNick">The displayed owner's nick (i.e.: the name from the victim).</param>
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
         public static global::Ragdoll SpawnRagdoll(
                 RoleType roleType,
+                string victimNick,
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
                 global::PlayerStats.HitInfo hitInfo = default,
                 bool allowRecall = false,
-                string ownerNick = "Dummy",
                 int playerId = -1,
                 string mirrorOwnerId = null)
         {
@@ -302,22 +347,22 @@ namespace Exiled.API.Features
                 DeathCause = hitInfo != default ? hitInfo : @default.DeathCause,
                 ClassColor = role.classColor,
                 FullName = role.fullName,
-                Nick = ownerNick,
+                Nick = victimNick,
             };
 
-            return SpawnRagdollNonAlloc(role, position, ragdollInfo, rotation, velocity, allowRecall);
+            return SpawnRagdoll(role, ragdollInfo, position, rotation, velocity, allowRecall);
         }
 
         /// <summary>
-        /// Optimized, low-level method to Spawn a ragdoll on the map.
-        /// Will only allocate the newly created GameObject.
+        /// Optimized method to Spawn a ragdoll on the map.
+        /// Will only allocate the newly created GameObject, requires extra work and pre-loaded base game roles.
         /// </summary>
         /// <remarks>
         /// <list type="number">
         /// <item>
         /// <para>
-        /// EXILED already has an internal, default Ragdoll.Info: the use of this method
-        /// to optimize a plugin is absolutely optional.
+        /// EXILED already has an internal, default Ragdoll.Info: the use of this
+        /// method to try to optimize a plugin is absolutely optional.
         /// </para>
         /// We recommend using: <see cref="SpawnRagdoll(RoleType, Vector3)"/>
         /// </item>
@@ -332,16 +377,16 @@ namespace Exiled.API.Features
         /// </list>
         /// </remarks>
         /// <param name="role">Main game's <see cref="global::Role"/> thad defines the role to spawn a ragdoll.</param>
-        /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="ragdollInfo"><see cref="Ragdoll.Info"/> object containing the ragdoll's info.</param>
+        /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The <see cref="Ragdoll"/> component created.</returns>
-        public static global::Ragdoll SpawnRagdollNonAlloc(
+        public static global::Ragdoll SpawnRagdoll(
                 global::Role role,
-                Vector3 position,
                 Ragdoll.Info ragdollInfo,
+                Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
                 bool allowRecall = false)
