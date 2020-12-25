@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands
+namespace Exiled.Events.Commands.Show
 {
     using System;
     using System.Linq;
@@ -29,7 +29,7 @@ namespace Exiled.Events.Commands
         public string[] Aliases { get; } = { "sp", "showplugins" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gets all plugins, names, authors and versions";
+        public string Description { get; } = "Get all plugins, names, authors and versions";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
