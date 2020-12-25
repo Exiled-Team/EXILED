@@ -179,7 +179,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the Default <see cref="Ragdoll.Info"/>, used in <see cref="SpawnRagdoll()"/>.
+        /// Gets the Default <see cref="Ragdoll.Info"/>,
+        /// used in <see cref="SpawnRagdoll(RoleType, string, Vector3, Quaternion, Vector3, PlayerStats.HitInfo, bool, int, string)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -262,13 +263,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        public static global::Ragdoll SpawnRagdoll(
-                Player victim,
-                DamageTypes.DamageType deathCause,
-                Vector3 position,
-                Quaternion rotation = default,
-                Vector3 velocity = default,
-                bool allowRecall = true)
+        public static global::Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true)
         {
             return SpawnRagdoll(
                         victim.Role,
@@ -402,7 +397,7 @@ namespace Exiled.API.Features
         /// EXILED already has an internal, default Ragdoll.Info: the use of this
         /// method to try to optimize a plugin is absolutely optional.
         /// </para>
-        /// We recommend using: <see cref="SpawnRagdoll(RoleType, Vector3)"/>
+        /// We recommend using: Map.SpawnRagdoll(RoleType roleType, string victimNick, Vector3 position)
         /// </item>
         /// <item>
         /// This method should only ever be used if you're dealing with massive
