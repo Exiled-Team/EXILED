@@ -47,9 +47,13 @@ namespace Exiled.Events.Commands.Show
             sb.AppendLine();
 
             var plugins = Exiled.Loader.Loader.Plugins;
+            var enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
 
             // Append two new lines before the list
-            sb.Append("Total number of plugins: ").Append(plugins.Count).AppendLine().AppendLine();
+            sb.Append("Total number of plugins: ").Append(plugins.Count).AppendLine()
+                .Append("Enabled plugins: ").Append(enabledPluginCount).AppendLine()
+                .Append("Disabled plugins: ").Append(plugins.Count - enabledPluginCount)
+                .AppendLine().AppendLine();
 
             StringBuilder AppendNewRow() => sb.AppendLine().Append("\t");
 
@@ -58,6 +62,11 @@ namespace Exiled.Events.Commands.Show
                 var plugin = plugins.ElementAt(z);
 
                 sb.Append(string.IsNullOrEmpty(plugin.Name) ? "(Unknown)" : plugin.Name).Append(":");
+
+                if (!plugin.Config.IsEnabled)
+                {
+                    AppendNewRow().Append("- Disabled");
+                }
 
                 AppendNewRow().Append("- Author: ").Append(plugin.Author);
                 AppendNewRow().Append("- Version: ").Append(plugin.Version);
