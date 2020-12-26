@@ -14,7 +14,7 @@
     <PublicBeta>false</PublicBeta>
 
     <HarmonyVersion>2.0.4</HarmonyVersion>
-    <YamlDotNetVersion>8.1.2</YamlDotNetVersion>
+    <YamlDotNetVersion>9.1.0</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
 
     <Company>Exiled Team</Company>
