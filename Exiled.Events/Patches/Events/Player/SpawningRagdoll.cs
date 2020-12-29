@@ -24,17 +24,18 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
     internal static class SpawningRagdoll
     {
-        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
+        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref Vector3 velocity, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
         {
             try
             {
                 var ev = new SpawningRagdollEventArgs(
-                    ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(__instance.gameObject), pos, rot, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
+                    ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(__instance.gameObject), pos, rot, velocity, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
 
                 Player.OnSpawningRagdoll(ev);
 
                 pos = ev.Position;
                 rot = ev.Rotation;
+                velocity = ev.Velocity;
                 classId = (int)ev.RoleType;
                 ragdollInfo = ev.HitInformations;
                 allowRecall = ev.IsRecallAllowed;

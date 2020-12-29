@@ -27,6 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="owner"><inheritdoc cref="Owner"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="rotation"><inheritdoc cref="Rotation"/></param>
+        /// <param name="velocity"><inheritdoc cref="Velocity"/></param>
         /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
         /// <param name="hinInformations"><inheritdoc cref="HitInformations"/></param>
         /// <param name="isRecallAllowed"><inheritdoc cref="IsRecallAllowed"/></param>
@@ -39,6 +40,7 @@ namespace Exiled.Events.EventArgs
             Player owner,
             Vector3 position,
             Quaternion rotation,
+            Vector3 velocity,
             RoleType roleType,
             PlayerStats.HitInfo hinInformations,
             bool isRecallAllowed,
@@ -51,6 +53,7 @@ namespace Exiled.Events.EventArgs
             Owner = owner;
             Position = position;
             Rotation = rotation;
+            Velocity = velocity;
             RoleType = roleType;
             HitInformations = hinInformations;
             IsRecallAllowed = isRecallAllowed;
@@ -79,6 +82,11 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the ragdoll rotation.
         /// </summary>
         public Quaternion Rotation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the adapted ragdoll velocity.
+        /// </summary>
+        public Vector3 Velocity { get; set; }
 
         /// <summary>
         /// Gets or sets the RoleType of the ragdoll owner.
