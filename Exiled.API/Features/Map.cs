@@ -168,7 +168,8 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
-        /// used in <see cref="SpawnRagdoll(RoleType, string, Vector3, Quaternion, Vector3, PlayerStats.HitInfo, bool, int, string)"/>.
+        /// used in <see cref="SpawnRagdoll(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
+        /// and <see cref="SpawnRagdoll(global::Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -419,7 +420,7 @@ namespace Exiled.API.Features
 
             // Modify the Ragdoll's component
             global::Ragdoll ragdollObject = gameObject.GetComponent<global::Ragdoll>();
-            ragdollObject.Networkowner = ragdollInfo;
+            ragdollObject.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdollObject.NetworkallowRecall = allowRecall;
             ragdollObject.NetworkPlayerVelo = velocity;
 
