@@ -353,14 +353,6 @@ namespace Exiled.API.Features
             if (role.model_ragdoll == null)
                 return null;
             var @default = DefaultRagdollOwner;
-            /* // Uncomment if people complain that changing
-             * // DefaultRagdollOwner.DeathCause changes
-             * // already spawned ragdolls.
-            if (hitInfo == default)
-            {
-                hitInfo = new PlayerStats.HitInfo(hitInfo.Amount, hitInfo.Attacker, DamageTypes.FromWeaponId(hitInfo.Tool), hitInfo.PlayerId);
-            }
-            */
 
             var ragdollInfo = new Ragdoll.Info()
             {
