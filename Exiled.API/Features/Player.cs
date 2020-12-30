@@ -1028,6 +1028,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        public void Broadcast(Broadcast broadcast)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+        }
+
+        /// <summary>
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
