@@ -31,18 +31,6 @@ namespace Exiled.API.Features
         private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
         private static readonly List<Lift> LiftsValue = new List<Lift>(10);
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
-        private static readonly Lazy<Ragdoll.Info> LazyDefaultRagdollOwner = new Lazy<Ragdoll.Info>(() =>
-        {
-            return new Ragdoll.Info()
-            {
-                ownerHLAPI_id = PlayerManager.localPlayer.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId,
-                PlayerId = -1,
-                DeathCause = new PlayerStats.HitInfo(-1f, "Killer", DamageTypes.Com15, -1),
-                ClassColor = new Color(1f, 0.556f, 0f),
-                FullName = "Class-D",
-                Nick = "A Class-D personnel",
-            };
-        });
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
@@ -185,10 +173,15 @@ namespace Exiled.API.Features
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
         /// </remarks>
-        public static Ragdoll.Info DefaultRagdollOwner
+        public static Ragdoll.Info DefaultRagdollOwner { get; } = new Ragdoll.Info()
         {
-            get => LazyDefaultRagdollOwner.Value;
-        }
+            ownerHLAPI_id = null,
+            PlayerId = -1,
+            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.Com15, -1),
+            ClassColor = new Color(1f, 0.556f, 0f),
+            FullName = "Class-D",
+            Nick = "[REDACTED]",
+        };
 
         /// <summary>
         /// Gets the current state of the intercom.
@@ -288,7 +281,7 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, deathCause:DamageTypes.Fall, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        ///     var fakeRagdoll = Map.SpawnRagdoll(RoleType.ClassD, DamageTypes.Fall, "The Falling Guy", new Vector3(1234f, -1f, 4321f));
         /// }
         /// </code>
         /// </example>
@@ -300,10 +293,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049. Must have a valid <paramref name="playerId"/>.</param>
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
-        /// <param name="mirrorOwnerId">The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
-        /// <param name="damage">Usually ignored, the killing blow damage.</param>
-        /// <param name="killerName">Usually ignored, the killer's name.</param>
-        /// <param name="killerId">Usually ignored, the killer's ID.</param>
+        /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
         public static global::Ragdoll SpawnRagdoll(
                 RoleType roleType,
@@ -314,12 +304,10 @@ namespace Exiled.API.Features
                 Vector3 velocity = default,
                 bool allowRecall = false,
                 int playerId = -1,
-                string mirrorOwnerId = null,
-                float damage = -1f,
-                string killerName = "Killer",
-                int killerId = -1)
+                string mirrorOwnerId = null)
         {
-            return SpawnRagdoll(roleType, victimNick, position, rotation, velocity, new PlayerStats.HitInfo(damage, killerName, deathCause == default ? DamageTypes.Com15 : deathCause, killerId), allowRecall, playerId, mirrorOwnerId);
+            var @default = DefaultRagdollOwner;
+            return SpawnRagdoll(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
         }
 
         /// <summary>
@@ -333,27 +321,27 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, ownerNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
         /// }
         /// </code>
         /// </example>
         /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
         /// <param name="victimNick">The name from the victim, who the corpse belongs to.</param>
+        /// <param name="hitInfo">The <see cref="PlayerStats.HitInfo"/> that displays who killed this ragdoll, and using which tool.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
-        /// <param name="hitInfo">The <see cref="PlayerStats.HitInfo"/> that displays who killed this ragdoll, and using which tool.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
-        /// <param name="mirrorOwnerId">The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
+        /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
         public static global::Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 string victimNick,
+                global::PlayerStats.HitInfo hitInfo,
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
-                global::PlayerStats.HitInfo hitInfo = default,
                 bool allowRecall = false,
                 int playerId = -1,
                 string mirrorOwnerId = null)
@@ -428,11 +416,15 @@ namespace Exiled.API.Features
                 return null;
 
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
-            Mirror.NetworkServer.Spawn(gameObject);
+
+            // Modify the Ragdoll's component
             global::Ragdoll ragdollObject = gameObject.GetComponent<global::Ragdoll>();
             ragdollObject.Networkowner = ragdollInfo;
             ragdollObject.NetworkallowRecall = allowRecall;
             ragdollObject.NetworkPlayerVelo = velocity;
+
+            Mirror.NetworkServer.Spawn(gameObject);
+
             return ragdollObject;
         }
 
