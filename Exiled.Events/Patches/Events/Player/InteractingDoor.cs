@@ -34,6 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 var ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
                 var bypassDenied = false;
+                var allowInteracting = false;
 
                 if (__instance.ActiveLocks != 0)
                 {
@@ -59,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                 }
 
-                if (__instance.AllowInteracting(ply, colliderId))
+                if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
                 {
                     if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.curItem, ply))
                     {
@@ -86,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 //>EXILED
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed && !bypassDenied)
+                if (ev.IsAllowed)
                 {
                     __instance.NetworkTargetState = !__instance.TargetState;
                     __instance._triggerPlayer = ply;
@@ -95,7 +96,8 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     __instance.LockBypassDenied(ply, colliderId);
                 }
-                else
+                // Don't call the RPC if the door is still moving
+                else if (allowInteracting)
                 {
                     // To avoid breaking their API, call the access denied event
                     // when our event prevents the door from opening
