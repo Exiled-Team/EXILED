@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Interactables.Interobjects.DoorUtils;
+
     /// <summary>
     /// Contains all informations before a player interacts with a door.
     /// </summary>
@@ -22,7 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingDoorEventArgs(Player player, Door door, bool isAllowed = true)
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
         {
             Player = player;
             Door = door;
@@ -37,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="Door"/> instance.
         /// </summary>
-        public Door Door { get; set; }
+        public DoorVariant Door { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the door.

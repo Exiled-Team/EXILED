@@ -12,6 +12,8 @@ namespace Exiled.API.Extensions
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
+    using Interactables.Interobjects.DoorUtils;
+
     /// <summary>
     /// Contains an extension method to get <see cref="DoorType"/> from <see cref="Door"/>.
     /// Internal class <see cref="RegisterDoorTypesOnLevelLoad"/> to cache the <see cref="DoorType"/> on level load.
@@ -25,7 +27,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="door">The Door to check.</param>
         /// <returns>The <see cref="DoorType"/>.</returns>
-        public static DoorType Type(this Door door) => OrderedDoorTypes.TryGetValue(door.GetInstanceID(), out var doorType) ? doorType : DoorType.UnknownDoor;
+        public static DoorType Type(this DoorVariant door) => OrderedDoorTypes.TryGetValue(door.GetInstanceID(), out var doorType) ? doorType : DoorType.UnknownDoor;
 
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for for the <see cref="Door"/> instances using <see cref="Door.DoorName"/> and <see cref="UnityEngine.GameObject"/> name.
@@ -45,7 +47,8 @@ namespace Exiled.API.Extensions
                 var door = doors[i];
                 var doorID = door.GetInstanceID();
 
-                var doorName = string.IsNullOrWhiteSpace(door.DoorName) ? door.name.RemoveBracketsOnEndOfName() : door.DoorName;
+                var doorNameTag = door.GetComponent<DoorNametagExtension>();
+                var doorName = doorNameTag == null ? door.name.RemoveBracketsOnEndOfName() : doorNameTag.GetName;
 
                 var doorType = GetDoorType(doorName);
 

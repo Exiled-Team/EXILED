@@ -631,7 +631,7 @@ namespace Exiled.API.Features
         /// Gets or sets the doors this player has locked. Can be null.
         /// Only applies if the player is SCP-079.
         /// </summary>
-        public SyncListString LockedDoors
+        public SyncListUInt LockedDoors
         {
             get => ReferenceHub.scp079PlayerScript?.lockedDoors;
             set

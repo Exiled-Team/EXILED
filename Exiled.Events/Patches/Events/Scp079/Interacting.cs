@@ -20,6 +20,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using HarmonyLib;
 
+    using Interactables.Interobjects.DoorUtils;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -128,25 +130,25 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Door door = target.GetComponent<Door>();
-                            if (door == null)
+                            if (!target.TryGetComponent<DoorVariant>(out var component))
                             {
                                 result = false;
                                 break;
                             }
 
-                            if (list != null && list.Count > 0 && list != null && list.Contains(door.DoorName))
+                            if (component.TryGetComponent<DoorNametagExtension>(out var component5) && list != null && list.Count > 0 && list != null && list.Contains(component5.GetName))
                             {
-                                Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
+                                GameCore.Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
                                 result = false;
                                 break;
                             }
 
                             Player player = Player.Get(__instance.gameObject);
-                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (string.IsNullOrEmpty(door.permissionLevel) ? "DEFAULT" : door.permissionLevel), __instance.abilities);
+                            var permissions = component.RequiredPermissions.RequiredPermissions.ToString();
+                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (permissions.Contains(",") ? permissions.Split(',')[0] : permissions), __instance.abilities);
                             bool isAllowed = apDrain <= __instance.curMana;
 
-                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, door, isAllowed);
+                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, component, isAllowed);
                             Handlers.Scp079.OnInteractingDoor(ev);
 
                             if (!ev.IsAllowed)
@@ -159,17 +161,22 @@ namespace Exiled.Events.Patches.Events.Scp079
                                     break;
                                 }
                             }
-                            else if (door != null && door.ChangeState079())
-                            {
-                                __instance.Mana -= apDrain;
-                                __instance.AddInteractionToHistory(target, array[0], addMana: true);
-                                Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                                result = false;
-                                break;
-                            }
                             else
                             {
-                                Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                                bool targetState = component.TargetState;
+                                component.ServerInteract(ReferenceHub.GetHub(__instance.gameObject), 0);
+                                if (targetState != component.TargetState)
+                                {
+                                    __instance.Mana -= apDrain;
+                                    __instance.AddInteractionToHistory(target, array[0], addMana: true);
+                                    Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
+                                    result = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                                }
                             }
 
                             result = false;

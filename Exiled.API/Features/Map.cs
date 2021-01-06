@@ -13,6 +13,8 @@ namespace Exiled.API.Features
 
     using Exiled.API.Extensions;
 
+    using Interactables.Interobjects.DoorUtils;
+
     using LightContainmentZoneDecontamination;
 
     using NorthwoodLib.Pools;
@@ -27,13 +29,13 @@ namespace Exiled.API.Features
     public static class Map
     {
         private static readonly List<Room> RoomsValue = new List<Room>(250);
-        private static readonly List<Door> DoorsValue = new List<Door>(250);
+        private static readonly List<DoorVariant> DoorsValue = new List<DoorVariant>(250);
         private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
         private static readonly List<Lift> LiftsValue = new List<Lift>(10);
         private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<DoorVariant> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
@@ -104,13 +106,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Door"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Door> Doors
+        public static ReadOnlyCollection<DoorVariant> Doors
         {
             get
             {
                 if (DoorsValue.Count == 0)
                 {
-                    DoorsValue.AddRange(Object.FindObjectsOfType<Door>());
+                    DoorsValue.AddRange(Object.FindObjectsOfType<DoorVariant>());
                     DoorTypeExtension.RegisterDoorTypesOnLevelLoad();
                 }
 

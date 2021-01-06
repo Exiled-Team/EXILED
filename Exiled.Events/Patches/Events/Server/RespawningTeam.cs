@@ -108,7 +108,6 @@ namespace Exiled.Events.Patches.Events.Server
                                     referenceHub.characterClassManager.NetworkCurUnitName = regular;
                                 }
 
-                                SCP_2536_Controller.singleton.TotalSpawnedPlayersByUnitName.Add(regular, referenceHubList.Count);
                                 rule.PlayEntranceAnnouncement(regular);
                             }
 

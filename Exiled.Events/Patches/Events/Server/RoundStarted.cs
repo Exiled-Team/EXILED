@@ -13,12 +13,16 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.CmdStartRound"/>.
+    /// Patches <see cref="CharacterClassManager.CallRpcRoundStarted"/>.
     /// Adds the RoundStarted event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.CmdStartRound))]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.CallRpcRoundStarted))]
     internal static class RoundStarted
     {
-        private static void Postfix() => Server.OnRoundStarted();
+        private static void Postfix(CharacterClassManager __instance)
+        {
+            if (__instance._hub.isDedicatedServer)
+                Server.OnRoundStarted();
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Interactables.Interobjects;
+
     /// <summary>
     /// Contains all information before SCP-096 begins prying a gate open.
     /// </summary>
@@ -21,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="scp096">The Scp096 who is triggering the event.</param>
         /// <param name="gate">The gate to be pried open.</param>
-        public StartPryingGateEventArgs(Player scp096, Door gate)
+        public StartPryingGateEventArgs(Player scp096, PryableDoor gate)
         {
             Player = scp096;
             Gate = gate;
@@ -35,7 +37,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the <see cref="Door"/> to be pried open.
         /// </summary>
-        public Door Gate { get; }
+        public PryableDoor Gate { get; }
 
         /// <summary>
         /// Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.

@@ -8,89 +8,107 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1005
+#pragma warning disable SA1515
+#pragma warning disable SA1513
+#pragma warning disable SA1512
     using System;
-    using System.Linq;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using Interactables.Interobjects.DoorUtils;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdOpenDoor(GameObject)"/>.
+    /// Patches <see cref="DoorVariant.ServerInteract(ReferenceHub, byte)"/>.
     /// Adds the <see cref="Handlers.Player.InteractingDoor"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdOpenDoor), typeof(GameObject))]
+    [HarmonyPatch(typeof(DoorVariant), nameof(DoorVariant.ServerInteract), typeof(ReferenceHub), typeof(byte))]
     internal static class InteractingDoor
     {
-        private static bool Prefix(PlayerInteract __instance, GameObject doorId)
+        private static bool Prefix(DoorVariant __instance, ReferenceHub ply, byte colliderId)
         {
             try
             {
-                if (!__instance._playerInteractRateLimit.CanExecute() ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) ||
-                    (doorId == null || __instance._ccm.CurClass == RoleType.None ||
-                     (__instance._ccm.CurClass == RoleType.Spectator || !doorId.TryGetComponent(out Door door))) ||
-                    (door.Buttons.Count == 0
-                        ? (!__instance.ChckDis(doorId.transform.position) ? 1 : 0)
-                        : (door.Buttons.All(item => !__instance.ChckDis(item.button.transform.position)) ? 1 : 0)) != 0)
-                    return false;
+                var ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
+                var bypassDenied = false;
 
-                var ev = new InteractingDoorEventArgs(API.Features.Player.Get(__instance.gameObject), door);
-
-                __instance.OnInteract();
-
-                if (__instance._sr.BypassMode)
+                if (__instance.ActiveLocks != 0)
                 {
-                    ev.IsAllowed = true;
-                }
-                else if (ev.Door.PermissionLevels.HasPermission(Door.AccessRequirements.Checkpoints) &&
-                         __instance._ccm.CurRole.team == Team.SCP)
-                {
-                    ev.IsAllowed = true;
-                }
-                else
-                {
-                    try
+                    DoorLockMode mode = DoorLockUtils.GetMode((DoorLockReason)__instance.ActiveLocks);
+                    if ((!mode.HasFlagFast(DoorLockMode.CanClose)
+                            || !mode.HasFlagFast(DoorLockMode.CanOpen))
+                        && (!mode.HasFlagFast(DoorLockMode.ScpOverride)
+                            || ply.characterClassManager.CurRole.team != 0)
+                        && (mode == DoorLockMode.FullLock
+                            || (__instance.TargetState
+                                && !mode.HasFlagFast(DoorLockMode.CanClose))
+                            || (!__instance.TargetState
+                                && !mode.HasFlagFast(DoorLockMode.CanOpen))))
                     {
-                        if (ev.Door.PermissionLevels == 0)
-                        {
-                            ev.IsAllowed = !ev.Door.locked;
-                        }
-                        else if (!ev.Door.RequireAllPermissions)
-                        {
-                            var itemPerms = __instance._inv.GetItemByID(__instance._inv.curItem).permissions;
-
-                            ev.IsAllowed = itemPerms.Any(p =>
-                                Door.backwardsCompatPermissions.TryGetValue(p, out var flag) &&
-                                ev.Door.PermissionLevels.HasPermission(flag)) || false;
-                        }
-                        else
-                        {
-                            ev.IsAllowed = false;
-                        }
-                    }
-                    catch
-                    {
+                        /*
+                        __instance.LockBypassDenied(ply, colliderId);
+                        return false;
+                        */
+                        //>EXILED
                         ev.IsAllowed = false;
+                        bypassDenied = true;
+                        //<EXILED
                     }
                 }
 
+                if (__instance.AllowInteracting(ply, colliderId))
+                {
+                    if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.curItem, ply))
+                    {
+                        /*
+                        __instance.NetworkTargetState = !__instance.TargetState;
+                        __instance._triggerPlayer = ply;
+                        */
+                        //>EXILED
+                        ev.IsAllowed = true;
+                        //<EXILED
+                    }
+                    else
+                    {
+                        /*
+                        __instance.PermissionsDenied(ply, colliderId);
+                        DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                        */
+                        //>EXILED
+                        ev.IsAllowed = false;
+                        //<EXILED
+                    }
+                }
+
+                //>EXILED
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed && (!ev.Door.locked || __instance._sr.BypassMode))
-                    ev.Door.ChangeState(__instance._sr.BypassMode);
+                if (ev.IsAllowed)
+                {
+                    __instance.NetworkTargetState = !__instance.TargetState;
+                    __instance._triggerPlayer = ply;
+                }
+                else if (bypassDenied)
+                {
+                    __instance.LockBypassDenied(ply, colliderId);
+                }
                 else
-                    __instance.RpcDenied(doorId);
+                {
+                    // To avoid breaking their API, call the access denied event
+                    // when our event prevents the door from opening
+                    __instance.PermissionsDenied(ply, colliderId);
+                    DoorEvents.TriggerAction(__instance, DoorAction.AccessDenied, ply);
+                }
+                //<EXILED
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.InteractingDoor: {e}\n{e.StackTrace}");
-
+                Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{ex}");
                 return true;
             }
         }

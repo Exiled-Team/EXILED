@@ -13,6 +13,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
     /// <summary>
@@ -53,7 +55,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Door> Doors { get; private set; }
+        public IEnumerable<DoorVariant> Doors { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the lights in this room are currently flickered off.
@@ -210,9 +212,9 @@ namespace Exiled.API.Features
             }
         }
 
-        private static List<Door> FindDoors(GameObject gameObject)
+        private static List<DoorVariant> FindDoors(GameObject gameObject)
         {
-            List<Door> doorList = new List<Door>();
+            List<DoorVariant> doorList = new List<DoorVariant>();
             foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
             {
                 foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
@@ -221,7 +223,7 @@ namespace Exiled.API.Features
                     {
                         if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
                         {
-                            Door door = scp079Interactable.GetComponent<Door>();
+                            DoorVariant door = scp079Interactable.GetComponent<DoorVariant>();
                             if (!doorList.Contains(door))
                             {
                                 doorList.Add(door);
