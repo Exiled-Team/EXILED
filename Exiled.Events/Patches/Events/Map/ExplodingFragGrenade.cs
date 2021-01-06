@@ -123,10 +123,10 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(firstIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloca_S, 11),
+                new CodeInstruction(OpCodes.Ldloca_S, 12),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Ldloc_S, 13),
+                new CodeInstruction(OpCodes.Ldloc_S, 14),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.Add), new[] { typeof(Player), typeof(float) })),
             });
 
@@ -190,19 +190,19 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
-                new CodeInstruction(OpCodes.Stloc_S, 13),
+                new CodeInstruction(OpCodes.Stloc_S, 14),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats))),
-                new CodeInstruction(OpCodes.Stloc_S, 12),
+                new CodeInstruction(OpCodes.Stloc_S, 13),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                 new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                 new CodeInstruction(OpCodes.Newobj, typeof(KeyValuePair<GameObject, ReferenceHub>).GetConstructor(new[] { typeof(GameObject), typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Stloc_S, 11),
+                new CodeInstruction(OpCodes.Stloc_S, 12),
             };
 
             var foreachEnd = new[]
