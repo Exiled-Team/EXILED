@@ -17,6 +17,8 @@ namespace Exiled.Events
 
     using HarmonyLib;
 
+    using UnityEngine.SceneManagement;
+
     /// <summary>
     /// Patch and unpatch events into the game.
     /// </summary>
@@ -79,10 +81,11 @@ namespace Exiled.Events
 
             Patch();
 
+            SceneManager.sceneUnloaded += InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+
             Handlers.Server.WaitingForPlayers += round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound += round.OnRestartingRound;
             Handlers.Server.RoundStarted += round.OnRoundStarted;
-
             Handlers.Player.ChangingRole += round.OnChangingRole;
 
             ServerConsole.ReloadServerName();
@@ -98,6 +101,8 @@ namespace Exiled.Events
 
             DisabledPatchesHashSet.Clear();
             DisabledPatches.Clear();
+
+            SceneManager.sceneUnloaded -= InternalHandlers.SceneUnloaded.OnSceneUnloaded;
 
             Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
             Handlers.Server.RestartingRound -= round.OnRestartingRound;

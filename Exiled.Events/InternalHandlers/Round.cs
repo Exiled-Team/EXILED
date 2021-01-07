@@ -17,16 +17,12 @@ namespace Exiled.Events.InternalHandlers
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
     /// </summary>
-    public sealed class Round
+    internal sealed class Round
     {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
-
-            API.Features.Player.IdsCache.Clear();
-            API.Features.Player.UserIdsCache.Clear();
-            API.Features.Player.Dictionary.Clear();
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
                 ConfigManager.Reload();
