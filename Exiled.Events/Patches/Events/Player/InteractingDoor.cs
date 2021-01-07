@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 //>EXILED
                 Handlers.Player.OnInteractingDoor(ev);
 
-                if (ev.IsAllowed)
+                if (ev.IsAllowed && allowInteracting)
                 {
                     __instance.NetworkTargetState = !__instance.TargetState;
                     __instance._triggerPlayer = ply;
