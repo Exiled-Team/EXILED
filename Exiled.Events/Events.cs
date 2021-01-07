@@ -103,11 +103,10 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded -= InternalHandlers.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers -= round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound -= round.OnRestartingRound;
-            Handlers.Server.RoundStarted -= round.OnRoundStarted;
-
-            Handlers.Player.ChangingRole -= round.OnChangingRole;
+            Handlers.Server.WaitingForPlayers -= InternalHandlers.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
         }
 
         /// <summary>
