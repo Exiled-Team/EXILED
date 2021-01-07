@@ -73,6 +73,11 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in players)
                 {
                     Player player = GetPlayerOrServer(gameObject);
+                    // This happens when the server changes the scene
+                    // with connected players (aka silent round restart)
+                    if (player.GameObject == null)
+                        continue;
+
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
 
                     if (player.Role.Is939())
