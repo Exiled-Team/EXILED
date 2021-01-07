@@ -513,6 +513,17 @@ namespace Exiled.API.Features
             GetCameraById((ushort)cameraType);
 
         /// <summary>
+        /// Gets the door with the given door name.
+        /// </summary>
+        /// <param name="doorName">The door name.</param>
+        /// <returns>The <see cref="DoorVariant"/> or null if a door with this name doesn't exist.</returns>
+        public static DoorVariant GetDoorByName(string doorName)
+        {
+            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nameExtension);
+            return nameExtension == null ? null : nameExtension.TargetDoor;
+        }
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
