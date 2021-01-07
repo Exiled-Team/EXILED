@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             Exiled.Events.Handlers.Scp096.OnAddingTarget(ev);
             if (ev.IsAllowed)
             {
-                if (!__instance._targets.IsEmpty())
+                if (!__instance._targets.IsEmpty() || __instance.Enraged)
                     __instance.EnrageTimeLeft += ev.EnrageTimeToAdd;
                 __instance._targets.Add(hub);
                 __instance.AdjustShield(ev.AhpToAdd);
