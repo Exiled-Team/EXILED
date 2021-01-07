@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before the SCP-914 machine upgrades items inside it.
+    /// Contains all informations before sending a remote admin message.
     /// </summary>
     public class SendingRemoteAdminCommandEventArgs : EventArgs
     {
@@ -72,7 +72,7 @@ namespace Exiled.Events.EventArgs
         public bool Success { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the RemoteAdmin command can be sent.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

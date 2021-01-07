@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Fixes
 
     using HarmonyLib;
 
+    using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
@@ -62,8 +64,8 @@ namespace Exiled.Events.Patches.Fixes
 
                     if (PlayerMovementSync._sphereHits[i].gameObject.layer == 27)
                     {
-                        Door componentInParent = PlayerMovementSync._sphereHits[i].GetComponentInParent<Door>();
-                        if (componentInParent != null && componentInParent.curCooldown > 0f && !componentInParent.isOpen)
+                        DoorVariant componentInParent2 = PlayerMovementSync._sphereHits[i].GetComponentInParent<DoorVariant>();
+                        if (componentInParent2 != null && componentInParent2.AnticheatPassageApproved(__instance._hub))
                         {
                             continue;
                         }

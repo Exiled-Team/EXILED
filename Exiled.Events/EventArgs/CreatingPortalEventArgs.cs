@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before creating a portal with SCP-096.
+    /// Contains all informations before SCP-106 creates a portal.
     /// </summary>
     public class CreatingPortalEventArgs : EventArgs
     {
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-096.
+        /// Gets the player who's controlling SCP-106.
         /// </summary>
         public Player Player { get; }
 
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-106 can create a portal.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

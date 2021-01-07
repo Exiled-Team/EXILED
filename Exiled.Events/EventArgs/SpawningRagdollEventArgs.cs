@@ -27,6 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="owner"><inheritdoc cref="Owner"/></param>
         /// <param name="position"><inheritdoc cref="Position"/></param>
         /// <param name="rotation"><inheritdoc cref="Rotation"/></param>
+        /// <param name="velocity"><inheritdoc cref="Velocity"/></param>
         /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
         /// <param name="hinInformations"><inheritdoc cref="HitInformations"/></param>
         /// <param name="isRecallAllowed"><inheritdoc cref="IsRecallAllowed"/></param>
@@ -39,6 +40,7 @@ namespace Exiled.Events.EventArgs
             Player owner,
             Vector3 position,
             Quaternion rotation,
+            Vector3 velocity,
             RoleType roleType,
             PlayerStats.HitInfo hinInformations,
             bool isRecallAllowed,
@@ -51,6 +53,7 @@ namespace Exiled.Events.EventArgs
             Owner = owner;
             Position = position;
             Rotation = rotation;
+            Velocity = velocity;
             RoleType = roleType;
             HitInformations = hinInformations;
             IsRecallAllowed = isRecallAllowed;
@@ -66,7 +69,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; }
 
         /// <summary>
-        /// Gets the player, owner of the ragdoll.
+        /// Gets the owner of the ragdoll (typically the player who died).
         /// </summary>
         public Player Owner { get; }
 
@@ -81,7 +84,12 @@ namespace Exiled.Events.EventArgs
         public Quaternion Rotation { get; set; }
 
         /// <summary>
-        /// Gets or sets the role type of the ragdoll owner.
+        /// Gets or sets the adapted ragdoll velocity.
+        /// </summary>
+        public Vector3 Velocity { get; set; }
+
+        /// <summary>
+        /// Gets or sets the RoleType of the ragdoll owner.
         /// </summary>
         public RoleType RoleType { get; set; }
 
@@ -91,7 +99,7 @@ namespace Exiled.Events.EventArgs
         public PlayerStats.HitInfo HitInformations { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can be revived by SCP-049 or not.
+        /// Gets or sets a value indicating whether or not the player can be revived by SCP-049.
         /// </summary>
         public bool IsRecallAllowed { get; set; }
 
@@ -106,7 +114,7 @@ namespace Exiled.Events.EventArgs
         public string PlayerNickname { get; set; }
 
         /// <summary>
-        /// Gets or sets the ragdoll playr id.
+        /// Gets or sets the ragdoll player id.
         /// </summary>
         public int PlayerId
         {
@@ -121,7 +129,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the ragdoll will be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

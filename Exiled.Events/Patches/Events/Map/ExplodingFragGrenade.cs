@@ -13,11 +13,9 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Security.Permissions;
 
     using CustomPlayerEffects;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -31,6 +29,8 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+#pragma warning disable SA1123 // Do not place regions within elements
+
     /// <summary>
     /// Patches <see cref="FragGrenade.ServersideExplosion()"/>.
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
@@ -42,6 +42,8 @@ namespace Exiled.Events.Patches.Events.Map
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            #region Locals
+
             // Declare Dictionary<Player, float> local variable.
             var players = generator.DeclareLocal(typeof(Dictionary<Player, float>));
 
@@ -51,6 +53,10 @@ namespace Exiled.Events.Patches.Events.Map
             // Declare KeyValuePair<Player, float> local variable.
             var playerKeyValuePair = generator.DeclareLocal(typeof(KeyValuePair<Player, float>));
 
+            #endregion
+
+            #region Labels
+
             // Define the return label.
             var returnLabel = generator.DefineLabel();
 
@@ -58,14 +64,16 @@ namespace Exiled.Events.Patches.Events.Map
             var foreachFirstLabel = generator.DefineLabel();
             var foreachSecondLabel = generator.DefineLabel();
 
-            // var players = Dictionary<Player, float>();
+            #endregion
+
+            // var players = new Dictionary<Player, float>();
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(Dictionary<Player, float>))[0]),
                 new CodeInstruction(OpCodes.Stloc_S, players.LocalIndex),
             });
 
-            ////////// ENABLE EFFECTS INSTRUCTIONS //////////
+            #region ENABLE EFFECTS INSTRUCTIONS
 
             var startOffset = -1;
             var finishOffset = 0;
@@ -89,7 +97,9 @@ namespace Exiled.Events.Patches.Events.Map
             var oldForeachFirstLabel = enableEffectsInstructions[3].operand;
             enableEffectsInstructions[3].operand = foreachFirstLabel;
 
-            /////////////// HURT INSTRUCTIONS ///////////////
+            #endregion
+
+            #region HURT INSTRUCTIONS
 
             startOffset = 2;
             finishOffset = 1;
@@ -100,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             // Search for the last index of instructions to remove, inside the foreach.
             lastIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer), new[] { typeof(PlayerStats.HitInfo), typeof(GameObject), typeof(bool) })) + finishOffset;
+            (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer), new[] { typeof(PlayerStats.HitInfo), typeof(GameObject), typeof(bool), typeof(bool) })) + finishOffset;
 
             // Redirect "br.s" instruction (break) to the old foreach.
             newInstructions[lastIndex + 1].operand = oldForeachFirstLabel;
@@ -113,20 +123,20 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(firstIndex, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, 11),
+                new CodeInstruction(OpCodes.Ldloca_S, 12),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Ldloc_S, 13),
+                new CodeInstruction(OpCodes.Ldloc_S, 14),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.Add), new[] { typeof(Player), typeof(float) })),
             });
 
-            ///////////////////////////////////////////////
+            #endregion
 
             // Get the index of the penultimate instruction;
             var index = newInstructions.Count - 2;
 
-            // Get the return labels from the penultimate instruction and clear them all.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // var ev = new ExplodingGrenadeEventArgs(players, true, grenadeGameObject, true);
             //
@@ -164,8 +174,8 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.GetEnumerator))),
                 new CodeInstruction(OpCodes.Stloc_S, playerEnumerator.LocalIndex),
 
-                new CodeInstruction(OpCodes.Br_S, foreachFirstLabel) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock) } },
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { labels = new List<Label>() { foreachSecondLabel } },
+                new CodeInstruction(OpCodes.Br_S, foreachFirstLabel).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock)),
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachSecondLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.Current))),
                 new CodeInstruction(OpCodes.Stloc_S, playerKeyValuePair.LocalIndex),
             };
@@ -174,34 +184,39 @@ namespace Exiled.Events.Patches.Events.Map
             //
             // damage = playerKeyValuePair.Value;
             // playerStats = playerKeyValuePair.Key.ReferenceHub.playerStats;
-            // gameObject = playerKeyValuePair.Key.ReferenceHub.gameObject;
+            // keyValuePair = new KeyValuePair<GameObject, ReferenceHub>(playerKeyValuePair.Key.ReferenceHub.gameObject, playerKeyValuePair.Key.ReferenceHub);
             var foreachBody = new[]
             {
                 new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
-                new CodeInstruction(OpCodes.Stloc_S, 13),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
+                new CodeInstruction(OpCodes.Stloc_S, 14),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats))),
-                new CodeInstruction(OpCodes.Stloc_S, 12),
+                new CodeInstruction(OpCodes.Stloc_S, 13),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Stloc_S, 11),
+                new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
+                new CodeInstruction(OpCodes.Newobj, typeof(KeyValuePair<GameObject, ReferenceHub>).GetConstructor(new[] { typeof(GameObject), typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Stloc_S, 12),
             };
 
             var foreachEnd = new[]
             {
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { labels = new List<Label>() { foreachFirstLabel } },
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachFirstLabel),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.MoveNext))),
                 new CodeInstruction(OpCodes.Brtrue_S, foreachSecondLabel),
                 new CodeInstruction(OpCodes.Leave_S, returnLabel),
 
                 // --- Clean up ---
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.BeginFinallyBlock) } },
+                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginFinallyBlock)),
                 new CodeInstruction(OpCodes.Constrained, typeof(Dictionary<Player, float>.Enumerator)),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(IDisposable), nameof(IDisposable.Dispose))),
-                new CodeInstruction(OpCodes.Endfinally) { blocks = new List<ExceptionBlock>() { new ExceptionBlock(ExceptionBlockType.EndExceptionBlock) } },
+                new CodeInstruction(OpCodes.Endfinally).WithBlocks(new ExceptionBlock(ExceptionBlockType.EndExceptionBlock)),
             };
 
             // Insert all instructions.
@@ -213,16 +228,42 @@ namespace Exiled.Events.Patches.Events.Map
                 .Concat(foreachEnd));
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // Add the return label to the penultimate instruction.
             newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
+
+            // We do that to prevent doors and glass being broken if the event wasn't allowed.
+            // Refer to #290 PR.
+            var physicsOverlapLoopStart = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Br);
+            var physicsOverlapLoopEnd = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Blt
+            && ci.operand is Label l
+            && newInstructions[physicsOverlapLoopStart + 1].labels.Contains(l));
+
+            // Also take 'LDC.I4.0' & 'STLOC.S 4'
+            physicsOverlapLoopStart -= 2;
+
+            var physicsOverlapLoopCount = physicsOverlapLoopEnd - physicsOverlapLoopStart + 1;
+
+            var physicsOverlapLoop = newInstructions.GetRange(
+                physicsOverlapLoopStart,
+                physicsOverlapLoopCount);
+
+            newInstructions.RemoveRange(physicsOverlapLoopStart, physicsOverlapLoopCount);
+
+            // Find the index of the ExplodingGrenadeEventArgs::IsAllowed call we inserted.
+            var foreachStartIndex = newInstructions.FindIndex(ci =>
+            ci.opcode == OpCodes.Callvirt
+            && ci.operand is MethodInfo v
+            && v == PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))) + 2;
+
+            newInstructions.InsertRange(foreachStartIndex, physicsOverlapLoop);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

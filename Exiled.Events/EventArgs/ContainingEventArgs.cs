@@ -16,14 +16,18 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ContainingEventArgs : EventArgs
     {
+#pragma warning disable SA1625 // Element documentation should not be copied and pasted
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="buttonPresser"><inheritdoc cref="Player"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ContainingEventArgs(Player player, bool isAllowed = true)
+#pragma warning restore SA1625 // Element documentation should not be copied and pasted
+        public ContainingEventArgs(Player player, Player buttonPresser, bool isAllowed = true)
         {
             Player = player;
+            ButtonPresser = buttonPresser;
             IsAllowed = isAllowed;
         }
 
@@ -33,7 +37,12 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets the player who pressed the button.
+        /// </summary>
+        public Player ButtonPresser { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not SCP-106 can be recontained.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

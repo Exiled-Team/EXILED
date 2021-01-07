@@ -12,6 +12,8 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using HarmonyLib;
 
+    using Interactables.Interobjects;
+
     using PlayableScps;
 
     /// <summary>
@@ -21,9 +23,9 @@ namespace Exiled.Events.Patches.Events.Scp096
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.PryGate))]
     internal static class StartPryingGate
     {
-        private static bool Prefix(PlayableScps.Scp096 __instance, Door gate)
+        private static bool Prefix(PlayableScps.Scp096 __instance, PryableDoor gate)
         {
-            if (__instance.Charging && __instance.Enraged && (!gate.isOpen && gate.doorType == Door.DoorTypes.HeavyGate))
+            if (__instance.Charging && __instance.Enraged && (!gate.TargetState /* && gate.doorType == Door.DoorTypes.HeavyGate */))
             {
                 var ev = new StartPryingGateEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), gate);
                 Exiled.Events.Handlers.Scp096.OnStartPryingGate(ev);

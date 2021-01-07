@@ -10,8 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -19,7 +19,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="ConsumableAndWearableItems.CallCmdUseMedicalItem"/>.
-    /// Adds the <see cref="Player.UsingMedicalItem"/> event.
+    /// Adds the <see cref="Handlers.Player.UsingMedicalItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.CallCmdUseMedicalItem))]
     internal static class UsingMedicalItem
@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 __instance._cancel = false;
-                if (__instance.cooldown > 0.0)
+                if (__instance.cooldown > 0f)
                     return false;
 
                 for (int i = 0; i < __instance.usableItems.Length; ++i)
@@ -40,8 +40,9 @@ namespace Exiled.Events.Patches.Events.Player
                     if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem &&
                         __instance.usableCooldowns[i] <= 0.0)
                     {
-                        var ev = new UsingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
-                        Player.OnUsingMedicalItem(ev);
+                        var ev = new UsingMedicalItemEventArgs(Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+
+                        Handlers.Player.OnUsingMedicalItem(ev);
 
                         __instance.cooldown = ev.Cooldown;
 
@@ -52,9 +53,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                 return false;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.UsingMedicalItem: {e}\n{e.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.UsingMedicalItem: {exception}\n{exception.StackTrace}");
 
                 return true;
             }

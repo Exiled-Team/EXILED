@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.targets" />
+  <Import Project="../EXILED.props" />
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>

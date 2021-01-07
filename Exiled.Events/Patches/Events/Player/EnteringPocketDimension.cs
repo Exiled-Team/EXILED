@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 ReferenceHub hub = ReferenceHub.GetHub(ply);
-                CharacterClassManager ccm = hub?.characterClassManager;
+                CharacterClassManager ccm = hub != null ? hub.characterClassManager : null;
 
                 if (ccm == null)
                     return false;
@@ -51,6 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var instanceHub = ReferenceHub.GetHub(__instance.gameObject);
                 instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
+                __instance.TargetHitMarker(__instance.connectionToClient);
 
                 if (Scp106PlayerScript._blastDoor.isClosed)
                 {
@@ -90,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
                         }
                     }
 
-                    var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f);
+                    var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f, API.Features.Player.Get(instanceHub));
 
                     Player.OnEnteringPocketDimension(ev);
 

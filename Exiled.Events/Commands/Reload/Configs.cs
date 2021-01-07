@@ -19,6 +19,11 @@ namespace Exiled.Events.Commands.Reload
     /// </summary>
     public class Configs : ICommand
     {
+        /// <summary>
+        /// Gets static instance of the <see cref="Configs"/> command.
+        /// </summary>
+        public static Configs Instance { get; } = new Configs();
+
         /// <inheritdoc/>
         public string Command { get; } = "configs";
 

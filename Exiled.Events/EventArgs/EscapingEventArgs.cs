@@ -35,12 +35,12 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the new player's role, assigned after escaping.
+        /// Gets or sets the role that will be assigned when the player escapes.
         /// </summary>
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can escape.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

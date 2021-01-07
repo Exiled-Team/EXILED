@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     /// <summary>
-    /// Contains all informations before announcing the ntf entrance.
+    /// Contains all informations before C.A.S.S.I.E announces the NTF entrance.
     /// </summary>
     public class AnnouncingNtfEntranceEventArgs : EventArgs
     {
@@ -30,22 +30,22 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the number of scps left.
+        /// Gets the number of SCPs left.
         /// </summary>
         public int ScpsLeft { get; }
 
         /// <summary>
-        /// Gets or sets the unit name.
+        /// Gets or sets the NTF unit name.
         /// </summary>
         public string UnitName { get; set; }
 
         /// <summary>
-        /// Gets or sets the unit number.
+        /// Gets or sets the NTF unit number.
         /// </summary>
         public int UnitNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the NTF spawn will be announced by C.A.S.S.I.E.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

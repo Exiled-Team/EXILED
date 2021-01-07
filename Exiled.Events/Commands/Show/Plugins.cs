@@ -5,9 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands
+namespace Exiled.Events.Commands.Show
 {
     using System;
+    using System.Linq;
     using System.Text;
 
     using CommandSystem;
@@ -28,7 +29,7 @@ namespace Exiled.Events.Commands
         public string[] Aliases { get; } = { "sp", "showplugins" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gets all plugins, names, authors and versions";
+        public string Description { get; } = "Get all plugins, names, authors and versions";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
@@ -46,17 +47,26 @@ namespace Exiled.Events.Commands
             sb.AppendLine();
 
             var plugins = Exiled.Loader.Loader.Plugins;
+            var enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
 
             // Append two new lines before the list
-            sb.Append("Total number of plugins: ").Append(plugins.Count).AppendLine().AppendLine();
+            sb.Append("Total number of plugins: ").Append(plugins.Count).AppendLine()
+                .Append("Enabled plugins: ").Append(enabledPluginCount).AppendLine()
+                .Append("Disabled plugins: ").Append(plugins.Count - enabledPluginCount)
+                .AppendLine().AppendLine();
 
             StringBuilder AppendNewRow() => sb.AppendLine().Append("\t");
 
             for (var z = 0; z < plugins.Count; z++)
             {
-                var plugin = plugins[z];
+                var plugin = plugins.ElementAt(z);
 
                 sb.Append(string.IsNullOrEmpty(plugin.Name) ? "(Unknown)" : plugin.Name).Append(":");
+
+                if (!plugin.Config.IsEnabled)
+                {
+                    AppendNewRow().Append("- Disabled");
+                }
 
                 AppendNewRow().Append("- Author: ").Append(plugin.Author);
                 AppendNewRow().Append("- Version: ").Append(plugin.Version);

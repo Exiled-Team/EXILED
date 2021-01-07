@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.Events;
 
     /// <summary>
-    /// Contains all informations before kicking a player.
+    /// Contains all informations before kicking a player from the server.
     /// </summary>
     public class KickingEventArgs : EventArgs
     {
@@ -92,7 +92,7 @@ namespace Exiled.Events.EventArgs
         public string FullMessage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not action is taken against the target.
         /// </summary>
         public bool IsAllowed
         {

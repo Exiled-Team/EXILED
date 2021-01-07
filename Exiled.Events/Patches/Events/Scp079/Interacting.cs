@@ -12,12 +12,20 @@ namespace Exiled.Events.Patches.Events.Scp079
 #pragma warning disable CS0436
     using System;
     using System.Collections.Generic;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using GameCore;
+
     using HarmonyLib;
+
+    using Interactables.Interobjects.DoorUtils;
+
     using NorthwoodLib.Pools;
+
     using UnityEngine;
+
     using Console = GameCore.Console;
     using Log = Exiled.API.Features.Log;
 
@@ -122,25 +130,25 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Door door = target.GetComponent<Door>();
-                            if (door == null)
+                            if (!target.TryGetComponent<DoorVariant>(out var component))
                             {
                                 result = false;
                                 break;
                             }
 
-                            if (list != null && list.Count > 0 && list != null && list.Contains(door.DoorName))
+                            if (component.TryGetComponent<DoorNametagExtension>(out var component5) && list != null && list.Count > 0 && list != null && list.Contains(component5.GetName))
                             {
-                                Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
+                                GameCore.Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
                                 result = false;
                                 break;
                             }
 
                             Player player = Player.Get(__instance.gameObject);
-                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (string.IsNullOrEmpty(door.permissionLevel) ? "DEFAULT" : door.permissionLevel), __instance.abilities);
+                            var permissions = component.RequiredPermissions.RequiredPermissions.ToString();
+                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (permissions.Contains(",") ? permissions.Split(',')[0] : permissions), __instance.abilities);
                             bool isAllowed = apDrain <= __instance.curMana;
 
-                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, door, isAllowed);
+                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, component, isAllowed);
                             Handlers.Scp079.OnInteractingDoor(ev);
 
                             if (!ev.IsAllowed)
@@ -153,17 +161,22 @@ namespace Exiled.Events.Patches.Events.Scp079
                                     break;
                                 }
                             }
-                            else if (door != null && door.ChangeState079())
-                            {
-                                __instance.Mana -= apDrain;
-                                __instance.AddInteractionToHistory(target, array[0], addMana: true);
-                                Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                                result = false;
-                                break;
-                            }
                             else
                             {
-                                Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                                bool targetState = component.TargetState;
+                                component.ServerInteract(ReferenceHub.GetHub(__instance.gameObject), 0);
+                                if (targetState != component.TargetState)
+                                {
+                                    __instance.Mana -= apDrain;
+                                    __instance.AddInteractionToHistory(target, array[0], addMana: true);
+                                    Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
+                                    result = false;
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
+                                }
                             }
 
                             result = false;
@@ -179,10 +192,8 @@ namespace Exiled.Events.Patches.Events.Scp079
                                 break;
                             }
 
-                            Transform roomTransform = scp079SpeakerObject.transform.parent;
-
                             Player player = Player.Get(__instance.gameObject);
-                            Room room = new Room(roomTransform.name, roomTransform.transform, roomTransform.position);
+                            Room room = Map.FindParentRoom(__instance.currentCamera.gameObject);
 
                             float apDrain = __instance.GetManaFromLabel("Speaker Start", __instance.abilities);
                             bool isAllowed = apDrain * 1.5f <= __instance.curMana;
@@ -225,11 +236,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                             }
 
                             string[] array7 = __instance.Speaker.Substring(0, __instance.Speaker.Length - 14).Split('/');
-                            GameObject roomObject = GameObject.Find(array7[0] + "/" + array7[1]);
 
                             StoppingSpeakerEventArgs ev = new StoppingSpeakerEventArgs(
                                 Player.Get(__instance.gameObject),
-                                new Room(roomObject.name, roomObject.transform, roomObject.transform.position));
+                                Map.FindParentRoom(__instance.currentCamera.gameObject));
+
                             Handlers.Scp079.OnStoppingSpeaker(ev);
 
                             if (ev.IsAllowed)
@@ -242,6 +253,41 @@ namespace Exiled.Events.Patches.Events.Scp079
                             result = false;
                             break;
                         }
+
+                    case "ELEVATORTELEPORT":
+                        float manaFromLabel = __instance.GetManaFromLabel("Elevator Teleport", __instance.abilities);
+                        global::Camera079 camera = null;
+                        foreach (global::Scp079Interactable scp079Interactable in __instance.nearbyInteractables)
+                        {
+                            if (scp079Interactable.type == global::Scp079Interactable.InteractableType.ElevatorTeleport)
+                            {
+                                camera = scp079Interactable.optionalObject.GetComponent<global::Camera079>();
+                            }
+                        }
+
+                        if (camera != null)
+                        {
+                            ElevatorTeleportEventArgs ev = new ElevatorTeleportEventArgs(Player.Get(__instance.gameObject), camera, manaFromLabel, manaFromLabel <= __instance.curMana);
+
+                            Handlers.Scp079.OnElevatorTeleport(ev);
+
+                            if (ev.IsAllowed)
+                            {
+                                __instance.RpcSwitchCamera(ev.Camera.cameraId, false);
+                                __instance.Mana -= ev.APCost;
+                                __instance.AddInteractionToHistory(target, array[0], true);
+                            }
+                            else
+                            {
+                                if (ev.APCost > __instance.curMana)
+                                {
+                                    __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
+                                }
+                            }
+                        }
+
+                        result = false;
+                        break;
 
                     default:
                         result = true;

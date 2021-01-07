@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Postfix(BanDetails ban, BanHandler.BanType banType)
         {
-            var ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), ban, banType);
+            var ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), API.Features.Player.Get(ban.Issuer), ban, banType);
 
             Player.OnBanned(ev);
         }

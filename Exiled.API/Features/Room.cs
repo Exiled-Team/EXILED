@@ -7,63 +7,45 @@
 
 namespace Exiled.API.Features
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room : IEquatable<Room>
+    public class Room : MonoBehaviour
     {
-        private readonly FlickerableLightController flickerableLightController;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Room"/> class.
-        /// </summary>
-        /// <param name="name">The room name.</param>
-        /// <param name="transform">The room transform.</param>
-        /// <param name="position">The room position.</param>
-        public Room(string name, Transform transform, Vector3 position)
-        {
-            Name = name;
-            Transform = transform;
-            Position = position;
-            Zone = FindZone();
-            Type = FindType(name);
-            Doors = FindDoors();
-            flickerableLightController = transform.GetComponentInChildren<FlickerableLightController>();
-        }
-
         /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
-        public string Name { get; }
+        public string Name => name;
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform { get; }
+        public Transform Transform => transform;
 
         /// <summary>
         /// Gets the <see cref="Room"/> position.
         /// </summary>
-        public Vector3 Position { get; }
+        public Vector3 Position => transform.position;
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; }
+        public ZoneType Zone { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; }
+        public RoomType Type { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
@@ -73,49 +55,34 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Door> Doors { get; }
+        public IEnumerable<DoorVariant> Doors { get; private set; }
 
         /// <summary>
-        /// Equality Comparer.
+        /// Gets a value indicating whether or not the lights in this room are currently flickered off.
         /// </summary>
-        /// <param name="lhs">Left comparer.</param>
-        /// <param name="rhs">Right comparer.</param>
-        /// <returns>If the rooms are equal.</returns>
-        public static bool operator ==(Room lhs, Room rhs) => lhs != null && lhs.Equals(rhs);
+        public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
 
-        /// <summary>
-        /// Equality Comparer.
-        /// </summary>
-        /// <param name="lhs">Left comparer.</param>
-        /// <param name="rhs">Right comparer.</param>
-        /// <returns>If the rooms are not equal.</returns>
-        public static bool operator !=(Room lhs, Room rhs) => lhs != null && !lhs.Equals(rhs);
+        private FlickerableLightController FlickerableLightController { get; set; }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        public void TurnOffLights(float duration) => flickerableLightController?.ServerFlickerLights(duration);
+        public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
-        /// Equality Comparer.
+        /// Sets the intensity of the lights in the room.
         /// </summary>
-        /// <param name="other">Other Room.</param>
-        /// <returns>If the rooms are equal.</returns>
-        public bool Equals(Room other) => other != null && this.Transform.gameObject == other.Transform.gameObject;
+        /// <param name="intensity">The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</param>
+        public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
 
         /// <summary>
-        /// Equality Comparer.
+        /// Factory method to create and add a <see cref="Room"/> component to a Transform.
+        /// We can add parameters to be set privately here.
         /// </summary>
-        /// <param name="obj">Other object.</param>
-        /// <returns>If the rooms are equal.</returns>
-        public override bool Equals(object obj) => obj is Room room && this == room;
-
-        /// <summary>
-        /// Gets the unique room Id.
-        /// </summary>
-        /// <returns>The unique Room Id.</returns>
-        public override int GetHashCode() => this.Transform.gameObject.GetHashCode();
+        /// <param name="roomGameObject">The Game Object to attach the Room component to.</param>
+        /// <returns>The Room component that was instantiated onto the Game Object.</returns>
+        internal static Room CreateComponent(GameObject roomGameObject) => roomGameObject.AddComponent<Room>();
 
         private static RoomType FindType(string rawName)
         {
@@ -225,12 +192,14 @@ namespace Exiled.API.Features
             }
         }
 
-        private ZoneType FindZone()
+        private static ZoneType FindZone(GameObject gameObject)
         {
-            if (Transform.parent == null)
+            var transform = gameObject.transform;
+
+            if (transform.parent == null)
                 return ZoneType.Unspecified;
 
-            switch (Transform.parent.name)
+            switch (transform.parent.name)
             {
                 case "HeavyRooms":
                     return ZoneType.HeavyContainment;
@@ -239,22 +208,22 @@ namespace Exiled.API.Features
                 case "EntranceRooms":
                     return ZoneType.Entrance;
                 default:
-                    return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
+                    return transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
             }
         }
 
-        private List<Door> FindDoors()
+        private static List<DoorVariant> FindDoors(GameObject gameObject)
         {
-            List<Door> doorList = new List<Door>();
+            List<DoorVariant> doorList = new List<DoorVariant>();
             foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
             {
                 foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
                 {
-                    if (zoneAndRoom.currentRoom == Name && zoneAndRoom.currentZone == Transform.parent.name)
+                    if (zoneAndRoom.currentRoom == gameObject.name && zoneAndRoom.currentZone == gameObject.transform.parent.name)
                     {
                         if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
                         {
-                            Door door = scp079Interactable.GetComponent<Door>();
+                            DoorVariant door = scp079Interactable.GetComponent<DoorVariant>();
                             if (!doorList.Contains(door))
                             {
                                 doorList.Add(door);
@@ -265,6 +234,14 @@ namespace Exiled.API.Features
             }
 
             return doorList;
+        }
+
+        private void Awake()
+        {
+            Zone = FindZone(gameObject);
+            Type = FindType(gameObject.name);
+            Doors = FindDoors(gameObject);
+            FlickerableLightController = GetComponentInChildren<FlickerableLightController>();
         }
     }
 }

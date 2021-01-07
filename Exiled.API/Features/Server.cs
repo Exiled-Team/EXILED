@@ -12,7 +12,7 @@ namespace Exiled.API.Features
     using Mirror;
 
     /// <summary>
-    /// A set of tools to work with the server code more easily .
+    /// A set of tools to easily work with the server.
     /// </summary>
     public static class Server
     {
@@ -93,6 +93,11 @@ namespace Exiled.API.Features
                 ServerConsole.singleton.RefreshServerName();
             }
         }
+
+        /// <summary>
+        /// Gets the Ip address of the server.
+        /// </summary>
+        public static string IpAddress => ServerConsole.Ip;
 
         /// <summary>
         /// Gets or sets the port of the server.

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player dies from walking through the incorrect exit in the pocket dimension.
+    /// Contains all informations before a player dies from walking through an incorrect exit in the pocket dimension.
     /// </summary>
     public class FailingEscapePocketDimensionEventArgs : EventArgs
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public PocketDimensionTeleport Teleporter { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player dies by failing the pocket dimension escape.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

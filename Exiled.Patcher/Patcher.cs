@@ -65,7 +65,7 @@ namespace Exiled.Patcher
                     if (type.Name == "Bootstrap")
                     {
                         modClass = type;
-                        Console.WriteLine($"[Injection] Hooked to: \"{type.Namespace}.{type.Name}\"");
+                        Console.WriteLine($"Hooked to: \"{type.Namespace}.{type.Name}\"");
                     }
                 }
 

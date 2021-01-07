@@ -8,10 +8,11 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player stopping a speaker through SCP-079.
+    /// Contains all informations before SCP-079 finishes using a speaker.
     /// </summary>
     public class StoppingSpeakerEventArgs : EventArgs
     {
@@ -29,17 +30,17 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's stopping the speaker through SCP-079.
+        /// Gets the player who's controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the room where the camera is located, that SCP-079 is stopping.
+        /// Gets the room that the speaker is located in.
         /// </summary>
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-079 can stop using the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

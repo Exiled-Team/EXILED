@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates the workstation.
+    /// Contains all informations before a player activates a workstation.
     /// </summary>
     public class ActivatingWorkstationEventArgs : EventArgs
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public WorkStation Workstation { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the workstation can be activated.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

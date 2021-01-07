@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract) || elevator == null)
+                    ((__instance._hc.CufferId > 0 || __instance._hc.ForceCuff) && !PlayerInteract.CanDisarmedInteract) || elevator == null)
                     return false;
 
                 Lift component = elevator.GetComponent<Lift>();

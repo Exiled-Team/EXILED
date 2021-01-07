@@ -31,8 +31,16 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!ply.GetComponent<CharacterClassManager>().IsVerified)
+                // Somehow we've seen spam
+                // here with a NullReferenceException,
+                // so there are more null checks here
+                if (ply == null
+                || !ply.TryGetComponent<CharacterClassManager>(out var ccm)
+                || ccm == null
+                || !ccm.IsVerified)
+                {
                     return false;
+                }
 
                 var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
                 var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
@@ -64,6 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
+                ply.GetComponent<FirstPersonController>().ResetStamina();
 
                 if (lite)
                 {
@@ -93,7 +102,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         if (CharacterClassManager.PutItemsInInvAfterEscaping)
                         {
-                            Item itemByID = component.GetItemByID(syncItemInfo.id);
+                            var itemByID = component.GetItemByID(syncItemInfo.id);
                             bool flag = false;
                             InventoryCategory[] categories = __instance._search.categories;
                             int i = 0;

@@ -20,9 +20,6 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.AnticheatRaycast), new[] { typeof(Vector3), typeof(bool) })]
     internal static class AntiCheatTriggerByR2WithCustomScale
     {
-        private static void Prefix(PlayerMovementSync __instance, ref Vector3 offset)
-        {
-            offset.y *= __instance.transform.localScale.y;
-        }
+        private static void Prefix(PlayerMovementSync __instance, ref Vector3 offset) => offset.y *= __instance.transform.localScale.y;
     }
 }

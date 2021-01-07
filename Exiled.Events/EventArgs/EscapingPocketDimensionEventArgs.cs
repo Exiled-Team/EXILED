@@ -37,12 +37,12 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the position in which the player is going to be teleported.
+        /// Gets or sets the position in which the player is going to be teleported to.
         /// </summary>
         public Vector3 TeleportPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can successfully escape the pocket dimension.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -55,6 +55,26 @@ namespace Exiled.API.Features
         public static void Restart() => Server.Host.ReferenceHub.playerStats.Roundrestart();
 
         /// <summary>
+        /// Forces the round to end, regardless of which factions are alive.
+        /// </summary>
+        /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
+        public static bool ForceEnd()
+        {
+            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2)
+            {
+                return false;
+            }
+
+            if (IsStarted && !IsLocked)
+            {
+                RoundSummary.singleton.ForceEnd();
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Start the round.
         /// </summary>
         public static void Start() => CharacterClassManager.ForceRoundStart();

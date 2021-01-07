@@ -14,8 +14,10 @@ namespace Exiled.Events.EventArgs
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
-    /// Contains all informations before spawning a wave of <see cref="Team.CHI"/> or <see cref="Team.MTF"/>..
+    /// Contains all informations before spawning a wave of <see cref="SpawnableTeamType.NineTailedFox"/> or <see cref="SpawnableTeamType.ChaosInsurgency"/>.
     /// </summary>
     public class RespawningTeamEventArgs : EventArgs
     {
@@ -45,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public int MaximumRespawnAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating what the next respawnable team is..
+        /// Gets or sets a value indicating what the next respawnable team is.
         /// </summary>
         public SpawnableTeamType NextKnownTeam
         {
@@ -58,7 +60,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the spawn can occur.
         /// </summary>
         public bool IsAllowed { get; set; }
 
@@ -72,7 +74,15 @@ namespace Exiled.Events.EventArgs
             var team = SpawnableTeam;
             if (team != null)
             {
-                MaximumRespawnAmount = team.Value.MaxWaveSize;
+                // Refer to the game code
+                int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
+                if (a == 0)
+                {
+                    a = RespawnTickets.DefaultTeamAmount;
+                    RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
+                }
+
+                MaximumRespawnAmount = Mathf.Min(a, team.Value.MaxWaveSize);
             }
         }
     }

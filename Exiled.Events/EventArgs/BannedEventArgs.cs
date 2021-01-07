@@ -19,20 +19,33 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="BannedEventArgs"/> class.
         /// </summary>
-        /// <param name="player">The banned player.</param>
+        /// <param name="target">The banned player.</param>
+        /// <param name="issuer">The issuer player.</param>
         /// <param name="details">The ban details.</param>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        public BannedEventArgs(Player player, BanDetails details, BanHandler.BanType type)
+        public BannedEventArgs(Player target, Player issuer, BanDetails details, BanHandler.BanType type)
         {
-            Player = player;
+            Target = target;
             Details = details;
             Type = type;
+            Issuer = issuer;
         }
 
         /// <summary>
         /// Gets the banned player.
         /// </summary>
-        public Player Player { get; }
+        [Obsolete("Use Target instead")]
+        public Player Player => Target;
+
+        /// <summary>
+        /// Gets the banned player.
+        /// </summary>
+        public Player Target { get; }
+
+        /// <summary>
+        /// Gets the issuer player.
+        /// </summary>
+        public Player Issuer { get; }
 
         /// <summary>
         /// Gets the ban details.

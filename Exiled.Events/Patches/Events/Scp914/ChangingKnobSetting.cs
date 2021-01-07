@@ -45,8 +45,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             var ev = generator.DeclareLocal(typeof(ChangingKnobSettingEventArgs));
 
             // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            var startingLabels = newInstructions[index].labels;
 
             // Get the return label from the last instruction.
             var returnLabel = newInstructions[index - 1].labels[0];
@@ -99,13 +98,12 @@ namespace Exiled.Events.Patches.Events.Scp914
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            newInstructions[index].WithLabels(startingLabels);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

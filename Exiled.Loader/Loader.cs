@@ -29,6 +29,10 @@ namespace Exiled.Loader
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
 
+#if PUBLIC_BETA
+            Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
+#endif
+
             Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.ToString(3)}", ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
@@ -57,7 +61,7 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static List<IPlugin<IConfig>> Plugins { get; } = new List<IPlugin<IConfig>>();
+        public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
 
         /// <summary>
         /// Gets the initialized global random class.
@@ -112,7 +116,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins).Where(path => (path.EndsWith(".dll") || path.EndsWith(".exe")) && !IsAssemblyLoaded(path)))
+            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(pluginPath);
 
@@ -126,8 +130,6 @@ namespace Exiled.Loader
 
                 Plugins.Add(plugin);
             }
-
-            Plugins.Sort();
         }
 
         /// <summary>
@@ -286,7 +288,6 @@ namespace Exiled.Loader
             {
                 try
                 {
-                    plugin.Config.IsEnabled = false;
                     plugin.OnUnregisteringCommands();
                     plugin.OnDisabled();
                 }
@@ -298,20 +299,6 @@ namespace Exiled.Loader
         }
 
         /// <summary>
-        /// Check if a dependency is loaded.
-        /// </summary>
-        /// <param name="path">The path to check from.</param>
-        /// <returns>Returns whether the dependency is loaded or not.</returns>
-        public static bool IsDependencyLoaded(string path) => Dependencies.Exists(assembly => assembly.Location == path);
-
-        /// <summary>
-        /// Check if an assembly is loaded.
-        /// </summary>
-        /// <param name="path">The path to check from.</param>
-        /// <returns>Returns whether the assembly is loaded or not.</returns>
-        public static bool IsAssemblyLoaded(string path) => Plugins.Any(plugin => plugin.Assembly.Location == path);
-
-        /// <summary>
         /// Loads all dependencies.
         /// </summary>
         private static void LoadDependencies()
@@ -320,7 +307,7 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
 
-                foreach (string dependency in Directory.GetFiles(Paths.Dependencies).Where(path => path.EndsWith(".dll") && !IsDependencyLoaded(path)))
+                foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {
                     Assembly assembly = LoadAssembly(dependency);
 

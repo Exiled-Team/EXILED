@@ -21,7 +21,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="scp096">The <see cref="Scp096"/> instance.</param>
         /// <param name="player">The player who's controlling SCP-096.</param>
-        /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+        /// <param name="isAllowed">Indicates whether or not SCP-096 can calm down.</param>
         public CalmingDownEventArgs(Scp096 scp096, Player player, bool isAllowed = true)
             : base(scp096, player, isAllowed)
         {

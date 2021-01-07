@@ -23,5 +23,10 @@ namespace Exiled.Events.EventArgs
             : base(player, isAllowed)
         {
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the nuke was set off automatically.
+        /// </summary>
+        public bool IsAuto { get; } = AlphaWarheadController.Host._autoDetonate && AlphaWarheadController.Host._autoDetonateTime <= 0;
     }
 }

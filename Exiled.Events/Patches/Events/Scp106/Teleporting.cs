@@ -44,9 +44,8 @@ namespace Exiled.Events.Patches.Events.Scp106
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
             var ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
 
-            // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = ListPool<Label>.Shared.Rent(newInstructions[index].labels);
-            newInstructions[index].labels.Clear();
+            // Get the count to find the previous index
+            var oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
             var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
@@ -81,13 +80,13 @@ namespace Exiled.Events.Patches.Events.Scp106
             });
 
             // Add the starting labels to the first injected instruction.
-            newInstructions[index].labels.AddRange(startingLabels);
+            // Calculate the difference and get the valid index - is better and easy than using a list
+            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
-            ListPool<Label>.Shared.Return(startingLabels);
         }
     }
 }

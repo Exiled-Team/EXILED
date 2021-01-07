@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Commands
+namespace Exiled.Events.Commands.Show
 {
     using System;
 
@@ -27,10 +27,10 @@ namespace Exiled.Events.Commands
         public override string Command { get; } = "show";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = { };
+        public override string[] Aliases { get; } = Array.Empty<string>();
 
         /// <inheritdoc/>
-        public override string Description { get; } = string.Empty;
+        public override string Description { get; } = "Show plugins";
 
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()

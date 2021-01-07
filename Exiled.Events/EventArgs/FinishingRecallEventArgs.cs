@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player is infected.
+    /// Contains all informations before SCP-049 finishes recalling a player.
     /// </summary>
     public class FinishingRecallEventArgs : EventArgs
     {
@@ -30,17 +30,17 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's getting infected.
+        /// Gets the player who's getting recalled.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the player who is SCP049.
+        /// Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Scp049 { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can be recalled.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

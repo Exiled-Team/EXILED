@@ -57,16 +57,7 @@ namespace Exiled.Events.Patches.Events.Server
                         list.ShuffleList();
                     }
 
-                    RespawnTickets singleton = RespawnTickets.Singleton;
-                    int a = singleton.GetAvailableTickets(__instance.NextKnownTeam);
-                    if (a == 0)
-                    {
-                        a = RespawnTickets.DefaultTeamAmount;
-                        RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
-                    }
-
-                    int num = Mathf.Min(a, spawnableTeam.MaxWaveSize);
-
+                    // Code that should be here is in RespawningTeamEventArgs::ReissueNextKnownTeam
                     var ev = new RespawningTeamEventArgs(list, __instance.NextKnownTeam);
                     Handlers.Server.OnRespawningTeam(ev);
 

@@ -7,12 +7,10 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using System;
-
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player activates the workstation.
+    /// Contains all informations before a player deactivates a workstation.
     /// </summary>
     public class DeactivatingWorkstationEventArgs : ActivatingWorkstationEventArgs
     {
@@ -21,7 +19,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="station"><inheritdoc cref="Permissions"/></param>
-        /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
+        /// <param name="isAllowed">Gets or sets a value indicating whether or not the workstation can be deactivated.</param>
         public DeactivatingWorkstationEventArgs(Player player, WorkStation station, bool isAllowed = true)
             : base(player, station, isAllowed)
         {

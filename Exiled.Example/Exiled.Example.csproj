@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.targets" />
+  <Import Project="../EXILED.props" />
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
@@ -10,14 +10,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exiled.API\Exiled.API.csproj"                 />
-    <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj"           />
+    <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
+    <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="YamlDotNet" Version="8.1.2" />
-    <PackageReference Include="Lib.Harmony" Version="2.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
+    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
+    <PackageReference Include="Lib.Harmony" Version="$(HarmonyVersion)" />
   </ItemGroup>
 
   <ItemGroup>
