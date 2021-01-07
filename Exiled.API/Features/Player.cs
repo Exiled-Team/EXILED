@@ -763,14 +763,28 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+        public static IEnumerable<Player> Get(Team team) 
+        {
+            List<Player> players = new List<Player>();
+            foreach(Player p in List)
+                if(p.Team == team)
+                    players.Add(p);
+            return players;
+        }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+        public static IEnumerable<Player> Get(RoleType role)
+        {
+            List<Player> players = new List<Player>();
+            foreach(Player p in List)
+                if(p.Role == role)
+                    players.Add(p);
+            return players;
+        }
 
         /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.
