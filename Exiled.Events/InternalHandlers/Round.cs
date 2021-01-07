@@ -17,10 +17,10 @@ namespace Exiled.Events.InternalHandlers
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
     /// </summary>
-    internal sealed class Round
+    internal static class Round
     {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
-        public void OnWaitingForPlayers()
+        public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
 
@@ -31,7 +31,7 @@ namespace Exiled.Events.InternalHandlers
         }
 
         /// <inheritdoc cref="Server.OnRestartingRound"/>
-        public void OnRestartingRound()
+        public static void OnRestartingRound()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
 
@@ -41,7 +41,7 @@ namespace Exiled.Events.InternalHandlers
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
-        public void OnRoundStarted()
+        public static void OnRoundStarted()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
 
@@ -56,7 +56,7 @@ namespace Exiled.Events.InternalHandlers
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
                 return;

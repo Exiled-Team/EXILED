@@ -26,7 +26,6 @@ namespace Exiled.Events
     {
 #pragma warning disable 0618
         private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
-        private readonly InternalHandlers.Round round = new InternalHandlers.Round();
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
@@ -83,10 +82,10 @@ namespace Exiled.Events
 
             SceneManager.sceneUnloaded += InternalHandlers.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers += round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound += round.OnRestartingRound;
-            Handlers.Server.RoundStarted += round.OnRoundStarted;
-            Handlers.Player.ChangingRole += round.OnChangingRole;
+            Handlers.Server.WaitingForPlayers += InternalHandlers.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound += InternalHandlers.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
 
             ServerConsole.ReloadServerName();
             Scp096.MaxShield = Config.Scp096MaxShieldAmount;
