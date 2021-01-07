@@ -50,8 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                byte b;
-                if (!request.Data.TryGetByte(out b) || b >= 2)
+                if (!request.Data.TryGetByte(out byte b) || b >= 2)
                 {
                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)2);
@@ -59,8 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else if (b == 1)
                 {
-                    string a;
-                    if (CustomLiteNetLib4MirrorTransport.VerificationChallenge != null && request.Data.TryGetString(out a) && a == CustomLiteNetLib4MirrorTransport.VerificationChallenge)
+                    if (CustomLiteNetLib4MirrorTransport.VerificationChallenge != null && request.Data.TryGetString(out string a) && a == CustomLiteNetLib4MirrorTransport.VerificationChallenge)
                     {
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)18);
@@ -89,11 +87,7 @@ namespace Exiled.Events.Patches.Events.Player
                 else
                 {
                     byte cBackwardRevision = 0;
-                    byte cMajor;
-                    byte cMinor;
-                    byte cRevision;
-                    bool flag;
-                    if (!request.Data.TryGetByte(out cMajor) || !request.Data.TryGetByte(out cMinor) || !request.Data.TryGetByte(out cRevision) || !request.Data.TryGetBool(out flag) || (flag && !request.Data.TryGetByte(out cBackwardRevision)))
+                    if (!request.Data.TryGetByte(out byte cMajor) || !request.Data.TryGetByte(out byte cMinor) || !request.Data.TryGetByte(out byte cRevision) || !request.Data.TryGetBool(out bool flag) || (flag && !request.Data.TryGetByte(out cBackwardRevision)))
                     {
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                         CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)3);
@@ -107,10 +101,8 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                     else
                     {
-                        int num;
-                        bool flag2 = request.Data.TryGetInt(out num);
-                        byte[] array;
-                        if (!request.Data.TryGetBytesWithLength(out array))
+                        bool flag2 = request.Data.TryGetInt(out int num);
+                        if (!request.Data.TryGetBytesWithLength(out byte[] array))
                         {
                             flag2 = false;
                         }
@@ -174,7 +166,7 @@ namespace Exiled.Events.Patches.Events.Player
                                             return;
                                         }
                                     }
-                                    byte[] bytes = RandomGenerator.GetBytes((int)(CustomLiteNetLib4MirrorTransport.ChallengeInitLen + CustomLiteNetLib4MirrorTransport.ChallengeSecretLen), true);
+                                    byte[] bytes = RandomGenerator.GetBytes(CustomLiteNetLib4MirrorTransport.ChallengeInitLen + CustomLiteNetLib4MirrorTransport.ChallengeSecretLen, true);
                                     ServerConsole.AddLog(string.Format("Requested challenge for incoming connection from endpoint {0}.", request.RemoteEndPoint), ConsoleColor.Gray);
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                     CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)13);
@@ -183,16 +175,16 @@ namespace Exiled.Events.Patches.Events.Player
                                     switch (CustomLiteNetLib4MirrorTransport.ChallengeMode)
                                     {
                                         case ChallengeType.MD5:
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.ChallengeSecretLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(Md.Md5(bytes));
-                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen, (int)CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
+                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, CustomLiteNetLib4MirrorTransport.ChallengeInitLen, CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
                                             break;
                                         case ChallengeType.SHA1:
-                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes, 0, CustomLiteNetLib4MirrorTransport.ChallengeInitLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.Put(CustomLiteNetLib4MirrorTransport.ChallengeSecretLen);
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(Sha.Sha1(bytes));
-                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, (int)CustomLiteNetLib4MirrorTransport.ChallengeInitLen, (int)CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
+                                            CustomLiteNetLib4MirrorTransport.Challenges.Add(key, new PreauthChallengeItem(new ArraySegment<byte>(bytes, CustomLiteNetLib4MirrorTransport.ChallengeInitLen, CustomLiteNetLib4MirrorTransport.ChallengeSecretLen)));
                                             break;
                                         case ChallengeType.Reply:
                                             CustomLiteNetLib4MirrorTransport.RequestWriter.PutBytesWithLength(bytes);
@@ -248,11 +240,6 @@ namespace Exiled.Events.Patches.Events.Player
                             {
                                 return;
                             }
-                            string text;
-                            long num3;
-                            byte b3;
-                            string text2;
-                            byte[] signature;
                             if (!CharacterClassManager.OnlineMode)
                             {
                                 KeyValuePair<BanDetails, BanDetails> keyValuePair = BanHandler.QueryBan(null, request.RemoteEndPoint.Address.ToString());
@@ -273,13 +260,13 @@ namespace Exiled.Events.Patches.Events.Player
                                     CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
                                 }
                             }
-                            else if (!request.Data.TryGetString(out text) || text == string.Empty)
+                            else if (!request.Data.TryGetString(out string text) || text == string.Empty)
                             {
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)5);
                                 request.RejectForce(CustomLiteNetLib4MirrorTransport.RequestWriter);
                             }
-                            else if (!request.Data.TryGetLong(out num3) || !request.Data.TryGetByte(out b3) || !request.Data.TryGetString(out text2) || !request.Data.TryGetBytesWithLength(out signature))
+                            else if (!request.Data.TryGetLong(out long num3) || !request.Data.TryGetByte(out byte b3) || !request.Data.TryGetString(out string text2) || !request.Data.TryGetBytesWithLength(out byte[] signature))
                             {
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
                                 CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)4);
