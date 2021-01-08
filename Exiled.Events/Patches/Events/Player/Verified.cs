@@ -33,16 +33,16 @@ namespace Exiled.Events.Patches.Events.Player
 
             foreach (var i in instructions)
             {
-                yield return i;
-
                 if (!did && i.opcode == OpCodes.Call && (MethodInfo)i.operand == targetMethod)
                 {
                     did = true;
 
                     // Think I wanna have a deal with IL?
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
                 }
+
+                yield return i;
             }
         }
 
