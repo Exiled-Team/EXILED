@@ -209,6 +209,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is verified.
+        /// </summary>
+        /// <remarks>
+        /// This is always false if online_mode is set to false.
+        /// </remarks>
+        public bool IsVerified { get; internal set; }
+
+        /// <summary>
         /// Gets or sets the player's display nickname.
         /// May be null.
         /// </summary>
