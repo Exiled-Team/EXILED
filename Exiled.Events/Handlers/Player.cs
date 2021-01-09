@@ -80,9 +80,19 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<JoinedEventArgs> Joined;
 
         /// <summary>
+        /// Ivoked after a player has been verified.
+        /// </summary>
+        public static event CustomEventHandler<VerifiedEventArgs> Verified;
+
+        /// <summary>
         /// Invoked after a player has left the server.
         /// </summary>
         public static event CustomEventHandler<LeftEventArgs> Left;
+
+        /// <summary>
+        /// Invoked before destroying a player.
+        /// </summary>
+        public static event CustomEventHandler<DestroyingEventArgs> Destroying;
 
         /// <summary>
         /// Invoked before hurting a player.
@@ -348,10 +358,22 @@ namespace Exiled.Events.Handlers
         public static void OnJoined(JoinedEventArgs ev) => Joined.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after a player has been verified.
+        /// </summary>
+        /// <param name="ev">The <see cref="VerifiedEventArgs"/> instance.</param>
+        public static void OnVerified(VerifiedEventArgs ev) => Verified.InvokeSafely(ev);
+
+        /// <summary>
         /// Called after a player has left the server.
         /// </summary>
         /// <param name="ev">The <see cref="LeftEventArgs"/> instance.</param>
         public static void OnLeft(LeftEventArgs ev) => Left.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before destroying a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance.</param>
+        public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
 
         /// <summary>
         /// Called before hurting a player.

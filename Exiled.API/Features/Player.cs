@@ -209,6 +209,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is verified.
+        /// </summary>
+        /// <remarks>
+        /// This is always false if online_mode is set to false.
+        /// </remarks>
+        public bool IsVerified { get; internal set; }
+
+        /// <summary>
         /// Gets or sets the player's display nickname.
         /// May be null.
         /// </summary>
@@ -391,13 +399,9 @@ namespace Exiled.API.Features
         public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
-        /// Gets or sets the player's IP address.
+        /// Gets the player's IP address.
         /// </summary>
-        public string IPAddress
-        {
-            get => ReferenceHub.queryProcessor._ipAddress;
-            set => ReferenceHub.queryProcessor._ipAddress = value;
-        }
+        public string IPAddress => ReferenceHub.networkIdentity.connectionToClient.address;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the <see cref="Player"/> has No-clip enabled.
@@ -428,7 +432,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is the host.
         /// </summary>
-        public bool IsHost => ReferenceHub.characterClassManager.IsHost;
+        public bool IsHost => ReferenceHub.isDedicatedServer;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is alive.

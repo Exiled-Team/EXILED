@@ -10,54 +10,39 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-    using Exiled.Loader.Features;
 
     using HarmonyLib;
 
-    using MEC;
+    using Mirror;
+
+    using PlayerAPI = Exiled.API.Features.Player;
+    using PlayerEvents = Exiled.Events.Handlers.Player;
 
     /// <summary>
-    /// Patches <see cref="ServerRoles.CallCmdServerSignatureComplete(string, string, string, bool)"/>.
-    /// Adds the <see cref="Player.Joined"/> event.
+    /// Patches <see cref="ReferenceHub.Awake"/>.
+    /// Adds the <see cref="PlayerEvents.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.CallCmdServerSignatureComplete))]
+    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
-        private static void Postfix(ServerRoles __instance)
+        private static void Postfix(ReferenceHub __instance)
         {
             try
             {
-                // It means the client has failed the verification
-                if (!__instance.PublicKeyAccepted)
+                // ReferenceHub is a component that is loaded first
+                if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;
 
-                // Allow only one call to this event
-                if (API.Features.Player.Dictionary.ContainsKey(__instance.gameObject))
-                    return;
+                var player = new PlayerAPI(__instance);
+                PlayerAPI.Dictionary.Add(__instance.gameObject, player);
 
-                var player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
-                API.Features.Player.Dictionary.Add(__instance.gameObject, player);
-
-                API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
-
-                if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
-
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    if (player?.IsMuted == true)
-                        player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-                });
-
-                var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
-
-                Player.OnJoined(ev);
+                PlayerEvents.OnJoined(new JoinedEventArgs(player));
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"{typeof(Joined).FullName}:\n{exception}");
+                Log.Error($"{typeof(Joined).FullName}:\n{exception}");
             }
         }
     }
