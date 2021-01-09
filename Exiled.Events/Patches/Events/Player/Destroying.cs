@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (player == null)
                     return;
 
-                PlayerEvents.OnDestroying(new DestoryingEventArgs(player));
+                PlayerEvents.OnDestroying(new DestroyingEventArgs(player));
 
                 PlayerAPI.Dictionary.Remove(player.GameObject);
                 PlayerAPI.IdsCache.Remove(player.Id);

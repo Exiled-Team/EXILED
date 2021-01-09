@@ -92,7 +92,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before destroying a player.
         /// </summary>
-        public static event CustomEventHandler<DestoryingEventArgs> Destroying;
+        public static event CustomEventHandler<DestroyingEventArgs> Destroying;
 
         /// <summary>
         /// Invoked before hurting a player.
@@ -372,8 +372,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before destroying a player.
         /// </summary>
-        /// <param name="ev">The <see cref="DestoryingEventArgs"/> instance.</param>
-        public static void OnDestroying(DestoryingEventArgs ev) => Destroying.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="DestroyingEventArgs"/> instance.</param>
+        public static void OnDestroying(DestroyingEventArgs ev) => Destroying.InvokeSafely(ev);
 
         /// <summary>
         /// Called before hurting a player.
