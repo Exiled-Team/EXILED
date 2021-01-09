@@ -37,6 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 PlayerAPI.Dictionary.Remove(player.GameObject);
                 PlayerAPI.IdsCache.Remove(player.Id);
+                PlayerAPI.UserIdsCache.Remove(player.UserId);
             }
             catch (Exception ex)
             {

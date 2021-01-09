@@ -15,6 +15,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
 
@@ -29,7 +31,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (__instance.isDedicatedServer)
+                // ReferenceHub is a component that is loaded first
+                if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;
 
                 var player = new PlayerAPI(__instance);
