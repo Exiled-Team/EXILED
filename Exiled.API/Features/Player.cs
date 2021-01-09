@@ -399,13 +399,9 @@ namespace Exiled.API.Features
         public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
 
         /// <summary>
-        /// Gets or sets the player's IP address.
+        /// Gets the player's IP address.
         /// </summary>
-        public string IPAddress
-        {
-            get => ReferenceHub.queryProcessor._ipAddress;
-            set => ReferenceHub.queryProcessor._ipAddress = value;
-        }
+        public string IPAddress => ReferenceHub.networkIdentity.connectionToClient.address;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the <see cref="Player"/> has No-clip enabled.
