@@ -432,7 +432,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is the host.
         /// </summary>
-        public bool IsHost => ReferenceHub.characterClassManager.IsHost;
+        public bool IsHost => ReferenceHub.isDedicatedServer;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is alive.
