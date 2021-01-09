@@ -12,10 +12,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Loader.Features;
 
     using HarmonyLib;
 
-    using Mirror;
+    using MEC;
 
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
@@ -37,6 +38,17 @@ namespace Exiled.Events.Patches.Events.Player
 
                 var player = new PlayerAPI(__instance);
                 PlayerAPI.Dictionary.Add(__instance.gameObject, player);
+
+                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
+
+                if (PlayerManager.players.Count >= CustomNetworkManager.slots)
+                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
+
+                Timing.CallDelayed(0.25f, () =>
+                {
+                    if (player.IsMuted)
+                        player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+                });
 
                 PlayerEvents.OnJoined(new JoinedEventArgs(player));
             }

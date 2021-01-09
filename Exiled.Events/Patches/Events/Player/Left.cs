@@ -34,19 +34,11 @@ namespace Exiled.Events.Patches.Events.Player
                     return;
 
                 Player player = Player.Get(conn.identity.gameObject);
-
                 if (player == null || player.IsHost)
                     return;
 
-                var ev = new LeftEventArgs(player);
-
-                Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({player?.Id}) disconnected", ConsoleColor.Green);
-
-                Handlers.Player.OnLeft(ev);
-
-                Player.IdsCache.Remove(player.Id);
-                Player.UserIdsCache.Remove(player.UserId);
-                Player.Dictionary.Remove(player.GameObject);
+                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) disconnected", ConsoleColor.Green);
+                Handlers.Player.OnLeft(new LeftEventArgs(player));
             }
             catch (Exception exception)
             {
