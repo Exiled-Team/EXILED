@@ -259,7 +259,7 @@ namespace Exiled.Updater
             var smallestExiledVersion = FindSmallestExiledVersion();
             if (smallestExiledVersion != null)
             {
-                Log.Info($"Found the smallest version of Exiled - {smallestExiledVersion.FullName}");
+                Log.Info($"Found the latest version of Exiled - {smallestExiledVersion.FullName}");
 
                 var includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease(releases);
                 for (int z = 0; z < releases.Length; z++)
