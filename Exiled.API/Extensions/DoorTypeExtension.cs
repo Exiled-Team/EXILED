@@ -38,9 +38,6 @@ namespace Exiled.API.Extensions
 
             var doors = Map.Doors;
 
-            if (doors == null)
-                return;
-
             var doorCount = doors.Count;
             for (int i = 0; i < doorCount; i++)
             {
