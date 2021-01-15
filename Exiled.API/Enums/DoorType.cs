@@ -65,7 +65,18 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the 173 door.
         /// </summary>
+        [System.Obsolete("Replaced with Scp173Conenctor")]
         Scp173,
+
+        /// <summary>
+        /// Represents the 173 gate.
+        /// </summary>
+        Scp173Gate,
+
+        /// <summary>
+        /// Represents the door between the 173 gate and the 173 armory.
+        /// </summary>
+        Scp173Connector,
 
         /// <summary>
         /// Represents the 173_ARMORY door.
@@ -80,7 +91,13 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the 372 door.
         /// </summary>
+        [System.Obsolete("Replaced with GR18.")]
         Scp372,
+
+        /// <summary>
+        /// Represents the GR18 door.
+        /// </summary>
+        GR18,
 
         /// <summary>
         /// Represents the 914 door.
@@ -90,6 +107,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the Airlocks door.
         /// </summary>
+        [System.Obsolete("Unused")]
         Airlocks,
 
         /// <summary>
@@ -110,22 +128,40 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the ContDoor door.
         /// </summary>
+        [System.Obsolete("Unused")]
         ContDoor,
 
         /// <summary>
-        /// Represents the EntrDoor door.
+        /// RRepresents any entrance zone styled door.
         /// </summary>
         EntranceDoor,
 
         /// <summary>
         /// Represents the ESCAPE door.
         /// </summary>
+        [System.Obsolete("Replaced with EscapePrimary.")]
         Escape,
+
+        /// <summary>
+        /// Represents the ESCAPE_PRIMARY door.
+        /// </summary>
+        EscapePrimary,
 
         /// <summary>
         /// Represents the ESCAPE_INNER door.
         /// </summary>
+        [System.Obsolete("Replaced with EscapeSecondary.")]
         EscapeInner,
+
+        /// <summary>
+        /// Represents the ESCAPE_SECONDARY door.
+        /// </summary>
+        EscapeSecondary,
+
+        /// <summary>
+        /// Represents the SERVERS_BOTTOM door.
+        /// </summary>
+        ServersBottom,
 
         /// <summary>
         /// Represents the GATE_A door.
@@ -143,7 +179,7 @@ namespace Exiled.API.Enums
         HczArmory,
 
         /// <summary>
-        /// Represents the HeavyContainmentDoor door.
+        /// Represents any heavy containment styled door.
         /// </summary>
         HeavyContainmentDoor,
 
@@ -183,7 +219,7 @@ namespace Exiled.API.Enums
         LczWc,
 
         /// <summary>
-        /// Represents the LightContainmentDoor door.
+        /// Represents any light containment styled door.
         /// </summary>
         LightContainmentDoor,
 
