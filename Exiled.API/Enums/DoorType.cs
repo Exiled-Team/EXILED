@@ -7,11 +7,20 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
+#pragma warning disable SA1124 // Do not use regions
+
     /// <summary>
     /// Unique identifier for the different types of doors.
     /// </summary>
     public enum DoorType
     {
+        /// <summary>
+        /// Represents an unknown door.
+        /// </summary>
+        UnknownDoor = 0,
+
         /// <summary>
         /// Represents the 012 door.
         /// </summary>
@@ -63,12 +72,6 @@ namespace Exiled.API.Enums
         Scp106Secondary,
 
         /// <summary>
-        /// Represents the 173 door.
-        /// </summary>
-        [System.Obsolete("Replaced with Scp173Conenctor")]
-        Scp173,
-
-        /// <summary>
         /// Represents the 173 gate.
         /// </summary>
         Scp173Gate,
@@ -89,12 +92,6 @@ namespace Exiled.API.Enums
         Scp173Bottom,
 
         /// <summary>
-        /// Represents the 372 door.
-        /// </summary>
-        [System.Obsolete("Replaced with GR18.")]
-        Scp372,
-
-        /// <summary>
         /// Represents the GR18 door.
         /// </summary>
         GR18,
@@ -103,12 +100,6 @@ namespace Exiled.API.Enums
         /// Represents the 914 door.
         /// </summary>
         Scp914,
-
-        /// <summary>
-        /// Represents the Airlocks door.
-        /// </summary>
-        [System.Obsolete("Unused")]
-        Airlocks,
 
         /// <summary>
         /// Represents the CHECKPOINT_ENT door.
@@ -126,32 +117,14 @@ namespace Exiled.API.Enums
         CheckpointLczB,
 
         /// <summary>
-        /// Represents the ContDoor door.
-        /// </summary>
-        [System.Obsolete("Unused")]
-        ContDoor,
-
-        /// <summary>
         /// RRepresents any entrance zone styled door.
         /// </summary>
         EntranceDoor,
 
         /// <summary>
-        /// Represents the ESCAPE door.
-        /// </summary>
-        [System.Obsolete("Replaced with EscapePrimary.")]
-        Escape,
-
-        /// <summary>
         /// Represents the ESCAPE_PRIMARY door.
         /// </summary>
         EscapePrimary,
-
-        /// <summary>
-        /// Represents the ESCAPE_INNER door.
-        /// </summary>
-        [System.Obsolete("Replaced with EscapeSecondary.")]
-        EscapeInner,
 
         /// <summary>
         /// Represents the ESCAPE_SECONDARY door.
@@ -243,9 +216,44 @@ namespace Exiled.API.Enums
         /// </summary>
         SurfaceGate,
 
+        #region Deprecated
+
         /// <summary>
-        /// Represents an unknown door.
+        /// Represents the 372 door.
         /// </summary>
-        UnknownDoor,
+        [Obsolete("Replaced with GR18.")]
+        Scp372 = GR18,
+
+        /// <summary>
+        /// Represents the Airlocks door.
+        /// </summary>
+        [Obsolete("Unused.")]
+        Airlocks = -1,
+
+        /// <summary>
+        /// Represents the ContDoor door.
+        /// </summary>
+        [Obsolete("Unused.")]
+        ContDoor = -1,
+
+        /// <summary>
+        /// Represents the ESCAPE door.
+        /// </summary>
+        [Obsolete("Replaced with EscapePrimary.")]
+        Escape = EscapePrimary,
+
+        /// <summary>
+        /// Represents the ESCAPE_INNER door.
+        /// </summary>
+        [Obsolete("Replaced with EscapeSecondary.")]
+        EscapeInner = EscapeSecondary,
+
+        /// <summary>
+        /// Represents the 173 door.
+        /// </summary>
+        [Obsolete("Replaced with Scp173Conenctor")]
+        Scp173 = Scp173Connector,
+
+        #endregion
     }
 }

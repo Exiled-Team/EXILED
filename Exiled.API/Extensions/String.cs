@@ -132,6 +132,21 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Retrieves a string before a symbol from an input.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="symbol">The symbol.</param>
+        /// <returns>Substring before the symbol.</returns>
+        public static string GetBefore(this string input, char symbol)
+        {
+            var start = input.IndexOf(symbol);
+            if (start != 0)
+                input = input.Substring(0, input.Length - start);
+
+            return input;
+        }
+
+        /// <summary>
         /// Splits camel case string to space-separated words. Ex: SomeCamelCase -> Some Camel Case.
         /// </summary>
         /// <param name="input">Camel case string.</param>
