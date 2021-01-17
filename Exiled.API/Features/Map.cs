@@ -113,7 +113,7 @@ namespace Exiled.API.Features
                 if (DoorsValue.Count == 0)
                 {
                     DoorsValue.AddRange(Object.FindObjectsOfType<DoorVariant>());
-                    DoorTypeExtension.RegisterDoorTypesOnLevelLoad();
+                    DoorExtensions.RegisterDoorTypesOnLevelLoad();
                 }
 
                 return ReadOnlyDoorsValue;
