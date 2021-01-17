@@ -25,16 +25,31 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="lift">The <see cref="Lift"/> to check.</param>
         /// <returns>The <see cref="ElevatorType"/>.</returns>
-        public static ElevatorType Type(this Lift lift) => OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out var elevatorType) ? elevatorType : ElevatorType.Unknown;
+        public static ElevatorType Type(this Lift lift)
+        {
+            RegisterIfNot();
+            return OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out var elevatorType) ? elevatorType : ElevatorType.Unknown;
+        }
 
         /// <summary>
-        /// Gets all the <see cref="ElevatorType"/> values for for the <see cref="Lift"/> instances using <see cref="Lift.elevatorName"/> and <see cref="UnityEngine.GameObject"/> name.
+        /// Does the work if not already done.
+        /// </summary>
+        internal static void RegisterIfNot()
+        {
+            if (OrderedElevatorTypes.Count == 0)
+                RegisterElevatorTypesOnLevelLoad();
+        }
+
+        /// <summary>
+        /// Gets all the <see cref="ElevatorType"/> values for the <see cref="Lift"/> instances using <see cref="Lift.elevatorName"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterElevatorTypesOnLevelLoad()
         {
             OrderedElevatorTypes.Clear();
 
             var lifts = Map.Lifts;
+            if (OrderedElevatorTypes.Count != 0)
+                return;
 
             if (lifts == null)
                 return;
@@ -47,9 +62,7 @@ namespace Exiled.API.Extensions
 
                 var liftName = string.IsNullOrWhiteSpace(lift.elevatorName) ? lift.elevatorName.RemoveBracketsOnEndOfName() : lift.elevatorName;
 
-                var elevatorType = GetElevatorType(liftName);
-
-                OrderedElevatorTypes.Add(liftID, elevatorType);
+                OrderedElevatorTypes[liftID] = GetElevatorType(liftName);
             }
         }
 
@@ -57,42 +70,23 @@ namespace Exiled.API.Extensions
         {
             switch (elevatorName)
             {
-                case "":
-                {
-                    return ElevatorType.Nuke;
-                }
-
+                case "SCP-049":
+                    return ElevatorType.Scp049;
+                case "GateA":
+                    return ElevatorType.GateA;
+                case "GateB":
+                    return ElevatorType.GateB;
                 case "ElA":
                 case "ElA2":
-                {
                     return ElevatorType.LczA;
-                }
-
                 case "ElB":
                 case "ElB2":
-                {
                     return ElevatorType.LczB;
-                }
-
-                case "GateA":
-                {
-                    return ElevatorType.GateA;
-                }
-
-                case "GateB":
-                {
-                    return ElevatorType.GateB;
-                }
-
-                case "SCP-049":
-                {
-                    return ElevatorType.Scp049;
-                }
+                case "":
+                    return ElevatorType.Nuke;
 
                 default:
-                {
                     return ElevatorType.Unknown;
-                }
             }
         }
     }

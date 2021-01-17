@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Exiled.API.Extensions;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -42,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2, component);
 
-                        Player.OnInteractingElevator(ev);
+                        Handlers.Player.OnInteractingElevator(ev);
 
                         if (!ev.IsAllowed)
                             return false;
@@ -57,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
 
                 return true;
             }
