@@ -14,6 +14,8 @@ namespace Exiled.API.Extensions
 
     using Interactables.Interobjects.DoorUtils;
 
+#pragma warning disable SA1123 // Do not place regions within elements
+
     /// <summary>
     /// Contains an extension method to get <see cref="DoorType"/> from <see cref="Door"/>.
     /// Internal class <see cref="RegisterDoorTypesOnLevelLoad"/> to cache the <see cref="DoorType"/> on level load.
@@ -57,86 +59,120 @@ namespace Exiled.API.Extensions
         {
             switch (doorName)
             {
-                case "012":
-                    return DoorType.Scp012;
-                case "012_BOTTOM":
-                    return DoorType.Scp012Bottom;
-                case "012_LOCKER":
-                    return DoorType.Scp012Locker;
-                case "049_ARMORY":
-                    return DoorType.Scp049Armory;
-                case "079_FIRST":
-                    return DoorType.Scp079First;
-                case "079_SECOND":
-                    return DoorType.Scp079Second;
-                case "096":
-                    return DoorType.Scp096;
-                case "106_BOTTOM":
-                    return DoorType.Scp106Bottom;
+                #region GameObject names
+
+                case "Prison BreakableDoor":
+                    return DoorType.PrisonDoor;
+
+                #endregion
+
+                // Doors contains the DoorNameTagExtension component
+                #region Door names
+
+                case "CHECKPOINT_LCZ_A":
+                    return DoorType.CheckpointLczA;
+                case "CHECKPOINT_EZ_HCZ":
+                    return DoorType.CheckpointEntrance;
+                case "CHECKPOINT_LCZ_B":
+                    return DoorType.CheckpointLczB;
                 case "106_PRIMARY":
                     return DoorType.Scp106Primary;
                 case "106_SECONDARY":
                     return DoorType.Scp106Secondary;
-                case "173":
-                    return DoorType.Scp173;
-                case "173_ARMORY":
-                    return DoorType.Scp173Armory;
-                case "173_BOTTOM":
-                    return DoorType.Scp173Bottom;
-                case "372":
-                    return DoorType.Scp372;
-                case "914":
-                    return DoorType.Scp914;
-                case "Airlocks":
-                    return DoorType.Airlocks;
-                case "CHECKPOINT_ENT":
-                    return DoorType.CheckpointEntrance;
-                case "CHECKPOINT_LCZ_A":
-                    return DoorType.CheckpointLczA;
-                case "CHECKPOINT_LCZ_B":
-                    return DoorType.CheckpointLczB;
-                case "ContDoor":
-                    return DoorType.ContDoor;
-                case "EntrDoor":
-                    return DoorType.EntranceDoor;
-                case "ESCAPE":
-                    return DoorType.Escape;
-                case "ESCAPE_INNER":
-                    return DoorType.EscapeInner;
-                case "GATE_A":
-                    return DoorType.GateA;
-                case "GATE_B":
-                    return DoorType.GateB;
-                case "HCZ_ARMORY":
-                    return DoorType.HczArmory;
-                case "HeavyContainmentDoor":
-                    return DoorType.HeavyContainmentDoor;
-                case "HID":
-                    return DoorType.HID;
-                case "HID_LEFT":
-                    return DoorType.HIDLeft;
-                case "HID_RIGHT":
-                    return DoorType.HIDRight;
+                case "106_BOTTOM":
+                    return DoorType.Scp106Bottom;
+                case "ESCAPE_PRIMARY":
+                    return DoorType.EscapePrimary;
+                case "ESCAPE_SECONDARY":
+                    return DoorType.EscapeSecondary;
                 case "INTERCOM":
                     return DoorType.Intercom;
-                case "LCZ_ARMORY":
-                    return DoorType.LczArmory;
-                case "LCZ_CAFE":
-                    return DoorType.LczCafe;
-                case "LCZ_WC":
-                    return DoorType.LczWc;
-                case "LightContainmentDoor":
-                    return DoorType.LightContainmentDoor;
                 case "NUKE_ARMORY":
                     return DoorType.NukeArmory;
-                case "NUKE_SURFACE":
+                case "LCZ_ARMORY":
+                    return DoorType.LczArmory;
+                case "012":
+                    return DoorType.Scp012;
+                case "SURFACE_NUKE":
                     return DoorType.NukeSurface;
-                case "PrisonDoor":
-                    return DoorType.PrisonDoor;
+                case "HID":
+                    return DoorType.HID;
+                case "HCZ_ARMORY":
+                    return DoorType.HczArmory;
+                case "096":
+                    return DoorType.Scp096;
+                case "049_ARMORY":
+                    return DoorType.Scp049Armory;
+                case "914":
+                    return DoorType.Scp914;
+                case "GATE_A":
+                    return DoorType.GateA;
+                case "079_FIRST":
+                    return DoorType.Scp079First;
+                case "GATE_B":
+                    return DoorType.GateB;
+                case "079_SECOND":
+                    return DoorType.Scp079Second;
+                case "012_LOCKER":
+                    return DoorType.Scp012Locker;
+                case "SERVERS_BOTTOM":
+                    return DoorType.ServersBottom;
+                case "173_CONNECTOR":
+                    return DoorType.Scp173Connector;
+                case "LCZ_WC":
+                    return DoorType.LczWc;
+                case "HID_RIGHT":
+                    return DoorType.HIDRight;
+                case "012_BOTTOM":
+                    return DoorType.Scp012Bottom;
+                case "HID_LEFT":
+                    return DoorType.HIDLeft;
+                case "173_ARMORY":
+                    return DoorType.Scp173Armory;
+                case "173_GATE":
+                    return DoorType.Scp173Gate;
+                case "GR18":
+                    return DoorType.GR18;
                 case "SURFACE_GATE":
                     return DoorType.SurfaceGate;
+
+                #endregion
+
+                // Doors spawned by the DoorSpawnPoint component
+                #region DoorSpawnPoint names
+
+                case "LCZ_CAFE":
+                    return DoorType.LczCafe;
+                case "173_BOTTOM":
+                    return DoorType.Scp173Bottom;
+
+                #endregion
+
+                // Doors contains the Door component,
+                // also gameobject names
+                #region Outdated doors
+
+                case "LightContainmentDoor":
+                    return DoorType.LightContainmentDoor;
+                case "EntrDoor":
+                    return DoorType.EntranceDoor;
+
+                #endregion
+
                 default:
-                    return DoorType.UnknownDoor;
+                    // All door gameobject names are separated by a whitespace
+                    doorName = doorName.GetBefore(' ');
+                    switch (doorName)
+                    {
+                        case "LCZ":
+                            return DoorType.LightContainmentDoor;
+                        case "HCZ":
+                            return DoorType.HeavyContainmentDoor;
+                        case "EZ":
+                            return DoorType.EntranceDoor;
+                        default:
+                            return DoorType.UnknownDoor;
+                    }
             }
         }
     }

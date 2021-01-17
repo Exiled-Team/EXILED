@@ -100,13 +100,9 @@ namespace Exiled.API.Features
         public static string IpAddress => ServerConsole.Ip;
 
         /// <summary>
-        /// Gets or sets the port of the server.
+        /// Gets the port of the server.
         /// </summary>
-        public static ushort Port
-        {
-            get => ServerStatic.ServerPort;
-            set => ServerStatic.ServerPort = value;
-        }
+        public static ushort Port => ServerStatic.ServerPort;
 
         /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.
