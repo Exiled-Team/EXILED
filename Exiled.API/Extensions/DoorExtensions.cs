@@ -61,7 +61,7 @@ namespace Exiled.API.Extensions
         public static string GetNametag(this DoorVariant door) => door.TryGetComponent<DoorNametagExtension>(out var name) ? name.GetName : null;
 
         /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for for the <see cref="Door"/> instances using <see cref="Door.DoorName"/> and <see cref="UnityEngine.GameObject"/> name.
+        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door.DoorName"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()
         {
