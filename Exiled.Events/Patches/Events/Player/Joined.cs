@@ -39,8 +39,6 @@ namespace Exiled.Events.Patches.Events.Player
                 var player = new PlayerAPI(__instance);
                 PlayerAPI.Dictionary.Add(__instance.gameObject, player);
 
-                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
-
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 

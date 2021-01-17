@@ -61,6 +61,8 @@ namespace Exiled.Events.Patches.Events.Player
                 var player = PlayerAPI.Get(instance.gameObject);
                 player.IsVerified = true;
 
+                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
+
                 PlayerEvents.OnVerified(new VerifiedEventArgs(player));
             }
             catch (Exception ex)
