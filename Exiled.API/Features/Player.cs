@@ -1075,12 +1075,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Returns true if item is found otherwise returns false.
         /// </summary>
-        /// <param name="item">The item to search for.</param>
-        public void HasItem(ItemType item)
+        /// <param name="targetItem">The item to search for.</param>
+        /// <returns>Returns true or false.</returns>
+        public bool HasItem(ItemType targetItem)
         {
             foreach (Inventory.SyncItemInfo item in this.Inventory.items)
             {
-                if (item.id == TargetItem)
+                if (item.id == targetItem)
                 {
                     return true;
                 }
