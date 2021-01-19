@@ -1073,6 +1073,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Returns true if item is found otherwise returns false.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        public void HasItem(ItemType item)
+        {
+            foreach (Inventory.SyncItemInfo item in this.Inventory.items)
+            {
+                if (item.id == TargetItem)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Removes an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
