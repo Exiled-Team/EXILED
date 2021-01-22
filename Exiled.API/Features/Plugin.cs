@@ -39,9 +39,6 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public Assembly Assembly { get; } = Assembly.GetCallingAssembly();
-        
-        /// <inheritdoc/>
-        public string Location { get; } = Exiled.Loader.Loader.Locations[this.Assembly];
 
         /// <inheritdoc/>
         public virtual string Name { get; }
