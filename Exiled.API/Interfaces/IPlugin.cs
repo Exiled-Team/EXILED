@@ -28,6 +28,11 @@ namespace Exiled.API.Interfaces
         Assembly Assembly { get; }
 
         /// <summary>
+        /// Gets the path to the plugin's DLL.
+        /// </summary>
+        string Location { get; }
+
+        /// <summary>
         /// Gets the plugin name.
         /// </summary>
         string Name { get; }

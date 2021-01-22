@@ -25,6 +25,9 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
+        /// <summary>
+        /// A dictionary containing the file paths of assemblies.
+        /// </summary>
         public static Dictionary<Assembly, string> Locations = new Dictionary<Assembly, string>();
 
         static Loader()
