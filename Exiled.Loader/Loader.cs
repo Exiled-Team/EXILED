@@ -25,10 +25,12 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
+#pragma warning disable SA1401
         /// <summary>
         /// A dictionary containing the file paths of assemblies.
         /// </summary>
         public static Dictionary<Assembly, string> Locations = new Dictionary<Assembly, string>();
+#pragma warning restore SA1401
 
         static Loader()
         {
