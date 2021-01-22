@@ -151,7 +151,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
         /// <returns>true, if redirection was successful; otherwise, false.</returns>
-        /// <remarks>If the return value is false, it doesn't restart the server.</remarks>
+        /// <remarks>If the returned value is false, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
             var pStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
