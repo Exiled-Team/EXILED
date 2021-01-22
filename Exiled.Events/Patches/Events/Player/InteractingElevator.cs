@@ -10,10 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
-    using Exiled.API.Extensions;
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -21,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.CallCmdUseElevator(GameObject)"/>.
-    /// Adds the <see cref="Player.InteractingElevator"/> event.
+    /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
     internal static class InteractingElevator
