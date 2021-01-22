@@ -60,7 +60,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="fastRestart">
         /// Indicates whether or not it'll be a fast restart.
-        /// If it's a fast restarts, then players won't be reconnected from
+        /// If it's a fast restart, then players won't be reconnected from
         /// the server; otherwise, they will.
         /// </param>
         /// <param name="overrideRestartAction">
