@@ -167,7 +167,7 @@ namespace Exiled.API.Features
         /// Redirects players to a server on another port, shutdowns the current server.
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
-        /// <returns>true if redirection was successful; otherwise, false.</returns>
+        /// <returns>true, if redirection was successful; otherwise, false.</returns>
         /// <remarks>If the return value is false, it doesn't shutdown the server.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
