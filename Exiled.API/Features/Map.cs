@@ -104,7 +104,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets all <see cref="Door"/> objects.
+        /// Gets all <see cref="DoorVariant"/> objects.
         /// </summary>
         public static ReadOnlyCollection<DoorVariant> Doors
         {
