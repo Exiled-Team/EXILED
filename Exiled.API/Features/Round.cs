@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         public static void Restart() => Restart(overrideRestartAction: false);
 
         /// <summary>
-        /// Restarts the round with the custom settings.
+        /// Restarts the round with custom settings.
         /// </summary>
         /// <param name="fastRestart">
         /// Indicates whether or not it'll be a fast restart.
