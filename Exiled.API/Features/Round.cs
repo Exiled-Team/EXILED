@@ -64,7 +64,7 @@ namespace Exiled.API.Features
         /// the server; otherwise, they will.
         /// </param>
         /// <param name="overrideRestartAction">
-        /// Overrides set <see cref="ServerStatic.NextRoundAction"/>.
+        /// Overrides a value of <see cref="ServerStatic.NextRoundAction"/>.
         /// Makes sense if someone used a command to set another action.
         /// </param>
         /// <param name="restartAction">
