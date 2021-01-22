@@ -70,7 +70,7 @@ namespace Exiled.API.Features
         /// <param name="restartAction">
         /// The <see cref="ServerStatic.NextRoundAction"/>.
         /// <para>
-        /// <see cref="ServerStatic.NextRoundAction.DoNothing"/> - does nothing, just silent restarts the round.
+        /// <see cref="ServerStatic.NextRoundAction.DoNothing"/> - does nothing, just restarts the round silently.
         /// <see cref="ServerStatic.NextRoundAction.Restart"/> - restarts the server, reconnects all players.
         /// <see cref="ServerStatic.NextRoundAction.Shutdown"/> - shutdowns the server, also disconnects all players.
         /// </para>
