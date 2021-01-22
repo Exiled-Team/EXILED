@@ -25,6 +25,8 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
+        public static Dictionary<Assembly, string> Locations = new Dictionary<Assembly, string>();
+
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
@@ -122,6 +124,8 @@ namespace Exiled.Loader
 
                 if (assembly == null)
                     continue;
+
+                Locations[assembly] = pluginPath;
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 
@@ -313,6 +317,8 @@ namespace Exiled.Loader
 
                     if (assembly == null)
                         continue;
+
+                    Locations[assembly] = dependency;
 
                     Dependencies.Add(assembly);
 
