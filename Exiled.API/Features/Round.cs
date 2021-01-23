@@ -103,7 +103,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Restarts the round silently.
         /// </summary>
-        public static void SilentRestart() => Restart(fastRestart: true, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.DoNothing);
+        public static void RestartSilently() => Restart(fastRestart: true, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.DoNothing);
 
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
