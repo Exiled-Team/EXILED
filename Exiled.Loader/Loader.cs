@@ -25,13 +25,6 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
-#pragma warning disable SA1401
-        /// <summary>
-        /// A dictionary containing the file paths of assemblies.
-        /// </summary>
-        public static Dictionary<Assembly, string> Locations = new Dictionary<Assembly, string>();
-#pragma warning restore SA1401
-
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
@@ -69,6 +62,11 @@ namespace Exiled.Loader
         /// Gets the plugins list.
         /// </summary>
         public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
+
+        /// <summary>
+        /// Gets a dictionary containing the file paths of assemblies.
+        /// </summary>
+        public static Dictionary<Assembly, string> Locations { get; } = new Dictionary<Assembly, string>();
 
         /// <summary>
         /// Gets the initialized global random class.
