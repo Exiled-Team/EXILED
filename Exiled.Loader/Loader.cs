@@ -64,6 +64,11 @@ namespace Exiled.Loader
         public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
 
         /// <summary>
+        /// Gets a dictionary containing the file paths of assemblies.
+        /// </summary>
+        public static Dictionary<Assembly, string> Locations { get; } = new Dictionary<Assembly, string>();
+
+        /// <summary>
         /// Gets the initialized global random class.
         /// </summary>
         public static Random Random { get; } = new Random();
@@ -122,6 +127,8 @@ namespace Exiled.Loader
 
                 if (assembly == null)
                     continue;
+
+                Locations[assembly] = pluginPath;
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 
@@ -313,6 +320,8 @@ namespace Exiled.Loader
 
                     if (assembly == null)
                         continue;
+
+                    Locations[assembly] = dependency;
 
                     Dependencies.Add(assembly);
 
