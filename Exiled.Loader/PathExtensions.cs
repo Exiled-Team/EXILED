@@ -36,6 +36,7 @@ namespace Exiled.Loader
         /// Gets a path of a plugin.
         /// </summary>
         /// <param name="plugin">The <see cref="IPlugin{IConfig}"/>.</param>
+        /// <exception cref="ArgumentNullException">The provided plugin is null.</exception>
         /// <returns>The path of the plugin or null.</returns>
         public static string GetPath(this IPlugin<IConfig> plugin)
         {
