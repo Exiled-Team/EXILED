@@ -22,7 +22,7 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="assembly">The <see cref="Assembly"/>.</param>
         /// <exception cref="ArgumentNullException">The provided assembly is null.</exception>
-        /// <returns>The path of the assembly.</returns>
+        /// <returns>The path of the assembly or null.</returns>
         public static string GetPath(this Assembly assembly)
         {
             if (assembly == null)
@@ -36,7 +36,7 @@ namespace Exiled.Loader
         /// Gets a path of a plugin.
         /// </summary>
         /// <param name="plugin">The <see cref="IPlugin{IConfig}"/>.</param>
-        /// <returns>The path of the plugin.</returns>
+        /// <returns>The path of the plugin or null.</returns>
         public static string GetPath(this IPlugin<IConfig> plugin)
         {
             if (plugin == null)
