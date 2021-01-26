@@ -87,6 +87,8 @@ namespace Exiled.Events
             Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
 
+            MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
+
             ServerConsole.ReloadServerName();
             Scp096.MaxShield = Config.Scp096MaxShieldAmount;
         }
@@ -107,6 +109,8 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
+
+            MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
         }
 
         /// <summary>
