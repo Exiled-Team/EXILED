@@ -51,9 +51,6 @@ namespace Exiled.API.Extensions
 
             var cameras = Map.Cameras;
 
-            if (cameras == null)
-                return;
-
             var cameraCount = cameras.Count;
             for (int i = 0; i < cameraCount; i++)
             {

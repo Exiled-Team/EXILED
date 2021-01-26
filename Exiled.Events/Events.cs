@@ -86,6 +86,7 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound += InternalHandlers.Round.OnRestartingRound;
             Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
             Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
+            Handlers.Map.Generated += InternalHandlers.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
@@ -109,6 +110,7 @@ namespace Exiled.Events
             Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
             Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
             Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
+            Handlers.Map.Generated -= InternalHandlers.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
         }

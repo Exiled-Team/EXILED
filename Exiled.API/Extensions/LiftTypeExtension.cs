@@ -25,20 +25,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="lift">The <see cref="Lift"/> to check.</param>
         /// <returns>The <see cref="ElevatorType"/>.</returns>
-        public static ElevatorType Type(this Lift lift)
-        {
-            RegisterIfNot();
-            return OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out var elevatorType) ? elevatorType : ElevatorType.Unknown;
-        }
-
-        /// <summary>
-        /// Does the work if not already done.
-        /// </summary>
-        internal static void RegisterIfNot()
-        {
-            if (OrderedElevatorTypes.Count == 0)
-                RegisterElevatorTypesOnLevelLoad();
-        }
+        public static ElevatorType Type(this Lift lift) => OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out var elevatorType) ? elevatorType : ElevatorType.Unknown;
 
         /// <summary>
         /// Gets all the <see cref="ElevatorType"/> values for the <see cref="Lift"/> instances using <see cref="Lift.elevatorName"/> and <see cref="UnityEngine.GameObject"/> name.
@@ -48,11 +35,6 @@ namespace Exiled.API.Extensions
             OrderedElevatorTypes.Clear();
 
             var lifts = Map.Lifts;
-            if (OrderedElevatorTypes.Count != 0)
-                return;
-
-            if (lifts == null)
-                return;
 
             var liftCount = lifts.Count;
             for (int i = 0; i < liftCount; i++)

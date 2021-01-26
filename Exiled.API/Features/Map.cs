@@ -111,10 +111,7 @@ namespace Exiled.API.Features
             get
             {
                 if (DoorsValue.Count == 0)
-                {
                     DoorsValue.AddRange(Object.FindObjectsOfType<DoorVariant>());
-                    DoorExtensions.RegisterDoorTypesOnLevelLoad();
-                }
 
                 return ReadOnlyDoorsValue;
             }
@@ -128,10 +125,7 @@ namespace Exiled.API.Features
             get
             {
                 if (CamerasValue.Count == 0)
-                {
                     CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
-                    CameraExtensions.RegisterCameraInfoOnLevelLoad();
-                }
 
                 return ReadOnlyCamerasValue;
             }
@@ -145,10 +139,7 @@ namespace Exiled.API.Features
             get
             {
                 if (LiftsValue.Count == 0)
-                {
                     LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
-                    LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
-                }
 
                 return ReadOnlyLiftsValue;
             }
