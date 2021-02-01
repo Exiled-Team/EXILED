@@ -236,7 +236,7 @@ namespace Exiled.API.Features
             return doorList;
         }
 
-        private void Awake()
+        private void Start()
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
