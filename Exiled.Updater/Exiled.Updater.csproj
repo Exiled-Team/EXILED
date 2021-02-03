@@ -28,7 +28,6 @@
     <Reference Include="Assembly-CSharp-firstpass" HintPath="$(EXILED_REFERENCES)\Assembly-CSharp-firstpass.dll" Private="false" />
     <Reference Include="CommandSystem.Core" HintPath="$(EXILED_REFERENCES)\CommandSystem.Core.dll" Private="false" />
     <Reference Include="Mono.Posix" HintPath="$(EXILED_REFERENCES)\Mono.Posix.dll" Private="false" />
-    <Reference Include="NorhwoodLib" HintPath="$(EXILED_REFERENCES)\NorhwoodLib.dll" Private="false" />
   </ItemGroup>
 
 </Project>
