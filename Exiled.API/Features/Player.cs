@@ -940,6 +940,9 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
+                        if (!player.IsVerified || player.Nickname == null)
+                            continue;
+
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
