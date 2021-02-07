@@ -527,11 +527,11 @@ namespace Exiled.API.Features
             Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
             Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
 
-            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == Unit))
+            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
             {
-                if (Unit.Contains("<color"))
+                if (unit.Contains("<color"))
                 {
-                    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
+                    Regex regex = new Regex("<color=(.*)>(.*)</color>");
                     var v = regex.Match(unit);
                     string s = v.Groups[1].ToString();
                     ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(s, color);
