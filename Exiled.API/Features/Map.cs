@@ -532,11 +532,11 @@ namespace Exiled.API.Features
                 if (Unit.Contains("<color"))
                 {
                     System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
-                    var v = regex.Match(Unit);
+                    var v = regex.Match(unit);
                     string s = v.Groups[1].ToString();
-                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = Unit.Replace(s, color);
+                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(s, color);
                 }
-                else ply.ReferenceHub.characterClassManager.NetworkCurUnitName = $"<color={color}>{Unit}</color>";
+                else ply.ReferenceHub.characterClassManager.NetworkCurUnitName = $"<color={color}>{unit}</color>";
             }
         }
 
