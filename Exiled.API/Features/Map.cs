@@ -531,7 +531,7 @@ namespace Exiled.API.Features
             {
                 if (unit.Contains("<color"))
                 {
-                    Regex regex = new Regex("<color=(.*)>(.*)</color>");
+                    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
                     var v = regex.Match(unit);
                     string s = v.Groups[1].ToString();
                     ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(s, color);
