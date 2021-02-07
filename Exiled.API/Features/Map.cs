@@ -514,7 +514,7 @@ namespace Exiled.API.Features
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nameExtension);
             return nameExtension == null ? null : nameExtension.TargetDoor;
         }
-        
+
         /// <summary>
         /// Changes the color of a MTF unit.
         /// </summary>
