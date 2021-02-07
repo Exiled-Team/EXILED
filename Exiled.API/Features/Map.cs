@@ -536,7 +536,10 @@ namespace Exiled.API.Features
                     string s = v.Groups[1].ToString();
                     ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(s, color);
                 }
-                else ply.ReferenceHub.characterClassManager.NetworkCurUnitName = $"<color={color}>{unit}</color>";
+                else
+                {
+                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = $"<color={color}>{unit}</color>";
+                }
             }
         }
 
