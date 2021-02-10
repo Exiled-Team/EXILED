@@ -23,6 +23,9 @@ namespace Exiled.Installer
 
     using Octokit;
 
+    using Range = SemVer.Range;
+    using Version = SemVer.Version;
+
     internal enum PathResolution
     {
         UNDEFINED,
@@ -44,7 +47,7 @@ namespace Exiled.Installer
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
-        private static readonly Version VersionLimit = new Version(2, 0, 0);
+        private static readonly Range VersionLimit = new Range(">=2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -152,11 +155,14 @@ namespace Exiled.Installer
                 Environment.Exit(0);
         }
 
-        private static async Task<IEnumerable<Release>> GetReleases() =>
-            (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                .Where(r => SemVer2Version.TryParse(r.TagName, out var version)
-                && VersionComparer.CustomVersionGreaterOrEquals(version.Backwards, VersionLimit))
-                .OrderByDescending(r => r.CreatedAt.Ticks);
+        private static async Task<IEnumerable<Release>> GetReleases()
+        {
+            var releases = (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+                .Where(r => Version.TryParse(r.TagName, out var version)
+                    && VersionLimit.IsSatisfied(version));
+
+            return releases.OrderByDescending(r => r.CreatedAt.Ticks);
+        }
 
         private static string FormatRelease(Release r)
             => FormatRelease(r, false);
@@ -290,11 +296,13 @@ namespace Exiled.Installer
 
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
+            var range = new Range($"={args.TargetVersion}");
+
             foreach (var r in releases)
             {
                 release = r;
 
-                if (args.TargetVersion != null && r.TagName.Equals(args.TargetVersion, StringComparison.OrdinalIgnoreCase))
+                if (args.TargetVersion != null && range.IsSatisfied(r.TagName))
                     return true;
 
                 if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
