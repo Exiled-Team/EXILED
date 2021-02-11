@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1600 // Elements should be documented
     using System;
 
     using Exiled.API.Features;
@@ -28,6 +29,21 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
+        internal static void CallEvent(ReferenceHub hub, out Player player)
+        {
+            player = new PlayerAPI(hub);
+            PlayerAPI.Dictionary.Add(hub.gameObject, player);
+
+            var p = player;
+            Timing.CallDelayed(0.25f, () =>
+            {
+                if (p.IsMuted)
+                    p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+            });
+
+            PlayerEvents.OnJoined(new JoinedEventArgs(player));
+        }
+
         private static void Postfix(ReferenceHub __instance)
         {
             try
@@ -36,19 +52,10 @@ namespace Exiled.Events.Patches.Events.Player
                 if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;
 
-                var player = new PlayerAPI(__instance);
-                PlayerAPI.Dictionary.Add(__instance.gameObject, player);
-
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    if (player.IsMuted)
-                        player.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-                });
-
-                PlayerEvents.OnJoined(new JoinedEventArgs(player));
+                CallEvent(__instance, out _);
             }
             catch (Exception exception)
             {

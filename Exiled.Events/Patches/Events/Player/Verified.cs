@@ -59,6 +59,13 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 var player = PlayerAPI.Get(instance.gameObject);
+
+                // Means the player connected before WaitingForPlayers event is fired
+                // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
+                // Blame NorthWood
+                if (player == null)
+                    Joined.CallEvent(instance._hub, out player);
+
                 player.IsVerified = true;
 
                 Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
