@@ -52,7 +52,15 @@ namespace Exiled.Events.Patches.Events.Scp096
             if (ev.IsAllowed)
             {
                 if (!__instance._targets.IsEmpty() || __instance.Enraged)
+                {
+                    if (__instance.AddedTimeThisRage + ev.EnrageTimeToAdd >= __instance.MaximumAddedEnrageTime)
+                        ev.EnrageTimeToAdd = 0f;
+                    else if (__instance.AddedTimeThisRage + ev.EnrageTimeToAdd > __instance.MaximumAddedEnrageTime)
+                        ev.EnrageTimeToAdd = __instance.AddedTimeThisRage + ev.EnrageTimeToAdd - __instance.MaximumAddedEnrageTime;
                     __instance.EnrageTimeLeft += ev.EnrageTimeToAdd;
+                    __instance.AddedTimeThisRage += ev.EnrageTimeToAdd;
+                }
+
                 __instance._targets.Add(hub);
                 __instance.AdjustShield(ev.AhpToAdd);
                 NetworkServer.SendToClientOfPlayer<Scp096ToTargetMessage>(hub.characterClassManager.netIdentity, new Scp096ToTargetMessage(hub));
