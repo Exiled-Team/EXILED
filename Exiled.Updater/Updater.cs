@@ -280,9 +280,10 @@ namespace Exiled.Updater
         private IEnumerable<ExiledLibrary> GetExiledLibs()
         {
             return from a in AppDomain.CurrentDomain.GetAssemblies()
-                   let name = a.GetName()
-                   where name.Name.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase) &&
-                   !(Config.ExcludeAssemblies?.Contains(name.Name, StringComparison.OrdinalIgnoreCase) ?? false)
+                   let name = a.GetName().Name
+                   where name.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase)
+                   && !(Config.ExcludeAssemblies?.Contains(name, StringComparison.OrdinalIgnoreCase) ?? false)
+                   && name != Assembly.GetName().Name
                    select new ExiledLibrary(a);
         }
 
