@@ -7,7 +7,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <AssemblyName>Exiled.Updater</AssemblyName>
-    <Version>3.0.3</Version>
+    <Version>3.1.0</Version>
     <NoWarn>$(NoWarn);CS1591;SA1600;SA1401;SA1309;SA1134;SA1123;SA1201</NoWarn>
   </PropertyGroup>
 
