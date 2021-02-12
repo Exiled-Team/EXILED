@@ -13,6 +13,7 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.Patches.Events.Player;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -127,6 +128,7 @@ namespace Exiled.Events
                 var lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
+                PatchCompilerMess();
                 Harmony.PatchAll();
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
@@ -163,9 +165,20 @@ namespace Exiled.Events
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
+            UnpatchCompilerMess();
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+        }
+
+        private void PatchCompilerMess()
+        {
+            UsedMedicalItem.Patch();
+        }
+
+        private void UnpatchCompilerMess()
+        {
+            UsedMedicalItem.Unpatch();
         }
     }
 }

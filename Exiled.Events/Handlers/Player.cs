@@ -50,6 +50,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
 
         /// <summary>
+        /// Invoked after a player dequips a medical item.
+        /// </summary>
+        public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
+
+        /// <summary>
         /// Invoked after a player has stopped the use of a medical item.
         /// </summary>
         public static event CustomEventHandler<StoppingMedicalItemEventArgs> StoppingMedicalItem;
@@ -318,8 +323,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a player used a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="MedicalItemUsed"/> instance.</param>
+        /// <param name="ev">The <see cref="UsedMedicalItemEventArgs"/> instance.</param>
         public static void OnMedicalItemUsed(UsedMedicalItemEventArgs ev) => MedicalItemUsed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a player dequipped a medical item.
+        /// </summary>
+        /// <param name="ev">The <see cref="DequippedMedicalItemEventArgs"/> instance.</param>
+        public static void OnMedicalItemDequipped(DequippedMedicalItemEventArgs ev) => MedicalItemDequipped.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has stopped the use of a medical item.
