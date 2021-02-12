@@ -530,10 +530,10 @@ namespace Exiled.API.Features
 
             foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
             {
-                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);                
-                if (!stirng.IsNullOrEmpty(color))
+                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
+                if (!string.IsNullOrEmpty(color))
                     modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
-                
+
                 ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
         }
