@@ -531,7 +531,7 @@ namespace Exiled.API.Features
             {
                 if (unit.Contains("color"))
                 {
-                    if (color == null || color == " ") { ply.ReferenceHub.characterClassManager.NetworkCurUnitName = Regex.Replace(unit, "<[^>]*?>", ""); }
+                    if (string.IsNullOrEmpty(color) || color == " ") { ply.ReferenceHub.characterClassManager.NetworkCurUnitName = Regex.Replace(unit, "<[^>]*?>", ""); }
                     else
                     {
                     System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
