@@ -11,6 +11,7 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Text.RegularExpressions;
 
     using Exiled.API.Extensions;
 
@@ -529,22 +530,11 @@ namespace Exiled.API.Features
 
             foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
             {
-                if (unit.Contains("color"))
-                {
-                    if (color == null || color == " " || color == "")
-                    {
-                        ply.ReferenceHub.characterClassManager.NetworkCurUnitName = System.Text.RegularExpressions.Regex.Replace(unit, "<[^>]*?>", "");
-                    }
-                    else
-                    {
-                    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
-                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(regex.Match(unit).Groups[1].ToString(), color);
-                    }
-                }
-                else
-                {
-                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = $"<color={color}>{unit}</color>";
-                }
+                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);                
+                if (!stirng.IsNullOrEmpty(color))
+                    modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
+                
+                ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
         }
 
