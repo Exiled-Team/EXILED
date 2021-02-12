@@ -529,12 +529,14 @@ namespace Exiled.API.Features
 
             foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
             {
-                if (unit.Contains("<color"))
+                if (unit.Contains("color"))
                 {
+                    if (color == null || color == " ") { ply.ReferenceHub.characterClassManager.NetworkCurUnitName = Regex.Replace(unit, "<[^>]*?>", ""); }
+                    else
+                    {
                     System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex("<color=(.*)>(.*)</color>");
-                    var v = regex.Match(unit);
-                    string s = v.Groups[1].ToString();
-                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(s, color);
+                    ply.ReferenceHub.characterClassManager.NetworkCurUnitName = unit.Replace(regex.Match(unit).Groups[1].ToString(), color);
+                    }
                 }
                 else
                 {
