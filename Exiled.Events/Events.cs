@@ -129,8 +129,8 @@ namespace Exiled.Events
                 var lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                PatchCompilerMess();
-                Harmony.PatchAll();
+                SafePatchCompilerMess();
+                PatchByAttributes();
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -138,7 +138,7 @@ namespace Exiled.Events
             }
             catch (Exception exception)
             {
-                Log.Error($"Patching failed! {exception}");
+                Log.Error($"Patching failed!\n{exception}");
             }
         }
 
@@ -170,6 +170,32 @@ namespace Exiled.Events
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+        }
+
+        private void PatchByAttributes()
+        {
+            try
+            {
+                Harmony.PatchAll();
+                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Patching by attributes failed!\n{exception}");
+            }
+        }
+
+        private void SafePatchCompilerMess()
+        {
+            try
+            {
+                PatchCompilerMess();
+                Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Patching in the inner types failed!\n{e}");
+            }
         }
 
         private void PatchCompilerMess()
