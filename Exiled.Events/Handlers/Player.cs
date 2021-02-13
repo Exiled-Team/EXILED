@@ -47,11 +47,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a player uses a medical item.
         /// </summary>
+        /// <remarks>
+        /// Invoked after <see cref="MedicalItemDequipped"/>, if a player's class has
+        /// changed during their health increase, won't fire.
+        /// </remarks>
         public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
 
         /// <summary>
         /// Invoked after a player dequips a medical item.
         /// </summary>
+        /// <remarks>
+        /// Invoked before <see cref="MedicalItemUsed"/>, if a player cancels the
+        /// use of a medical item, won't fire.
+        /// </remarks>
         public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
 
         /// <summary>
