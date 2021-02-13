@@ -25,7 +25,7 @@ namespace Exiled.Events.Utils
         /// Initializes a new instance of the <see cref="NextEnumerator{T}"/> class.
         /// </summary>
         /// <param name="enumerator">The innner <see cref="IEnumerator{T}"/>.</param>
-        public NextEnumerator(IEnumerator<T> enumerator) => enumerator = inner ?? throw new ArgumentNullException(nameof(inner));
+        public NextEnumerator(IEnumerator<T> enumerator) => inner = enumerator ?? throw new ArgumentNullException(nameof(inner));
 
         /// <inheritdoc cref="IEnumerator{T}.Current"/>
         public T Current { get; private set; }
