@@ -47,7 +47,20 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a player uses a medical item.
         /// </summary>
+        /// <remarks>
+        /// Invoked after <see cref="MedicalItemDequipped"/>, if a player's class has
+        /// changed during their health increase, won't fire.
+        /// </remarks>
         public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
+
+        /// <summary>
+        /// Invoked after a player dequips a medical item.
+        /// </summary>
+        /// <remarks>
+        /// Invoked before <see cref="MedicalItemUsed"/>, if a player cancels the
+        /// use of a medical item, won't fire.
+        /// </remarks>
+        public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
 
         /// <summary>
         /// Invoked after a player has stopped the use of a medical item.
@@ -318,8 +331,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a player used a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="MedicalItemUsed"/> instance.</param>
+        /// <param name="ev">The <see cref="UsedMedicalItemEventArgs"/> instance.</param>
         public static void OnMedicalItemUsed(UsedMedicalItemEventArgs ev) => MedicalItemUsed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a player dequipped a medical item.
+        /// </summary>
+        /// <param name="ev">The <see cref="DequippedMedicalItemEventArgs"/> instance.</param>
+        public static void OnMedicalItemDequipped(DequippedMedicalItemEventArgs ev) => MedicalItemDequipped.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has stopped the use of a medical item.
