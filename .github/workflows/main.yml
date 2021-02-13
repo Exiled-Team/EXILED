@@ -77,8 +77,8 @@ jobs:
       shell: pwsh
       run: |
         [XML]$TargetsFile = Get-Content Exiled.props
-        $Version = $TargetsFile.Project.PropertyGroup.Version
-        $Version = $Version[0].Trim()
+        $Version = $TargetsFile.Project.PropertyGroup[2].Version
+        $Version = $Version.'#text'.Trim()
         $Year = [System.DateTime]::Now.ToString("yyyy")
         Write-Host "Generating for version $Version"
         nuget pack Exiled/Exiled.nuspec -Version $Version -Properties Year=$Year
