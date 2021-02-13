@@ -1,0 +1,283 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Exiled.Permissions</name>
+    </assembly>
+    <members>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Add">
+            <summary>
+            Adds a permission to a group.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Add.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Add.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Add.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Add.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Group.Add">
+            <summary>
+            Adds a group to permissions.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Add.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Add.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Add.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Group.Add.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Group.Group">
+            <summary>
+            Handles commands about permissions groups.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Group.Group.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Permissions.Commands.Permissions.Group.Group"/> class.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Group.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Group.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Group.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Group.Group.LoadGeneratedCommands">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Group.Group.ExecuteParent(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Group.Remove">
+            <summary>
+            Removes a group to permissions.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Remove.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Remove.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Group.Remove.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Group.Remove.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Permissions">
+            <summary>
+            Handles commands about permissions.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Permissions.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Permissions.Commands.Permissions.Permissions"/> class.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Permissions.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Permissions.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Permissions.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Permissions.LoadGeneratedCommands">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Permissions.ExecuteParent(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Reload">
+            <summary>
+            Reloads all permissions.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Reload.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Reload.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Reload.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Reload.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Commands.Permissions.Remove">
+            <summary>
+            Removes a permission from a group.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Remove.Command">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Remove.Aliases">
+            <inheritdoc/>
+        </member>
+        <member name="P:Exiled.Permissions.Commands.Permissions.Remove.Description">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Commands.Permissions.Remove.Execute(System.ArraySegment{System.String},CommandSystem.ICommandSender,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Config">
+            <inheritdoc cref="T:Exiled.API.Interfaces.IConfig"/>
+        </member>
+        <member name="M:Exiled.Permissions.Config.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Exiled.Permissions.Config"/> class.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Config.ShouldDebugBeShown">
+            <summary>
+            Gets a value indicating whether the debug should be shown or not.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Config.Folder">
+            <summary>
+            Gets the permissions folder path.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Config.FullPath">
+            <summary>
+            Gets the permissions full path.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Config.IsEnabled">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Extensions.Permissions">
+            <inheritdoc cref="T:Exiled.Permissions.Permissions"/>
+        </member>
+        <member name="P:Exiled.Permissions.Extensions.Permissions.Groups">
+            <summary>
+            Gets groups list.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Extensions.Permissions.DefaultGroup">
+            <summary>
+            Gets the default group.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.Create">
+            <summary>
+            Create permissions.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.Reload">
+            <summary>
+            Reloads permissions.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.Save">
+            <summary>
+            Save permissions.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.CheckPermission(CommandSystem.ICommandSender,System.String)">
+            <summary>
+            Checks a sender's permission.
+            </summary>
+            <param name="sender">The sender to be checked.</param>
+            <param name="permission">The permission to be checked.</param>
+            <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.CheckPermission(CommandSender,System.String)">
+            <summary>
+            Checks a sender's permission.
+            </summary>
+            <param name="sender">The sender to be checked.</param>
+            <param name="permission">The permission to be checked.</param>
+            <returns>Returns a value indicating whether the user has the permission or not.</returns>
+        </member>
+        <member name="M:Exiled.Permissions.Extensions.Permissions.CheckPermission(Exiled.API.Features.Player,System.String)">
+            <summary>
+            Checks a player's permission.
+            </summary>
+            <param name="player">The player to be checked.</param>
+            <param name="permission">The permission to be checked.</param>
+            <returns>true if the player's current or native group has permissions; otherwise, false.</returns>
+        </member>
+        <member name="T:Exiled.Permissions.Features.Group">
+            <summary>
+            Represents a player's group.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Features.Group.IsDefault">
+            <summary>
+            Gets or sets a value indicating whether group is the default one or not.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Features.Group.Inheritance">
+            <summary>
+            Gets or sets the group inheritance.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Features.Group.Permissions">
+            <summary>
+            Gets or sets the group permissions.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Features.Group.CombinedPermissions">
+            <summary>
+            Gets the combined permissions of the group plus all inherited groups.
+            </summary>
+        </member>
+        <member name="T:Exiled.Permissions.Permissions">
+            <summary>
+            Handles all plugin-related permissions, for executing commands, doing actions and so on.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Permissions.Instance">
+            <summary>
+            Gets the permissions instance.
+            </summary>
+        </member>
+        <member name="M:Exiled.Permissions.Permissions.OnEnabled">
+            <inheritdoc/>
+        </member>
+        <member name="M:Exiled.Permissions.Permissions.OnDisabled">
+            <inheritdoc/>
+        </member>
+        <member name="T:Exiled.Permissions.Properties.Resources">
+            <summary>
+              Classe di risorse fortemente tipizzata per la ricerca di stringhe localizzate e così via.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Properties.Resources.ResourceManager">
+            <summary>
+              Restituisce l'istanza di ResourceManager nella cache utilizzata da questa classe.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Properties.Resources.Culture">
+            <summary>
+              Esegue l'override della proprietà CurrentUICulture del thread corrente per tutte le
+              ricerche di risorse eseguite utilizzando questa classe di risorse fortemente tipizzata.
+            </summary>
+        </member>
+        <member name="P:Exiled.Permissions.Properties.Resources.permissions">
+            <summary>
+              Cerca una risorsa localizzata di tipo System.Byte[].
+            </summary>
+        </member>
+    </members>
+</doc>
