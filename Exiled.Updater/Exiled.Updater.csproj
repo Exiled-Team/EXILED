@@ -1,16 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.props" />
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <AssemblyName>Exiled.Updater</AssemblyName>
     <Authors>Exiled Team &#64; iRebbok</Authors>
+    <BaseProperties>false</BaseProperties>
     <Version>3.0.3</Version>
     <NoWarn>$(NoWarn);CS1591;SA1600;SA1401;SA1309;SA1134;SA1123;SA1201</NoWarn>
   </PropertyGroup>
+
+  <Import Project="../EXILED.props" />
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />

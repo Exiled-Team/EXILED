@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.props" />
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AssemblyName>Exiled.CreditTags</AssemblyName>
     <Authors>Babyboucher20 &#38; iRebbok &#38; Exiled Team</Authors>
+    <BaseProperties>false</BaseProperties>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn);CS1591;SA1600</NoWarn>
   </PropertyGroup>
+
+  <Import Project="../EXILED.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />

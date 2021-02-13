@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <Import Project="../EXILED.props" />
-
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AssemblyName>Exiled.Example</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
+
+  <Import Project="../EXILED.props" />
 
   <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
