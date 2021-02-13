@@ -17,8 +17,8 @@
     <YamlDotNetVersion>9.1.0</YamlDotNetVersion>
     <StyleCopVersion>1.1.118</StyleCopVersion>
 
-    <Company>Exiled Team</Company>
-    <Copyright>Copyright © Exiled Team 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
+    <Authors>Exiled Team</Authors>
+    <Copyright>Copyright © $(Authors) 2020 - $([System.DateTime]::Now.ToString("yyyy"))</Copyright>
     <RepositoryType>Git</RepositoryType>
     <RepositoryUrl>https://github.com/galaxy119/EXILED</RepositoryUrl>
     <PackageProjectUrl>https://github.com/galaxy119/EXILED</PackageProjectUrl>
