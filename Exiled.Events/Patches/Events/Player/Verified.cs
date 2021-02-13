@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
 
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Utils;
 
     using HarmonyLib;
 
@@ -31,26 +32,25 @@ namespace Exiled.Events.Patches.Events.Player
             var targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
             var did = false;
 
-            var ienumerator = instructions.GetEnumerator();
-            while (ienumerator.MoveNext())
+            using (var nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
             {
-                var i = ienumerator.Current;
-                CodeInstruction i2 = ienumerator.MoveNext() ? ienumerator.Current : null;
-
-                if (!did
-                    && i.opcode == OpCodes.Ldc_I4_0
-                    && i2 != null && i2.opcode == OpCodes.Call && (MethodInfo)i2.operand == targetMethod)
+                while (nextEnumerator.MoveNext())
                 {
-                    did = true;
+                    if (!did
+                        && nextEnumerator.Current.opcode == OpCodes.Ldc_I4_0
+                        && nextEnumerator.NextCurrent != null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
+                    {
+                        did = true;
 
-                    // Think I wanna have a deal with IL?
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
-                    yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        // Think I wanna have a deal with IL?
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
+                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                    }
+
+                    yield return nextEnumerator.Current;
+                    if (nextEnumerator.NextCurrent != null)
+                        yield return nextEnumerator.NextCurrent;
                 }
-
-                yield return i;
-                if (i2 != null)
-                    yield return i2;
             }
         }
 
