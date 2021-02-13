@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             const string nestedName = "<UseMedicalItem>d__24";
             const string methodName = "MoveNext";
 
-            type = Array.Find(typeof(ConsumableAndWearableItems).GetNestedTypes(BindingFlags.NonPublic | BindingFlags.Public), t => t.Name == nestedName);
+            type = AccessTools.Inner(typeof(ConsumableAndWearableItems), "<UseMedicalItem>d__24");
             method = type != null ? AccessTools.Method(type, methodName) : null;
             if (type == null || method == null)
             {

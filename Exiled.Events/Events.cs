@@ -14,6 +14,7 @@ namespace Exiled.Events
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.Patches.Events.Player;
+    using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -174,11 +175,13 @@ namespace Exiled.Events
         private void PatchCompilerMess()
         {
             UsedMedicalItem.Patch();
+            WaitingForPlayers.Patch();
         }
 
         private void UnpatchCompilerMess()
         {
             UsedMedicalItem.Unpatch();
+            WaitingForPlayers.Unpatch();
         }
     }
 }
