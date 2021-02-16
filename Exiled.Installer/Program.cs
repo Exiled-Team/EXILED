@@ -204,7 +204,7 @@ namespace Exiled.Installer
             {
                 Console.WriteLine($"Processing '{entry.Name}'");
 
-                if (entry.Name.ToLower().Contains("example"))
+                if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
                     Console.WriteLine($"Extract for {entry.Name} is disabled");
                     return;
@@ -298,14 +298,13 @@ namespace Exiled.Installer
         {
             Console.WriteLine("Trying to find release..");
 
-            var target = args.TargetVersion != null ? $"={args.TargetVersion}" : ">2.0.0";
-            var range = new Range($"{target}");
+            var range = args.TargetVersion != null ? new Range($"={args.TargetVersion}") : null;
 
             foreach (var r in releases)
             {
                 release = r;
 
-                if (args.TargetVersion != null && range.IsSatisfied(r.TagName))
+                if (range?.IsSatisfied(r.TagName) ?? false)
                     return true;
 
                 if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
