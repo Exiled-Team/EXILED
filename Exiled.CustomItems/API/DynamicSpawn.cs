@@ -15,14 +15,26 @@ namespace Exiled.CustomItems.API
     public class DynamicSpawn : CustomItemSpawn
     {
         /// <summary>
+        /// The <see cref="SpawnLocation"/> for this item.
+        /// </summary>
+        private readonly SpawnLocation location;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DynamicSpawn"/> class.
         /// </summary>
-        /// <param name="pos">The <see cref="Vector3"/> position to spawn the item.</param>
+        /// <param name="location">The <see cref="SpawnLocation"/> to spawn the item.</param>
         /// <param name="chance">The spawn chance for this location.</param>
-        /// <param name="name">The name of this location.</param>
-        public DynamicSpawn(Vector3 pos, float chance, string name)
-            : base(pos, chance, name)
+        public DynamicSpawn(SpawnLocation location, float chance)
+            : base(chance, $"{location}") => this.location = location;
+
+        /// <inheritdoc />
+        public override Vector Position
         {
+            get
+            {
+                Vector3 pos = location.TryGetLocation();
+                return new Vector(pos.x, pos.y, pos.z);
+            }
         }
     }
 }

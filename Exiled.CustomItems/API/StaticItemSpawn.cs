@@ -17,11 +17,13 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticItemSpawn"/> class.
         /// </summary>
-        /// <param name="location">The <see cref="SpawnLocation"/> for the item.</param>
+        /// <param name="position">The <see cref="Vector"/> for the item.</param>
         /// <param name="chance">The spawn chance for this location.</param>
-        public StaticItemSpawn(SpawnLocation location, float chance)
-            : base(location.TryGetLocation(), chance, $"{location}")
-        {
-        }
+        /// <param name="name">The name of this loctaion.</param>
+        public StaticItemSpawn(Vector position, float chance, string name)
+            : base(chance, name) => Position = position;
+
+        /// <inheritdoc />
+        public override Vector Position { get; }
     }
 }
