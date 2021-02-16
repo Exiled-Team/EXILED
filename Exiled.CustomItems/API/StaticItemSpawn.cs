@@ -10,7 +10,7 @@ namespace Exiled.CustomItems.API
     /// <summary>
     /// Handles static spawn locations.
     /// </summary>
-    public class StaticItemSpawn : CustomItemSpawn
+    public sealed class StaticItemSpawn : CustomItemSpawn
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="StaticItemSpawn"/> class.
@@ -19,9 +19,19 @@ namespace Exiled.CustomItems.API
         /// <param name="chance">The spawn chance for this location.</param>
         /// <param name="name">The name of this loctaion.</param>
         public StaticItemSpawn(Vector position, float chance, string name)
-            : base(chance, name) => Position = position;
+        {
+            Position = position;
+            Chance = chance;
+            Name = name;
+        }
 
         /// <inheritdoc />
-        public override Vector Position { get; }
+        public override Vector Position { get; set; }
+
+        /// <inheritdoc />
+        public override float Chance { get; set; }
+
+        /// <inheritdoc />
+        public override string Name { get; set; }
     }
 }

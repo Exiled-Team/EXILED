@@ -20,6 +20,20 @@ namespace Exiled.CustomItems.API
     {
         private int clipSize;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomWeapon"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
+        /// <param name="clipSize">The <see cref="int"/> size of the clip to be used.</param>
+        /// <param name="itemId">The <see cref="int"/> ID to be used.</param>
+        protected CustomWeapon(ItemType type, int clipSize, int itemId)
+            : base(type, itemId) => ClipSize = clipSize;
+
+        /// <summary>
+        /// Gets the weapon modifiers.
+        /// </summary>
+        public virtual Modifiers Modifiers { get; }
+
         /// <inheritdoc/>
         public override ItemType Type
         {
@@ -36,10 +50,10 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
-        public virtual int ClipSize
+        protected virtual int ClipSize
         {
             get => clipSize;
-            protected set
+            set
             {
                 if (clipSize < 0)
                     throw new ArgumentOutOfRangeException("ClipSize", value, "Minimum is 0");
@@ -47,11 +61,6 @@ namespace Exiled.CustomItems.API
                 clipSize = value;
             }
         }
-
-        /// <summary>
-        /// Gets the weapon modifiers.
-        /// </summary>
-        public abstract Modifiers Modifiers { get; }
 
         /// <inheritdoc/>
         public override void Init()
@@ -82,6 +91,9 @@ namespace Exiled.CustomItems.API
                 durability = 1,
                 id = Type,
                 uniq = Inventory._uniqId,
+                modBarrel = Modifiers.BarrelType,
+                modSight = Modifiers.SightType,
+                modOther = Modifiers.OtherType,
             };
             player.Inventory.items.Add(syncItemInfo);
             ItemIds.Add(syncItemInfo.uniq);
@@ -99,9 +111,9 @@ namespace Exiled.CustomItems.API
                 durability = ClipSize,
                 id = Type,
                 uniq = ++Inventory._uniqId,
-                modBarrel = (int)Modifiers.BarrelType,
-                modSight = (int)Modifiers.SightType,
-                modOther = (int)Modifiers.OtherType,
+                modBarrel = Modifiers.BarrelType,
+                modSight = Modifiers.SightType,
+                modOther = Modifiers.OtherType,
             };
 
             player.Inventory.items.Add(syncItemInfo);

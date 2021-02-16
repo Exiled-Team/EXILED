@@ -12,10 +12,10 @@ namespace Exiled.CustomItems.API
     /// <summary>
     /// A yaml-serializable vector object.
     /// </summary>
-    public class Vector
+    public readonly struct Vector
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Vector"/> class.
+        /// Initializes a new instance of the <see cref="Vector"/> struct.
         /// </summary>
         /// <param name="x">X coordinates.</param>
         /// <param name="y">Y coordinates.</param>
@@ -43,9 +43,9 @@ namespace Exiled.CustomItems.API
         public float Z { get; }
 
         /// <summary>
-        /// Converts this into a <see cref="Vector3"/>.
+        /// Gets a conversion this into a <see cref="Vector3"/>.
         /// </summary>
         /// <returns>The converted <see cref="Vector3"/>.</returns>
-        public Vector3 ToVector3() => new Vector3(X, Y, Z);
+        public Vector3 ToVector3 => new Vector3(X, Y, Z);
     }
 }

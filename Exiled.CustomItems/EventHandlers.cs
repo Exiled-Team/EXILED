@@ -42,7 +42,7 @@ namespace Exiled.CustomItems
                         continue;
 
                     count++;
-                    item.Spawn(spawn.Position.ToVector3());
+                    item.Spawn(spawn.Position.ToVector3);
                     Log.Debug($"Spawned {item.Name} at {spawn.Name} - {spawn.Position}", plugin.Config.Debug);
                 }
             }

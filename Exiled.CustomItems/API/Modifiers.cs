@@ -20,7 +20,7 @@ namespace Exiled.CustomItems.API
         /// <param name="barrelType"><inheritdoc cref="BarrelType"/></param>
         /// <param name="sightType"><inheritdoc cref="SightType"/></param>
         /// <param name="otherType"><inheritdoc cref="OtherType"/></param>
-        public Modifiers(BarrelType barrelType, SightType sightType, OtherType otherType)
+        public Modifiers(int barrelType, int sightType, int otherType)
         {
             BarrelType = barrelType;
             SightType = sightType;
@@ -30,16 +30,16 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Gets a value indicating what <see cref="BarrelType"/> the weapon will have.
         /// </summary>
-        public BarrelType BarrelType { get; }
+        public int BarrelType { get; }
 
         /// <summary>
         /// Gets a value indicating what <see cref="SightType"/> the weapon will have.
         /// </summary>
-        public SightType SightType { get; }
+        public int SightType { get; }
 
         /// <summary>
         /// Gets a value indicating what <see cref="OtherType"/> the weapon will have.
         /// </summary>
-        public OtherType OtherType { get; }
+        public int OtherType { get; }
     }
 }

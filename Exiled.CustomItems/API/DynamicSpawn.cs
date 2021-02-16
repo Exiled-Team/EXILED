@@ -7,12 +7,14 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
     using UnityEngine;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Handles dynamic spawn locations.
     /// </summary>
-    public class DynamicSpawn : CustomItemSpawn
+    public sealed class DynamicSpawn : CustomItemSpawn
     {
         /// <summary>
         /// The <see cref="SpawnLocation"/> for this item.
@@ -25,9 +27,14 @@ namespace Exiled.CustomItems.API
         /// <param name="location">The <see cref="SpawnLocation"/> to spawn the item.</param>
         /// <param name="chance">The spawn chance for this location.</param>
         public DynamicSpawn(SpawnLocation location, float chance)
-            : base(chance, $"{location}") => this.location = location;
+        {
+            this.location = location;
+            Chance = chance;
+            Name = $"{location}";
+        }
 
         /// <inheritdoc />
+        [YamlIgnore]
         public override Vector Position
         {
             get
@@ -35,6 +42,13 @@ namespace Exiled.CustomItems.API
                 Vector3 pos = location.TryGetLocation();
                 return new Vector(pos.x, pos.y, pos.z);
             }
+            set => throw new ArgumentException("You cannot set the position of a dynamic spawn.");
         }
+
+        /// <inheritdoc />
+        public override float Chance { get; set; }
+
+        /// <inheritdoc />
+        public override string Name { get; set; }
     }
 }

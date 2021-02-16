@@ -28,6 +28,16 @@ namespace Exiled.CustomItems.API
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CustomGrenade"/> class.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
+        /// <param name="itemId">The <see cref="int"/> custom ID to be used.</param>
+        protected CustomGrenade(ItemType type, int itemId)
+            : base(type, itemId)
+        {
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="ItemType"/> to use for this item.
         /// </summary>
         public override ItemType Type
@@ -45,12 +55,12 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Gets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
         /// </summary>
-        public abstract bool ExplodeOnCollision { get; }
+        protected virtual bool ExplodeOnCollision { get; } = false;
 
         /// <summary>
         /// Gets a value indicating how long the grenade's fuse time should be.
         /// </summary>
-        public abstract float FuseTime { get; }
+        protected virtual float FuseTime { get; } = 3f;
 
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.

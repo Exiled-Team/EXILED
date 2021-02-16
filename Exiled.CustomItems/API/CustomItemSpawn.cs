@@ -15,29 +15,18 @@ namespace Exiled.CustomItems.API
     public abstract class CustomItemSpawn
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomItemSpawn"/> class.
+        /// Gets or sets a value indicating where in the map to spawn the item.
         /// </summary>
-        /// <param name="chance">The spawn chance for this location.</param>
-        /// <param name="name">The <see cref="string"/> name of the item.</param>
-        protected CustomItemSpawn(float chance, string name)
-        {
-            Chance = chance;
-            Name = name;
-        }
+        public abstract Vector Position { get; set; }
 
         /// <summary>
-        /// Gets a value indicating where in the map to spawn the item.
+        /// Gets or sets a value indicating the spawn chance in this location.
         /// </summary>
-        public abstract Vector Position { get; }
+        public abstract float Chance { get; set; }
 
         /// <summary>
-        /// Gets a value indicating the spawn chance in this location.
+        /// Gets or sets the name of this spawn location.
         /// </summary>
-        public float Chance { get; }
-
-        /// <summary>
-        /// Gets the name of this spawn location.
-        /// </summary>
-        public string Name { get; }
+        public abstract string Name { get; set; }
     }
 }

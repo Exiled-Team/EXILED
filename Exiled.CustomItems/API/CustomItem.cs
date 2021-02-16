@@ -23,37 +23,18 @@ namespace Exiled.CustomItems.API
     /// </summary>
     public abstract class CustomItem
     {
-        private long id;
+        private int id;
         private ItemType type;
 
         /// <summary>
-        /// Gets or sets the custom ItemID of the item.
+        /// Initializes a new instance of the <see cref="CustomItem"/> class.
         /// </summary>
-        public virtual long Id
+        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
+        /// <param name="itemId">The <see cref="int"/> custom item ID to be used.</param>
+        protected CustomItem(ItemType type, int itemId)
         {
-            get => id;
-            protected set
-            {
-                if (value < 0)
-                    throw new ArgumentOutOfRangeException("Id", value, "Minimum is 0.");
-
-                id = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="ItemType"/> to use for this item.
-        /// </summary>
-        public virtual ItemType Type
-        {
-            get => type;
-            protected set
-            {
-                if (!Enum.IsDefined(typeof(ItemType), value))
-                    throw new ArgumentOutOfRangeException("Type", value, "Invalid Grenade type.");
-
-                type = value;
-            }
+            Type = type;
+            Id = itemId;
         }
 
         /// <summary>
@@ -70,6 +51,36 @@ namespace Exiled.CustomItems.API
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
         public virtual SpawnProperties SpawnProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the custom ItemID of the item.
+        /// </summary>
+        public virtual int Id
+        {
+            get => id;
+            protected set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Id", value, "Minimum is 0.");
+
+                id = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the ItemType to use for this item.
+        /// </summary>
+        public virtual ItemType Type
+        {
+            get => type;
+            protected set
+            {
+                if (!Enum.IsDefined(typeof(ItemType), value))
+                    throw new ArgumentOutOfRangeException("Type", value, "Invalid Grenade type.");
+
+                type = value;
+            }
+        }
 
         /// <summary>
         /// Gets the list of uniqIds being tracked as the current item.
