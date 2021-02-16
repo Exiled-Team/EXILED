@@ -88,7 +88,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            item.SpawnItem(spawnPos);
+            item.Spawn(spawnPos);
             response = $"{item.Name} has been spawned at {spawnPos}.";
 
             return true;

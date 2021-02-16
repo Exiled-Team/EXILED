@@ -43,7 +43,7 @@ namespace Exiled.CustomItems
                         continue;
 
                     count++;
-                    item.SpawnItem(spawn.Key.TryGetLocation());
+                    item.Spawn(spawn.Key.TryGetLocation());
                     Log.Debug($"Spawned {item.Name} at {spawn.Key}", plugin.Config.Debug);
                 }
             }

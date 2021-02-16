@@ -46,7 +46,7 @@ namespace Exiled.CustomItems.Commands
             }
 
             string message =
-                $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.ItemType}\nSpawn Locations:";
+                $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:";
             foreach (KeyValuePair<SpawnLocation, float> kvp in item.SpawnLocations)
                 message += $"{kvp.Key}: {kvp.Value}\n";
 
