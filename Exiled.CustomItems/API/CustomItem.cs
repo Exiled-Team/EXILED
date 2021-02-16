@@ -56,24 +56,19 @@ namespace Exiled.CustomItems.API
         }
 
         /// <summary>
-        /// Gets the name of the item.
+        /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
-        public abstract string Name { get; }
+        public virtual SpawnProperties SpawnProperties { get; set; }
 
         /// <summary>
-        /// Gets the description of the item.
+        /// Gets or sets the custom ItemID of the item.
         /// </summary>
-        public abstract string Description { get; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets how many of the item are allowed to spawn in the map when a round starts.
+        /// Gets or sets the ItemType to use for this item.
         /// </summary>
-        public virtual int SpawnLimit { get; }
-
-        /// <summary>
-        /// Gets the list of spawn locations and chances for each one.
-        /// </summary>
-        public virtual Dictionary<SpawnLocation, float> SpawnLocations { get; }
+        public ItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets the list of uniqIds being tracked as the current item.
