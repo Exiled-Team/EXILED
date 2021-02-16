@@ -28,33 +28,9 @@ namespace Exiled.CreditTags
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            int rankId;
-            if (plugin.RankCache.ContainsKey(ev.Player.UserId))
-            {
-                rankId = plugin.RankCache[ev.Player.UserId];
-            }
-            else
-            {
-                rankId = plugin.CheckForExiledCredit(ev.Player.UserId);
-                plugin.RankCache.Add(ev.Player.UserId, rankId);
-            }
-
-            if (plugin.Ranks.ContainsKey(rankId))
-            {
-                if ((string.IsNullOrEmpty(ev.Player.RankName) || plugin.Config.BadgeOverride) && plugin.Config.UseBadge)
-                {
-                    ev.Player.RankName = plugin.Ranks[rankId].Name;
-                    ev.Player.RankColor = plugin.Ranks[rankId].Color;
-
-                    return;
-                }
-
-                if ((string.IsNullOrEmpty(ev.Player.CustomInfo) || plugin.Config.CPTOverride) && !plugin.Config.UseBadge)
-                {
-                    ev.Player.CustomInfo =
-                        $"<color=${plugin.Ranks[rankId].HexValue}{plugin.Ranks[rankId].Name}</color>";
-                }
-            }
+            if (ev.Player.GlobalBadge != null && ev.Player.GlobalBadge.Value.IsGlobal)
+                return;
+            plugin.ShowCreditTag(ev.Player);
         }
     }
 }

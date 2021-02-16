@@ -20,6 +20,11 @@ namespace Exiled.CreditTags
     /// </summary>
     public sealed class CreditTags : Plugin<CreditTagsConfig>
     {
+        /// <summary>
+        /// A static reference to this class.
+        /// </summary>
+        public static CreditTags Singleton;
+
         private const string Url = "https://exiled.host/checkcredits.php";
 
         private CreditsHandler handler;
@@ -45,6 +50,7 @@ namespace Exiled.CreditTags
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            Singleton = this;
             base.OnEnabled();
             RefreshHandler();
             AttachHandler();
@@ -76,6 +82,46 @@ namespace Exiled.CreditTags
             }
 
             return rankId;
+        }
+
+        /// <summary>
+        /// Shows a player's credit tag, if it exists.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who's tag should be shown.</param>
+        /// <returns>Whether or not a tag was shown.</returns>
+        internal bool ShowCreditTag(Player player)
+        {
+            int rankId;
+            if (RankCache.ContainsKey(player.UserId))
+            {
+                rankId = RankCache[player.UserId];
+            }
+            else
+            {
+                rankId = CheckForExiledCredit(player.UserId);
+                RankCache.Add(player.UserId, rankId);
+            }
+
+            if (Ranks.ContainsKey(rankId))
+            {
+                if ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && Config.UseBadge)
+                {
+                    player.RankName = Ranks[rankId].Name;
+                    player.RankColor = Ranks[rankId].Color;
+
+                    return true;
+                }
+
+                if ((string.IsNullOrEmpty(player.CustomInfo) || Config.CPTOverride) && !Config.UseBadge)
+                {
+                    player.CustomInfo =
+                        $"<color=${Ranks[rankId].HexValue}{Ranks[rankId].Name}</color>";
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         private void RefreshHandler() => handler = new CreditsHandler(this);
