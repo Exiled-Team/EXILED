@@ -155,6 +155,7 @@ namespace Exiled.Events
             foreach (MethodBase method in DisabledPatchesHashSet)
             {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+
                 Log.Info($"Unpatched {method.Name}");
             }
         }
@@ -177,6 +178,7 @@ namespace Exiled.Events
             try
             {
                 Harmony.PatchAll();
+
                 Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception exception)
@@ -190,6 +192,7 @@ namespace Exiled.Events
             try
             {
                 PatchCompilerMess();
+
                 Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception e)
