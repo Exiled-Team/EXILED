@@ -30,12 +30,6 @@ namespace Exiled.CustomItems.API
         {
         }
 
-        /// <inheritdoc/>
-        public abstract override string Name { get; set; }
-
-        /// <inheritdoc/>
-        public abstract override string Description { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
         /// </summary>

@@ -42,14 +42,9 @@ namespace Exiled.CustomItems.API
         public abstract string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets how many of the item are allowed to spawn in the map when a round starts.
-        /// </summary>
-        public virtual int SpawnLimit { get; set; } = 0;
-
-        /// <summary>
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
-        public virtual Dictionary<SpawnLocation, float> SpawnLocations { get; set; }
+        public virtual SpawnProperties SpawnProperties { get; set; }
 
         /// <summary>
         /// Gets or sets the custom ItemID of the item.

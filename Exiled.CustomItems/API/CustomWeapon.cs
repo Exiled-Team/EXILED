@@ -23,12 +23,6 @@ namespace Exiled.CustomItems.API
         protected CustomWeapon(ItemType type, int clipSize, int itemId)
             : base(type, itemId) => ClipSize = clipSize;
 
-        /// <inheritdoc/>
-        public abstract override string Name { get; set; }
-
-        /// <inheritdoc/>
-        public abstract override string Description { get; set; }
-
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>

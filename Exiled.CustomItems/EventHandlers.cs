@@ -31,20 +31,20 @@ namespace Exiled.CustomItems
         {
             foreach (CustomItem item in plugin.ItemManagers)
             {
-                if (item.SpawnLocations == null)
+                if (item.SpawnProperties == null)
                     continue;
 
                 int count = 0;
 
-                foreach (KeyValuePair<SpawnLocation, float> spawn in item.SpawnLocations)
+                foreach (CustomItemSpawn spawn in item.SpawnProperties.SpawnLocations)
                 {
-                    Log.Debug($"Attempting to spawn {item.Name} at {spawn.Key}", plugin.Config.Debug);
-                    if (plugin.Rng.Next(100) >= spawn.Value || (item.SpawnLimit > 0 && count >= item.SpawnLimit))
+                    Log.Debug($"Attempting to spawn {item.Name} at {spawn.Name}", plugin.Config.Debug);
+                    if (plugin.Rng.Next(100) >= spawn.Chance || (item.SpawnProperties.Limit > 0 && count >= item.SpawnProperties.Limit))
                         continue;
 
                     count++;
-                    item.SpawnItem(spawn.Key.TryGetLocation());
-                    Log.Debug($"Spawned {item.Name} at {spawn.Key}", plugin.Config.Debug);
+                    item.SpawnItem(spawn.Position);
+                    Log.Debug($"Spawned {item.Name} at {spawn.Name} - {spawn.Position}", plugin.Config.Debug);
                 }
             }
         }
