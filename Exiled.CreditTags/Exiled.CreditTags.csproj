@@ -4,7 +4,7 @@
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <AssemblyName>Exiled.CreditTags</AssemblyName>
-    <Authors>Babyboucher20 &#38; iRebbok &#38; Exiled Team</Authors>
+    <Authors>Babyboucher20 &amp; iRebbok &amp; Exiled Team</Authors>
     <BaseProperties>false</BaseProperties>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn);CS1591;SA1600</NoWarn>

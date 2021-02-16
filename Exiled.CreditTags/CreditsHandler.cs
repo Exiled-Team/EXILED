@@ -5,83 +5,45 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreaditTags
+namespace Exiled.CreditTags
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Security.Cryptography;
-    using System.Text;
-
     using Exiled.Events.EventArgs;
 
+    /// <summary>
+    /// Event Handlers for the <see cref="CreditTags"/> plugin of Exiled.
+    /// </summary>
     internal sealed class CreditsHandler
     {
-        private readonly Dictionary<string, string> tagsContainer;
+        private readonly CreditTags plugin;
 
-        public CreditsHandler(Dictionary<string, string> container) => tagsContainer = container;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreditsHandler"/> class.
+        /// </summary>
+        /// <param name="plugin">This <see cref="CreditTags"/> instance initializing this class.</param>
+        public CreditsHandler(CreditTags plugin) => this.plugin = plugin;
 
-        private CreditTagsConfig Config => CreditTags.Instance.Config;
-
+        /// <summary>
+        /// Handles checking if a player should have a credit tag or not upon joining.
+        /// </summary>
+        /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            string playerID = HashSh1(ev.Player.UserId);
-            if (tagsContainer.ContainsKey(playerID))
+            int rankId = plugin.CheckForExiledCredit(ev.Player.UserId);
+            if (plugin.Ranks.ContainsKey(rankId))
             {
-                if ((ev.Player.RankName == null || Config.BadgeOverride) && Config.UseBadge)
+                if ((string.IsNullOrEmpty(ev.Player.RankName) || plugin.Config.BadgeOverride) && plugin.Config.UseBadge)
                 {
-                    ev.Player.RankName = tagsContainer[playerID];
-                    switch (tagsContainer[playerID])
-                    {
-                        case "Exiled Plugin Dev":
-                            ev.Player.RankColor = "crimson";
-                            break;
-                        case "Exiled Contributor":
-                            ev.Player.RankColor = "cyan";
-                            break;
-                        case "Exiled Dev":
-                            ev.Player.RankColor = "magenta";
-                            break;
-                    }
+                    ev.Player.RankName = plugin.Ranks[rankId].Name;
+                    ev.Player.RankColor = plugin.Ranks[rankId].Color;
+
+                    return;
                 }
 
-                if ((ev.Player.ReferenceHub.nicknameSync.Network_customPlayerInfoString == null || Config.CPTOverride) && !Config.UseBadge)
+                if ((string.IsNullOrEmpty(ev.Player.CustomInfo) || plugin.Config.CPTOverride) && !plugin.Config.UseBadge)
                 {
-                    switch (tagsContainer[playerID])
-                    {
-                        case "Exiled Plugin Dev":
-                            ev.Player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = "<color=#DC143C>Exiled Plugin Dev</color>";
-                            break;
-                        case "Exiled Contributor":
-                            ev.Player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = "<color=#800080>Exiled Contributor</color>";
-                            break;
-                        case "Exiled Dev":
-                            ev.Player.ReferenceHub.nicknameSync.Network_customPlayerInfoString = "<color=#00FFFF>Exiled Dev</color>";
-                            break;
-                    }
+                    ev.Player.CustomInfo =
+                        $"<color=${plugin.Ranks[rankId].HexValue}{plugin.Ranks[rankId].Name}</color>";
                 }
-            }
-        }
-
-        private string HashSh1(string input)
-        {
-            using (SHA1Managed sha1 = new SHA1Managed())
-            {
-                var hashSh1 = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-                // declare stringbuilder
-                var sb = new StringBuilder(hashSh1.Length * 2);
-
-                // computing hashSh1
-                foreach (byte b in hashSh1)
-                {
-                    // "x2"
-                    sb.Append(b.ToString("X2").ToLower());
-                }
-
-                // final output
-                Console.WriteLine(string.Format("The SHA1 hash of {0} is: {1}", input, sb.ToString()));
-
-                return sb.ToString();
             }
         }
     }

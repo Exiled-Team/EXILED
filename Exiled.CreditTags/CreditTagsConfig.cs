@@ -5,14 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreaditTags
+namespace Exiled.CreditTags
 {
     using System.ComponentModel;
 
     using Exiled.API.Interfaces;
 
+    /// <inheritdoc />
     public sealed class CreditTagsConfig : IConfig
     {
+        /// <inheritdoc/>
         [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
 
