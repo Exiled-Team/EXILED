@@ -70,6 +70,8 @@ namespace Exiled.CreditTags
         /// <returns>The rank ID assigned to the user's Userid. 0 means no credit was assigned.</returns>
         internal int CheckForExiledCredit(string userid)
         {
+            userid = userid.Substring(0, userid.IndexOf('@') - 1);
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{Url}?userid={userid}");
             request.AutomaticDecompression = DecompressionMethods.GZip;
 
