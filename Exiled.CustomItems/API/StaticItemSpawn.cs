@@ -7,8 +7,6 @@
 
 namespace Exiled.CustomItems.API
 {
-    using UnityEngine;
-
     /// <summary>
     /// Handles static spawn locations.
     /// </summary>

@@ -15,6 +15,7 @@ namespace Exiled.CustomItems.API
     using Exiled.Events.EventArgs;
 
     using MEC;
+
     using UnityEngine;
 
     /// <summary>

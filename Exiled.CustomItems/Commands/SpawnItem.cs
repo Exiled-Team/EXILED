@@ -8,10 +8,13 @@
 namespace Exiled.CustomItems.Commands
 {
     using System;
+
     using CommandSystem;
+
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
     using Exiled.Permissions.Extensions;
+
     using UnityEngine;
 
     /// <summary>

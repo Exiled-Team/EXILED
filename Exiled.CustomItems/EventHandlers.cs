@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems
 {
-    using System.Collections.Generic;
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
 

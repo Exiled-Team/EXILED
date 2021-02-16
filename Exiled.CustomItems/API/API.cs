@@ -9,8 +9,11 @@ namespace Exiled.CustomItems.API
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features;
+
     using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
     /// <summary>
