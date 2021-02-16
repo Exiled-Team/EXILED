@@ -9,9 +9,9 @@ namespace Exiled.CustomItems
 {
     using System;
     using System.Collections.Generic;
+
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
-    using ServerEvents = Exiled.Events.Handlers.Server;
 
     /// <summary>
     /// Handles all CustomItem API.

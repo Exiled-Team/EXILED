@@ -8,8 +8,11 @@
 namespace Exiled.CustomItems.Components
 {
     using System;
+
     using Exiled.API.Features;
+
     using Grenades;
+
     using UnityEngine;
 
     /// <summary>

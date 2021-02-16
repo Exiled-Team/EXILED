@@ -7,7 +7,6 @@
 
 namespace Exiled.CustomItems
 {
-    using System.Collections.Generic;
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
 
@@ -43,7 +42,7 @@ namespace Exiled.CustomItems
                         continue;
 
                     count++;
-                    item.SpawnItem(spawn.Position.ToVector3());
+                    item.Spawn(spawn.Position);
                     Log.Debug($"Spawned {item.Name} at {spawn.Name} - {spawn.Position}", plugin.Config.Debug);
                 }
             }

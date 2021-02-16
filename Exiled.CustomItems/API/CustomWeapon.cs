@@ -7,41 +7,51 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
+
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+
     using UnityEngine;
 
     /// <inheritdoc />
     public abstract class CustomWeapon : CustomItem
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CustomWeapon"/> class.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="clipSize">The <see cref="int"/> size of the clip to be used.</param>
-        /// <param name="itemId">The <see cref="int"/> ID to be used.</param>
-        protected CustomWeapon(ItemType type, int clipSize, int itemId)
-            : base(type, itemId) => ClipSize = clipSize;
+        private int clipSize;
+
+        /// <inheritdoc/>
+        public override ItemType Type
+        {
+            get => base.Type;
+            protected set
+            {
+                if (!value.IsWeapon())
+                    throw new ArgumentOutOfRangeException("Type", value, "Invalid weapon type.");
+
+                base.Type = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
-        protected virtual int ClipSize { get; set; }
+        public virtual int ClipSize
+        {
+            get => clipSize;
+            protected set
+            {
+                if (clipSize < 0)
+                    throw new ArgumentOutOfRangeException("ClipSize", value, "Minimum is 0");
+
+                clipSize = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating what <see cref="ModBarrel"/> the weapon will have.
+        /// Gets the weapon modifiers.
         /// </summary>
-        protected virtual int ModBarrel { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets a value indicating what <see cref="ModSight"/> the weapon will have.
-        /// </summary>
-        protected virtual int ModSight { get; set; } = 0;
-
-        /// <summary>
-        /// Gets or sets a value indicating what <see cref="ModOther"/> the weapon will have.
-        /// </summary>
-        protected virtual int ModOther { get; set; } = 0;
+        public abstract Modifiers Modifiers { get; }
 
         /// <inheritdoc/>
         public override void Init()
@@ -58,16 +68,19 @@ namespace Exiled.CustomItems.API
         }
 
         /// <inheritdoc/>
-        public override void SpawnItem(Vector3 position) => ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(ItemType, ClipSize, position, default, ModSight, ModBarrel, ModOther));
+        public override void Spawn(Vector3 position)
+        {
+            ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(Type, ClipSize, position, default, (int)Modifiers.SightType, (int)Modifiers.BarrelType, (int)Modifiers.OtherType));
+        }
 
         /// <inheritdoc/>
-        public override void GiveItem(Player player)
+        public override void Give(Player player)
         {
             ++Inventory._uniqId;
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
             {
                 durability = 1,
-                id = ItemType,
+                id = Type,
                 uniq = Inventory._uniqId,
             };
             player.Inventory.items.Add(syncItemInfo);
@@ -79,19 +92,20 @@ namespace Exiled.CustomItems.API
         }
 
         /// <inheritdoc/>
-        public override void GiveItem(Player player, bool displayMessage)
+        public override void Give(Player player, bool displayMessage)
         {
-            ++Inventory._uniqId;
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
             {
                 durability = ClipSize,
-                id = ItemType,
-                uniq = Inventory._uniqId,
-                modBarrel = ModBarrel,
-                modSight = ModSight,
-                modOther = ModOther,
+                id = Type,
+                uniq = ++Inventory._uniqId,
+                modBarrel = (int)Modifiers.BarrelType,
+                modSight = (int)Modifiers.SightType,
+                modOther = (int)Modifiers.OtherType,
             };
+
             player.Inventory.items.Add(syncItemInfo);
+
             ItemIds.Add(syncItemInfo.uniq);
 
             if (displayMessage)
@@ -112,7 +126,7 @@ namespace Exiled.CustomItems.API
         /// <param name="ev"><see cref="ReloadingWeaponEventArgs"/>.</param>
         protected virtual void OnReloadingWeapon(ReloadingWeaponEventArgs ev)
         {
-            if (!CheckItem(ev.Player.CurrentItem))
+            if (!Check(ev.Player.CurrentItem))
                 return;
 
             ev.IsAllowed = false;

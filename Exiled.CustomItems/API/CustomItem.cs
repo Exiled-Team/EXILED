@@ -7,12 +7,15 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using MEC;
+
     using UnityEngine;
 
     /// <summary>
@@ -20,41 +23,53 @@ namespace Exiled.CustomItems.API
     /// </summary>
     public abstract class CustomItem
     {
+        private long id;
+        private ItemType type;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomItem"/> class.
+        /// Gets or sets the custom ItemID of the item.
         /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="itemId">The <see cref="int"/> custom item ID to be used.</param>
-        protected CustomItem(ItemType type, int itemId)
+        public virtual long Id
         {
-            ItemType = type;
-            Id = itemId;
+            get => id;
+            protected set
+            {
+                if (value < 0)
+                    throw new ArgumentOutOfRangeException("Id", value, "Minimum is 0.");
+
+                id = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the name of the item.
+        /// Gets or sets the <see cref="ItemType"/> to use for this item.
         /// </summary>
-        public abstract string Name { get; set; }
+        public virtual ItemType Type
+        {
+            get => type;
+            protected set
+            {
+                if (!Enum.IsDefined(typeof(ItemType), value))
+                    throw new ArgumentOutOfRangeException("Type", value, "Invalid Grenade type.");
+
+                type = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the description of the item.
+        /// Gets the name of the item.
         /// </summary>
-        public abstract string Description { get; set; }
+        public abstract string Name { get; }
+
+        /// <summary>
+        /// Gets the description of the item.
+        /// </summary>
+        public abstract string Description { get; }
 
         /// <summary>
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
         public virtual SpawnProperties SpawnProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets the custom ItemID of the item.
-        /// </summary>
-        public int Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ItemType to use for this item.
-        /// </summary>
-        public ItemType ItemType { get; set; }
 
         /// <summary>
         /// Gets the list of uniqIds being tracked as the current item.
@@ -70,22 +85,23 @@ namespace Exiled.CustomItems.API
         /// Spawns the item in a specific location.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the item will be spawned.</param>
-        public virtual void SpawnItem(Vector3 position) => ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(ItemType, 1, position));
+        public virtual void Spawn(Vector3 position) => ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(Type, 1, position));
 
         /// <summary>
         /// Gives the item to a player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will recieve the item.</param>
-        public virtual void GiveItem(Player player)
+        public virtual void Give(Player player)
         {
-            ++Inventory._uniqId;
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
             {
                 durability = 1,
-                id = ItemType,
-                uniq = Inventory._uniqId,
+                id = Type,
+                uniq = ++Inventory._uniqId,
             };
+
             player.Inventory.items.Add(syncItemInfo);
+
             ItemIds.Add(syncItemInfo.uniq);
 
             ShowMessage(player);
@@ -98,13 +114,13 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will recieve the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowMessage"/> will be called when the player received the item.</param>
-        public virtual void GiveItem(Player player, bool displayMessage)
+        public virtual void Give(Player player, bool displayMessage)
         {
             ++Inventory._uniqId;
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
             {
                 durability = 1,
-                id = ItemType,
+                id = Type,
                 uniq = Inventory._uniqId,
             };
             player.Inventory.items.Add(syncItemInfo);
@@ -121,13 +137,13 @@ namespace Exiled.CustomItems.API
         /// </summary>
         public virtual void Init()
         {
-            Exiled.Events.Handlers.Player.Dying += OnDying;
-            Exiled.Events.Handlers.Player.Escaping += OnEscaping;
-            Exiled.Events.Handlers.Player.Handcuffing += OnHandcuffing;
-            Exiled.Events.Handlers.Player.DroppingItem += OnDroppingItem;
-            Exiled.Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
-            Exiled.Events.Handlers.Scp914.UpgradingItems += OnUpgradingItems;
-            Exiled.Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            Events.Handlers.Player.Dying += OnDying;
+            Events.Handlers.Player.Escaping += OnEscaping;
+            Events.Handlers.Player.Handcuffing += OnHandcuffing;
+            Events.Handlers.Player.DroppingItem += OnDroppingItem;
+            Events.Handlers.Player.PickingUpItem += OnPickingUpItem;
+            Events.Handlers.Scp914.UpgradingItems += OnUpgradingItems;
+            Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
 
             LoadEvents();
         }
@@ -137,13 +153,13 @@ namespace Exiled.CustomItems.API
         /// </summary>
         public virtual void Destroy()
         {
-            Exiled.Events.Handlers.Player.Dying -= OnDying;
-            Exiled.Events.Handlers.Player.Escaping -= OnEscaping;
-            Exiled.Events.Handlers.Player.Handcuffing -= OnHandcuffing;
-            Exiled.Events.Handlers.Player.DroppingItem -= OnDroppingItem;
-            Exiled.Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
-            Exiled.Events.Handlers.Scp914.UpgradingItems -= OnUpgradingItems;
-            Exiled.Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+            Events.Handlers.Player.Dying -= OnDying;
+            Events.Handlers.Player.Escaping -= OnEscaping;
+            Events.Handlers.Player.Handcuffing -= OnHandcuffing;
+            Events.Handlers.Player.DroppingItem -= OnDroppingItem;
+            Events.Handlers.Player.PickingUpItem -= OnPickingUpItem;
+            Events.Handlers.Scp914.UpgradingItems -= OnUpgradingItems;
+            Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
 
             UnloadEvents();
         }
@@ -153,17 +169,17 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public bool CheckItem(Pickup pickup) => ItemPickups.Contains(pickup);
+        public bool Check(Pickup pickup) => ItemPickups.Contains(pickup);
 
         /// <summary>
         /// Checks the specified inventory item to see if it is a custom item.
         /// </summary>
         /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public bool CheckItem(Inventory.SyncItemInfo item) => ItemIds.Contains(item.uniq);
+        public bool Check(Inventory.SyncItemInfo item) => ItemIds.Contains(item.uniq);
 
         /// <inheritdoc/>
-        public override string ToString() => $"[{Name} ({Id})] {Description} {ItemType}";
+        public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
 
         /// <summary>
         /// Called after the manager is initialized, to allow loading of special event handlers.
@@ -194,7 +210,7 @@ namespace Exiled.CustomItems.API
         /// <param name="ev"><see cref="DroppingItemEventArgs"/>.</param>
         protected virtual void OnDroppingItem(DroppingItemEventArgs ev)
         {
-            if (CheckItem(ev.Item))
+            if (Check(ev.Item))
             {
                 ev.IsAllowed = false;
                 ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(ev.Item.id, ev.Item.durability, ev.Player.Position, default, ev.Item.modSight, ev.Item.modBarrel, ev.Item.modOther));
@@ -208,7 +224,7 @@ namespace Exiled.CustomItems.API
         /// <param name="ev"><see cref="PickingUpItemEventArgs"/>.</param>
         protected virtual void OnPickingUpItem(PickingUpItemEventArgs ev)
         {
-            if (CheckItem(ev.Pickup) && ev.Player.Inventory.items.Count < 8)
+            if (Check(ev.Pickup) && ev.Player.Inventory.items.Count < 8)
             {
                 ev.IsAllowed = false;
                 Inventory._uniqId++;
@@ -240,7 +256,7 @@ namespace Exiled.CustomItems.API
 
             foreach (Pickup pickup in ev.Items.ToList())
             {
-                if (!CheckItem(pickup))
+                if (!Check(pickup))
                     continue;
 
                 pickup.transform.position += outPos;
@@ -253,7 +269,7 @@ namespace Exiled.CustomItems.API
             {
                 foreach (Inventory.SyncItemInfo item in player.Inventory.items.ToList())
                 {
-                    if (!CheckItem(item))
+                    if (!Check(item))
                         continue;
 
                     itemsToSave.Add(player, item);
@@ -276,7 +292,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
             {
-                if (!CheckItem(item))
+                if (!Check(item))
                     continue;
 
                 ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(item.id, item.durability, ev.Target.Position, default, item.modSight, item.modBarrel, item.modOther));
@@ -292,7 +308,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
             {
-                if (!CheckItem(item))
+                if (!Check(item))
                     continue;
 
                 ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(item.id, item.durability, ev.Target.Position, default, item.modSight, item.modBarrel, item.modOther));
@@ -308,7 +324,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
             {
-                if (!CheckItem(item))
+                if (!Check(item))
                     continue;
 
                 ItemPickups.Add(Exiled.API.Extensions.Item.Spawn(item.id, item.durability, ev.NewRole.GetRandomSpawnPoint(), default, item.modSight, item.modBarrel, item.modOther));

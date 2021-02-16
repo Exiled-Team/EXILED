@@ -9,8 +9,11 @@ namespace Exiled.CustomItems.API
 {
     using System.Collections.Generic;
     using System.Linq;
+
     using Exiled.API.Features;
+
     using Interactables.Interobjects.DoorUtils;
+
     using UnityEngine;
 
     /// <summary>
@@ -27,13 +30,6 @@ namespace Exiled.CustomItems.API
         {
             if (!CustomItems.Singleton.ItemManagers.Contains(item))
             {
-                if (item.Name.Contains(":"))
-                {
-                    string newName = item.Name.Replace(":", string.Empty);
-                    Log.Warn($"{item.Name} contains an invalid character and will be renamed to {newName}");
-                    item.Name = newName;
-                }
-
                 if (CustomItems.Singleton.ItemManagers.Any(i => i.Id == item.Id))
                 {
                     Log.Error($"{item.Name} has tried to register with the same ItemID as another item: {item.Id}. It will not be registered.");
@@ -42,8 +38,11 @@ namespace Exiled.CustomItems.API
                 }
 
                 CustomItems.Singleton.ItemManagers.Add(item);
+
                 item.Init();
+
                 Log.Debug($"{item.Name} ({item.Id}) has been successfully registered.", CustomItems.Singleton.Config.Debug);
+
                 return true;
             }
 
@@ -111,7 +110,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="item">The <see cref="CustomItem"/> to give to the player.</param>
-        public static void GiveItem(this Player player, CustomItem item) => item.GiveItem(player);
+        public static void GiveItem(this Player player, CustomItem item) => item.Give(player);
 
         /// <summary>
         /// Gives the specified item to a player.
@@ -120,7 +119,7 @@ namespace Exiled.CustomItems.API
         /// <param name="item">The <see cref="CustomItem"/> to give to the player.</param>
         /// <param name="displayMessage">Whether or not to show a message when the item is given.</param>
         public static void GiveItem(this Player player, CustomItem item, bool displayMessage) =>
-            item.GiveItem(player, displayMessage);
+            item.Give(player, displayMessage);
 
         /// <summary>
         /// Gives the player a specified item.
@@ -133,7 +132,7 @@ namespace Exiled.CustomItems.API
             if (!TryGetItem(name, out CustomItem item))
                 return false;
 
-            item.GiveItem(player);
+            item.Give(player);
 
             return true;
         }
@@ -149,7 +148,7 @@ namespace Exiled.CustomItems.API
             if (!TryGetItem(id, out CustomItem item))
                 return false;
 
-            item.GiveItem(player);
+            item.Give(player);
 
             return true;
         }
@@ -159,7 +158,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="item">The <see cref="CustomItem"/> to spawn.</param>
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item at.</param>
-        public static void SpawnItem(this CustomItem item, Vector3 position) => item.SpawnItem(position);
+        public static void SpawnItem(this CustomItem item, Vector3 position) => item.Spawn(position);
 
         /// <summary>
         /// Spawns a specified item at a location.
@@ -172,7 +171,7 @@ namespace Exiled.CustomItems.API
             if (!TryGetItem(name, out CustomItem item))
                 return false;
 
-            item.SpawnItem(position);
+            item.Spawn(position);
 
             return true;
         }
@@ -188,7 +187,7 @@ namespace Exiled.CustomItems.API
             if (!TryGetItem(id, out CustomItem item))
                 return false;
 
-            item.SpawnItem(position);
+            item.Spawn(position);
 
             return true;
         }
@@ -242,7 +241,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (CustomItem cItem in GetInstalledItems())
             {
-                if (!cItem.CheckItem(player.CurrentItem))
+                if (!cItem.Check(player.CurrentItem))
                     continue;
 
                 item = cItem;
@@ -284,7 +283,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (CustomItem customItem in GetInstalledItems())
             {
-                if (!customItem.CheckItem(item))
+                if (!customItem.Check(item))
                     continue;
 
                 cItem = customItem;
@@ -305,7 +304,7 @@ namespace Exiled.CustomItems.API
         {
             foreach (CustomItem cItem in GetInstalledItems())
             {
-                if (!cItem.CheckItem(pickup))
+                if (!cItem.Check(pickup))
                     continue;
 
                 item = cItem;

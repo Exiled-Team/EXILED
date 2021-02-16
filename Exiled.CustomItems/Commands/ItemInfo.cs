@@ -8,8 +8,9 @@
 namespace Exiled.CustomItems.Commands
 {
     using System;
-    using System.Collections.Generic;
+
     using CommandSystem;
+
     using Exiled.CustomItems.API;
 
     /// <summary>
@@ -46,7 +47,7 @@ namespace Exiled.CustomItems.Commands
             }
 
             string message =
-                $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.ItemType}\nSpawn Locations:";
+                $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:";
             foreach (CustomItemSpawn spawnLoc in item.SpawnProperties.SpawnLocations)
                 message += $"{spawnLoc.Name} - {spawnLoc.Position} Chance: {spawnLoc.Chance}\n";
             message += $"Spawn Limit: {item.SpawnProperties.Limit}";

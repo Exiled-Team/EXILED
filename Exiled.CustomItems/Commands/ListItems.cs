@@ -8,7 +8,9 @@
 namespace Exiled.CustomItems.Commands
 {
     using System;
+
     using CommandSystem;
+
     using Exiled.CustomItems.API;
 
     /// <summary>

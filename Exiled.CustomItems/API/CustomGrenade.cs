@@ -7,38 +7,50 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
     using System.Collections.Generic;
+
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomItems.Components;
     using Exiled.Events.EventArgs;
+
     using Grenades;
+
     using MEC;
+
     using Mirror;
+
     using UnityEngine;
 
     /// <inheritdoc />
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomGrenade"/> class.
+        /// Gets or sets the <see cref="ItemType"/> to use for this item.
         /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="itemId">The <see cref="int"/> custom ID to be used.</param>
-        protected CustomGrenade(ItemType type, int itemId)
-            : base(type, itemId)
+        public override ItemType Type
         {
+            get => base.Type;
+            protected set
+            {
+                if (!value.IsThrowable())
+                    throw new ArgumentOutOfRangeException("Type", value, "Invalid grenade type.");
+
+                base.Type = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
+        /// Gets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
         /// </summary>
-        protected virtual bool ExplodeOnCollision { get; set; }
+        public abstract bool ExplodeOnCollision { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating how long the grenade's fuse time should be.
+        /// Gets a value indicating how long the grenade's fuse time should be.
         /// </summary>
-        protected virtual float FuseTime { get; set; } = 3f;
+        public abstract float FuseTime { get; }
 
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
@@ -65,7 +77,7 @@ namespace Exiled.CustomItems.API
         /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
         protected virtual void OnThrowingGrenade(ThrowingGrenadeEventArgs ev)
         {
-            if (CheckItem(ev.Player.CurrentItem))
+            if (Check(ev.Player.CurrentItem))
             {
                 ev.IsAllowed = false;
                 Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance
@@ -77,7 +89,7 @@ namespace Exiled.CustomItems.API
 
                     if (ExplodeOnCollision)
                     {
-                        GameObject grenade = SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, 1.5f, GetGrenadeType(ItemType), ev.Player).gameObject;
+                        GameObject grenade = SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, 1.5f, GetGrenadeType(Type), ev.Player).gameObject;
                         CollisionHandler collisionHandler = grenade.gameObject.AddComponent<CollisionHandler>();
                         collisionHandler.Owner = ev.Player.GameObject;
                         collisionHandler.Grenade = grenadeComponent;
@@ -85,7 +97,7 @@ namespace Exiled.CustomItems.API
                     }
                     else
                     {
-                        SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(ItemType), ev.Player);
+                        SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player);
                     }
 
                     ev.Player.RemoveItem(ev.Player.CurrentItem);

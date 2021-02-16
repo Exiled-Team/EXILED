@@ -8,10 +8,13 @@
 namespace Exiled.CustomItems.Commands
 {
     using System;
+
     using CommandSystem;
+
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
     using Exiled.Permissions.Extensions;
+
     using UnityEngine;
 
     /// <summary>
@@ -88,7 +91,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            item.SpawnItem(spawnPos);
+            item.Spawn(spawnPos);
             response = $"{item.Name} has been spawned at {spawnPos}.";
 
             return true;
