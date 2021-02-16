@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Exiled.CustomItems.API;
+
     /// <summary>
     /// Contains all informations after a player drops an item.
     /// </summary>
@@ -21,7 +23,8 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        public ItemDroppedEventArgs(Player player, Pickup pickup)
+        /// <param name="customItem"><inheritdoc cref="CustomItem"/></param>
+        public ItemDroppedEventArgs(Player player, Pickup pickup, CustomItem customItem)
         {
             Player = player;
             Pickup = pickup;
@@ -36,5 +39,10 @@ namespace Exiled.Events.EventArgs
         /// Gets the dropped pickup.
         /// </summary>
         public Pickup Pickup { get; }
+
+        /// <summary>
+        /// Gets the custom item if the dropped pickup was a custom item, otherwise null.
+        /// </summary>
+        public CustomItem CustomItem { get; }
     }
 }

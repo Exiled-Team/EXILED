@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
 
+    using Exiled.CustomItems.API;
+
     /// <summary>
     /// Contains all informations before a player picks up an item.
     /// </summary>
@@ -19,9 +21,10 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player">The player who's picking up the item.</param>
         /// <param name="pickup">The pickup to be picked up.</param>
+        /// <param name="customItem">The custom item of the pickup.</param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PickingUpItemEventArgs(Player player, Pickup pickup, bool isAllowed = true)
-            : base(player, pickup)
+        public PickingUpItemEventArgs(Player player, Pickup pickup, CustomItem customItem, bool isAllowed = true)
+            : base(player, pickup, customItem)
         {
             IsAllowed = isAllowed;
         }

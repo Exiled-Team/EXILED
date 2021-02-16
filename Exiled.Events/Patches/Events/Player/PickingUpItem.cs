@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using Exiled.CustomItems.API;
+
     using HarmonyLib;
 
     using Searching;
@@ -28,7 +30,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup);
+                API.IsCustomItem(__instance.TargetPickup, out var customItem);
+
+                var ev = new PickingUpItemEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance.TargetPickup, customItem);
 
                 Player.OnPickingUpItem(ev);
 

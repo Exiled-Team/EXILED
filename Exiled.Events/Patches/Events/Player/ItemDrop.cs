@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using Exiled.CustomItems.API;
+
     using HarmonyLib;
 
     /// <summary>
@@ -35,8 +37,10 @@ namespace Exiled.Events.Patches.Events.Player
                 if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
                     return false;
 
+                API.IsCustomItem(syncItemInfo, out var customItem);
+
                 var droppingItemEventArgs =
-                    new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo);
+                    new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo, customItem);
 
                 Player.OnDroppingItem(droppingItemEventArgs);
 
