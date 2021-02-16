@@ -206,7 +206,10 @@ namespace Exiled.Updater
         private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool allowEqual = false)
         {
             var includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease();
-            var range = new Range(string.Format(">{0}{1}{2}{3}", allowEqual ? "=" : string.Empty, smallestVersion.Version.Major, smallestVersion.Version.Minor, smallestVersion.Version.Patch));
+            string build = string.IsNullOrEmpty(smallestVersion.Version.Build)
+                ? string.Empty
+                : smallestVersion.Version.Build;
+            var range = new Range($">{(allowEqual ? "=" : string.Empty)}{smallestVersion.Version.Major}{smallestVersion.Version.Minor}{smallestVersion.Version.Patch}{build}");
 
             for (int z = 0; z < releases.Length; z++)
             {
