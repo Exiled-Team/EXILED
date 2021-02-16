@@ -46,7 +46,7 @@ namespace Exiled.Installer
         internal const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
-        private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
+        private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
         private static readonly Range VersionLimit = new Range(">=2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
@@ -204,7 +204,7 @@ namespace Exiled.Installer
             {
                 Console.WriteLine($"Processing '{entry.Name}'");
 
-                if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
+                if (entry.Name.ToLower().Contains("example"))
                 {
                     Console.WriteLine($"Extract for {entry.Name} is disabled");
                     return;
@@ -296,7 +296,10 @@ namespace Exiled.Installer
 
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
-            var range = new Range($"={args.TargetVersion}");
+            Console.WriteLine("Trying to find release..");
+
+            var target = args.TargetVersion != null ? $"={args.TargetVersion}" : ">2.0.0";
+            var range = new Range($"{target}");
 
             foreach (var r in releases)
             {
