@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // Player.OnMedicalItemDequipped(new UsedMedicalItemEventArgs(arg1, arg2))
                 new CodeInstruction(OpCodes.Newobj, AccessTools.Constructor(typeof(UsedMedicalItemEventArgs), new[] { typeof(Player), typeof(ItemType) })),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMedicalItemDequipped))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMedicalItemUsed))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
