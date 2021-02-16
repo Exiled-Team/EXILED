@@ -15,9 +15,9 @@ namespace Exiled.CustomItems.API
     public abstract class CustomItemSpawn
     {
         /// <summary>
-        /// Gets or sets a value indicating where in the map to spawn the item.
+        /// Gets or sets the name of this spawn location.
         /// </summary>
-        public abstract Vector Position { get; set; }
+        public abstract string Name { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating the spawn chance in this location.
@@ -25,8 +25,8 @@ namespace Exiled.CustomItems.API
         public abstract float Chance { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of this spawn location.
+        /// Gets or sets a value indicating where in the map to spawn the item.
         /// </summary>
-        public abstract string Name { get; set; }
+        public abstract Vector Position { get; set; }
     }
 }
