@@ -37,6 +37,11 @@ namespace Exiled.CreditTags
             { 3, new Rank("Exiled Plugin Developer", "crimson", "E60909") },
         };
 
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey,TValue}"/> of recently cached userIds and their ranks.
+        /// </summary>
+        internal Dictionary<string, int> RankCache { get; } = new Dictionary<string, int>();
+
         /// <inheritdoc/>
         public override void OnEnabled()
         {

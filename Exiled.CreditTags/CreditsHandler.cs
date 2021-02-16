@@ -28,7 +28,17 @@ namespace Exiled.CreditTags
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            int rankId = plugin.CheckForExiledCredit(ev.Player.UserId);
+            int rankId;
+            if (plugin.RankCache.ContainsKey(ev.Player.UserId))
+            {
+                rankId = plugin.RankCache[ev.Player.UserId];
+            }
+            else
+            {
+                rankId = plugin.CheckForExiledCredit(ev.Player.UserId);
+                plugin.RankCache.Add(ev.Player.UserId, rankId);
+            }
+
             if (plugin.Ranks.ContainsKey(rankId))
             {
                 if ((string.IsNullOrEmpty(ev.Player.RankName) || plugin.Config.BadgeOverride) && plugin.Config.UseBadge)
