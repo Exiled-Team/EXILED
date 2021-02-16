@@ -44,12 +44,15 @@ namespace Exiled.CustomItems
             Singleton = this;
             EventHandlers = new EventHandlers(this);
 
+            Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
+
             base.OnEnabled();
         }
 
         /// <inheritdoc />
         public override void OnDisabled()
         {
+            Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
             EventHandlers = null;
 
             base.OnDisabled();
