@@ -20,14 +20,14 @@ namespace Exiled.CreditTags
     /// </summary>
     public sealed class CreditTags : Plugin<CreditTagsConfig>
     {
-        /// <summary>
-        /// A static reference to this class.
-        /// </summary>
-        public static CreditTags Singleton;
-
-        private const string Url = "https://exiled.host/checkcredits.php";
+        private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
         private CreditsHandler handler;
+
+        /// <summary>
+        /// Gets a static reference to this class.
+        /// </summary>
+        public static CreditTags Singleton { get; private set; }
 
         /// <inheritdoc/>
         public override string Prefix { get; } = "exiled_credits";
