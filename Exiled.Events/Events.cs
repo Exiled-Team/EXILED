@@ -82,13 +82,13 @@ namespace Exiled.Events
 
             Patch();
 
-            SceneManager.sceneUnloaded += InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers += InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound += InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated += InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
@@ -106,13 +106,13 @@ namespace Exiled.Events
             DisabledPatchesHashSet.Clear();
             DisabledPatches.Clear();
 
-            SceneManager.sceneUnloaded -= InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers -= InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated -= InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
         }

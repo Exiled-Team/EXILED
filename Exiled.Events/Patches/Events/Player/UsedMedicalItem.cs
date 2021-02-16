@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
 
@@ -64,14 +63,14 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
             var index = newInstructions.FindLastIndex(op => op.opcode == OpCodes.Blt);
+
             newInstructions.InsertRange(++index, new[]
             {
                 // Player.Get(ConsumableAndWearableItems._hub)
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems._hub))),
-                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ConsumableAndWearableItems.usableItems[mid].inventoryID
                 new CodeInstruction(OpCodes.Ldloc_2),

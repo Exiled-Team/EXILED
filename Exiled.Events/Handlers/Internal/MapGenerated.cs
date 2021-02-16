@@ -5,18 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.InternalHandlers
+namespace Exiled.Events.Handlers.Internal
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using System.Threading.Tasks;
-
     using Exiled.API.Extensions;
 
     /// <summary>
-    /// Handles <see cref="Handlers.Map.Generated"/> event.
+    /// Handles <see cref="Map.Generated"/> event.
     /// </summary>
     internal static class MapGenerated
     {

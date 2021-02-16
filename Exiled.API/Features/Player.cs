@@ -103,6 +103,8 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
+
+                RawUserId = UserId.GetRawUserId();
             }
         }
 
@@ -168,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId.Substring(0, UserId.LastIndexOf('@'));
+        public string RawUserId { get; private set; }
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -858,6 +860,13 @@ namespace Exiled.API.Features
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
+        /// </summary>
+        /// <param name="sender">The command sender.</param>
+        /// <returns>Returns a player or null if not found.</returns>
+        public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.

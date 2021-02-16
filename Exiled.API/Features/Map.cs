@@ -11,8 +11,6 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
-    using Exiled.API.Extensions;
-
     using Interactables.Interobjects.DoorUtils;
 
     using LightContainmentZoneDecontamination;
