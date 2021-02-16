@@ -12,9 +12,7 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using CommandSystem.Commands;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -132,14 +130,20 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
+            foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
-                Assembly assembly = LoadAssembly(pluginPath);
+                    Assembly assembly = LoadAssembly(assemblyPath);
 
-                if (assembly == null)
+                    if (assembly == null)
+                        continue;
+
+                    Locations[assembly] = assemblyPath;
+            }
+
+            foreach (Assembly assembly in Locations.Keys)
+            {
+                if (Locations[assembly].Contains("dependencies"))
                     continue;
-
-                Locations[assembly] = pluginPath;
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 
@@ -178,7 +182,7 @@ namespace Exiled.Loader
         {
             try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
+                foreach (Type type in assembly.GetTypes().Where(type => type != null && !type.IsAbstract && !type.IsInterface))
                 {
                     if (!type.BaseType.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
                     {
@@ -199,9 +203,14 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
+                        Log.Debug(
+                            $"Constructor wasn't found, searching for a property with the {type.FullName} type...",
+                            ShouldDebugBeShown);
 
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        var value = Array
+                            .Find(
+                                type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
+                                property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -209,7 +218,8 @@ namespace Exiled.Loader
 
                     if (plugin == null)
                     {
-                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
+                        Log.Error(
+                            $"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
 
                         continue;
                     }
@@ -220,15 +230,16 @@ namespace Exiled.Loader
                     {
                         if (!Config.ShouldLoadOutdatedPlugins)
                         {
-                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                            $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                            Log.Error(
+                                $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                                $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                             continue;
                         }
                         else
                         {
                             Log.Warn($"You're running an older version of Exiled ({Version.ToString(3)})! " +
-                            $"You may encounter some bugs by loading {plugin.Name}! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
+                                     $"You may encounter some bugs by loading {plugin.Name}! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
                         }
                     }
 
@@ -237,7 +248,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+                Log.Error(
+                    $"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! \n{exception}\n{exception.StackTrace}");
             }
 
             return null;
