@@ -160,7 +160,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
         /// used in <see cref="SpawnRagdoll(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
-        /// and <see cref="SpawnRagdoll(global::Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
+        /// and <see cref="SpawnRagdoll(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -381,7 +381,7 @@ namespace Exiled.API.Features
         /// </item>
         /// </list>
         /// </remarks>
-        /// <param name="role">Main game's <see cref="global::Role"/> thad defines the role to spawn a ragdoll.</param>
+        /// <param name="role">Main game's <see cref="Role"/> thad defines the role to spawn a ragdoll.</param>
         /// <param name="ragdollInfo"><see cref="Ragdoll.Info"/> object containing the ragdoll's info.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>

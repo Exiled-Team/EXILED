@@ -35,7 +35,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
         {
@@ -686,7 +686,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="global::Stamina"/> class.
+        /// Gets the <see cref="Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 

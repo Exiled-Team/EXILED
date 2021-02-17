@@ -70,7 +70,14 @@ namespace Exiled.API.Features
         public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
-        public virtual void OnEnabled() => Log.Info($"{Name} v{Version.Major}.{Version.Minor}.{Version.Build}, made by {Author}, has been enabled!");
+        public virtual void OnEnabled()
+        {
+            string version = $"{Version.Major}.{Version.Minor}.{Version.Build}";
+            var informationVersion = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (informationVersion != null)
+                version = informationVersion.InformationalVersion;
+            Log.Info($"{Name} v{version} by {Author} has been enabled!");
+        }
 
         /// <inheritdoc/>
         public virtual void OnDisabled() => Log.Info($"{Name} has been disabled!");
