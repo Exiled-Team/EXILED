@@ -72,11 +72,8 @@ namespace Exiled.API.Features
         /// <inheritdoc/>
         public virtual void OnEnabled()
         {
-            string version = $"{Version.Major}.{Version.Minor}.{Version.Build}";
-            var informationVersion = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            if (informationVersion != null)
-                version = informationVersion.InformationalVersion;
-            Log.Info($"{Name} v{version} by {Author} has been enabled!");
+            var attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
         }
 
         /// <inheritdoc/>
