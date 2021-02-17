@@ -7,24 +7,20 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 
     <AssemblyName>Exiled.Updater</AssemblyName>
-    <Version>3.0.3</Version>
+    <Version>3.1.0</Version>
     <NoWarn>$(NoWarn);CS1591;SA1600;SA1401;SA1309;SA1134;SA1123;SA1201</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
     <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
+    <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Include="..\Exiled\SemVer2Version.cs" Link="Models\SemVer2Version.cs" />
-    <Compile Include="..\Exiled\VersionComparer.cs" />
-  </ItemGroup>
-  
   <ItemGroup>
     <Reference Include="System.Net.Http" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />

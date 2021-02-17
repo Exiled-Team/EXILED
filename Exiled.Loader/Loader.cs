@@ -216,21 +216,8 @@ namespace Exiled.Loader
 
                     Log.Debug($"Instantiated type {type.FullName}", ShouldDebugBeShown);
 
-                    if (plugin.RequiredExiledVersion > Version)
-                    {
-                        if (!Config.ShouldLoadOutdatedPlugins)
-                        {
-                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                            $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
-
-                            continue;
-                        }
-                        else
-                        {
-                            Log.Warn($"You're running an older version of Exiled ({Version.ToString(3)})! " +
-                            $"You may encounter some bugs by loading {plugin.Name}! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
-                        }
-                    }
+                    if (CheckPluginRequiredExiledVersion(plugin))
+                        continue;
 
                     return plugin;
                 }
@@ -314,6 +301,36 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
                 }
             }
+        }
+
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        {
+            var requiredVersion = plugin.RequiredExiledVersion;
+            var actualVersion = Version;
+
+            // Check Major version
+            // It's increased when an incompatible API change was made
+            if (requiredVersion.Major != actualVersion.Major)
+            {
+                // Assume that if the Required Major version is greater than the Actual Major version,
+                // Exled is outdated
+                if (requiredVersion.Major > actualVersion.Major)
+                {
+                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+
+                    return true;
+                }
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                {
+                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
+                        $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
