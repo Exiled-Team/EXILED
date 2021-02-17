@@ -8,56 +8,58 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1600 // Elements should be documented
     using System;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.Loader.Features;
 
     using HarmonyLib;
 
     using MEC;
 
-    using UnityEngine;
+    using PlayerAPI = Exiled.API.Features.Player;
+    using PlayerEvents = Exiled.Events.Handlers.Player;
 
     /// <summary>
-    /// Patches <see cref="PlayerManager.AddPlayer(GameObject)"/>.
-    /// Adds the <see cref="Player.Joined"/> event.
+    /// Patches <see cref="ReferenceHub.Awake"/>.
+    /// Adds the <see cref="PlayerEvents.Joined"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIsVerified), MethodType.Setter)]
+    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
-        private static void Prefix(CharacterClassManager __instance, bool value)
+        internal static void CallEvent(ReferenceHub hub, out Player player)
+        {
+            player = new PlayerAPI(hub);
+            PlayerAPI.Dictionary.Add(hub.gameObject, player);
+
+            var p = player;
+            Timing.CallDelayed(0.25f, () =>
+            {
+                if (p.IsMuted)
+                    p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+            });
+
+            PlayerEvents.OnJoined(new JoinedEventArgs(player));
+        }
+
+        private static void Postfix(ReferenceHub __instance)
         {
             try
             {
-                if (!value || string.IsNullOrEmpty(__instance?.UserId))
+                // ReferenceHub is a component that is loaded first
+                if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;
 
-                if (!API.Features.Player.Dictionary.TryGetValue(__instance.gameObject, out API.Features.Player player))
-                {
-                    player = new API.Features.Player(ReferenceHub.GetHub(__instance.gameObject));
-
-                    API.Features.Player.Dictionary.Add(__instance.gameObject, player);
-                }
-
-                API.Features.Log.SendRaw($"Player {player?.Nickname} ({player?.UserId}) ({player?.Id}) connected with the IP: {player?.IPAddress}", ConsoleColor.Green);
-
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                    API.Features.Log.Debug($"Server is full!");
+                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
-                Timing.CallDelayed(0.25f, () =>
-                {
-                    if (player != null && player.IsMuted)
-                        player.ReferenceHub.characterClassManager.SetDirtyBit(1UL);
-                });
-
-                var ev = new JoinedEventArgs(API.Features.Player.Get(__instance.gameObject));
-
-                Player.OnJoined(ev);
+                CallEvent(__instance, out _);
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Joined: {exception}\n{exception.StackTrace}");
+                Log.Error($"{typeof(Joined).FullName}:\n{exception}");
             }
         }
     }

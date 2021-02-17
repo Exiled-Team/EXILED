@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using Grenades;
@@ -23,15 +24,15 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="grenadeManager"><inheritdoc cref="GrenadeManager"/></param>
-        /// <param name="id"><inheritdoc cref="Id"/></param>
+        /// <param name="type"><inheritdoc cref="Type"/></param>
         /// <param name="isSlow"><inheritdoc cref="IsSlow"/></param>
         /// <param name="fuseTime"><inheritdoc cref="FuseTime"/></param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
-        public ThrowingGrenadeEventArgs(Player player, GrenadeManager grenadeManager, int id, bool isSlow, double fuseTime, bool isAllowed = true)
+        public ThrowingGrenadeEventArgs(Player player, GrenadeManager grenadeManager, GrenadeType type, bool isSlow, double fuseTime, bool isAllowed = true)
         {
             Player = player;
             GrenadeManager = grenadeManager;
-            Id = id;
+            Type = type;
             IsSlow = isSlow;
             FuseTime = fuseTime;
             IsAllowed = isAllowed;
@@ -50,7 +51,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the grenade id.
         /// </summary>
-        public int Id { get; }
+        [Obsolete("Use the Type property instead", true)]
+        public int Id => (int)Type;
+
+        /// <summary>
+        /// Gets or sets the grenade type.
+        /// </summary>
+        public GrenadeType Type { get; set; }
 
         /// <summary>
         ///  Gets or sets a value indicating whether the throw is slow or not.
@@ -63,7 +70,7 @@ namespace Exiled.Events.EventArgs
         public double FuseTime { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the grenade can be thrown.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

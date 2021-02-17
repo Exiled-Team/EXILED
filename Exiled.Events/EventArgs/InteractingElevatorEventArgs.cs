@@ -9,10 +9,12 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player interacts with an elevator.
+    /// Contains all information before a player interacts with an elevator.
     /// </summary>
     public class InteractingElevatorEventArgs : EventArgs
     {
@@ -21,12 +23,18 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="elevator"><inheritdoc cref="Elevator"/></param>
+        /// <param name="lift"><inheritdoc cref="Type"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, bool isAllowed = true)
+        public InteractingElevatorEventArgs(Player player, Lift.Elevator elevator, Lift lift, bool isAllowed = true)
         {
+            Lift = lift;
+            Status = lift.status;
             Player = player;
             Elevator = elevator;
             IsAllowed = isAllowed;
+#pragma warning disable CS0618 // Type or member is obsolete
+            Type = lift.Type();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -40,7 +48,23 @@ namespace Exiled.Events.EventArgs
         public Lift.Elevator Elevator { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets the <see cref="Lift"/> instance.
+        /// </summary>
+        public Lift Lift { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Lift"/> current <see cref="Lift.Status"/>.
+        /// </summary>
+        public Lift.Status Status { get; }
+
+        /// <summary>
+        /// Gets the <see cref="ElevatorType"/>.
+        /// </summary>
+        [Obsolete("Use Lift.Type() extension method instead.")]
+        public ElevatorType Type { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player can interact with the elevator.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

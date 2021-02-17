@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
-    using PlayableScps;
+    using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
     /// Contains all informations before SCP-096 gets enraged.
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-096 can be enraged.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

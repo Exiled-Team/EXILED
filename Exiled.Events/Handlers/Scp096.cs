@@ -18,25 +18,47 @@ namespace Exiled.Events.Handlers
     public static class Scp096
     {
         /// <summary>
-        /// Invoked before enraging with SCP-096.
+        /// Invoked before SCP-096 is enraged.
         /// </summary>
         public static event CustomEventHandler<EnragingEventArgs> Enraging;
 
         /// <summary>
-        /// Invoked before calming down with SCP-096.
+        /// Invoked before SCP-096 calms down.
         /// </summary>
         public static event CustomEventHandler<CalmingDownEventArgs> CalmingDown;
 
         /// <summary>
-        /// Invoked before enraging with SCP-096.
+        /// Invoked before adding a target to SCP-096.
+        /// </summary>
+        public static event CustomEventHandler<AddingTargetEventArgs> AddingTarget;
+
+        /// <summary>
+        /// Invoked before SCP-096 begins prying open a gate.
+        /// </summary>
+        public static event CustomEventHandler<StartPryingGateEventArgs> StartPryingGate;
+
+        /// <summary>
+        /// Called before SCP-096 is enraged.
         /// </summary>
         /// <param name="ev">The <see cref="EnragingEventArgs"/> instance.</param>
         public static void OnEnraging(EnragingEventArgs ev) => Enraging.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before calming down with SCP-096.
+        /// Called before SCP-096 calms down.
         /// </summary>
         /// <param name="ev">The <see cref="CalmingDownEventArgs"/> instance.</param>
         public static void OnCalmingDown(CalmingDownEventArgs ev) => CalmingDown.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before adding a target to SCP-096.
+        /// </summary>
+        /// <param name="ev">The <see cref="AddingTargetEventArgs"/> instance.</param>
+        public static void OnAddingTarget(AddingTargetEventArgs ev) => AddingTarget.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-096 begins prying open a gate.
+        /// </summary>
+        /// <param name="ev">The <see cref="StartPryingGateEventArgs"/> instance.</param>
+        public static void OnStartPryingGate(StartPryingGateEventArgs ev) => StartPryingGate.InvokeSafely(ev);
     }
 }

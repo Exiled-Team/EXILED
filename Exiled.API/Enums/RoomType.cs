@@ -10,7 +10,7 @@ namespace Exiled.API.Enums
     /// <summary>
     /// Unique identifier for the different types of rooms.
     /// </summary>
-public enum RoomType
+    public enum RoomType
     {
         /// <summary>
         /// Unknown Room Type.
@@ -246,6 +246,11 @@ public enum RoomType
         /// Entrance Shelter Room.
         /// </summary>
         EzShelter,
+
+        /// <summary>
+        /// Pocket Dimension.
+        /// </summary>
+        Pocket,
 
         /// <summary>
         /// The Surface.

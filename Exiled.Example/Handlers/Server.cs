@@ -7,6 +7,7 @@
 
 namespace Exiled.Example.Handlers
 {
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -26,7 +27,7 @@ namespace Exiled.Example.Handlers
         {
             Log.Debug($"The round is ending, fetching leading team...");
 
-            if (ev.LeadingTeam == RoundSummary.LeadingTeam.Draw)
+            if (ev.LeadingTeam == LeadingTeam.Draw)
                 Log.Error($"The round has ended in a draw!");
             else
                 Log.Info($"The leading team is actually: {ev.LeadingTeam}.");

@@ -63,7 +63,7 @@ namespace Exiled.API.Features
         /// Sends a raw log message to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        /// <param name="color">The message color.</param>
+        /// <param name="color">The <see cref="System.ConsoleColor"/> of the message.</param>
         public static void SendRaw(object message, System.ConsoleColor color) => ServerConsole.AddLog(message.ToString(), color);
     }
 }

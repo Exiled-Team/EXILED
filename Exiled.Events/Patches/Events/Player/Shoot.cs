@@ -18,27 +18,56 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
+#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
+#pragma warning disable SA1005 // Single line comments should begin with single space
+#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
+
     /// <summary>
-    /// Patches <see cref="WeaponManager.CallCmdShoot(GameObject, string, Vector3, Vector3, Vector3)"/>.
+    /// Patches <see cref="WeaponManager.CallCmdShoot(GameObject, HitBoxType, Vector3, Vector3, Vector3)"/>.
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
     [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdShoot))]
     internal static class Shoot
     {
-        private static bool Prefix(WeaponManager __instance, GameObject target, string hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
+        private static bool Prefix(WeaponManager __instance, GameObject target, HitBoxType hitboxType, Vector3 dir, Vector3 sourcePos, Vector3 targetPos)
         {
             try
             {
                 if (!__instance._iawRateLimit.CanExecute(true))
                     return false;
-                int itemIndex = __instance._hub.inventory.GetItemIndex();
-                if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count || __instance.curWeapon < 0 ||
-                    ((__instance._reloadCooldown > 0.0 || __instance._fireCooldown > 0.0) &&
-                     !__instance.isLocalPlayer) ||
-                    (__instance._hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID ||
-                     __instance._hub.inventory.items[itemIndex].durability <= 0.0))
-                    return false;
 
+                int itemIndex = __instance._hub.inventory.GetItemIndex();
+                if (itemIndex < 0
+                    || itemIndex >= __instance._hub.inventory.items.Count
+                    || __instance.curWeapon < 0
+                    || ((__instance._reloadCooldown > 0f
+                            || __instance._fireCooldown > 0f)
+                        && !__instance.isLocalPlayer)
+                    || __instance._hub.inventory.curItem != __instance.weapons[__instance.curWeapon].inventoryID
+                    || __instance._hub.inventory.items[itemIndex].durability <= 0.0)
+                {
+                    return false;
+                }
+
+                if (Vector3.Distance(__instance._hub.playerMovementSync.RealModelPosition, sourcePos) > 5.5f)
+                {
+                    __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.6 (difference between real source position and provided source position is too big)", "gray");
+                    return false;
+                }
+
+                if (sourcePos.y - __instance._hub.playerMovementSync.LastSafePosition.y > 1.78f)
+                {
+                    __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.7 (Y axis difference between last safe position and provided source position is too big)", "gray");
+                    return false;
+                }
+
+                if (Math.Abs(sourcePos.y - __instance._hub.playerMovementSync.RealModelPosition.y) > 2.7f)
+                {
+                    __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.8 (|Y| axis difference between real position and provided source position is too big)", "gray");
+                    return false;
+                }
+
+                //>Exiled
                 Log.Debug("Invoking shooting event", Loader.ShouldDebugBeShown);
 
                 var shootingEventArgs = new ShootingEventArgs(Player.Get(__instance.gameObject), target, targetPos);
@@ -49,154 +78,224 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
 
                 targetPos = shootingEventArgs.Position;
+                //<Exiled
 
-                if (Vector3.Distance(__instance.camera.transform.position, sourcePos) > 6.5)
+                __instance._hub.inventory.items.ModifyDuration(itemIndex, __instance._hub.inventory.items[itemIndex].durability - 1f);
+                __instance.scp268.ServerDisable();
+                __instance._fireCooldown = 1f / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier) * 0.9f;
+
+                float sourceRangeScale = __instance.weapons[__instance.curWeapon].allEffects.audioSourceRangeScale;
+                sourceRangeScale = sourceRangeScale * sourceRangeScale * 70f;
+                __instance.GetComponent<Scp939_VisionController>().MakeNoise(Mathf.Clamp(sourceRangeScale, 5f, 100f));
+
+                bool flag = target != null;
+                if (targetPos == Vector3.zero)
                 {
-                    __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code 2.2 (difference between real source position and provided source position is too big)", "gray");
+                    if (Physics.Raycast(sourcePos, dir, out RaycastHit raycastHit, 500f, __instance.raycastMask))
+                    {
+                        HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
+                        if (component != null)
+                        {
+                            WeaponManager componentInParent = component.GetComponentInParent<WeaponManager>();
+                            if (componentInParent != null)
+                            {
+                                flag = false;
+                                target = componentInParent.gameObject;
+                                hitboxType = component.id;
+                                targetPos = componentInParent.transform.position;
+                            }
+                        }
+                    }
+                }
+                else if (Physics.Linecast(sourcePos, targetPos, out RaycastHit raycastHit, __instance.raycastMask))
+                {
+                    HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
+                    if (component != null)
+                    {
+                        WeaponManager componentInParent = component.GetComponentInParent<WeaponManager>();
+                        if (componentInParent != null)
+                        {
+                            if (componentInParent.gameObject == target)
+                            {
+                                flag = false;
+                            }
+                            else if (componentInParent.scp268.Enabled)
+                            {
+                                flag = false;
+                                target = componentInParent.gameObject;
+                                hitboxType = component.id;
+                                targetPos = componentInParent.transform.position;
+                            }
+                        }
+                    }
+                }
+
+                ReferenceHub referenceHub = null;
+                if (target != null)
+                {
+                    referenceHub = ReferenceHub.GetHub(target);
+                }
+
+                if (referenceHub != null && __instance.GetShootPermission(referenceHub.characterClassManager, false))
+                {
+                    if (Math.Abs(__instance._hub.playerMovementSync.RealModelPosition.y - referenceHub.playerMovementSync.RealModelPosition.y) > 35f)
+                    {
+                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.1 (too big Y-axis difference between source and target)", "gray");
+                        return false;
+                    }
+
+                    if (Vector3.Distance(referenceHub.playerMovementSync.RealModelPosition, targetPos) > 5f)
+                    {
+                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.2 (difference between real target position and provided target position is too big)", "gray");
+                        return false;
+                    }
+
+                    if (Physics.Linecast(__instance._hub.playerMovementSync.RealModelPosition, sourcePos, __instance.raycastServerMask))
+                    {
+                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.3 (collision between source positions detected)", "gray");
+                        return false;
+                    }
+
+                    if (flag && Physics.Linecast(sourcePos, targetPos, __instance.raycastServerMask))
+                    {
+                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.4 (collision on shot line detected)", "gray");
+                        return false;
+                    }
+
+                    if (referenceHub.gameObject == __instance.gameObject)
+                    {
+                        __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.5 (target is itself)", "gray");
+                        return false;
+                    }
+
+                    Vector3 vector = referenceHub.playerMovementSync.RealModelPosition - __instance._hub.playerMovementSync.RealModelPosition;
+                    if (Math.Abs(vector.y) < 10f && vector.sqrMagnitude > 7.84f
+                        && (referenceHub.characterClassManager.CurClass != RoleType.Scp0492 || vector.sqrMagnitude > 9f)
+                        && ((referenceHub.characterClassManager.CurClass != RoleType.Scp93953 && referenceHub.characterClassManager.CurClass != RoleType.Scp93989) || vector.sqrMagnitude > 18.49f))
+                    {
+                        float num = Math.Abs(Misc.AngleIgnoreY(vector, __instance.transform.forward));
+                        if (num > 45f)
+                        {
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.12 (too big angle)", "gray");
+                            return false;
+                        }
+
+                        if (__instance._lastAngleReset > 0f && num > 25f && Math.Abs(Misc.AngleIgnoreY(vector, __instance._lastAngle)) > 60f)
+                        {
+                            __instance._lastAngle = vector;
+                            __instance._lastAngleReset = 0.4f;
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.13 (too big angle v2)", "gray");
+                            return false;
+                        }
+
+                        __instance._lastAngle = vector;
+                        __instance._lastAngleReset = 0.4f;
+                    }
+
+                    if (__instance._lastRotationReset > 0f && (__instance._hub.playerMovementSync.Rotations.x < 68f || __instance._hub.playerMovementSync.Rotations.x > 295f))
+                    {
+                        float num2 = __instance._hub.playerMovementSync.Rotations.x - __instance._lastRotation;
+                        if (num2 >= 0f && num2 <= 0.0005f)
+                        {
+                            __instance._lastRotation = __instance._hub.playerMovementSync.Rotations.x;
+                            __instance._lastRotationReset = 0.35f;
+                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code W.9 (no recoil)", "gray");
+                            return false;
+                        }
+                    }
+
+                    __instance._lastRotation = __instance._hub.playerMovementSync.Rotations.x;
+                    __instance._lastRotationReset = 0.35f;
+                    float num3 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
+                    float num4 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num3);
+
+                    switch (referenceHub.characterClassManager.CurClass)
+                    {
+                        case RoleType.Scp106:
+                            num4 /= 10f;
+                            goto IL_6D1;
+
+                        case RoleType.Scp049:
+                        case RoleType.Scp079:
+                        case RoleType.Scp096:
+                        case RoleType.Scp173:
+                        case RoleType.Scp93953:
+                        case RoleType.Scp93989:
+                            goto IL_6D1;
+
+                        default:
+                            switch (hitboxType)
+                            {
+                                case HitBoxType.HEAD:
+                                    num4 *= 4f;
+                                    float num5 = 1f / (__instance.weapons[__instance.curWeapon].shotsPerSecond * __instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier);
+                                    __instance._headshotsL++;
+                                    __instance._headshotsS++;
+                                    __instance._headshotsResetS = num5 * 1.86f;
+                                    __instance._headshotsResetL = num5 * 2.9f;
+
+                                    if (__instance._headshotsS >= 3)
+                                    {
+                                        __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window A\n(debug code: W.10)", "W.10");
+                                        return false;
+                                    }
+
+                                    if (__instance._headshotsL >= 4)
+                                    {
+                                        __instance._hub.playerMovementSync.AntiCheatKillPlayer("Headshots limit exceeded in time window B\n(debug code: W.11)", "W.11");
+                                        return false;
+                                    }
+
+                                    break;
+
+                                case HitBoxType.ARM:
+                                case HitBoxType.LEG:
+                                    num4 /= 2f;
+                                    break;
+                            }
+
+                            break;
+                    }
+
+                IL_6D1:
+                    num4 *= __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier;
+                    num4 *= __instance.overallDamagerFactor;
+
+                    // >Exiled
+                    Log.Debug("Invoking late shoot.", Loader.ShouldDebugBeShown);
+
+                    var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num3, num4);
+
+                    Handlers.Player.OnShot(shotEventArgs);
+
+                    if (!shotEventArgs.CanHurt)
+                        return false;
+
+                    // <Exiled
+                    __instance._hub.playerStats.HurtPlayer(new PlayerStats.HitInfo(shotEventArgs.Damage, __instance._hub.LoggedNameFromRefHub(), DamageTypes.FromWeaponId(__instance.curWeapon), __instance._hub.queryProcessor.PlayerId), referenceHub.gameObject, false);
+                    __instance.RpcConfirmShot(true, __instance.curWeapon);
+                    __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)referenceHub.characterClassManager.CurClass, num3);
+                    return false;
                 }
                 else
                 {
-                    __instance._hub.inventory.items.ModifyDuration(itemIndex, __instance._hub.inventory.items[itemIndex].durability - 1f);
-                    __instance.scp268.ServerDisable();
-                    __instance._fireCooldown = (float)(1.0 / (__instance.weapons[__instance.curWeapon].shotsPerSecond * (double)__instance.weapons[__instance.curWeapon].allEffects.firerateMultiplier) * 0.800000011920929);
-                    float sourceRangeScale = __instance.weapons[__instance.curWeapon].allEffects.audioSourceRangeScale;
-                    __instance.GetComponent<Scp939_VisionController>().MakeNoise(
-                        Mathf.Clamp((float)(sourceRangeScale * (double)sourceRangeScale * 70.0), 5f, 100f));
-                    bool flag = target != null;
-                    if (targetPos == Vector3.zero)
+                    if (target != null && hitboxType == HitBoxType.WINDOW && target.GetComponent<BreakableWindow>() != null)
                     {
-                        if (Physics.Raycast(sourcePos, dir, out RaycastHit raycastHit, 500f, __instance.raycastMask))
-                        {
-                            HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
-                            if (component != null)
-                            {
-                                WeaponManager componentInParent = component.GetComponentInParent<WeaponManager>();
-                                if (componentInParent != null)
-                                {
-                                    flag = false;
-                                    target = componentInParent.gameObject;
-                                    hitboxType = component.id;
-                                    targetPos = componentInParent.transform.position;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (Physics.Linecast(sourcePos, targetPos, out RaycastHit raycastHit, __instance.raycastMask))
-                        {
-                            HitboxIdentity component = raycastHit.collider.GetComponent<HitboxIdentity>();
-                            if (component != null)
-                            {
-                                WeaponManager componentInParent = component.GetComponentInParent<WeaponManager>();
-                                if (componentInParent != null)
-                                {
-                                    if (componentInParent.gameObject == target)
-                                    {
-                                        flag = false;
-                                    }
-                                    else if (componentInParent.scp268.Enabled)
-                                    {
-                                        flag = false;
-                                        target = componentInParent.gameObject;
-                                        hitboxType = component.id;
-                                        targetPos = componentInParent.transform.position;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    CharacterClassManager c = null;
-
-                    if (target != null)
-                        c = target.GetComponent<CharacterClassManager>();
-
-                    if (c != null && __instance.GetShootPermission(c, false))
-                    {
-                        if (Math.Abs(__instance.camera.transform.position.y - c.transform.position.y) > 40.0)
-                        {
-                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(
-                                __instance.connectionToClient,
-                                "Shot rejected - Code 2.1 (too big Y-axis difference between source and target)",
-                                "gray");
-                        }
-                        else if (Vector3.Distance(c.transform.position, targetPos) > 6.5)
-                        {
-                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(
-                                __instance.connectionToClient,
-                                "Shot rejected - Code 2.3 (difference between real target position and provided target position is too big)",
-                                "gray");
-                        }
-                        else if (Physics.Linecast(__instance.camera.transform.position, sourcePos, __instance.raycastServerMask))
-                        {
-                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code 2.4 (collision between source positions detected)", "gray");
-                        }
-                        else if (flag && Physics.Linecast(sourcePos, targetPos, __instance.raycastServerMask))
-                        {
-                            __instance.GetComponent<CharacterClassManager>().TargetConsolePrint(__instance.connectionToClient, "Shot rejected - Code 2.5 (collision on shot line detected)", "gray");
-                        }
-                        else
-                        {
-                            float num1 = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
-                            float num2 = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(num1);
-                            string upper = hitboxType.ToUpper();
-                            if (upper != "HEAD")
-                            {
-                                if (upper != "LEG")
-                                {
-                                    if (upper == "SCP106")
-                                        num2 /= 10f;
-                                }
-                                else
-                                {
-                                    num2 /= 2f;
-                                }
-                            }
-                            else
-                            {
-                                num2 *= 4f;
-                            }
-
-                            Log.Debug("Invoking late shoot.", Loader.ShouldDebugBeShown);
-
-                            var shotEventArgs = new ShotEventArgs(Player.Get(__instance.gameObject), target, hitboxType, num1, num2);
-
-                            Handlers.Player.OnShot(shotEventArgs);
-
-                            if (!shotEventArgs.CanHurt)
-                                return false;
-
-                            __instance._hub.playerStats.HurtPlayer(
-                                new PlayerStats.HitInfo(
-                                    shotEventArgs.Damage * __instance.weapons[__instance.curWeapon].allEffects.damageMultiplier *
-                                    __instance.overallDamagerFactor,
-                                    __instance._hub.nicknameSync.MyNick + " (" + __instance._hub.characterClassManager.UserId + ")",
-                                    DamageTypes.FromWeaponId(__instance.curWeapon),
-                                    __instance._hub.queryProcessor.PlayerId), c.gameObject);
-                            __instance.RpcConfirmShot(true, __instance.curWeapon);
-                            __instance.PlaceDecal(true, new Ray(__instance.camera.position, dir), (int)c.CurClass, shotEventArgs.Damage);
-                        }
-                    }
-                    else if (target != null && hitboxType == "window" && target.GetComponent<BreakableWindow>() != null)
-                    {
-                        float damage = __instance.weapons[__instance.curWeapon].damageOverDistance
-                            .Evaluate(Vector3.Distance(__instance.camera.transform.position, target.transform.position));
+                        float time = Vector3.Distance(__instance.camera.transform.position, target.transform.position);
+                        float damage = __instance.weapons[__instance.curWeapon].damageOverDistance.Evaluate(time);
                         target.GetComponent<BreakableWindow>().ServerDamageWindow(damage);
                         __instance.RpcConfirmShot(true, __instance.curWeapon);
+                        return false;
                     }
-                    else
-                    {
-                        __instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), __instance.curWeapon, 0.0f);
-                        __instance.RpcConfirmShot(false, __instance.curWeapon);
-                    }
-                }
 
-                return false;
+                    __instance.PlaceDecal(false, new Ray(__instance.camera.position, dir), __instance.curWeapon, 0f);
+                    __instance.RpcConfirmShot(false, __instance.curWeapon);
+                    return false;
+                }
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Shoot: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"{typeof(Shoot).FullName}.{nameof(Prefix)}:\n{e}");
 
                 return true;
             }

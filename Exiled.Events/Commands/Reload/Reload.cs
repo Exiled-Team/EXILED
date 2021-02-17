@@ -35,16 +35,17 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         public override void LoadGeneratedCommands()
         {
-            RegisterCommand(new Configs());
-            RegisterCommand(new Plugins());
-            RegisterCommand(new GamePlay());
-            RegisterCommand(new RemoteAdmin());
+            RegisterCommand(All.Instance);
+            RegisterCommand(Configs.Instance);
+            RegisterCommand(Plugins.Instance);
+            RegisterCommand(GamePlay.Instance);
+            RegisterCommand(RemoteAdmin.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: plugins, gameplay, configs, remoteadmin";
+            response = "Please, specify a valid subcommand! Available ones: all, plugins, gameplay, configs, remoteadmin";
             return false;
         }
     }

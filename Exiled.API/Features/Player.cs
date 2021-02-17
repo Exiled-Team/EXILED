@@ -12,6 +12,8 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
 
+    using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
@@ -24,6 +26,9 @@ namespace Exiled.API.Features
     using Mirror;
 
     using NorthwoodLib;
+    using NorthwoodLib.Pools;
+
+    using PlayableScps;
 
     using RemoteAdmin;
 
@@ -49,9 +54,20 @@ namespace Exiled.API.Features
         public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
 
         /// <summary>
+        /// Finalizes an instance of the <see cref="Player"/> class.
+        /// </summary>
+        ~Player()
+        {
+            HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
+#pragma warning disable CS0618 // Type or member is obsolete
+            ListPool<int>.Shared.Return(TargetGhosts);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
         /// </summary>
-        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>();
+        public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
         /// <summary>
         /// Gets a list of all <see cref="Player"/>'s on the server.
@@ -61,12 +77,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their user ids.
         /// </summary>
-        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>();
+        public static Dictionary<string, Player> UserIdsCache { get; } = new Dictionary<string, Player>(20);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing cached <see cref="Player"/> and their ids.
         /// </summary>
-        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>();
+        public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
@@ -87,6 +103,8 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
+
+                RawUserId = UserId.GetRawUserId();
             }
         }
 
@@ -113,7 +131,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        [Obsolete("Use CameraTransform instead", true)]
+        [Obsolete("Use CameraTransform instead.", true)]
         public Transform PlayerCamera => CameraTransform;
 
         /// <summary>
@@ -152,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId.Substring(0, UserId.LastIndexOf('@'));
+        public string RawUserId { get; private set; }
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -172,21 +190,33 @@ namespace Exiled.API.Features
                 if (index == -1)
                     return AuthenticationType.Unknown;
 
-                switch (UserId.Substring(index))
+                switch (UserId.Substring(index + 1))
                 {
                     case "steam":
                         return AuthenticationType.Steam;
+
                     case "discord":
                         return AuthenticationType.Discord;
+
                     case "northwood":
                         return AuthenticationType.Northwood;
+
                     case "patreon":
                         return AuthenticationType.Patreon;
+
                     default:
                         return AuthenticationType.Unknown;
                 }
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is verified.
+        /// </summary>
+        /// <remarks>
+        /// This is always false if online_mode is set to false.
+        /// </remarks>
+        public bool IsVerified { get; internal set; }
 
         /// <summary>
         /// Gets or sets the player's display nickname.
@@ -204,22 +234,83 @@ namespace Exiled.API.Features
         public string Nickname => ReferenceHub.nicknameSync.Network_myNickSync;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is invisible or not.
+        /// Gets or sets the player's player info area bitmask.
+        /// You can hide player info elements with this.
+        /// </summary>
+        public PlayerInfoArea InfoArea
+        {
+            get => ReferenceHub.nicknameSync.Network_playerInfoToShow;
+            set => ReferenceHub.nicknameSync.Network_playerInfoToShow = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's player info area bitmask.
+        /// You can hide player info elements with this.
+        /// </summary>
+        [Obsolete("Use InfoArea instead.", true)]
+        public PlayerInfoArea PlayerInfoArea
+        {
+            get => InfoArea;
+            set => InfoArea = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's custom player info string.
+        /// </summary>
+        public string CustomInfo
+        {
+            get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
+            set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's custom player info string.
+        /// </summary>
+        [Obsolete("Use CustomInfo instead.", true)]
+        public string CustomPlayerInfo
+        {
+            get => CustomInfo;
+            set => CustomInfo = value;
+        }
+
+        /// <summary>
+        /// Gets the dictionary of player's session variables. It is not being saved on player disconnect.
+        /// </summary>
+        public Dictionary<string, object> SessionVariables { get; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player is invisible.
         /// </summary>
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the players can be tracked or not.
+        /// Gets a value indicating whether or not the player can be tracked.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
-        /// Gets a list of player ids who can't see the player.
+        /// Gets a value indicating whether or not the player is connected to the server.
         /// </summary>
-        public List<int> TargetGhosts { get; private set; } = new List<int>();
+        public bool IsConnected => GameObject != null;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's overwatch is enabled or not.
+        /// Gets a list of player ids who can't see the player.
+        /// </summary>
+        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases.")]
+        public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a list of player ids who can't see the player.
+        /// </summary>
+        public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player has Remote Admin access.
+        /// </summary>
+        public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player's overwatch is enabled.
         /// </summary>
         public bool IsOverwatchEnabled
         {
@@ -242,13 +333,13 @@ namespace Exiled.API.Features
         public Vector3 Position
         {
             get => ReferenceHub.playerMovementSync.GetRealPosition();
-            set => ReferenceHub.playerMovementSync.OverridePosition(value, ReferenceHub.transform.rotation.eulerAngles.y);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value, 0f);
         }
 
         /// <summary>
         /// Gets or sets the player's rotations.
         /// </summary>
-        /// <returns>Returns a <see cref="Vector2"/>, representing the directions he's looking at.</returns>
+        /// <returns>Returns a <see cref="Vector2"/> representing the rotation of the player.</returns>
         public Vector2 Rotations
         {
             get => ReferenceHub.playerMovementSync.RotationSync;
@@ -285,28 +376,34 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether the player is cuffed or not.
+        /// Gets a value indicating whether or not the palyer is cuffed.
         /// </summary>
         public bool IsCuffed => CufferId != -1;
 
         /// <summary>
-        /// Gets a value indicating whether the player is reloading or not.
+        /// Gets a value indicating whether or not the player is reloading a weapon.
         /// </summary>
         public bool IsReloading => ReferenceHub.weaponManager.IsReloading();
 
         /// <summary>
-        /// Gets a value indicating whether the player is zooming or not.
+        /// Gets a value indicating whether or not the player is zooming with a weapon.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.ZoomInProgress();
+        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
-        /// Gets or sets the player's IP address.
+        /// Gets the player's current <see cref="PlayerMovementState"/>.
         /// </summary>
-        public string IPAddress
-        {
-            get => ReferenceHub.queryProcessor._ipAddress;
-            set => ReferenceHub.queryProcessor._ipAddress = value;
-        }
+        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is jumping.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
+
+        /// <summary>
+        /// Gets the player's IP address.
+        /// </summary>
+        public string IPAddress => ReferenceHub.networkIdentity.connectionToClient.address;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the <see cref="Player"/> has No-clip enabled.
@@ -321,7 +418,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's command sender instance.
         /// </summary>
-        [Obsolete("Use Sender instead", true)]
+        [Obsolete("Use Sender instead.", true)]
         public CommandSender CommandSender => Sender;
 
         /// <summary>
@@ -335,33 +432,45 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
-        /// Gets a value indicating whether the player is the host or not.
+        /// Gets a value indicating whether or not the player is the host.
         /// </summary>
-        public bool IsHost => ReferenceHub.characterClassManager.IsHost;
+        public bool IsHost => ReferenceHub.isDedicatedServer;
 
         /// <summary>
-        /// Gets a value indicating whether the player is alive or not.
+        /// Gets a value indicating whether or not the player is alive.
         /// </summary>
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether the player is dead or not.
+        /// Gets a value indicating whether or not the player is dead.
         /// </summary>
         public bool IsDead => Team == Team.RIP;
 
         /// <summary>
-        /// Gets or sets the camera of SCP-079.
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
+        /// Equivalent to checking the player's <see cref="Team"/>.
+        /// </summary>
+        public bool IsNTF => Team == Team.MTF;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP rank.
+        /// </summary>
+        public bool IsScp => Team == Team.SCP;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
+        /// </summary>
+        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.MTF || Team == Team.RSC;
+
+        /// <summary>
+        /// Gets or sets the camera SCP-079 is currently controlling.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Camera079 Camera
         {
             get => ReferenceHub.scp079PlayerScript.currentCamera;
             set => SetCamera(value.cameraId);
         }
-
-        /// <summary>
-        /// Gets a value indicating whether the player's role type is any NTF type <see cref="ReferenceHub"/>.
-        /// </summary>
-        public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/> they're currently in.
@@ -406,7 +515,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is muted or not.
+        /// Gets or sets a value indicating whether or not the player is muted.
         /// </summary>
         public bool IsMuted
         {
@@ -415,7 +524,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is intercom muted or not.
+        /// Gets or sets a value indicating whether or not the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
         {
@@ -424,7 +533,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's godmode is enabled or not.
+        /// Gets or sets a value indicating whether or not the player has godmode enabled.
         /// </summary>
         public bool IsGodModeEnabled
         {
@@ -434,6 +543,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's health.
+        /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
         public float Health
         {
@@ -457,6 +567,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's adrenaline health.
+        /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
         /// </summary>
         public float AdrenalineHealth
         {
@@ -479,6 +590,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's current SCP.
+        /// </summary>
+        public PlayableScp CurrentScp
+        {
+            get => ReferenceHub.scpsController.CurrentScp;
+            set => ReferenceHub.scpsController.CurrentScp = value;
+        }
+
+        /// <summary>
         /// Gets or sets the item in the player's hand, returns the default value if empty.
         /// </summary>
         public Inventory.SyncItemInfo CurrentItem
@@ -494,6 +614,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the abilities of SCP-079. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
@@ -507,6 +628,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the levels of SCP-079. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
@@ -519,7 +641,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the speaker of SCP-079. Can be null.
+        /// Gets or sets the speaker this player is currently using. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public string Speaker
         {
@@ -532,9 +655,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the SCP-079 locked doors <see cref="SyncListString"/>. Can be null.
+        /// Gets or sets the doors this player has locked. Can be null.
+        /// Only applies if the player is SCP-079.
         /// </summary>
-        public SyncListString LockedDoors
+        public SyncListUInt LockedDoors
         {
             get => ReferenceHub.scp079PlayerScript?.lockedDoors;
             set
@@ -545,7 +669,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the experience of SCP-079.
+        /// Gets or sets the amount of experience this player has.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float Experience
         {
@@ -566,7 +691,8 @@ namespace Exiled.API.Features
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
         /// <summary>
-        /// Gets or sets the level of SCP-079.
+        /// Gets or sets this player's level.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public byte Level
         {
@@ -583,7 +709,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the SCP-079 max energy.
+        /// Gets or sets this player's max energy.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float MaxEnergy
         {
@@ -599,7 +726,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the energy of SCP-079.
+        /// Gets or sets this player's energy.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         public float Energy
         {
@@ -630,29 +758,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current room the player is in.
         /// </summary>
-        public Room CurrentRoom
-        {
-            get
-            {
-                Vector3 end = Position - new Vector3(0f, 10f, 0f);
-                bool flag = Physics.Linecast(Position, end, out RaycastHit raycastHit, -84058629);
-
-                if (!flag || raycastHit.transform == null)
-                    return null;
-
-                Transform latestParent = raycastHit.transform;
-                while (latestParent.parent?.parent != null)
-                    latestParent = latestParent.parent;
-
-                foreach (Room room in Map.Rooms)
-                {
-                    if (room.Transform == latestParent)
-                        return room;
-                }
-
-                return new Room(latestParent.name, latestParent, latestParent.position);
-            }
-        }
+        public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the player's group.
@@ -688,12 +794,11 @@ namespace Exiled.API.Features
         {
             get
             {
-                var token = ReferenceHub.serverRoles.NetworkGlobalBadge;
-
-                if (string.IsNullOrEmpty(token))
+                if (string.IsNullOrEmpty(ReferenceHub.serverRoles.NetworkGlobalBadge))
                     return null;
 
-                var serverRoles = ReferenceHub.serverRoles;
+                ServerRoles serverRoles = ReferenceHub.serverRoles;
+
                 return new Badge(serverRoles._bgt, serverRoles._bgc, serverRoles.GlobalBadgeType, true);
             }
         }
@@ -714,6 +819,35 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is in the pocket dimension.
+        /// </summary>
+        public bool IsInPocketDimension
+        {
+            get => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether player should use stamina system.
+        /// </summary>
+        public bool IsUsingStamina { get; set; } = true;
+
+        /// <summary>
+        /// Gets or sets a player's SCP-330 usages counter.
+        /// </summary>
+        [Obsolete("Removed from the base-game.", true)]
+        public int Scp330Usages
+        {
+            get => -1;
+            set { }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether player has hands.
+        /// </summary>
+        [Obsolete("Removed from the base-game.", true)]
+        public bool HasHands => false;
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
@@ -726,6 +860,13 @@ namespace Exiled.API.Features
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
+        /// </summary>
+        /// <param name="sender">The command sender.</param>
+        /// <returns>Returns a player or null if not found.</returns>
+        public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.
@@ -781,6 +922,9 @@ namespace Exiled.API.Features
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(args))
+                    return null;
+
                 if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
                     return playerFound;
 
@@ -805,6 +949,9 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
+                        if (!player.IsVerified || player.Nickname == null)
+                            continue;
+
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
@@ -837,32 +984,28 @@ namespace Exiled.API.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"Player.Get error: {exception}");
+                Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
                 return null;
             }
         }
 
-        /// <summary>
-        /// Gets the camera with the given ID.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns><see cref="Camera079"/>.</returns>
-        public Camera079 GetCameraById(ushort cameraId)
-        {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
-            {
-                if (camera.cameraId == cameraId)
-                    return camera;
-            }
-
-            return null;
-        }
+        /// <inheritdoc cref="Map.GetCameraById(ushort)"/>
+        [Obsolete("Use Map.GetCameraById instead.")]
+        public Camera079 GetCameraById(ushort cameraId) => Map.GetCameraById(cameraId);
 
         /// <summary>
-        /// Sets the SCP-079 camera, if the player is SCP-079.
+        /// Sets the camera the player is currently located at.
+        /// Only applies if the player is SCP-079.
         /// </summary>
         /// <param name="cameraId">Camera ID.</param>
         public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
+
+        /// <summary>
+        /// Sets the camera the player is currently located at.
+        /// Only applies if the player is SCP-079.
+        /// </summary>
+        /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
+        public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
 
         /// <summary>
         /// Sets the player's rank.
@@ -922,6 +1065,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        public void Broadcast(Broadcast broadcast)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+        }
+
+        /// <summary>
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
@@ -929,6 +1082,24 @@ namespace Exiled.API.Features
         {
             Inventory.SetPickup(item.id, item.durability, Position, Inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
             Inventory.items.Remove(item);
+        }
+
+        /// <summary>
+        /// Indicates whether or not the player has an item.
+        /// </summary>
+        /// <param name="targetItem">The item to search for.</param>
+        /// <returns>true, if the player has it; otherwise, false.</returns>
+        public bool HasItem(ItemType targetItem)
+        {
+            foreach (Inventory.SyncItemInfo item in this.Inventory.items)
+            {
+                if (item.id == targetItem)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -990,7 +1161,7 @@ namespace Exiled.API.Features
         public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
 
         /// <summary>
-        /// Bans a the player.
+        /// Bans the player.
         /// </summary>
         /// <param name="duration">The ban duration.</param>
         /// <param name="reason">The ban reason.</param>
@@ -1080,16 +1251,21 @@ namespace Exiled.API.Features
         public void ResetInventory(List<Inventory.SyncItemInfo> newItems) => ResetInventory(newItems.Select(item => item.id).ToList());
 
         /// <summary>
-        /// Clears the player's inventory.
+        /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        public void ClearInventory() => Inventory.items.Clear();
+        public void ClearInventory() => Inventory.Clear();
+
+        /// <summary>
+        /// Drops all items in the player's inventory, including all ammo and items.
+        /// </summary>
+        public void DropItems() => Inventory.ServerDropAll();
 
         /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see>.
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
-        [Obsolete("Use Ammo instead", true)]
+        [Obsolete("Use Ammo instead.", true)]
         public void SetAmmo(AmmoType ammoType, uint amount) => ReferenceHub.ammoBox[(int)ammoType] = amount;
 
         /// <summary>
@@ -1097,7 +1273,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
         /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
-        [Obsolete("Use Ammo instead", true)]
+        [Obsolete("Use Ammo instead.", true)]
         public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
 
         /// <summary>
@@ -1113,6 +1289,146 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
+
+        /// <summary>
+        /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
+        public bool GetEffectActive<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+                return playerEffect.Enabled;
+
+            return false;
+        }
+
+        /// <summary>
+        ///  Disables all currently active <see cref="PlayerEffect">status effects</see>.
+        /// </summary>
+        public void DisableAllEffects()
+        {
+            foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+                if (effect.Value.Enabled)
+                    effect.Value.ServerDisable();
+            }
+        }
+
+        /// <summary>
+        /// Disables a specific <see cref="PlayerEffect">status effect</see> on the player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to disable.</typeparam>
+        public void DisableEffect<T>()
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.DisableEffect<T>();
+
+        /// <summary>
+        /// Disables a specific <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/> to disable.</param>
+        public void DisableEffect(EffectType effect)
+        {
+            if (TryGetEffect(effect, out var pEffect))
+                pEffect.ServerDisable();
+        }
+
+        /// <summary>
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
+            => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
+        {
+            if (TryGetEffect(effect, out var pEffect))
+                ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
+        }
+
+        /// <summary>
+        /// Gets an instance of <see cref="PlayerEffect"/> by <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <returns>The <see cref="PlayerEffect"/>.</returns>
+        public PlayerEffect GetEffect(EffectType effect)
+        {
+            var type = effect.Type();
+            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(type, out var pEffect);
+            return pEffect;
+        }
+
+        /// <summary>
+        /// Tries to get an instance of <see cref="PlayerEffect"/> by <see cref="EffectType"/>.
+        /// </summary>
+        /// <param name="effect">The <see cref="EffectType"/>.</param>
+        /// <param name="playerEffect">The <see cref="PlayerEffect"/>.</param>
+        /// <returns>A bool indicating whether or not the <paramref name="playerEffect"/> was successfully gotten.</returns>
+        public bool TryGetEffect(EffectType effect, out PlayerEffect playerEffect)
+        {
+            playerEffect = GetEffect(effect);
+            return playerEffect != null;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="byte"/> indicating the intensity of the given <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
+        /// <exception cref="ArgumentException">Thrown if the given type is not a valid <see cref="PlayerEffect"/>.</exception>
+        /// <returns>The intensity of the effect.</returns>
+        public byte GetEffectIntensity<T>()
+            where T : PlayerEffect
+        {
+            if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
+            {
+                return playerEffect.Intensity;
+            }
+
+            throw new ArgumentException("The given type is invalid.");
+        }
+
+        /// <summary>
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="PlayerEffect"/> to change the intensity of.</typeparam>
+        /// <param name="intensity">The intensity of the effect.</param>
+        public void ChangeEffectIntensity<T>(byte intensity)
+            where T : PlayerEffect => ReferenceHub.playerEffectsController.ChangeEffectIntensity<T>(intensity);
+
+        /// <summary>
+        /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="intensity">The intensity of the effect.</param>
+        /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
+        public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) =>
+            ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
+
+        /// <summary>
+        /// Removes the player's hands.
+        /// </summary>
+        [Obsolete("Removed from the base-game.", true)]
+        public void RemoveHands()
+        {
         }
 
         /// <inheritdoc/>

@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains information about the report to local administrators.
+    /// Contains informations before a report is sent to local administrators.
     /// </summary>
     public class LocalReportingEventArgs : EventArgs
     {
@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the process can be processed or not.
+        /// Gets or sets a value indicating whether the report can be processed or not.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

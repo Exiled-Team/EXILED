@@ -15,35 +15,34 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     /// <summary>
-    /// Patches <see cref="ReferenceHub.OnDestroy"/>.
+    /// Patches <see cref="CustomNetworkManager.OnServerDisconnect(Mirror.NetworkConnection)"/>.
     /// Adds the <see cref="Handlers.Player.Left"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.OnDestroy))]
+    [HarmonyPatch(typeof(CustomNetworkManager), nameof(CustomNetworkManager.OnServerDisconnect), new[] { typeof(NetworkConnection) })]
     internal static class Left
     {
-        private static void Prefix(ReferenceHub __instance)
+        private static void Prefix(NetworkConnection conn)
         {
             try
             {
-                Player player = Player.Get(__instance.gameObject);
+                // The game checks for null NetworkIdentity, do the same
+                // GameObjects don't support the null-conditional operator (?) and the null-coalescing operator (??)
+                if (conn.identity == null || conn.identity.gameObject == null)
+                    return;
 
+                Player player = Player.Get(conn.identity.gameObject);
                 if (player == null || player.IsHost)
                     return;
 
-                var ev = new LeftEventArgs(player);
-
-                Log.SendRaw($"Player {ev.Player.Nickname} ({ev.Player.UserId}) ({player?.Id}) disconnected", ConsoleColor.Green);
-
-                Handlers.Player.OnLeft(ev);
-
-                Player.IdsCache.Remove(player.Id);
-                Player.UserIdsCache.Remove(player.UserId);
-                Player.Dictionary.Remove(player.GameObject);
+                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) disconnected", ConsoleColor.Green);
+                Handlers.Player.OnLeft(new LeftEventArgs(player));
             }
             catch (Exception exception)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.Left: {exception}\n{exception.StackTrace}");
+                Log.Error($"{typeof(Left).FullName}.{nameof(Prefix)}:\n{exception}");
             }
         }
     }

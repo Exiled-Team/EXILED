@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player gets hurt.
+    /// Contains all informations before a player gets damaged.
     /// </summary>
     public class HurtingEventArgs : EventArgs
     {
@@ -87,7 +87,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player will be dealt damage.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -31,38 +31,45 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!__instance._playerInteractRateLimit.CanExecute() ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+                if (!__instance._playerInteractRateLimit.CanExecute()
+                    || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
+                {
                     return false;
+                }
 
                 GameObject gameObject = GameObject.Find("OutsitePanelScript");
-
                 if (!__instance.ChckDis(gameObject.transform.position))
                     return false;
 
-                Item itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
-
+                var itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
                 if (!__instance._sr.BypassMode && itemById == null)
                     return false;
 
+                const string PANEL_PERM = "CONT_LVL_3";
+
+                // Deprecated
                 var list = ListPool<string>.Shared.Rent();
-                list.Add("CONT_LVL_3");
-                var ev = new ActivatingWarheadPanelEventArgs(API.Features.Player.Get(__instance.gameObject), list);
+                list.Add(PANEL_PERM);
+
+                var ev = new ActivatingWarheadPanelEventArgs(
+                    API.Features.Player.Get(__instance.gameObject),
+                    list,
+                    __instance._sr.BypassMode || itemById.permissions.Contains(PANEL_PERM));
 
                 Player.OnActivatingWarheadPanel(ev);
+                ListPool<string>.Shared.Return(list);
 
-                if (ev.IsAllowed && itemById.permissions.Intersect(ev.Permissions).Any())
+                if (ev.IsAllowed)
                 {
                     gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
                     __instance.OnInteract();
                 }
 
-                ListPool<string>.Shared.Return(list);
                 return false;
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ActivatingWarheadPanel: {exception}\n{exception.StackTrace}");
+                API.Features.Log.Error($"{typeof(ActivatingWarheadPanel).FullName}.{nameof(Prefix)}:\n{exception}");
 
                 return true;
             }

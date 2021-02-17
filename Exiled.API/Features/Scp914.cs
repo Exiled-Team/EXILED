@@ -18,7 +18,7 @@ namespace Exiled.API.Features
     using Utils.ConfigHandler;
 
     /// <summary>
-    /// A set of tools to use the Scp914 machine more easily.
+    /// A set of tools to modify SCP-914's behaviour.
     /// </summary>
     public static class Scp914
     {

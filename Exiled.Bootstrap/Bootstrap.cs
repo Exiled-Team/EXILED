@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Boostrap
+namespace Exiled.Bootstrap
 {
 #pragma warning disable SA1118
     using System;

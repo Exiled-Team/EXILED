@@ -5,24 +5,24 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Handlers
+namespace Exiled.Events.Handlers.Internal
 {
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
     using Exiled.Loader;
+    using Exiled.Loader.Features;
 
     using MEC;
 
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
     /// </summary>
-    public sealed class Round
+    internal static class Round
     {
         /// <inheritdoc cref="Server.OnWaitingForPlayers"/>
-        public void OnWaitingForPlayers()
+        public static void OnWaitingForPlayers()
         {
-            API.Features.Player.IdsCache.Clear();
-            API.Features.Player.UserIdsCache.Clear();
-            API.Features.Player.Dictionary.Clear();
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
                 ConfigManager.Reload();
@@ -31,14 +31,20 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Server.OnRestartingRound"/>
-        public void OnRestartingRound()
+        public static void OnRestartingRound()
         {
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_END);
+
             API.Features.Map.ClearCache();
+            API.Features.Scp173.TurnedPlayers.Clear();
+            API.Features.Scp096.TurnedPlayers.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>
-        public void OnRoundStarted()
+        public static void OnRoundStarted()
         {
+            MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
+
             foreach (API.Features.Player player in API.Features.Player.List)
             {
                 if (player.IsOverwatchEnabled)
@@ -50,7 +56,7 @@ namespace Exiled.Events.Handlers
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>
-        public void OnChangingRole(ChangingRoleEventArgs ev)
+        public static void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Player?.IsHost != false || string.IsNullOrEmpty(ev.Player.UserId))
                 return;

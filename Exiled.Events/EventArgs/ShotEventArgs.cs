@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations after a player has shot.
+    /// Contains all informations after a player has fired a weapon.
     /// </summary>
     public class ShotEventArgs : EventArgs
     {
@@ -27,11 +27,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="distance"><inheritdoc cref="Distance"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
         /// <param name="canHurt"><inheritdoc cref="CanHurt"/></param>
-        public ShotEventArgs(Player shooter, GameObject target, string hitboxType, float distance, float damage, bool canHurt = true)
+        public ShotEventArgs(Player shooter, GameObject target, HitBoxType hitboxType, float distance, float damage, bool canHurt = true)
         {
             Shooter = shooter;
             Target = target;
-            HitboxType = hitboxType;
+#pragma warning disable CS0618 // Type or member is obsolete
+            HitboxType = hitboxType.ToString().ToLowerInvariant();
+#pragma warning restore CS0618 // Type or member is obsolete
+            HitboxTypeEnum = hitboxType;
             Distance = distance;
             Damage = damage;
             CanHurt = canHurt;
@@ -50,7 +53,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the hitbox type of the shot.
         /// </summary>
+        [Obsolete("Use HitboxTypeEnum instead")]
         public string HitboxType { get; }
+
+        /// <summary>
+        /// Gets the hitbox type of the shot.
+        /// </summary>
+        public HitBoxType HitboxTypeEnum { get; }
 
         /// <summary>
         /// Gets the shot distance.
@@ -63,7 +72,7 @@ namespace Exiled.Events.EventArgs
         public float Damage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the shot can hurt the target or notc.
+        /// Gets or sets a value indicating whether or not the shot can hurt the target.
         /// </summary>
         public bool CanHurt { get; set; }
     }

@@ -43,7 +43,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<AnnouncingNtfEntranceEventArgs> AnnouncingNtfEntrance;
 
         /// <summary>
-        /// Invoked after a generator has been activated.
+        /// Invoked after a <see cref="Generator079"/> has been activated.
         /// </summary>
         public static event CustomEventHandler<GeneratorActivatedEventArgs> GeneratorActivated;
 
@@ -53,9 +53,29 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DecontaminatingEventArgs> Decontaminating;
 
         /// <summary>
+        /// Invoked before damaging a window.
+        /// </summary>
+        public static event CustomEventHandler<DamagingWindowEventArgs> DamagingWindow;
+
+        /// <summary>
         /// Invoked before a grenade explodes.
         /// </summary>
         public static event CustomEventHandler<ExplodingGrenadeEventArgs> ExplodingGrenade;
+
+        /// <summary>
+        /// Invoked before an item is spawned.
+        /// </summary>
+        public static event CustomEventHandler<SpawningItemEventArgs> SpawningItem;
+
+        /// <summary>
+        /// Invoked after an item is spawned.
+        /// </summary>
+        public static event CustomEventHandler<SpawnedItemEventArgs> SpawnedItem;
+
+        /// <summary>
+        /// Invoked after the map is generated.
+        /// </summary>
+        public static event CustomEventHandler Generated;
 
         /// <summary>
         /// Called before placing a decal.
@@ -88,7 +108,7 @@ namespace Exiled.Events.Handlers
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after a generator has been activated.
+        /// Called after a <see cref="Generator079"/> has been activated.
         /// </summary>
         /// <param name="ev">The <see cref="GeneratorActivatedEventArgs"/> instance.</param>
         public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev) => GeneratorActivated.InvokeSafely(ev);
@@ -100,9 +120,32 @@ namespace Exiled.Events.Handlers
         public static void OnDecontaminating(DecontaminatingEventArgs ev) => Decontaminating.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before damaging a window.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
+        public static void OnDamagingWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a grenade explodes.
         /// </summary>
         /// <param name="ev">The <see cref="ExplodingGrenadeEventArgs"/> instance.</param>
         public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) => ExplodingGrenade.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before an item is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
+        public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after an item is spawned.
+        /// </summary>
+        /// <param name="ev">The <see cref="SpawnedItemEventArgs"/> instance.</param>
+        public static void OnSpawnedItem(SpawnedItemEventArgs ev) => SpawnedItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after the map is generated.
+        /// </summary>
+        public static void OnGenerated() => Generated.InvokeSafely();
     }
 }

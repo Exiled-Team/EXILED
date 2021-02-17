@@ -13,28 +13,28 @@ namespace Exiled.Events.Handlers
     using static Exiled.Events.Events;
 
     /// <summary>
-    /// Scp049 related events.
+    /// SCP-049 related events.
     /// </summary>
     public static class Scp049
     {
         /// <summary>
-        /// Invoked before a player is infected.
+        /// Invoked before SCP-049 finishes recalling a player.
         /// </summary>
         public static event CustomEventHandler<FinishingRecallEventArgs> FinishingRecall;
 
         /// <summary>
-        /// Invoked before Scp049 starts to infect a player.
+        /// Invoked before SCP-049 begins recalling a player.
         /// </summary>
         public static event CustomEventHandler<StartingRecallEventArgs> StartingRecall;
 
         /// <summary>
-        /// Invoked before a player is recalled.
+        /// Called before SCP-049 finishes recalling a player.
         /// </summary>
         /// <param name="ev">The <see cref="FinishingRecallEventArgs"/> instance.</param>
         public static void OnFinishingRecall(FinishingRecallEventArgs ev) => FinishingRecall.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before Scp049 starts to recall a player.
+        /// Called before Scp049 starts to recall a player.
         /// </summary>
         /// <param name="ev">The <see cref="StartingRecallEventArgs"/> instance.</param>
         public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);

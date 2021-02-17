@@ -35,9 +35,9 @@ namespace Exiled.Events.Patches.Events.Server
             IdleMode.PreauthStopwatch.Restart();
             IdleMode.SetIdleMode(false);
 
-            if (q.ToLower().StartsWith("gban-kick"))
+            if (q.StartsWith("gban-kick", System.StringComparison.OrdinalIgnoreCase))
             {
-                if (queryProcessor == null || !queryProcessor._sender.SR.RaEverywhere)
+                if (queryProcessor == null || (!queryProcessor._sender.ServerRoles.RaEverywhere || !queryProcessor._sender.ServerRoles.Staff))
                 {
                     sender.RaReply(
                         $"GBAN-KICK# Permission to run command denied by the server. If this is an unexpected error, contact EXILED developers.",

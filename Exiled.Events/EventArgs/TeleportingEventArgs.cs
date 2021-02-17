@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before teleporting an SCP-106.
+    /// Contains all informations before SCP-106 teleports using a portal.
     /// </summary>
     public class TeleportingEventArgs : EventArgs
     {
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Vector3 PortalPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not SCP-106 can teleport using a portal.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

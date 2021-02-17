@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before the SCP-914 machine upgrades items inside it.
+    /// Contains all informations before a generator is unlocked.
     /// </summary>
     public class UnlockingGeneratorEventArgs : EventArgs
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public Generator079 Generator { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the generator can be unlocked.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

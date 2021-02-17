@@ -13,9 +13,12 @@ namespace Exiled.Loader
     using System.Linq;
     using System.Reflection;
 
+    using CommandSystem.Commands;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
+    using Exiled.Loader.Features;
 
     /// <summary>
     /// Used to handle plugins.
@@ -25,7 +28,19 @@ namespace Exiled.Loader
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
-            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.Major}.{Version.Minor}.{Version.Build}", ConsoleColor.DarkRed);
+
+#if PUBLIC_BETA
+            Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
+#endif
+
+            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.DarkRed);
+
+            if (MultiAdminFeatures.MultiAdminUsed)
+            {
+                Log.SendRaw($"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}", ConsoleColor.Cyan);
+                MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_START);
+                MultiAdminFeatures.CallAction(MultiAdminFeatures.ActionType.SET_SUPPORTED_FEATURES, MultiAdminFeatures.ModFeatures.All);
+            }
 
             CustomNetworkManager.Modded = true;
 
@@ -46,7 +61,12 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static List<IPlugin<IConfig>> Plugins { get; } = new List<IPlugin<IConfig>>();
+        public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
+
+        /// <summary>
+        /// Gets a dictionary containing the file paths of assemblies.
+        /// </summary>
+        public static Dictionary<Assembly, string> Locations { get; } = new Dictionary<Assembly, string>();
 
         /// <summary>
         /// Gets the initialized global random class.
@@ -79,7 +99,7 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
-            if (dependencies != null && dependencies.Length > 0)
+            if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
             LoadDependencies();
@@ -88,6 +108,23 @@ namespace Exiled.Loader
             ConfigManager.Reload();
 
             EnablePlugins();
+
+            BuildInfoCommand.ModDescription = string.Join(
+                "\n",
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
+                    .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
+            ServerConsole.AddLog(
+                @"Welcome to
+   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
+  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
+  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
+ ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
+▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
+  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
+  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
+  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
+                                  ▀                                 ", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -95,12 +132,14 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins).Where(path => (path.EndsWith(".dll") || path.EndsWith(".exe")) && !IsAssemblyLoaded(path)))
+            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(pluginPath);
 
                 if (assembly == null)
                     continue;
+
+                Locations[assembly] = pluginPath;
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 
@@ -109,8 +148,6 @@ namespace Exiled.Loader
 
                 Plugins.Add(plugin);
             }
-
-            Plugins.Sort();
         }
 
         /// <summary>
@@ -126,7 +163,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while loading a plugin at {path}! {exception}");
+                Log.Error($"Error while loading an assembly at {path}! {exception}");
             }
 
             return null;
@@ -179,21 +216,8 @@ namespace Exiled.Loader
 
                     Log.Debug($"Instantiated type {type.FullName}", ShouldDebugBeShown);
 
-                    if (plugin.RequiredExiledVersion > Version)
-                    {
-                        if (!Config.ShouldLoadOutdatedPlugins)
-                        {
-                            Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                            $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
-
-                            continue;
-                        }
-                        else
-                        {
-                            Log.Warn($"You're running an older version of Exiled ({Version.ToString(3)})! " +
-                            $"You may encounter some bugs by loading {plugin.Name}! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
-                        }
-                    }
+                    if (CheckPluginRequiredExiledVersion(plugin))
+                        continue;
 
                     return plugin;
                 }
@@ -241,6 +265,8 @@ namespace Exiled.Loader
 
                     plugin.Config.IsEnabled = false;
 
+                    plugin.OnUnregisteringCommands();
+
                     plugin.OnDisabled();
                 }
                 catch (Exception exception)
@@ -248,6 +274,8 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
+
+            Plugins.Clear();
 
             LoadPlugins();
 
@@ -265,9 +293,8 @@ namespace Exiled.Loader
             {
                 try
                 {
-                    plugin.Config.IsEnabled = false;
-                    plugin.OnDisabled();
                     plugin.OnUnregisteringCommands();
+                    plugin.OnDisabled();
                 }
                 catch (Exception exception)
                 {
@@ -276,19 +303,35 @@ namespace Exiled.Loader
             }
         }
 
-        /// <summary>
-        /// Check if a dependency is loaded.
-        /// </summary>
-        /// <param name="path">The path to check from.</param>
-        /// <returns>Returns whether the dependency is loaded or not.</returns>
-        public static bool IsDependencyLoaded(string path) => Dependencies.Exists(assembly => assembly.Location == path);
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        {
+            var requiredVersion = plugin.RequiredExiledVersion;
+            var actualVersion = Version;
 
-        /// <summary>
-        /// Check if an assembly is loaded.
-        /// </summary>
-        /// <param name="path">The path to check from.</param>
-        /// <returns>Returns whether the assembly is loaded or not.</returns>
-        public static bool IsAssemblyLoaded(string path) => Plugins.Any(plugin => plugin.Assembly.Location == path);
+            // Check Major version
+            // It's increased when an incompatible API change was made
+            if (requiredVersion.Major != actualVersion.Major)
+            {
+                // Assume that if the Required Major version is greater than the Actual Major version,
+                // Exled is outdated
+                if (requiredVersion.Major > actualVersion.Major)
+                {
+                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+
+                    return true;
+                }
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                {
+                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
+                        $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Loads all dependencies.
@@ -299,12 +342,14 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
 
-                foreach (string dependency in Directory.GetFiles(Paths.Dependencies).Where(path => path.EndsWith(".dll") && !IsDependencyLoaded(path)))
+                foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {
                     Assembly assembly = LoadAssembly(dependency);
 
                     if (assembly == null)
                         continue;
+
+                    Locations[assembly] = dependency;
 
                     Dependencies.Add(assembly);
 

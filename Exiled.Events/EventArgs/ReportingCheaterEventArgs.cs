@@ -59,7 +59,7 @@ namespace Exiled.Events.EventArgs
         public string Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the report will be sent.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

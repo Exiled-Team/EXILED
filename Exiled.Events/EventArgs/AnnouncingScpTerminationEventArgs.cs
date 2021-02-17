@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before announcing an SCP termination.
+    /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; }
 
         /// <summary>
-        /// Gets the killed <see cref="Role"/>.
+        /// Gets the killed <see cref="API.Extensions.Role"/>.
         /// </summary>
         public Role Role { get; }
 
@@ -54,7 +54,7 @@ namespace Exiled.Events.EventArgs
         public string TerminationCause { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

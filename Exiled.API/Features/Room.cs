@@ -11,83 +11,83 @@ namespace Exiled.API.Features
     using System.Linq;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+
+    using Interactables.Interobjects.DoorUtils;
 
     using UnityEngine;
 
     /// <summary>
     /// The in-game room.
     /// </summary>
-    public class Room
+    public class Room : MonoBehaviour
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Room"/> class.
-        /// </summary>
-        /// <param name="name">The room name.</param>
-        /// <param name="transform">The room transform.</param>
-        /// <param name="position">The room position.</param>
-        public Room(string name, Transform transform, Vector3 position)
-        {
-            Name = name;
-            Transform = transform;
-            Position = position;
-            Zone = FindZone();
-            Type = FindType(name);
-        }
-
         /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
-        public string Name { get; }
+        public string Name => name;
 
         /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
-        public Transform Transform { get; }
+        public Transform Transform => transform;
 
         /// <summary>
         /// Gets the <see cref="Room"/> position.
         /// </summary>
-        public Vector3 Position { get; }
+        public Vector3 Position => transform.position;
 
         /// <summary>
         /// Gets the <see cref="ZoneType"/> in which the room is located.
         /// </summary>
-        public ZoneType Zone { get; }
+        public ZoneType Zone { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="RoomType"/>.
         /// </summary>
-        public RoomType Type { get; }
+        public RoomType Type { get; private set; }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
 
-        private ZoneType FindZone()
-        {
-            if (Transform.parent == null)
-                return ZoneType.Unspecified;
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<DoorVariant> Doors { get; private set; }
 
-            switch (Transform.parent.name)
-            {
-                case "HeavyRooms":
-                    return ZoneType.HeavyContainment;
-                case "LightRooms":
-                    return ZoneType.LightContainment;
-                case "EntranceRooms":
-                    return ZoneType.Entrance;
-                default:
-                    return Position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
-            }
-        }
+        /// <summary>
+        /// Gets a value indicating whether or not the lights in this room are currently flickered off.
+        /// </summary>
+        public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
 
-        private RoomType FindType(string rawName)
+        private FlickerableLightController FlickerableLightController { get; set; }
+
+        /// <summary>
+        /// Flickers the room's lights off for a duration.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
+
+        /// <summary>
+        /// Sets the intensity of the lights in the room.
+        /// </summary>
+        /// <param name="intensity">The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</param>
+        public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
+
+        /// <summary>
+        /// Factory method to create and add a <see cref="Room"/> component to a Transform.
+        /// We can add parameters to be set privately here.
+        /// </summary>
+        /// <param name="roomGameObject">The Game Object to attach the Room component to.</param>
+        /// <returns>The Room component that was instantiated onto the Game Object.</returns>
+        internal static Room CreateComponent(GameObject roomGameObject) => roomGameObject.AddComponent<Room>();
+
+        private static RoomType FindType(string rawName)
         {
             // Try to remove brackets if they exist.
-            var bracketStart = rawName.IndexOf('(') - 1;
-            if (bracketStart > 0)
-                rawName = rawName.Remove(bracketStart, rawName.Length - bracketStart);
+            rawName = rawName.RemoveBracketsOnEndOfName();
 
             switch (rawName)
             {
@@ -183,11 +183,65 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
-                case "Root_*&*Outside Cams":
+                case "PocketWorld":
+                    return RoomType.Pocket;
+                case "Outside":
                     return RoomType.Surface;
                 default:
                     return RoomType.Unknown;
             }
+        }
+
+        private static ZoneType FindZone(GameObject gameObject)
+        {
+            var transform = gameObject.transform;
+
+            if (transform.parent == null)
+                return ZoneType.Unspecified;
+
+            switch (transform.parent.name)
+            {
+                case "HeavyRooms":
+                    return ZoneType.HeavyContainment;
+                case "LightRooms":
+                    return ZoneType.LightContainment;
+                case "EntranceRooms":
+                    return ZoneType.Entrance;
+                default:
+                    return transform.position.y > 900 ? ZoneType.Surface : ZoneType.Unspecified;
+            }
+        }
+
+        private static List<DoorVariant> FindDoors(GameObject gameObject)
+        {
+            List<DoorVariant> doorList = new List<DoorVariant>();
+            foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
+            {
+                foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
+                {
+                    if (zoneAndRoom.currentRoom == gameObject.name && zoneAndRoom.currentZone == gameObject.transform.parent.name)
+                    {
+                        if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
+                        {
+                            DoorVariant door = scp079Interactable.GetComponent<DoorVariant>();
+                            if (!doorList.Contains(door))
+                            {
+                                doorList.Add(door);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return doorList;
+        }
+
+        private void Start()
+        {
+            Zone = FindZone(gameObject);
+            Type = FindType(gameObject.name);
+            Doors = FindDoors(gameObject);
+            FlickerableLightController = GetComponentInChildren<FlickerableLightController>();
         }
     }
 }

@@ -35,12 +35,12 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is in hurting range or not.
+        /// Gets or sets a value indicating whether or not the player is in hurting range.
         /// </summary>
         public bool IsInHurtingRange { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tesla is going to be triggered or not.
+        /// Gets or sets a value indicating whether or not the tesla is going to be activated.
         /// </summary>
         public bool IsTriggerable { get; set; }
     }

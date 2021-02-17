@@ -18,6 +18,11 @@ namespace Exiled.Events.Handlers
     public static class Scp079
     {
         /// <summary>
+        /// Invoked before SCP-079 switches cameras.
+        /// </summary>
+        public static event CustomEventHandler<ChangingCameraEventArgs> ChangingCamera;
+
+        /// <summary>
         /// Invoked before gaining experience with SCP-079
         /// </summary>
         public static event CustomEventHandler<GainingExperienceEventArgs> GainingExperience;
@@ -38,36 +43,75 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
 
         /// <summary>
+        /// Invoked before SCP-079 teleports using an elevator.
+        /// </summary>
+        public static event CustomEventHandler<ElevatorTeleportEventArgs> ElevatorTeleport;
+
+        /// <summary>
+        /// Invoked before SCP-079 uses a speaker.
+        /// </summary>
+        public static event CustomEventHandler<StartingSpeakerEventArgs> StartingSpeaker;
+
+        /// <summary>
+        /// Invoked before SCP-079 finishes using a speaker.
+        /// </summary>
+        public static event CustomEventHandler<StoppingSpeakerEventArgs> StoppingSpeaker;
+
+        /// <summary>
         /// Invoked after Scp079 recontainment.
         /// </summary>
         public static event CustomEventHandler<RecontainedEventArgs> Recontained;
 
         /// <summary>
-        /// Invoked before gaining experience with SCP-079.
+        /// Called before SCP-079 switches cameras.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingCameraEventArgs"/> instance.</param>
+        public static void OnChangingCamera(ChangingCameraEventArgs ev) => ChangingCamera.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before gaining experience with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="GainingExperienceEventArgs"/> instance.</param>
         public static void OnGainingExperience(GainingExperienceEventArgs ev) => GainingExperience.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before gaining levels with SCP-079.
+        /// Called before gaining levels with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="GainingLevelEventArgs"/> instance.</param>
         public static void OnGainingLevel(GainingLevelEventArgs ev) => GainingLevel.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before triggering a tesla with SCP-079.
+        /// Called before triggering a tesla with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingTeslaEventArgs"/> instance.</param>
         public static void OnInteractingTesla(InteractingTeslaEventArgs ev) => InteractingTesla.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked before interacting with a door with SCP-079.
+        /// Called before interacting with a door with SCP-079.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after 079 recontainment.
+        /// Called before SCP-079 teleports using an elevator.
+        /// </summary>
+        /// <param name="ev">The <see cref="ElevatorTeleportEventArgs"/> instance.</param>
+        public static void OnElevatorTeleport(ElevatorTeleportEventArgs ev) => ElevatorTeleport.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before interacting with a speaker with SCP-079.
+        /// </summary>
+        /// <param name="ev">The <see cref="StartingSpeakerEventArgs"/> instance.</param>
+        public static void OnStartingSpeaker(StartingSpeakerEventArgs ev) => StartingSpeaker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-079 finishes using a speaker.
+        /// </summary>
+        /// <param name="ev">The <see cref="StoppingEventArgs"/> instance.</param>
+        public static void OnStoppingSpeaker(StoppingSpeakerEventArgs ev) => StoppingSpeaker.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after SCP-079 is recontained.
         /// </summary>
         /// <param name="ev">The <see cref="RecontainedEventArgs"/> instance.</param>
         public static void OnRecontained(RecontainedEventArgs ev) => Recontained.InvokeSafely(ev);

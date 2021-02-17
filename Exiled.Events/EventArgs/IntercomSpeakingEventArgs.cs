@@ -12,7 +12,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player speaks to the itercom.
+    /// Contains all informations before a player speaks to the intercom.
     /// </summary>
     public class IntercomSpeakingEventArgs : EventArgs
     {
@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
+        /// Gets or sets a value indicating whether or not the player can speak to the intercom.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

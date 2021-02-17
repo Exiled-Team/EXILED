@@ -33,7 +33,7 @@ namespace Exiled.API.Features
         {
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
-            Author = ((AssemblyCompanyAttribute)Attribute.GetCustomAttribute(Assembly, typeof(AssemblyCompanyAttribute), false))?.Company;
+            Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
             Version = Assembly.GetName().Version;
         }
 
@@ -56,7 +56,7 @@ namespace Exiled.API.Features
         public virtual Version Version { get; }
 
         /// <inheritdoc/>
-        public virtual Version RequiredExiledVersion { get; } = new Version(2, 1, 0);
+        public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
 
         /// <inheritdoc/>
         public Dictionary<Type, Dictionary<Type, ICommand>> Commands { get; } = new Dictionary<Type, Dictionary<Type, ICommand>>()
@@ -70,7 +70,11 @@ namespace Exiled.API.Features
         public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
-        public virtual void OnEnabled() => Log.Info($"{Name} v{Version.Major}.{Version.Minor}.{Version.Build}, made by {Author}, has been enabled!");
+        public virtual void OnEnabled()
+        {
+            var attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
+        }
 
         /// <inheritdoc/>
         public virtual void OnDisabled() => Log.Info($"{Name} has been disabled!");

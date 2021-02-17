@@ -7,36 +7,88 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+#pragma warning disable SA1600 // Elements should be documented
+#pragma warning disable SA1118 // Parameter should not span multiple lines
+
     /// <summary>
-    /// Patches <see cref="ConsumableAndWearableItems.SendRpc(ConsumableAndWearableItems.HealAnimation, int)"/>.
-    /// Adds the <see cref="Player.MedicalItemUsed"/> event.
+    /// Patches a method, the class in which it's defined, is compiler-generated, <see cref="ConsumableAndWearableItems"/>.
+    /// Adds the <see cref="Handlers.Player.MedicalItemUsed"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.SendRpc))]
     internal static class UsedMedicalItem
     {
-        private static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
-        {
-            try
-            {
-                if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
-                {
-                    var ev = new UsedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
+        private static readonly HarmonyMethod PatchMethod = new HarmonyMethod(typeof(UsedMedicalItem), nameof(Transpiler));
 
-                    Player.OnMedicalItemUsed(ev);
-                }
-            }
-            catch (Exception e)
+        private static Type type;
+        private static MethodInfo method;
+
+        internal static void Patch()
+        {
+            const string nestedName = "<UseMedicalItem>d__24";
+            const string methodName = "MoveNext";
+
+            type = AccessTools.Inner(typeof(ConsumableAndWearableItems), "<UseMedicalItem>d__24");
+            method = type != null ? AccessTools.Method(type, methodName) : null;
+            if (type == null || method == null)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.UsedMedicalItem: {e}\n{e.StackTrace}");
+                Log.Error($"Couldn't find `{nestedName}::{methodName}` ({type == null}, {method == null}) inside `ConsumableAndWearableItems`: Player::MedicalItemUsed event won't fire");
+                return;
             }
+
+            Exiled.Events.Events.Instance.Harmony.Patch(method, transpiler: PatchMethod);
+        }
+
+        internal static void Unpatch()
+        {
+            if (type != null && method != null)
+            {
+                Exiled.Events.Events.Instance.Harmony.Unpatch(method, PatchMethod.method);
+
+                type = null;
+                method = null;
+            }
+        }
+
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+        {
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            var index = newInstructions.FindLastIndex(op => op.opcode == OpCodes.Blt);
+
+            newInstructions.InsertRange(++index, new[]
+            {
+                // Player.Get(ConsumableAndWearableItems._hub)
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems._hub))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // ConsumableAndWearableItems.usableItems[mid].inventoryID
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ConsumableAndWearableItems), nameof(ConsumableAndWearableItems.usableItems))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(type, "mid")),
+                new CodeInstruction(OpCodes.Ldelem, typeof(ConsumableAndWearableItems.UsableItem)),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ConsumableAndWearableItems.UsableItem), nameof(ConsumableAndWearableItems.UsableItem.inventoryID))),
+
+                // Player.OnMedicalItemDequipped(new UsedMedicalItemEventArgs(arg1, arg2))
+                new CodeInstruction(OpCodes.Newobj, AccessTools.Constructor(typeof(UsedMedicalItemEventArgs), new[] { typeof(Player), typeof(ItemType) })),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Player), nameof(Handlers.Player.OnMedicalItemUsed))),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

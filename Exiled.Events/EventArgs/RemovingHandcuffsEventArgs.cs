@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="RemovingHandcuffsEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,7 +10,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations freeing a handcuffed player.
+    /// Contains all informations before freeing a handcuffed player.
     /// </summary>
     public class RemovingHandcuffsEventArgs : HandcuffingEventArgs
     {

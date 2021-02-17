@@ -14,22 +14,26 @@ namespace Exiled.Events.EventArgs
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
-    /// Contains all informations before spawning a wave of <see cref="Team.CHI"/> or <see cref="Team.MTF"/>..
+    /// Contains all informations before spawning a wave of <see cref="SpawnableTeamType.NineTailedFox"/> or <see cref="SpawnableTeamType.ChaosInsurgency"/>.
     /// </summary>
     public class RespawningTeamEventArgs : EventArgs
     {
+        private SpawnableTeamType nextKnownTeam;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="RespawningTeamEventArgs"/> class.
         /// </summary>
         /// <param name="players"><inheritdoc cref="Players"/></param>
-        /// <param name="maximumRespawnAmount"><inheritdoc cref="MaximumRespawnAmount"/></param>
         /// <param name="nextKnownTeam"><inheritdoc cref="NextKnownTeam"/></param>
-        public RespawningTeamEventArgs(List<Player> players, int maximumRespawnAmount, SpawnableTeamType nextKnownTeam)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public RespawningTeamEventArgs(List<Player> players, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
         {
             Players = players;
-            MaximumRespawnAmount = maximumRespawnAmount;
             NextKnownTeam = nextKnownTeam;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -43,8 +47,43 @@ namespace Exiled.Events.EventArgs
         public int MaximumRespawnAmount { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating what the next respawnable team is..
+        /// Gets or sets a value indicating what the next respawnable team is.
         /// </summary>
-        public SpawnableTeamType NextKnownTeam { get; set; }
+        public SpawnableTeamType NextKnownTeam
+        {
+            get => nextKnownTeam;
+            set
+            {
+                nextKnownTeam = value;
+                ReissueNextKnownTeam();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the spawn can occur.
+        /// </summary>
+        public bool IsAllowed { get; set; }
+
+        /// <summary>
+        /// Gets the current spawnable team.
+        /// </summary>
+        internal SpawnableTeam? SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out var team) ? (SpawnableTeam?)team : null;
+
+        private void ReissueNextKnownTeam()
+        {
+            var team = SpawnableTeam;
+            if (team != null)
+            {
+                // Refer to the game code
+                int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
+                if (a == 0)
+                {
+                    a = RespawnTickets.DefaultTeamAmount;
+                    RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
+                }
+
+                MaximumRespawnAmount = Mathf.Min(a, team.Value.MaxWaveSize);
+            }
+        }
     }
 }
