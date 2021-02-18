@@ -11,27 +11,18 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
     using Grenades;
-
     using Hints;
-
     using MEC;
-
     using Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using RemoteAdmin;
-
     using UnityEngine;
 
     /// <summary>
@@ -847,7 +838,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
-        internal static Dictionary<ReferenceHub, Player> UnverifiedPlayers { get; } = new Dictionary<ReferenceHub, Player>();
+        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
