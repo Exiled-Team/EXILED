@@ -29,21 +29,6 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ReferenceHub), nameof(ReferenceHub.Awake))]
     internal static class Joined
     {
-        internal static void CallEvent(ReferenceHub hub, out Player player)
-        {
-            player = new PlayerAPI(hub);
-            PlayerAPI.Dictionary.Add(hub.gameObject, player);
-
-            var p = player;
-            Timing.CallDelayed(0.25f, () =>
-            {
-                if (p.IsMuted)
-                    p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-            });
-
-            PlayerEvents.OnJoined(new JoinedEventArgs(player));
-        }
-
         private static void Postfix(ReferenceHub __instance)
         {
             try
@@ -55,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (PlayerManager.players.Count >= CustomNetworkManager.slots)
                     MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
-                CallEvent(__instance, out _);
+                PlayerEvents.OnJoined(new JoinedEventArgs(__instance));
             }
             catch (Exception exception)
             {

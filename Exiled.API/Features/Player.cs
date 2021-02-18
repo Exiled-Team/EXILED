@@ -103,6 +103,8 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
+
+                RawUserId = UserId?.GetRawUserId();
             }
         }
 
@@ -168,7 +170,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId?.GetRawUserId();
+        public string RawUserId { get; private set; }
 
         /// <summary>
         /// Gets the player's authentication token.

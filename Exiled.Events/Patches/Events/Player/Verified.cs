@@ -11,14 +11,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
-
     using Exiled.API.Features;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Utils;
-
     using HarmonyLib;
-
+    using MEC;
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
 
@@ -58,13 +55,15 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var player = PlayerAPI.Get(instance.gameObject);
+                Player player = new PlayerAPI(instance._hub);
+                PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
 
-                // Means the player connected before WaitingForPlayers event is fired
-                // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
-                // Blame NorthWood
-                if (player == null)
-                    Joined.CallEvent(instance._hub, out player);
+                Player p = player;
+                Timing.CallDelayed(0.25f, () =>
+                {
+                    if (p.IsMuted)
+                        p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+                });
 
                 player.IsVerified = true;
 

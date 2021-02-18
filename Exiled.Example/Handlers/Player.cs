@@ -78,7 +78,7 @@ namespace Exiled.Example.Handlers
         }
 
         /// <inheritdoc cref="Events.Handlers.Player.OnJoined(JoinedEventArgs)"/>
-        public void OnJoined(JoinedEventArgs ev)
+        public void OnVerified(VerifiedEventArgs ev)
         {
             if (!Instance.Config.JoinedBroadcast.Show)
                 return;
