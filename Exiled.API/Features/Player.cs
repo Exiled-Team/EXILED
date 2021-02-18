@@ -102,22 +102,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject { get; internal set; }
+        public GameObject GameObject => referenceHub.gameObject;
 
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public AmmoBox Ammo { get; internal set; }
+        public AmmoBox Ammo => referenceHub.ammoBox;
 
         /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
-        public HintDisplay HintDisplay { get; internal set; }
+        public HintDisplay HintDisplay => referenceHub.hints;
 
         /// <summary>
         /// Gets the player's inventory.
         /// </summary>
-        public Inventory Inventory { get; internal set; }
+        public Inventory Inventory => referenceHub.inventory;
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
@@ -128,7 +128,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform CameraTransform { get; internal set; }
+        public Transform CameraTransform => referenceHub.PlayerCameraReference;
 
         /// <summary>
         /// Gets the player's grenade manager.

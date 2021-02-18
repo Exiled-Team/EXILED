@@ -66,13 +66,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
                 player.IsVerified = true;
-                player.GameObject = instance._hub.gameObject;
-                player.Ammo = instance._hub.ammoBox;
-                player.HintDisplay = instance._hub.hints;
-                player.Inventory = instance._hub.inventory;
-                player.CameraTransform = instance._hub.PlayerCameraReference;
                 player.GrenadeManager = instance._hub.GetComponent<GrenadeManager>();
-
                 player.RawUserId = player.UserId.GetRawUserId();
 
                 Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
