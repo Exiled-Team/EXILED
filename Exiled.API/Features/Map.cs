@@ -10,6 +10,8 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
+    using System.Text.RegularExpressions;
 
     using Interactables.Interobjects.DoorUtils;
 
@@ -510,6 +512,28 @@ namespace Exiled.API.Features
         {
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nameExtension);
             return nameExtension == null ? null : nameExtension.TargetDoor;
+        }
+
+        /// <summary>
+        /// Changes the color of a MTF unit.
+        /// </summary>
+        /// <param name="index">The index of the unit color you want to change.</param>
+        /// <param name="color">The new color of the Unit.</param>
+        public static void ChangeUnitColor(int index, string color)
+        {
+            var unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
+
+            Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
+            Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
+
+            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
+            {
+                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
+                if (!string.IsNullOrEmpty(color))
+                    modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
+
+                ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
+            }
         }
 
         /// <summary>
