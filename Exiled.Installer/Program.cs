@@ -298,16 +298,16 @@ namespace Exiled.Installer
         {
             Console.WriteLine("Trying to find release..");
 
-            var range = args.TargetVersion != null ? new Range($"={args.TargetVersion}") : null;
+            var range = args.TargetVersion != null ? new Range($"={args.TargetVersion}") : new Range(">2.0.0");
 
             foreach (var r in releases)
             {
                 release = r;
 
-                if (range?.IsSatisfied(r.TagName) ?? false)
-                    return true;
+                if (!range.IsSatisfied(r.TagName))
+                    continue;
 
-                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
+                if ((r.Prerelease && args.PreReleases) || !r.Prerelease || args.TargetVersion != null)
                     return true;
             }
 
