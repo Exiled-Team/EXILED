@@ -15,7 +15,6 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Utils;
-    using Grenades;
     using HarmonyLib;
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
@@ -66,7 +65,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
                 player.IsVerified = true;
-                player.GrenadeManager = instance._hub.GetComponent<GrenadeManager>();
                 player.RawUserId = player.UserId.GetRawUserId();
 
                 Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);

@@ -96,28 +96,34 @@ namespace Exiled.API.Features
                     throw new NullReferenceException("Player's ReferenceHub cannot be null!");
 
                 referenceHub = value;
+                GameObject = value.gameObject;
+                Ammo = value.ammoBox;
+                HintDisplay = value.hints;
+                Inventory = value.inventory;
+                CameraTransform = value.PlayerCameraReference;
+                GrenadeManager = value.GetComponent<GrenadeManager>();
             }
         }
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject => referenceHub.gameObject;
+        public GameObject GameObject { get; private set; }
 
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public AmmoBox Ammo => referenceHub.ammoBox;
+        public AmmoBox Ammo { get; private set; }
 
         /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
-        public HintDisplay HintDisplay => referenceHub.hints;
+        public HintDisplay HintDisplay { get; private set; }
 
         /// <summary>
         /// Gets the player's inventory.
         /// </summary>
-        public Inventory Inventory => referenceHub.inventory;
+        public Inventory Inventory { get; private set; }
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
@@ -128,12 +134,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform CameraTransform => referenceHub.PlayerCameraReference;
+        public Transform CameraTransform { get; private set; }
 
         /// <summary>
         /// Gets the player's grenade manager.
         /// </summary>
-        public GrenadeManager GrenadeManager { get; internal set; }
+        public GrenadeManager GrenadeManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's id.
