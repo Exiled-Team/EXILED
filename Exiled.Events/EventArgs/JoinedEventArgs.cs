@@ -12,19 +12,19 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all information after a player joins the server.
+    /// Contains all informations after a player joins the server.
     /// </summary>
     public class JoinedEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JoinedEventArgs"/> class.
         /// </summary>
-        /// <param name="hub"><inheritdoc cref="ReferenceHub"/></param>
-        public JoinedEventArgs(ReferenceHub hub) => Hub = hub;
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        public JoinedEventArgs(Player player) => Player = player;
 
         /// <summary>
         /// Gets the joined player.
         /// </summary>
-        public ReferenceHub Hub { get; }
+        public Player Player { get; }
     }
 }

@@ -96,35 +96,28 @@ namespace Exiled.API.Features
                     throw new NullReferenceException("Player's ReferenceHub cannot be null!");
 
                 referenceHub = value;
-
-                GameObject = value.gameObject;
-                Ammo = value.ammoBox;
-                HintDisplay = value.hints;
-                Inventory = value.inventory;
-                CameraTransform = value.PlayerCameraReference;
-                GrenadeManager = value.GetComponent<GrenadeManager>();
             }
         }
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
-        public GameObject GameObject { get; private set; }
+        public GameObject GameObject { get; internal set; }
 
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public AmmoBox Ammo { get; private set; }
+        public AmmoBox Ammo { get; internal set; }
 
         /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
-        public HintDisplay HintDisplay { get; private set; }
+        public HintDisplay HintDisplay { get; internal set; }
 
         /// <summary>
         /// Gets the player's inventory.
         /// </summary>
-        public Inventory Inventory { get; private set; }
+        public Inventory Inventory { get; internal set; }
 
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
@@ -135,12 +128,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        public Transform CameraTransform { get; private set; }
+        public Transform CameraTransform { get; internal set; }
 
         /// <summary>
         /// Gets the player's grenade manager.
         /// </summary>
-        public GrenadeManager GrenadeManager { get; private set; }
+        public GrenadeManager GrenadeManager { get; internal set; }
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -168,7 +161,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId?.GetRawUserId();
+        public string RawUserId { get; internal set; }
 
         /// <summary>
         /// Gets the player's authentication token.
