@@ -17,9 +17,9 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="LeftEventArgs"/> class.
         /// </summary>
-        /// <param name="player">The player who left the server.</param>
-        public LeftEventArgs(Player player)
-            : base(player)
+        /// <param name="hub">The player who left the server.</param>
+        public LeftEventArgs(ReferenceHub hub)
+            : base(hub)
         {
         }
     }
