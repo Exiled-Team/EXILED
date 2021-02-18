@@ -47,7 +47,7 @@ namespace Exiled.Installer
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
-        private static readonly Range VersionLimit = new Range(">=2.0.0");
+        private static readonly Version VersionLimit = new Version("2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -158,8 +158,8 @@ namespace Exiled.Installer
         private static async Task<IEnumerable<Release>> GetReleases()
         {
             var releases = (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                .Where(r => Version.TryParse(r.TagName, out var version)
-                    && VersionLimit.IsSatisfied(version));
+                .Where(r => Version.TryParse(r.TagName, out Version version)
+                    && (version > VersionLimit));
 
             return releases.OrderByDescending(r => r.CreatedAt.Ticks);
         }
@@ -298,16 +298,14 @@ namespace Exiled.Installer
         {
             Console.WriteLine("Trying to find release..");
 
-            var range = args.TargetVersion != null ? new Range($"={args.TargetVersion}") : new Range(">2.0.0");
-
             foreach (var r in releases)
             {
                 release = r;
 
-                if (!range.IsSatisfied(r.TagName))
-                    continue;
+                if (args.TargetVersion != null && (new Version(args.TargetVersion) == new Version(r.TagName)))
+                    return true;
 
-                if ((r.Prerelease && args.PreReleases) || !r.Prerelease || args.TargetVersion != null)
+                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
                     return true;
             }
 
