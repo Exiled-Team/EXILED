@@ -307,7 +307,7 @@ namespace Exiled.Installer
                 if (!range.IsSatisfied(r.TagName))
                     continue;
 
-                if ((r.Prerelease && args.PreReleases) || !r.Prerelease)
+                if ((r.Prerelease && args.PreReleases) || !r.Prerelease || args.TargetVersion != null)
                     return true;
             }
 
