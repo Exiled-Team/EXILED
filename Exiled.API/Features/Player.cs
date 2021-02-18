@@ -85,11 +85,6 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// A dictionary for storing player objects of connected but not yet verified players.
-        /// </summary>
-        internal static Dictionary<ReferenceHub, Player> UnverifiedPlayers = new Dictionary<ReferenceHub, Player>();
-
-        /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
@@ -848,6 +843,11 @@ namespace Exiled.API.Features
         /// </summary>
         [Obsolete("Removed from the base-game.", true)]
         public bool HasHands => false;
+
+        /// <summary>
+        /// Gets a dictionary for storing player objects of connected but not yet verified players.
+        /// </summary>
+        internal static Dictionary<ReferenceHub, Player> UnverifiedPlayers { get; } = new Dictionary<ReferenceHub, Player>();
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
