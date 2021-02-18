@@ -104,7 +104,7 @@ namespace Exiled.API.Features
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
 
-                RawUserId = UserId.GetRawUserId();
+                RawUserId = UserId?.GetRawUserId();
             }
         }
 
