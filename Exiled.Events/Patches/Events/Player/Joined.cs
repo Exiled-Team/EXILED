@@ -33,6 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             player = new PlayerAPI(hub);
 
+            Player.UnverifiedPlayers.Add(hub, player);
             var p = player;
             Timing.CallDelayed(0.25f, () =>
             {
