@@ -203,11 +203,9 @@ namespace Exiled.Updater
             return false;
         }
 
-        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool allowEqual = false)
+        private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool forced = false)
         {
             var includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease();
-
-            var range = new Range($">{(allowEqual ? "=" : string.Empty)}{smallestVersion.Version}");
 
             for (int z = 0; z < releases.Length; z++)
             {
@@ -215,7 +213,7 @@ namespace Exiled.Updater
                 if (taggedRelease.Release.PreRelease && !includePRE)
                     continue;
 
-                if (range.IsSatisfied(taggedRelease.Version))
+                if ((taggedRelease.Version > smallestVersion.Version) || forced)
                 {
                     release = taggedRelease.Release;
                     return true;

@@ -32,8 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
         internal static void CallEvent(ReferenceHub hub, out Player player)
         {
             player = new PlayerAPI(hub);
-            PlayerAPI.Dictionary.Add(hub.gameObject, player);
 
+            Player.UnverifiedPlayers.Add(hub, player);
             var p = player;
             Timing.CallDelayed(0.25f, () =>
             {

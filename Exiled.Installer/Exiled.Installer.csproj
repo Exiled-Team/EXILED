@@ -14,9 +14,9 @@
     <AssemblyName Condition="'$(RuntimeIdentifier)' == 'win-x64'">$(AssemblyName)-Win</AssemblyName>
 
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    
+
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
-    <Version>3.2.0</Version>
+    <Version>3.2.1</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>

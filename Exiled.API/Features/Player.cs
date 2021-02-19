@@ -11,27 +11,18 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
     using Grenades;
-
     using Hints;
-
     using MEC;
-
     using Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using RemoteAdmin;
-
     using UnityEngine;
 
     /// <summary>
@@ -96,7 +87,6 @@ namespace Exiled.API.Features
                     throw new NullReferenceException("Player's ReferenceHub cannot be null!");
 
                 referenceHub = value;
-
                 GameObject = value.gameObject;
                 Ammo = value.ammoBox;
                 HintDisplay = value.hints;
@@ -168,7 +158,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId?.GetRawUserId();
+        public string RawUserId { get; internal set; }
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -844,6 +834,11 @@ namespace Exiled.API.Features
         /// </summary>
         [Obsolete("Removed from the base-game.", true)]
         public bool HasHands => false;
+
+        /// <summary>
+        /// Gets a dictionary for storing player objects of connected but not yet verified players.
+        /// </summary>
+        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.

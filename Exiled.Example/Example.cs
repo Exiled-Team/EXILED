@@ -74,7 +74,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Died += player.OnDied;
             Events.Handlers.Player.ChangingRole += player.OnChangingRole;
             Events.Handlers.Player.ChangingItem += player.OnChangingItem;
-            Events.Handlers.Player.Joined += player.OnJoined;
+            Events.Handlers.Player.Verified += player.OnVerified;
             Events.Handlers.Player.FailingEscapePocketDimension += player.OnFailingEscapePocketDimension;
             Events.Handlers.Player.EscapingPocketDimension += player.OnEscapingPocketDimension;
             Events.Handlers.Player.UnlockingGenerator += player.OnUnlockingGenerator;
@@ -106,7 +106,7 @@ namespace Exiled.Example
             Events.Handlers.Player.Died -= player.OnDied;
             Events.Handlers.Player.ChangingRole -= player.OnChangingRole;
             Events.Handlers.Player.ChangingItem -= player.OnChangingItem;
-            Events.Handlers.Player.Joined -= player.OnJoined;
+            Events.Handlers.Player.Verified -= player.OnVerified;
             Events.Handlers.Player.FailingEscapePocketDimension -= player.OnFailingEscapePocketDimension;
             Events.Handlers.Player.EscapingPocketDimension -= player.OnEscapingPocketDimension;
             Events.Handlers.Player.UnlockingGenerator -= player.OnUnlockingGenerator;

@@ -11,14 +11,11 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
-
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Utils;
-
     using HarmonyLib;
-
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
 
@@ -58,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var player = PlayerAPI.Get(instance.gameObject);
+                Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
 
                 // Means the player connected before WaitingForPlayers event is fired
                 // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
@@ -66,7 +63,9 @@ namespace Exiled.Events.Patches.Events.Player
                 if (player == null)
                     Joined.CallEvent(instance._hub, out player);
 
+                PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
                 player.IsVerified = true;
+                player.RawUserId = player.UserId.GetRawUserId();
 
                 Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
 
