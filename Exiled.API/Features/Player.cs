@@ -754,7 +754,7 @@ namespace Exiled.API.Features
         public UserGroup Group
         {
             get => ReferenceHub.serverRoles.Group;
-            set => ReferenceHub.serverRoles.SetGroup(value, false, false, value.Cover);
+            set => ReferenceHub.serverRoles.SetGroup(value, false);
         }
 
         /// <summary>
