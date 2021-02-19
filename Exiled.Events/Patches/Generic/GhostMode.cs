@@ -241,7 +241,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception exception)
             {
-                Log.Error($"GhostMode error: {exception}\n{exception.InnerException}\n{exception.StackTrace}");
+                Log.Error($"GhostMode error: {exception}");
                 return true;
             }
         }
