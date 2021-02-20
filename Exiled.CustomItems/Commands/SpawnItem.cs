@@ -71,7 +71,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!API.TryGetItem(args[1], out CustomItem item))
+            if (!CustomItemApi.TryGetItem(args[1], out CustomItem item))
             {
                 response = $"Invalid item: {args[1]}";
                 return false;

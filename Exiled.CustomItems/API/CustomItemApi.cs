@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="API.cs" company="Exiled Team">
+// <copyright file="CustomItemApi.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -19,7 +19,7 @@ namespace Exiled.CustomItems.API
     /// <summary>
     /// A collection of API methods.
     /// </summary>
-    public static class API
+    public static class CustomItemApi
     {
         /// <summary>
         /// Registers a <see cref="CustomItem"/> manager with the plugin.
