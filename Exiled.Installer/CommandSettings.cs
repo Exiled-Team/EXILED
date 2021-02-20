@@ -81,7 +81,7 @@ namespace Exiled.Installer
             { IsRequired = false },
 
             new Option<string?>(
-                "--github--token",
+                "--github-token",
                 description: "Uses a token for auth in case the rate limit is exceeded (no permissions required)")
             { IsRequired = false },
 

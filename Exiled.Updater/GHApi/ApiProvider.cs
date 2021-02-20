@@ -12,6 +12,7 @@ namespace Exiled.Updater.GHApi
     using System.Threading.Tasks;
 
     using Exiled.Updater.GHApi.Models;
+    using Exiled.Updater.GHApi.Settings;
 
     using Utf8Json;
 
@@ -19,9 +20,9 @@ namespace Exiled.Updater.GHApi
     {
         public const string GetReleasesTemplate = "https://api.github.com/repositories/{0}/releases";
 
-        public static async Task<Release[]> GetReleases(long repoId, HttpClient client)
+        public static async Task<Release[]> GetReleases(long repoId, GetReleasesSettings settings, HttpClient client)
         {
-            var url = string.Format(GetReleasesTemplate, repoId);
+            var url = string.Format(GetReleasesTemplate, repoId) + settings.Build();
             using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false))
             using (var streamContnet = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {

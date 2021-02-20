@@ -11,31 +11,22 @@ namespace Exiled.API.Features
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
+    using System.Runtime.CompilerServices;
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
     using Grenades;
-
     using Hints;
-
     using MEC;
-
     using Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using RemoteAdmin;
-
     using UnityEngine;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -85,7 +76,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
         {
@@ -96,7 +87,6 @@ namespace Exiled.API.Features
                     throw new NullReferenceException("Player's ReferenceHub cannot be null!");
 
                 referenceHub = value;
-
                 GameObject = value.gameObject;
                 Ammo = value.ammoBox;
                 HintDisplay = value.hints;
@@ -168,7 +158,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's user id without the authentication.
         /// </summary>
-        public string RawUserId => UserId.Substring(0, UserId.LastIndexOf('@'));
+        public string RawUserId { get; internal set; }
 
         /// <summary>
         /// Gets the player's authentication token.
@@ -684,7 +674,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="global::Stamina"/> class.
+        /// Gets the <see cref="Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
@@ -764,7 +754,7 @@ namespace Exiled.API.Features
         public UserGroup Group
         {
             get => ReferenceHub.serverRoles.Group;
-            set => ReferenceHub.serverRoles.SetGroup(value, false, false, value.Cover);
+            set => ReferenceHub.serverRoles.SetGroup(value, false);
         }
 
         /// <summary>
@@ -846,6 +836,11 @@ namespace Exiled.API.Features
         public bool HasHands => false;
 
         /// <summary>
+        /// Gets a dictionary for storing player objects of connected but not yet verified players.
+        /// </summary>
+        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
@@ -858,6 +853,13 @@ namespace Exiled.API.Features
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
+        /// </summary>
+        /// <param name="sender">The command sender.</param>
+        /// <returns>Returns a player or null if not found.</returns>
+        public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
         /// Gets the Player belonging to the ReferenceHub, if any.

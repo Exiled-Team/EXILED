@@ -148,12 +148,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
 
         /// <summary>
-        /// Invoked before a player interacts with SCP-330.
-        /// </summary>
-        [Obsolete("SCP-330 has been removed.", true)]
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
-
-        /// <summary>
         /// Invoked before handcuffing a player.
         /// </summary>
         public static event CustomEventHandler<HandcuffingEventArgs> Handcuffing;
@@ -441,12 +435,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpItemEventArgs"/> instance.</param>
         public static void OnPickingUpItem(PickingUpItemEventArgs ev) => PickingUpItem.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a player picks up an item.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        public static void OnPickingUpScp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before handcuffing a player.

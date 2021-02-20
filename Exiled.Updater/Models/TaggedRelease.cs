@@ -9,15 +9,17 @@ namespace Exiled.Updater.Models
 {
     using Exiled.Updater.GHApi.Models;
 
+    using SemVer;
+
     public readonly struct TaggedRelease
     {
         public readonly Release Release;
-        public readonly SemVer2Version Version;
+        public readonly Version Version;
 
         public TaggedRelease(Release release)
         {
             Release = release;
-            Version = SemVer2Version.Parse(release.TagName);
+            Version = Version.Parse(release.TagName);
         }
     }
 }

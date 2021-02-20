@@ -159,5 +159,12 @@ namespace Exiled.API.Extensions
         /// <param name="input">Input string.</param>
         /// <returns>String without spaces.</returns>
         public static string RemoveSpaces(this string input) => Regex.Replace(input, @"\s+", string.Empty);
+
+        /// <summary>
+        /// Gets the player's user id without the authentication.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <returns>Returns the raw user id.</returns>
+        public static string GetRawUserId(this string userId) => userId.Substring(0, userId.LastIndexOf('@'));
     }
 }

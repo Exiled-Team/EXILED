@@ -31,7 +31,7 @@ namespace Exiled.Loader
             Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
 #endif
 
-            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Version.ToString(3)}", ConsoleColor.DarkRed);
+            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
             {
@@ -182,7 +182,7 @@ namespace Exiled.Loader
         {
             try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => type != null && !type.IsAbstract && !type.IsInterface))
+                foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
                     if (!type.BaseType.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
                     {
@@ -203,14 +203,9 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        Log.Debug(
-                            $"Constructor wasn't found, searching for a property with the {type.FullName} type...",
-                            ShouldDebugBeShown);
+                        Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
 
-                        var value = Array
-                            .Find(
-                                type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
-                                property => property.PropertyType == type)?.GetValue(null);
+                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -218,38 +213,22 @@ namespace Exiled.Loader
 
                     if (plugin == null)
                     {
-                        Log.Error(
-                            $"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
+                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
 
                         continue;
                     }
 
                     Log.Debug($"Instantiated type {type.FullName}", ShouldDebugBeShown);
 
-                    if (plugin.RequiredExiledVersion > Version)
-                    {
-                        if (!Config.ShouldLoadOutdatedPlugins)
-                        {
-                            Log.Error(
-                                $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                                $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
-
-                            continue;
-                        }
-                        else
-                        {
-                            Log.Warn($"You're running an older version of Exiled ({Version.ToString(3)})! " +
-                                     $"You may encounter some bugs by loading {plugin.Name}! Update Exiled to at least {plugin.RequiredExiledVersion.ToString(3)}");
-                        }
-                    }
+                    if (CheckPluginRequiredExiledVersion(plugin))
+                        continue;
 
                     return plugin;
                 }
             }
             catch (Exception exception)
             {
-                Log.Error(
-                    $"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! \n{exception}\n{exception.StackTrace}");
+                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
             }
 
             return null;
@@ -326,6 +305,36 @@ namespace Exiled.Loader
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
                 }
             }
+        }
+
+        private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
+        {
+            var requiredVersion = plugin.RequiredExiledVersion;
+            var actualVersion = Version;
+
+            // Check Major version
+            // It's increased when an incompatible API change was made
+            if (requiredVersion.Major != actualVersion.Major)
+            {
+                // Assume that if the Required Major version is greater than the Actual Major version,
+                // Exled is outdated
+                if (requiredVersion.Major > actualVersion.Major)
+                {
+                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+
+                    return true;
+                }
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                {
+                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
+                        $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
