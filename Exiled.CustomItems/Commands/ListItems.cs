@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Text;
+
 namespace Exiled.CustomItems.Commands
 {
     using System;
@@ -32,10 +34,11 @@ namespace Exiled.CustomItems.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            string message = string.Empty;
+            StringBuilder builder = NorthwoodLib.Pools.StringBuilderPool.Shared.Rent();
             foreach (CustomItem item in CustomItems.Singleton.ItemManagers)
-                message += $"{item.Name}({item.Id})\n";
+                builder.AppendLine($"{item.Name}({item.Id})");
 
+            string message = NorthwoodLib.Pools.StringBuilderPool.Shared.ToStringReturn(builder);
             response = string.IsNullOrEmpty(message) ? "There are no custom items currently on this server." : message;
 
             return true;

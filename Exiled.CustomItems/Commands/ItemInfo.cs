@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Text;
+
 namespace Exiled.CustomItems.Commands
 {
     using System;
@@ -46,15 +48,15 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            string message =
-                $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:";
+            StringBuilder builder = NorthwoodLib.Pools.StringBuilderPool.Shared.Rent();
+            builder.AppendLine($"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:");
             foreach (DynamicItemSpawn spawnLoc in item.SpawnProperties.DynamicSpawnLocations)
-                message += $"{spawnLoc.Name} - {spawnLoc.Location.TryGetLocation()} Chance: {spawnLoc.Chance}\n";
+                builder.AppendLine($"{spawnLoc.Name} - {spawnLoc.Location.TryGetLocation()} Chance: {spawnLoc.Chance}");
             foreach (StaticItemSpawn spawnLoc in item.SpawnProperties.StaticSpawnLocations)
-                message += $"{spawnLoc.Name} - {spawnLoc.Position} Chance: {spawnLoc.Chance}";
-            message += $"Spawn Limit: {item.SpawnProperties.Limit}";
+                builder.AppendLine($"{spawnLoc.Name} - {spawnLoc.Position} Chance: {spawnLoc.Chance}");
+            builder.AppendLine($"Spawn Limit: {item.SpawnProperties.Limit}");
 
-            response = message;
+            response = NorthwoodLib.Pools.StringBuilderPool.Shared.ToStringReturn(builder);
             return true;
         }
     }
