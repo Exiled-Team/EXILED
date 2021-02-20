@@ -117,7 +117,7 @@ namespace Exiled.CreditTags
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
-                    if (Config.UseBadge() && (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride))
+                    if (Config.UseBadge() && (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge != null)
                     {
                         player.RankName = value.Name;
                         player.RankColor = value.Color;
