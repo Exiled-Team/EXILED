@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs
         public Lift.Elevator Elevator { get; }
 
         /// <summary>
-        /// Gets the <see cref="global::Lift"/> instance.
+        /// Gets the <see cref="Lift"/> instance.
         /// </summary>
         public Lift Lift { get; }
 

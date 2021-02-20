@@ -36,6 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
                 PlayerEvents.OnDestroying(new DestroyingEventArgs(player));
 
                 PlayerAPI.Dictionary.Remove(player.GameObject);
+                PlayerAPI.UnverifiedPlayers.Remove(__instance);
                 PlayerAPI.IdsCache.Remove(player.Id);
 
                 if (player.UserId != null)

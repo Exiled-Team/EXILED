@@ -47,7 +47,20 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a player uses a medical item.
         /// </summary>
+        /// <remarks>
+        /// Invoked after <see cref="MedicalItemDequipped"/>, if a player's class has
+        /// changed during their health increase, won't fire.
+        /// </remarks>
         public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
+
+        /// <summary>
+        /// Invoked after a player dequips a medical item.
+        /// </summary>
+        /// <remarks>
+        /// Invoked before <see cref="MedicalItemUsed"/>, if a player cancels the
+        /// use of a medical item, won't fire.
+        /// </remarks>
+        public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
 
         /// <summary>
         /// Invoked after a player has stopped the use of a medical item.
@@ -133,12 +146,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before picking up an item.
         /// </summary>
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
-
-        /// <summary>
-        /// Invoked before a player interacts with SCP-330.
-        /// </summary>
-        [Obsolete("SCP-330 has been removed.", true)]
-        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
 
         /// <summary>
         /// Invoked before handcuffing a player.
@@ -318,8 +325,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a player used a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="MedicalItemUsed"/> instance.</param>
+        /// <param name="ev">The <see cref="UsedMedicalItemEventArgs"/> instance.</param>
         public static void OnMedicalItemUsed(UsedMedicalItemEventArgs ev) => MedicalItemUsed.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a player dequipped a medical item.
+        /// </summary>
+        /// <param name="ev">The <see cref="DequippedMedicalItemEventArgs"/> instance.</param>
+        public static void OnMedicalItemDequipped(DequippedMedicalItemEventArgs ev) => MedicalItemDequipped.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has stopped the use of a medical item.
@@ -422,12 +435,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpItemEventArgs"/> instance.</param>
         public static void OnPickingUpItem(PickingUpItemEventArgs ev) => PickingUpItem.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a player picks up an item.
-        /// </summary>
-        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
-        public static void OnPickingUpScp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
         /// Called before handcuffing a player.

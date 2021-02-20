@@ -13,6 +13,8 @@ namespace Exiled.Events
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.Patches.Events.Player;
+    using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -80,13 +82,13 @@ namespace Exiled.Events
 
             Patch();
 
-            SceneManager.sceneUnloaded += InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers += InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound += InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated += InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
@@ -104,13 +106,13 @@ namespace Exiled.Events
             DisabledPatchesHashSet.Clear();
             DisabledPatches.Clear();
 
-            SceneManager.sceneUnloaded -= InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers -= InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated -= InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
         }
@@ -127,7 +129,8 @@ namespace Exiled.Events
                 var lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                Harmony.PatchAll();
+                SafePatchCompilerMess();
+                PatchByAttributes();
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
@@ -135,7 +138,7 @@ namespace Exiled.Events
             }
             catch (Exception exception)
             {
-                Log.Error($"Patching failed! {exception}");
+                Log.Error($"Patching failed!\n{exception}");
             }
         }
 
@@ -152,6 +155,7 @@ namespace Exiled.Events
             foreach (MethodBase method in DisabledPatchesHashSet)
             {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+
                 Log.Info($"Unpatched {method.Name}");
             }
         }
@@ -163,9 +167,50 @@ namespace Exiled.Events
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
+            UnpatchCompilerMess();
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
+        }
+
+        private void PatchByAttributes()
+        {
+            try
+            {
+                Harmony.PatchAll();
+
+                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Patching by attributes failed!\n{exception}");
+            }
+        }
+
+        private void SafePatchCompilerMess()
+        {
+            try
+            {
+                PatchCompilerMess();
+
+                Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Patching in the inner types failed!\n{e}");
+            }
+        }
+
+        private void PatchCompilerMess()
+        {
+            UsedMedicalItem.Patch();
+            WaitingForPlayers.Patch();
+        }
+
+        private void UnpatchCompilerMess()
+        {
+            UsedMedicalItem.Unpatch();
+            WaitingForPlayers.Unpatch();
         }
     }
 }

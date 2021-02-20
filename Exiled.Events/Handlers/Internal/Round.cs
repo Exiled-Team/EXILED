@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.InternalHandlers
+namespace Exiled.Events.Handlers.Internal
 {
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
