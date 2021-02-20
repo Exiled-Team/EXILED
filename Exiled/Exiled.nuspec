@@ -40,6 +40,8 @@
 
     <file src="..\bin\Release\Exiled.Updater.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.Updater.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Exiled.CreditTags.dll" target="lib\net472" />
     <!-- Project files -->
 
     <!-- Icon -->
