@@ -15,24 +15,18 @@ namespace Exiled.CustomItems.API
     public class SpawnProperties
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SpawnProperties"/> class.
+        /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
         /// </summary>
-        /// <param name="spawnLocations">The list of <see cref="CustomItemSpawn"/>'s for this item.</param>
-        /// <param name="spawnLimit">How many of this item are allowed to spawn on the map.</param>
-        public SpawnProperties(List<CustomItemSpawn> spawnLocations, int spawnLimit)
-        {
-            Limit = spawnLimit;
-            SpawnLocations = spawnLocations;
-        }
+        public int Limit { get; set; }
 
         /// <summary>
-        /// Gets a value indicating how many of the item can be spawned when the round starts.
+        /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn locations.
         /// </summary>
-        public int Limit { get; }
+        public List<DynamicItemSpawn> DynamicSpawnLocations { get; set; } = new List<DynamicItemSpawn>();
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey,TValue}"/> of possible spawn locations and their chance to spawn.
+        /// Gets or sets a <see cref="List{T}"/> of possible static spawn locations.
         /// </summary>
-        public List<CustomItemSpawn> SpawnLocations { get; }
+        public List<StaticItemSpawn> StaticSpawnLocations { get; set; } = new List<StaticItemSpawn>();
     }
 }

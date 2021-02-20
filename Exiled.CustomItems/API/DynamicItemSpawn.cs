@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="StaticItemSpawn.cs" company="Exiled Team">
+// <copyright file="DynamicItemSpawn.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,24 +7,29 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
+    using UnityEngine;
+    using YamlDotNet.Serialization;
+
     /// <summary>
-    /// Handles static spawn locations.
+    /// Handles dynamic spawn locations.
     /// </summary>
-    public class StaticItemSpawn
+    public class DynamicItemSpawn
     {
         /// <summary>
-        /// Gets or sets this spawn location's <see cref="Vector"/>.
+        /// Gets or sets the <see cref="SpawnLocation"/> for this item.
         /// </summary>
-        public Vector Position { get; set; }
+        public SpawnLocation Location { get; set; }
 
         /// <summary>
-        /// Gets or sets this spawn location's spawn chance.
+        /// Gets or sets this location's spawn chance.
         /// </summary>
         public float Chance { get; set; }
 
         /// <summary>
-        /// Gets or sets this spawn location's name.
+        /// Gets this location's name.
         /// </summary>
-        public string Name { get; set; }
+        [YamlIgnore]
+        public string Name => Location.ToString();
     }
 }

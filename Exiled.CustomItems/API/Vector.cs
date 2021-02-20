@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.API
 {
     using UnityEngine;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// A yaml-serializable vector object.
@@ -46,6 +47,7 @@ namespace Exiled.CustomItems.API
         /// Gets a conversion this into a <see cref="Vector3"/>.
         /// </summary>
         /// <returns>The converted <see cref="Vector3"/>.</returns>
+        [YamlIgnore]
         public Vector3 ToVector3 => new Vector3(X, Y, Z);
     }
 }

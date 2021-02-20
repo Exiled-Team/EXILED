@@ -35,10 +35,21 @@ namespace Exiled.CustomItems
 
                 int count = 0;
 
-                foreach (CustomItemSpawn spawn in item.SpawnProperties.SpawnLocations)
+                foreach (DynamicItemSpawn spawn in item.SpawnProperties.DynamicSpawnLocations)
                 {
                     Log.Debug($"Attempting to spawn {item.Name} at {spawn.Name}", plugin.Config.Debug);
                     if (plugin.Rng.Next(100) >= spawn.Chance || (item.SpawnProperties.Limit > 0 && count >= item.SpawnProperties.Limit))
+                        continue;
+
+                    count++;
+                    item.Spawn(spawn.Location.TryGetLocation());
+                    Log.Debug($"Spawned {item.Name} at {spawn.Name} - {spawn.Location.TryGetLocation()}", plugin.Config.Debug);
+                }
+
+                foreach (StaticItemSpawn spawn in item.SpawnProperties.StaticSpawnLocations)
+                {
+                    Log.Debug($"Attempting to spawn {item.Name} at {spawn.Name}", plugin.Config.Debug);
+                    if (plugin.Rng.Next(100) >= spawn.Chance || (item.SpawnProperties.Limit > 0 && count > item.SpawnProperties.Limit))
                         continue;
 
                     count++;

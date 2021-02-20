@@ -48,8 +48,10 @@ namespace Exiled.CustomItems.Commands
 
             string message =
                 $"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:";
-            foreach (CustomItemSpawn spawnLoc in item.SpawnProperties.SpawnLocations)
-                message += $"{spawnLoc.Name} - {spawnLoc.Position} Chance: {spawnLoc.Chance}\n";
+            foreach (DynamicItemSpawn spawnLoc in item.SpawnProperties.DynamicSpawnLocations)
+                message += $"{spawnLoc.Name} - {spawnLoc.Location.TryGetLocation()} Chance: {spawnLoc.Chance}\n";
+            foreach (StaticItemSpawn spawnLoc in item.SpawnProperties.StaticSpawnLocations)
+                message += $"{spawnLoc.Name} - {spawnLoc.Position} Chance: {spawnLoc.Chance}";
             message += $"Spawn Limit: {item.SpawnProperties.Limit}";
 
             response = message;
