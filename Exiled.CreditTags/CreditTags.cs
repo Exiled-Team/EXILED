@@ -7,11 +7,12 @@
 
 namespace Exiled.CreditTags
 {
+    using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Net;
 
     using Exiled.API.Features;
+
+    using UnityEngine;
 
     using PlayerEvents = Exiled.Events.Handlers.Player;
 
@@ -35,17 +36,17 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of Exiled Credit ranks.
         /// </summary>
-        internal Dictionary<int, Rank> Ranks { get; } = new Dictionary<int, Rank>
+        internal Dictionary<RankKind, Rank> Ranks { get; } = new Dictionary<RankKind, Rank>
         {
-            { 1, new Rank("Exiled Developer", "aqua", "33DEFF") },
-            { 2, new Rank("Exiled Contributor", "magenta", "B733FF") },
-            { 3, new Rank("Exiled Plugin Developer", "crimson", "E60909") },
+            [RankKind.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
+            [RankKind.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
+            [RankKind.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
         };
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of recently cached userIds and their ranks.
         /// </summary>
-        internal Dictionary<string, int> RankCache { get; } = new Dictionary<string, int>();
+        internal Dictionary<string, RankKind> RankCache { get; } = new Dictionary<string, RankKind>();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -63,67 +64,71 @@ namespace Exiled.CreditTags
             UnattachHandler();
         }
 
-        /// <summary>
-        /// Check to see if a player has EXILED Credit.
-        /// </summary>
-        /// <param name="userid">The <see cref="Player.UserId"/> of the player to check.</param>
-        /// <returns>The rank ID assigned to the user's Userid. 0 means no credit was assigned.</returns>
-        internal int CheckForExiledCredit(string userid)
+        internal void MakeRequst(string userid, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
         {
             userid = userid.Substring(0, userid.IndexOf('@') - 1);
+            var url = $"{Url}?userid={userid}";
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create($"{Url}?userid={userid}");
-            request.AutomaticDecompression = DecompressionMethods.GZip;
-
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            string responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
-            if (!int.TryParse(responseString, out int rankId))
-            {
-                Log.Debug($"{nameof(CheckForExiledCredit)}: Response from server: {responseString}", Loader.Loader.ShouldDebugBeShown);
-                return 0;
-            }
-
-            return rankId;
+            ThreadSafeRequest.Go(url, errorHandler, resultHandler, issuer);
+            /*
+             * Log.Debug($"{nameof(CheckForExiledCredit)}: Response from server: {responseString}", Loader.Loader.ShouldDebugBeShown);
+             */
         }
 
-        /// <summary>
-        /// Shows a player's credit tag, if it exists.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who's tag should be shown.</param>
-        /// <returns>Whether or not a tag was shown.</returns>
-        internal bool ShowCreditTag(Player player)
+        // returns true if the player was in the cache
+        internal bool ShowCreditTag(Player player, Action errorHandler, Action happyHandler)
         {
-            int rankId;
-            if (RankCache.ContainsKey(player.UserId))
+            if (RankCache.TryGetValue(player.UserId, out var cachedRank))
             {
-                rankId = RankCache[player.UserId];
+                ShowRank(cachedRank);
+                return true;
             }
             else
             {
-                rankId = CheckForExiledCredit(player.UserId);
-                RankCache.Add(player.UserId, rankId);
+                MakeRequst(player.UserId, ErrorHandler, HappyHandler, player.GameObject);
+                return false;
             }
 
-            if (Ranks.ContainsKey(rankId))
+            void HappyHandler(string result)
             {
-                if ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && Config.UseBadge)
+                if (Enum.TryParse<RankKind>(result, out var kind))
                 {
-                    player.RankName = Ranks[rankId].Name;
-                    player.RankColor = Ranks[rankId].Color;
+                    RankCache[player.UserId] = kind;
+                    ShowRank(kind);
 
-                    return true;
+                    if (happyHandler != null)
+                        happyHandler();
                 }
-
-                if ((string.IsNullOrEmpty(player.CustomInfo) || Config.CPTOverride) && !Config.UseBadge)
+                else
                 {
-                    player.CustomInfo =
-                        $"<color=${Ranks[rankId].HexValue}{Ranks[rankId].Name}</color>";
+                    Log.Debug($"{nameof(HappyHandler)}: Invalid RankKind - response: {result}", Loader.Loader.ShouldDebugBeShown);
                 }
-
-                return true;
             }
 
-            return false;
+            void ErrorHandler(ThreadSafeRequest request)
+            {
+                Log.Debug($"{nameof(ErrorHandler)}: Response: {request.Result} Code: {request.Code}", Loader.Loader.ShouldDebugBeShown);
+
+                if (errorHandler != null)
+                    errorHandler();
+            }
+
+            void ShowRank(RankKind rank)
+            {
+                if (Ranks.TryGetValue(rank, out var value))
+                {
+                    if (Config.UseBadge() && (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride))
+                    {
+                        player.RankName = value.Name;
+                        player.RankColor = value.Color;
+                    }
+
+                    if (Config.UseCustomPlayerInfo() && (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride))
+                    {
+                        player.CustomInfo = $"<color=${value.HexValue}{value.Name}</color>";
+                    }
+                }
+            }
         }
 
         private void RefreshHandler() => handler = new CreditsHandler(this);

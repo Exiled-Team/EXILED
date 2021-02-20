@@ -14,17 +14,39 @@ namespace Exiled.CreditTags
     /// <inheritdoc />
     public sealed class CreditTagsConfig : IConfig
     {
+        public enum InfoSide
+        {
+            /// <summary>
+            /// Uses badge.
+            /// </summary>
+            Badge,
+
+            /// <summary>
+            /// Uses Custom Player Info area
+            /// </summary>
+            CustomPlayerInfo,
+
+            /// <summary>
+            /// Includes both of them.
+            /// </summary>
+            Both,
+        }
+
         /// <inheritdoc/>
         [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("If true a badge will be given, if false custom player text will be given")]
-        public bool UseBadge { get; set; } = true;
+        [Description("Info side - Badge, CustomPlayerInfo, Both")]
+        public InfoSide Mode { get; set; } = InfoSide.Both;
 
-        [Description("Should badge override existing badges?")]
+        [Description("Overrides badge if exists")]
         public bool BadgeOverride { get; set; } = true;
 
-        [Description("Should CPT override existing CPT?")]
-        public bool CPTOverride { get; set; } = true;
+        [Description("Overrides Custom Player Info if exists")]
+        public bool CustomPlayerInfoOverride { get; set; } = true;
+
+        public bool UseBadge() => Mode == InfoSide.Both || Mode == InfoSide.Badge;
+
+        public bool UseCustomPlayerInfo() => Mode == InfoSide.Both || Mode == InfoSide.CustomPlayerInfo;
     }
 }

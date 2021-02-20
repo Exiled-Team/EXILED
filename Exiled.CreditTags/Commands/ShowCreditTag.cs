@@ -31,13 +31,24 @@ namespace Exiled.CreditTags.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            Player player = Player.Get(((CommandSender)sender).SenderId);
+            var cmdSender = (CommandSender)sender;
+            Player player = Player.Get(cmdSender.SenderId);
 
-            bool success = CreditTags.Singleton.ShowCreditTag(player);
-            response = success
+            void HappyHandler()
+            {
+                cmdSender.RaReply("Enjoy your credit tag!", true, true, string.Empty);
+            }
+
+            void ErrorHandler()
+            {
+                cmdSender.RaReply("An error has occurred.", true, true, string.Empty);
+            }
+
+            bool cached = CreditTags.Singleton.ShowCreditTag(player, ErrorHandler, HappyHandler);
+            response = cached
                 ? "Your credit tag has been shown."
-                : "You have no credit tag to show.";
-            return success;
+                : "Hold on...";
+            return true;
         }
     }
 }

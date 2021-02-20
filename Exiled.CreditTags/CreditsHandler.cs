@@ -7,6 +7,8 @@
 
 namespace Exiled.CreditTags
 {
+    using System;
+
     using Exiled.Events.EventArgs;
 
     /// <summary>
@@ -28,9 +30,10 @@ namespace Exiled.CreditTags
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            if (ev.Player.GlobalBadge != null && ev.Player.GlobalBadge.Value.IsGlobal)
+            if (ev.Player.GlobalBadge?.IsGlobal == true)
                 return;
-            plugin.ShowCreditTag(ev.Player);
+
+            plugin.ShowCreditTag(ev.Player, null, null);
         }
     }
 }
