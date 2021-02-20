@@ -73,6 +73,9 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in players)
                 {
                     Player player = GetPlayerOrServer(gameObject);
+                    if (player == null)
+                        continue;
+
                     Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
 
                     if (player.Role.Is939())
@@ -103,6 +106,9 @@ namespace Exiled.Events.Patches.Generic
                                 continue;
 
                             Player currentTarget = GetPlayerOrServer(targetHub.gameObject);
+                            if (currentTarget == null)
+                                continue;
+
                             Scp096 scp096 = player.ReferenceHub.scpsController.CurrentScp as Scp096;
 
                             Vector3 vector3 = ppd.position - player.ReferenceHub.playerMovementSync.RealModelPosition;
@@ -188,7 +194,10 @@ namespace Exiled.Events.Patches.Generic
                         if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
                             continue;
 
-                        var target = GetPlayerOrServer(targetHub.gameObject);
+                        Player target = GetPlayerOrServer(targetHub.gameObject);
+                        if (target == null)
+                            continue;
+
                         // If for some reason the player/their ref hub is null
                         if (target?.ReferenceHub == null)
                             continue;
