@@ -33,26 +33,6 @@ namespace Exiled.CustomItems.Commands
         /// <inheritdoc/>
         public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";
 
-        /// <summary>
-        /// Tries to parse a <see cref="string"/> into a <see cref="Vector3"/>.
-        /// </summary>
-        /// <param name="s">The <see cref="string"/> to parse.</param>
-        /// <param name="vector">The <see cref="Vector3"/> parsed from the string.</param>
-        /// <returns>A <see cref="bool"/> indicating whether or not the parse was successful.</returns>
-        public static bool TryParseVector3(string s, out Vector3 vector)
-        {
-            vector = Vector3.zero;
-            s = s.Replace("(", string.Empty).Replace(")", string.Empty);
-            string[] split = s.Split(',');
-
-            if (!float.TryParse(split[0], out float x) || !float.TryParse(split[1], out float y) || !float.TryParse(split[2], out float z))
-                return false;
-
-            vector = new Vector3(x, y, z);
-
-            return true;
-        }
-
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
@@ -78,12 +58,25 @@ namespace Exiled.CustomItems.Commands
             }
 
             Vector3 spawnPos = Vector3.zero;
-            if (TryParseVector3(args[2], out Vector3 pos))
-                spawnPos = pos;
-            else if (Enum.TryParse(args[2], out SpawnLocation location))
+
+            if (Enum.TryParse(args[2], out SpawnLocation location))
+            {
                 spawnPos = location.TryGetLocation();
+            }
             else if (Player.Get(args[2]) is Player player)
+            {
                 spawnPos = player.Position;
+            }
+            else if (args.Length > 4)
+            {
+                if (!float.TryParse(args[2], out float x) || !float.TryParse(args[3], out float y) || !float.TryParse(args[4], out float z))
+                {
+                    response = "Invalid coordinates selected.";
+                    return false;
+                }
+
+                spawnPos = new Vector3(x, y, z);
+            }
 
             if (spawnPos == Vector3.zero)
             {
