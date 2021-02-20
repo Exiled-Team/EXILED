@@ -5,14 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Text;
-
 namespace Exiled.CustomItems.Commands
 {
     using System;
-
+    using System.Text;
     using CommandSystem;
-
     using Exiled.CustomItems.API;
 
     /// <summary>

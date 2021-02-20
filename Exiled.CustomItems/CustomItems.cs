@@ -36,7 +36,7 @@ namespace Exiled.CustomItems
         /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
-        public List<CustomItem> ItemManagers { get; } = new List<CustomItem>();
+        public HashSet<CustomItem> ItemManagers { get; } = new HashSet<CustomItem>();
 
         /// <inheritdoc />
         public override void OnEnabled()

@@ -196,7 +196,7 @@ namespace Exiled.CustomItems.API
         /// Gets a list of all currently active Item Managers.
         /// </summary>
         /// <returns>A list of all <see cref="CustomItem"/>s.</returns>
-        public static List<CustomItem> GetInstalledItems() => CustomItems.Singleton.ItemManagers;
+        public static HashSet<CustomItem> GetInstalledItems() => CustomItems.Singleton.ItemManagers;
 
         /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
