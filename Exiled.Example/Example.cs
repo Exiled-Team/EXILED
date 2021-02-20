@@ -17,7 +17,7 @@ namespace Exiled.Example
     /// </summary>
     public class Example : Plugin<Config>
     {
-        private static readonly Lazy<Example> LazyInstance = new Lazy<Example>(() => new Example());
+        private static Example singleton = new Example();
 
         private Handlers.Server server;
         private Handlers.Player player;
@@ -30,9 +30,9 @@ namespace Exiled.Example
         }
 
         /// <summary>
-        /// Gets the lazy instance.
+        /// Gets the only existing instance of this plugin.
         /// </summary>
-        public static Example Instance => LazyInstance.Value;
+        public static Example Instance => singleton;
 
         /// <inheritdoc/>
         public override PluginPriority Priority { get; } = PluginPriority.Last;
