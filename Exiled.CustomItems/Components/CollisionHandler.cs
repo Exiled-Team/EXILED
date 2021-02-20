@@ -40,7 +40,7 @@ namespace Exiled.CustomItems.Components
             }
             catch (Exception e)
             {
-                Log.Error($"CollisionHandler: {e.Message}\n{e.StackTrace}");
+                Log.Error($"CollisionHandler:\n{e}");
             }
         }
     }
