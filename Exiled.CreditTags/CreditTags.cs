@@ -66,7 +66,7 @@ namespace Exiled.CreditTags
 
         internal void MakeRequst(string userid, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
         {
-            userid = userid.Substring(0, userid.IndexOf('@') - 1);
+            userid = userid.Substring(0, userid.IndexOf('@'));
             var url = $"{Url}?userid={userid}";
 
             ThreadSafeRequest.Go(url, errorHandler, resultHandler, issuer);
