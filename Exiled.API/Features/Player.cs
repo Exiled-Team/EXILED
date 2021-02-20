@@ -35,7 +35,6 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
