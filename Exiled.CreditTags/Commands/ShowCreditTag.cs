@@ -23,7 +23,7 @@ namespace Exiled.CreditTags.Commands
         public string Command { get; } = "exiledtag";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "crtag" };
+        public string[] Aliases { get; } = new[] { "crtag", "et", "ct" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Shows your EXILED Credits tag, if available.";
@@ -32,22 +32,19 @@ namespace Exiled.CreditTags.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             var cmdSender = (CommandSender)sender;
-            Player player = Player.Get(cmdSender.SenderId);
 
-            void HappyHandler()
+            if (!(Player.Get(cmdSender.SenderId) is Player player))
             {
-                cmdSender.RaReply("Enjoy your credit tag!", true, true, string.Empty);
+                response = "You cannot use this command while still authenticating.";
+                return false;
             }
 
-            void ErrorHandler()
-            {
-                cmdSender.RaReply("An error has occurred.", true, true, string.Empty);
-            }
+            void ErrorHandler() => cmdSender.RaReply("An error has occurred.", false, true, string.Empty);
+            void SuccessHandler() => cmdSender.RaReply("Enjoy your credit tag!", true, true, string.Empty);
 
-            bool cached = CreditTags.Singleton.ShowCreditTag(player, ErrorHandler, HappyHandler, true);
-            response = cached
-                ? "Your credit tag has been shown."
-                : "Hold on...";
+            bool cached = CreditTags.Instance.ShowCreditTag(player, ErrorHandler, SuccessHandler, true);
+
+            response = cached ? "Your credit tag has been shown." : "Hold on...";
             return true;
         }
     }

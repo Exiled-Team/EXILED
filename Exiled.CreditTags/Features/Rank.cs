@@ -5,34 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags
+namespace Exiled.CreditTags.Features
 {
-    /// <summary>
-    /// Represents all existing ranks.
-    /// </summary>
-    public enum RankKind
-    {
-        /// <summary>
-        /// Nothing.
-        /// </summary>
-        None,
-
-        /// <summary>
-        /// Exiled Developer.
-        /// </summary>
-        Dev = 1,
-
-        /// <summary>
-        /// Exiled Contributor.
-        /// </summary>
-        Contributor = 2,
-
-        /// <summary>
-        /// Exiled Plugin Developer.
-        /// </summary>
-        PluginDev = 3,
-    }
-
     /// <summary>
     /// An object representing Exiled Credit ranks.
     /// </summary>

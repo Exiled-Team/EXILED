@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags
+namespace Exiled.CreditTags.Features
 {
     using System;
     using System.Collections.Generic;
@@ -28,7 +28,10 @@ namespace Exiled.CreditTags
 
         public bool Done => done;
 
-        public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer) => Timing.RunCoroutine(MakeRequest(url, errorHandler, resultHandler).CancelWith(issuer), Segment.LateUpdate);
+        public static void Go(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
+        {
+            Timing.RunCoroutine(MakeRequest(url, errorHandler, resultHandler).CancelWith(issuer), Segment.LateUpdate);
+        }
 
         private static IEnumerator<float> MakeRequest(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler)
         {
