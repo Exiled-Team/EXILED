@@ -30,7 +30,7 @@ namespace Exiled.CreditTags
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            if (ev.Player.GlobalBadge?.IsGlobal == true)
+            if (ev.Player.GlobalBadge?.IsGlobal == true || (ev.Player.DoNotTrack && !plugin.Config.IgnoreDntFlag))
                 return;
 
             plugin.ShowCreditTag(ev.Player, null, null);
