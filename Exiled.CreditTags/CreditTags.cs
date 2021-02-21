@@ -76,7 +76,7 @@ namespace Exiled.CreditTags
         }
 
         // returns true if the player was in the cache
-        internal bool ShowCreditTag(Player player, Action errorHandler, Action happyHandler)
+        internal bool ShowCreditTag(Player player, Action errorHandler, Action happyHandler, bool force = false)
         {
             if (RankCache.TryGetValue(player.UserId, out var cachedRank))
             {
@@ -117,7 +117,7 @@ namespace Exiled.CreditTags
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
-                    if (Config.UseBadge() && (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge != null)
+                    if (Config.UseBadge() && (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge != null)))
                     {
                         player.RankName = value.Name;
                         player.RankColor = value.Color;

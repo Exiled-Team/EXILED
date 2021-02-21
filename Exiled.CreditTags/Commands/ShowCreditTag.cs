@@ -44,7 +44,7 @@ namespace Exiled.CreditTags.Commands
                 cmdSender.RaReply("An error has occurred.", true, true, string.Empty);
             }
 
-            bool cached = CreditTags.Singleton.ShowCreditTag(player, ErrorHandler, HappyHandler);
+            bool cached = CreditTags.Singleton.ShowCreditTag(player, ErrorHandler, HappyHandler, true);
             response = cached
                 ? "Your credit tag has been shown."
                 : "Hold on...";
