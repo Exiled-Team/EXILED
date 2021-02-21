@@ -34,13 +34,14 @@ namespace Exiled.CustomItems.Components
         {
             try
             {
-                if (collision.gameObject == Owner || collision.gameObject.GetComponent<Grenade>() != null)
+                if (collision.gameObject == Owner || !collision.gameObject.TryGetComponent<Grenade>(out _))
                     return;
+
                 Grenade.NetworkfuseTime = 0.1f;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error($"CollisionHandler:\n{e}");
+                Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
             }
         }
     }
