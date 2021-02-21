@@ -117,15 +117,18 @@ namespace Exiled.CreditTags
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
-                    if (Config.UseBadge() && (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge != null)))
+                    if (Config.UseBadge())
                     {
-                        player.RankName = value.Name;
-                        player.RankColor = value.Color;
+                        if (force || (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride))
+                        {
+                            player.RankName = value.Name;
+                            player.RankColor = value.Color;
+                        }
                     }
 
                     if (Config.UseCustomPlayerInfo() && (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride))
                     {
-                        player.CustomInfo = $"<color=${value.HexValue}{value.Name}</color>";
+                        player.CustomInfo = $"<color=#{value.HexValue}{value.Name}</color>";
                     }
                 }
             }
