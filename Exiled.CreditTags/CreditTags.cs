@@ -10,7 +10,11 @@ namespace Exiled.CreditTags
     using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.CreditTags.Enums;
+    using Exiled.CreditTags.Events;
+    using Exiled.CreditTags.Features;
 
     using UnityEngine;
 
@@ -19,16 +23,18 @@ namespace Exiled.CreditTags
     /// <summary>
     /// Handles credits for Exiled Devs, Contributors and Plugin devs.
     /// </summary>
-    public sealed class CreditTags : Plugin<CreditTagsConfig>
+    public sealed class CreditTags : Plugin<Config>
     {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
+
+        private static readonly CreditTags Singleton = new CreditTags();
 
         private CreditsHandler handler;
 
         /// <summary>
         /// Gets a static reference to this class.
         /// </summary>
-        public static CreditTags Singleton { get; private set; }
+        public static CreditTags Instance => Singleton;
 
         /// <inheritdoc/>
         public override string Prefix { get; } = "exiled_credits";
@@ -36,47 +42,42 @@ namespace Exiled.CreditTags
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of Exiled Credit ranks.
         /// </summary>
-        internal Dictionary<RankKind, Rank> Ranks { get; } = new Dictionary<RankKind, Rank>
+        internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
         {
-            [RankKind.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
-            [RankKind.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
-            [RankKind.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
+            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
+            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
+            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
         };
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey,TValue}"/> of recently cached userIds and their ranks.
         /// </summary>
-        internal Dictionary<string, RankKind> RankCache { get; } = new Dictionary<string, RankKind>();
+        internal Dictionary<string, RankType> RankCache { get; } = new Dictionary<string, RankType>();
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            Singleton = this;
-            base.OnEnabled();
             RefreshHandler();
             AttachHandler();
+
+            base.OnEnabled();
         }
 
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            base.OnDisabled();
             UnattachHandler();
+
+            base.OnDisabled();
         }
 
-        internal void MakeRequst(string userid, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler, GameObject issuer)
+        internal void MakeRequest(string userId, Action<ThreadSafeRequest> errorHandler, Action<string> successHandler, GameObject issuer)
         {
-            userid = userid.Substring(0, userid.IndexOf('@'));
-            var url = $"{Url}?userid={userid}";
-
-            ThreadSafeRequest.Go(url, errorHandler, resultHandler, issuer);
-            /*
-             * Log.Debug($"{nameof(CheckForExiledCredit)}: Response from server: {responseString}", Loader.Loader.ShouldDebugBeShown);
-             */
+            ThreadSafeRequest.Go($"{Url}?userid={userId.GetRawUserId()}", errorHandler, successHandler, issuer);
         }
 
         // returns true if the player was in the cache
-        internal bool ShowCreditTag(Player player, Action errorHandler, Action happyHandler, bool force = false)
+        internal bool ShowCreditTag(Player player, Action errorHandler, Action successHandler, bool force = false)
         {
             if (RankCache.TryGetValue(player.UserId, out var cachedRank))
             {
@@ -85,23 +86,22 @@ namespace Exiled.CreditTags
             }
             else
             {
-                MakeRequst(player.UserId, ErrorHandler, HappyHandler, player.GameObject);
+                MakeRequest(player.UserId, ErrorHandler, SuccessHandler, player.GameObject);
                 return false;
             }
 
-            void HappyHandler(string result)
+            void SuccessHandler(string result)
             {
-                if (Enum.TryParse<RankKind>(result, out var kind))
+                if (Enum.TryParse<RankType>(result, out var kind))
                 {
                     RankCache[player.UserId] = kind;
                     ShowRank(kind);
 
-                    if (happyHandler != null)
-                        happyHandler();
+                    successHandler?.Invoke();
                 }
                 else
                 {
-                    Log.Debug($"{nameof(HappyHandler)}: Invalid RankKind - response: {result}", Loader.Loader.ShouldDebugBeShown);
+                    Log.Debug($"{nameof(SuccessHandler)}: Invalid RankKind - response: {result}", Loader.Loader.ShouldDebugBeShown);
                 }
             }
 
@@ -109,11 +109,10 @@ namespace Exiled.CreditTags
             {
                 Log.Debug($"{nameof(ErrorHandler)}: Response: {request.Result} Code: {request.Code}", Loader.Loader.ShouldDebugBeShown);
 
-                if (errorHandler != null)
-                    errorHandler();
+                errorHandler?.Invoke();
             }
 
-            void ShowRank(RankKind rank)
+            void ShowRank(RankType rank)
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
@@ -134,7 +133,7 @@ namespace Exiled.CreditTags
             }
         }
 
-        private void RefreshHandler() => handler = new CreditsHandler(this);
+        private void RefreshHandler() => handler = new CreditsHandler();
 
         private void AttachHandler() => PlayerEvents.Verified += handler.OnPlayerVerify;
 

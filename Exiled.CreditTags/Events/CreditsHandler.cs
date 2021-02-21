@@ -5,33 +5,27 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CreditTags
+namespace Exiled.CreditTags.Events
 {
     using Exiled.Events.EventArgs;
+
+    using static CreditTags;
 
     /// <summary>
     /// Event Handlers for the <see cref="CreditTags"/> plugin of Exiled.
     /// </summary>
     internal sealed class CreditsHandler
     {
-        private readonly CreditTags plugin;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreditsHandler"/> class.
-        /// </summary>
-        /// <param name="plugin">This <see cref="CreditTags"/> instance initializing this class.</param>
-        public CreditsHandler(CreditTags plugin) => this.plugin = plugin;
-
         /// <summary>
         /// Handles checking if a player should have a credit tag or not upon joining.
         /// </summary>
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            if (ev.Player.GlobalBadge?.IsGlobal == true || (ev.Player.DoNotTrack && !plugin.Config.IgnoreDntFlag))
+            if ((ev.Player.GlobalBadge?.IsGlobal ?? false) || (ev.Player.DoNotTrack && !Instance.Config.IgnoreDntFlag))
                 return;
 
-            plugin.ShowCreditTag(ev.Player, null, null);
+            Instance.ShowCreditTag(ev.Player, null, null);
         }
     }
 }
