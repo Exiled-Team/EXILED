@@ -845,14 +845,32 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+        public static IEnumerable<Player> Get(Team team)
+        {
+            foreach (Player p in Dictionary.Values)
+            {
+                if (p.Team == team)
+                {
+                    yield return p;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+        public static IEnumerable<Player> Get(RoleType role)
+        {
+            foreach (Player p in Dictionary.Values)
+            {
+                if (p.Role == role)
+                {
+                    yield return p;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
