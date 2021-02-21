@@ -7,8 +7,6 @@
 
 namespace Exiled.CreditTags
 {
-    using System;
-
     using Exiled.Events.EventArgs;
 
     /// <summary>
