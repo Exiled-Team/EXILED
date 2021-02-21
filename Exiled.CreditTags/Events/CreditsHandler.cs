@@ -22,7 +22,7 @@ namespace Exiled.CreditTags.Events
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            if (ev.Player.GlobalBadge?.IsGlobal ?? true || (ev.Player.DoNotTrack && !Instance.Config.IgnoreDntFlag))
+            if ((ev.Player.GlobalBadge?.IsGlobal ?? true) || (ev.Player.DoNotTrack && !Instance.Config.IgnoreDntFlag))
                 return;
 
             Instance.ShowCreditTag(ev.Player, null, null);
