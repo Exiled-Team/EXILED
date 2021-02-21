@@ -23,7 +23,7 @@ Additional Arguments:
 
 -----
 
-#### Exmaples
+#### Examples
 
 - ##### Basic installation in the folder you are in
 ```
