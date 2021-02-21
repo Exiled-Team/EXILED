@@ -40,10 +40,10 @@ namespace Exiled.CreditTags
         public InfoSide Mode { get; set; } = InfoSide.Both;
 
         [Description("Overrides badge if exists")]
-        public bool BadgeOverride { get; set; } = true;
+        public bool BadgeOverride { get; set; } = false;
 
         [Description("Overrides Custom Player Info if exists")]
-        public bool CustomPlayerInfoOverride { get; set; } = true;
+        public bool CustomPlayerInfoOverride { get; set; } = false;
 
         public bool UseBadge() => Mode == InfoSide.Both || Mode == InfoSide.Badge;
 
