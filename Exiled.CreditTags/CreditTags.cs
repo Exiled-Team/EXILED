@@ -128,7 +128,7 @@ namespace Exiled.CreditTags
 
                     if (Config.UseCustomPlayerInfo() && (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride))
                     {
-                        player.CustomInfo = $"<color=#{value.HexValue}{value.Name}</color>";
+                        player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
                     }
                 }
             }
