@@ -9,6 +9,8 @@ namespace Exiled.CreditTags.Events
 {
     using Exiled.Events.EventArgs;
 
+    using MEC;
+
     using static CreditTags;
 
     /// <summary>
@@ -22,10 +24,7 @@ namespace Exiled.CreditTags.Events
         /// <param name="ev"><inheritdoc cref="VerifiedEventArgs"/></param>
         public void OnPlayerVerify(VerifiedEventArgs ev)
         {
-            if ((ev.Player.GlobalBadge?.IsGlobal ?? false) || (ev.Player.DoNotTrack && !Instance.Config.IgnoreDntFlag))
-                return;
-
-            Instance.ShowCreditTag(ev.Player, null, null);
+            Timing.CallDelayed(0.5f, () => Instance.ShowCreditTag(ev.Player, null, null));
         }
     }
 }

@@ -20,16 +20,16 @@ namespace Exiled.CreditTags
         public bool IsEnabled { get; set; } = true;
 
         [Description("Info side - Badge, CustomPlayerInfo, Both")]
-        public InfoSide Mode { get; private set; } = InfoSide.Both;
+        public InfoSide Mode { get; set; } = InfoSide.Both;
 
         [Description("Overrides badge if exists")]
-        public bool BadgeOverride { get; private set; } = false;
+        public bool BadgeOverride { get; set; } = false;
 
         [Description("Overrides Custom Player Info if exists")]
-        public bool CustomPlayerInfoOverride { get; private set; } = false;
+        public bool CustomPlayerInfoOverride { get; set; } = false;
 
         [Description("Whether or not the plugin should ignore a player's DNT flag. By default (false), players with DNT flag will not be checked for credit tags.")]
-        public bool IgnoreDntFlag { get; set; } = false;
+        public bool IgnoreDntFlag { get; set; } = true;
 
         public bool UseBadge() => Mode == InfoSide.Both || Mode == InfoSide.Badge;
 

@@ -27,14 +27,12 @@ namespace Exiled.CreditTags
     {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
-        private static readonly CreditTags Singleton = new CreditTags();
-
         private CreditsHandler handler;
 
         /// <summary>
         /// Gets a static reference to this class.
         /// </summary>
-        public static CreditTags Instance => Singleton;
+        public static CreditTags Instance { get; private set; }
 
         /// <inheritdoc/>
         public override string Prefix { get; } = "exiled_credits";
@@ -57,6 +55,7 @@ namespace Exiled.CreditTags
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            Instance = this;
             RefreshHandler();
             AttachHandler();
 
@@ -79,6 +78,7 @@ namespace Exiled.CreditTags
         // returns true if the player was in the cache
         internal bool ShowCreditTag(Player player, Action errorHandler, Action successHandler, bool force = false)
         {
+            Log.Debug($"{player.Nickname} thingy");
             if (RankCache.TryGetValue(player.UserId, out var cachedRank))
             {
                 ShowRank(cachedRank);
@@ -118,7 +118,8 @@ namespace Exiled.CreditTags
                 {
                     if (Config.UseBadge())
                     {
-                        if (force || (string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride))
+                        if (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) &&
+                                      player.GlobalBadge == null))
                         {
                             player.RankName = value.Name;
                             player.RankColor = value.Color;
