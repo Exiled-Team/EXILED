@@ -92,7 +92,7 @@ namespace Exiled.CreditTags
                 return false;
             }
 
-            void SuccessHandler(string result)
+            void HappyHandler(string result)
             {
                 if (Enum.TryParse<RankType>(result, out var kind))
                 {
