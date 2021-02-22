@@ -27,12 +27,18 @@ namespace Exiled.CreditTags
     {
         private const string Url = "https://exiled.host/utilities/checkcredits.php";
 
+        private static readonly CreditTags Singleton = new CreditTags();
+
         private CreditsHandler handler;
+
+        private CreditTags()
+        {
+        }
 
         /// <summary>
         /// Gets a static reference to this class.
         /// </summary>
-        public static CreditTags Instance { get; private set; }
+        public static CreditTags Instance => Singleton;
 
         /// <inheritdoc/>
         public override string Prefix { get; } = "exiled_credits";
@@ -55,7 +61,6 @@ namespace Exiled.CreditTags
         /// <inheritdoc/>
         public override void OnEnabled()
         {
-            Instance = this;
             RefreshHandler();
             AttachHandler();
 
