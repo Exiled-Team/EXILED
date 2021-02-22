@@ -36,7 +36,8 @@ jobs:
       shell: pwsh
       run: |
         ./build.ps1 -BuildNuGet
-        Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=Exiled.$Version.nupkg" -Encoding utf-8 -Append
+        $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
+        Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
