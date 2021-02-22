@@ -1,7 +1,7 @@
 #! pwsh
 
 param (
-    [SwitchParameter]$BuildNuGet
+    [Switch]$BuildNuGet
 )
 
 $Projects = @(
