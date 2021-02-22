@@ -4,6 +4,9 @@ on: [push, pull_request]
 
 jobs:
   build:
+    # Prevent double running for push & pull_request events from the main repo
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'Exiled-Team/Exiled'
+
     name: .Net Core ${{ matrix.framework }} on ${{ matrix.os }} for ${{ matrix.proj_name }}
     runs-on: ${{ matrix.os }}
     strategy:
