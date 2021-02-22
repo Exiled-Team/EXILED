@@ -28,7 +28,7 @@ jobs:
       shell: pwsh
       run: |
         Invoke-WebRequest -Uri https://www.exiled.host/build_deps/References.zip -OutFile ${{ github.workspace }}/References.zip
-        Expand-Archive -Path References.zip -DestinationPath $EXILED_REFERENCES_PATH
+        Expand-Archive -Path References.zip -DestinationPath ${{ env.EXILED_REFERENCES_PATH }}
 
     - name: Build NuGet
       env:
