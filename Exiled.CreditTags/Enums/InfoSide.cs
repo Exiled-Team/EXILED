@@ -18,5 +18,10 @@ namespace Exiled.CreditTags.Enums
         /// Uses Custom Player Info area
         /// </summary>
         CustomPlayerInfo,
+
+        /// <summary>
+        /// Includes both of them.
+        /// </summary>
+        Both = Badge,
     }
 }
