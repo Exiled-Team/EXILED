@@ -123,18 +123,23 @@ namespace Exiled.CreditTags
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
-                    if (Config.UseBadge())
+                    switch (Config.Mode)
                     {
-                        if (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge == null))
-                        {
-                            player.RankName = value.Name;
-                            player.RankColor = value.Color;
-                        }
-                    }
+                        case InfoSide.Badge:
+                            if (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge == null))
+                            {
+                                player.RankName = value.Name;
+                                player.RankColor = value.Color;
+                            }
 
-                    if (Config.UseCustomPlayerInfo() && (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride))
-                    {
-                        player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
+                            break;
+                        case InfoSide.CustomPlayerInfo:
+                            if (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride)
+                            {
+                                player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
+                            }
+
+                            break;
                     }
                 }
             }
