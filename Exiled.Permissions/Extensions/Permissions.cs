@@ -92,7 +92,7 @@ namespace Exiled.Permissions.Extensions
             {
                 Log.Error("Your Remote Admin config is broken. You have to fix it because the game won't even start with a broken config.");
 
-                // Then do nothing.
+                // If we don't return the context, it'll throw another exception.
                 return;
             }
 
