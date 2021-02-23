@@ -88,6 +88,14 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Reload()
         {
+            if (ServerStatic.PermissionsHandler == null)
+            {
+                Log.Error("Your Remote Admin config is broken. You have to fix it because the game won't even start with a broken config.");
+
+                // If we don't return the context, it'll throw another exception.
+                return;
+            }
+
             try
             {
                 Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
