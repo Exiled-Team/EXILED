@@ -22,6 +22,6 @@ namespace Exiled.CreditTags.Enums
         /// <summary>
         /// Includes both of them.
         /// </summary>
-        Both,
+        Both = Badge,
     }
 }
