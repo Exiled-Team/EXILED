@@ -841,6 +841,13 @@ namespace Exiled.API.Features
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
+        /// </summary>
+        /// <param name="side">The player's side.</param>
+        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
+
+        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
