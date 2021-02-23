@@ -70,7 +70,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override void Init()
         {
-            UnsubscribeEvents();
+            SubscribeEvents();
 
             base.Init();
         }
