@@ -100,14 +100,8 @@ namespace Exiled.CustomItems.API.Features
         /// Gives the item to a player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will recieve the item.</param>
-        public virtual void Give(Player player) => Give(player, false);
-
-        /// <summary>
-        /// Gives the item to a player.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will recieve the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowMessage"/> will be called when the player received the item.</param>
-        public virtual void Give(Player player, bool displayMessage)
+        public virtual void Give(Player player, bool displayMessage = true)
         {
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
             {

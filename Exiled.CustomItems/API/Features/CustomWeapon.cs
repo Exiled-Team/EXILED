@@ -90,22 +90,6 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        public override void Init()
-        {
-            SubscribeEvents();
-
-            base.Init();
-        }
-
-        /// <inheritdoc/>
-        public override void Destroy()
-        {
-            UnsubscribeEvents();
-
-            base.Destroy();
-        }
-
-        /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             Events.Handlers.Player.ReloadingWeapon += OnReloading;

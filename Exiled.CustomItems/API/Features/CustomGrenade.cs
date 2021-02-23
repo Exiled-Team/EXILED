@@ -68,22 +68,6 @@ namespace Exiled.CustomItems.API.Features
         protected List<GameObject> Tracked { get; } = new List<GameObject>();
 
         /// <inheritdoc/>
-        public override void Init()
-        {
-            SubscribeEvents();
-
-            base.Init();
-        }
-
-        /// <inheritdoc/>
-        public override void Destroy()
-        {
-            UnsubscribeEvents();
-
-            base.Destroy();
-        }
-
-        /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
             Events.Handlers.Player.ThrowingGrenade += OnThrowing;

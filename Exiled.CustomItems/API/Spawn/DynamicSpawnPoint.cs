@@ -7,8 +7,8 @@
 
 namespace Exiled.CustomItems.API.Spawn
 {
+    using System;
     using Exiled.CustomItems.API.Features;
-
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -16,23 +16,10 @@ namespace Exiled.CustomItems.API.Spawn
     /// </summary>
     public class DynamicSpawnPoint : SpawnPoint
     {
-        private SpawnLocation location;
-
         /// <summary>
         /// Gets or sets the <see cref="SpawnLocation"/> for this item.
         /// </summary>
-        public SpawnLocation Location
-        {
-            get => location;
-            set
-            {
-                location = value;
-
-                Position = value.GetPosition().ToVector();
-
-                Name = value.ToString();
-            }
-        }
+        public SpawnLocation Location { get; set; }
 
         /// <summary>
         /// Gets or sets this location's spawn chance.
@@ -43,12 +30,20 @@ namespace Exiled.CustomItems.API.Spawn
         /// Gets or sets this location's name.
         /// </summary>
         [YamlIgnore]
-        public override string Name { get; set; }
+        public override string Name
+        {
+            get => Location.ToString();
+            set => throw new ArgumentException("You cannot change the name of a dynamic spawn location.");
+        }
 
         /// <summary>
         /// Gets or sets this location's name.
         /// </summary>
         [YamlIgnore]
-        public override Vector Position { get; set; }
+        public override Vector Position
+        {
+            get => Location.GetPosition().ToVector();
+            set => throw new ArgumentException("You cannot change the spawn vector of a dynamic spawn location.");
+        }
     }
 }
