@@ -843,7 +843,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
         /// </summary>
-        /// <param name="side">The player's side.</param>
+        /// <param name="side">The players' side.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
 
