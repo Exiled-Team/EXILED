@@ -1,6 +1,8 @@
 name: Exiled CD
 
-on: workflow_dispatch
+on:
+  release:
+    types: [published]
 
 env:
   EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip
