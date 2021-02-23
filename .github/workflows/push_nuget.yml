@@ -41,4 +41,4 @@ jobs:
 
     - name: Push NuGet
       shell: pwsh
-      run: nuget push ${{ env.PackageFile }} -ApiKey ${{ secrets.NUGET_API_KEY }}}
+      run: nuget push ${{ env.PackageFile }} -ApiKey ${{ secrets.NUGET_API_KEY }} -Source https://api.nuget.org/v3/index.json
