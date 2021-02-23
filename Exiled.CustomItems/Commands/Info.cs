@@ -37,7 +37,7 @@ namespace Exiled.CustomItems.Commands
         public string Command { get; } = "info";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "i" };
+        public string[] Aliases { get; } = { "i" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets more information about the specified custom item.";
@@ -65,15 +65,18 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Shared.Rent();
 
-            message.AppendLine($"<color=#e6ac00>-</color> <color=#00d639>{item.Name}</color> <color=#05c4eb>({item.Id})</color>\n - {item.Description}\n{item.Type}\nSpawn Locations:");
+            message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine("</color>")
+                .Append("- ").AppendLine(item.Description)
+                .AppendLine(item.Type.ToString())
+                .AppendLine("Spawn Locations:");
 
             foreach (DynamicSpawnPoint spawnPoint in item.SpawnProperties.DynamicSpawnPoints)
-                message.AppendLine($"{spawnPoint.Name} - {spawnPoint.Position} Chance: {spawnPoint.Chance}");
+                message.Append(spawnPoint.Name).Append('(').Append(spawnPoint.Position).Append(") ").Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)
-                message.AppendLine($"{spawnPoint.Name} - {spawnPoint.Position} Chance: {spawnPoint.Chance}");
+                message.Append(spawnPoint.Name).Append('(').Append(spawnPoint.Position).Append(") ").Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
-            message.AppendLine($"Spawn Limit: {item.SpawnProperties.Limit}");
+            message.Append("Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString());
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

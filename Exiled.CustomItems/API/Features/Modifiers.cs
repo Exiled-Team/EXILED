@@ -28,16 +28,16 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets a value indicating what <see cref="BarrelType"/> the weapon will have.
         /// </summary>
-        public int BarrelType { get; }
+        public int BarrelType { get; private set; }
 
         /// <summary>
         /// Gets a value indicating what <see cref="SightType"/> the weapon will have.
         /// </summary>
-        public int SightType { get; }
+        public int SightType { get; private set; }
 
         /// <summary>
         /// Gets a value indicating what <see cref="OtherType"/> the weapon will have.
         /// </summary>
-        public int OtherType { get; }
+        public int OtherType { get; private set; }
     }
 }

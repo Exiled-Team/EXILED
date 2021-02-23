@@ -34,7 +34,7 @@ namespace Exiled.CustomItems.Commands
         public string Command { get; } = "give";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "g" };
+        public string[] Aliases { get; } = { "g" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Gives a custom item.";
@@ -62,22 +62,19 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (int.TryParse(arguments.At(0), out int id))
-            {
-                player.GiveItem(id);
-
-                response = $"Custom item given to {player.Nickname} ({player.UserId})";
-                return true;
-            }
-
-            // Not like this
-            if (player.GiveCustomItem(arguments.At(0)))
+            if (int.TryParse(arguments.At(0), out int id) && player.TryGiveCustomItem(id))
             {
                 response = $"Custom item given to {player.Nickname} ({player.UserId})";
                 return true;
             }
 
-            response = "Item not found.";
+            if (player.TryGiveCustomItem(arguments.At(0)))
+            {
+                response = $"Custom item given to {player.Nickname} ({player.UserId})";
+                return true;
+            }
+
+            response = $"custom item {arguments.At(0)} not found.";
             return false;
         }
     }

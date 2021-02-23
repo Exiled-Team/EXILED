@@ -93,14 +93,57 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Spawns the item in a specific location.
         /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="z">The z coordinate.</param>
+        public virtual void Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
+
+        /// <summary>
+        /// Spawns the item in a specific location.
+        /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the item will be spawned.</param>
-        public virtual void Spawn(Vector3 position) => Pickups.Add(Item.Spawn(Type, 1, position));
+        public virtual void Spawn(Vector3 position) => Pickups.Add(Item.Spawn(Type, Durability, position));
+
+        /// <summary>
+        /// Spawns items inside <paramref name="spawnPoints"/>.
+        /// </summary>
+        /// <param name="spawnPoints">The spawn points <see cref="IEnumerable{T}"/>.</param>
+        public virtual void Spawn(IEnumerable<SpawnPoint> spawnPoints)
+        {
+            int spawned = 0;
+
+            foreach (SpawnPoint spawnPoint in spawnPoints)
+            {
+                Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.", Instance.Config.Debug);
+
+                if (UnityEngine.Random.Range(1, 101) >= spawnPoint.Chance || (SpawnProperties.Limit > 0 && spawned >= SpawnProperties.Limit))
+                    continue;
+
+                spawned++;
+
+                Spawn(spawnPoint.Position.ToVector3);
+
+                Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
+            }
+        }
+
+        /// <summary>
+        /// Spawns all items at their dynamic and static positions.
+        /// </summary>
+        public virtual void SpawnAll()
+        {
+            if (SpawnProperties == null)
+                return;
+
+            Spawn(SpawnProperties.DynamicSpawnPoints);
+            Spawn(SpawnProperties.StaticSpawnPoints);
+        }
 
         /// <summary>
         /// Gives the item to a player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will recieve the item.</param>
-        /// <param name="displayMessage">Indicates whether or not <see cref="ShowMessage"/> will be called when the player received the item.</param>
+        /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player received the item.</param>
         public virtual void Give(Player player, bool displayMessage = true)
         {
             Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
@@ -115,9 +158,7 @@ namespace Exiled.CustomItems.API.Features
             InsideInventories.Add(syncItemInfo.uniq);
 
             if (displayMessage)
-                ShowMessage(player);
-
-            ItemGiven(player);
+                ShowPickedUpMessage(player);
         }
 
         /// <summary>
@@ -170,6 +211,7 @@ namespace Exiled.CustomItems.API.Features
             Events.Handlers.Player.Handcuffing += OnHandcuffing;
             Events.Handlers.Player.DroppingItem += OnDropping;
             Events.Handlers.Player.PickingUpItem += OnPickingUp;
+            Events.Handlers.Player.ChangingItem += OnChanging;
             Events.Handlers.Scp914.UpgradingItems += OnUpgrading;
             Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
         }
@@ -184,6 +226,7 @@ namespace Exiled.CustomItems.API.Features
             Events.Handlers.Player.Handcuffing -= OnHandcuffing;
             Events.Handlers.Player.DroppingItem -= OnDropping;
             Events.Handlers.Player.PickingUpItem -= OnPickingUp;
+            Events.Handlers.Player.ChangingItem -= OnChanging;
             Events.Handlers.Scp914.UpgradingItems -= OnUpgrading;
             Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
         }
@@ -223,23 +266,9 @@ namespace Exiled.CustomItems.API.Features
             {
                 ev.IsAllowed = false;
 
-                Inventory.SyncItemInfo item = new Inventory.SyncItemInfo()
-                {
-                    durability = ev.Pickup.durability,
-                    id = ev.Pickup.itemId,
-                    modBarrel = ev.Pickup.weaponMods.Barrel,
-                    modOther = ev.Pickup.weaponMods.Other,
-                    modSight = ev.Pickup.weaponMods.Sight,
-                    uniq = ++Inventory._uniqId,
-                };
-
-                ev.Player.Inventory.items.Add(item);
-
-                InsideInventories.Add(item.uniq);
+                Give(ev.Player);
 
                 ev.Pickup.Delete();
-
-                ShowMessage(ev.Player);
             }
         }
 
@@ -249,17 +278,17 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="UpgradingItemsEventArgs"/>.</param>
         protected virtual void OnUpgrading(UpgradingItemsEventArgs ev)
         {
-            Vector3 outPosition = ev.Scp914.output.position - ev.Scp914.intake.position;
-
             foreach (Pickup pickup in ev.Items.ToList())
             {
                 if (!Check(pickup))
                     continue;
 
-                pickup.transform.position += outPosition;
+                pickup.transform.position = ev.Scp914.output.position;
+
                 ev.Items.Remove(pickup);
             }
 
+            // It could be handled differently
             Dictionary<Player, Inventory.SyncItemInfo> itemsToSave = new Dictionary<Player, Inventory.SyncItemInfo>();
 
             foreach (Player player in ev.Players)
@@ -270,6 +299,7 @@ namespace Exiled.CustomItems.API.Features
                         continue;
 
                     itemsToSave.Add(player, item);
+
                     player.Inventory.items.Remove(item);
                 }
             }
@@ -282,7 +312,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Handles making sure custom items are not 'lost' when being handcuffed.
+        /// Handles making sure custom items are not "lost" when being handcuffed.
         /// </summary>
         /// <param name="ev"><see cref="HandcuffingEventArgs"/>.</param>
         protected virtual void OnHandcuffing(HandcuffingEventArgs ev)
@@ -292,13 +322,14 @@ namespace Exiled.CustomItems.API.Features
                 if (!Check(item))
                     continue;
 
-                Pickups.Add(Item.Spawn(item.id, item.durability, ev.Target.Position, default, item.modSight, item.modBarrel, item.modOther));
+                Spawn(ev.Target.Position);
+
                 ev.Target.RemoveItem(item);
             }
         }
 
         /// <summary>
-        /// Handles making sure custom items are not 'lost' when a player dies.
+        /// Handles making sure custom items are not "lost" when a player dies.
         /// </summary>
         /// <param name="ev"><see cref="DyingEventArgs"/>.</param>
         protected virtual void OnDying(DyingEventArgs ev)
@@ -308,13 +339,14 @@ namespace Exiled.CustomItems.API.Features
                 if (!Check(item))
                     continue;
 
-                Pickups.Add(Item.Spawn(item.id, item.durability, ev.Target.Position, default, item.modSight, item.modBarrel, item.modOther));
+                Spawn(ev.Target.Position);
+
                 ev.Target.RemoveItem(item);
             }
         }
 
         /// <summary>
-        /// Handles making sure custom items are not 'lost' when a player escapes.
+        /// Handles making sure custom items are not "lost" when a player escapes.
         /// </summary>
         /// <param name="ev"><see cref="EscapingEventArgs"/>.</param>
         protected virtual void OnEscaping(EscapingEventArgs ev)
@@ -324,28 +356,38 @@ namespace Exiled.CustomItems.API.Features
                 if (!Check(item))
                     continue;
 
-                Pickups.Add(Item.Spawn(item.id, item.durability, ev.NewRole.GetRandomSpawnPoint(), default, item.modSight, item.modBarrel, item.modOther));
+                Spawn(ev.NewRole.GetRandomSpawnPoint());
 
                 ev.Player.RemoveItem(item);
             }
         }
 
         /// <summary>
-        /// Shows a message to the player when they pickup a custom item.
+        /// Handles tracking items when they are selected in the player's inventory.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
-        protected virtual void ShowMessage(Player player)
+        /// <param name="ev"><see cref="ChangingItemEventArgs"/>.</param>
+        protected virtual void OnChanging(ChangingItemEventArgs ev)
         {
-            player.ShowHint(string.Format(Instance.Config.PickedUpBroadcast.Content, Name, Description), Instance.Config.PickedUpBroadcast.Duration);
+            if (Check(ev.NewItem))
+                ShowSelectedMessage(ev.Player);
         }
 
         /// <summary>
-        /// Called when a player is given the item directly via a command or plugin.
+        /// Shows a message to the player when he pickups a custom item.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> who received the item.</param>
-        protected virtual void ItemGiven(Player player)
+        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
+        protected virtual void ShowPickedUpMessage(Player player)
         {
-            // Needs to be changed into an event
+            player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+        }
+
+        /// <summary>
+        /// Shows a message to the player when he selects a custom item.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
+        protected virtual void ShowSelectedMessage(Player player)
+        {
+            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
     }
 }

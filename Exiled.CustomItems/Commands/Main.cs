@@ -27,7 +27,7 @@ namespace Exiled.CustomItems.Commands
         public override string Command { get; } = "customitems";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new[] { "ci", "cis" };
+        public override string[] Aliases { get; } = { "ci", "cis" };
 
         /// <inheritdoc/>
         public override string Description { get; } = string.Empty;

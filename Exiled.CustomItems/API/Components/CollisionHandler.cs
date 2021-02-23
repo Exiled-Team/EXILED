@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Components
+namespace Exiled.CustomItems.API.Components
 {
     using System;
 

@@ -36,7 +36,7 @@ namespace Exiled.CustomItems.Commands
         public string Command { get; } = "spawn";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "sp" };
+        public string[] Aliases { get; } = { "sp" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Spawn an item at the specified Spawn Location, coordinates, or at the designated player's feet.";

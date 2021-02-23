@@ -84,9 +84,7 @@ namespace Exiled.CustomItems.API.Features
             InsideInventories.Add(syncItemInfo.uniq);
 
             if (displayMessage)
-                ShowMessage(player);
-
-            ItemGiven(player);
+                ShowPickedUpMessage(player);
         }
 
         /// <inheritdoc/>
@@ -111,6 +109,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="ReloadingWeaponEventArgs"/>.</param>
         protected virtual void OnReloading(ReloadingWeaponEventArgs ev)
         {
+            // Still need to check this method
             if (!Check(ev.Player.CurrentItem))
                 return;
 

@@ -19,13 +19,20 @@ namespace Exiled.CustomItems
     public class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Whether or not this plugin is enabled.")]
+        [Description("Indicates whether this plugin is enabled or not.")]
         public bool IsEnabled { get; set; } = true;
 
         /// <summary>
-        /// Gets the broadcast that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
         /// </summary>
-        public Broadcast PickedUpBroadcast { get; private set; } = new Broadcast("You have picked up a {0}\n{1}");
+        [Description("The hint that is shown when someone pickups a custom item.")]
+        public Broadcast PickedUpHint { get; private set; } = new Broadcast("You have picked up a {0}\n{1}");
+
+        /// <summary>
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// </summary>
+        [Description("The hint that is shown when someone selects a custom item.")]
+        public Broadcast SelectedHint { get; private set; } = new Broadcast("You have selected a {0}\n{1}");
 
         /// <summary>
         /// Gets a value indicating whether if debug mode is enabled.

@@ -13,7 +13,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.CustomItems.Components;
+    using Exiled.CustomItems.API.Components;
     using Exiled.Events.EventArgs;
 
     using Grenades;
@@ -99,19 +99,10 @@ namespace Exiled.CustomItems.API.Features
                 {
                     Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
 
+                    GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
+
                     if (ExplodeOnCollision)
-                    {
-                        GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, 1.5f, GetGrenadeType(Type), ev.Player).gameObject;
-
-                        CollisionHandler collisionHandler = grenade.gameObject.AddComponent<CollisionHandler>();
-                        collisionHandler.Init(ev.Player.GameObject, grenadeComponent);
-
-                        Tracked.Add(grenade);
-                    }
-                    else
-                    {
-                        Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player);
-                    }
+                        grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
 
                     ev.Player.RemoveItem(ev.Player.CurrentItem);
                 });
@@ -160,7 +151,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        protected Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        protected virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
@@ -172,6 +163,8 @@ namespace Exiled.CustomItems.API.Features
             grenade.NetworkfuseTime = NetworkTime.time + fusetime;
 
             NetworkServer.Spawn(grenade.gameObject);
+
+            Tracked.Add(grenade.gameObject);
 
             return grenade;
         }

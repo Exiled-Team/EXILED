@@ -35,7 +35,7 @@ namespace Exiled.CustomItems.Commands
         public string Command { get; } = "list";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new[] { "s", "l", "show", "sh" };
+        public string[] Aliases { get; } = { "s", "l", "show", "sh" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Gets a list of all currently registered custom items.";
@@ -63,10 +63,10 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
 
-            message.Append("[CUSTOM ITEMS (").Append(CustomItems.Instance.ItemManagers).Append(")]").AppendLine();
+            message.Append("[CUSTOM ITEMS (").Append(CustomItems.Instance.ItemManagers).AppendLine(")]");
 
             foreach (CustomItem item in CustomItems.Instance.ItemManagers)
-                message.Append(item.Name).Append(" (").Append(item.Id).AppendLine();
+                message.Append(item.Name).Append(" (").AppendLine(item.Id.ToString());
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

@@ -10,14 +10,14 @@ namespace Exiled.CustomItems.API.Spawn
     using System.Collections.Generic;
 
     /// <summary>
-    /// All of the data related to spawn locations.
+    /// All of the data related to spawn locations (This could be put in Exentions).
     /// </summary>
-    public struct SpawnLocationData
+    public static class SpawnLocationData
     {
         /// <summary>
         /// The names of the doors attached to each spawn location.
         /// </summary>
-        public static Dictionary<SpawnLocation, string> DoorNames = new Dictionary<SpawnLocation, string>
+        public static readonly Dictionary<SpawnLocation, string> DoorNames = new Dictionary<SpawnLocation, string>
         {
             { SpawnLocation.Inside012, "012" },
             { SpawnLocation.Inside096, "096" },
@@ -52,7 +52,7 @@ namespace Exiled.CustomItems.API.Spawn
         /// <summary>
         /// The names of spawn locations who's positions are on the opposite side of their door, and must be corrected.
         /// </summary>
-        public static List<SpawnLocation> ReversedLocations = new List<SpawnLocation>
+        public static readonly List<SpawnLocation> ReversedLocations = new List<SpawnLocation>
         {
             SpawnLocation.InsideServersBottom,
             SpawnLocation.InsideHczArmory,

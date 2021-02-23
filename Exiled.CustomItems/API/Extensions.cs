@@ -115,7 +115,7 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="name">The <see cref="string"/> name of the item to give.</param>
         /// <returns>A <see cref="bool"/> indicating if the player was given the item or not.</returns>
-        public static bool GiveCustomItem(this Player player, string name)
+        public static bool TryGiveCustomItem(this Player player, string name)
         {
             if (!TryGetItem(name, out CustomItem item))
                 return false;
@@ -131,7 +131,7 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="id">The <see cref="int"/> name of the item to give.</param>
         /// <returns>A <see cref="bool"/> indicating if the player was given the item or not.</returns>
-        public static bool GiveItem(this Player player, int id)
+        public static bool TryGiveCustomItem(this Player player, int id)
         {
             if (!TryGetItem(id, out CustomItem item))
                 return false;
@@ -186,10 +186,9 @@ namespace Exiled.CustomItems.API
         /// <returns>The <see cref="Transform"/> used for that spawn location. Can be null.</returns>
         public static Transform GetDoor(this SpawnLocation location)
         {
-            if (!SpawnLocationData.DoorNames.ContainsKey(location))
+            if (!SpawnLocationData.DoorNames.TryGetValue(location, out string doorName))
                 return null;
 
-            string doorName = SpawnLocationData.DoorNames[location];
             return DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nametag) ? nametag.transform : null;
         }
 
@@ -235,21 +234,19 @@ namespace Exiled.CustomItems.API
         /// Checks to see if the player has any custom items in their inventory.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
-        /// <param name="cItems">A <see cref="IEnumerable{T}"/> of custom items in their possession.</param>
+        /// <param name="customItems">A <see cref="List{T}"/> of custom items in their possession.</param>
         /// <returns>True if they have any custom items.</returns>
-        public static bool HasCustomItem(this Player player, out IEnumerable<CustomItem> cItems)
+        public static bool TryGetCustomItems(this Player player, out List<CustomItem> customItems)
         {
-            List<CustomItem> items = new List<CustomItem>();
+            customItems = new List<CustomItem>();
+
             foreach (Inventory.SyncItemInfo item in player.Inventory.items)
             {
-                foreach (CustomItem cItem in GetInstalledItems())
-                {
-                    items.Add(cItem);
-                }
+                foreach (CustomItem installedCustomItem in GetInstalledItems())
+                    customItems.Add(installedCustomItem);
             }
 
-            cItems = items;
-            return items.Count > 0;
+            return customItems.Count > 0;
         }
 
         /// <summary>
@@ -277,20 +274,20 @@ namespace Exiled.CustomItems.API
         /// Checks if this pickup is a custom item.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
-        /// <param name="item">The <see cref="CustomItem"/> this pickup is.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> this pickup is.</param>
         /// <returns>True if the pickup is a custom item.</returns>
-        public static bool IsCustomItem(this Pickup pickup, out CustomItem item)
+        public static bool IsCustomItem(this Pickup pickup, out CustomItem customItem)
         {
-            foreach (CustomItem cItem in GetInstalledItems())
+            foreach (CustomItem installedCustomItem in GetInstalledItems())
             {
-                if (!cItem.Check(pickup))
+                if (!installedCustomItem.Check(pickup))
                     continue;
 
-                item = cItem;
+                customItem = installedCustomItem;
                 return true;
             }
 
-            item = null;
+            customItem = null;
             return false;
         }
 
