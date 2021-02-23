@@ -7,31 +7,28 @@
 
 namespace Exiled.CustomItems
 {
-    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using Exiled.CustomItems.API;
+    using Exiled.CustomItems.API.Features;
 
     /// <summary>
     /// Handles all CustomItem API.
     /// </summary>
     public class CustomItems : Plugin<Config>
     {
+        private static readonly CustomItems Singleton = new CustomItems();
+
+        private RoundHandler roundHandler;
+
+        private CustomItems()
+        {
+        }
+
         /// <summary>
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
-        public static CustomItems Singleton { get; private set; }
-
-        /// <summary>
-        /// Gets the Random object used for random number generation.
-        /// </summary>
-        public Random Rng { get; } = new Random();
-
-        /// <summary>
-        /// Gets the EventHandlers class.
-        /// </summary>
-        public EventHandlers EventHandlers { get; private set; }
+        public static CustomItems Instance => Singleton;
 
         /// <summary>
         /// Gets the list of current Item Managers.
@@ -41,10 +38,9 @@ namespace Exiled.CustomItems
         /// <inheritdoc />
         public override void OnEnabled()
         {
-            Singleton = this;
-            EventHandlers = new EventHandlers(this);
+            roundHandler = new RoundHandler();
 
-            Events.Handlers.Server.RoundStarted += EventHandlers.OnRoundStart;
+            Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
 
             base.OnEnabled();
         }
@@ -52,8 +48,9 @@ namespace Exiled.CustomItems
         /// <inheritdoc />
         public override void OnDisabled()
         {
-            Events.Handlers.Server.RoundStarted -= EventHandlers.OnRoundStart;
-            EventHandlers = null;
+            Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+
+            roundHandler = null;
 
             base.OnDisabled();
         }

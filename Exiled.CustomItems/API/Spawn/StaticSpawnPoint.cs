@@ -1,30 +1,32 @@
 // -----------------------------------------------------------------------
-// <copyright file="StaticItemSpawn.cs" company="Exiled Team">
+// <copyright file="StaticSpawnPoint.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.CustomItems.API.Spawn
 {
+    using Exiled.CustomItems.API.Features;
+
     /// <summary>
     /// Handles static spawn locations.
     /// </summary>
-    public class StaticItemSpawn
+    public class StaticSpawnPoint : SpawnPoint
     {
         /// <summary>
-        /// Gets or sets this spawn location's <see cref="Vector"/>.
+        /// Gets or sets this spawn location's name.
         /// </summary>
-        public Vector Position { get; set; }
+        public override string Name { get; set; }
 
         /// <summary>
         /// Gets or sets this spawn location's spawn chance.
         /// </summary>
-        public float Chance { get; set; }
+        public override float Chance { get; set; }
 
         /// <summary>
-        /// Gets or sets this spawn location's name.
+        /// Gets or sets this spawn location's <see cref="Vector"/>.
         /// </summary>
-        public string Name { get; set; }
+        public override Vector Position { get; set; }
     }
 }

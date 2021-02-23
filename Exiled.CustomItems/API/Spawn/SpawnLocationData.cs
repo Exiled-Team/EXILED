@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.CustomItems.API.Spawn
 {
     using System.Collections.Generic;
 

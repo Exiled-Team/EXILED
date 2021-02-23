@@ -5,10 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.CustomItems.API.Features
 {
-    using Exiled.API.Enums;
-
     /// <summary>
     /// Weapon modifiers.
     /// </summary>

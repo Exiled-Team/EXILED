@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="CustomItemApi.cs" company="Exiled Team">
+// <copyright file="Extensions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -11,6 +11,8 @@ namespace Exiled.CustomItems.API
     using System.Linq;
 
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
+    using Exiled.CustomItems.API.Spawn;
 
     using Interactables.Interobjects.DoorUtils;
 
@@ -19,7 +21,7 @@ namespace Exiled.CustomItems.API
     /// <summary>
     /// A collection of API methods.
     /// </summary>
-    public static class CustomItemApi
+    public static class Extensions
     {
         /// <summary>
         /// Registers a <see cref="CustomItem"/> manager with the plugin.
@@ -28,39 +30,26 @@ namespace Exiled.CustomItems.API
         /// <returns>A <see cref="bool"/> indicating whether or not the item was registered.</returns>
         public static bool RegisterCustomItem(this CustomItem item)
         {
-            if (!CustomItems.Singleton.ItemManagers.Contains(item))
+            if (!CustomItems.Instance.ItemManagers.Contains(item))
             {
-                if (CustomItems.Singleton.ItemManagers.Any(i => i.Id == item.Id))
+                if (CustomItems.Instance.ItemManagers.Any(i => i.Id == item.Id))
                 {
                     Log.Error($"{item.Name} has tried to register with the same ItemID as another item: {item.Id}. It will not be registered.");
 
                     return false;
                 }
 
-                CustomItems.Singleton.ItemManagers.Add(item);
+                CustomItems.Instance.ItemManagers.Add(item);
 
                 item.Init();
 
-                Log.Debug($"{item.Name} ({item.Id}) has been successfully registered.", CustomItems.Singleton.Config.Debug);
+                Log.Debug($"{item.Name} ({item.Id}) has been successfully registered.", CustomItems.Instance.Config.Debug);
 
                 return true;
             }
 
             Log.Warn($"Couldn't register {item} as it already exists.");
             return false;
-        }
-
-        /// <summary>
-        /// Unregisters a <see cref="CustomItem"/> manager.
-        /// </summary>
-        /// <param name="item">The <see cref="CustomItem"/> to unregister.</param>
-        public static void UnregisterCustomItem(this CustomItem item)
-        {
-            if (!CustomItems.Singleton.ItemManagers.Contains(item))
-                return;
-
-            item.Destroy();
-            CustomItems.Singleton.ItemManagers.Remove(item);
         }
 
         /// <summary>
@@ -71,7 +60,7 @@ namespace Exiled.CustomItems.API
         /// <returns>The <see cref="CustomItem"/> matching the search. Can be null.</returns>
         public static bool TryGetItem(string name, out CustomItem item)
         {
-            foreach (CustomItem cItem in CustomItems.Singleton.ItemManagers)
+            foreach (CustomItem cItem in CustomItems.Instance.ItemManagers)
             {
                 if (!cItem.Name.Equals(name, System.StringComparison.OrdinalIgnoreCase))
                     continue;
@@ -92,7 +81,7 @@ namespace Exiled.CustomItems.API
         /// <returns>The <see cref="CustomItem"/> matching the search. Can be null.</returns>
         public static bool TryGetItem(int id, out CustomItem item)
         {
-            foreach (CustomItem cItem in CustomItems.Singleton.ItemManagers)
+            foreach (CustomItem cItem in CustomItems.Instance.ItemManagers)
             {
                 if (cItem.Id != id)
                     continue;
@@ -110,7 +99,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="item">The <see cref="CustomItem"/> to give to the player.</param>
-        public static void GiveItem(this Player player, CustomItem item) => item.Give(player);
+        public static void GiveCustomItem(this Player player, CustomItem item) => player.GiveCustomItem(item, false);
 
         /// <summary>
         /// Gives the specified item to a player.
@@ -118,8 +107,7 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="item">The <see cref="CustomItem"/> to give to the player.</param>
         /// <param name="displayMessage">Whether or not to show a message when the item is given.</param>
-        public static void GiveItem(this Player player, CustomItem item, bool displayMessage) =>
-            item.Give(player, displayMessage);
+        public static void GiveCustomItem(this Player player, CustomItem item, bool displayMessage) => item.Give(player, displayMessage);
 
         /// <summary>
         /// Gives the player a specified item.
@@ -127,12 +115,12 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The <see cref="Player"/> to give the item to.</param>
         /// <param name="name">The <see cref="string"/> name of the item to give.</param>
         /// <returns>A <see cref="bool"/> indicating if the player was given the item or not.</returns>
-        public static bool GiveItem(this Player player, string name)
+        public static bool GiveCustomItem(this Player player, string name)
         {
             if (!TryGetItem(name, out CustomItem item))
                 return false;
 
-            item.Give(player);
+            player.GiveCustomItem(item);
 
             return true;
         }
@@ -148,7 +136,7 @@ namespace Exiled.CustomItems.API
             if (!TryGetItem(id, out CustomItem item))
                 return false;
 
-            item.Give(player);
+            player.GiveCustomItem(item);
 
             return true;
         }
@@ -156,17 +144,10 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Spawns a specified item at a location.
         /// </summary>
-        /// <param name="item">The <see cref="CustomItem"/> to spawn.</param>
-        /// <param name="position">The <see cref="Vector3"/> location to spawn the item at.</param>
-        public static void SpawnItem(this CustomItem item, Vector3 position) => item.Spawn(position);
-
-        /// <summary>
-        /// Spawns a specified item at a location.
-        /// </summary>
         /// <param name="name">The <see cref="string"/> name of the item to spawn.</param>
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
         /// <returns>A <see cref="bool"/> value indicating whether or not the item was spawned.</returns>
-        public static bool SpawnItem(string name, Vector3 position)
+        public static bool SpawnItem(this string name, Vector3 position)
         {
             if (!TryGetItem(name, out CustomItem item))
                 return false;
@@ -182,7 +163,7 @@ namespace Exiled.CustomItems.API
         /// <param name="id">The <see cref="int"/> ID of the item to spawn.</param>
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
         /// <returns>A <see cref="bool"/> value indicating whether or not the item was spawned.</returns>
-        public static bool SpawnItem(int id, Vector3 position)
+        public static bool SpawnItem(this int id, Vector3 position)
         {
             if (!TryGetItem(id, out CustomItem item))
                 return false;
@@ -196,7 +177,7 @@ namespace Exiled.CustomItems.API
         /// Gets a list of all currently active Item Managers.
         /// </summary>
         /// <returns>A list of all <see cref="CustomItem"/>s.</returns>
-        public static HashSet<CustomItem> GetInstalledItems() => CustomItems.Singleton.ItemManagers;
+        public static HashSet<CustomItem> GetInstalledItems() => CustomItems.Instance.ItemManagers;
 
         /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
@@ -217,38 +198,36 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
         /// <returns>The <see cref="Vector3"/> used for that spawn location. Can be <see cref="Vector3.zero"/>.</returns>
-        public static Vector3 TryGetLocation(this SpawnLocation location)
+        public static Vector3 GetPosition(this SpawnLocation location)
         {
-            Vector3 pos = Vector3.zero;
+            Transform transform = location.GetDoor();
+
+            if (transform == null)
+                return default;
 
             float modifier = SpawnLocationData.ReversedLocations.Contains(location) ? -3f : 3f;
-            Transform transform = location.GetDoor();
-            if (transform != null)
-            {
-                pos = (transform.position + (Vector3.up * 1.5f)) + (transform.forward * modifier);
-            }
 
-            return pos;
+            return (transform.position + (Vector3.up * 1.5f)) + (transform.forward * modifier);
         }
 
         /// <summary>
         /// Checks to see if the player's current item is a custom item.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
-        /// <param name="item">The <see cref="CustomItem"/> in their hand.</param>
+        /// <param name="customItem">The <see cref="CustomItem"/> in their hand.</param>
         /// <returns>True if the player has a custom item in their hand.</returns>
-        public static bool HasCustomItemInHand(this Player player, out CustomItem item)
+        public static bool TryGetCustomItemInHand(this Player player, out CustomItem customItem)
         {
-            foreach (CustomItem cItem in GetInstalledItems())
+            foreach (CustomItem installedCustomItem in GetInstalledItems())
             {
-                if (!cItem.Check(player.CurrentItem))
+                if (!installedCustomItem.Check(player.CurrentItem))
                     continue;
 
-                item = cItem;
+                customItem = installedCustomItem;
                 return true;
             }
 
-            item = null;
+            customItem = null;
             return false;
         }
 
@@ -314,5 +293,18 @@ namespace Exiled.CustomItems.API
             item = null;
             return false;
         }
+
+        /// <summary>
+        /// Converts a <see cref="Vector3"/> to a <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="vector3">The <see cref="Vector3"/> to be converted.</param>
+        /// <returns>Returns the <see cref="Vector"/>.</returns>
+        public static Vector ToVector(this Vector3 vector3) => new Vector(vector3.x, vector3.y, vector3.z);
+
+        /// <summary>
+        /// Reloads the current weapon for the player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who's weapon should be reloaded.</param>
+        public static void ReloadWeapon(this Player player) => player.ReferenceHub.weaponManager.RpcReload(player.ReferenceHub.weaponManager.curWeapon);
     }
 }

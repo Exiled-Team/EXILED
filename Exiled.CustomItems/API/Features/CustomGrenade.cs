@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.CustomItems.API.Features
 {
     using System;
     using System.Collections.Generic;
@@ -31,9 +31,9 @@ namespace Exiled.CustomItems.API
         /// Initializes a new instance of the <see cref="CustomGrenade"/> class.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="itemId">The <see cref="int"/> custom ID to be used.</param>
-        protected CustomGrenade(ItemType type, int itemId)
-            : base(type, itemId)
+        /// <param name="id">The <see cref="uint"/> custom ID to be used.</param>
+        protected CustomGrenade(ItemType type, uint id)
+            : base(type, id)
         {
         }
 
@@ -65,49 +65,68 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
-        protected List<GameObject> TrackedGrenades { get; } = new List<GameObject>();
+        protected List<GameObject> Tracked { get; } = new List<GameObject>();
 
         /// <inheritdoc/>
         public override void Init()
         {
-            Exiled.Events.Handlers.Player.ThrowingGrenade += OnThrowingGrenade;
+            UnsubscribeEvents();
+
             base.Init();
         }
 
         /// <inheritdoc/>
         public override void Destroy()
         {
-            Exiled.Events.Handlers.Player.ThrowingGrenade -= OnThrowingGrenade;
+            UnsubscribeEvents();
+
             base.Destroy();
+        }
+
+        /// <inheritdoc/>
+        protected override void SubscribeEvents()
+        {
+            Events.Handlers.Player.ThrowingGrenade += OnThrowing;
+
+            base.SubscribeEvents();
+        }
+
+        /// <inheritdoc/>
+        protected override void UnsubscribeEvents()
+        {
+            Events.Handlers.Player.ThrowingGrenade -= OnThrowing;
+
+            base.UnsubscribeEvents();
         }
 
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
         /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
-        protected virtual void OnThrowingGrenade(ThrowingGrenadeEventArgs ev)
+        protected virtual void OnThrowing(ThrowingGrenadeEventArgs ev)
         {
             if (Check(ev.Player.CurrentItem))
             {
                 ev.IsAllowed = false;
-                Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance
-                    .GetComponent<Grenade>();
+
+                Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<Grenade>();
 
                 Timing.CallDelayed(1f, () =>
                 {
-                    Vector3 pos = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
+                    Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
 
                     if (ExplodeOnCollision)
                     {
-                        GameObject grenade = SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, 1.5f, GetGrenadeType(Type), ev.Player).gameObject;
+                        GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, 1.5f, GetGrenadeType(Type), ev.Player).gameObject;
+
                         CollisionHandler collisionHandler = grenade.gameObject.AddComponent<CollisionHandler>();
-                        collisionHandler.Owner = ev.Player.GameObject;
-                        collisionHandler.Grenade = grenadeComponent;
-                        TrackedGrenades.Add(grenade);
+                        collisionHandler.Init(ev.Player.GameObject, grenadeComponent);
+
+                        Tracked.Add(grenade);
                     }
                     else
                     {
-                        SpawnGrenade(pos, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player);
+                        Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player);
                     }
 
                     ev.Player.RemoveItem(ev.Player.CurrentItem);
@@ -118,7 +137,8 @@ namespace Exiled.CustomItems.API
         /// <inheritdoc/>
         protected override void OnWaitingForPlayers()
         {
-            TrackedGrenades.Clear();
+            Tracked.Clear();
+
             base.OnWaitingForPlayers();
         }
 
@@ -127,7 +147,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="grenade">The <see cref="GameObject"/> of the grenade to check.</param>
         /// <returns>True if it is a custom grenade.</returns>
-        protected bool CheckGrenade(GameObject grenade) => TrackedGrenades.Contains(grenade);
+        protected bool Check(GameObject grenade) => Tracked.Contains(grenade);
 
         /// <summary>
         /// Converts a <see cref="ItemType"/> into a <see cref="GrenadeType"/>.
@@ -156,19 +176,20 @@ namespace Exiled.CustomItems.API
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        protected Grenade SpawnGrenade(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        protected Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
 
-            GrenadeManager component = player.GrenadeManager;
-            Grenade component2 = GameObject.Instantiate(component.availableGrenades[(int)grenadeType].grenadeInstance)
-                .GetComponent<Grenade>();
-            component2.FullInitData(component, position, Quaternion.Euler(component2.throwStartAngle), velocity, component2.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            component2.NetworkfuseTime = NetworkTime.time + fusetime;
-            NetworkServer.Spawn(component2.gameObject);
+            GrenadeManager grenadeManager = player.GrenadeManager;
+            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades[(int)grenadeType].grenadeInstance).GetComponent<Grenade>();
 
-            return component2;
+            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
+            grenade.NetworkfuseTime = NetworkTime.time + fusetime;
+
+            NetworkServer.Spawn(grenade.gameObject);
+
+            return grenade;
         }
     }
 }
