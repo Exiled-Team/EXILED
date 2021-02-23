@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Bootstrap", "Exiled.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Patcher", "Exiled.Patcher\Exiled.Patcher.csproj", "{B92E9671-71E6-4DDE-B085-062065110D0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.CreditTags", "Exiled.CreditTags\Exiled.CreditTags.csproj", "{9FEBCAEA-EB51-46D0-BC04-F74789A40079}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{B92E9671-71E6-4DDE-B085-062065110D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B92E9671-71E6-4DDE-B085-062065110D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B92E9671-71E6-4DDE-B085-062065110D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FEBCAEA-EB51-46D0-BC04-F74789A40079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FEBCAEA-EB51-46D0-BC04-F74789A40079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FEBCAEA-EB51-46D0-BC04-F74789A40079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FEBCAEA-EB51-46D0-BC04-F74789A40079}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,27 +12,17 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
     using Grenades;
-
     using Hints;
-
     using MEC;
-
     using Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using RemoteAdmin;
-
     using UnityEngine;
 
     /// <summary>
@@ -764,7 +754,7 @@ namespace Exiled.API.Features
         public UserGroup Group
         {
             get => ReferenceHub.serverRoles.Group;
-            set => ReferenceHub.serverRoles.SetGroup(value, false, false, value.Cover);
+            set => ReferenceHub.serverRoles.SetGroup(value, false);
         }
 
         /// <summary>

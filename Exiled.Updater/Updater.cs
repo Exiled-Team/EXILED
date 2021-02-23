@@ -55,9 +55,6 @@ namespace Exiled.Updater
         private bool _firstLaunch = true;
         private volatile Stage _stage;
 
-        /// <inheritdoc />
-        public override string Author => "Exiled Team @ iRebbok";
-
         private Updater()
         {
         }
