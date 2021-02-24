@@ -56,7 +56,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!Extensions.TryGetItem(arguments.At(0), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
             {
                 response = $" {arguments.At(0)} is not a valid custom item.";
                 return false;

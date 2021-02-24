@@ -12,7 +12,6 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
-    using Exiled.CustomItems.API;
     using Exiled.CustomItems.API.Features;
     using Exiled.CustomItems.API.Spawn;
     using Exiled.Permissions.Extensions;
@@ -57,7 +56,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (Extensions.TryGetItem(arguments.At(1), out CustomItem item))
+            if (CustomItem.TryGet(arguments.At(1), out CustomItem item))
             {
                 response = $"{arguments.At(1)} is not a valid custom item.";
                 return false;

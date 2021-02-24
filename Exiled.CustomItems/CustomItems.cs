@@ -7,10 +7,8 @@
 
 namespace Exiled.CustomItems
 {
-    using System.Collections.Generic;
 
     using Exiled.API.Features;
-    using Exiled.CustomItems.API.Features;
 
     /// <summary>
     /// Handles all CustomItem API.
@@ -29,11 +27,6 @@ namespace Exiled.CustomItems
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
         public static CustomItems Instance => Singleton;
-
-        /// <summary>
-        /// Gets the list of current Item Managers.
-        /// </summary>
-        public HashSet<CustomItem> ItemManagers { get; } = new HashSet<CustomItem>();
 
         /// <inheritdoc />
         public override void OnEnabled()

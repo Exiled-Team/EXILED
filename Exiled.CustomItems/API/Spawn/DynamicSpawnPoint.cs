@@ -8,7 +8,9 @@
 namespace Exiled.CustomItems.API.Spawn
 {
     using System;
+
     using Exiled.CustomItems.API.Features;
+
     using YamlDotNet.Serialization;
 
     /// <summary>

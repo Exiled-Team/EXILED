@@ -7,13 +7,7 @@
 
 namespace Exiled.CustomItems
 {
-    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
-    using Exiled.CustomItems.API.Spawn;
-
-    using UnityEngine;
-
-    using static CustomItems;
 
     /// <summary>
     /// Event Handlers for the CustomItem API.
@@ -23,7 +17,7 @@ namespace Exiled.CustomItems
         /// <inheritdoc cref="Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            foreach (CustomItem customItem in Instance.ItemManagers)
+            foreach (CustomItem customItem in CustomItem.Registered)
                 customItem?.SpawnAll();
         }
     }

@@ -55,7 +55,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (CustomItems.Instance.ItemManagers.Count == 0)
+            if (CustomItem.Registered.Count == 0)
             {
                 response = "There are no custom items currently on this server.";
                 return false;
@@ -63,9 +63,9 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
 
-            message.Append("[CUSTOM ITEMS (").Append(CustomItems.Instance.ItemManagers).AppendLine(")]");
+            message.Append("[CUSTOM ITEMS (").Append(CustomItem.Registered).AppendLine(")]");
 
-            foreach (CustomItem item in CustomItems.Instance.ItemManagers)
+            foreach (CustomItem item in CustomItem.Registered)
                 message.Append(item.Name).Append(" (").AppendLine(item.Id.ToString());
 
             response = StringBuilderPool.Shared.ToStringReturn(message);

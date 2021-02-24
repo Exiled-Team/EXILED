@@ -65,7 +65,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
-        protected List<GameObject> Tracked { get; } = new List<GameObject>();
+        protected HashSet<GameObject> Tracked { get; } = new HashSet<GameObject>();
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
@@ -89,24 +89,26 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
         protected virtual void OnThrowing(ThrowingGrenadeEventArgs ev)
         {
-            if (Check(ev.Player.CurrentItem))
-            {
-                ev.IsAllowed = false;
+            if (!Check(ev.Player.CurrentItem))
+                return;
 
+            ev.IsAllowed = false;
+
+            InsideInventories.Remove(ev.Player.CurrentItem.uniq);
+
+            ev.Player.RemoveItem(ev.Player.CurrentItem);
+
+            Timing.CallDelayed(1f, () =>
+            {
                 Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<Grenade>();
 
-                Timing.CallDelayed(1f, () =>
-                {
-                    Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
+                Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
 
-                    GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
+                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
 
-                    if (ExplodeOnCollision)
-                        grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
-
-                    ev.Player.RemoveItem(ev.Player.CurrentItem);
-                });
-            }
+                if (ExplodeOnCollision)
+                    grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
+            });
         }
 
         /// <inheritdoc/>

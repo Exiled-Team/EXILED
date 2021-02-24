@@ -17,6 +17,8 @@ namespace Exiled.CustomItems.API.Features
 
     using YamlDotNet.Serialization;
 
+    using static CustomItems;
+
     /// <inheritdoc />
     public abstract class CustomWeapon : CustomItem
     {
@@ -61,10 +63,7 @@ namespace Exiled.CustomItems.API.Features
         public override float Durability { get; protected set; }
 
         /// <inheritdoc/>
-        public override void Spawn(Vector3 position)
-        {
-            Pickups.Add(Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType));
-        }
+        public override void Spawn(Vector3 position) => Spawned.Add(Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType));
 
         /// <inheritdoc/>
         public override void Give(Player player, bool displayMessage)
@@ -91,6 +90,9 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Events.Handlers.Player.ReloadingWeapon += OnReloading;
+            Events.Handlers.Player.Shooting += OnShooting;
+            Events.Handlers.Player.Shot += OnShot;
+            Events.Handlers.Player.Hurting += OnHurting;
 
             base.SubscribeEvents();
         }
@@ -99,6 +101,9 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Events.Handlers.Player.ReloadingWeapon -= OnReloading;
+            Events.Handlers.Player.Shooting -= OnShooting;
+            Events.Handlers.Player.Shot -= OnShot;
+            Events.Handlers.Player.Hurting -= OnHurting;
 
             base.UnsubscribeEvents();
         }
@@ -109,18 +114,17 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="ReloadingWeaponEventArgs"/>.</param>
         protected virtual void OnReloading(ReloadingWeaponEventArgs ev)
         {
-            // Still need to check this method
             if (!Check(ev.Player.CurrentItem))
                 return;
 
             ev.IsAllowed = false;
 
-            uint remainingInClip = (uint)ev.Player.CurrentItem.durability;
+            uint remainingClip = (uint)ev.Player.CurrentItem.durability;
 
-            if (remainingInClip >= ClipSize)
+            if (remainingClip >= ClipSize)
                 return;
 
-            Log.Debug($"{ev.Player.Nickname} is reloading a {Name}!", CustomItems.Instance.Config.Debug);
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!", Instance.Config.Debug);
 
             if (ev.IsAnimationOnly)
             {
@@ -128,27 +132,43 @@ namespace Exiled.CustomItems.API.Features
             }
             else
             {
-                uint currentAmmoAmount = ev.Player.Ammo[ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType];
-                uint amountToReload = ClipSize - remainingInClip;
+                int ammoType = ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType;
+                uint amountToReload = Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType]);
 
-                if (currentAmmoAmount < 0)
-                {
-                    Log.Debug($"Returning!");
+                if (amountToReload <= 0)
                     return;
-                }
 
                 ev.Player.ReferenceHub.weaponManager.scp268.ServerDisable();
 
-                uint amountAfterReload = currentAmmoAmount - amountToReload;
+                ev.Player.Ammo[ammoType] -= amountToReload;
+                ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.GetItemIndex(), ev.Player.CurrentItem.durability + amountToReload);
 
-                ev.Player.Ammo[ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType] = amountAfterReload < 0 ? 0 : currentAmmoAmount - amountToReload;
-
-                Log.Debug($"{remainingInClip} - {currentAmmoAmount} - {amountToReload} - {amountAfterReload} - {ev.Player.Ammo[ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType]}");
-
-                ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.GetItemIndex(), ClipSize);
+                Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({ev.Player.CurrentItem.durability}/{ClipSize})]!", Instance.Config.Debug);
             }
+        }
 
-            Log.Debug($"{ev.Player.Nickname} - {ev.Player.CurrentItem.durability} - {ev.Player.Ammo[ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType]}", CustomItems.Instance.Config.Debug);
+        /// <summary>
+        /// Handles shooting for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="ShootingEventArgs"/>.</param>
+        protected virtual void OnShooting(ShootingEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles shot for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="ShotEventArgs"/>.</param>
+        protected virtual void OnShot(ShotEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles hurting for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
+        protected virtual void OnHurting(HurtingEventArgs ev)
+        {
         }
     }
 }

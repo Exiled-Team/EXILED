@@ -13,7 +13,7 @@ namespace Exiled.CustomItems.Commands
     using CommandSystem;
 
     using Exiled.API.Features;
-    using Exiled.CustomItems.API;
+    using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
 
     /// <summary>
@@ -62,13 +62,13 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (int.TryParse(arguments.At(0), out int id) && player.TryGiveCustomItem(id))
+            if (int.TryParse(arguments.At(0), out int id) && CustomItem.TryGive(player, id))
             {
                 response = $"Custom item given to {player.Nickname} ({player.UserId})";
                 return true;
             }
 
-            if (player.TryGiveCustomItem(arguments.At(0)))
+            if (CustomItem.TryGive(player, arguments.At(0)))
             {
                 response = $"Custom item given to {player.Nickname} ({player.UserId})";
                 return true;
