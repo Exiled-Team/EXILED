@@ -14,19 +14,13 @@ namespace Exiled.CustomItems.API.Spawn
     /// </summary>
     public class StaticSpawnPoint : SpawnPoint
     {
-        /// <summary>
-        /// Gets or sets this spawn location's name.
-        /// </summary>
+        /// <inheritdoc/>
         public override string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets this spawn location's spawn chance.
-        /// </summary>
+        /// <inheritdoc/>
         public override float Chance { get; set; }
 
-        /// <summary>
-        /// Gets or sets this spawn location's <see cref="Vector"/>.
-        /// </summary>
+        /// <inheritdoc/>
         public override Vector Position { get; set; }
     }
 }

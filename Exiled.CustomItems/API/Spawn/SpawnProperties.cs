@@ -17,7 +17,7 @@ namespace Exiled.CustomItems.API.Spawn
         /// <summary>
         /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
         /// </summary>
-        public int Limit { get; set; }
+        public uint Limit { get; set; }
 
         /// <summary>
         /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn points.

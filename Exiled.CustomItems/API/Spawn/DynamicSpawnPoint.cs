@@ -23,14 +23,10 @@ namespace Exiled.CustomItems.API.Spawn
         /// </summary>
         public SpawnLocation Location { get; set; }
 
-        /// <summary>
-        /// Gets or sets this location's spawn chance.
-        /// </summary>
+        /// <inheritdoc/>
         public override float Chance { get; set; }
 
-        /// <summary>
-        /// Gets or sets this location's name.
-        /// </summary>
+        /// <inheritdoc/>
         [YamlIgnore]
         public override string Name
         {
@@ -38,9 +34,7 @@ namespace Exiled.CustomItems.API.Spawn
             set => throw new InvalidOperationException("You cannot change the name of a dynamic spawn location.");
         }
 
-        /// <summary>
-        /// Gets or sets this location's name.
-        /// </summary>
+        /// <inheritdoc/>
         [YamlIgnore]
         public override Vector Position
         {

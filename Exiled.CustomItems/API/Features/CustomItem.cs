@@ -357,15 +357,17 @@ namespace Exiled.CustomItems.API.Features
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.
         /// </summary>
         /// <param name="spawnPoints">The spawn points <see cref="IEnumerable{T}"/>.</param>
-        public virtual void Spawn(IEnumerable<SpawnPoint> spawnPoints)
+        /// <param name="limit">The spawn limit.</param>
+        /// <returns>Returns the number of spawned items.</returns>
+        public virtual uint Spawn(IEnumerable<SpawnPoint> spawnPoints, uint limit)
         {
-            int spawned = 0;
+            uint spawned = 0;
 
             foreach (SpawnPoint spawnPoint in spawnPoints)
             {
                 Log.Debug($"Attempting to spawn {Name} at {spawnPoint.Position}.", Instance.Config.Debug);
 
-                if (UnityEngine.Random.Range(1, 101) >= spawnPoint.Chance || (SpawnProperties.Limit > 0 && spawned >= SpawnProperties.Limit))
+                if (UnityEngine.Random.Range(1, 101) >= spawnPoint.Chance || (limit > 0 && spawned >= limit))
                     continue;
 
                 spawned++;
@@ -374,6 +376,8 @@ namespace Exiled.CustomItems.API.Features
 
                 Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
             }
+
+            return spawned;
         }
 
         /// <summary>
@@ -384,8 +388,7 @@ namespace Exiled.CustomItems.API.Features
             if (SpawnProperties == null)
                 return;
 
-            Spawn(SpawnProperties.DynamicSpawnPoints);
-            Spawn(SpawnProperties.StaticSpawnPoints);
+            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit)));
         }
 
         /// <summary>
