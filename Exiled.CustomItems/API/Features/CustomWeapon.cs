@@ -50,6 +50,11 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the weapon damage.
+        /// </summary>
+        public virtual float Damage { get; protected set; }
+
+        /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
         public virtual uint ClipSize
@@ -89,10 +94,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ReloadingWeapon += OnReloading;
-            Events.Handlers.Player.Shooting += OnShooting;
-            Events.Handlers.Player.Shot += OnShot;
-            Events.Handlers.Player.Hurting += OnHurting;
+            Events.Handlers.Player.ReloadingWeapon += OnInternalReloading;
+            Events.Handlers.Player.Shooting += OnInternalShooting;
+            Events.Handlers.Player.Shot += OnInternalShot;
+            Events.Handlers.Player.Hurting += OnInternalHurting;
 
             base.SubscribeEvents();
         }
@@ -100,10 +105,10 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ReloadingWeapon -= OnReloading;
-            Events.Handlers.Player.Shooting -= OnShooting;
-            Events.Handlers.Player.Shot -= OnShot;
-            Events.Handlers.Player.Hurting -= OnHurting;
+            Events.Handlers.Player.ReloadingWeapon -= OnInternalReloading;
+            Events.Handlers.Player.Shooting -= OnInternalShooting;
+            Events.Handlers.Player.Shot -= OnInternalShot;
+            Events.Handlers.Player.Hurting -= OnInternalHurting;
 
             base.UnsubscribeEvents();
         }
@@ -114,10 +119,38 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="ReloadingWeaponEventArgs"/>.</param>
         protected virtual void OnReloading(ReloadingWeaponEventArgs ev)
         {
+        }
+
+        /// <summary>
+        /// Handles shooting for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="ShootingEventArgs"/>.</param>
+        protected virtual void OnShooting(ShootingEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles shot for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="ShotEventArgs"/>.</param>
+        protected virtual void OnShot(ShotEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles hurting for custom weapons.
+        /// </summary>
+        /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
+        protected virtual void OnHurting(HurtingEventArgs ev) => ev.Amount = Damage;
+
+        private void OnInternalReloading(ReloadingWeaponEventArgs ev)
+        {
             if (!Check(ev.Player.CurrentItem))
                 return;
 
             ev.IsAllowed = false;
+
+            OnReloading(ev);
 
             uint remainingClip = (uint)ev.Player.CurrentItem.durability;
 
@@ -147,28 +180,28 @@ namespace Exiled.CustomItems.API.Features
             }
         }
 
-        /// <summary>
-        /// Handles shooting for custom weapons.
-        /// </summary>
-        /// <param name="ev"><see cref="ShootingEventArgs"/>.</param>
-        protected virtual void OnShooting(ShootingEventArgs ev)
+        private void OnInternalShooting(ShootingEventArgs ev)
         {
+            if (!Check(ev.Shooter.CurrentItem))
+                return;
+
+            OnShooting(ev);
         }
 
-        /// <summary>
-        /// Handles shot for custom weapons.
-        /// </summary>
-        /// <param name="ev"><see cref="ShotEventArgs"/>.</param>
-        protected virtual void OnShot(ShotEventArgs ev)
+        private void OnInternalShot(ShotEventArgs ev)
         {
+            if (!Check(ev.Shooter.CurrentItem))
+                return;
+
+            OnShot(ev);
         }
 
-        /// <summary>
-        /// Handles hurting for custom weapons.
-        /// </summary>
-        /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
-        protected virtual void OnHurting(HurtingEventArgs ev)
+        private void OnInternalHurting(HurtingEventArgs ev)
         {
+            if (!Check(ev.Attacker.CurrentItem))
+                return;
+
+            OnHurting(ev);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingGrenade += OnThrowing;
+            Events.Handlers.Player.ThrowingGrenade += OnInternalThrowing;
 
             base.SubscribeEvents();
         }
@@ -78,7 +78,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingGrenade -= OnThrowing;
+            Events.Handlers.Player.ThrowingGrenade -= OnInternalThrowing;
 
             base.UnsubscribeEvents();
         }
@@ -89,26 +89,6 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
         protected virtual void OnThrowing(ThrowingGrenadeEventArgs ev)
         {
-            if (!Check(ev.Player.CurrentItem))
-                return;
-
-            ev.IsAllowed = false;
-
-            InsideInventories.Remove(ev.Player.CurrentItem.uniq);
-
-            ev.Player.RemoveItem(ev.Player.CurrentItem);
-
-            Timing.CallDelayed(1f, () =>
-            {
-                Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<Grenade>();
-
-                Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
-
-                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
-
-                if (ExplodeOnCollision)
-                    grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
-            });
         }
 
         /// <inheritdoc/>
@@ -169,6 +149,35 @@ namespace Exiled.CustomItems.API.Features
             Tracked.Add(grenade.gameObject);
 
             return grenade;
+        }
+
+        private void OnInternalThrowing(ThrowingGrenadeEventArgs ev)
+        {
+            if (!Check(ev.Player.CurrentItem))
+                return;
+
+            ev.IsAllowed = false;
+
+            OnThrowing(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            InsideInventories.Remove(ev.Player.CurrentItem.uniq);
+
+            ev.Player.RemoveItem(ev.Player.CurrentItem);
+
+            Timing.CallDelayed(1f, () =>
+            {
+                Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<Grenade>();
+
+                Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
+
+                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
+
+                if (ExplodeOnCollision)
+                    grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
+            });
         }
     }
 }

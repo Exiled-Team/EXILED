@@ -14,6 +14,7 @@ namespace Exiled.CustomItems.API.Features
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.EventArgs;
     using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
 
@@ -469,13 +470,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void SubscribeEvents()
         {
-            Events.Handlers.Player.Dying += OnDying;
-            Events.Handlers.Player.Escaping += OnEscaping;
-            Events.Handlers.Player.Handcuffing += OnHandcuffing;
-            Events.Handlers.Player.DroppingItem += OnDropping;
-            Events.Handlers.Player.PickingUpItem += OnPickingUp;
-            Events.Handlers.Player.ChangingItem += OnChanging;
-            Events.Handlers.Scp914.UpgradingItems += OnUpgrading;
+            Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
+            Events.Handlers.Player.Dying += OnInternalOwnerDying;
+            Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
+            Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
+            Events.Handlers.Player.DroppingItem += OnInternalDropping;
+            Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
+            Events.Handlers.Player.ChangingItem += OnInternalChanging;
+            Events.Handlers.Scp914.UpgradingItems += OnInternalUpgrading;
             Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
         }
 
@@ -484,14 +486,77 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
-            Events.Handlers.Player.Dying -= OnDying;
-            Events.Handlers.Player.Escaping -= OnEscaping;
-            Events.Handlers.Player.Handcuffing -= OnHandcuffing;
-            Events.Handlers.Player.DroppingItem -= OnDropping;
-            Events.Handlers.Player.PickingUpItem -= OnPickingUp;
-            Events.Handlers.Player.ChangingItem -= OnChanging;
-            Events.Handlers.Scp914.UpgradingItems -= OnUpgrading;
+            Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
+            Events.Handlers.Player.Dying -= OnInternalOwnerDying;
+            Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
+            Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
+            Events.Handlers.Player.DroppingItem -= OnInternalDropping;
+            Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
+            Events.Handlers.Player.ChangingItem -= OnInternalChanging;
+            Events.Handlers.Scp914.UpgradingItems -= OnInternalUpgrading;
             Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+        }
+
+        /// <summary>
+        /// Handles tracking items when they a player changes their role.
+        /// </summary>
+        /// <param name="ev"><see cref="OwnerChangingRoleEventArgs"/>.</param>
+        protected virtual void OnOwnerChangingRole(OwnerChangingRoleEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles making sure custom items are not "lost" when a player dies.
+        /// </summary>
+        /// <param name="ev"><see cref="OwnerDyingEventArgs"/>.</param>
+        protected virtual void OnOwnerDying(OwnerDyingEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles making sure custom items are not "lost" when a player escapes.
+        /// </summary>
+        /// <param name="ev"><see cref="OwnerEscapingEventArgs"/>.</param>
+        protected virtual void OnOwnerEscaping(OwnerEscapingEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles making sure custom items are not "lost" when being handcuffed.
+        /// </summary>
+        /// <param name="ev"><see cref="OwnerHandcuffingEventArgs"/>.</param>
+        protected virtual void OnOwnerHandcuffing(OwnerHandcuffingEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles tracking items when they are dropped by a player.
+        /// </summary>
+        /// <param name="ev"><see cref="DroppingItemEventArgs"/>.</param>
+        protected virtual void OnDropping(DroppingItemEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles tracking items when they are picked up by a player.
+        /// </summary>
+        /// <param name="ev"><see cref="PickingUpItemEventArgs"/>.</param>
+        protected virtual void OnPickingUp(PickingUpItemEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles tracking items when they are selected in the player's inventory.
+        /// </summary>
+        /// <param name="ev"><see cref="ChangingItemEventArgs"/>.</param>
+        protected virtual void OnChanging(ChangingItemEventArgs ev) => ShowSelectedMessage(ev.Player);
+
+        /// <summary>
+        /// Handles making sure custom items are not affected by SCP-914.
+        /// </summary>
+        /// <param name="ev"><see cref="UpgradingEventArgs"/>.</param>
+        protected virtual void OnUpgrading(UpgradingEventArgs ev)
+        {
         }
 
         /// <summary>
@@ -504,42 +569,141 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Handles tracking items when they are dropped by a player.
+        /// Shows a message to the player when he pickups a custom item.
         /// </summary>
-        /// <param name="ev"><see cref="DroppingItemEventArgs"/>.</param>
-        protected virtual void OnDropping(DroppingItemEventArgs ev)
+        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
+        protected virtual void ShowPickedUpMessage(Player player)
+        {
+            player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+        }
+
+        /// <summary>
+        /// Shows a message to the player when he selects a custom item.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
+        protected virtual void ShowSelectedMessage(Player player)
+        {
+            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+        }
+
+        private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
+        {
+            foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
+            {
+                if (!Check(item))
+                    continue;
+
+                OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item, ev));
+
+                InsideInventories.Remove(item.uniq);
+
+                ev.Player.RemoveItem(item);
+
+                Spawn(ev.Player, item);
+            }
+        }
+
+        private void OnInternalOwnerDying(DyingEventArgs ev)
+        {
+            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
+            {
+                if (!Check(item))
+                    continue;
+
+                OnOwnerDying(new OwnerDyingEventArgs(item, ev));
+
+                if (!ev.IsAllowed)
+                    continue;
+
+                ev.Target.RemoveItem(item);
+
+                InsideInventories.Remove(item.uniq);
+
+                Spawn(ev.Target, item);
+            }
+        }
+
+        private void OnInternalOwnerEscaping(EscapingEventArgs ev)
+        {
+            foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
+            {
+                if (!Check(item))
+                    continue;
+
+                OnOwnerEscaping(new OwnerEscapingEventArgs(item, ev));
+
+                if (!ev.IsAllowed)
+                    continue;
+
+                ev.Player.RemoveItem(item);
+
+                InsideInventories.Remove(item.uniq);
+
+                Spawn(ev.NewRole.GetRandomSpawnPoint(), item);
+            }
+        }
+
+        private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
+        {
+            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
+            {
+                if (!Check(item))
+                    continue;
+
+                OnOwnerHandcuffing(new OwnerHandcuffingEventArgs(item, ev));
+
+                if (!ev.IsAllowed)
+                    continue;
+
+                ev.Target.RemoveItem(item);
+
+                InsideInventories.Remove(item.uniq);
+
+                Spawn(ev.Target, item);
+            }
+        }
+
+        private void OnInternalDropping(DroppingItemEventArgs ev)
         {
             if (!Check(ev.Item))
                 return;
 
             ev.IsAllowed = false;
 
+            OnDropping(ev);
+
+            InsideInventories.Remove(ev.Item.uniq);
+
             ev.Player.RemoveItem(ev.Item);
 
             Spawn(ev.Player, ev.Item);
         }
 
-        /// <summary>
-        /// Handles tracking items when they are picked up by a player.
-        /// </summary>
-        /// <param name="ev"><see cref="PickingUpItemEventArgs"/>.</param>
-        protected virtual void OnPickingUp(PickingUpItemEventArgs ev)
+        private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
             if (!Check(ev.Pickup) || ev.Player.Inventory.items.Count >= 8)
                 return;
 
             ev.IsAllowed = false;
 
+            OnPickingUp(ev);
+
             Give(ev.Player, ev.Pickup);
+
+            Spawned.Remove(ev.Pickup);
 
             ev.Pickup.Delete();
         }
 
-        /// <summary>
-        /// Handles making sure custom items are not affected by SCP-914.
-        /// </summary>
-        /// <param name="ev"><see cref="UpgradingItemsEventArgs"/>.</param>
-        protected virtual void OnUpgrading(UpgradingItemsEventArgs ev)
+        private void OnInternalChanging(ChangingItemEventArgs ev)
+        {
+            if (!Check(ev.NewItem))
+                return;
+
+            OnChanging(ev);
+        }
+
+        private void OnInternalUpgrading(UpgradingItemsEventArgs ev)
         {
             foreach (Pickup pickup in ev.Items.ToList())
             {
@@ -561,6 +725,8 @@ namespace Exiled.CustomItems.API.Features
                 {
                     if (!Check(item))
                         continue;
+
+                    OnUpgrading(new UpgradingEventArgs(item, ev));
 
                     playerToItems[player].Add(item);
 
@@ -587,85 +753,6 @@ namespace Exiled.CustomItems.API.Features
                     }
                 }
             });
-        }
-
-        /// <summary>
-        /// Handles making sure custom items are not "lost" when being handcuffed.
-        /// </summary>
-        /// <param name="ev"><see cref="HandcuffingEventArgs"/>.</param>
-        protected virtual void OnHandcuffing(HandcuffingEventArgs ev)
-        {
-            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
-            {
-                if (!Check(item))
-                    continue;
-
-                ev.Target.RemoveItem(item);
-
-                Spawn(ev.Target, item);
-            }
-        }
-
-        /// <summary>
-        /// Handles making sure custom items are not "lost" when a player dies.
-        /// </summary>
-        /// <param name="ev"><see cref="DyingEventArgs"/>.</param>
-        protected virtual void OnDying(DyingEventArgs ev)
-        {
-            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
-            {
-                if (!Check(item))
-                    continue;
-
-                ev.Target.RemoveItem(item);
-
-                Spawn(ev.Target, item);
-            }
-        }
-
-        /// <summary>
-        /// Handles making sure custom items are not "lost" when a player escapes.
-        /// </summary>
-        /// <param name="ev"><see cref="EscapingEventArgs"/>.</param>
-        protected virtual void OnEscaping(EscapingEventArgs ev)
-        {
-            foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
-            {
-                if (!Check(item))
-                    continue;
-
-                ev.Player.RemoveItem(item);
-
-                Spawn(ev.NewRole.GetRandomSpawnPoint(), item);
-            }
-        }
-
-        /// <summary>
-        /// Handles tracking items when they are selected in the player's inventory.
-        /// </summary>
-        /// <param name="ev"><see cref="ChangingItemEventArgs"/>.</param>
-        protected virtual void OnChanging(ChangingItemEventArgs ev)
-        {
-            if (Check(ev.NewItem))
-                ShowSelectedMessage(ev.Player);
-        }
-
-        /// <summary>
-        /// Shows a message to the player when he pickups a custom item.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
-        protected virtual void ShowPickedUpMessage(Player player)
-        {
-            player.ShowHint(string.Format(Instance.Config.PickedUpHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
-        }
-
-        /// <summary>
-        /// Shows a message to the player when he selects a custom item.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who will be shown the message.</param>
-        protected virtual void ShowSelectedMessage(Player player)
-        {
-            player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
     }
 }
