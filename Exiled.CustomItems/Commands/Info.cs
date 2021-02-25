@@ -50,15 +50,15 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (arguments.Count < 2)
+            if (arguments.Count < 1)
             {
                 response = "info [Custom item name/Custom item ID]";
                 return false;
             }
 
-            if (CustomItem.TryGet(arguments.At(1), out CustomItem item))
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
             {
-                response = $"{arguments.At(1)} is not a valid custom item.";
+                response = $"{arguments.At(0)} is not a valid custom item.";
                 return false;
             }
 

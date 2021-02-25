@@ -32,17 +32,6 @@ namespace Exiled.CustomItems.API.Features
         private ItemType type;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomItem"/> class.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="id">The <see cref="uint"/> custom item ID to be used.</param>
-        protected CustomItem(ItemType type, uint id)
-        {
-            Type = type;
-            Id = id;
-        }
-
-        /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
         public static HashSet<CustomItem> Registered { get; } = new HashSet<CustomItem>();

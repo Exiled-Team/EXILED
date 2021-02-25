@@ -28,16 +28,6 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomGrenade : CustomItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomGrenade"/> class.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="id">The <see cref="uint"/> custom ID to be used.</param>
-        protected CustomGrenade(ItemType type, uint id)
-            : base(type, id)
-        {
-        }
-
-        /// <summary>
         /// Gets or sets the <see cref="ItemType"/> to use for this item.
         /// </summary>
         public override ItemType Type

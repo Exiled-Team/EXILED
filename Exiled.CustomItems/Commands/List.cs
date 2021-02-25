@@ -63,10 +63,10 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
 
-            message.Append("[CUSTOM ITEMS (").Append(CustomItem.Registered).AppendLine(")]");
+            message.Append("[CUSTOM ITEMS (").Append(CustomItem.Registered.Count).AppendLine(")]");
 
             foreach (CustomItem item in CustomItem.Registered)
-                message.Append(item.Name).Append(" (").AppendLine(item.Id.ToString());
+                message.Append(item.Name).Append(" (").Append(item.Id.ToString()).AppendLine(")");
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

@@ -23,15 +23,6 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CustomWeapon"/> class.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to be used.</param>
-        /// <param name="clipSize">The <see cref="uint"/> size of the clip to be used.</param>
-        /// <param name="id">The <see cref="uint"/> ID to be used.</param>
-        protected CustomWeapon(ItemType type, uint id, uint clipSize)
-            : base(type, id) => ClipSize = clipSize;
-
-        /// <summary>
         /// Gets the weapon modifiers.
         /// </summary>
         public virtual Modifiers Modifiers { get; }

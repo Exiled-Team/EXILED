@@ -67,8 +67,7 @@ namespace Exiled.CustomItems.Commands
                 response = $"Custom item given to {player.Nickname} ({player.UserId})";
                 return true;
             }
-
-            if (CustomItem.TryGive(player, arguments.At(0)))
+            else if (CustomItem.TryGive(player, arguments.At(0)))
             {
                 response = $"Custom item given to {player.Nickname} ({player.UserId})";
                 return true;
