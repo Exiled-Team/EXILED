@@ -427,6 +427,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts a message to all players.
         /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        public static void Broadcast(Broadcast broadcast)
+        {
+            if (broadcast.Show)
+                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
