@@ -56,7 +56,8 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            if (!(int.TryParse(arguments.At(0), out int id) && CustomItem.TryGet(id, out CustomItem item)) &&
+                !CustomItem.TryGet(arguments.At(0), out item))
             {
                 response = $"{arguments.At(0)} is not a valid custom item.";
                 return false;
@@ -64,16 +65,16 @@ namespace Exiled.CustomItems.Commands
 
             StringBuilder message = StringBuilderPool.Shared.Rent();
 
-            message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine("</color>")
+            message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine(")</color>")
                 .Append("- ").AppendLine(item.Description)
                 .AppendLine(item.Type.ToString())
                 .AppendLine("Spawn Locations:");
 
             foreach (DynamicSpawnPoint spawnPoint in item.SpawnProperties.DynamicSpawnPoints)
-                message.Append(spawnPoint.Name).Append('(').Append(spawnPoint.Position).Append(") ").Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)
-                message.Append(spawnPoint.Name).Append('(').Append(spawnPoint.Position).Append(") ").Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
             message.Append("Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString());
 

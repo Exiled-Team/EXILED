@@ -66,7 +66,7 @@ namespace Exiled.CustomItems.Commands
             message.Append("[CUSTOM ITEMS (").Append(CustomItem.Registered.Count).AppendLine(")]");
 
             foreach (CustomItem item in CustomItem.Registered)
-                message.Append(item.Name).Append(" (").Append(item.Id.ToString()).AppendLine(")");
+                message.Append(item.Name).Append(" (").Append(item.Id).Append(')').Append(" [").Append(item.Type).AppendLine("]");
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

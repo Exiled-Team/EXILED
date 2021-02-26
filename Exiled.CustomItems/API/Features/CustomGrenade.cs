@@ -33,7 +33,7 @@ namespace Exiled.CustomItems.API.Features
         public override ItemType Type
         {
             get => base.Type;
-            protected set
+            set
             {
                 if (!value.IsThrowable())
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid grenade type.");
@@ -43,14 +43,14 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
+        /// Gets or sets a value indicating whether gets or sets a value that determines if the grenade should explode immediately when contacting any surface.
         /// </summary>
-        protected virtual bool ExplodeOnCollision { get; } = false;
+        public abstract bool ExplodeOnCollision { get; set; }
 
         /// <summary>
-        /// Gets a value indicating how long the grenade's fuse time should be.
+        /// Gets or sets a value indicating how long the grenade's fuse time should be.
         /// </summary>
-        protected virtual float FuseTime { get; } = 3f;
+        public abstract float FuseTime { get; set; }
 
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.

@@ -23,15 +23,15 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
-        /// Gets the weapon modifiers.
+        /// Gets or sets the weapon modifiers.
         /// </summary>
-        public virtual Modifiers Modifiers { get; }
+        public abstract Modifiers Modifiers { get; set; }
 
         /// <inheritdoc/>
         public override ItemType Type
         {
             get => base.Type;
-            protected set
+            set
             {
                 if (!value.IsWeapon())
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid weapon type.");
@@ -43,7 +43,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets the weapon damage.
         /// </summary>
-        public virtual float Damage { get; protected set; }
+        public abstract float Damage { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
@@ -56,7 +56,7 @@ namespace Exiled.CustomItems.API.Features
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override float Durability { get; protected set; }
+        public override float Durability { get; set; }
 
         /// <inheritdoc/>
         public override void Spawn(Vector3 position) => Spawned.Add(Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType));

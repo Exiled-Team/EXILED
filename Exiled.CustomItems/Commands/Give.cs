@@ -50,7 +50,7 @@ namespace Exiled.CustomItems.Commands
 
             if (arguments.Count < 2)
             {
-                response = "give [Custom item name] [Nickname/PlayerID/UserID]";
+                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID]";
                 return false;
             }
 
@@ -62,14 +62,20 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
+            if (player.Inventory.items.Count >= 8)
+            {
+                response = $"{player.Nickname}'s inventory is full!";
+                return false;
+            }
+
             if (int.TryParse(arguments.At(0), out int id) && CustomItem.TryGive(player, id))
             {
-                response = $"Custom item given to {player.Nickname} ({player.UserId})";
+                response = $"Custom item with ID {arguments.At(0)} given to {player.Nickname} ({player.UserId})";
                 return true;
             }
             else if (CustomItem.TryGive(player, arguments.At(0)))
             {
-                response = $"Custom item given to {player.Nickname} ({player.UserId})";
+                response = $"Custom item {arguments.At(0)} given to {player.Nickname} ({player.UserId})";
                 return true;
             }
 

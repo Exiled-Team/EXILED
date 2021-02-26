@@ -37,19 +37,29 @@ namespace Exiled.CustomItems.API.Features
         public static HashSet<CustomItem> Registered { get; } = new HashSet<CustomItem>();
 
         /// <summary>
-        /// Gets the name of the item.
-        /// </summary>
-        public abstract string Name { get; }
-
-        /// <summary>
-        /// Gets the description of the item.
-        /// </summary>
-        public abstract string Description { get; }
-
-        /// <summary>
         /// Gets or sets the custom ItemID of the item.
         /// </summary>
-        public virtual uint Id { get; protected set; }
+        public abstract uint Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the item.
+        /// </summary>
+        public abstract string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the description of the item.
+        /// </summary>
+        public abstract string Description { get; set; }
+
+        /// <summary>
+        /// Gets or sets the item durability.
+        /// </summary>
+        public abstract float Durability { get; set; }
+
+        /// <summary>
+        /// Gets or sets the list of spawn locations and chances for each one.
+        /// </summary>
+        public abstract SpawnProperties SpawnProperties { get; set; }
 
         /// <summary>
         /// Gets or sets the ItemType to use for this item.
@@ -57,7 +67,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual ItemType Type
         {
             get => type;
-            protected set
+            set
             {
                 if (!Enum.IsDefined(typeof(ItemType), value))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid Item type.");
@@ -65,16 +75,6 @@ namespace Exiled.CustomItems.API.Features
                 type = value;
             }
         }
-
-        /// <summary>
-        /// Gets or sets the item durability.
-        /// </summary>
-        public virtual float Durability { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the list of spawn locations and chances for each one.
-        /// </summary>
-        public virtual SpawnProperties SpawnProperties { get; protected set; }
 
         /// <summary>
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
