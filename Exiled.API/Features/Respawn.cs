@@ -48,7 +48,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
         /// </summary>
-        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.Where(controller => controller != null).FirstOrDefault();
+        public static RespawnEffectsController Controller => RespawnEffectsController.AllControllers.FirstOrDefault(controller => controller != null);
 
         /// <summary>
         /// Play an effect when a certain class spawns.
