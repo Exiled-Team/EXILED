@@ -132,7 +132,11 @@ namespace Exiled.CustomItems.API.Features
         /// Handles hurting for custom weapons.
         /// </summary>
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
-        protected virtual void OnHurting(HurtingEventArgs ev) => ev.Amount = Damage;
+        protected virtual void OnHurting(HurtingEventArgs ev)
+        {
+            if (ev.Attacker != ev.Target)
+                ev.Amount = Damage;
+        }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
