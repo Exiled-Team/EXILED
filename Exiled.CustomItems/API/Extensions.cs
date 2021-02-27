@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomItems.API
 {
+    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Features;
@@ -89,8 +90,24 @@ namespace Exiled.CustomItems.API
         /// <param name="customItems"><see cref="CustomItem"/>s to be registered.</param>
         public static void Register(this IEnumerable<CustomItem> customItems)
         {
+            if (customItems == null)
+                throw new ArgumentNullException("customItems");
+
             foreach (CustomItem customItem in customItems)
                 customItem.TryRegister();
+        }
+
+        /// <summary>
+        /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.
+        /// </summary>
+        /// <param name="customItems"><see cref="CustomItem"/>s to be unregistered.</param>
+        public static void Unregister(this IEnumerable<CustomItem> customItems)
+        {
+            if (customItems == null)
+                throw new ArgumentNullException("customItems");
+
+            foreach (CustomItem customItem in customItems)
+                customItem.TryUnregister();
         }
 
         /// <summary>

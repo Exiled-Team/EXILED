@@ -51,7 +51,7 @@ namespace Exiled.CustomItems.API.Features
         public virtual uint ClipSize
         {
             get => (uint)Durability;
-            protected set => Durability = value;
+            set => Durability = value;
         }
 
         /// <inheritdoc/>

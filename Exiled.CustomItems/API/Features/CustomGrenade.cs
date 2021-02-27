@@ -24,6 +24,8 @@ namespace Exiled.CustomItems.API.Features
 
     using UnityEngine;
 
+    using YamlDotNet.Serialization;
+
     /// <inheritdoc />
     public abstract class CustomGrenade : CustomItem
     {
@@ -51,6 +53,10 @@ namespace Exiled.CustomItems.API.Features
         /// Gets or sets a value indicating how long the grenade's fuse time should be.
         /// </summary>
         public abstract float FuseTime { get; set; }
+
+        /// <inheritdoc/>
+        [YamlIgnore]
+        public override float Durability { get; set; } = 0;
 
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
