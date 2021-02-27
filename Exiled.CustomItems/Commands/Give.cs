@@ -62,6 +62,12 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
+            if (player.IsDead || player.Team == Team.SCP)
+            {
+                response = $"{player.Nickname}'s \"{player.Role}\" role cannot receive custom items!";
+                return false;
+            }
+
             if (player.Inventory.items.Count >= 8)
             {
                 response = $"{player.Nickname}'s inventory is full!";

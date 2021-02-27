@@ -70,6 +70,12 @@ namespace Exiled.CustomItems.Commands
             }
             else if (Player.Get(arguments.At(1)) is Player player)
             {
+                if (player.IsDead)
+                {
+                    response = $"Cannot spawn custom items under dead players!";
+                    return false;
+                }
+
                 position = player.Position;
             }
             else if (arguments.Count > 3)
