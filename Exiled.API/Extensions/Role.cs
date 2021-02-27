@@ -49,7 +49,6 @@ namespace Exiled.API.Extensions
                     return Side.ChaosInsurgency;
                 case Team.TUT:
                     return Side.Tutorial;
-                case Team.RIP:
                 default:
                     return Side.None;
             }
