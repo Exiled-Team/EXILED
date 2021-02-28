@@ -56,7 +56,7 @@ namespace Exiled.CustomItems.API.Features
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override float Durability { get; set; } = 0;
+        public override float Durability { get; set; }
 
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.

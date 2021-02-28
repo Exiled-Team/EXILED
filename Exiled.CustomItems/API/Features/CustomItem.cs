@@ -52,14 +52,14 @@ namespace Exiled.CustomItems.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the item durability.
-        /// </summary>
-        public abstract float Durability { get; set; }
-
-        /// <summary>
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
         public abstract SpawnProperties SpawnProperties { get; set; }
+
+        /// <summary>
+        /// Gets or sets the item durability.
+        /// </summary>
+        public virtual float Durability { get; set; }
 
         /// <summary>
         /// Gets or sets the ItemType to use for this item.
