@@ -38,7 +38,7 @@ namespace Exiled.CustomItems.Commands
             RegisterCommand(Give.Instance);
             RegisterCommand(Spawn.Instance);
             RegisterCommand(Info.Instance);
-            RegisterCommand(List.Instance);
+            RegisterCommand(List.List.Instance);
         }
 
         /// <inheritdoc/>

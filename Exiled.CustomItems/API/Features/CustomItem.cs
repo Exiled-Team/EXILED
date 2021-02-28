@@ -79,12 +79,12 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
-        protected HashSet<int> InsideInventories { get; } = new HashSet<int>();
+        public HashSet<int> InsideInventories { get; } = new HashSet<int>();
 
         /// <summary>
         /// Gets the list of spawned custom items being tracked as the current item.
         /// </summary>
-        protected HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
+        public HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
 
         /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific ID.

@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="List.cs" company="Exiled Team">
+// <copyright file="Registered.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Commands
+namespace Exiled.CustomItems.Commands.List
 {
     using System;
     using System.Text;
@@ -17,41 +17,39 @@ namespace Exiled.CustomItems.Commands
 
     using NorthwoodLib.Pools;
 
-    /// <summary>
-    /// The command to list all installed items.
-    /// </summary>
-    internal sealed class List : ICommand
+    /// <inheritdoc/>
+    internal sealed class Registered : ICommand
     {
-        private List()
+        private Registered()
         {
         }
 
         /// <summary>
-        /// Gets the <see cref="Info"/> instance.
+        /// Gets the command instance.
         /// </summary>
-        public static List Instance { get; } = new List();
+        public static Registered Instance { get; } = new Registered();
 
         /// <inheritdoc/>
-        public string Command { get; } = "list";
+        public string Command { get; } = "registered";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = { "s", "l", "show", "sh" };
+        public string[] Aliases { get; } = { "r", "reg" };
 
         /// <inheritdoc/>
-        public string Description { get; } = "Gets a list of all currently registered custom items.";
+        public string Description { get; } = "Gets a list of registered custom items.";
 
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customitems.list"))
+            if (!sender.CheckPermission("customitems.list.registered"))
             {
-                response = "Permission Denied, required: customitems.list";
+                response = "Permission Denied, required: customitems.list.registered";
                 return false;
             }
 
             if (arguments.Count != 0)
             {
-                response = "list";
+                response = "list registered";
                 return false;
             }
 
@@ -65,8 +63,8 @@ namespace Exiled.CustomItems.Commands
 
             message.Append("[CUSTOM ITEMS (").Append(CustomItem.Registered.Count).AppendLine(")]");
 
-            foreach (CustomItem item in CustomItem.Registered)
-                message.Append(item.Name).Append(" (").Append(item.Id).Append(')').Append(" [").Append(item.Type).AppendLine("]");
+            foreach (CustomItem customItem in CustomItem.Registered)
+                message.Append('[').Append(customItem.Id).Append(". ").Append(customItem.Name).Append(" (").Append(customItem.Type).Append(')').AppendLine("]");
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

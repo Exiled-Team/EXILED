@@ -71,10 +71,10 @@ namespace Exiled.CustomItems.Commands
                 .AppendLine("Spawn Locations:");
 
             foreach (DynamicSpawnPoint spawnPoint in item.SpawnProperties.DynamicSpawnPoints)
-                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)
-                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append("Chance: ").AppendLine(spawnPoint.Chance.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").AppendLine(spawnPoint.Chance.ToString());
 
             message.Append("Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString());
 
