@@ -61,6 +61,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets the item durability.
         /// </summary>
+        [YamlIgnore]
         public virtual float Durability { get; set; }
 
         /// <summary>
