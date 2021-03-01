@@ -86,7 +86,7 @@ namespace Exiled.CustomItems.Commands.List
             if (message.Length == 0)
                 message.Append("There are no custom items inside inventories.");
             else
-                message.Insert(0, Environment.NewLine + "[CUSTOM ITEMS INSIDE INVENTORIES (" + count + ")]" + Environment.NewLine);
+                message.Insert(0, Environment.NewLine + "[Custom items inside inventories (" + count + ")]" + Environment.NewLine);
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

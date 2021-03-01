@@ -75,7 +75,7 @@ namespace Exiled.CustomItems.Commands.List
             if (message.Length == 0)
                 message.Append("There are no spawned custom items.");
             else
-                message.Insert(0, Environment.NewLine + "[SPAWNED CUSTOM ITEMS (" + count + ")]" + Environment.NewLine);
+                message.Insert(0, Environment.NewLine + "[Spawned custom items (" + count + ")]" + Environment.NewLine);
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;

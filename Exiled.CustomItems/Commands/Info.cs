@@ -63,20 +63,19 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            StringBuilder message = StringBuilderPool.Shared.Rent();
+            StringBuilder message = StringBuilderPool.Shared.Rent().AppendLine();
 
             message.Append("<color=#E6AC00>-</color> <color=#00D639>").Append(item.Name).Append("</color> <color=#05C4EB>(").Append(item.Id).AppendLine(")</color>")
                 .Append("- ").AppendLine(item.Description)
                 .AppendLine(item.Type.ToString())
-                .AppendLine("Spawn Locations:");
+                .Append("- Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString()).AppendLine()
+                .Append("[Spawn Locations (").Append(item.SpawnProperties.DynamicSpawnPoints.Count + item.SpawnProperties.StaticSpawnPoints.Count).AppendLine(")]");
 
             foreach (DynamicSpawnPoint spawnPoint in item.SpawnProperties.DynamicSpawnPoints)
-                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").AppendLine(spawnPoint.Chance.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").Append(spawnPoint.Chance).AppendLine("%");
 
             foreach (StaticSpawnPoint spawnPoint in item.SpawnProperties.StaticSpawnPoints)
-                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").AppendLine(spawnPoint.Chance.ToString());
-
-            message.Append("Spawn Limit: ").AppendLine(item.SpawnProperties.Limit.ToString());
+                message.Append(spawnPoint.Name).Append(' ').Append(spawnPoint.Position).Append(" Chance: ").Append(spawnPoint.Chance).AppendLine("%");
 
             response = StringBuilderPool.Shared.ToStringReturn(message);
             return true;
