@@ -129,7 +129,7 @@ namespace Exiled.CustomItems.API.Features
             if (name == null)
                 throw new ArgumentNullException("name");
 
-            customItem = Get(name);
+            customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
             return customItem != null;
         }
