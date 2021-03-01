@@ -61,6 +61,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
+        [YamlIgnore]
         protected HashSet<GameObject> Tracked { get; } = new HashSet<GameObject>();
 
         /// <inheritdoc/>
@@ -140,9 +141,9 @@ namespace Exiled.CustomItems.API.Features
             grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
             grenade.NetworkfuseTime = NetworkTime.time + fusetime;
 
-            NetworkServer.Spawn(grenade.gameObject);
-
             Tracked.Add(grenade.gameObject);
+
+            NetworkServer.Spawn(grenade.gameObject);
 
             return grenade;
         }

@@ -22,6 +22,8 @@ namespace Exiled.CustomItems.API.Features
 
     using UnityEngine;
 
+    using YamlDotNet.Serialization;
+
     using static CustomItems;
 
     /// <summary>
@@ -79,11 +81,13 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
+        [YamlIgnore]
         public HashSet<int> InsideInventories { get; } = new HashSet<int>();
 
         /// <summary>
         /// Gets the list of spawned custom items being tracked as the current item.
         /// </summary>
+        [YamlIgnore]
         public HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
 
         /// <summary>
