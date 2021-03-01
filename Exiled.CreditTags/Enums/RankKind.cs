@@ -1,0 +1,35 @@
+// -----------------------------------------------------------------------
+// <copyright file="RankKind.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.CreditTags.Enums
+{
+    /// <summary>
+    /// Represents all existing ranks.
+    /// </summary>
+    public enum RankType
+    {
+        /// <summary>
+        /// Nothing.
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// Exiled Developer.
+        /// </summary>
+        Dev = 1,
+
+        /// <summary>
+        /// Exiled Contributor.
+        /// </summary>
+        Contributor = 2,
+
+        /// <summary>
+        /// Exiled Plugin Developer.
+        /// </summary>
+        PluginDev = 3,
+    }
+}
