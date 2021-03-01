@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.Components
+namespace Exiled.CustomItems.API.Components
 {
     using System;
 
@@ -21,26 +21,38 @@ namespace Exiled.CustomItems.Components
     public class CollisionHandler : MonoBehaviour
     {
         /// <summary>
-        /// Gets or sets the thrower of the grenade.
+        /// Gets the thrower of the grenade.
         /// </summary>
-        public GameObject Owner { get; set; }
+        public GameObject Owner { get; private set; }
 
         /// <summary>
-        /// Gets or sets the grenade itself.
+        /// Gets the grenade itself.
         /// </summary>
-        public Grenade Grenade { get; set; }
+        public Grenade Grenade { get; private set; }
+
+        /// <summary>
+        /// Inits the <see cref="CollisionHandler"/> object.
+        /// </summary>
+        /// <param name="owner">The grenade owner.</param>
+        /// <param name="grenade">The grenade component.</param>
+        public void Init(GameObject owner, Grenade grenade)
+        {
+            Owner = owner;
+            Grenade = grenade;
+        }
 
         private void OnCollisionEnter(Collision collision)
         {
             try
             {
-                if (collision.gameObject == Owner || collision.gameObject.GetComponent<Grenade>() != null)
+                if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<Grenade>(out _))
                     return;
+
                 Grenade.NetworkfuseTime = 0.1f;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error($"CollisionHandler:\n{e}");
+                Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
             }
         }
     }

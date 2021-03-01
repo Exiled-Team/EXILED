@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API
+namespace Exiled.CustomItems.API.Spawn
 {
     using System.Collections.Generic;
 
@@ -17,16 +17,16 @@ namespace Exiled.CustomItems.API
         /// <summary>
         /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
         /// </summary>
-        public int Limit { get; set; }
+        public uint Limit { get; set; }
 
         /// <summary>
-        /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn locations.
+        /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn points.
         /// </summary>
-        public List<DynamicItemSpawn> DynamicSpawnLocations { get; set; } = new List<DynamicItemSpawn>();
+        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new List<DynamicSpawnPoint>();
 
         /// <summary>
-        /// Gets or sets a <see cref="List{T}"/> of possible static spawn locations.
+        /// Gets or sets a <see cref="List{T}"/> of possible static spawn points.
         /// </summary>
-        public List<StaticItemSpawn> StaticSpawnLocations { get; set; } = new List<StaticItemSpawn>();
+        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new List<StaticSpawnPoint>();
     }
 }

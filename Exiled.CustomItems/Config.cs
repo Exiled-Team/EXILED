@@ -9,7 +9,9 @@ namespace Exiled.CustomItems
 {
     using System.ComponentModel;
 
+    using Exiled.API.Features;
     using Exiled.API.Interfaces;
+    using Exiled.CustomItems.API.Features;
 
     /// <summary>
     /// The plugin's config class.
@@ -17,13 +19,25 @@ namespace Exiled.CustomItems
     public class Config : IConfig
     {
         /// <inheritdoc/>
-        [Description("Whether or not this plugin is enabled.")]
+        [Description("Indicates whether this plugin is enabled or not.")]
         public bool IsEnabled { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether if debug mode is enabled.
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// </summary>
+        [Description("The hint that is shown when someone pickups a custom item.")]
+        public Broadcast PickedUpHint { get; private set; } = new Broadcast("You have picked up a {0}\n{1}");
+
+        /// <summary>
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// </summary>
+        [Description("The hint that is shown when someone selects a custom item.")]
+        public Broadcast SelectedHint { get; private set; } = new Broadcast("You have selected a {0}\n{1}");
+
+        /// <summary>
+        /// Gets a value indicating whether if debug mode is enabled.
         /// </summary>
         [Description("Whether or not debug messages should be displayed in the server console.")]
-        public bool Debug { get; set; } = false;
+        public bool Debug { get; private set; } = false;
     }
 }
