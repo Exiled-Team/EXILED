@@ -64,6 +64,33 @@ namespace Exiled.CustomItems.API.Features
         [YamlIgnore]
         protected HashSet<GameObject> Tracked { get; } = new HashSet<GameObject>();
 
+        /// <summary>
+        /// Spawns a live grenade object on the map.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
+        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
+        /// <param name="fusetime">The <see cref="float"/> fuse time of the grenade.</param>
+        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
+        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
+        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
+        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        {
+            if (player == null)
+                player = Server.Host;
+
+            GrenadeManager grenadeManager = player.GrenadeManager;
+            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades[(int)grenadeType].grenadeInstance).GetComponent<Grenade>();
+
+            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
+            grenade.NetworkfuseTime = NetworkTime.time + fusetime;
+
+            Tracked.Add(grenade.gameObject);
+
+            NetworkServer.Spawn(grenade.gameObject);
+
+            return grenade;
+        }
+
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
@@ -119,33 +146,6 @@ namespace Exiled.CustomItems.API.Features
                 default:
                     return GrenadeType.FragGrenade;
             }
-        }
-
-        /// <summary>
-        /// Spawns a live grenade object on the map.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
-        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
-        /// <param name="fusetime">The <see cref="float"/> fuse time of the grenade.</param>
-        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
-        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        protected virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
-        {
-            if (player == null)
-                player = Server.Host;
-
-            GrenadeManager grenadeManager = player.GrenadeManager;
-            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades[(int)grenadeType].grenadeInstance).GetComponent<Grenade>();
-
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fusetime;
-
-            Tracked.Add(grenade.gameObject);
-
-            NetworkServer.Spawn(grenade.gameObject);
-
-            return grenade;
         }
 
         private void OnInternalThrowing(ThrowingGrenadeEventArgs ev)

@@ -32,7 +32,7 @@ namespace Exiled.CustomItems
         /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
         /// </summary>
         [Description("The hint that is shown when someone selects a custom item.")]
-        public Broadcast SelectedHint { get; private set; } = new Broadcast("You have selected a {0}\n{1}");
+        public Broadcast SelectedHint { get; private set; } = new Broadcast("You have selected a {0}\n{1}", 5);
 
         /// <summary>
         /// Gets a value indicating whether if debug mode is enabled.
