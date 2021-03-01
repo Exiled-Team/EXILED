@@ -15,7 +15,8 @@
 
   <PropertyGroup>
     <!-- This is the global version and is used for all projects that don't have a version -->
-    <Version Condition="$(Version) == ''">2.3.4-rc.3</Version>
+    <Version Condition="$(Version) == ''">2.4.0</Version>
+
     <!-- Enables public beta warning via the PUBLIC_BETA constant -->
     <PublicBeta>false</PublicBeta>
 
