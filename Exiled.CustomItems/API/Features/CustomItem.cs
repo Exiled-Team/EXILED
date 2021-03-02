@@ -662,9 +662,12 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Item))
                 return;
 
-            ev.IsAllowed = false;
-
             OnDropping(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            ev.IsAllowed = false;
 
             InsideInventories.Remove(ev.Item.uniq);
 
@@ -678,9 +681,12 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Pickup) || ev.Player.Inventory.items.Count >= 8)
                 return;
 
-            ev.IsAllowed = false;
-
             OnPickingUp(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            ev.IsAllowed = false;
 
             Give(ev.Player, ev.Pickup);
 
