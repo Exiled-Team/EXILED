@@ -5,12 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Exiled.CustomItems.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -71,30 +70,30 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
         /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
-        /// <param name="fusetime">The <see cref="float"/> fuse time of the grenade.</param>
+        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, ItemType grenadeType = ItemType.GrenadeFrag, Player player = null)
+        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeFrag, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
 
             GrenadeManager grenadeManager = player.GrenadeManager;
-            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades.FirstOrDefault(g => g.inventoryID == grenadeType)?.grenadeInstance).GetComponent<Grenade>();
+            GrenadeSettings settings =
+                grenadeManager.availableGrenades.FirstOrDefault(g => g.inventoryID == grenadeType);
 
-            if (grenade == null)
-            {
-                Log.Warn($"{nameof(CustomGrenade)}: {nameof(Spawn)}: Unable to spawn custom grenade. Grenade instance was unavailable.");
-                return null;
-            }
+            Grenade grenade = GameObject.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
 
             grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fusetime;
+            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
 
             Tracked.Add(grenade.gameObject);
 
             NetworkServer.Spawn(grenade.gameObject);
+
+            if (ExplodeOnCollision)
+                grenade.gameObject.AddComponent<CollisionHandler>().Init(player.GameObject, grenade);
 
             return grenade;
         }
@@ -153,14 +152,8 @@ namespace Exiled.CustomItems.API.Features
 
             Timing.CallDelayed(1f, () =>
             {
-                Grenade grenadeComponent = ev.Player.GrenadeManager.availableGrenades[0].grenadeInstance.GetComponent<Grenade>();
-
-                Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
-
-                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, Type, ev.Player)?.gameObject;
-
-                if (grenade != null && ExplodeOnCollision)
-                    grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
+                Vector3 position = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
+                Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, Type, ev.Player);
             });
         }
     }
