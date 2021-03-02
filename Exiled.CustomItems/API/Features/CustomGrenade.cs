@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Exiled.CustomItems.API.Features
 {
     using System;
@@ -73,13 +75,19 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fusetime = 3f, ItemType grenadeType = ItemType.GrenadeFrag, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
 
             GrenadeManager grenadeManager = player.GrenadeManager;
-            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades[(int)grenadeType].grenadeInstance).GetComponent<Grenade>();
+            Grenade grenade = GameObject.Instantiate(grenadeManager.availableGrenades.FirstOrDefault(g => g.inventoryID == grenadeType)?.grenadeInstance).GetComponent<Grenade>();
+
+            if (grenade == null)
+            {
+                Log.Warn($"{nameof(CustomGrenade)}: {nameof(Spawn)}: Unable to spawn custom grenade. Grenade instance was unavailable.");
+                return null;
+            }
 
             grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
             grenade.NetworkfuseTime = NetworkTime.time + fusetime;
@@ -130,24 +138,6 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if it is a custom grenade.</returns>
         protected bool Check(GameObject grenade) => Tracked.Contains(grenade);
 
-        /// <summary>
-        /// Converts a <see cref="ItemType"/> into a <see cref="GrenadeType"/>.
-        /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> to check.</param>
-        /// <returns><see cref="GrenadeType"/>.</returns>
-        protected GrenadeType GetGrenadeType(ItemType type)
-        {
-            switch (type)
-            {
-                case ItemType.GrenadeFlash:
-                    return GrenadeType.Flashbang;
-                case ItemType.SCP018:
-                    return GrenadeType.Scp018;
-                default:
-                    return GrenadeType.FragGrenade;
-            }
-        }
-
         private void OnInternalThrowing(ThrowingGrenadeEventArgs ev)
         {
             if (!Check(ev.Player.CurrentItem))
@@ -167,9 +157,9 @@ namespace Exiled.CustomItems.API.Features
 
                 Vector3 position = ev.Player.CameraTransform.TransformPoint(grenadeComponent.throwStartPositionOffset);
 
-                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, GetGrenadeType(Type), ev.Player).gameObject;
+                GameObject grenade = Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, Type, ev.Player)?.gameObject;
 
-                if (ExplodeOnCollision)
+                if (grenade != null && ExplodeOnCollision)
                     grenade.gameObject.AddComponent<CollisionHandler>().Init(ev.Player.GameObject, grenadeComponent);
             });
         }
