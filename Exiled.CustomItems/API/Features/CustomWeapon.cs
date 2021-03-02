@@ -134,7 +134,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker != ev.Target)
+            if (ev.IsAllowed && ev.Attacker != ev.Target)
                 ev.Amount = Damage;
         }
 
@@ -143,9 +143,12 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Player.CurrentItem))
                 return;
 
-            ev.IsAllowed = false;
-
             OnReloading(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            ev.IsAllowed = false;
 
             uint remainingClip = (uint)ev.Player.CurrentItem.durability;
 
