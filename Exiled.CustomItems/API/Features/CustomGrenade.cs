@@ -142,9 +142,12 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Player.CurrentItem))
                 return;
 
-            ev.IsAllowed = false;
-
             OnThrowing(ev);
+
+            if (!ev.IsAllowed)
+                return;
+
+            ev.IsAllowed = false;
 
             InsideInventories.Remove(ev.Player.CurrentItem.uniq);
 
