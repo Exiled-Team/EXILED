@@ -49,9 +49,21 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
+                Vector3 position = ply.transform.position;
+                float num1 = Vector3.Distance(__instance._hub.playerMovementSync.RealModelPosition, position);
+                float num2 = Math.Abs(__instance._hub.playerMovementSync.RealModelPosition.y - position.y);
+                if ((num1 >= 1.8179999589920044 && num2 < 1.0199999809265137) || (num1 >= 2.0999999046325684 && num2 < 1.9500000476837158) || ((num1 >= 2.6500000953674316 && num2 < 2.200000047683716) || (num1 >= 3.200000047683716 && num2 < 3.0)) || num1 >= 3.640000104904175)
+                {
+                    __instance._hub.characterClassManager.TargetConsolePrint(__instance.connectionToClient, $"106 MovePlayer command rejected - too big distance (code: T1). Distance: {num1}, Y Diff: {num2}.", "gray");
+                }
+                else if (Physics.Linecast(__instance._hub.playerMovementSync.RealModelPosition, ply.transform.position, (int)__instance._hub.weaponManager.raycastServerMask))
+                {
+                    __instance._hub.characterClassManager.TargetConsolePrint(__instance.connectionToClient, $"106 MovePlayer command rejected - collider found between you and the target (code: T2). Distance: {num1}, Y Diff: {num2}.", "gray");
+                }
+
                 var instanceHub = ReferenceHub.GetHub(__instance.gameObject);
                 instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
-                __instance.TargetHitMarker(__instance.connectionToClient);
+                __instance.TargetHitMarker(__instance.connectionToClient, __instance.captureCooldown);
 
                 if (Scp106PlayerScript._blastDoor.isClosed)
                 {

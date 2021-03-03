@@ -77,8 +77,7 @@ namespace Exiled.Updater
 
         public bool CheckUpdate(bool forced)
         {
-            FixInvalidProxyHandling();
-
+            // FixInvalidProxyHandling();
             if (_stage == Stage.Free)
             {
                 Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
@@ -88,6 +87,7 @@ namespace Exiled.Updater
             return false;
         }
 
+        /* "I'm not sure if it's needed tbh." -Zabszk
         private void FixInvalidProxyHandling()
         {
             // https://github.com/mono/mono/pull/12595
@@ -95,8 +95,8 @@ namespace Exiled.Updater
             {
                 const string keyName = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 
-                var proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
-                var strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
+                int proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
+                string strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
                 if (proxyEnabled > 0 && strProxy == null)
                 {
                     Log.Info("HttpProxy detected, bypassing...");
@@ -107,7 +107,7 @@ namespace Exiled.Updater
                     GameCore.Console.LockHttpMode = false;
                 }
             }
-        }
+        }*/
 
         private HttpClient CreateHttpClient()
         {
