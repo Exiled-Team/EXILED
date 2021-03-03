@@ -87,7 +87,7 @@ namespace Exiled.Updater
             return false;
         }
 
-        /* "I'm not sure if it's needed tbh." -Zabszk
+        /* "I don't think that will be necessary." -Zabszk
         private void FixInvalidProxyHandling()
         {
             // https://github.com/mono/mono/pull/12595
@@ -95,8 +95,8 @@ namespace Exiled.Updater
             {
                 const string keyName = "HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
 
-                int proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
-                string strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
+                var proxyEnabled = (int)Microsoft.Win32.Registry.GetValue(keyName, "ProxyEnable", 0);
+                var strProxy = (string)Microsoft.Win32.Registry.GetValue(keyName, "ProxyServer", null);
                 if (proxyEnabled > 0 && strProxy == null)
                 {
                     Log.Info("HttpProxy detected, bypassing...");
