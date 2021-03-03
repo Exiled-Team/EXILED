@@ -77,8 +77,7 @@ namespace Exiled.Updater
 
         public bool CheckUpdate(bool forced)
         {
-            FixInvalidProxyHandling();
-
+            // FixInvalidProxyHandling();
             if (_stage == Stage.Free)
             {
                 Timing.RunCoroutine(_CheckUpdate(forced), Segment.EndOfFrame);
@@ -88,6 +87,7 @@ namespace Exiled.Updater
             return false;
         }
 
+        /* "I don't think that will be necessary." -Zabszk
         private void FixInvalidProxyHandling()
         {
             // https://github.com/mono/mono/pull/12595
@@ -107,7 +107,7 @@ namespace Exiled.Updater
                     GameCore.Console.LockHttpMode = false;
                 }
             }
-        }
+        }*/
 
         private HttpClient CreateHttpClient()
         {
