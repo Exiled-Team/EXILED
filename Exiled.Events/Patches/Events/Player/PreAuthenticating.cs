@@ -357,6 +357,13 @@ namespace Exiled.Events.Patches.Events.Player
                                                 return;
                                             }
                                         }
+                                        if (flags.HasFlagFast(CentralAuthPreauthFlags.AuthRejected))
+                                        {
+                                            ServerConsole.AddLog(string.Format("Player {0} ({1}) kicked due to auth rejection by central server.", text, request.RemoteEndPoint));
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Reset();
+                                            CustomLiteNetLib4MirrorTransport.RequestWriter.Put((byte)20);
+                                            request.Reject(CustomLiteNetLib4MirrorTransport.RequestWriter);
+                                        }
                                         if (flags.HasFlagFast(CentralAuthPreauthFlags.GloballyBanned) && (ServerStatic.PermissionsHandler.IsVerified || CustomLiteNetLib4MirrorTransport.UseGlobalBans))
                                         {
                                             ServerConsole.AddLog(string.Format("Player {0} ({1}) kicked due to an active global ban.", text, request.RemoteEndPoint), ConsoleColor.Gray);
