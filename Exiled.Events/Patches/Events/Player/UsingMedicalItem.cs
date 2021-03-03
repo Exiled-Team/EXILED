@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!__instance._interactRateLimit.CanExecute(true))
+                if (!__instance._medicalItemRateLimit.CanExecute(true))
                     return false;
 
                 __instance._cancel = false;
