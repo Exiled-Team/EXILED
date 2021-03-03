@@ -39,6 +39,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             API.Features.Map.ClearCache();
+            GenerateCache();
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
             DoorExtensions.RegisterDoorTypesOnLevelLoad();
