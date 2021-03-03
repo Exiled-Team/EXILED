@@ -320,7 +320,7 @@ namespace Exiled.Updater
                         FileName = installerPath,
                         UseShellExecute = false,
                         CreateNoWindow = true,
-                        Arguments = $"--exit --pre-releases {newVersion.Release.PreRelease} --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\"",
+                        Arguments = $"--exit --target-version {newVersion.Release.TagName} --appdata \"{Paths.AppData}\"",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         StandardErrorEncoding = ProcessEncoding,
