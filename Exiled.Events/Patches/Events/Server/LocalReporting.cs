@@ -135,7 +135,7 @@ namespace Exiled.Events.Patches.Events.Server
             var call_SuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
 
             var internal_report_data_root_class = typeof(CheaterReport);
-            const string internal_report_data_nested_class_name = "<>c__DisplayClass14_0";
+            const string internal_report_data_nested_class_name = "<>c__DisplayClass13_0";
             const string internal_report_data_nested_class_reason_field_name = "reason";
 
             var internal_report_data_nested_class = internal_report_data_root_class.GetNestedType(internal_report_data_nested_class_name, BindingFlags.NonPublic);
