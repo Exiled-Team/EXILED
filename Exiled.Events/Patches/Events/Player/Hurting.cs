@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!ev.IsAllowed)
                     return false;
 
-                if (!ev.Target.IsGodModeEnabled && (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.AdrenalineHealth))
+                if (!ev.Target.IsGodModeEnabled && (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth))
                 {
                     var dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
 
