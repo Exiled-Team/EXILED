@@ -12,17 +12,27 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+
     using CustomPlayerEffects;
+
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+
     using Grenades;
+
     using Hints;
+
     using MEC;
+
     using Mirror;
+
     using NorthwoodLib;
     using NorthwoodLib.Pools;
+
     using PlayableScps;
+
     using RemoteAdmin;
+
     using UnityEngine;
 
     /// <summary>
@@ -488,7 +498,7 @@ namespace Exiled.API.Features
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"SetScale error: {exception}");
+                    Log.Error($"{nameof(Scale)} error: {exception}");
                 }
             }
         }
@@ -539,6 +549,7 @@ namespace Exiled.API.Features
             set
             {
                 ReferenceHub.playerStats.Health = value;
+
                 if (value > MaxHealth)
                     MaxHealth = (int)value;
             }
@@ -554,27 +565,49 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's adrenaline health.
-        /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
+        /// Gets or sets the player's artificial health.
+        /// If the health is greater than the <see cref="MaxArtificialHealth"/>, it will also be changed to match the artificial health.
         /// </summary>
-        public float AdrenalineHealth
+        public float ArtificialHealth
         {
             get => ReferenceHub.playerStats.unsyncedArtificialHealth;
             set
             {
                 ReferenceHub.playerStats.unsyncedArtificialHealth = value;
-                if (value > MaxAdrenalineHealth)
-                    MaxAdrenalineHealth = (int)value;
+
+                if (value > MaxArtificialHealth)
+                    MaxArtificialHealth = (int)value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's adrenaline health.
+        /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
+        /// </summary>
+        [Obsolete("Use ArtificialHealth instead.", true)]
+        public float AdrenalineHealth
+        {
+            get => ArtificialHealth;
+            set => ArtificialHealth = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's maximum artificial health.
+        /// </summary>
+        public int MaxArtificialHealth
+        {
+            get => ReferenceHub.playerStats.maxArtificialHealth;
+            set => ReferenceHub.playerStats.maxArtificialHealth = value;
         }
 
         /// <summary>
         /// Gets or sets the player's maximum adrenaline health.
         /// </summary>
+        [Obsolete("Use MaxArtificialHealth instead.", true)]
         public int MaxAdrenalineHealth
         {
-            get => ReferenceHub.playerStats.maxArtificialHealth;
-            set => ReferenceHub.playerStats.maxArtificialHealth = value;
+            get => MaxArtificialHealth;
+            set => MaxArtificialHealth = value;
         }
 
         /// <summary>
@@ -809,10 +842,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension
-        {
-            get => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
-        }
+        public bool IsInPocketDimension => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether player should use stamina system.
@@ -834,6 +864,11 @@ namespace Exiled.API.Features
         /// </summary>
         [Obsolete("Removed from the base-game.", true)]
         public bool HasHands => false;
+
+        /// <summary>
+        /// Gets player's items.
+        /// </summary>
+        public Inventory.SyncListItemInfo Items => Inventory.items;
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
@@ -1330,8 +1365,8 @@ namespace Exiled.API.Features
         /// <param name="effect">The <see cref="EffectType"/> to disable.</param>
         public void DisableEffect(EffectType effect)
         {
-            if (TryGetEffect(effect, out var pEffect))
-                pEffect.ServerDisable();
+            if (TryGetEffect(effect, out var playerEffect))
+                playerEffect.ServerDisable();
         }
 
         /// <summary>
@@ -1342,6 +1377,15 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
             where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
+
+        /// <summary>
+        /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffect(PlayerEffect effect, float duration = 0f, bool addDurationIfActive = false)
+            => ReferenceHub.playerEffectsController.EnableEffect(effect, duration, addDurationIfActive);
 
         /// <summary>
         /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
@@ -1372,9 +1416,9 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="PlayerEffect"/>.</returns>
         public PlayerEffect GetEffect(EffectType effect)
         {
-            var type = effect.Type();
-            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(type, out var pEffect);
-            return pEffect;
+            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(effect.Type(), out var playerEffect);
+
+            return playerEffect;
         }
 
         /// <summary>
@@ -1386,6 +1430,7 @@ namespace Exiled.API.Features
         public bool TryGetEffect(EffectType effect, out PlayerEffect playerEffect)
         {
             playerEffect = GetEffect(effect);
+
             return playerEffect != null;
         }
 
@@ -1399,9 +1444,7 @@ namespace Exiled.API.Features
             where T : PlayerEffect
         {
             if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
-            {
                 return playerEffect.Intensity;
-            }
 
             throw new ArgumentException("The given type is invalid.");
         }
@@ -1420,8 +1463,7 @@ namespace Exiled.API.Features
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
-        public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) =>
-            ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
+        public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
         /// <summary>
         /// Removes the player's hands.
