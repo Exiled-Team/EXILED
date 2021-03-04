@@ -866,7 +866,7 @@ namespace Exiled.API.Features
         public bool HasHands => false;
 
         /// <summary>
-        /// Gets the player's items.
+        /// Gets player's items.
         /// </summary>
         public Inventory.SyncListItemInfo Items => Inventory.items;
 
