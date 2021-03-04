@@ -313,7 +313,7 @@ namespace Exiled.API.Extensions
         /// Gets the default durability of any item.
         /// </summary>
         /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
-        /// <returns>Returns the item durability.</see></returns>
+        /// <returns>Returns the item durability.</returns>
         public static int GetDefaultDurability(ItemType item)
         {
             switch (item)
