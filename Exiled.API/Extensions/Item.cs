@@ -314,7 +314,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="item">The <see cref="ItemType">item</see> that you want to get durability of.</param>
         /// <returns>Returns the item durability.</returns>
-        public static float GetDefaultDurability(ItemType item)
+        public static float GetDefaultDurability(this ItemType item)
         {
             return Pickup.Inv.GetItemByID(item)?.durability ?? float.NaN;
         }
