@@ -153,6 +153,8 @@ namespace Exiled.Events.EventArgs
 
             NetDataWriter rejectData = new NetDataWriter();
 
+            rejectData.Put((byte)rejectionReason);
+
             switch (rejectionReason)
             {
                 case RejectionReason.Banned:
