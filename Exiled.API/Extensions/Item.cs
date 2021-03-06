@@ -316,7 +316,14 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static float GetDefaultDurability(ItemType item)
         {
-            return Pickup.Inv.GetItemByID(item).durability;
+            try
+            {
+                return Pickup.Inv.GetItemByID(item)?.durability ?? float.NaN;
+            }
+            catch (Exception)
+            {
+                return float.NaN;
+            }
         }
     }
 }
