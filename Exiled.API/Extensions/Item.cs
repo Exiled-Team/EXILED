@@ -316,29 +316,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static int GetDefaultDurability(ItemType item)
         {
-            switch (item)
-            {
-                case ItemType.GunCOM15:
-                    return 12;
-                case ItemType.MicroHID:
-                    return 1;
-                case ItemType.GunE11SR:
-                    return 40;
-                case ItemType.GunProject90:
-                    return 50;
-                case ItemType.GunMP7:
-                    return 35;
-                case ItemType.GunLogicer:
-                    return 75;
-                case ItemType.GunUSP:
-                    return 18;
-                case ItemType.Ammo556:
-                case ItemType.Ammo762:
-                case ItemType.Ammo9mm:
-                    return 25;
-                default:
-                    return 0;
-            }
+            return Pickup.Inv.GetItemByID(item).durability;
         }
     }
 }
