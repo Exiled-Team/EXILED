@@ -111,6 +111,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Events.Handlers.Player.ThrowingGrenade -= OnInternalThrowing;
+            Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
 
             base.UnsubscribeEvents();
         }
