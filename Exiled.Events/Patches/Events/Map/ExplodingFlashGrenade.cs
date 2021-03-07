@@ -66,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Map
             }
             catch (Exception exception)
             {
-                Log.Error($"{nameof(Handlers.Map.OnExplodingGrenade)} error: {exception}");
+                Log.Error($"{typeof(ExplodingFlashGrenade).FullName}: {exception}");
 
                 return true;
             }

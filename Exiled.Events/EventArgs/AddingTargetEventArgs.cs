@@ -50,8 +50,8 @@ namespace Exiled.Events.EventArgs
 
         /// <summary>
         /// Gets or sets how much time is added to SCP-096's enrage timer if <see cref="IsAllowed"/> is true.
-        /// Note: This does not affect anything if he doesn't already have any targets before this event is called.
         /// </summary>
+        /// <remarks>This does not affect anything if he doesn't already have any targets before this event is called.</remarks>
         public float EnrageTimeToAdd { get; set; }
 
         /// <summary>
