@@ -159,6 +159,6 @@ namespace Exiled.Events.Handlers
         /// Called before the server changes a <see cref="Pickup"/> into a <see cref="Grenade"/> when hit by an explosion.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
-        public static void OnServerChangingGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
+        public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
     }
 }

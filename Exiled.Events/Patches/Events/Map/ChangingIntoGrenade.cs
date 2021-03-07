@@ -45,13 +45,14 @@ namespace Exiled.Events.Patches.Events.Map
             // Generate a continue lable.
             Label continueLabel = generator.DefineLabel();
 
-            // Declare ServerChangingGrenadeEventArgs, to be able to store it's instance with "stloc.s".
+            // Declare ChangingIntoGrenadeEventArgs, to be able to store it's instance with "stloc.s".
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingIntoGrenadeEventArgs));
 
             newInstructions.InsertRange(index, new[]
             {
                 // (Pickup item)
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new ServerChangingGrenadeEventArgs(pickup)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
@@ -60,7 +61,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Map.OnServerChangingGrenade(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnServerChangingGrenade))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnChangingIntoGrenade))),
 
                 // if (!ev.IsAllowed)
                 //     return;

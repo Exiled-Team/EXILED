@@ -19,10 +19,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs"/> class.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
-        public ChangingIntoGrenadeEventArgs(Pickup pickup)
+        /// <param name="isAllowed">Whether or not the event is allowed to continue.</param>
+        public ChangingIntoGrenadeEventArgs(Pickup pickup, bool isAllowed = true)
         {
             Pickup = pickup;
             Type = pickup.itemId;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
