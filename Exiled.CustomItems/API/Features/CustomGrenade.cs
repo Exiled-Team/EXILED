@@ -102,6 +102,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void SubscribeEvents()
         {
             Events.Handlers.Player.ThrowingGrenade += OnInternalThrowing;
+            Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
 
             base.SubscribeEvents();
         }
@@ -110,6 +111,7 @@ namespace Exiled.CustomItems.API.Features
         protected override void UnsubscribeEvents()
         {
             Events.Handlers.Player.ThrowingGrenade -= OnInternalThrowing;
+            Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
 
             base.UnsubscribeEvents();
         }
@@ -119,6 +121,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
         protected virtual void OnThrowing(ThrowingGrenadeEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles tracking exploded custom grenades.
+        /// </summary>
+        /// <param name="ev"><see cref="ExplodingGrenadeEventArgs"/>.</param>
+        protected virtual void OnExploding(ExplodingGrenadeEventArgs ev)
         {
         }
 
@@ -158,6 +168,12 @@ namespace Exiled.CustomItems.API.Features
                 Vector3 position = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
                 Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, Type, ev.Player);
             });
+        }
+
+        private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
+        {
+            if (Check(ev.Grenade))
+                OnExploding(ev);
         }
     }
 }
