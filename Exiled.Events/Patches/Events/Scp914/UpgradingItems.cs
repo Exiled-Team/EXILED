@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.players))),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<CharacterClassManager>), nameof(List<CharacterClassManager>.Clear))),
 
-                // this.items.AddRange(ev.Players.Select(player => player.ReferenceHub.characterClassManager).ToList());
+                // this.players.AddRange(ev.Players.Select(player => player.ReferenceHub.characterClassManager).ToList());
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.players))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
