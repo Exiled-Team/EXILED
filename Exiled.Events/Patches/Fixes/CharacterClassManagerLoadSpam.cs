@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;

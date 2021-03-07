@@ -10,6 +10,8 @@ namespace Exiled.Events.Handlers
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
+    using Grenades;
+
     using static Exiled.Events.Events;
 
     /// <summary>
@@ -76,6 +78,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after the map is generated.
         /// </summary>
         public static event CustomEventHandler Generated;
+
+        /// <summary>
+        /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
+        /// </summary>
+        public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
 
         /// <summary>
         /// Called before placing a decal.
@@ -147,5 +154,11 @@ namespace Exiled.Events.Handlers
         /// Called after the map is generated.
         /// </summary>
         public static void OnGenerated() => Generated.InvokeSafely();
+
+        /// <summary>
+        /// Called before the server changes a <see cref="Pickup"/> into a <see cref="Grenade"/> when hit by an explosion.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
+        public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
     }
 }

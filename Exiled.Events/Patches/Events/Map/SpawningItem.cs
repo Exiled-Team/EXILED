@@ -32,13 +32,18 @@ namespace Exiled.Events.Patches.Events.Map
             if (ev.IsAllowed)
             {
                 Pickup pickup = ReferenceHub.GetHub(PlayerManager.localPlayer).inventory.SetPickup(ev.Id, 0.0f, Vector3.zero, Quaternion.identity, 0, 0, 0);
+
                 yield return float.NegativeInfinity;
+
                 HostItemSpawner.SetPos(pickup, ev.Position, ev.Id, ev.Rotation.eulerAngles);
+
                 pickup.RefreshDurability(true, true);
+
                 if (ev.Locked)
                     pickup.Locked = true;
 
                 SpawnedItemEventArgs spawned_ev = new SpawnedItemEventArgs(pickup);
+
                 Handlers.Map.OnSpawnedItem(spawned_ev);
             }
         }

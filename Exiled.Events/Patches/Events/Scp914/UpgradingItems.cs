@@ -7,8 +7,11 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+
     using System.Linq;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -17,9 +20,9 @@ namespace Exiled.Events.Patches.Events.Scp914
 
     using HarmonyLib;
 
-    using Mirror;
+    using NorthwoodLib.Pools;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp914Machine.ProcessItems"/>.
@@ -28,40 +31,85 @@ namespace Exiled.Events.Patches.Events.Scp914
     [HarmonyPatch(typeof(Scp914Machine), nameof(Scp914Machine.ProcessItems))]
     internal static class UpgradingItems
     {
-        private static bool Prefix(Scp914Machine __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (!NetworkServer.active)
-                return true;
-            Collider[] colliderArray = Physics.OverlapBox(__instance.intake.position, __instance.inputSize / 2f);
-            __instance.players.Clear();
-            __instance.items.Clear();
-            foreach (Collider collider in colliderArray)
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The first index offset.
+            var offset = 0;
+
+            // Search for the first "nop".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Nop) + offset;
+
+            // Declare UpgradingItemsEventArgs, to be able to store its instance with "stloc.s".
+            var ev = generator.DeclareLocal(typeof(UpgradingItemsEventArgs));
+
+            newInstructions.InsertRange(index, new[]
             {
-                CharacterClassManager component1 = collider.GetComponent<CharacterClassManager>();
-                if (component1 != null)
-                {
-                    __instance.players.Add(component1);
-                }
-                else
-                {
-                    Pickup component2 = collider.GetComponent<Pickup>();
-                    if (component2 != null)
-                        __instance.items.Add(component2);
-                }
-            }
+                // var ev = new UpgradingItemsEventArgs(this, this.players.Select(player => API.Features.Player.Get(player.gameObject)).ToList(), this.items, this.knobState);
+                //
+                // Scp914.OnUpgradingItems(ev);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.players))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(UpgradingItems), nameof(UpgradingItems.FromCharacterClassManagersToPlayers))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.items))),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.knobState))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingItemsEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingItems))),
 
-            var ev = new UpgradingItemsEventArgs(__instance, __instance.players.Select(player => API.Features.Player.Get(player.gameObject)).ToList(), __instance.items, __instance.knobState);
+                // this.players.Clear();
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.players))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<CharacterClassManager>), nameof(List<CharacterClassManager>.Clear))),
 
-            Scp914.OnUpgradingItems(ev);
+                // this.players.AddRange(ev.Players.Select(player => player.ReferenceHub.characterClassManager).ToList());
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Machine), nameof(Scp914Machine.players))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemsEventArgs), nameof(UpgradingItemsEventArgs.Players))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(UpgradingItems), nameof(UpgradingItems.FromPlayersToCharacterClassManagers))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<CharacterClassManager>), nameof(List<CharacterClassManager>.AddRange))),
+            });
 
-            var players = ev.Players.Select(player => player.ReferenceHub.characterClassManager).ToList();
+            // The second index offset.
+            offset = 1;
+            var endFinallyOffset = 6;
 
-            __instance.MoveObjects(ev.Items, players);
+            // Search for the fifth "call".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Leave_S) + offset;
 
-            if (ev.IsAllowed)
-                __instance.UpgradeObjects(ev.Items, players);
+            // Set the return label to the first "endfinally" .
+            var returnLabel = newInstructions[index + endFinallyOffset].WithLabels(generator.DefineLabel()).labels[0];
 
-            return false;
+            newInstructions.InsertRange(index, new[]
+            {
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).MoveBlocksFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingItemsEventArgs), nameof(UpgradingItemsEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static List<API.Features.Player> FromCharacterClassManagersToPlayers(List<CharacterClassManager> characterClassManagers)
+        {
+            return characterClassManagers.Select(player => API.Features.Player.Get(player.gameObject)).ToList();
+        }
+
+        private static List<CharacterClassManager> FromPlayersToCharacterClassManagers(List<API.Features.Player> players)
+        {
+            return players.Select(player => player.ReferenceHub.characterClassManager).ToList();
         }
     }
 }

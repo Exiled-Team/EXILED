@@ -32,11 +32,7 @@ namespace Exiled.Events.Patches.Events.Server
             if (reportedUserId == reporterUserId)
                 reporter.SendToClient(__instance.connectionToClient, "You can't report yourself!" + Environment.NewLine, "yellow");
 
-            var ev = new ReportingCheaterEventArgs(
-                API.Features.Player.Get(reporterUserId),
-                API.Features.Player.Get(reportedUserId),
-                ServerConsole.Port,
-                reason);
+            var ev = new ReportingCheaterEventArgs(API.Features.Player.Get(reporterUserId), API.Features.Player.Get(reportedUserId), ServerConsole.Port, reason);
 
             Server.OnReportingCheater(ev);
 
