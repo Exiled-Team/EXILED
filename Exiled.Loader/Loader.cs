@@ -12,9 +12,7 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
-
     using CommandSystem.Commands;
-
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -132,14 +130,20 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            foreach (string pluginPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
+            foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
-                Assembly assembly = LoadAssembly(pluginPath);
+                    Assembly assembly = LoadAssembly(assemblyPath);
 
-                if (assembly == null)
+                    if (assembly == null)
+                        continue;
+
+                    Locations[assembly] = assemblyPath;
+            }
+
+            foreach (Assembly assembly in Locations.Keys)
+            {
+                if (Locations[assembly].Contains("dependencies"))
                     continue;
-
-                Locations[assembly] = pluginPath;
 
                 IPlugin<IConfig> plugin = CreatePlugin(assembly);
 

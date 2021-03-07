@@ -19,7 +19,7 @@ namespace Exiled.CreditTags
         [Description("Is the plugin enabled?")]
         public bool IsEnabled { get; set; } = true;
 
-        [Description("Info side - Badge, CustomPlayerInfo, Both")]
+        [Description("Info side - Badge, CustomPlayerInfo")]
         public InfoSide Mode { get; private set; } = InfoSide.Badge;
 
         [Description("Overrides badge if exists")]

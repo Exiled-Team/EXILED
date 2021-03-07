@@ -28,11 +28,30 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Map
     {
-        private static readonly List<Room> RoomsValue = new List<Room>(250);
-        private static readonly List<DoorVariant> DoorsValue = new List<DoorVariant>(250);
-        private static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
-        private static readonly List<Lift> LiftsValue = new List<Lift>(10);
-        private static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
+        /// <summary>
+        /// A list of <see cref="Room"/>s on the map.
+        /// </summary>
+        internal static readonly List<Room> RoomsValue = new List<Room>(250);
+
+        /// <summary>
+        /// A list of <see cref="DoorVariant"/>s on the map.
+        /// </summary>
+        internal static readonly List<DoorVariant> DoorsValue = new List<DoorVariant>(250);
+
+        /// <summary>
+        /// A list of <see cref="Camera079"/>s on the map.
+        /// </summary>
+        internal static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
+
+        /// <summary>
+        /// A list of <see cref="Lift"/>s on the map.
+        /// </summary>
+        internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
+
+        /// <summary>
+        /// A list of <see cref="TeslaGate"/>s on the map.
+        /// </summary>
+        internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<DoorVariant> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
@@ -55,109 +74,27 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Room"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Room> Rooms
-        {
-            get
-            {
-                if (RoomsValue.Count == 0)
-                {
-                    List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent();
-
-                    // Get bulk of rooms.
-                    roomObjects.AddRange(GameObject.FindGameObjectsWithTag("Room"));
-
-                    // If no rooms were found, it means a plugin is trying to access this before the map is created.
-                    if (roomObjects.Count == 0)
-                    {
-                        ListPool<GameObject>.Shared.Return(roomObjects);
-                        throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
-                    }
-
-                    // Add the pocket dimension since it is not tagged Room.
-                    const string PocketPath = "HeavyRooms/PocketWorld";
-
-                    var pocket = GameObject.Find(PocketPath);
-
-                    if (pocket == null)
-                        Log.Send($"[{typeof(Map).FullName}]: Pocket Dimension not found. The name or location in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
-                    else
-                        roomObjects.Add(pocket);
-
-                    // Add the surface since it is not tagged Room. Add it last so we can use it as a default room since it never changes.
-                    const string surfaceRoomName = "Outside";
-
-                    var surface = GameObject.Find(surfaceRoomName);
-
-                    if (surface == null)
-                        Log.Send($"[{typeof(Map).FullName}]: Surface not found. The name in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
-                    else
-                        roomObjects.Add(surface);
-
-                    foreach (var roomObject in roomObjects)
-                        RoomsValue.Add(Room.CreateComponent(roomObject));
-
-                    ListPool<GameObject>.Shared.Return(roomObjects);
-                }
-
-                return ReadOnlyRoomsValue;
-            }
-        }
+        public static ReadOnlyCollection<Room> Rooms => ReadOnlyRoomsValue;
 
         /// <summary>
         /// Gets all <see cref="DoorVariant"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<DoorVariant> Doors
-        {
-            get
-            {
-                if (DoorsValue.Count == 0)
-                    DoorsValue.AddRange(Object.FindObjectsOfType<DoorVariant>());
-
-                return ReadOnlyDoorsValue;
-            }
-        }
+        public static ReadOnlyCollection<DoorVariant> Doors => ReadOnlyDoorsValue;
 
         /// <summary>
         /// Gets all <see cref="Camera079"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Camera079> Cameras
-        {
-            get
-            {
-                if (CamerasValue.Count == 0)
-                    CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
-
-                return ReadOnlyCamerasValue;
-            }
-        }
+        public static ReadOnlyCollection<Camera079> Cameras => ReadOnlyCamerasValue;
 
         /// <summary>
         /// Gets all <see cref="Lift"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Lift> Lifts
-        {
-            get
-            {
-                if (LiftsValue.Count == 0)
-                    LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
-
-                return ReadOnlyLiftsValue;
-            }
-        }
+        public static ReadOnlyCollection<Lift> Lifts => ReadOnlyLiftsValue;
 
         /// <summary>
         /// Gets all <see cref="TeslaGate"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<TeslaGate> TeslaGates
-        {
-            get
-            {
-                if (TeslasValue.Count == 0)
-                    TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
-
-                return ReadOnlyTeslasValue;
-            }
-        }
+        public static ReadOnlyCollection<TeslaGate> TeslaGates => ReadOnlyTeslasValue;
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
@@ -250,7 +187,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        public static global::Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true)
+        public static Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true)
         {
             return SpawnRagdoll(
                         victim.Role,
@@ -289,7 +226,7 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        public static global::Ragdoll SpawnRagdoll(
+        public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 DamageTypes.DamageType deathCause,
                 string victimNick,
@@ -329,10 +266,10 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        public static global::Ragdoll SpawnRagdoll(
+        public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 string victimNick,
-                global::PlayerStats.HitInfo hitInfo,
+                PlayerStats.HitInfo hitInfo,
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
@@ -340,7 +277,7 @@ namespace Exiled.API.Features
                 int playerId = -1,
                 string mirrorOwnerId = null)
         {
-            global::Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
+            Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
 
             // Check if there's no ragdoll for this class, or if the class is invalid
             if (role.model_ragdoll == null)
@@ -349,7 +286,7 @@ namespace Exiled.API.Features
 
             var ragdollInfo = new Ragdoll.Info()
             {
-                ownerHLAPI_id = mirrorOwnerId != null ? mirrorOwnerId : @default.ownerHLAPI_id,
+                ownerHLAPI_id = mirrorOwnerId ?? @default.ownerHLAPI_id,
                 PlayerId = playerId,
                 DeathCause = hitInfo != default ? hitInfo : @default.DeathCause,
                 ClassColor = role.classColor,
@@ -390,8 +327,8 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The <see cref="Ragdoll"/> component created.</returns>
-        public static global::Ragdoll SpawnRagdoll(
-                global::Role role,
+        public static Ragdoll SpawnRagdoll(
+                Role role,
                 Ragdoll.Info ragdollInfo,
                 Vector3 position,
                 Quaternion rotation = default,
@@ -404,7 +341,7 @@ namespace Exiled.API.Features
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
 
             // Modify the Ragdoll's component
-            global::Ragdoll ragdollObject = gameObject.GetComponent<global::Ragdoll>();
+            Ragdoll ragdollObject = gameObject.GetComponent<Ragdoll>();
             ragdollObject.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdollObject.NetworkallowRecall = allowRecall;
             ragdollObject.NetworkPlayerVelo = velocity;
@@ -422,6 +359,16 @@ namespace Exiled.API.Features
         [Obsolete("Removed from the base-game.", true)]
         public static void SpawnHands(Vector3 position, Quaternion rotation)
         {
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        public static void Broadcast(Broadcast broadcast)
+        {
+            if (broadcast.Show)
+                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
         }
 
         /// <summary>
