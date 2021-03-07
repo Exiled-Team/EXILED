@@ -27,6 +27,7 @@ namespace Exiled.CustomItems.Patches
             if (!CustomItem.TryGet(item, out CustomItem customItem) || !(customItem is CustomGrenade customGrenade))
                 return true;
 
+            item.Delete();
             customGrenade.Spawn(item.position, Vector3.zero, customGrenade.FuseTime, customGrenade.Type);
 
             return false;

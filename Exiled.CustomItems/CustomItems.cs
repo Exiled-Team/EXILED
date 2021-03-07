@@ -7,8 +7,9 @@
 
 namespace Exiled.CustomItems
 {
-    using Exiled.API.Enums;
+    using System;
     using Exiled.API.Features;
+    using HarmonyLib;
 
     /// <summary>
     /// Handles all CustomItem API.
@@ -18,6 +19,7 @@ namespace Exiled.CustomItems
         private static readonly CustomItems Singleton = new CustomItems();
 
         private RoundHandler roundHandler;
+        private Harmony harmony;
 
         private CustomItems()
         {
@@ -34,6 +36,8 @@ namespace Exiled.CustomItems
             roundHandler = new RoundHandler();
 
             Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
+            harmony = new Harmony($"com.{nameof(CustomItems)}.galaxy119-{DateTime.Now.Ticks}");
+            harmony.PatchAll();
 
             base.OnEnabled();
         }
@@ -42,7 +46,9 @@ namespace Exiled.CustomItems
         public override void OnDisabled()
         {
             Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+            harmony.UnpatchAll();
 
+            harmony = null;
             roundHandler = null;
 
             base.OnDisabled();
