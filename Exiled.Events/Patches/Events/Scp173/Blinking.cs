@@ -35,6 +35,7 @@ namespace Exiled.Events.Patches.Events.Scp173
                     if (player.Team != Team.SCP && player.Team != Team.RIP)
                     {
                         Scp173PlayerScript playerScript = player.ReferenceHub.characterClassManager.Scp173;
+
                         if (playerScript.LookFor173(__instance.gameObject, true))
                             triggers.Add(player);
                     }

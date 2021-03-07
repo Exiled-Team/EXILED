@@ -7,11 +7,18 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Generator079.CheckFinish"/>.
@@ -20,21 +27,40 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(Generator079), nameof(Generator079.CheckFinish))]
     internal static class GeneratorActivated
     {
-        private static bool Prefix(Generator079 __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (__instance.prevFinish || __instance._localTime > 0.0)
-                return false;
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var ev = new GeneratorActivatedEventArgs(__instance);
+            // The index offset.
+            const int offset = 1;
 
-            Map.OnGeneratorActivated(ev);
+            // Search for the third "ldarg.0".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
-            __instance.prevFinish = true;
-            __instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
-            __instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
-            __instance._asource.PlayOneShot(__instance.unlockSound);
+            // Get the first label of the first "ret".
+            var returnLabel = newInstructions[index - offset].labels[0];
 
-            return false;
+            // var ev = new GeneratorActivatedEventArgs(this, true);
+            //
+            // Map.OnGeneratorActivated(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Linq;
 
-#pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
