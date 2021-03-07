@@ -50,8 +50,9 @@ namespace Exiled.Events.Patches.Events.Map
 
             newInstructions.InsertRange(index, new[]
             {
-                // (Pickup item)
+                // (Pickup item, float fuseTime, bool isAllowed)
                 new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldc_R4, 3f),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new ServerChangingGrenadeEventArgs(pickup)

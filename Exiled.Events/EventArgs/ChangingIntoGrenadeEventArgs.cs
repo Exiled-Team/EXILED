@@ -19,11 +19,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingIntoGrenadeEventArgs"/> class.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
+        /// <param name="fuseTime">The duration, in seconds, of the fuse time to be used when the grenade goes live.</param>
         /// <param name="isAllowed">Whether or not the event is allowed to continue.</param>
-        public ChangingIntoGrenadeEventArgs(Pickup pickup, bool isAllowed = true)
+        public ChangingIntoGrenadeEventArgs(Pickup pickup, float fuseTime = 3f, bool isAllowed = true)
         {
             Pickup = pickup;
             Type = pickup.itemId;
+            FuseTime = fuseTime;
             IsAllowed = isAllowed;
         }
 
@@ -40,11 +42,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether the pickup will be changed.
         /// </summary>
-        public bool IsAllowed { get; set; } = true;
+        public bool IsAllowed { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating how long the fuse of the changed grenade will be.
         /// </summary>
-        public float FuseTime { get; set; } = 3f;
+        public float FuseTime { get; set; }
     }
 }
