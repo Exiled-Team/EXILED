@@ -90,8 +90,8 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Grenades.Grenade), nameof(Grenades.Grenade.NetworkfuseTime))),
             });
 
-            foreach (CodeInstruction instruction in newInstructions)
-                yield return instruction;
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
