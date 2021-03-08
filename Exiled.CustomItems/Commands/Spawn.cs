@@ -44,9 +44,9 @@ namespace Exiled.CustomItems.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customitems.list"))
+            if (!sender.CheckPermission("customitems.spawn"))
             {
-                response = "Permission Denied, required: customitems.list";
+                response = "Permission Denied, required: customitems.spawn";
                 return false;
             }
 
