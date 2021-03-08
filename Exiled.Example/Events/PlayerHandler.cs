@@ -105,5 +105,11 @@ namespace Exiled.Example.Events
         {
             Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) is getting killed by {ev.Killer.Nickname} ({ev.Killer.Role})!");
         }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnPreAuthenticating(PreAuthenticatingEventArgs)"/>
+        public void OnPreAuthenticating(PreAuthenticatingEventArgs ev)
+        {
+            Log.Info($"{ev.UserId} is pre-authenticating from {ev.Country} ({ev.Request.RemoteEndPoint}) with flags {ev.Flags}!");
+        }
     }
 }

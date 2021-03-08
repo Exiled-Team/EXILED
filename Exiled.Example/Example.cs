@@ -83,6 +83,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension += playerHandler.OnFailingEscapePocketDimension;
             Exiled.Events.Handlers.Player.EscapingPocketDimension += playerHandler.OnEscapingPocketDimension;
             Exiled.Events.Handlers.Player.UnlockingGenerator += playerHandler.OnUnlockingGenerator;
+            Exiled.Events.Handlers.Player.PreAuthenticating += playerHandler.OnPreAuthenticating;
 
             Exiled.Events.Handlers.Warhead.Stopping += warheadHandler.OnStopping;
             Exiled.Events.Handlers.Warhead.Starting += warheadHandler.OnStarting;
@@ -122,6 +123,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.FailingEscapePocketDimension -= playerHandler.OnFailingEscapePocketDimension;
             Exiled.Events.Handlers.Player.EscapingPocketDimension -= playerHandler.OnEscapingPocketDimension;
             Exiled.Events.Handlers.Player.UnlockingGenerator -= playerHandler.OnUnlockingGenerator;
+            Exiled.Events.Handlers.Player.PreAuthenticating -= playerHandler.OnPreAuthenticating;
 
             Exiled.Events.Handlers.Warhead.Stopping -= warheadHandler.OnStopping;
             Exiled.Events.Handlers.Warhead.Starting -= warheadHandler.OnStarting;
