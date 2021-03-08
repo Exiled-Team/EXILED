@@ -44,7 +44,7 @@ namespace Exiled.CustomItems.Commands.List
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = $"Invalid subcommand! Available: registered, spawned, insideinventories";
-            return true;
+            return false;
         }
     }
 }
