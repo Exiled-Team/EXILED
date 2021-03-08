@@ -291,12 +291,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
 
         /// <summary>
-        /// Invoked before an user's radio battery charge is changed.
+        /// Invoked before a user's radio battery charge is changed.
         /// </summary>
         public static event CustomEventHandler<UsingRadioBatteryEventArgs> UsingRadioBattery;
 
         /// <summary>
-        /// Invoked before an user's radio preset is changed.
+        /// Invoked before a user's radio preset is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingRadioPresetEventArgs> ChangingRadioPreset;
 
@@ -619,13 +619,13 @@ namespace Exiled.Events.Handlers
         public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before an user's radio battery charge is changed.
+        /// Called before a user's radio battery charge is changed.
         /// </summary>
         /// <param name="ev">The <see cref="UsingRadioBatteryEventArgs"/> instance.</param>
         public static void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => UsingRadioBattery.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before an user's radio preset is changed.
+        /// Called before a user's radio preset is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
         public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
