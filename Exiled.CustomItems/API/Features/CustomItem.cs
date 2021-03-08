@@ -231,7 +231,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="name">The name of the <see cref="CustomItem"/> to give.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
         /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
-        public static bool TryGive(Player player, string name, bool displayMessage = true)
+        public static bool TryGive(this Player player, string name, bool displayMessage = true)
         {
             if (!TryGet(name, out CustomItem item))
                 return false;
@@ -248,7 +248,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="id">The IDs of the <see cref="CustomItem"/> to give.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
         /// <returns>Returns a value indicating if the player was given the <see cref="CustomItem"/> or not.</returns>
-        public static bool TryGive(Player player, int id, bool displayMessage = true)
+        public static bool TryGive(this Player player, int id, bool displayMessage = true)
         {
             if (!TryGet(id, out CustomItem item))
                 return false;
