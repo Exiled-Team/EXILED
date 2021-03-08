@@ -12,7 +12,9 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using CommandSystem.Commands;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -132,12 +134,12 @@ namespace Exiled.Loader
         {
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
-                    Assembly assembly = LoadAssembly(assemblyPath);
+                Assembly assembly = LoadAssembly(assemblyPath);
 
-                    if (assembly == null)
-                        continue;
+                if (assembly == null)
+                    continue;
 
-                    Locations[assembly] = assemblyPath;
+                Locations[assembly] = assemblyPath;
             }
 
             foreach (Assembly assembly in Locations.Keys)

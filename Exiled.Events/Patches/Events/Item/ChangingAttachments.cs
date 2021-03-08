@@ -50,6 +50,7 @@ namespace Exiled.Events.Patches.Events.Item
             // Handlers.Player.OnChangingAttachments(ev);
             //
             // if (!ev.IsAllowed)
+            //   return;
             //
             // base[index] = ev.Item;
             //

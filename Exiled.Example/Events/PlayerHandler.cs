@@ -7,8 +7,6 @@
 
 namespace Exiled.Example.Events
 {
-    using System;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 

@@ -8,14 +8,8 @@
 namespace Exiled.CustomItems.Commands.List
 {
     using System;
-    using System.Text;
 
     using CommandSystem;
-
-    using Exiled.CustomItems.API.Features;
-    using Exiled.Permissions.Extensions;
-
-    using NorthwoodLib.Pools;
 
     /// <summary>
     /// The command to list all installed items.
