@@ -7,15 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using Exiled.API.Features;
-
 #pragma warning disable SA1313
     using System;
 
     using CustomPlayerEffects;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 

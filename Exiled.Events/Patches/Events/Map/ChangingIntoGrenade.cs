@@ -12,7 +12,6 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using Grenades;

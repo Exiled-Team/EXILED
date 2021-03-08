@@ -8,7 +8,6 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-    using Exiled.API.Enums;
 
     /// <summary>
     /// Contains all information for when the server is turning a pickup into a live grenade.

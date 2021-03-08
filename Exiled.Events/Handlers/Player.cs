@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -291,6 +289,16 @@ namespace Exiled.Events.Handlers
         /// Invoked before an user's intercom mute status is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
+
+        /// <summary>
+        /// Invoked before a user's radio battery charge is changed.
+        /// </summary>
+        public static event CustomEventHandler<UsingRadioBatteryEventArgs> UsingRadioBattery;
+
+        /// <summary>
+        /// Invoked before a user's radio preset is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingRadioPresetEventArgs> ChangingRadioPreset;
 
         /// <summary>
         /// Called before pre-authenticating a player.
@@ -609,5 +617,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntercomMuteStatusEventArgs"/> instance.</param>
         public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a user's radio battery charge is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingRadioBatteryEventArgs"/> instance.</param>
+        public static void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => UsingRadioBattery.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a user's radio preset is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
+        public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
     }
 }
