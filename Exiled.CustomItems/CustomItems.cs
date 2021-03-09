@@ -8,10 +8,15 @@
 namespace Exiled.CustomItems
 {
     using System;
+    using System.Collections.Generic;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
 
     using HarmonyLib;
+
+    using MEC;
 
     /// <summary>
     /// Handles all CustomItem API.
@@ -21,6 +26,8 @@ namespace Exiled.CustomItems
         private static readonly CustomItems Singleton = new CustomItems();
 
         private RoundHandler roundHandler;
+        private ServerHandler serverHandler;
+        private CoroutineHandle handle;
         private Harmony harmony;
 
         private CustomItems()
@@ -36,24 +43,53 @@ namespace Exiled.CustomItems
         public override void OnEnabled()
         {
             roundHandler = new RoundHandler();
+            serverHandler = new ServerHandler();
 
             Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
+            Events.Handlers.Server.SendingRemoteAdminCommand += serverHandler.OnRemoteAdminCommand;
             harmony = new Harmony($"com.{nameof(CustomItems)}.galaxy119-{DateTime.Now.Ticks}");
             harmony.PatchAll();
 
+            handle = Timing.RunCoroutine(ShowCustomItemInNickname());
             base.OnEnabled();
         }
 
         /// <inheritdoc />
         public override void OnDisabled()
         {
+            Timing.KillCoroutines(handle);
             Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+            Events.Handlers.Server.SendingRemoteAdminCommand -= serverHandler.OnRemoteAdminCommand;
             harmony.UnpatchAll();
 
             harmony = null;
             roundHandler = null;
+            serverHandler = null;
 
             base.OnDisabled();
+        }
+
+        private IEnumerator<float> ShowCustomItemInNickname()
+        {
+            for (; ;)
+            {
+                foreach (Player player in Player.List)
+                {
+                    if (!CustomItem.TryGet(player.CurrentItem, out CustomItem customItem))
+                        continue;
+
+                    foreach (Player target in Player.List)
+                    {
+                        target.SendFakeSyncVar(
+                            player.ReferenceHub.networkIdentity,
+                            typeof(NicknameSync),
+                            nameof(NicknameSync.Network_myNickSync),
+                            target.Role == RoleType.Spectator ? $"{player.Nickname} (CustomItem: {customItem.Name})" : player.Nickname);
+                    }
+                }
+
+                yield return Timing.WaitForSeconds(0.50f);
+            }
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Exiled.CustomItems.Commands.List
 
     using NorthwoodLib.Pools;
 
+    using RemoteAdmin;
+
     /// <inheritdoc/>
     internal sealed class InsideInventories : ICommand
     {
@@ -43,7 +45,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customitems.list.insideinventories"))
+            if (!sender.CheckPermission("customitems.list.insideinventories") && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor.Roles.RaEverywhere))
             {
                 response = "Permission Denied, required: customitems.list.insideinventories";
                 return false;

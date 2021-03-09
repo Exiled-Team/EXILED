@@ -128,7 +128,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Only this player can see info.</param>
         /// <param name="target">Target to set info.</param>
         /// <param name="info">Setting info.</param>
-        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => SendFakeSyncVar(player, target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
@@ -160,7 +160,7 @@ namespace Exiled.API.Extensions
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
         /// <param name="value">Value of send to target.</param>
-        public static void SendFakeSyncVar(Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
+        public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
             Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
             {
