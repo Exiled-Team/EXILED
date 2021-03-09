@@ -52,16 +52,14 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
         /// <returns>Returns a dictionary of loaded configs.</returns>
-        public static Dictionary<string, IConfig> Load(string rawConfigs)
+        public static SortedDictionary<string, IConfig> Load(string rawConfigs)
         {
             try
             {
                 Log.Info("Loading plugin configs...");
 
-                rawConfigs = Regex.Replace(rawConfigs, @"\ !.*", string.Empty).Replace("!Dictionary[string,IConfig]", string.Empty);
-
                 Dictionary<string, object> rawDeserializedConfigs = Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
-                Dictionary<string, IConfig> deserializedConfigs = new Dictionary<string, IConfig>();
+                SortedDictionary<string, IConfig> deserializedConfigs = new SortedDictionary<string, IConfig>(StringComparer.Ordinal);
 
                 if (!rawDeserializedConfigs.TryGetValue("exiled_loader", out object rawDeserializedConfig))
                 {
@@ -145,7 +143,7 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="configs">The configs to be saved.</param>
         /// <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
-        public static bool Save(Dictionary<string, IConfig> configs)
+        public static bool Save(SortedDictionary<string, IConfig> configs)
         {
             try
             {
