@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Fixes
         /// <returns>New <see cref="CodeInstruction"/>.</returns>
         internal static IEnumerable<CodeInstruction> FixInstructions(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = new List<CodeInstruction>(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 1;
 
@@ -50,7 +50,8 @@ namespace Exiled.Events.Patches.Fixes
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            return newInstructions;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
         }
     }
 
@@ -60,15 +61,7 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.PreWindup))]
     internal static class Scp096FailEnrageFix
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(InstructionBuilder.FixInstructions(instructions, generator));
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) => InstructionBuilder.FixInstructions(instructions, generator);
     }
 
     /// <summary>
@@ -77,14 +70,6 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.Windup))]
     internal static class Scp096WindupFix
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
-        {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(InstructionBuilder.FixInstructions(instructions, generator));
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
-        }
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator) => InstructionBuilder.FixInstructions(instructions, generator);
     }
 }
