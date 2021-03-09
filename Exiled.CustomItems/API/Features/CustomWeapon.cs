@@ -135,7 +135,7 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
             if (ev.IsAllowed && ev.Attacker != ev.Target)
-                ev.Amount = Damage;
+                ev.Amount = ev.Target.Role == RoleType.Scp106 ? Damage * 0.1f : Damage;
         }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
