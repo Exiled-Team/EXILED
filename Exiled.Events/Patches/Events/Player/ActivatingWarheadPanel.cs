@@ -58,10 +58,10 @@ namespace Exiled.Events.Patches.Events.Player
             // Define the inside if label.
             var insideIfLabel = newInstructions[insideIfIndex].WithLabels(generator.DefineLabel()).labels[0];
 
-            // Define the check bypass or contains label.
+            // Define the checked bypass or contains label.
             var checkedBypassLabel = generator.DefineLabel();
 
-            // Define the check contains label label.
+            // Define the checked contains label label.
             var checkedContainsLabel = generator.DefineLabel();
 
             // if (!this._sr.BypassMode && itemById == null)
