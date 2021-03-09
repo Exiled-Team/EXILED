@@ -49,9 +49,6 @@ namespace Exiled.Events.Patches.Events.Player
             // Declare List<string> local variable.
             var list = generator.DeclareLocal(typeof(List<string>));
 
-            // Get the first label of the last "ret".
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
             // Define the continue label.
             var continueLabel = generator.DefineLabel();
 
@@ -87,10 +84,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.BypassMode))),
                 new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
 
-                // if (itemByID == null)
-                //   return;
+                // if (itemByID != null)
+                //   goto continueLabel
                 new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
+
+                // return
+                new CodeInstruction(OpCodes.Ret),
 
                 // var list = ListPool<string>.Shared.Rent()
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ListPool<string>), nameof(ListPool<string>.Shared))).WithLabels(continueLabel),
@@ -100,7 +100,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // list.Add("CONT_LVL_3)
                 new CodeInstruction(OpCodes.Ldstr, permission),
-                new CodeInstruction(OpCodes.Call, Method(typeof(List<string>), nameof(List<string>.Add))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<string>), nameof(List<string>.Add))),
 
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0),
