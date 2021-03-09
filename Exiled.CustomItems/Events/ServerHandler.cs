@@ -38,7 +38,7 @@ namespace Exiled.CustomItems
                     {
                         if (item.ShouldMessageOnGban)
                         {
-                            builder.AppendLine(item.Name + " - " + item.Description);
+                            builder.Append(item.Name).Append(" - ").Append(item.Description).AppendLine();
                         }
                     }
 
