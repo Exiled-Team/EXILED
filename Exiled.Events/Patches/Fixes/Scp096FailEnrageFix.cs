@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Scp096PreWindupFix.cs" company="Exiled Team">
+// <copyright file="Scp096FailEnrageFix.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Fixes
     /// patches <see cref="Scp096.PreWindup"/>.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.PreWindup))]
-    internal static class Scp096PreWindupFix
+    internal static class Scp096FailEnrageFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
