@@ -78,7 +78,7 @@ namespace Exiled.Events.Handlers
         public static void OnCharging(ChargingEventArgs ev) => Charging.InvokeSafely(ev);
 
         /// <summary>
-        /// Called  before SCP-096 starts trying not to cry.
+        /// Called before SCP-096 starts trying not to cry.
         /// </summary>
         /// <param name="ev">The <see cref="TryingNotToCryEventArgs"/> instance.</param>
         public static void OnTryingNotToCry(TryingNotToCryEventArgs ev) => TryingNotToCry.InvokeSafely(ev);
