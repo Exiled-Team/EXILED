@@ -42,11 +42,11 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // search for "this._hub" before the only "PlayerEffect.ServerDisable()"
-            int offset = 17;
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerEffect), nameof(PlayerEffect.ServerDisable))) - offset;
+            int offset = -17;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerEffect), nameof(PlayerEffect.ServerDisable))) + offset;
 
-            LocalBuilder ev1 = generator.DeclareLocal(typeof(ShootingEventArgs));
-            LocalBuilder ev2 = generator.DeclareLocal(typeof(ShotEventArgs));
+            LocalBuilder shoootingEv = generator.DeclareLocal(typeof(ShootingEventArgs));
+            LocalBuilder shotEv = generator.DeclareLocal(typeof(ShotEventArgs));
 
             Label returnLabel = generator.DefineLabel();
 
@@ -54,8 +54,8 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // GameObject target
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShootingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev1.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, shoootingEv.LocalIndex),
 
                 // Handlers.Server.OnShooting(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
@@ -82,15 +82,15 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // Search for the only "PlayerStats.HurtPlayer()"
-            offset = 34;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))) - offset;
+            offset = -34;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // GameObject target
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev2.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, shotEv.LocalIndex),
 
                 // Handlers.Player.OnShot(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
@@ -121,7 +121,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // num4 = ev.Damage
-                new CodeInstruction(OpCodes.Ldloc_S, ev2.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, shotEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
                 new CodeInstruction(OpCodes.Stloc_S, 13),
             });
