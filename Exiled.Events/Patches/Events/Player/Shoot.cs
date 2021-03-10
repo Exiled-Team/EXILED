@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager._hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(WeaponManager), nameof(WeaponManager._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // GameObject target
@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(WeaponManager), nameof(WeaponManager._hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(WeaponManager), nameof(WeaponManager._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // GameObject target
