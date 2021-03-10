@@ -22,12 +22,14 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches the <see cref="Scp096.TryNotToCry"/> method.
     /// Adds the <see cref="Handlers.Scp096.TryingNotToCry"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.Charging))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.TryNotToCry))]
     internal static class TryingNotToCry
     {
+        private static readonly int DoorMask = LayerMask.GetMask("Door");
+
         private static bool Prefix(Scp096 __instance)
         {
-            if (!Physics.Raycast(__instance.Hub.PlayerCameraReference.position, __instance.Hub.PlayerCameraReference.forward, out RaycastHit hitInfo, 1f, LayerMask.GetMask("Door")))
+            if (!Physics.Raycast(__instance.Hub.PlayerCameraReference.position, __instance.Hub.PlayerCameraReference.forward, out RaycastHit hitInfo, 1f, DoorMask))
                 return false;
 
             DoorVariant componentInParent = hitInfo.collider.gameObject.GetComponentInParent<DoorVariant>();
@@ -35,6 +37,8 @@ namespace Exiled.Events.Patches.Events.Scp096
                 return false;
 
             var ev = new TryingNotToCryEventArgs(__instance, API.Features.Player.Get(__instance.Hub.gameObject), componentInParent);
+
+            Handlers.Scp096.OnTryingNotToCry(ev);
 
             if (ev.IsAllowed)
             {
