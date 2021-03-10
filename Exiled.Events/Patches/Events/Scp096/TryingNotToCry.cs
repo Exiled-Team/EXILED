@@ -7,20 +7,16 @@
 
 namespace Exiled.Events.Patches.Events.Scp096
 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
-#pragma warning disable SA1118
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using Interactables.Interobjects.DoorUtils;
-
     using NorthwoodLib.Pools;
 
     using PlayableScps;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
