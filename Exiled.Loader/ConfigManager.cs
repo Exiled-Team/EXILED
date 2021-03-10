@@ -10,7 +10,6 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text.RegularExpressions;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -47,12 +46,16 @@ namespace Exiled.Loader
             .IgnoreUnmatchedProperties()
             .Build();
 
+        /// <inheritdoc cref="LoadSorted(string)"/>
+        [Obsolete("Replaced with LoadSorted(string)", true)]
+        public static Dictionary<string, IConfig> Load(string rawConfigs) => new Dictionary<string, IConfig>(LoadSorted(rawConfigs));
+
         /// <summary>
         /// Loads all plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
         /// <returns>Returns a dictionary of loaded configs.</returns>
-        public static SortedDictionary<string, IConfig> Load(string rawConfigs)
+        public static SortedDictionary<string, IConfig> LoadSorted(string rawConfigs)
         {
             try
             {
@@ -115,7 +118,7 @@ namespace Exiled.Loader
         /// Reads, Loads and Saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
-        public static bool Reload() => Save(Load(Read()));
+        public static bool Reload() => Save(LoadSorted(Read()));
 
         /// <summary>
         /// Saves plugin configs.
@@ -137,6 +140,10 @@ namespace Exiled.Loader
                 return false;
             }
         }
+
+        /// <inheritdoc cref="Save(SortedDictionary{string, IConfig})"/>
+        [Obsolete("Replaced with Save(SortedDictionary{string, IConfig})", true)]
+        public static bool Save(Dictionary<string, IConfig> configs) => Save(new SortedDictionary<string, IConfig>(configs));
 
         /// <summary>
         /// Saves plugin configs.
