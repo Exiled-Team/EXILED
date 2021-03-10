@@ -81,9 +81,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
-            // Search for the only "PlayerStats.HurtPlayer()"
-            offset = -34;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))) + offset;
+            // Search for the last "Div" call before the only "PlayerStats.HurtPlayer()"
+            offset = +2;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Div) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
