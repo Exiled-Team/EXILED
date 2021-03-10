@@ -79,7 +79,7 @@ namespace Exiled.Events.Patches.Events.Scp049
                 // if (!ev.IsAllowed)
                 //   return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartingRecallEventArgs), nameof(StartingRecallEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
             offset = -5;
