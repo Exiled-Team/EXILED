@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Scp096
     using System.Collections.Generic;
     using System.Reflection.Emit;
 #pragma warning disable SA1118
-#pragma warning disable SA1313
 #pragma warning disable SA1402
     using Exiled.Events.EventArgs;
 
