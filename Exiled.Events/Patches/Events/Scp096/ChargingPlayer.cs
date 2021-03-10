@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.ChargePlayer"/>.
     /// Adds the <see cref="Handlers.Scp096.Charging"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.Charging))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.ChargePlayer))]
     internal static class ChargingPlayer
     {
         private static readonly int ChargingMask = LayerMask.GetMask("Default", "Door", "Glass");
