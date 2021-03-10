@@ -82,7 +82,7 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // Search for the last "Div" call before the only "PlayerStats.HurtPlayer()"
-            offset = +2;
+            offset = 2;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Div) + offset;
 
             newInstructions.InsertRange(index, new[]
