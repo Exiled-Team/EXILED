@@ -710,8 +710,13 @@ namespace Exiled.CustomItems.API.Features
         private void OnInternalChanging(ChangingItemEventArgs ev)
         {
             if (!Check(ev.NewItem))
+            {
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
                 return;
+            }
 
+            foreach (Player player in Player.Get(RoleType.Spectator))
+                player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {Name})");
             OnChanging(ev);
         }
 
