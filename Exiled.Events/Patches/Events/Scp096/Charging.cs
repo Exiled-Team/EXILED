@@ -18,7 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.Charge"/>.
     /// Adds the <see cref="Handlers.Scp096.Charging"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.Charging))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.Charge))]
     internal static class Charging
     {
         private static bool Prefix(Scp096 __instance)
