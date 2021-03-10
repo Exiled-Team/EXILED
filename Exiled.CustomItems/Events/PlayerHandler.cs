@@ -20,36 +20,28 @@ namespace Exiled.CustomItems
         /// <inheritdoc cref="ChangingRoleEventArgs"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            switch (ev.NewRole == RoleType.Spectator)
+            if (ev.NewRole == RoleType.Spectator)
             {
-                case true:
+                foreach (Player player in Player.List)
                 {
-                    foreach (Player player in Player.List)
+                    if (player == ev.Player)
+                        continue;
+
+                    if (CustomItem.TryGet(player, out CustomItem item))
                     {
-                        if (player == ev.Player)
-                            continue;
-
-                        if (CustomItem.TryGet(player, out CustomItem item))
-                        {
-                            if (item.ShouldMessageOnGban)
-                                ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {item.Name})");
-                        }
+                        if (item.ShouldMessageOnGban)
+                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {item.Name})");
                     }
-
-                    break;
                 }
-
-                case false:
+            }
+            else
+            {
+                foreach (Player player in Player.List)
                 {
-                    foreach (Player player in Player.List)
-                    {
-                        if (player == ev.Player)
-                            continue;
+                    if (player == ev.Player)
+                        continue;
 
-                        ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), player.Nickname);
-                    }
-
-                    break;
+                    ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), player.Nickname);
                 }
             }
         }
