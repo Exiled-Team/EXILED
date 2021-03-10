@@ -715,8 +715,14 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            foreach (Player player in Player.Get(RoleType.Spectator))
-                player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {Name})");
+            if (ShouldMessageOnGban)
+            {
+                foreach (Player player in Player.Get(RoleType.Spectator))
+                {
+                    player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {Name})");
+                }
+            }
+
             OnChanging(ev);
         }
 

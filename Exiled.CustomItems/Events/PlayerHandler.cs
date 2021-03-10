@@ -17,6 +17,7 @@ namespace Exiled.CustomItems
     /// </summary>
     internal sealed class PlayerHandler
     {
+        /// <inheritdoc cref="ChangingRoleEventArgs"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             switch (ev.NewRole == RoleType.Spectator)
@@ -30,7 +31,8 @@ namespace Exiled.CustomItems
 
                         if (CustomItem.TryGet(player, out CustomItem item))
                         {
-                            ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {item.Name})");
+                            if (item.ShouldMessageOnGban)
+                                ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {item.Name})");
                         }
                     }
 
