@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Scp096
             if (componentInParent == null || componentInParent.GetExactState() > 0.0 || Scp096._takenDoors.ContainsKey(__instance.Hub.gameObject))
                 return false;
 
-            var ev = new TryingNotToCryEventArgs(__instance, API.Features.Player.Get(__instance.Hub.gameObject), componentInParent);
+            var ev = new TryingNotToCryEventArgs(__instance, API.Features.Player.Get(__instance.Hub), componentInParent);
 
             Handlers.Scp096.OnTryingNotToCry(ev);
 
