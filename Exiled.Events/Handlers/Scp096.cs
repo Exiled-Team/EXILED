@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TryingNotToCryEventArgs> TryingNotToCry;
 
         /// <summary>
+        /// Invoked before SCP-096 charges a player.
+        /// </summary>
+        public static event CustomEventHandler<ChargingPlayerEventArgs> ChargingPlayer;
+
+        /// <summary>
         /// Called before SCP-096 is enraged.
         /// </summary>
         /// <param name="ev">The <see cref="EnragingEventArgs"/> instance.</param>
@@ -82,5 +87,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TryingNotToCryEventArgs"/> instance.</param>
         public static void OnTryingNotToCry(TryingNotToCryEventArgs ev) => TryingNotToCry.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-096 charges a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChargingPlayerEventArgs"/> instance.</param>
+        public static void OnChargingPlayer(ChargingPlayerEventArgs ev) => ChargingPlayer.InvokeSafely(ev);
     }
 }
