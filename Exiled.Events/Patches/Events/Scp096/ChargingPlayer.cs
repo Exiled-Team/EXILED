@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     /// <summary>
     /// Patches <see cref="Scp096.ChargePlayer"/>.
-    /// Adds the <see cref="Handlers.Scp096.Charging"/> event.
+    /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp096), nameof(Scp096.ChargePlayer))]
     internal static class ChargingPlayer
