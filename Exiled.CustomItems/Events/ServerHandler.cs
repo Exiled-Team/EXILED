@@ -26,31 +26,30 @@ namespace Exiled.CustomItems
         {
             if (ev.Name.ToLower() == "gban-kick" && ev.Sender.ReferenceHub.queryProcessor._sender.ServerRoles.RaEverywhere)
             {
-                Player player = Player.Get(string.Join(" ", ev.Arguments));
-                if (player == null)
+                if (!(Player.Get(string.Join(" ", ev.Arguments)) is Player player))
                     return;
 
-                if (CustomItem.TryGet(player, out IEnumerable<CustomItem> customItems))
+                if (!CustomItem.TryGet(player, out IEnumerable<CustomItem> customItems))
+                    return;
+
+                StringBuilder builder = StringBuilderPool.Shared.Rent();
+
+                foreach (CustomItem item in customItems)
                 {
-                    StringBuilder builder = StringBuilderPool.Shared.Rent();
-
-                    foreach (CustomItem item in customItems)
+                    if (item.ShouldMessageOnGban)
                     {
-                        if (item.ShouldMessageOnGban)
-                        {
-                            builder.Append(item.Name).Append(" - ").Append(item.Description).AppendLine();
-                        }
+                        builder.Append(item.Name).Append(" - ").Append(item.Description).AppendLine();
                     }
+                }
 
-                    string itemNames = StringBuilderPool.Shared.ToStringReturn(builder);
+                string itemNames = StringBuilderPool.Shared.ToStringReturn(builder);
 
-                    if (!string.IsNullOrEmpty(itemNames))
-                    {
-                        ev.Sender.SendConsoleMessage(
-                            $"{player.Nickname} has been globally banned while in possession of the following items: {itemNames}\n" +
-                            "Note: The creator(s) of these items have specifically flagged these items as doing something that may cause suspicion of hacking.",
-                            "red");
-                    }
+                if (!string.IsNullOrEmpty(itemNames))
+                {
+                    ev.Sender.SendConsoleMessage(
+                        $"{player.Nickname} has been globally banned while in possession of the following items: {itemNames}\n" +
+                        "Note: The creator(s) of these items have specifically flagged these items as doing something that may cause suspicion of hacking.",
+                        "red");
                 }
             }
         }
