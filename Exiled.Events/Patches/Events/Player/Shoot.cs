@@ -41,8 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // search for the only "PlayerEffect.ServerDisable()"
-            int offset = 2;
+            // search for "this._hub" before the only "PlayerEffect.ServerDisable()"
+            int offset = 17;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(PlayerEffect), nameof(PlayerEffect.ServerDisable))) - offset;
 
             LocalBuilder ev1 = generator.DeclareLocal(typeof(ShootingEventArgs));
