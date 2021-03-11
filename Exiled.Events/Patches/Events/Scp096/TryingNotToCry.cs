@@ -43,9 +43,15 @@ namespace Exiled.Events.Patches.Events.Scp096
             // Get the return label from the instruction.
             var returnLabel = newInstructions[index - 1].labels[0];
 
+            // var ev = new TryingNotToCryEventArgs(Scp096 scp096, Player player, door, true);
+            //
+            // Handlers.Scp096.OnTryingNotToCry(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -54,11 +60,9 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TryingNotToCryEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnTryingNotToCry))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(TryingNotToCryEventArgs), nameof(TryingNotToCryEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TryingNotToCryEventArgs), nameof(TryingNotToCryEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
-
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
