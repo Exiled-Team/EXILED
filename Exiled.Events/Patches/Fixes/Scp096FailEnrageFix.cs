@@ -98,13 +98,5 @@ namespace Exiled.Events.Patches.Fixes
                 yield return newInstructions[z];
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void Test(Scp096 scp096, bool force = false)
-        {
-            if (scp096._targets.Count == 0 && !force)
-                    return;
-
-            scp096._attacking = true;
-        }
     }
 }
