@@ -711,15 +711,17 @@ namespace Exiled.CustomItems.API.Features
         {
             if (!Check(ev.NewItem))
             {
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName));
                 return;
             }
 
+            Log.Info($"{ev.Player.Nickname} changed to {Name} -- {ShouldMessageOnGban}");
             if (ShouldMessageOnGban)
             {
                 foreach (Player player in Player.Get(RoleType.Spectator))
                 {
-                    player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {Name})");
+                    Log.Info($"{player.Nickname} is being sent a fake syncvar.");
+                    Timing.CallDelayed(0.5f, () => player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.Player.Nickname} (CustomItem: {Name})"));
                 }
             }
 
