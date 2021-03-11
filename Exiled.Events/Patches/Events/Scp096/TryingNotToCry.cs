@@ -10,21 +10,21 @@ namespace Exiled.Events.Patches.Events.Scp096
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
-    using PlayableScps;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp096.TryNotToCry"/> method.
+    /// Patches the <see cref="PlayableScps.Scp096.TryNotToCry"/> method.
     /// Adds the <see cref="Handlers.Scp096.TryingNotToCry"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.TryNotToCry))]
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.TryNotToCry))]
     internal static class TryingNotToCry
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -53,8 +53,8 @@ namespace Exiled.Events.Patches.Events.Scp096
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScp), nameof(PlayableScp.Hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TryingNotToCryEventArgs))[0]),
