@@ -92,6 +92,12 @@ namespace Exiled.CustomItems.API.Features
         public HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
 
         /// <summary>
+        /// Gets a value indicating whether whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
+        /// </summary>
+        [YamlIgnore]
+        public virtual bool ShouldMessageOnGban { get; } = false;
+
+        /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
@@ -594,6 +600,8 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.RemoveItem(item);
 
                 Spawn(ev.Player, item);
+
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -614,6 +622,8 @@ namespace Exiled.CustomItems.API.Features
                 InsideInventories.Remove(item.uniq);
 
                 Spawn(ev.Target, item);
+
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -634,6 +644,8 @@ namespace Exiled.CustomItems.API.Features
                 InsideInventories.Remove(item.uniq);
 
                 Spawn(ev.NewRole.GetRandomSpawnPoint(), item);
+
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -698,7 +710,18 @@ namespace Exiled.CustomItems.API.Features
         private void OnInternalChanging(ChangingItemEventArgs ev)
         {
             if (!Check(ev.NewItem))
+            {
+                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
                 return;
+            }
+
+            if (ShouldMessageOnGban)
+            {
+                foreach (Player player in Player.Get(RoleType.Spectator))
+                {
+                    player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync), $"{ev.Player.Nickname} (CustomItem: {Name})");
+                }
+            }
 
             OnChanging(ev);
         }
