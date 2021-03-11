@@ -715,12 +715,10 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            Log.Info($"{ev.Player.Nickname} changed to {Name} -- {ShouldMessageOnGban}");
             if (ShouldMessageOnGban)
             {
                 foreach (Player player in Player.Get(RoleType.Spectator))
                 {
-                    Log.Info($"{player.Nickname} is being sent a fake syncvar.");
                     Timing.CallDelayed(0.5f, () => player.SendFakeSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{ev.Player.Nickname} (CustomItem: {Name})"));
                 }
             }

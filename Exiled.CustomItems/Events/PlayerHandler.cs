@@ -22,19 +22,16 @@ namespace Exiled.CustomItems
         {
             if (ev.NewRole == RoleType.Spectator)
             {
-                Log.Info($"{ev.Player.Nickname} -> {ev.NewRole}");
                 foreach (Player player in Player.List)
                 {
                     if (player == ev.Player)
                     {
-                        Log.Info($"{ev.Player.Nickname} == {player.Nickname}");
                         continue;
                     }
 
                     Log.Info($"Getting items for {player.Nickname}");
                     if (CustomItem.TryGet(player, out CustomItem item))
                     {
-                        Log.Info($"{player.Nickname} using {item.Name} -- {item.ShouldMessageOnGban}");
                         if (item.ShouldMessageOnGban)
                         {
                             ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.Nickname} (CustomItem: {item.Name})");
