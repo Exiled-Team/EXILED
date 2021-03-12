@@ -37,9 +37,6 @@ namespace Exiled.Events.Patches.Events.Scp096
             // Search for last "lfsfld".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
-
             // Get the return label from the instruction.
             var returnLabel = newInstructions[index - 1].labels[0];
 

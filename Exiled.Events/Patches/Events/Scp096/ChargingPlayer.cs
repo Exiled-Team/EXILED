@@ -40,11 +40,8 @@ namespace Exiled.Events.Patches.Events.Scp096
             // The index offset.
             const int offset = 1;
 
-            // Search for last "lfsfld".
+            // Search for "Stloc_0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_0) + offset;
-
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
             var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
