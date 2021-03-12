@@ -29,13 +29,11 @@ namespace Exiled.CustomItems
                         continue;
                     }
 
-                    Log.Info($"Getting items for {player.Nickname}");
                     if (CustomItem.TryGet(player, out CustomItem item))
                     {
                         if (item.ShouldMessageOnGban)
                         {
                             ev.Player.SendFakeSyncVar(player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName), $"{player.Nickname} (CustomItem: {item.Name})");
-                            Log.Info($"{ev.Player.Nickname} has been sent a fake syncvar.");
                         }
                     }
                 }
