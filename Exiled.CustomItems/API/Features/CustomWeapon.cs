@@ -134,7 +134,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.IsAllowed && ev.Attacker != ev.Target)
+            if (ev.IsAllowed && ev.Attacker != ev.Target && ev.DamageType == DamageTypes.FromWeaponId(ev.Attacker.ReferenceHub.weaponManager.curWeapon))
                 ev.Amount = ev.Target.Role == RoleType.Scp106 ? Damage * 0.1f : Damage;
         }
 
