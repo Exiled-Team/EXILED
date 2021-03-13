@@ -21,13 +21,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="camera"><inheritdoc cref="Camera"/></param>
-        /// <param name="apCost"><inheritdoc cref="APCost"/></param>
+        /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ElevatorTeleportEventArgs(Player player, Camera079 camera, float apCost, bool isAllowed = true)
+        public ElevatorTeleportEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
             Camera = camera;
-            APCost = apCost;
+            AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
 
@@ -42,9 +42,19 @@ namespace Exiled.Events.EventArgs
         public Camera079 Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of AP will be consumed during the level change.
+        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
         /// </summary>
-        public float APCost { get; set; }
+        public float AuxiliaryPowerCost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of AP that will be removed for the first time when using speakers through SCP-079.
+        /// </summary>
+        [Obsolete("Use AuxiliaryPowerCost instead.", true)]
+        public float APCost
+        {
+            get => AuxiliaryPowerCost;
+            set => AuxiliaryPowerCost = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can teleport.
