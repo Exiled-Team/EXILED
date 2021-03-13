@@ -42,7 +42,7 @@ namespace Exiled.Events.Commands.Reload
                 return false;
             }
 
-            bool haveBeenReloaded = ConfigManager.Reload();
+            bool haveBeenReloaded = ConfigManager.ReloadAll();
 
             Handlers.Server.OnReloadedConfigs();
 

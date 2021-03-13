@@ -105,7 +105,7 @@ namespace Exiled.Loader
             LoadDependencies();
             LoadPlugins();
 
-            ConfigManager.Reload();
+            ConfigManager.ReloadAll();
 
             EnablePlugins();
 
@@ -285,7 +285,7 @@ namespace Exiled.Loader
 
             LoadPlugins();
 
-            ConfigManager.Reload();
+            ConfigManager.ReloadAll();
 
             EnablePlugins();
         }

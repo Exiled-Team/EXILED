@@ -115,10 +115,73 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Loads all plugin translations.
+        /// </summary>
+        /// <param name="rawTranslations">The raw translations to be loaded.</param>
+        /// <returns>Returns a dictionary of loaded translations.</returns>
+        public static SortedDictionary<string, ITranslations> LoadSortedTranslations(string rawTranslations)
+        {
+            try
+            {
+                Log.Info("Loading plugin translations...");
+
+                Dictionary<string, object> rawDeserializedTranslations = Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
+                SortedDictionary<string, ITranslations> deserializedTranslations = new SortedDictionary<string, ITranslations>(StringComparer.Ordinal);
+
+                foreach (IPlugin<IConfig> plugin in Loader.Plugins)
+                {
+                    if (!rawDeserializedTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
+                    {
+                        Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
+
+                        deserializedTranslations.Add(plugin.Prefix, plugin.Translations);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            deserializedTranslations.Add(plugin.Prefix, (ITranslations)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.Translations.GetType()));
+
+                            plugin.Translations.CopyProperties(deserializedTranslations[plugin.Prefix]);
+                        }
+                        catch (YamlException yamlException)
+                        {
+                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead! {yamlException}");
+
+                            deserializedTranslations.Add(plugin.Prefix, plugin.Translations);
+                        }
+                    }
+                }
+
+                Log.Info("Plugin translations loaded successfully!");
+
+                return deserializedTranslations;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while loading translations! {exception}");
+
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Reads, Loads and Saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
         public static bool Reload() => Save(LoadSorted(Read()));
+
+        /// <summary>
+        /// Reads, Loads and Saves plugin translations.
+        /// </summary>
+        /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
+        public static bool ReloadTranslations() => SaveTranslations(LoadSortedTranslations(ReadTranslations()));
+
+        /// <summary>
+        /// Reads, Loads and Saves plugin configs and translations.
+        /// </summary>
+        /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
+        public static bool ReloadAll() => Reload() && ReloadTranslations();
 
         /// <summary>
         /// Saves plugin configs.
@@ -136,6 +199,27 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while saving configs to {Paths.Config} path: {exception}");
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves plugin translations.
+        /// </summary>
+        /// <param name="translations">The translations to be saved, already serialized in yaml format.</param>
+        /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
+        public static bool SaveTranslations(string translations)
+        {
+            try
+            {
+                File.WriteAllText(Paths.Translations, translations ?? string.Empty);
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path: {exception}");
 
                 return false;
             }
@@ -168,6 +252,28 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Saves plugin translations.
+        /// </summary>
+        /// <param name="translations">The translations to be saved.</param>
+        /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
+        public static bool SaveTranslations(SortedDictionary<string, ITranslations> translations)
+        {
+            try
+            {
+                if (translations == null || translations.Count == 0)
+                    return false;
+
+                return SaveTranslations(Serializer.Serialize(translations));
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"An error has occurred while serializing translations: {yamlException}");
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Read all plugin configs.
         /// </summary>
         /// <returns>Returns the read configs.</returns>
@@ -181,6 +287,25 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while reading configs from {Paths.Config} path: {exception}");
+            }
+
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Read all plugin translations.
+        /// </summary>
+        /// <returns>Returns the read translations.</returns>
+        public static string ReadTranslations()
+        {
+            try
+            {
+                if (File.Exists(Paths.Translations))
+                    return File.ReadAllText(Paths.Translations);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while reading translations from {Paths.Translations} path: {exception}");
             }
 
             return string.Empty;

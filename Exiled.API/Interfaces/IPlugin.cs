@@ -69,6 +69,11 @@ namespace Exiled.API.Interfaces
         TConfig Config { get; }
 
         /// <summary>
+        /// Gets the plugin translations.
+        /// </summary>
+        ITranslations Translations { get; }
+
+        /// <summary>
         /// Fired after enabling the plugin.
         /// </summary>
         void OnEnabled();

@@ -53,6 +53,11 @@ namespace Exiled.API.Features
         public static string Config { get; set; }
 
         /// <summary>
+        /// Gets or sets translations path.
+        /// </summary>
+        public static string Translations { get; set; }
+
+        /// <summary>
         /// Gets or sets logs path.
         /// </summary>
         public static string Log { get; set; }
@@ -68,6 +73,7 @@ namespace Exiled.API.Features
             Dependencies = Path.Combine(Plugins, "dependencies");
             Configs = Path.Combine(Exiled, "Configs");
             Config = Path.Combine(Configs, $"{Server.Port}-config.yml");
+            Translations = Path.Combine(Configs, $"{Server.Port}-translations.yml");
             Log = Path.Combine(Exiled, $"{Server.Port}-RemoteAdminLog.txt");
         }
     }

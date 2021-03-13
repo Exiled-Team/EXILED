@@ -70,6 +70,9 @@ namespace Exiled.API.Features
         public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
+        public ITranslations Translations { get; } = null;
+
+        /// <inheritdoc/>
         public virtual void OnEnabled()
         {
             var attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
