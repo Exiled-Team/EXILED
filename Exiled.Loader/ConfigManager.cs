@@ -130,6 +130,9 @@ namespace Exiled.Loader
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
+                    if (plugin.Translations == null)
+                        continue;
+
                     if (!rawDeserializedTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
                     {
                         Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
