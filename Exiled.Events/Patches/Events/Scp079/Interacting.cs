@@ -124,9 +124,9 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region InteractingDoorEventArgs
+            #region TriggeringDoorEventArgs
 
-            // Declare a local variable of the type "InteractingDoorEventArgs";
+            // Declare a local variable of the type "TriggeringDoorEventArgs";
             var interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
 
             offset = 10;
@@ -300,7 +300,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region ElevatorTeleportEventArgs
+            #region ElevatorTeleportingEventArgs
 
             // Index offset.
             offset = 5;
@@ -309,12 +309,12 @@ namespace Exiled.Events.Patches.Events.Scp079
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
             (string)instruction.operand == "Elevator Teleport") + offset;
 
-            // Declare a local variable of the type "ElevatorTeleportEventArgs";
-            var elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportEventArgs));
+            // Declare a local variable of the type "ElevatorTeleportingEventArgs";
+            var elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
 
-            // var ev = new ElevatorTeleportEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, this.curMana > manaFromLabel);
+            // var ev = new ElevatorTeleportingEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, this.curMana > manaFromLabel);
             //
-            // Handlers.Scp079.OnElevatorTeleport(ev);
+            // Handlers.Scp079.OnElevatorTeleporting(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -337,23 +337,23 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Cgt),
 
-                // var ev = new ElevatorTeleportEventArgs(...)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorTeleportEventArgs))[0]),
+                // var ev = new ElevatorTeleportingEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorTeleportingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, elevatorTeleportEv.LocalIndex),
 
-                // Handlers.Map.OnElevatorTeleport(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnElevatorTeleport))),
+                // Handlers.Map.OnElevatorTeleporting(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnElevatorTeleporting))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportEventArgs), nameof(ElevatorTeleportEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportingEventArgs), nameof(ElevatorTeleportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, elevatorTeleportEv.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportEventArgs), nameof(ElevatorTeleportEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportingEventArgs), nameof(ElevatorTeleportingEventArgs.AuxiliaryPowerCost))),
                 new CodeInstruction(OpCodes.Stloc_3),
             };
 
