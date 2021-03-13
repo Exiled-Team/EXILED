@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TriggeringDoorEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
+        /// Gets or sets the amount of auxiliary power required to trigger a door through SCP-079.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
     }

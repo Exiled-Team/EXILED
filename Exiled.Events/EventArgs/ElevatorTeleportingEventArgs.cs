@@ -42,13 +42,13 @@ namespace Exiled.Events.EventArgs
         public Camera079 Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
+        /// Gets or sets the amount of auxiliary power required to teleport to an elevator camera.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can teleport.
-        /// Defaults to a <see cref="bool"/> describing whether or not SCP-079 has enough AP to teleport.
+        /// Defaults to a <see cref="bool"/> describing whether or not SCP-079 has enough auxiliary power to teleport.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public TeslaGate Tesla { get; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
+        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate through SCP-079.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 

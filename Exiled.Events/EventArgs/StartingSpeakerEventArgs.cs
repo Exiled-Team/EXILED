@@ -42,12 +42,12 @@ namespace Exiled.Events.EventArgs
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
+        /// Gets or sets the amount of auxiliary power required to use a speaker through SCP-079.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of AP that will be removed for the first time when using speakers through SCP-079.
+        /// Gets or sets the amount of auxiliary power that will be removed for the first time when using speakers through SCP-079.
         /// </summary>
         [Obsolete("Use AuxiliaryPowerCost instead.", true)]
         public float APDrain
