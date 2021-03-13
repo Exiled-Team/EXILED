@@ -23,13 +23,11 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="door"><inheritdoc cref="Door"/></param>
-        /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingDoorEventArgs(Player player, DoorVariant door, float auxiliaryPowerCost, bool isAllowed = true)
+        public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
         {
             Player = player;
             Door = door;
-            AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
 
@@ -42,11 +40,6 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the <see cref="Door"/> instance.
         /// </summary>
         public DoorVariant Door { get; set; }
-
-        /// <summary>
-        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate.
-        /// </summary>
-        public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the door.

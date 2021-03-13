@@ -127,7 +127,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             #region InteractingDoorEventArgs
 
             // Declare a local variable of the type "InteractingDoorEventArgs";
-            var interactingDoorEv = generator.DeclareLocal(typeof(InteractingDoorEventArgs));
+            var interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
 
             offset = 10;
 
@@ -135,9 +135,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
             (sbyte)instruction.operand == ',') + offset;
 
-            // var ev = new InteractingDoorEventArgsg(Player.Get(this.gameObject), doorVariant, manaFromLabel, this.curMana > manaFromLabel);
+            // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, this.curMana > manaFromLabel);
             //
-            // Handlers.Map.OnInteractingDoor(ev);
+            // Handlers.Scp079.OnTriggeringDoor(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -160,23 +160,23 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Cgt),
 
-                // var ev = new InteractingDoorEventArgs(...)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingDoorEventArgs))[0]),
+                // var ev = new TriggeringDoorEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringDoorEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, interactingDoorEv.LocalIndex),
 
-                // Handlers.Map.OnInteractingTesla(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnInteractingDoor))),
+                // Handlers.Scp079.OnTriggeringDoor(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnTriggeringDoor))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, interactingDoorEv.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingDoorEventArgs), nameof(InteractingDoorEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
                 new CodeInstruction(OpCodes.Stloc_3),
             });
 
