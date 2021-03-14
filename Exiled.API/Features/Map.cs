@@ -397,6 +397,17 @@ namespace Exiled.API.Features
         public static void ClearBroadcasts() => Server.Broadcast.RpcClearElements();
 
         /// <summary>
+        /// Gets a random spawn point of a <see cref="RoleType"/>.
+        /// </summary>
+        /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
+        /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
+        [Obsolete("Moved to Exiled.API.Extensions.Role.")]
+        public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
+        {
+            return Extensions.Role.GetRandomSpawnPoint(roleType);
+        }
+
+        /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
         public static void StartDecontamination()
