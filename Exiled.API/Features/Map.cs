@@ -401,7 +401,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
-        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).")]
+        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).", true)]
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
             return Extensions.Role.GetRandomSpawnPoint(roleType);
