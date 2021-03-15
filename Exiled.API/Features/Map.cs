@@ -401,11 +401,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
+        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).", true)]
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
-            GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(roleType);
-
-            return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
+            return Extensions.Role.GetRandomSpawnPoint(roleType);
         }
 
         /// <summary>
