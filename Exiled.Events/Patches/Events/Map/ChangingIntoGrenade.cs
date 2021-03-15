@@ -46,6 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
 
             // Declare ChangingIntoGrenadeEventArgs, to be able to store it's instance with "stloc.s".
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingIntoGrenadeEventArgs));
+            LocalBuilder grenade = generator.DeclareLocal(typeof(Grenade));
 
             newInstructions.InsertRange(index, new[]
             {
@@ -78,17 +79,20 @@ namespace Exiled.Events.Patches.Events.Map
             });
 
             // Find the last method call
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(Grenade), nameof(Grenade.InitData), new[] { typeof(FragGrenade), typeof(Pickup) }));
+            offset = -2;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(Grenade), nameof(Grenade.InitData), new[] { typeof(FragGrenade), typeof(Pickup) })) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 // grenade.NetworkFuseTime = NetworkTime.Time + ev.FuseTime
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, grenade.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.FuseTime))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(NetworkTime), nameof(NetworkTime.time))),
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Grenades.Grenade), nameof(Grenades.Grenade.NetworkfuseTime))),
+                new CodeInstruction(OpCodes.Ldloc_S, grenade.LocalIndex),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

@@ -197,7 +197,11 @@ namespace Exiled.CustomItems.API.Features
             OnChangingIntoGrenade(ev);
 
             if (ev.IsAllowed)
-                Spawn(ev.Pickup.position, Vector3.zero, ev.FuseTime, ev.Type);
+            {
+                Timing.CallDelayed(0.25f, () => Spawn(ev.Pickup.position, Vector3.zero, ev.FuseTime, ev.Type));
+                ev.Pickup.Delete();
+                ev.IsAllowed = false;
+            }
         }
     }
 }
