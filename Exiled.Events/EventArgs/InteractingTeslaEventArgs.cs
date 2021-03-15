@@ -21,11 +21,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
+        /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, bool isAllowed = true)
+        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
             Tesla = tesla;
+            AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
 
@@ -38,6 +40,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the <see cref="TeslaGate"/> that SCP-079 is triggering.
         /// </summary>
         public TeslaGate Tesla { get; }
+
+        /// <summary>
+        /// Gets or sets the amount of auxiliary power required to interact with a tesla gate through SCP-079.
+        /// </summary>
+        public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can interact with the tesla gate.

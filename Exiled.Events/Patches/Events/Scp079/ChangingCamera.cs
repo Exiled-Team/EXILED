@@ -52,12 +52,12 @@ namespace Exiled.Events.Patches.Events.Scp079
                 if (ev.IsAllowed)
                 {
                     __instance.RpcSwitchCamera(ev.Camera.cameraId, lookatRotation);
-                    __instance.Mana = Mathf.Clamp(__instance.Mana - ev.APCost, 0, __instance.maxMana);
+                    __instance.Mana = Mathf.Clamp(__instance.Mana - ev.AuxiliaryPowerCost, 0, __instance.maxMana);
                     __instance.currentCamera = ev.Camera;
                 }
-                else if (ev.APCost > __instance.curMana)
+                else if (ev.AuxiliaryPowerCost > __instance.curMana)
                 {
-                    __instance.RpcNotEnoughMana(ev.APCost, __instance.curMana);
+                    __instance.RpcNotEnoughMana(ev.AuxiliaryPowerCost, __instance.curMana);
                 }
 
                 return false;

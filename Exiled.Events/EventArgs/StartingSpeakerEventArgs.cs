@@ -21,13 +21,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="room"><inheritdoc cref="Room"/></param>
-        /// <param name="apDrain"><inheritdoc cref="APDrain"/></param>
+        /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartingSpeakerEventArgs(Player player, Room room, float apDrain, bool isAllowed = true)
+        public StartingSpeakerEventArgs(Player player, Room room, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
             Room = room;
-            APDrain = apDrain;
+            AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
 
@@ -42,9 +42,19 @@ namespace Exiled.Events.EventArgs
         public Room Room { get; }
 
         /// <summary>
-        /// Gets or sets the amount of AP that will be removed for the first time when using speakers through SCP-079.
+        /// Gets or sets the amount of auxiliary power required to use a speaker through SCP-079.
         /// </summary>
-        public float APDrain { get; set; }
+        public float AuxiliaryPowerCost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of auxiliary power that will be removed for the first time when using speakers through SCP-079.
+        /// </summary>
+        [Obsolete("Use AuxiliaryPowerCost instead.", true)]
+        public float APDrain
+        {
+            get => AuxiliaryPowerCost;
+            set => AuxiliaryPowerCost = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can use the speaker.

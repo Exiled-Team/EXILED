@@ -7,27 +7,23 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1313
-#pragma warning disable CS0618
-#pragma warning disable CS0436
+#pragma warning disable SA1118
+#pragma warning disable SA1123
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
-    using GameCore;
-
     using HarmonyLib;
-
-    using Interactables.Interobjects.DoorUtils;
 
     using NorthwoodLib.Pools;
 
     using UnityEngine;
 
-    using Console = GameCore.Console;
-    using Log = Exiled.API.Features.Log;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
@@ -36,273 +32,368 @@ namespace Exiled.Events.Patches.Events.Scp079
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
     internal static class Interacting
     {
-        /// <summary>
-        /// Prefix of <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
-        /// </summary>
-        /// <param name="__instance">The <see cref="Scp079PlayerScript"/> instance.</param>
-        /// <param name="command">The command to be executed.</param>
-        /// <param name="target">The target game object.</param>
-        /// <returns>Returns a value indicating whether the original method has to be executed or not.</returns>
-        private static bool Prefix(Scp079PlayerScript __instance, string command, GameObject target)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            #region InteractingTeslaEventArgs
+
+            // Index offset.
+            var offset = 5;
+
+            // Find first "ldstr Tesla Gate Burst", then add the offset to get "ldloc.3".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
+            (string)instruction.operand == "Tesla Gate Burst") + offset;
+
+            // Get the return label.
+            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+
+            // Declare a local variable of the type "InteractingTeslaEventArgs";
+            var interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
+
+            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, this.curMana > manaFromLabel);
+            //
+            // Handlers.Map.OnInteractingTesla(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            var instructionsToInsert = new[]
             {
-                if (!__instance._interactRateLimit.CanExecute())
-                {
-                    return false;
-                }
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                if (!__instance.iAm079)
-                {
-                    return false;
-                }
+                // teslaGameObject.GetComponent<TeslaGate>();
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(GameObject), nameof(GameObject.GetComponent), generics: new[] { typeof(TeslaGate) })),
 
-                Console.AddDebugLog("SCP079", "Command received from a client: " + command, MessageImportance.LessImportant);
-                if (!command.Contains(":"))
-                {
-                    return false;
-                }
+                // manaFromLabel
+                new CodeInstruction(OpCodes.Ldloc_3),
 
-                string[] array = command.Split(':');
-                __instance.RefreshCurrentRoom();
-                if (!__instance.CheckInteractableLegitness(__instance.currentRoom, __instance.currentZone, target, true))
-                {
-                    return false;
-                }
+                // this.curMana > manaFromLabel
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Cgt),
 
-                List<string> list = ListPool<string>.Shared.Rent();
-                ConfigFile.ServerConfig.GetStringCollection("scp079_door_blacklist", list);
+                // var ev = new InteractingTeslaEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingTeslaEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, interactingTeslaEv.LocalIndex),
 
-                bool result = true;
-                switch (array[0])
-                {
-                    case "TESLA":
-                        {
-                            GameObject gameObject3 = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Gate");
-                            if (gameObject3 == null)
-                            {
-                                result = false;
-                                break;
-                            }
+                // Handlers.Map.OnInteractingTesla(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnInteractingTesla))),
 
-                            Player player = Player.Get(__instance.gameObject);
-                            TeslaGate teslaGate = gameObject3.GetComponent<TeslaGate>();
-                            float apDrain = __instance.GetManaFromLabel("Tesla Gate Burst", __instance.abilities);
-                            bool isAllowed = apDrain <= __instance.curMana;
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingTeslaEventArgs), nameof(InteractingTeslaEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
-                            InteractingTeslaEventArgs ev = new InteractingTeslaEventArgs(player, teslaGate, isAllowed);
-                            Handlers.Scp079.OnInteractingTesla(ev);
+                // manaFromLabel = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, interactingTeslaEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingTeslaEventArgs), nameof(InteractingTeslaEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            };
 
-                            if (!ev.IsAllowed)
-                            {
-                                if (apDrain > __instance.curMana)
-                                {
-                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
-                                    result = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                teslaGate.RpcInstantBurst();
-                                __instance.AddInteractionToHistory(gameObject3, array[0], addMana: true);
-                                __instance.Mana -= apDrain;
-                                result = false;
-                                break;
-                            }
+            newInstructions.InsertRange(index, instructionsToInsert);
 
-                            result = false;
-                            break;
-                        }
+            var instructionsToMoveOffset = 10;
+            var instructionsToMoveCount = 13;
 
-                    case "DOOR":
-                        {
-                            if (AlphaWarheadController.Host.inProgress)
-                            {
-                                result = false;
-                                break;
-                            }
+            // GameObject teslaGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom + "/Gate");
+            //
+            // if (gameObject == null)
+            //   return;
+            var instructionsToMove = newInstructions.GetRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
 
-                            if (target == null)
-                            {
-                                Console.AddDebugLog("SCP079", "The door command requires a target.", MessageImportance.LessImportant);
-                                result = false;
-                                break;
-                            }
+            // Move the instructions block to the start of the transpiler and and remove it.
+            newInstructions.RemoveRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
+            newInstructions.InsertRange(index, instructionsToMove);
 
-                            if (!target.TryGetComponent<DoorVariant>(out var component))
-                            {
-                                result = false;
-                                break;
-                            }
+            // New index offset.
+            var newOffest = -2;
 
-                            if (component.TryGetComponent<DoorNametagExtension>(out var component5) && list != null && list.Count > 0 && list != null && list.Contains(component5.GetName))
-                            {
-                                GameCore.Console.AddDebugLog("SCP079", "Door access denied by the server.", MessageImportance.LeastImportant);
-                                result = false;
-                                break;
-                            }
+            // Find first "teslaGate.RpcInstantBurst" method, then add the offset to get "ldloc.s 4".
+            var newIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+            (MethodInfo)instruction.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + newOffest;
 
-                            Player player = Player.Get(__instance.gameObject);
-                            var permissions = component.RequiredPermissions.RequiredPermissions.ToString();
-                            float apDrain = __instance.GetManaFromLabel("Door Interaction " + (permissions.Contains(",") ? permissions.Split(',')[0] : permissions), __instance.abilities);
-                            bool isAllowed = apDrain <= __instance.curMana;
+            // Move all labels from the first moved instruction.
+            newInstructions[newIndex].MoveLabelsFrom(newInstructions[index]);
 
-                            InteractingDoorEventArgs ev = new InteractingDoorEventArgs(player, component, isAllowed);
-                            Handlers.Scp079.OnInteractingDoor(ev);
+            #endregion
 
-                            if (!ev.IsAllowed)
-                            {
-                                if (apDrain > __instance.curMana)
-                                {
-                                    Console.AddDebugLog("SCP079", "Not enough mana.", MessageImportance.LeastImportant);
-                                    __instance.RpcNotEnoughMana(apDrain, __instance.curMana);
-                                    result = false;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                bool targetState = component.TargetState;
-                                component.ServerInteract(ReferenceHub.GetHub(__instance.gameObject), 0);
-                                if (targetState != component.TargetState)
-                                {
-                                    __instance.Mana -= apDrain;
-                                    __instance.AddInteractionToHistory(target, array[0], addMana: true);
-                                    Console.AddDebugLog("SCP079", "Door state changed.", MessageImportance.LeastImportant);
-                                    result = false;
-                                    break;
-                                }
-                                else
-                                {
-                                    Console.AddDebugLog("SCP079", "Door state failed to change.", MessageImportance.LeastImportant);
-                                }
-                            }
+            #region TriggeringDoorEventArgs
 
-                            result = false;
-                            break;
-                        }
+            // Declare a local variable of the type "TriggeringDoorEventArgs";
+            var interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
 
-                    case "SPEAKER":
-                        {
-                            GameObject scp079SpeakerObject = GameObject.Find(__instance.currentZone + "/" + __instance.currentRoom + "/Scp079Speaker");
-                            if (scp079SpeakerObject == null)
-                            {
-                                result = false;
-                                break;
-                            }
+            offset = 10;
 
-                            Player player = Player.Get(__instance.gameObject);
-                            Room room = Map.FindParentRoom(__instance.currentCamera.gameObject);
+            // Find the first ',', then add the offset to get "ldloc.3".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
+            (sbyte)instruction.operand == ',') + offset;
 
-                            float apDrain = __instance.GetManaFromLabel("Speaker Start", __instance.abilities);
-                            bool isAllowed = apDrain * 1.5f <= __instance.curMana;
-
-                            StartingSpeakerEventArgs ev = new StartingSpeakerEventArgs(player, room, apDrain, isAllowed);
-                            Handlers.Scp079.OnStartingSpeaker(ev);
-
-                            if (!ev.IsAllowed)
-                            {
-                                if (ev.APDrain * 1.5f > __instance.curMana)
-                                {
-                                    __instance.RpcNotEnoughMana(ev.APDrain, __instance.curMana);
-                                    result = false;
-                                    break;
-                                }
-                            }
-                            else if (scp079SpeakerObject != null)
-                            {
-                                __instance.Mana -= ev.APDrain;
-                                __instance.Speaker = __instance.currentZone + "/" + __instance.currentRoom + "/Scp079Speaker";
-                                __instance.AddInteractionToHistory(scp079SpeakerObject, array[0], addMana: true);
-                                result = false;
-                                break;
-                            }
-
-                            result = false;
-                            break;
-                        }
-
-                    case "STOPSPEAKER":
-                        {
-                            void ResetSpeaker() => __instance.Speaker = string.Empty;
-
-                            // Somehow it can be empty
-                            if (string.IsNullOrEmpty(__instance.Speaker))
-                            {
-                                ResetSpeaker();
-                                result = false;
-                                break;
-                            }
-
-                            string[] array7 = __instance.Speaker.Substring(0, __instance.Speaker.Length - 14).Split('/');
-
-                            StoppingSpeakerEventArgs ev = new StoppingSpeakerEventArgs(
-                                Player.Get(__instance.gameObject),
-                                Map.FindParentRoom(__instance.currentCamera.gameObject));
-
-                            Handlers.Scp079.OnStoppingSpeaker(ev);
-
-                            if (ev.IsAllowed)
-                            {
-                                ResetSpeaker();
-                                result = false;
-                                break;
-                            }
-
-                            result = false;
-                            break;
-                        }
-
-                    case "ELEVATORTELEPORT":
-                        float manaFromLabel = __instance.GetManaFromLabel("Elevator Teleport", __instance.abilities);
-                        global::Camera079 camera = null;
-                        foreach (global::Scp079Interactable scp079Interactable in __instance.nearbyInteractables)
-                        {
-                            if (scp079Interactable.type == global::Scp079Interactable.InteractableType.ElevatorTeleport)
-                            {
-                                camera = scp079Interactable.optionalObject.GetComponent<global::Camera079>();
-                            }
-                        }
-
-                        if (camera != null)
-                        {
-                            ElevatorTeleportEventArgs ev = new ElevatorTeleportEventArgs(Player.Get(__instance.gameObject), camera, manaFromLabel, manaFromLabel <= __instance.curMana);
-
-                            Handlers.Scp079.OnElevatorTeleport(ev);
-
-                            if (ev.IsAllowed)
-                            {
-                                __instance.RpcSwitchCamera(ev.Camera.cameraId, false);
-                                __instance.Mana -= ev.APCost;
-                                __instance.AddInteractionToHistory(target, array[0], true);
-                            }
-                            else
-                            {
-                                if (ev.APCost > __instance.curMana)
-                                {
-                                    __instance.RpcNotEnoughMana(manaFromLabel, __instance.curMana);
-                                }
-                            }
-                        }
-
-                        result = false;
-                        break;
-
-                    default:
-                        result = true;
-                        break;
-                }
-
-                ListPool<string>.Shared.Return(list);
-                return result;
-            }
-            catch (Exception e)
+            // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, this.curMana > manaFromLabel);
+            //
+            // Handlers.Scp079.OnTriggeringDoor(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                Log.Error($"{typeof(Interacting).FullName}.{nameof(Prefix)}:\n{e}");
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                return true;
-            }
+                // doorVariant
+                new CodeInstruction(OpCodes.Ldloc_1),
+
+                // manaFromLabel
+                new CodeInstruction(OpCodes.Ldloc_3),
+
+                // __instance.curMana > manaFromLabel
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Cgt),
+
+                // var ev = new TriggeringDoorEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringDoorEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, interactingDoorEv.LocalIndex),
+
+                // Handlers.Scp079.OnTriggeringDoor(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnTriggeringDoor))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // manaFromLabel = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, interactingDoorEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            });
+
+            #endregion
+
+            #region StartingSpeakerEventArgs
+
+            // Declare a local variable of the type "StartingSpeakerEventArgs";
+            var startingSpeakerEv = generator.DeclareLocal(typeof(StartingSpeakerEventArgs));
+
+            offset = -1;
+
+            // Find the first 1.5f, then add the offset to get "ldloc.3".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 &&
+            (float)instruction.operand == 1.5f) + offset;
+
+            // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, this.curMana > manaFromLabel * 1.5f);
+            //
+            // Handlers.Scp079.OnStartingSpeaker(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+
+                // Map.FindParentRoom(this.currentCamera.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
+
+                // manaFromLabel
+                new CodeInstruction(OpCodes.Ldloc_3),
+
+                // __instance.curMana > manaFromLabel * 1.5f
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldc_R4, 1.5f),
+                new CodeInstruction(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Cgt),
+
+                // var ev = new StartingSpeakerEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingSpeakerEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, startingSpeakerEv.LocalIndex),
+
+                // Handlers.Scp079.OnStartingSpeaker(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnStartingSpeaker))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // manaFromLabel = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, startingSpeakerEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            });
+
+            #endregion
+
+            #region StoppingSpeakerEventArgs
+
+            offset = -1;
+
+            // Find the first string.Empty, then add the offset to get "ldarg.0".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld &&
+            (FieldInfo)instruction.operand == Field(typeof(string), nameof(string.Empty))) + offset;
+
+            // if (string.IsNullOrEmpty(this.Speaker)
+            //   return;
+            //
+            // var ev = new StoppingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), true);
+            //
+            // Handlers.Scp079.OnStoppingSpeaker(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                // if (string.IsNullOrEmpty(this.Speaker)
+                //   return;
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.Speaker))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.IsNullOrEmpty))),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+
+                // Map.FindParentRoom(this.currentCamera.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentCamera))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
+
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+
+                // var ev = new StartingSpeakerEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StoppingSpeakerEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+
+                // Handlers.Scp079.OnStartingSpeaker(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnStoppingSpeaker))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StoppingSpeakerEventArgs), nameof(StoppingSpeakerEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+            });
+
+            #endregion
+
+            #region ElevatorTeleportingEventArgs
+
+            // Index offset.
+            offset = 5;
+
+            // Find first "ldstr Elevator Teleport", then add the offset to get "ldloc.3".
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
+            (string)instruction.operand == "Elevator Teleport") + offset;
+
+            // Declare a local variable of the type "ElevatorTeleportingEventArgs";
+            var elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
+
+            // var ev = new ElevatorTeleportingEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, this.curMana > manaFromLabel);
+            //
+            // Handlers.Scp079.OnElevatorTeleporting(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            instructionsToInsert = new[]
+            {
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+
+                // camera
+                new CodeInstruction(OpCodes.Ldloc_S, 12),
+
+                // manaFromLabel
+                new CodeInstruction(OpCodes.Ldloc_3),
+
+                // this.curMana > manaFromLabel
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Cgt),
+
+                // var ev = new ElevatorTeleportingEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorTeleportingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, elevatorTeleportEv.LocalIndex),
+
+                // Handlers.Map.OnElevatorTeleporting(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnElevatorTeleporting))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportingEventArgs), nameof(ElevatorTeleportingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // manaFromLabel = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, elevatorTeleportEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportingEventArgs), nameof(ElevatorTeleportingEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            };
+
+            newInstructions.InsertRange(index, instructionsToInsert);
+
+            instructionsToMoveOffset = 10;
+            instructionsToMoveCount = 30;
+
+            // Camera079 camera = null;
+            //
+            // foreach (global::Scp079Interactable scp079Interactable in this.nearbyInteractables)
+            // {
+            //   if (scp079Interactable.type == Scp079Interactable.InteractableType.ElevatorTeleport)
+            //     camera = scp079Interactable.optionalObject.GetComponent<Camera079>();
+            // }
+            //
+            // if (camera != null)
+            //   return;
+            instructionsToMove = newInstructions.GetRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
+
+            // Move the instructions block to the start of the transpiler and and remove it.
+            newInstructions.RemoveRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
+            newInstructions.InsertRange(index, instructionsToMove);
+
+            // New index offset.
+            newOffest = -4;
+
+            // Find first "teslaGate.RpcInstantBurst" method, then add the offset to get "ldarg.0".
+            newIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == Method(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.RpcSwitchCamera))) + newOffest;
+
+            // Move all labels from the first moved instruction.
+            newInstructions[newIndex].MoveLabelsFrom(newInstructions[index]);
+
+            #endregion
+
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

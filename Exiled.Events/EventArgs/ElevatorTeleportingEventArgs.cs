@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangingCameraEventArgs.cs" company="Exiled Team">
+// <copyright file="ElevatorTeleportingEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,18 +12,18 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a SCP-079 changes the current camera.
+    /// Contains all informations before SCP-079 changes rooms via elevator.
     /// </summary>
-    public class ChangingCameraEventArgs : EventArgs
+    public class ElevatorTeleportingEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingCameraEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ElevatorTeleportingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="camera"><inheritdoc cref="Camera"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingCameraEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
+        public ElevatorTeleportingEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
             Camera = camera;
@@ -32,34 +32,23 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who is SCP-079.
+        /// Gets the player who is controlling SCP-079.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the camera SCP-079 will be moved to.
+        /// Gets or sets the <see cref="Camera079"/> that SCP-079 will be moved to.
         /// </summary>
         public Camera079 Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
+        /// Gets or sets the amount of auxiliary power required to teleport to an elevator camera.
         /// </summary>
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
-        /// </summary>
-        [Obsolete("Use AuxiliaryPowerCost instead.")]
-        public float APCost
-        {
-            get => AuxiliaryPowerCost;
-            set => AuxiliaryPowerCost = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
-        /// Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.
-        /// Can be set to true to allow a switch regardless of SCP-079's auxiliary power amount.
+        /// Gets or sets a value indicating whether or not SCP-079 can teleport.
+        /// Defaults to a <see cref="bool"/> describing whether or not SCP-079 has enough auxiliary power to teleport.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
