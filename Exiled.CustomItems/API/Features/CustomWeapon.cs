@@ -59,7 +59,13 @@ namespace Exiled.CustomItems.API.Features
         public override float Durability { get; set; }
 
         /// <inheritdoc/>
-        public override void Spawn(Vector3 position) => Spawned.Add(Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType));
+        public override Pickup Spawn(Vector3 position)
+        {
+            var pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+
+            Spawned.Add(pickup);
+            return pickup;
+        }
 
         /// <inheritdoc/>
         public override void Give(Player player, bool displayMessage)
