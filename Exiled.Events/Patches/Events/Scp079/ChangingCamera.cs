@@ -51,6 +51,8 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
+            //
+            // num = ev.AuxiliaryPowerCost
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this.gameObject)
