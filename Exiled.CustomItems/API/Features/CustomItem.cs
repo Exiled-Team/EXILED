@@ -439,7 +439,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         [Obsolete("Use Spawn method with out parameter instead.")]
-        public virtual void Spawn(Vector3 position) => Spawn(position, out var pickup);
+        public virtual void Spawn(Vector3 position) => Spawn(position, out _);
 
         /// <summary>
         /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific position.
@@ -447,7 +447,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
         [Obsolete("Use Spawn method with out parameter instead.")]
-        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item) => Spawn(position, item, out var pickup);
+        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item) => Spawn(position, item, out _);
 
         /// <summary>
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.
@@ -468,7 +468,7 @@ namespace Exiled.CustomItems.API.Features
 
                 spawned++;
 
-                Spawn(spawnPoint.Position.ToVector3, out Pickup pickup);
+                Spawn(spawnPoint.Position.ToVector3, out _);
 
                 Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
             }
@@ -697,7 +697,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item, out Pickup pickup);
+                Spawn(ev.Player, item, out _);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -719,7 +719,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(ev.Target, item, out Pickup pickup);
+                Spawn(ev.Target, item, out _);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -741,7 +741,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out Pickup pickup);
+                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out _);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -763,7 +763,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(ev.Target, item, out Pickup pickup);
+                Spawn(ev.Target, item, out _);
             }
         }
 
@@ -783,7 +783,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.Player.RemoveItem(ev.Item);
 
-            Spawn(ev.Player, ev.Item, out Pickup pickup);
+            Spawn(ev.Player, ev.Item, out _);
         }
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
@@ -865,7 +865,7 @@ namespace Exiled.CustomItems.API.Features
                         {
                             InsideInventories.Remove(item.uniq);
 
-                            Spawn(playerToItemsPair.Key, item, out Pickup pickup);
+                            Spawn(playerToItemsPair.Key, item, out _);
 
                             continue;
                         }
