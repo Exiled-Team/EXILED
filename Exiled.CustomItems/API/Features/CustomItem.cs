@@ -468,7 +468,7 @@ namespace Exiled.CustomItems.API.Features
 
                 spawned++;
 
-                Spawn(spawnPoint.Position.ToVector3);
+                Spawn(spawnPoint.Position.ToVector3, out Pickup pickup);
 
                 Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
             }
@@ -697,7 +697,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item);
+                Spawn(ev.Player, item, out Pickup pickup);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -719,7 +719,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(ev.Target, item);
+                Spawn(ev.Target, item, out Pickup pickup);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -741,7 +741,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item);
+                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out Pickup pickup);
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -763,7 +763,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(ev.Target, item);
+                Spawn(ev.Target, item, out Pickup pickup);
             }
         }
 
@@ -783,7 +783,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.Player.RemoveItem(ev.Item);
 
-            Spawn(ev.Player, ev.Item);
+            Spawn(ev.Player, ev.Item, out Pickup pickup);
         }
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
@@ -865,7 +865,7 @@ namespace Exiled.CustomItems.API.Features
                         {
                             InsideInventories.Remove(item.uniq);
 
-                            Spawn(playerToItemsPair.Key, item);
+                            Spawn(playerToItemsPair.Key, item, out Pickup pickup);
 
                             continue;
                         }

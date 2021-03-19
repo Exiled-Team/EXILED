@@ -67,6 +67,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
+        [Obsolete("Use Spawn method with out parameter instead.")]
         public override void Spawn(Vector3 position)
         {
             Pickup pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
