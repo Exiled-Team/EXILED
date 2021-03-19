@@ -212,7 +212,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position);
+            item.Spawn(position, out pickup);
 
             return true;
         }
@@ -231,7 +231,41 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            pickup = item.Spawn(position);
+            item.Spawn(position, out pickup);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to spawn a specific <see cref="CustomItem"/> at a specific <see cref="Vector3"/> position.
+        /// </summary>
+        /// <param name="id">The ID of the <see cref="CustomItem"/> to spawn.</param>
+        /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
+        [Obsolete("Use TrySpawn method with out parameter instead.")]
+        public static bool TrySpawn(int id, Vector3 position)
+        {
+            if (!TryGet(id, out CustomItem item))
+                return false;
+
+            item.Spawn(position);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to spawn a specific <see cref="CustomItem"/> at a specific <see cref="Vector3"/> position.
+        /// </summary>
+        /// <param name="name">The name of the <see cref="CustomItem"/> to spawn.</param>
+        /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
+        [Obsolete("Use TrySpawn method with out parameter instead.")]
+        public static bool TrySpawn(string name, Vector3 position)
+        {
+            if (!TryGet(name, out CustomItem item))
+                return false;
+
+            item.Spawn(position);
 
             return true;
         }
@@ -323,8 +357,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(float x, float y, float z, out Pickup pickup) => Spawn(new Vector3(x, y, z), out pickup);
 
         /// <summary>
         /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific location.
@@ -333,50 +367,87 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(float x, float y, float z, Inventory.SyncItemInfo item) => Spawn(new Vector3(x, y, z), item);
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(float x, float y, float z, Inventory.SyncItemInfo item, out Pickup pickup) => Spawn(new Vector3(x, y, z), item, out pickup);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Player player) => Spawn(player.Position);
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(Player player, out Pickup pickup) => Spawn(player.Position, out pickup);
 
         /// <summary>
         /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Player player, Inventory.SyncItemInfo item) => Spawn(player.Position, item);
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(Player player, Inventory.SyncItemInfo item, out Pickup pickup) => Spawn(player.Position, item, out pickup);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Vector3 position)
-        {
-            var pickup = Item.Spawn(Type, Durability, position);
-
-            Spawned.Add(pickup);
-            return pickup;
-        }
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(Vector3 position, out Pickup pickup) => Spawned.Add(pickup = Item.Spawn(Type, Durability, position));
 
         /// <summary>
         /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>Returns the Pickup of the <see cref="CustomItem"/>.</returns>
-        public virtual Pickup Spawn(Vector3 position, Inventory.SyncItemInfo item)
-        {
-            var pickup = Item.Spawn(item, position);
+        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
+        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item, out Pickup pickup) => Spawned.Add(pickup = Item.Spawn(item, position));
 
-            Spawned.Add(pickup);
-            return pickup;
-        }
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> in a specific location.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="z">The z coordinate.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
+
+        /// <summary>
+        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific location.
+        /// </summary>
+        /// <param name="x">The x coordinate.</param>
+        /// <param name="y">The y coordinate.</param>
+        /// <param name="z">The z coordinate.</param>
+        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(float x, float y, float z, Inventory.SyncItemInfo item) => Spawn(new Vector3(x, y, z), item);
+
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(Player player) => Spawn(player.Position);
+
+        /// <summary>
+        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(Player player, Inventory.SyncItemInfo item) => Spawn(player.Position, item);
+
+        /// <summary>
+        /// Spawns the <see cref="CustomItem"/> in a specific position.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(Vector3 position) => Spawn(position, out var pickup);
+
+        /// <summary>
+        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific position.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
+        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        [Obsolete("Use Spawn method with out parameter instead.")]
+        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item) => Spawn(position, item, out var pickup);
 
         /// <summary>
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.

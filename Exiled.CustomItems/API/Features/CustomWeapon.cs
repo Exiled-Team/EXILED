@@ -59,12 +59,19 @@ namespace Exiled.CustomItems.API.Features
         public override float Durability { get; set; }
 
         /// <inheritdoc/>
-        public override Pickup Spawn(Vector3 position)
+        public override void Spawn(Vector3 position, out Pickup pickup)
         {
-            var pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+            pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
 
             Spawned.Add(pickup);
-            return pickup;
+        }
+
+        /// <inheritdoc/>
+        public override void Spawn(Vector3 position)
+        {
+            Pickup pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+
+            Spawned.Add(pickup);
         }
 
         /// <inheritdoc/>
