@@ -42,11 +42,11 @@ namespace Exiled.Example
         public override void OnEnabled()
         {
             RegisterEvents();
-            
+
             Log.Warn($"I correctly read the string config, its value is: {Config.String}");
             Log.Warn($"I correctly read the int config, its value is: {Config.Int}");
             Log.Warn($"I correctly read the float config, its value is: {Config.Float}");
-            
+
             base.OnEnabled();
         }
 
