@@ -121,12 +121,6 @@ namespace Exiled.Loader
         public static bool Reload() => Save(LoadSorted(Read()));
 
         /// <summary>
-        /// Reads, Loads and Saves plugin configs and translations.
-        /// </summary>
-        /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
-        public static bool ReloadAll() => Reload() && ReloadTranslations();
-
-        /// <summary>
         /// Saves plugin configs.
         /// </summary>
         /// <param name="configs">The configs to be saved, already serialized in yaml format.</param>
