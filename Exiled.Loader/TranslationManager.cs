@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="TranslationManager.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -49,14 +49,14 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="rawTranslations">The raw translations to be loaded.</param>
         /// <returns>Returns a dictionary of loaded translations.</returns>
-        public static Dictionary<string, ITranslations> Load(string rawTranslations)
+        public static SortedDictionary<string, ITranslations> Load(string rawTranslations)
         {
             try
             {
                 Log.Info("Loading plugin translations...");
 
                 Dictionary<string, object> rawDeserializedTranslations = Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
-                Dictionary<string, ITranslations> deserializedTranslations = new Dictionary<string, ITranslations>();
+                SortedDictionary<string, ITranslations> deserializedTranslations = new Dictionary<string, ITranslations>(StringComparison.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
@@ -130,7 +130,7 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="translations">The translations to be saved.</param>
         /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
-        public static bool Save(Dictionary<string, ITranslations> translations)
+        public static bool Save(SortedDictionary<string, ITranslations> translations)
         {
             try
             {
