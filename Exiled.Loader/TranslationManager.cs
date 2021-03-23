@@ -56,7 +56,7 @@ namespace Exiled.Loader
                 Log.Info("Loading plugin translations...");
 
                 Dictionary<string, object> rawDeserializedTranslations = Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
-                SortedDictionary<string, ITranslations> deserializedTranslations = new Dictionary<string, ITranslations>(StringComparer.Ordinal);
+                SortedDictionary<string, ITranslations> deserializedTranslations = new SortedDictionary<string, ITranslations>(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
