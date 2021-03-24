@@ -37,6 +37,7 @@ namespace Exiled.Events.Commands.Reload
         {
             RegisterCommand(All.Instance);
             RegisterCommand(Configs.Instance);
+            RegisterCommand(Translations.Instance);
             RegisterCommand(Plugins.Instance);
             RegisterCommand(GamePlay.Instance);
             RegisterCommand(RemoteAdmin.Instance);
@@ -45,7 +46,7 @@ namespace Exiled.Events.Commands.Reload
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = "Please, specify a valid subcommand! Available ones: all, plugins, gameplay, configs, remoteadmin";
+            response = "Please, specify a valid subcommand! Available ones: all, plugins, gameplay, configs, remoteadmin, translations";
             return false;
         }
     }
