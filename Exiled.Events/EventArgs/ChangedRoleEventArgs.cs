@@ -21,9 +21,9 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangedRoleEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="newRole"><inheritdoc cref="NewRole"/></param>
+        /// <param name="oldRole"><inheritdoc cref="OldRole"/></param>
         /// <param name="items"><inheritdoc cref="Items"/></param>
-        /// <param name="shouldPreservePosition"><inheritdoc cref="ShouldPreservePosition"/></param>
+        /// <param name="preservedPosition"><inheritdoc cref="PreservedPosition"/></param>
         /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
         public ChangedRoleEventArgs(Player player, RoleType oldRole, List<ItemType> items, bool preservedPosition, bool isEscaped)
         {
