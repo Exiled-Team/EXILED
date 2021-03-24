@@ -70,12 +70,17 @@ namespace Exiled.Events.Patches.Events.Player
                     classid = escapingEventArgs.NewRole;
                 }
 
+                var oldRole = API.Features.Player.Get(ply).Role;
+
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
                 ply.GetComponent<FirstPersonController>().ResetStamina();
 
                 if (lite)
                 {
+                    var changedRoleEventArgs = new ChangedRoleEventArgs(API.Features.Player.Get(ply), oldRole, startItemsList, true, escape);
+                    Player.OnChangedRole(changedRoleEventArgs);
+
                     ListPool<ItemType>.Shared.Return(startItemsList);
                     return false;
                 }
@@ -93,8 +98,6 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     component.AddNewItem(id, -4.65664672E+11f, 0, 0, 0);
                 }
-
-                ListPool<ItemType>.Shared.Return(startItemsList);
 
                 if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
@@ -154,6 +157,11 @@ namespace Exiled.Events.Patches.Events.Player
                 }
 
                 ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
+
+                var changedRoleEventArgs1 = new ChangedRoleEventArgs(API.Features.Player.Get(ply), oldRole, startItemsList, false, escape);
+                Player.OnChangedRole(changedRoleEventArgs1);
+
+                ListPool<ItemType>.Shared.Return(startItemsList);
                 return false;
             }
             catch (Exception e)
