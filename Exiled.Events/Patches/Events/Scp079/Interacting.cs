@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Declare a local variable of the type "InteractingTeslaEventArgs";
             var interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
 
-            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, this.curMana > manaFromLabel);
+            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, manaFromLabel <= this.curMana);
             //
             // Handlers.Map.OnInteractingTesla(ev);
             //
@@ -71,11 +71,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                // this.curMana > manaFromLabel
+                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
+                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
-                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
                 // var ev = new InteractingTeslaEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingTeslaEventArgs))[0]),
@@ -135,7 +137,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S &&
             (sbyte)instruction.operand == ',') + offset;
 
-            // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, this.curMana > manaFromLabel);
+            // var ev = new TriggeringDoorEventArgs(Player.Get(this.gameObject), doorVariant, manaFromLabel, manaFromLabel <= this.curMana);
             //
             // Handlers.Scp079.OnTriggeringDoor(ev);
             //
@@ -154,11 +156,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                // __instance.curMana > manaFromLabel
+                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
+                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
-                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
                 // var ev = new TriggeringDoorEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringDoorEventArgs))[0]),
@@ -193,7 +197,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 &&
             (float)instruction.operand == 1.5f) + offset;
 
-            // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, this.curMana > manaFromLabel * 1.5f);
+            // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, manaFromLabel * 1.5f <= this.curMana);
             //
             // Handlers.Scp079.OnStartingSpeaker(ev);
             //
@@ -215,13 +219,15 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                // __instance.curMana > manaFromLabel * 1.5f
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                // !(manaFromLabel * 1.5f > this.curMana) --> manaFromLabel * 1.5f <= this.curMana
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Ldc_R4, 1.5f),
                 new CodeInstruction(OpCodes.Mul),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
                 new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
                 // var ev = new StartingSpeakerEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingSpeakerEventArgs))[0]),
@@ -312,7 +318,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Declare a local variable of the type "ElevatorTeleportingEventArgs";
             var elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
 
-            // var ev = new ElevatorTeleportingEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, this.curMana > manaFromLabel);
+            // var ev = new ElevatorTeleportingEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, manaFromLabel <= this.curMana);
             //
             // Handlers.Scp079.OnElevatorTeleporting(ev);
             //
@@ -331,11 +337,13 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                // this.curMana > manaFromLabel
+                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
+                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
-                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
                 // var ev = new ElevatorTeleportingEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ElevatorTeleportingEventArgs))[0]),
