@@ -10,6 +10,7 @@ namespace Exiled.API.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
 
@@ -20,6 +21,8 @@ namespace Exiled.API.Extensions
     /// </summary>
     public static class String
     {
+        private static readonly SHA256 Sha256 = SHA256.Create();
+
         /// <summary>
         /// Compute the distance between two <see cref="string"/>.
         /// </summary>
@@ -166,5 +169,17 @@ namespace Exiled.API.Extensions
         /// <param name="userId">The user id.</param>
         /// <returns>Returns the raw user id.</returns>
         public static string GetRawUserId(this string userId) => userId.Substring(0, userId.LastIndexOf('@'));
+
+        /// <summary>
+        /// Gets a SHA256 hash of a player's user id without the authentication.
+        /// </summary>
+        /// <param name="userId">The user id.</param>
+        /// <returns>The hashed userid.</returns>
+        public static string GetHashedUserId(this string userId)
+        {
+            byte[] textData = Encoding.UTF8.GetBytes(userId.Substring(0, userId.LastIndexOf('@')));
+            byte[] hash = Sha256.ComputeHash(textData);
+            return BitConverter.ToString(hash).Replace("-", string.Empty);
+        }
     }
 }
