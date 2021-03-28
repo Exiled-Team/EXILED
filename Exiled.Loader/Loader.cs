@@ -140,6 +140,8 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
+
+                Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
             }
 
             foreach (Assembly assembly in Locations.Keys)
@@ -319,7 +321,7 @@ namespace Exiled.Loader
             if (requiredVersion.Major != actualVersion.Major)
             {
                 // Assume that if the Required Major version is greater than the Actual Major version,
-                // Exled is outdated
+                // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
                     Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
@@ -359,7 +361,7 @@ namespace Exiled.Loader
 
                     Dependencies.Add(assembly);
 
-                    Log.Info($"Loaded dependency {assembly.FullName}");
+                    Log.Info($"Loaded dependency {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
                 }
 
                 Log.Info("Dependencies loaded successfully!");
