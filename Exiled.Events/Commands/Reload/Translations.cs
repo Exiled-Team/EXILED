@@ -28,7 +28,7 @@ namespace Exiled.Events.Commands.Reload
         public string Command { get; } = "translations";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { };
+        public string[] Aliases { get; } = Array.Empty<string>();
 
         /// <inheritdoc/>
         public string Description { get; } = "Reload plugin translations.";
