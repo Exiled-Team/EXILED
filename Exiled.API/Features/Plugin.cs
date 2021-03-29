@@ -42,19 +42,19 @@ namespace Exiled.API.Features
         public Assembly Assembly { get; } = Assembly.GetCallingAssembly();
 
         /// <inheritdoc/>
-        public virtual string Name { get; protected set; }
+        public virtual string Name { get; }
 
         /// <inheritdoc/>
-        public virtual string Prefix { get; protected set; }
+        public virtual string Prefix { get; }
 
         /// <inheritdoc/>
-        public virtual string Author { get; protected set; }
+        public virtual string Author { get; }
 
         /// <inheritdoc/>
         public virtual PluginPriority Priority { get; }
 
         /// <inheritdoc/>
-        public virtual Version Version { get; protected set; }
+        public virtual Version Version { get; }
 
         /// <inheritdoc/>
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
@@ -164,10 +164,6 @@ namespace Exiled.API.Features
         /// </summary>
         public Plugin()
         {
-            Name = Assembly.GetName().Name;
-            Prefix = Name.ToSnakeCase();
-            Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
-            Version = Assembly.GetName().Version;
             InternalTranslation = new TTranslation();
         }
 
