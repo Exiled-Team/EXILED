@@ -70,7 +70,7 @@ namespace Exiled.API.Features
         public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
-        public ITranslations Translations { get; } = null;
+        public ITranslation Translation { get; } = null;
 
         /// <inheritdoc/>
         public virtual void OnEnabled()

@@ -71,7 +71,7 @@ namespace Exiled.API.Interfaces
         /// <summary>
         /// Gets the plugin translations.
         /// </summary>
-        ITranslations Translations { get; }
+        ITranslation Translation { get; }
 
         /// <summary>
         /// Fired after enabling the plugin.

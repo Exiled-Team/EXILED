@@ -49,39 +49,39 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="rawTranslations">The raw translations to be loaded.</param>
         /// <returns>Returns a dictionary of loaded translations.</returns>
-        public static SortedDictionary<string, ITranslations> Load(string rawTranslations)
+        public static SortedDictionary<string, ITranslation> Load(string rawTranslations)
         {
             try
             {
                 Log.Info("Loading plugin translations...");
 
                 Dictionary<string, object> rawDeserializedTranslations = Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
-                SortedDictionary<string, ITranslations> deserializedTranslations = new SortedDictionary<string, ITranslations>(StringComparer.Ordinal);
+                SortedDictionary<string, ITranslation> deserializedTranslations = new SortedDictionary<string, ITranslation>(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (plugin.Translations == null)
+                    if (plugin.Translation == null)
                         continue;
 
                     if (!rawDeserializedTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
                     {
                         Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
 
-                        deserializedTranslations.Add(plugin.Prefix, plugin.Translations);
+                        deserializedTranslations.Add(plugin.Prefix, plugin.Translation);
                     }
                     else
                     {
                         try
                         {
-                            deserializedTranslations.Add(plugin.Prefix, (ITranslations)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.Translations.GetType()));
+                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.Translation.GetType()));
 
-                            plugin.Translations.CopyProperties(deserializedTranslations[plugin.Prefix]);
+                            plugin.Translation.CopyProperties(deserializedTranslations[plugin.Prefix]);
                         }
                         catch (YamlException yamlException)
                         {
                             Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead! {yamlException}");
 
-                            deserializedTranslations.Add(plugin.Prefix, plugin.Translations);
+                            deserializedTranslations.Add(plugin.Prefix, plugin.Translation);
                         }
                     }
                 }
@@ -130,7 +130,7 @@ namespace Exiled.Loader
         /// </summary>
         /// <param name="translations">The translations to be saved.</param>
         /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
-        public static bool Save(SortedDictionary<string, ITranslations> translations)
+        public static bool Save(SortedDictionary<string, ITranslation> translations)
         {
             try
             {
