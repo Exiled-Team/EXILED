@@ -27,6 +27,10 @@ namespace Exiled.Events.Handlers.Internal
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
             {
                 ConfigManager.Reload();
+            }
+
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
+            {
                 TranslationManager.Reload();
             }
 

@@ -10,40 +10,18 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.Loader.Features.Configs;
+
     using YamlDotNet.Core;
-    using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugin translations.
     /// </summary>
     public static class TranslationManager
     {
-        /// <summary>
-        /// Gets the translation serializer.
-        /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .Build();
-
-        /// <summary>
-        /// Gets the translation deserializer.
-        /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
-
         /// <summary>
         /// Loads all plugin translations.
         /// </summary>
@@ -55,7 +33,7 @@ namespace Exiled.Loader
             {
                 Log.Info("Loading plugin translations...");
 
-                Dictionary<string, object> rawDeserializedTranslations = Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new SortedDictionary<string, ITranslation>(StringComparer.Ordinal);
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
@@ -73,7 +51,7 @@ namespace Exiled.Loader
                     {
                         try
                         {
-                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType()));
+                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType()));
 
                             plugin.InternalTranslation.CopyProperties(deserializedTranslations[plugin.Prefix]);
                         }
@@ -137,7 +115,7 @@ namespace Exiled.Loader
                 if (translations == null || translations.Count == 0)
                     return false;
 
-                return Save(Serializer.Serialize(translations));
+                return Save(Loader.Serializer.Serialize(translations));
             }
             catch (YamlException yamlException)
             {
