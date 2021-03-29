@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -41,19 +42,19 @@ namespace Exiled.API.Features
         public Assembly Assembly { get; } = Assembly.GetCallingAssembly();
 
         /// <inheritdoc/>
-        public virtual string Name { get; }
+        public virtual string Name { get; protected set; }
 
         /// <inheritdoc/>
-        public virtual string Prefix { get; }
+        public virtual string Prefix { get; protected set; }
 
         /// <inheritdoc/>
-        public virtual string Author { get; }
+        public virtual string Author { get; protected set; }
 
         /// <inheritdoc/>
         public virtual PluginPriority Priority { get; }
 
         /// <inheritdoc/>
-        public virtual Version Version { get; }
+        public virtual Version Version { get; protected set; }
 
         /// <inheritdoc/>
         public virtual Version RequiredExiledVersion { get; } = typeof(IPlugin<>).Assembly.GetName().Version;
@@ -70,7 +71,7 @@ namespace Exiled.API.Features
         public TConfig Config { get; } = new TConfig();
 
         /// <inheritdoc/>
-        public ITranslation Translation { get; } = null;
+        public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
         public virtual void OnEnabled()
@@ -147,5 +148,32 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public int CompareTo(IPlugin<IConfig> other) => -Priority.CompareTo(other.Priority);
+    }
+
+    /// <summary>
+    /// Expose how a plugin has to be made.
+    /// </summary>
+    /// <typeparam name="TConfig">The config type.</typeparam>
+    /// <typeparam name="TTranslation">The translation type.</typeparam>
+    public abstract class Plugin<TConfig, TTranslation> : Plugin<TConfig>
+        where TConfig : IConfig, new()
+        where TTranslation : ITranslation, new()
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Plugin{TConfig, TTranslation}"/> class.
+        /// </summary>
+        public Plugin()
+        {
+            Name = Assembly.GetName().Name;
+            Prefix = Name.ToSnakeCase();
+            Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
+            Version = Assembly.GetName().Version;
+            InternalTranslation = new TTranslation();
+        }
+
+        /// <summary>
+        /// Gets the plugin translations.
+        /// </summary>
+        public TTranslation Translation => (TTranslation)InternalTranslation;
     }
 }

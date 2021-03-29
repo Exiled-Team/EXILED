@@ -60,28 +60,28 @@ namespace Exiled.Loader
 
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (plugin.Translation == null)
+                    if (plugin.InternalTranslation == null)
                         continue;
 
                     if (!rawDeserializedTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
                     {
                         Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
 
-                        deserializedTranslations.Add(plugin.Prefix, plugin.Translation);
+                        deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
                     }
                     else
                     {
                         try
                         {
-                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.Translation.GetType()));
+                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType()));
 
-                            plugin.Translation.CopyProperties(deserializedTranslations[plugin.Prefix]);
+                            plugin.InternalTranslation.CopyProperties(deserializedTranslations[plugin.Prefix]);
                         }
                         catch (YamlException yamlException)
                         {
                             Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead! {yamlException}");
 
-                            deserializedTranslations.Add(plugin.Prefix, plugin.Translation);
+                            deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
                         }
                     }
                 }

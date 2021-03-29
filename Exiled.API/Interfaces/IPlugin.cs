@@ -10,10 +10,9 @@ namespace Exiled.API.Interfaces
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-
     using CommandSystem;
-
     using Exiled.API.Enums;
+    using Exiled.API.Features;
 
     /// <summary>
     /// Defines the contract for basic plugin features.
@@ -69,9 +68,9 @@ namespace Exiled.API.Interfaces
         TConfig Config { get; }
 
         /// <summary>
-        /// Gets the plugin translations.
+        /// Gets the internally used translations. Plugins should implement <inheritdoc cref="Plugin{TConfig, TTranslation}"/> and use <inheritdoc cref="Plugin{TConfig, TTranslation}.Translation"/>.
         /// </summary>
-        ITranslation Translation { get; }
+        ITranslation InternalTranslation { get; }
 
         /// <summary>
         /// Fired after enabling the plugin.
