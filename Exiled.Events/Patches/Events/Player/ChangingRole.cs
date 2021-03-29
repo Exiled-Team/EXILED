@@ -42,8 +42,10 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
+                var player = API.Features.Player.Get(ply);
+
                 var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
-                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
+                var changingRoleEventArgs = new ChangingRoleEventArgs(player, classid, startItemsList, lite, escape);
 
                 Player.OnChangingRole(changingRoleEventArgs);
 
@@ -60,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (escape)
                 {
-                    var escapingEventArgs = new EscapingEventArgs(API.Features.Player.Get(ply), classid);
+                    var escapingEventArgs = new EscapingEventArgs(player, classid);
 
                     Player.OnEscaping(escapingEventArgs);
 
@@ -70,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
                     classid = escapingEventArgs.NewRole;
                 }
 
-                var oldRole = API.Features.Player.Get(ply).Role;
+                var oldRole = player.Role;
 
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
@@ -78,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (lite)
                 {
-                    var changedRoleEventArgs = new ChangedRoleEventArgs(API.Features.Player.Get(ply), oldRole, startItemsList, true, escape);
+                    var changedRoleEventArgs = new ChangedRoleEventArgs(player, oldRole, startItemsList, true, escape);
                     Player.OnChangedRole(changedRoleEventArgs);
 
                     ListPool<ItemType>.Shared.Return(startItemsList);
@@ -158,7 +160,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
 
-                var changedRoleEventArgs1 = new ChangedRoleEventArgs(API.Features.Player.Get(ply), oldRole, startItemsList, false, escape);
+                var changedRoleEventArgs1 = new ChangedRoleEventArgs(player, oldRole, startItemsList, false, escape);
                 Player.OnChangedRole(changedRoleEventArgs1);
 
                 ListPool<ItemType>.Shared.Return(startItemsList);
