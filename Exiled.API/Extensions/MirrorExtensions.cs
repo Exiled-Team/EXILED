@@ -20,6 +20,8 @@ namespace Exiled.API.Extensions
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
     /// A set of extensions for <see cref="Mirror"/> Networking.
     /// </summary>
@@ -70,7 +72,7 @@ namespace Exiled.API.Extensions
                     {
                         var bytecodes = property.GetSetMethod().GetMethodBody().GetILAsByteArray();
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
-                             SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -153,18 +155,32 @@ namespace Exiled.API.Extensions
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.First().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise);
 
         /// <summary>
-        /// Change <see cref="Player"/> walking speed.
+        /// Change <see cref="Player"/> walking speed. Negative values will invert player's controls.
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
-        public static void ChangeWalkingSpeed(this Player player, float multiplier) => SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
+        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
+        {
+            if (useCap)
+                multiplier = Mathf.Clamp(multiplier, -2, 2);
+
+            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
+        }
 
         /// <summary>
-        /// Change <see cref="Player"/> running speed.
+        /// Change <see cref="Player"/> running speed. Negative values will invert player's controls.
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
-        public static void ChangeRunningSpeed(this Player player, float multiplier) => SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
+        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true)
+        {
+            if (useCap)
+                multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
+
+            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
+        }
 
         /// <summary>
         /// Send fake values to client's <see cref="Mirror.SyncVarAttribute"/>.
