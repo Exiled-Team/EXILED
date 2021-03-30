@@ -209,7 +209,7 @@ namespace Exiled.Loader
             {
                 foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
-                    if (!type.BaseType.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
+                    if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
                         continue;
