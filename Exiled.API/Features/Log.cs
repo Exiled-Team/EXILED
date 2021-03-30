@@ -20,7 +20,12 @@ namespace Exiled.API.Features
         /// Sends a <see cref="LogLevel.Info"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Info(object message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Info, System.ConsoleColor.Cyan);
+        /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
+        public static void Info(object message, bool canBeSent = true)
+        {
+            if (canBeSent)
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Info, System.ConsoleColor.Cyan);
+        }
 
         /// <summary>
         /// Sends a <see cref="LogLevel.Debug"/> level messages to the game console.
@@ -38,7 +43,12 @@ namespace Exiled.API.Features
         /// Sends a <see cref="LogLevel.Warn"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Warn(object message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Warn, System.ConsoleColor.Magenta);
+        /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
+        public static void Warn(object message, bool canBeSent = true)
+        {
+            if (canBeSent)
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Warn, System.ConsoleColor.Magenta);
+        }
 
         /// <summary>
         /// Sends a <see cref="LogLevel.Error"/> level messages to the game console.
@@ -46,7 +56,12 @@ namespace Exiled.API.Features
         /// It's recommended to send any messages in the catch block of a try/catch as errors with the exception string.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        public static void Error(object message) => Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Error, System.ConsoleColor.DarkRed);
+        /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
+        public static void Error(object message, bool canBeSent = true)
+        {
+            if (canBeSent)
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Error, System.ConsoleColor.DarkRed);
+        }
 
         /// <summary>
         /// Sends a log message to the game console.

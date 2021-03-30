@@ -153,6 +153,20 @@ namespace Exiled.API.Extensions
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.First().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise);
 
         /// <summary>
+        /// Change <see cref="Player"/> walking speed.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="multiplier">Speed multiplier.</param>
+        public static void ChangeWalkingSpeed(this Player player, float multiplier) => SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
+
+        /// <summary>
+        /// Change <see cref="Player"/> running speed.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="multiplier">Speed multiplier.</param>
+        public static void ChangeRunningSpeed(this Player player, float multiplier) => SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
+
+        /// <summary>
         /// Send fake values to client's <see cref="Mirror.SyncVarAttribute"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
