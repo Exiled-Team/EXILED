@@ -163,7 +163,7 @@ namespace Exiled.API.Extensions
         public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
         {
             if (useCap)
-                multiplier = Mathf.Clamp(multiplier, -2, 2);
+                multiplier = Mathf.Clamp(multiplier, -2f, 2f);
 
             SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
         }
