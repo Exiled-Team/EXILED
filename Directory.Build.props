@@ -2,7 +2,7 @@
 <Project>
     <!-- StyleCop Analyzers configuration -->
     <PropertyGroup>
-        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Exiled.ruleset</CodeAnalysisRuleSet>
+        <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\Sexiled.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>

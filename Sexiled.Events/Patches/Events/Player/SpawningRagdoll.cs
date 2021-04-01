@@ -1,0 +1,59 @@
+// -----------------------------------------------------------------------
+// <copyright file="SpawningRagdoll.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Sexiled.API.Features;
+using Sexiled.Events.EventArgs;
+
+namespace Sexiled.Events.Patches.Events.Player
+{
+#pragma warning disable SA1313
+    using System;
+
+    using Sexiled.Events.EventArgs;
+    using Sexiled.Events.Handlers;
+
+    using HarmonyLib;
+
+    using UnityEngine;
+
+    /// <summary>
+    /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int)"/>.
+    /// Adds the <see cref="Handlers.Player.SpawningRagdoll"/> event.
+    /// </summary>
+    [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
+    internal static class SpawningRagdoll
+    {
+        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref Vector3 velocity, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
+        {
+            try
+            {
+                var ev = new SpawningRagdollEventArgs(
+                    ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(__instance.gameObject), pos, rot, velocity, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
+
+                Handlers.Player.OnSpawningRagdoll(ev);
+
+                pos = ev.Position;
+                rot = ev.Rotation;
+                velocity = ev.Velocity;
+                classId = (int)ev.RoleType;
+                ragdollInfo = ev.HitInformations;
+                allowRecall = ev.IsRecallAllowed;
+                ownerID = ev.DissonanceId;
+                ownerNick = ev.PlayerNickname;
+                playerId = ev.PlayerId;
+
+                return ev.IsAllowed;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Sexiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
+
+                return true;
+            }
+        }
+    }
+}

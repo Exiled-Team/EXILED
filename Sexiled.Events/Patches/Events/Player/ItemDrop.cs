@@ -1,0 +1,69 @@
+// -----------------------------------------------------------------------
+// <copyright file="ItemDrop.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Sexiled.Events.EventArgs;
+using Sexiled.Events.Handlers;
+
+namespace Sexiled.Events.Patches.Events.Player
+{
+#pragma warning disable SA1313
+    using System;
+
+    using Sexiled.Events.EventArgs;
+    using Sexiled.Events.Handlers;
+
+    using HarmonyLib;
+
+    /// <summary>
+    /// Patches <see cref="Inventory.CallCmdDropItem(int)"/>.
+    /// Adds the <see cref="Handlers.Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
+    /// </summary>
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
+    internal static class ItemDrop
+    {
+        private static bool Prefix(Inventory __instance, int itemInventoryIndex)
+        {
+            try
+            {
+                if (!__instance._iawRateLimit.CanExecute(true) || itemInventoryIndex < 0 ||
+                    itemInventoryIndex >= __instance.items.Count)
+                    return false;
+
+                Inventory.SyncItemInfo syncItemInfo = __instance.items[itemInventoryIndex];
+
+                if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
+                    return false;
+
+                var droppingItemEventArgs =
+                    new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo);
+
+                Handlers.Player.OnDroppingItem(droppingItemEventArgs);
+
+                syncItemInfo = droppingItemEventArgs.Item;
+
+                if (!droppingItemEventArgs.IsAllowed)
+                    return false;
+
+                Pickup droppedPickup = __instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position, __instance.camera.transform.rotation, syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
+
+                __instance.items.RemoveAt(itemInventoryIndex);
+
+                var itemDroppedEventArgs = new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
+
+                Handlers.Player.OnItemDropped(itemDroppedEventArgs);
+
+                return false;
+            }
+            catch (Exception e)
+            {
+                API.Features.Log.Error($"Sexiled.Events.Patches.Events.Player.ItemDrop: {e}\n{e.StackTrace}");
+
+                return true;
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
-# EXILED - EXtended In-runtime Library for External Development
+# SEXILED - EXtended In-runtime Library for External Development
 
-![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
+![SEXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
 ![GitHub Release](https://img.shields.io/github/release/galaxy119/EXILED/all.svg?style=flat)
 ![Github All Releases](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat) 
 <a href="https://discord.gg/PyUkWTg">
@@ -8,89 +8,89 @@
 </a>
 
 
-EXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
-All EXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
+SEXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
+All SEXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
 
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
  - Secondly, since all of the code related to the framework are done outside of the server assembly, things like small game updates will have little, if any, effect on the framework. Making it most likely to be compatible with future game updates, as well as making it easier to update when it *is* necessary to do so.
 
 
 # Installation
-Installation of EXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
-As mentioned above, the vast majority of EXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* EXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
+Installation of SEXILED may seem more involved or complicated than other frameworks, but it is in fact quite simple.
+As mentioned above, the vast majority of SEXILED is not contained within the server's Assembly-CSharp.dll file, however, there is a single modification needed to the Assembly-CSharp.dll file that is required to actually *load* SEXILED into the server during startup, a clean game Assembly with this change already made will be provided with releases.
 
-If you choose to use the installer it will, if run correctly, take care of installing `Exiled.Loader`, `Exiled.Updater`, `Exiled.Permissions`, `Exiled.API` and `Exiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
+If you choose to use the installer it will, if run correctly, take care of installing `Sexiled.Loader`, `Sexiled.Updater`, `Sexiled.Permissions`, `Sexiled.API` and `Sexiled.Events`, and ensuring your server has the proper Assembly-CSharp.dll file installer.
 
 # Windows
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Sexiled.Installer/README.md))
 **Note**: Make sure you're on the user that runs the server or you have Admin privileges before running the Installer.
 
-  - Download the **`Exiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
+  - Download the **`Sexiled.Installer-Win.exe` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> click the Installer)
   - Place it on your server folder (download the dedicated server if you haven't)
-  - Double click the **`Exiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
+  - Double click the **`Sexiled.Installer.exe`** or **[download this .bat](https://www.dropbox.com/s/xny4xus73ze6mq9/install-prerelease.bat?dl=1)** and place it in the server folder to install the latest pre-release
   - To install and get plugins, check the [Installing plugins](#installing-plugins) section down below.
-**Note:** If you are installing EXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
+**Note:** If you are installing SEXILED on a remote server, make sure you run the .exe as the same user that runs your SCP:SL servers (or one with Admin privileges)
 
 ### Manual installation
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)**
+  - Download the **`Sexiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)**
   - Extract its contents with [7Zip](https://www.7-zip.org/) or [WinRar](https://www.win-rar.com/download.html?&L=6)
   - Move **``Assembly-CSharp.dll``** to: **`(Your Server Folder)\SCPSL_Data\Managed`** and replace the file.
-  - Move the **``EXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
+  - Move the **``SEXILED``** folder to **`%appdata%`** *Note: This folder needs to go in ``C:\Users\(Your_User)\AppData\Roaming``, and ***NOT*** ``C:\Users\(Your_User)\AppData\Roaming\SCP Secret Laboratory``, and **IT MUST** be in (...)\AppData\Roaming, not (...)\AppData\!*
     - Windows 10:
       Write `%appdata%` in Cortana / the search icon, or the Windows Explorer bar
     - Any other Windows version:
       Press Win + R and type `%appdata%`
 
 ### Installing plugins
-That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
+That's it, SEXILED should now be installed and active the next time you boot up your server. Note that SEXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\EXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
+  - Move it to: ``C:\Users\(Your_User)\AppData\Roaming\SEXILED\Plugins`` (move here by pressing Win + R, then writing `%appdata%`)
 
 # Linux
-### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Exiled.Installer/README.md))
+### Automatic installation ([more information](https://github.com/galaxy119/EXILED/blob/master/Sexiled.Installer/README.md))
 
-**Note:** If you are installing EXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
+**Note:** If you are installing SEXILED on a remote server, make sure you run the Installer as the same user that runs your SCP:SL servers (or root)
 
-  - Download the **`Exiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
-  - Install it by either typing **`./Exiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Exiled.Installer-Linux`**.
-  - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`./Exiled.Installer-Linux /home/scp/server --pre-releases`**
-  - Another example, if you placed `Exiled.Installer-Linux` in your server folder: **`/home/scp/server/Exiled.Installer-Linux --pre-releases`**
+  - Download the **`Sexiled.Installer-Linux` [from here](https://github.com/galaxy119/EXILED/releases)** (click on Assets -> download the Installer)
+  - Install it by either typing **`./Sexiled.Installer-Linux --path /path/to/server`** or move it inside the server folder directly, move to it with the terminal (`cd`) and type: **`./Sexiled.Installer-Linux`**.
+  - If you want the latest pre-release, simply add **`--pre-releases`**. Example: **`./Sexiled.Installer-Linux /home/scp/server --pre-releases`**
+  - Another example, if you placed `Sexiled.Installer-Linux` in your server folder: **`/home/scp/server/Sexiled.Installer-Linux --pre-releases`**
   - To install and get plugins, check the [Installing plugins](#installing-plugins-1) section down below.
 
 ### Manual installation
   - **Ensure** you are logged in on the user that runs the SCP servers.
-  - Download the **`Exiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Exiled.tar.gz` link, then type: **`wget (link_to_download)`**)
-  - To extract it to your current folder, type **``tar -xzvf EXILED.tar.gz``**
+  - Download the **`Sexiled.tar.gz` [from here](https://github.com/galaxy119/EXILED/releases)** (SSH: right click and to get the `Sexiled.tar.gz` link, then type: **`wget (link_to_download)`**)
+  - To extract it to your current folder, type **``tar -xzvf SEXILED.tar.gz``**
   - Move the included **``Assembly-CSharp.dll``** file into the **``SCPSL_Data/Managed``** folder of your server installation (SSH: **`mv Assembly-CSharp.dll (path_to_server)/SCPSL_Data/Managed`**).
-  - Move the **`EXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv EXILED ~/.config/`**)
+  - Move the **`SEXILED`** folder to **``~/.config``**. *Note: This folder needs to go in ``~/.config``, and ***NOT*** ``~/.config/SCP Secret Laboratory``* (SSH: **`mv SEXILED ~/.config/`**)
 
 ### Installing plugins
-That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
+That's it, SEXILED should now be installed and active the next time you boot up your server. Note that SEXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
-  - Move it to: ``~/.config/EXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
+  - Move it to: ``~/.config/SEXILED/Plugins`` (if you use your SSH as root, then search for the correct `.config` which will be inside `/home/(SCP Server User)`)
 
 # Config
-EXILED by itself offers some config options.
-All of them are auto-generated at the server startup, they are located at ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
+SEXILED by itself offers some config options.
+All of them are auto-generated at the server startup, they are located at ``~/.config/SEXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\SEXILED\Configs\(ServerPortHere)-config.yml`` on Windows).
 
-Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/EXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\EXILED\(ServerPortHere)-config.yml`` on Windows).
-However, some plugins might get their config settings from other locations on their own, this is simply the default EXILED location for them, so refer to the individual plugin if there are issues.
+Plugin configs will ***NOT*** be in the aforementioned ``config_gameplay.txt`` file, instead, plugin configs are set in the ``~/.config/SEXILED/Configs/(ServerPortHere)-config.yml`` file (``%AppData%\SEXILED\(ServerPortHere)-config.yml`` on Windows).
+However, some plugins might get their config settings from other locations on their own, this is simply the default SEXILED location for them, so refer to the individual plugin if there are issues.
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
+If you wish to make a Plugin for SEXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
 
 But make sure to follow these rules when publishing your plugins:
 
- - Your plugin must contain a class that inherits from Exiled.API.Features.Plugin<>, if it does not, EXILED will not load your plugin when the server starts.
+ - Your plugin must contain a class that inherits from Sexiled.API.Features.Plugin<>, if it does not, SEXILED will not load your plugin when the server starts.
  - When a plugin is loaded, the code within the aforementioned class' ``OnEnabled()`` method is fired immediately, it does not wait for other plugins to be loaded. It does not wait for the server startup process to finish. ***It does not wait for anything.*** When setting up your OnEnable() method, be sure you are not accessing things which may not be initialized by the server yet, such as ServerConsole.Port, or PlayerManager.localPlayer.
  - If you need to access things early on that are not initialized before your plugin is loaded, it is recommended to simply wait for the WaitingForPlayers event to do so, if you for some reason need to do things sooner, wrap the code in a ``` while(!x)``` loop that checks for the variable/object you need to no longer be null before continuing.
- - EXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
- - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within EXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
+ - SEXILED supports dynamically reloading plugin assemblies mid-execution. The means that, if you need to update a plugin, it can be done without rebooting the server, however, if you are updating a plugin mid-execution, the plugin needs to be properly setup to support it, or you will have a very bad time. Refer to the ``Dynamic Updates`` section for more information and guidelines to follow.
+ - There is ***NO*** OnUpdate, OnFixedUpdate or OnLateUpdate event within SEXILED. If you need to, for some reason, run code that often, you can use a MEC coroutine that waits for one frame, 0.01f, or uses a Timing layer like Timing.FixedUpdate instead.
 
-### Disabling EXILED Event patches
+### Disabling SEXILED Event patches
 ***This feature is currently no longer implemented.***
 
  ### MEC Coroutines
@@ -120,15 +120,15 @@ public IEnumerator<float> MyCoroutine()
 It is ***strongly*** recommended that you do some googling, or ask around in the Discord if you are unfamiliar with MEC and would like to learn more, get advice, or need help. Questions, no matter how 'stupid' they are, will always be answered as helpfully and clearly as possible for plugin developers to excell. Better code is better for everyone.
 
 ### Dynamic Updates
-EXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
-For example, if you start the server with just `Exiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all EXILED plugins, including new ones that weren't loaded before.
+SEXILED as a framework supports dynamic reloading of plugin assemblies without requiring a server reboot.
+For example, if you start the server with just `Sexiled.Events` as the only plugin, and wish to add a new one, you do not need to reboot the server to complete this task. You can simply use the RemoteAdmin/ServerConsole command `reload plugins` to reload all SEXILED plugins, including new ones that weren't loaded before.
 
 This also means that you can *update* plugins without having to fully reboot the server as well. However there are a few guidelines that must be followed by the plugin developer in order for this to be achieved properly:
 
 ***For Hosts***
  - If you are updating a plugin, make sure that it's assembly name is not the same as the current version you have installed (if any). The plugin must be built by the developer with Dynamic Updates in mind for this to work, simply renaming the file will not.
- - If the plugin supports Dynamic Updates, be sure that when you put the newer version of the plugin into the "Plugins" folder, you also remove the older version from the folder, before reloading EXILED, failure to ensure this will result in many many bad things.
- - Any problems that arise from Dynamically Updating a plugin is solely the responsibility of you and the developer of the plugin in question. While EXILED fully supports and encourages Dynamic Updates, the only way it could fail or go wrong is if the server host or plugin dev did something wrong. Triple check that everything was done correctly by both of those parties before reporting a bug to EXILED devs regarding Dynamic Updates.
+ - If the plugin supports Dynamic Updates, be sure that when you put the newer version of the plugin into the "Plugins" folder, you also remove the older version from the folder, before reloading SEXILED, failure to ensure this will result in many many bad things.
+ - Any problems that arise from Dynamically Updating a plugin is solely the responsibility of you and the developer of the plugin in question. While SEXILED fully supports and encourages Dynamic Updates, the only way it could fail or go wrong is if the server host or plugin dev did something wrong. Triple check that everything was done correctly by both of those parties before reporting a bug to SEXILED devs regarding Dynamic Updates.
 
  ***For Developers***
 
@@ -136,7 +136,7 @@ This also means that you can *update* plugins without having to fully reboot the
  - Plugins that have custom Harmony patches must use some kind of changing variable within the name of the Harmony Instance, and must UnPatchAll() on their harmony instance when the plugin is disabled or reloaded.
  - Any coroutines started by the plugin in OnEnabled must also be killed when the plugin is disabled or reloaded.
 
-All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When EXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
+All of these can be achieved in either the OnReloaded() or OnDisabled() methods in the plugin class. When SEXILED reloads plugins, it calls OnDisabled(), then OnReloaded(), then it will load in the new assemblies, and then executes OnEnabled().
 
 Note that I said *new* assemblies. If you replace an assembly with another one of the same name, it will ***NOT*** be updated. This is due to the GAC (Global Assembly Cache), if you attempt to 'load' and assembly that is already in the cache, it will always use the cached assembly instead.
 For this reason, if your plugin will support Dynamic Updates, you must build each version with a different Assembly Name in the build options (renaming the file will not work). Also, since the old assembly is not "destroyed" when it is no longer needed, if you fail to unsubscribe from events, unpatch your harmony instance, kill coroutines, etc, that code will continue to run aswell as the new version's code.

@@ -1,0 +1,35 @@
+// -----------------------------------------------------------------------
+// <copyright file="RecontainedEventArgs.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+using Sexiled.API.Features;
+
+namespace Sexiled.Events.EventArgs
+{
+    using System;
+
+    using Sexiled.API.Features;
+
+    /// <summary>
+    /// Contains informations after SCP-079 recontainming.
+    /// </summary>
+    public class RecontainedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecontainedEventArgs"/> class.
+        /// </summary>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
+        public RecontainedEventArgs(Player target)
+        {
+            Target = target;
+        }
+
+        /// <summary>
+        /// Gets the player that previously controlled SCP-079.
+        /// </summary>
+        public Player Target { get; }
+    }
+}

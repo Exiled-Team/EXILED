@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+
+    <id>SEXILED</id>
+    <title>SEXILED</title>
+    <version>$version$</version>
+    <authors>The Exiled Team</authors>
+    <owners>Galaxy119</owners>
+    <copyright>Copyright © Exiled Team 2020 - $year$</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <repository type="Git" url="https://github.com/galaxy119/EXILED" />
+    <licenseUrl>https://github.com/galaxy119/EXILED/blob/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/galaxy119/EXILED</projectUrl>
+    <icon>images\Sexiled_Icon.jpg</icon>
+    <description>Plugin framework for SCP: Secret Laboratory.</description>
+
+    <dependencies>
+      <group targetFramework="net472" />
+    </dependencies>
+
+  </metadata>
+
+  <files>
+    <!-- Project files -->
+    <file src="..\bin\Release\Sexiled.API.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.API.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.Bootstrap.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.Bootstrap.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.Events.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.Events.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.Loader.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.Loader.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.Permissions.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.Permissions.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.Updater.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.Updater.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.CreditTags.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.CreditTags.xml" target="lib\net472" />
+
+    <file src="..\bin\Release\Sexiled.CustomItems.dll" target="lib\net472" />
+    <file src="..\bin\Release\Sexiled.CustomItems.xml" target="lib\net472" />
+    <!-- Project files -->
+
+    <!-- Icon -->
+    <file src="..\assets\Sexiled_Icon.jpg" target="images" />
+  </files>
+
+</package>
