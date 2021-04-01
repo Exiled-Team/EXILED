@@ -40,7 +40,7 @@ namespace Exiled.API.Features
         }
 
         /// <inheritdoc/>
-        public virtual Assembly Assembly { get; protected set; }
+        public Assembly Assembly { get; }
 
         /// <inheritdoc/>
         public virtual string Name { get; }
