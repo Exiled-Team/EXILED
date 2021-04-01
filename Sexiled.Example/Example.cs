@@ -81,39 +81,39 @@ namespace Sexiled.Example
             scp914Handler = new Scp914Handler();
             scp096Handler = new Scp096Handler();
 
-            Server.WaitingForPlayers += serverHandler.OnWaitingForPlayers;
-            Server.EndingRound += serverHandler.OnEndingRound;
+            Sexiled.Events.Handlers.Server.WaitingForPlayers += serverHandler.OnWaitingForPlayers;
+            Sexiled.Events.Handlers.Server.EndingRound += serverHandler.OnEndingRound;
 
-            Player.Destroying += playerHandler.OnDestroying;
-            Player.Dying += playerHandler.OnDying;
-            Player.Died += playerHandler.OnDied;
-            Player.ChangingRole += playerHandler.OnChangingRole;
-            Player.ChangingItem += playerHandler.OnChangingItem;
-            Player.Verified += playerHandler.OnVerified;
-            Player.FailingEscapePocketDimension += playerHandler.OnFailingEscapePocketDimension;
-            Player.EscapingPocketDimension += playerHandler.OnEscapingPocketDimension;
-            Player.UnlockingGenerator += playerHandler.OnUnlockingGenerator;
-            Player.PreAuthenticating += playerHandler.OnPreAuthenticating;
+            Sexiled.Events.Handlers.Player.Destroying += playerHandler.OnDestroying;
+            Sexiled.Events.Handlers.Player.Dying += playerHandler.OnDying;
+            Sexiled.Events.Handlers.Player.Died += playerHandler.OnDied;
+            Sexiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
+            Sexiled.Events.Handlers.Player.ChangingItem += playerHandler.OnChangingItem;
+            Sexiled.Events.Handlers.Player.Verified += playerHandler.OnVerified;
+            Sexiled.Events.Handlers.Player.FailingEscapePocketDimension += playerHandler.OnFailingEscapePocketDimension;
+            Sexiled.Events.Handlers.Player.EscapingPocketDimension += playerHandler.OnEscapingPocketDimension;
+            Sexiled.Events.Handlers.Player.UnlockingGenerator += playerHandler.OnUnlockingGenerator;
+            Sexiled.Events.Handlers.Player.PreAuthenticating += playerHandler.OnPreAuthenticating;
 
-            Warhead.Stopping += warheadHandler.OnStopping;
-            Warhead.Starting += warheadHandler.OnStarting;
+            Sexiled.Events.Handlers.Warhead.Stopping += warheadHandler.OnStopping;
+            Sexiled.Events.Handlers.Warhead.Starting += warheadHandler.OnStarting;
 
-            Scp106.Teleporting += playerHandler.OnTeleporting;
-            Scp106.Containing += playerHandler.OnContaining;
-            Scp106.CreatingPortal += playerHandler.OnCreatingPortal;
+            Sexiled.Events.Handlers.Scp106.Teleporting += playerHandler.OnTeleporting;
+            Sexiled.Events.Handlers.Scp106.Containing += playerHandler.OnContaining;
+            Sexiled.Events.Handlers.Scp106.CreatingPortal += playerHandler.OnCreatingPortal;
 
-            Scp914.Activating += playerHandler.OnActivating;
-            Scp914.ChangingKnobSetting += playerHandler.OnChangingKnobSetting;
+            Sexiled.Events.Handlers.Scp914.Activating += playerHandler.OnActivating;
+            Sexiled.Events.Handlers.Scp914.ChangingKnobSetting += playerHandler.OnChangingKnobSetting;
 
-            Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
-            Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
+            Sexiled.Events.Handlers.Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
+            Sexiled.Events.Handlers.Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
 
-            Item.ChangingDurability += itemHandler.OnChangingDurability;
-            Item.ChangingAttachments += itemHandler.OnChangingAttachments;
+            Sexiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
+            Sexiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
 
-            Scp914.UpgradingItems += scp914Handler.OnUpgradingItems;
+            Sexiled.Events.Handlers.Scp914.UpgradingItems += scp914Handler.OnUpgradingItems;
 
-            Scp096.AddingTarget += scp096Handler.OnAddingTarget;
+            Sexiled.Events.Handlers.Scp096.AddingTarget += scp096Handler.OnAddingTarget;
         }
 
         /// <summary>
@@ -121,39 +121,39 @@ namespace Sexiled.Example
         /// </summary>
         private void UnregisterEvents()
         {
-            Server.WaitingForPlayers -= serverHandler.OnWaitingForPlayers;
-            Server.EndingRound -= serverHandler.OnEndingRound;
+            Sexiled.Events.Handlers.Server.WaitingForPlayers -= serverHandler.OnWaitingForPlayers;
+            Sexiled.Events.Handlers.Server.EndingRound -= serverHandler.OnEndingRound;
 
-            Player.Destroying -= playerHandler.OnDestroying;
-            Player.Dying -= playerHandler.OnDying;
-            Player.Died -= playerHandler.OnDied;
-            Player.ChangingRole -= playerHandler.OnChangingRole;
-            Player.ChangingItem -= playerHandler.OnChangingItem;
-            Player.Verified -= playerHandler.OnVerified;
-            Player.FailingEscapePocketDimension -= playerHandler.OnFailingEscapePocketDimension;
-            Player.EscapingPocketDimension -= playerHandler.OnEscapingPocketDimension;
-            Player.UnlockingGenerator -= playerHandler.OnUnlockingGenerator;
-            Player.PreAuthenticating -= playerHandler.OnPreAuthenticating;
+            Sexiled.Events.Handlers.Player.Destroying -= playerHandler.OnDestroying;
+            Sexiled.Events.Handlers.Player.Dying -= playerHandler.OnDying;
+            Sexiled.Events.Handlers.Player.Died -= playerHandler.OnDied;
+            Sexiled.Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
+            Sexiled.Events.Handlers.Player.ChangingItem -= playerHandler.OnChangingItem;
+            Sexiled.Events.Handlers.Player.Verified -= playerHandler.OnVerified;
+            Sexiled.Events.Handlers.Player.FailingEscapePocketDimension -= playerHandler.OnFailingEscapePocketDimension;
+            Sexiled.Events.Handlers.Player.EscapingPocketDimension -= playerHandler.OnEscapingPocketDimension;
+            Sexiled.Events.Handlers.Player.UnlockingGenerator -= playerHandler.OnUnlockingGenerator;
+            Sexiled.Events.Handlers.Player.PreAuthenticating -= playerHandler.OnPreAuthenticating;
 
-            Warhead.Stopping -= warheadHandler.OnStopping;
-            Warhead.Starting -= warheadHandler.OnStarting;
+            Sexiled.Events.Handlers.Warhead.Stopping -= warheadHandler.OnStopping;
+            Sexiled.Events.Handlers.Warhead.Starting -= warheadHandler.OnStarting;
 
-            Scp106.Teleporting -= playerHandler.OnTeleporting;
-            Scp106.Containing -= playerHandler.OnContaining;
-            Scp106.CreatingPortal -= playerHandler.OnCreatingPortal;
+            Sexiled.Events.Handlers.Scp106.Teleporting -= playerHandler.OnTeleporting;
+            Sexiled.Events.Handlers.Scp106.Containing -= playerHandler.OnContaining;
+            Sexiled.Events.Handlers.Scp106.CreatingPortal -= playerHandler.OnCreatingPortal;
 
-            Scp914.Activating -= playerHandler.OnActivating;
-            Scp914.ChangingKnobSetting -= playerHandler.OnChangingKnobSetting;
+            Sexiled.Events.Handlers.Scp914.Activating -= playerHandler.OnActivating;
+            Sexiled.Events.Handlers.Scp914.ChangingKnobSetting -= playerHandler.OnChangingKnobSetting;
 
-            Map.ExplodingGrenade -= mapHandler.OnExplodingGrenade;
-            Map.GeneratorActivated -= mapHandler.OnGeneratorActivated;
+            Sexiled.Events.Handlers.Map.ExplodingGrenade -= mapHandler.OnExplodingGrenade;
+            Sexiled.Events.Handlers.Map.GeneratorActivated -= mapHandler.OnGeneratorActivated;
 
-            Item.ChangingDurability -= itemHandler.OnChangingDurability;
-            Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
+            Sexiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
+            Sexiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
 
-            Scp914.UpgradingItems -= scp914Handler.OnUpgradingItems;
+            Sexiled.Events.Handlers.Scp914.UpgradingItems -= scp914Handler.OnUpgradingItems;
 
-            Scp096.AddingTarget -= scp096Handler.OnAddingTarget;
+            Sexiled.Events.Handlers.Scp096.AddingTarget -= scp096Handler.OnAddingTarget;
 
             serverHandler = null;
             playerHandler = null;
