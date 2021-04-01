@@ -32,6 +32,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Plugin()
         {
+            Assembly = Assembly.GetCallingAssembly();
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
             Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
@@ -39,7 +40,7 @@ namespace Exiled.API.Features
         }
 
         /// <inheritdoc/>
-        public virtual Assembly Assembly { get; } = Assembly.GetCallingAssembly();
+        public virtual Assembly Assembly { get; protected set; }
 
         /// <inheritdoc/>
         public virtual string Name { get; }
@@ -164,11 +165,9 @@ namespace Exiled.API.Features
         /// </summary>
         public Plugin()
         {
+            Assembly = Assembly.GetCallingAssembly();
             InternalTranslation = new TTranslation();
         }
-
-        /// <inheritdoc/>
-        public override Assembly Assembly { get; } = Assembly.GetCallingAssembly();
 
         /// <summary>
         /// Gets the plugin translations.
