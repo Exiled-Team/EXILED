@@ -161,7 +161,7 @@ namespace Sexiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Log.Error($"Sexiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
+                Sexiled.API.Features.Log.Error($"Sexiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
 
                 return true;
             }

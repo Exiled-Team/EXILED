@@ -44,7 +44,7 @@ namespace Sexiled.Events.Commands.Reload
 
             sender.Respond("Reloading plugins...");
 
-            Loader.Loader.ReloadPlugins();
+            Loader.ReloadPlugins();
 
             response = "Plugins have been reloaded successfully!";
             return true;

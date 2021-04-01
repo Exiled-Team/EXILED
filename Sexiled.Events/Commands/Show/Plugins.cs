@@ -70,7 +70,7 @@ namespace Sexiled.Events.Commands.Show
 
                 AppendNewRow().Append("- Author: ").Append(plugin.Author);
                 AppendNewRow().Append("- Version: ").Append(plugin.Version);
-                AppendNewRow().Append("- Required Exiled Version: ").Append(plugin.RequiredExiledVersion);
+                AppendNewRow().Append("- Required Exiled Version: ").Append(plugin.RequiredSexiledVersion);
                 AppendNewRow().Append("- Prefix: ").Append(plugin.Prefix);
                 AppendNewRow().Append("- Priority: ").Append(plugin.Priority);
 

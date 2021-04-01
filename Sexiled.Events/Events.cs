@@ -139,7 +139,7 @@ namespace Sexiled.Events
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
-                Log.Debug("Events patched successfully!", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception exception)
             {
@@ -170,12 +170,12 @@ namespace Sexiled.Events
         /// </summary>
         public void Unpatch()
         {
-            Log.Debug("Unpatching events...", Loader.Loader.ShouldDebugBeShown);
+            Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
             UnpatchCompilerMess();
             Harmony.UnpatchAll();
 
-            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.Loader.ShouldDebugBeShown);
+            Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
         }
 
         private void PatchByAttributes()
@@ -184,7 +184,7 @@ namespace Sexiled.Events
             {
                 Harmony.PatchAll();
 
-                Log.Debug("Events patched by attributes successfully!", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception exception)
             {
@@ -198,7 +198,7 @@ namespace Sexiled.Events
             {
                 PatchCompilerMess();
 
-                Log.Debug("Events in the inner types patched successfully!", Loader.Loader.ShouldDebugBeShown);
+                Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception e)
             {
