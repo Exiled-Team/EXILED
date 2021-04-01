@@ -1,4 +1,4 @@
-name: Exiled Programs CI
+name: Sexiled Programs CI
 
 on: [push, pull_request]
 
@@ -12,7 +12,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        proj_name: [Exiled.Installer, Exiled.Patcher]
+        proj_name: [Sexiled.Installer, Sexiled.Patcher]
         include:
         - os: ubuntu-latest
           target: linux-x64
