@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         }
 
         /// <inheritdoc/>
-        public Assembly Assembly { get; } = Assembly.GetCallingAssembly();
+        public virtual Assembly Assembly { get; } = Assembly.GetCallingAssembly();
 
         /// <inheritdoc/>
         public virtual string Name { get; }
@@ -166,6 +166,9 @@ namespace Exiled.API.Features
         {
             InternalTranslation = new TTranslation();
         }
+
+        /// <inheritdoc/>
+        public override Assembly Assembly { get; } = Assembly.GetCallingAssembly();
 
         /// <summary>
         /// Gets the plugin translations.
