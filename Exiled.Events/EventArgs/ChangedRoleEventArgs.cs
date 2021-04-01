@@ -23,14 +23,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="oldRole"><inheritdoc cref="OldRole"/></param>
         /// <param name="items"><inheritdoc cref="Items"/></param>
-        /// <param name="preservedPosition"><inheritdoc cref="PreservedPosition"/></param>
+        /// <param name="hasPreservedPosition"><inheritdoc cref="HasPreservedPosition"/></param>
         /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangedRoleEventArgs(Player player, RoleType oldRole, List<ItemType> items, bool preservedPosition, bool isEscaped)
+        public ChangedRoleEventArgs(Player player, RoleType oldRole, List<ItemType> items, bool hasPreservedPosition, bool isEscaped)
         {
             Player = player;
             OldRole = oldRole;
             Items = items.AsReadOnly();
-            PreservedPosition = preservedPosition;
+            HasPreservedPosition = hasPreservedPosition;
             IsEscaped = isEscaped;
         }
 
@@ -57,6 +57,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating whether the position has been preserved after changing the role.
         /// </summary>
-        public bool PreservedPosition { get; }
+        public bool HasPreservedPosition { get; }
     }
 }

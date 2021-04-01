@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
                     classid = escapingEventArgs.NewRole;
                 }
 
-                var oldRole = player.Role;
+                var changedRoleEventArgs = new ChangedRoleEventArgs(player, player.Role, startItemsList, lite, escape);
 
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
@@ -80,7 +80,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (lite)
                 {
-                    var changedRoleEventArgs = new ChangedRoleEventArgs(player, oldRole, startItemsList, true, escape);
                     Player.OnChangedRole(changedRoleEventArgs);
 
                     ListPool<ItemType>.Shared.Return(startItemsList);
@@ -160,8 +159,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
 
-                var changedRoleEventArgs1 = new ChangedRoleEventArgs(player, oldRole, startItemsList, false, escape);
-                Player.OnChangedRole(changedRoleEventArgs1);
+                Player.OnChangedRole(changedRoleEventArgs);
 
                 ListPool<ItemType>.Shared.Return(startItemsList);
                 return false;
