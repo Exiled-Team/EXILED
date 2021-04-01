@@ -32,7 +32,7 @@ namespace Sexiled.Events.Patches.Events.Scp096
     /// Patches <see cref="Scp096.AddTarget"/>.
     /// Adds the <see cref="Handlers.Scp096.AddingTarget"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(API.Features.Scp096.AddTarget))]
+    [HarmonyPatch(typeof(Scp096), nameof(Scp096.AddTarget))]
     internal static class AddingTarget
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -61,7 +61,7 @@ namespace Sexiled.Events.Patches.Events.Scp096
             {
                 // Player.Get(this.Hub)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(API.Features.Scp096.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // Player.Get(target)
@@ -73,7 +73,7 @@ namespace Sexiled.Events.Patches.Events.Scp096
 
                 // this.EnrageTimePerReset;
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(API.Features.Scp096.EnrageTimePerReset))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimePerReset))),
 
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -98,7 +98,7 @@ namespace Sexiled.Events.Patches.Events.Scp096
 
             // Search for the sixth "ldarg.0".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(API.Features.Scp096.AddReset))) + offset;
+            (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
 
             // Extract all labels from it.
             var addResetLabels = newInstructions[index].ExtractLabels();
@@ -111,20 +111,20 @@ namespace Sexiled.Events.Patches.Events.Scp096
                 // this.EnrageTimeLeft += ev.EnrageTimeToAdd
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(addResetLabels),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(API.Features.Scp096.EnrageTimeLeft))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
                 new CodeInstruction(OpCodes.Add),
-                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(API.Features.Scp096.EnrageTimeLeft))),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
 
                 // this.AddedTimeThisRage += ev.EnrageTimeToAdd
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(API.Features.Scp096.AddedTimeThisRage))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
                 new CodeInstruction(OpCodes.Add),
-                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(API.Features.Scp096.AddedTimeThisRage))),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
             });
 
             // Get the index of the last "ldc.i4.s".
