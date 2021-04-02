@@ -126,6 +126,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
+        /// Invoked after changing a player's role.
+        /// </summary>
+        public static event CustomEventHandler<ChangedRoleEventArgs> ChangedRole;
+
+        /// <summary>
         /// Invoked before throwing a grenade.
         /// </summary>
         public static event CustomEventHandler<ThrowingGrenadeEventArgs> ThrowingGrenade;
@@ -419,6 +424,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after changing a player's role.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
+        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before throwing a grenade.
