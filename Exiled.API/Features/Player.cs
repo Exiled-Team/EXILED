@@ -886,7 +886,7 @@ namespace Exiled.API.Features
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
-        /// Gets or sets the time of the displaying hints.
+        /// Gets or sets the remaining time of the current hint.
         /// </summary>
         internal float HintRemainingTime { get; set; }
 

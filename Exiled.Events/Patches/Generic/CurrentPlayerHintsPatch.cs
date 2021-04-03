@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Generic
 {
     using System.Collections.Generic;
-
     using Exiled.API.Features;
     using HarmonyLib;
     using Hints;
