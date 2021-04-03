@@ -117,6 +117,11 @@ namespace Exiled.API.Features
         public AmmoBox Ammo { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether gets if the player is viewing a hint.
+        /// </summary>
+        public bool HasHint { get; internal set; }
+
+        /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
         public HintDisplay HintDisplay { get; private set; }
@@ -780,6 +785,11 @@ namespace Exiled.API.Features
         /// Gets the current room the player is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
+
+        /// <summary>
+        /// Gets the current zome the player is in.
+        /// </summary>
+        public ZoneType Zone => Map.FindParentRoom(GameObject).Zone;
 
         /// <summary>
         /// Gets or sets the player's group.
