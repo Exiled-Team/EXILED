@@ -155,7 +155,7 @@ namespace Exiled.API.Extensions
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.First().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise);
 
         /// <summary>
-        /// Change <see cref="Player"/> walking speed. Negative values will invert player's controls.
+        /// Changes the <see cref="Player"/>'s walking speed. Negative values will invert the player's controls.
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
@@ -169,7 +169,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Change <see cref="Player"/> running speed. Negative values will invert player's controls.
+        /// Changes the <see cref="Player"/>'s running speed. Negative values will invert the player's controls.
         /// </summary>
         /// <param name="player">Player to change.</param>
         /// <param name="multiplier">Speed multiplier.</param>
