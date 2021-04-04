@@ -42,6 +42,31 @@ namespace Exiled.CustomItems.API
         };
 
         /// <summary>
+        /// Resets the player's inventory to the provided list of items and/or customitems names, clearing any items it already possess.
+        /// </summary>
+        /// <param name="player">The player to which items will be given.</param>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        public static void ResetInventory(this Player player, List<string> newItems)
+        {
+            player.ClearInventory();
+
+            foreach (string item in newItems)
+            {
+                if (Enum.TryParse(item, true, out ItemType parsedItem))
+                {
+                    player.AddItem(parsedItem);
+                }
+                else
+                {
+                    if (!CustomItem.TryGive(player, item, false))
+                    {
+                        Log.Error($"\"{item}\" is not a valid item name, nor a custom item name.");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
