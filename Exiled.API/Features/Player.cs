@@ -117,6 +117,11 @@ namespace Exiled.API.Features
         public AmmoBox Ammo { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether gets if the player is viewing a hint.
+        /// </summary>
+        public bool HasHint { get; internal set; }
+
+        /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
         public HintDisplay HintDisplay { get; private set; }
@@ -782,6 +787,11 @@ namespace Exiled.API.Features
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
+        /// Gets the current zone the player is in.
+        /// </summary>
+        public ZoneType Zone => Map.FindParentRoom(GameObject).Zone;
+
+        /// <summary>
         /// Gets or sets the player's group.
         /// </summary>
         public UserGroup Group
@@ -874,6 +884,11 @@ namespace Exiled.API.Features
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
+
+        /// <summary>
+        /// Gets or sets the remaining time of the current hint.
+        /// </summary>
+        internal float HintRemainingTime { get; set; }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
