@@ -77,6 +77,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler ReloadedConfigs;
 
         /// <summary>
+        /// Invoked after the "reload translations" command is ran.
+        /// </summary>
+        public static event CustomEventHandler ReloadedTranslations;
+
+        /// <summary>
         /// Invoked after the "reload gameplay" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedGameplay;
@@ -168,6 +173,11 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload configs" command is ran.
         /// </summary>
         public static void OnReloadedConfigs() => ReloadedConfigs.InvokeSafely();
+
+        /// <summary>
+        /// Called after the "reload translations" command is ran.
+        /// </summary>
+        public static void OnReloadedTranslations() => ReloadedTranslations.InvokeSafely();
 
         /// <summary>
         /// Called after the "reload gameplay" command is ran.

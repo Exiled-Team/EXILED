@@ -25,7 +25,14 @@ namespace Exiled.Events.Handlers.Internal
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
+            {
                 ConfigManager.Reload();
+            }
+
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
+            {
+                TranslationManager.Reload();
+            }
 
             RoundSummary.RoundLock = false;
         }
