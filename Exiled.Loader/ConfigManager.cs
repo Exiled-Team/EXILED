@@ -5,19 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using YamlDotNet.Serialization;
-
 namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-
     using YamlDotNet.Core;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Used to handle plugin configs.
