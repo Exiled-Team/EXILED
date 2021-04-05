@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using YamlDotNet.Serialization;
+
 namespace Exiled.Loader
 {
     using System;
@@ -22,6 +24,18 @@ namespace Exiled.Loader
     /// </summary>
     public static class ConfigManager
     {
+        /// <summary>
+        /// Gets the config serializer.
+        /// </summary>
+        [Obsolete("Moved to Loader.Serializer", true)]
+        public static ISerializer Serializer => Loader.Serializer;
+
+        /// <summary>
+        /// Gets the config deserializer.
+        /// </summary>
+        [Obsolete("Moved to Loader.Deserializer", true)]
+        public static IDeserializer Deserializer => Loader.Deserializer;
+
         /// <inheritdoc cref="LoadSorted(string)"/>
         [Obsolete("Replaced with LoadSorted(string)", true)]
         public static Dictionary<string, IConfig> Load(string rawConfigs) => new Dictionary<string, IConfig>(LoadSorted(rawConfigs));
