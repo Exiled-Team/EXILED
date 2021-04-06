@@ -117,7 +117,7 @@ namespace Exiled.API.Features
         public AmmoBox Ammo { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether gets if the player is viewing a hint.
+        /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
         public bool HasHint { get; internal set; }
 
