@@ -789,7 +789,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
-        public ZoneType Zone => Map.FindParentRoom(GameObject).Zone;
+        public ZoneType Zone => CurrentRoom.Zone;
 
         /// <summary>
         /// Gets or sets the player's group.
@@ -884,11 +884,6 @@ namespace Exiled.API.Features
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
-
-        /// <summary>
-        /// Gets or sets the remaining time of the current hint.
-        /// </summary>
-        internal float HintRemainingTime { get; set; }
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
