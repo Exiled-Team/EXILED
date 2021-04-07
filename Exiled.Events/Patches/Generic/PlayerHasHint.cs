@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         // Creating a list for coroutine check
-        private static HashSet<Player> playerHasHintCoroutines = new HashSet<Player>();
+        private static Dictionary<Player, CoroutineHandle> playerHasHintCoroutines = new Dictionary<Player, CoroutineHandle>();
 
         public static void Postfix(HintDisplay __instance, Hint hint)
         {
@@ -31,28 +31,27 @@ namespace Exiled.Events.Patches.Generic
             if (!(Player.Get(__instance.gameObject) is Player player))
                 return;
 
-            // If contains, kill coroutine
-            if (playerHasHintCoroutines.Contains(player))
+            // If Player value has couroutine, kill it
+            if (playerHasHintCoroutines.TryGetValue(player, out CoroutineHandle oldcoroutine))
             {
-                // Kill player coroutine
-                Timing.KillCoroutines(player.UserId + "HasHint");
+                // Kill the coroutine
+                Timing.KillCoroutines(oldcoroutine);
+            }
+
+            // If not contains add it and run the couroutine
+            if (!playerHasHintCoroutines.ContainsKey(player))
+            {
+                playerHasHintCoroutines.Add(player, Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar)));
             }
             else
             {
-                // If it doesn't contains the player, add it
-                playerHasHintCoroutines.Add(player);
+                // If contains, create a new coroutine
+                playerHasHintCoroutines[player] = Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar));
             }
 
             // If it is false, then to true
             if (!player.HasHint)
                 player.HasHint = true;
-
-            // I have to create a variable to be able to change the value of coroutine tag
-            CoroutineHandle coroutine = Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar));
-
-            // Change the value of coroutine tag to the userid of the player
-            // Add HasHint part to ensure the tag is unique
-            coroutine.Tag = player.UserId + "HasHint";
         }
 
         public static IEnumerator<float> HasHintToFalse(Player player, float duration)
@@ -60,7 +59,7 @@ namespace Exiled.Events.Patches.Generic
             // Waiting for the hint to end
             yield return Timing.WaitForSeconds(duration);
 
-            // If player gameobject doesn't exists, break the coroutine.
+            // If player gameobject doesn't exists, break the coroutine
             if (!player.GameObject)
                 yield break;
 
