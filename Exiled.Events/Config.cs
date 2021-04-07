@@ -51,7 +51,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
-        [Description("Indicates whether configs has to be reloaded every time a round restarts")]
+        [Description("Indicates whether configs have to be reloaded every round restart")]
         public bool ShouldReloadConfigsAtRoundRestart { get; set; } = false;
 
         /// <summary>
