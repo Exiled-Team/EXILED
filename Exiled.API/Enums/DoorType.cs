@@ -117,7 +117,7 @@ namespace Exiled.API.Enums
         CheckpointLczB,
 
         /// <summary>
-        /// RRepresents any entrance zone styled door.
+        /// Represents any entrance zone styled door.
         /// </summary>
         EntranceDoor,
 
