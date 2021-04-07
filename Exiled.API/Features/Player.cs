@@ -586,6 +586,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's artificial health decay.
+        /// </summary>
+        public float ArtificialHealthDecay
+        {
+            get => ReferenceHub.playerStats.artificialHpDecay;
+            set => ReferenceHub.playerStats.artificialHpDecay = value;
+        }
+
+        /// <summary>
         /// Gets or sets the player's adrenaline health.
         /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
         /// </summary>
