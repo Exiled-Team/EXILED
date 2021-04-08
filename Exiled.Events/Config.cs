@@ -51,7 +51,8 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
-        public bool ShouldReloadConfigsAtRoundRestart { get; set; }
+        [Description("Indicates whether configs have to be reloaded every round restart")]
+        public bool ShouldReloadConfigsAtRoundRestart { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether translations has to be reloaded every time a round restarts.
