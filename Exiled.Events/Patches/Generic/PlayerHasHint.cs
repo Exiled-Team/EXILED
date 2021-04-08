@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Generic
             yield return Timing.WaitForSeconds(duration);
 
             // If player gameobject doesn't exists, break the coroutine
-            if (!player.GameObject)
+            if (player.GameObject == null)
                 yield break;
 
             player.HasHint = false;
