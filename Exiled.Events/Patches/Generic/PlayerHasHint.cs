@@ -38,16 +38,8 @@ namespace Exiled.Events.Patches.Generic
                 Timing.KillCoroutines(oldcoroutine);
             }
 
-            // If not contains add it and run the couroutine
-            if (!playerHasHintCoroutines.ContainsKey(player))
-            {
-                playerHasHintCoroutines.Add(player, Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar)));
-            }
-            else
-            {
-                // If contains, create a new coroutine
-                playerHasHintCoroutines[player] = Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar));
-            }
+            // Create a new couroutine and assing the value to the player
+            playerHasHintCoroutines[player] = Timing.RunCoroutine(HasHintToFalse(player, hint.DurationScalar));
 
             // If it is false, then to true
             if (!player.HasHint)
