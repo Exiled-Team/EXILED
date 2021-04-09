@@ -22,6 +22,7 @@ namespace Exiled.Events.Patches.Fixes
 
     /// <summary>
     /// Fixes <see cref="CharacterClassManager.RunDefaultClassPicker(bool, out int[], out System.Collections.Generic.Dictionary{UnityEngine.GameObject, RoleType})"/> method.
+    /// Fixes overwatch players not spawning correctly.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RunDefaultClassPicker))]
     internal static class OverwatchSkipFix
