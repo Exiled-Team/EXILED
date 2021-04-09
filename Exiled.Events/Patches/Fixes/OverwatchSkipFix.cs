@@ -54,7 +54,6 @@ namespace Exiled.Events.Patches.Fixes
             newInstructions.InsertRange(index, new[]
             {
                 // if (referenceHub.serverRoles.OverwatchEnabled)
-                //      continue;
                 new CodeInstruction(OpCodes.Ldloc_S, 9),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.OverwatchEnabled))),
@@ -72,6 +71,8 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                 new CodeInstruction(OpCodes.Ldc_I4_2),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Dictionary<GameObject, RoleType>), nameof(Dictionary<GameObject, RoleType>.Add))),
+
+                // continue;
                 new CodeInstruction(OpCodes.Br, continueLabel),
             });
 
