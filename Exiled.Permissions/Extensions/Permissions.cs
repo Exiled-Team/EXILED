@@ -15,6 +15,7 @@ namespace Exiled.Permissions.Extensions
 
     using CommandSystem;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
@@ -209,7 +210,7 @@ namespace Exiled.Permissions.Extensions
             Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
             Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
-            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : null;
+            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value.EqualsTo(player.Group)).Key : null;
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
             if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group))
