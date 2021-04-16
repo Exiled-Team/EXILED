@@ -38,13 +38,13 @@ namespace Exiled.Events.Patches.Events.Scp079
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Declare a local variable of the type "GainingExperienceEventArgs"
+            // Declare a local variable of the type "GainingExperienceEventArgs".
             var gainingExperienceEv = generator.DeclareLocal(typeof(GainingExperienceEventArgs));
 
-            // Define the continue label
+            // Define the continue label.
             var continueLabel = generator.DefineLabel();
 
-            // Define the return label
+            // Define the return label.
             var returnLabel = generator.DefineLabel();
 
             // var ev = new GainingExperienceEventArgs(Player.Get(this.gameObject), type, (float)details, true)

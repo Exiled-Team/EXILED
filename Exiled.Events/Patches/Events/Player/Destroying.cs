@@ -14,9 +14,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using PlayerAPI = Exiled.API.Features.Player;
-    using PlayerEvents = Exiled.Events.Handlers.Player;
-
 #pragma warning disable SA1600 // Elements should be documented
 #pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 
@@ -27,24 +24,22 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var player = PlayerAPI.Get(__instance);
-
                 // Means it's the server
-                if (player == null)
+                if (!(Player.Get(__instance) is Player player))
                     return;
 
-                PlayerEvents.OnDestroying(new DestroyingEventArgs(player));
+                Handlers.Player.OnDestroying(new DestroyingEventArgs(player));
 
-                PlayerAPI.Dictionary.Remove(player.GameObject);
-                PlayerAPI.UnverifiedPlayers.Remove(__instance);
-                PlayerAPI.IdsCache.Remove(player.Id);
+                Player.Dictionary.Remove(player.GameObject);
+                Player.UnverifiedPlayers.Remove(__instance);
+                Player.IdsCache.Remove(player.Id);
 
                 if (player.UserId != null)
-                    PlayerAPI.UserIdsCache.Remove(player.UserId);
+                    Player.UserIdsCache.Remove(player.UserId);
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{ex}");
+                Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{exception}");
             }
         }
     }
