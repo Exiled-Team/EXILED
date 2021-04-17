@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             // The index offset.
             var offset = 1;
 
-            // Search for the last "ldloc.2".
+            // Search for the last "stloc.3".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
 
             // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), flag);
