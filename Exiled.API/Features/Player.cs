@@ -545,6 +545,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating the current player mtf unit name.
+        /// </summary>
+        public string UnitName
+        {
+            get => ReferenceHub.characterClassManager.NetworkCurUnitName;
+            set => ReferenceHub.characterClassManager.NetworkCurUnitName = value;
+        }
+
+        /// <summary>
         /// Gets or sets the player's health.
         /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
