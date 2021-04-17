@@ -34,33 +34,29 @@ namespace Exiled.Events.Patches.Events.Player
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = 0;
+            var offset = 1;
 
             // Search for the last "ldloc.2".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_2) + offset;
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
 
-            // Get the first label of the last "ret".
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
-            // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), true);
+            // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), flag);
             //
             // Handlers.Player.OnHandcuffing(ev);
             //
-            // if (!ev.IsAllowed)
-            //   return;
+            // flag = ev.IsAllowed;
             newInstructions.InsertRange(index, new[]
             {
-                // Player.Get(this.gameObject)
-                new CodeInstruction(OpCodes.Ldarg_0),
+                // Player.Get(this.gameObject);
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // Player.Get(target)
+                // Player.Get(target);
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // true
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                // IsAllowed = flag;
+                new CodeInstruction(OpCodes.Ldloc_3),
 
                 // var ev = new HandcuffingEventArgs(...);
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
@@ -69,14 +65,15 @@ namespace Exiled.Events.Patches.Events.Player
                 // Handlers.Player.OnHandcuffing(ev);
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
 
-                // if (!ev.IsAllowed)
-                //   return;
+                // flag = ev.IsAllowed;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Stloc_3),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
+            {
                 yield return newInstructions[z];
+            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
