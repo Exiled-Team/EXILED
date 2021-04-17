@@ -71,9 +71,7 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
