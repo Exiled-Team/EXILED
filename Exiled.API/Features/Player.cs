@@ -545,7 +545,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the current player mtf unit name.
+        /// Gets or sets the current player mtf unit name.
         /// </summary>
         public string UnitName
         {
