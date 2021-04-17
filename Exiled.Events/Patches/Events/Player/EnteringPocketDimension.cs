@@ -55,13 +55,13 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ply)
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // Vector3.down * 1998.5f
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.down))),
                 new CodeInstruction(OpCodes.Ldc_R4, 1998.5f),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Vector3), "op_Multiply")),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Vector3), "op_Multiply", new[] { typeof(Vector3), typeof(float) })),
 
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Player
             const int instructionsToRemove = 3;
 
             // Search for the first "OverridePosition" method.
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
             (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
 
             // Remove "Vector3.down * 1998.5f" instructions.

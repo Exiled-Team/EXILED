@@ -36,8 +36,8 @@ namespace Exiled.Events.Patches.Events.Player
             // The index offset.
             const int offset = 0;
 
-            // Search for the last "ldloc.1".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            // Search for the last "ldloc.0".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
 
             // The leave index offset.
             const int leaveIndexOffset = 0;
