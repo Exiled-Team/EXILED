@@ -49,6 +49,14 @@ namespace Exiled.CustomItems.API
         /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
         public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
         {
+            foreach (Inventory.SyncItemInfo item in player.Inventory.items)
+            {
+                if (CustomItem.TryGet(item, out CustomItem customItem))
+                {
+                    customItem.InsideInventories.Remove(item.uniq);
+                }
+            }
+
             player.ClearInventory();
 
             foreach (string item in newItems)
