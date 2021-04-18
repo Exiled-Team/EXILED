@@ -52,9 +52,7 @@ namespace Exiled.CustomItems.API
             foreach (Inventory.SyncItemInfo item in player.Inventory.items)
             {
                 if (CustomItem.TryGet(item, out CustomItem customItem))
-                {
                     customItem.InsideInventories.Remove(item.uniq);
-                }
             }
 
             player.ClearInventory();
