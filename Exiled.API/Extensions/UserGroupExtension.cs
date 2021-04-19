@@ -17,7 +17,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="this">The fist <see cref="UserGroup"/>.</param>
         /// <param name="other">The second <see cref="UserGroup"/>.</param>
-        /// <returns><c>true</c> if they are equal; otherwise, <c>false<c>.</returns>
+        /// <returns><c>true</c> if they are equal; otherwise, <c>false</c>.</returns>
         public static bool EqualsTo(this UserGroup @this, UserGroup other)
             => @this.BadgeColor == other.BadgeColor
                && @this.BadgeText == other.BadgeText
