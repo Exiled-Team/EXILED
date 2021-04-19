@@ -34,10 +34,10 @@ namespace Exiled.Events.Patches.Events.Player
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = 1;
+            var offset = 0;
 
-            // Search for the last "stloc.3".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
+            // Search for the last "ldloc.3".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_3) + offset;
 
             // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), flag);
             //
