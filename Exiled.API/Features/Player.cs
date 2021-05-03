@@ -379,7 +379,7 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether or not the palyer is cuffed.
+        /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
         public bool IsCuffed => CufferId != -1;
 
