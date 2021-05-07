@@ -72,6 +72,8 @@ namespace Exiled.Events.Patches.Fixes
                     }
 
                     __result = true;
+
+                    return false;
                 }
 
                 __result = false;
