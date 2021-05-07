@@ -36,15 +36,15 @@ namespace Exiled.Events.Patches.Fixes
                     case RoleType.Scp93953:
                     case RoleType.Scp93989:
                         var scp939Offset = PlayerMovementSync._yAxisOffset939 * __instance.transform.localScale.y;
-                        num = Physics.OverlapCapsuleNonAlloc(pos - scp939Offset, pos + scp939Offset, 0.15f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        num = Physics.OverlapCapsuleNonAlloc(pos - scp939Offset, pos + scp939Offset, 0.15f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces, QueryTriggerInteraction.Ignore);
                         break;
                     case RoleType.ChaosInsurgency:
                         var ciOffset = PlayerMovementSync._yAxisOffsetCi * __instance.transform.localScale.y;
-                        num = Physics.OverlapCapsuleNonAlloc(pos - ciOffset, pos + ciOffset, 0.32f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        num = Physics.OverlapCapsuleNonAlloc(pos - ciOffset, pos + ciOffset, 0.32f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces, QueryTriggerInteraction.Ignore);
                         break;
                     default:
                         var defOffset = PlayerMovementSync._yAxisOffset * __instance.transform.localScale.y;
-                        num = Physics.OverlapCapsuleNonAlloc(pos - defOffset, pos + defOffset, 0.38f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces);
+                        num = Physics.OverlapCapsuleNonAlloc(pos - defOffset, pos + defOffset, 0.38f, PlayerMovementSync._sphereHits, PlayerMovementSync._r3CollidableSurfaces, QueryTriggerInteraction.Ignore);
                         break;
                 }
 
