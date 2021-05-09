@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="UserGroupExtension.cs" company="Exiled Team">
+// <copyright file="UserGroupExtensions.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -13,7 +13,7 @@ namespace Exiled.API.Extensions
     /// <summary>
     /// Contains a useful extension to compare two <see cref="UserGroup"/>'s.
     /// </summary>
-    public static class UserGroupExtension
+    public static class UserGroupExtensions
     {
         /// <summary>
         /// Compares two <see cref="UserGroup"/>'s for equality.
