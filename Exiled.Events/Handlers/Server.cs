@@ -125,7 +125,7 @@ namespace Exiled.Events.Handlers
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before respawning a wave of Chaso Insurgency or NTF.
+        /// Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
