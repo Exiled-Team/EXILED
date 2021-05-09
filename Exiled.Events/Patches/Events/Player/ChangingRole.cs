@@ -42,8 +42,10 @@ namespace Exiled.Events.Patches.Events.Player
                     return false;
                 }
 
+                var player = API.Features.Player.Get(ply);
+
                 var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
-                var changingRoleEventArgs = new ChangingRoleEventArgs(API.Features.Player.Get(ply), classid, startItemsList, lite, escape);
+                var changingRoleEventArgs = new ChangingRoleEventArgs(player, classid, startItemsList, lite, escape);
 
                 Player.OnChangingRole(changingRoleEventArgs);
 
@@ -60,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (escape)
                 {
-                    var escapingEventArgs = new EscapingEventArgs(API.Features.Player.Get(ply), classid);
+                    var escapingEventArgs = new EscapingEventArgs(player, classid);
 
                     Player.OnEscaping(escapingEventArgs);
 
@@ -70,12 +72,16 @@ namespace Exiled.Events.Patches.Events.Player
                     classid = escapingEventArgs.NewRole;
                 }
 
+                var changedRoleEventArgs = new ChangedRoleEventArgs(player, player.Role, startItemsList, lite, escape);
+
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
                 ply.GetComponent<FirstPersonController>().ResetStamina();
 
                 if (lite)
                 {
+                    Player.OnChangedRole(changedRoleEventArgs);
+
                     ListPool<ItemType>.Shared.Return(startItemsList);
                     return false;
                 }
@@ -93,8 +99,6 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     component.AddNewItem(id, -4.65664672E+11f, 0, 0, 0);
                 }
-
-                ListPool<ItemType>.Shared.Return(startItemsList);
 
                 if (escape && CharacterClassManager.KeepItemsAfterEscaping)
                 {
@@ -154,6 +158,10 @@ namespace Exiled.Events.Patches.Events.Player
                 }
 
                 ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
+
+                Player.OnChangedRole(changedRoleEventArgs);
+
+                ListPool<ItemType>.Shared.Return(startItemsList);
                 return false;
             }
             catch (Exception e)

@@ -126,6 +126,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
+        /// Invoked after changing a player's role.
+        /// </summary>
+        public static event CustomEventHandler<ChangedRoleEventArgs> ChangedRole;
+
+        /// <summary>
         /// Invoked before throwing a grenade.
         /// </summary>
         public static event CustomEventHandler<ThrowingGrenadeEventArgs> ThrowingGrenade;
@@ -139,6 +144,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after an item has been dropped.
         /// </summary>
         public static event CustomEventHandler<ItemDroppedEventArgs> ItemDropped;
+
+        /// <summary>
+        /// Invoked before picking up an ammo.
+        /// </summary>
+        public static event CustomEventHandler<PickingUpAmmoEventArgs> PickingUpAmmo;
 
         /// <summary>
         /// Invoked before picking up an item.
@@ -421,6 +431,12 @@ namespace Exiled.Events.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after changing a player's role.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
+        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrowingGrenadeEventArgs"/> instance.</param>
@@ -437,6 +453,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ItemDroppedEventArgs"/> instance.</param>
         public static void OnItemDropped(ItemDroppedEventArgs ev) => ItemDropped.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player picks up an ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpAmmoEventArgs"/> instance.</param>
+        public static void OnPickingUpAmmo(PickingUpAmmoEventArgs ev) => PickingUpAmmo.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a user picks up an item.

@@ -39,6 +39,10 @@ namespace Exiled.Events.Commands.Reload
                 success = false;
             sender.Respond(responsetemp);
 
+            if (!Translations.Instance.Execute(arguments, sender, out responsetemp))
+                success = false;
+            sender.Respond(responsetemp);
+
             if (!GamePlay.Instance.Execute(arguments, sender, out responsetemp))
                 success = false;
             sender.Respond(responsetemp);
