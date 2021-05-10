@@ -7,59 +7,82 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patch the <see cref="WorkStation.ConnectTablet(UnityEngine.GameObject)"/>.
-    /// Adds the <see cref="Player.ActivatingWorkstation"/> event.
+    /// Adds the <see cref="Handlers.Player.ActivatingWorkstation"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WorkStation), nameof(WorkStation.ConnectTablet))]
     internal static class ActivatingWorkstation
     {
-        private static bool Prefix(WorkStation __instance, GameObject tabletOwner)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            const int offset = 0;
+
+            // Search for the last "ldloc.0".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
+
+            // The leave index offset.
+            const int leaveIndexOffset = 0;
+
+            // Search for the first "leave.s".
+            var leaveIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Leave_S) + leaveIndexOffset;
+
+            // Define the return label and add it to the "leave,s" instruction.
+            var returnLabel = newInstructions[leaveIndex].WithLabels(generator.DefineLabel()).labels[0];
+
+            // var ev = new ActivatingWorkstationEventArgs(Player.Get(tabletOwner), this, true);
+            //
+            // Handlers.Player.OnActivatingWorkstation(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance.CanPlace(tabletOwner) || __instance._animationCooldown > 0f)
-                {
-                    return false;
-                }
+                // Player.Get(tabletOwner)
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                Inventory component = tabletOwner.GetComponent<Inventory>();
-                foreach (Inventory.SyncItemInfo syncItemInfo in component.items)
-                {
-                    if (syncItemInfo.id == ItemType.WeaponManagerTablet)
-                    {
-                        ActivatingWorkstationEventArgs ev = new ActivatingWorkstationEventArgs(Exiled.API.Features.Player.Get(tabletOwner), __instance);
-                        Player.OnActivatingWorkstation(ev);
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
 
-                        if (ev.IsAllowed)
-                        {
-                            component.items.Remove(syncItemInfo);
-                            __instance.NetworkisTabletConnected = true;
-                            __instance._animationCooldown = 6.5f;
-                            __instance.Network_playerConnected = tabletOwner;
-                        }
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                        break;
-                    }
-                }
+                // var ev = new ActivatingWorkstationEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWorkstationEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
 
-                return false;
-            }
-            catch (Exception exception)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ActivatingWorkstation: {exception}\n{exception.StackTrace}");
-                return true;
-            }
+                // Handlers.Player.OnActivatingWorkstation(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWorkstation))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWorkstationEventArgs), nameof(ActivatingWorkstationEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

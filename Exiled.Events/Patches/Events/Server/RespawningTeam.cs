@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Server
 
     /// <summary>
     /// Patch the <see cref="RespawnManager.Spawn"/>.
-    /// Adds the <see cref="Exiled.Events.Handlers.Server.RespawningTeam"/> event.
+    /// Adds the <see cref="Handlers.Server.RespawningTeam"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
     internal static class RespawningTeam
@@ -41,15 +41,16 @@ namespace Exiled.Events.Patches.Events.Server
                 }
                 else
                 {
-                    List<API.Features.Player> list = ListPool<API.Features.Player>.Shared.Rent(
-                        API.Features.Player.List
-                            .Where(p => p.IsDead && !p.IsOverwatchEnabled));
+                    List<API.Features.Player> list = ListPool<API.Features.Player>.Shared.Rent(API.Features.Player.List.Where(player => player.IsDead && !player.IsOverwatchEnabled));
 
                     if (__instance._prioritySpawn)
                     {
                         var tempList = ListPool<API.Features.Player>.Shared.Rent();
+
                         tempList.AddRange(list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime));
+
                         ListPool<API.Features.Player>.Shared.Return(list);
+
                         list = tempList;
                     }
                     else
@@ -59,6 +60,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                     // Code that should be here is in RespawningTeamEventArgs::ReissueNextKnownTeam
                     var ev = new RespawningTeamEventArgs(list, __instance.NextKnownTeam);
+
                     Handlers.Server.OnRespawningTeam(ev);
 
                     if (ev.IsAllowed && ev.SpawnableTeam != null)
@@ -74,23 +76,20 @@ namespace Exiled.Events.Patches.Events.Server
                         {
                             try
                             {
-                                RoleType classid =
-                                    ev.SpawnableTeam.Value.ClassQueue[
-                                        Mathf.Min(referenceHubList.Count, spawnableTeam.ClassQueue.Length - 1)];
+                                RoleType classid = ev.SpawnableTeam.Value.ClassQueue[Mathf.Min(referenceHubList.Count, spawnableTeam.ClassQueue.Length - 1)];
+
                                 me.ReferenceHub.characterClassManager.SetPlayersClass(classid, me.ReferenceHub.gameObject);
+
                                 referenceHubList.Add(me.ReferenceHub);
+
                                 ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " respawned as " + classid + ".", ServerLogs.ServerLogType.GameEvent);
                             }
                             catch (Exception ex)
                             {
                                 if (me != null)
-                                {
                                     ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " couldn't be spawned. Err msg: " + ex.Message, ServerLogs.ServerLogType.GameEvent);
-                                }
                                 else
-                                {
                                     ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Couldn't spawn a player - target's ReferenceHub is null.", ServerLogs.ServerLogType.GameEvent);
-                                }
                             }
                         }
 
@@ -98,6 +97,7 @@ namespace Exiled.Events.Patches.Events.Server
                         {
                             ServerLogs.AddLog(ServerLogs.Modules.ClassChange, $"RespawnManager has successfully spawned {referenceHubList.Count} players as {__instance.NextKnownTeam}!", ServerLogs.ServerLogType.GameEvent);
                             RespawnTickets.Singleton.GrantTickets(__instance.NextKnownTeam, -referenceHubList.Count * spawnableTeam.TicketRespawnCost);
+
                             if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out UnitNamingRule rule))
                             {
                                 rule.GenerateNew(__instance.NextKnownTeam, out string regular);

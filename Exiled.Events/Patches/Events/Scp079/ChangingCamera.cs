@@ -42,12 +42,12 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Define the first label of the last "ret" and retrieve it.
             var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
 
-            // Declare a local variable of the type "ChangingCameraEventArgs";
+            // Declare a local variable of the type "ChangingCameraEventArgs"
             var changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
 
-            // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana);
+            // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana)
             //
-            // Handlers.Scp079.OnChangingCamera(ev);
+            // Handlers.Scp079.OnChangingCamera(ev)
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -80,7 +80,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
 
-                // Handlers.Scp079.OnChangingCamera(ev);
+                // Handlers.Scp079.OnChangingCamera(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnChangingCamera))),
 
                 // if (!ev.IsAllowed)
