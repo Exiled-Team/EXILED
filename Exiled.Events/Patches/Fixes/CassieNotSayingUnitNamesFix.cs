@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="NineTailedFoxNamingRuleFix.cs" company="Exiled Team">
+// <copyright file="CassieNotSayingUnitNamesFix.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-    #pragma warning disable SA1600
     #pragma warning disable SA1313
 
     using System.Text.RegularExpressions;
@@ -19,10 +18,10 @@ namespace Exiled.Events.Patches.Fixes
     using Respawning.NamingRules;
 
     /// <summary>
-    /// Fixes Cassie ignoring unit name if it changed via <see cref="Map.ChangeUnitColor(int, string)"/>.
+    /// Fixes Cassie ignoring unit name if it's changed via <see cref="Map.ChangeUnitColor(int, string)"/>.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxNamingRule), nameof(NineTailedFoxNamingRule.GetCassieUnitName))]
-    public static class NineTailedFoxNamingRuleFix
+    public static class CassieNotSayingUnitNamesFix
     {
         private static bool Prefix(NineTailedFoxNamingRule __instance, string regular, ref string __result)
         {
