@@ -25,7 +25,8 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
-
+    using Mirror.LiteNetLib4Mirror;
+    
     using NorthwoodLib;
     using NorthwoodLib.Pools;
 
@@ -1353,6 +1354,12 @@ namespace Exiled.API.Features
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
+        
+        /// <summary>
+        /// Get player ping.
+        /// </summary>
+        /// <returns>Return player ping.</returns>
+        public int Ping() => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
