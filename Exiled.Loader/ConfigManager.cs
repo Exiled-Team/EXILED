@@ -10,16 +10,11 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.Loader.Features.Configs;
-
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugin configs.
@@ -29,22 +24,14 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the config serializer.
         /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .Build();
+        [Obsolete("Moved to Loader.Serializer", true)]
+        public static ISerializer Serializer => Loader.Serializer;
 
         /// <summary>
-        /// Gets the config serializer.
+        /// Gets the config deserializer.
         /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
+        [Obsolete("Moved to Loader.Deserializer", true)]
+        public static IDeserializer Deserializer => Loader.Deserializer;
 
         /// <inheritdoc cref="LoadSorted(string)"/>
         [Obsolete("Replaced with LoadSorted(string)", true)]
@@ -61,7 +48,7 @@ namespace Exiled.Loader
             {
                 Log.Info("Loading plugin configs...");
 
-                Dictionary<string, object> rawDeserializedConfigs = Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
+                Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
                 SortedDictionary<string, IConfig> deserializedConfigs = new SortedDictionary<string, IConfig>(StringComparer.Ordinal);
 
                 if (!rawDeserializedConfigs.TryGetValue("exiled_loader", out object rawDeserializedConfig))
@@ -72,7 +59,7 @@ namespace Exiled.Loader
                 }
                 else
                 {
-                    deserializedConfigs.Add("exiled_loader", Deserializer.Deserialize<Config>(Serializer.Serialize(rawDeserializedConfig)));
+                    deserializedConfigs.Add("exiled_loader", Loader.Deserializer.Deserialize<Config>(Loader.Serializer.Serialize(rawDeserializedConfig)));
 
                     Loader.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
                 }
@@ -89,7 +76,7 @@ namespace Exiled.Loader
                     {
                         try
                         {
-                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
+                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
 
                             plugin.Config.CopyProperties(deserializedConfigs[plugin.Prefix]);
                         }
@@ -157,7 +144,7 @@ namespace Exiled.Loader
                 if (configs == null || configs.Count == 0)
                     return false;
 
-                return Save(Serializer.Serialize(configs));
+                return Save(Loader.Serializer.Serialize(configs));
             }
             catch (YamlException yamlException)
             {

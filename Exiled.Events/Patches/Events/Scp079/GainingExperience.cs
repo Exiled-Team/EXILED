@@ -7,128 +7,161 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+#pragma warning disable SA1123
     using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using Mirror;
+
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallRpcGainExp(ExpGainType, RoleType)"/>.
-    /// Adds the <see cref="Scp079.GainingExperience"/> event.
+    /// Adds the <see cref="Handlers.Scp079.GainingExperience"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallRpcGainExp))]
     internal static class GainingExperience
     {
-        private static bool Prefix(Scp079PlayerScript __instance, ExpGainType type, RoleType details)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Declare a local variable of the type "GainingExperienceEventArgs".
+            var gainingExperienceEv = generator.DeclareLocal(typeof(GainingExperienceEventArgs));
+
+            // Define the continue label.
+            var continueLabel = generator.DefineLabel();
+
+            // Define the return label.
+            var returnLabel = generator.DefineLabel();
+
+            // var ev = new GainingExperienceEventArgs(Player.Get(this.gameObject), type, (float)details, true)
+            newInstructions.InsertRange(0, new[]
             {
-                var ev = new GainingExperienceEventArgs(API.Features.Player.Get(__instance.gameObject), type, (float)details);
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                switch (type)
-                {
-                    case ExpGainType.KillAssist:
-                    case ExpGainType.PocketAssist:
-                        {
-                            Team team = __instance.GetComponent<CharacterClassManager>().Classes.SafeGet(details).team;
-                            int num = 6;
+                // type
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-                            switch (team)
-                            {
-                                case Team.SCP:
-                                    ev.Amount = __instance.GetManaFromLabel("SCP Kill Assist", __instance.expEarnWays);
-                                    num = 11;
-                                    break;
-                                case Team.MTF:
-                                    ev.Amount = __instance.GetManaFromLabel("MTF Kill Assist", __instance.expEarnWays);
-                                    num = 9;
-                                    break;
-                                case Team.CHI:
-                                    ev.Amount = __instance.GetManaFromLabel("Chaos Kill Assist", __instance.expEarnWays);
-                                    num = 8;
-                                    break;
-                                case Team.RSC:
-                                    ev.Amount = __instance.GetManaFromLabel("Scientist Kill Assist", __instance.expEarnWays);
-                                    num = 10;
-                                    break;
-                                case Team.CDP:
-                                    ev.Amount = __instance.GetManaFromLabel("Class-D Kill Assist", __instance.expEarnWays);
-                                    num = 7;
-                                    break;
-                                default:
-                                    ev.Amount = 0f;
-                                    break;
-                            }
+                // (float)details
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Conv_R4),
 
-                            num--;
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                            if (type == ExpGainType.PocketAssist)
-                            {
-                                ev.Amount /= 2f;
-                            }
+                // var ev = new GainingExperienceEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingExperienceEventArgs))[0]),
+                new CodeInstruction(OpCodes.Stloc_S, gainingExperienceEv.LocalIndex),
+            });
 
-                            break;
-                        }
+            #region ExpGainType.KillAssist and ExpGainType.PocketAssist
 
-                    case ExpGainType.DirectKill:
-                    case ExpGainType.HardwareHack:
-                        break;
-                    case ExpGainType.AdminCheat:
-                        ev.Amount = (float)details;
-                        break;
-                    case ExpGainType.GeneralInteractions:
-                        {
-                            switch (details)
-                            {
-                                case RoleType.ClassD:
-                                    ev.Amount = __instance.GetManaFromLabel("Door Interaction", __instance.expEarnWays);
-                                    break;
-                                case RoleType.Spectator:
-                                    ev.Amount = __instance.GetManaFromLabel("Tesla Gate Activation", __instance.expEarnWays);
-                                    break;
-                                case RoleType.Scientist:
-                                    ev.Amount = __instance.GetManaFromLabel("Lockdown Activation", __instance.expEarnWays);
-                                    break;
-                                case RoleType.Scp079:
-                                    ev.Amount = __instance.GetManaFromLabel("Elevator Use", __instance.expEarnWays);
-                                    break;
-                            }
+            // The index offset.
+            var offset = 0;
 
-                            if (ev.Amount != 0f)
-                            {
-                                float num4 = 1f / Mathf.Clamp(__instance.levels[__instance.curLvl].manaPerSecond / 1.5f, 1f, 7f);
+            // Search for the first "call NetworkServer.active".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
 
-                                ev.Amount = Mathf.Round(ev.Amount * num4 * 10f) / 10f;
-                            }
-
-                            break;
-                        }
-
-                    default:
-                        return false;
-                }
-
-                Scp079.OnGainingExperience(ev);
-
-                if (ev.IsAllowed && ev.Amount > 0)
-                {
-                    __instance.AddExperience(ev.Amount);
-                    return false;
-                }
-
-                return false;
-            }
-            catch (Exception e)
+            // ev.Amount = num2
+            // goto continueLabel
+            newInstructions.InsertRange(index, new[]
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Scp079.GainingExperience: {e}\n{e.StackTrace}");
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Br_S, continueLabel),
+            });
 
-                return true;
-            }
+            #endregion
+
+            #region ExpGainType.GeneralInteractions
+
+            // The index offset.
+            offset = 1;
+
+            // Search for the last "stloc.3".
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Stloc_3) + offset;
+
+            // ev.Amount = num3
+            // goto continueLabel
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Br_S, continueLabel),
+            });
+
+            #endregion
+
+            #region ExpGainType.AdminCheat
+
+            // The index offset.
+            offset = 0;
+
+            // Search for the last "call NetworkServer.active".
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
+
+            // goto continueLabel
+            newInstructions.Insert(index, new CodeInstruction(OpCodes.Br_S, continueLabel));
+
+            #endregion
+
+            // Handlers.Scp079.OnGainingExperience(ev);
+            //
+            // if (!ev.IsAllowed || ev.Amount <= 0)
+            //   return;
+            //
+            // this.AddExperience(ev.Amount);
+            newInstructions.AddRange(new[]
+            {
+                // Handlers.Scp079.OnGainingExperience(ev);
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex).WithLabels(continueLabel).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnGainingExperience))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
+                // if (ev.Amount <= 0)
+                //   return;
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Ldc_R4, 0f),
+                new CodeInstruction(OpCodes.Ble_Un_S, returnLabel),
+
+                // this.AddExperience(ev.Amount);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_S, gainingExperienceEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingExperienceEventArgs), nameof(GainingExperienceEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.AddExperience))),
+                new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+            });
+
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

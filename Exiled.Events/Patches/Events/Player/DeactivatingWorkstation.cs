@@ -7,50 +7,77 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patch the <see cref="WorkStation.UnconnectTablet(UnityEngine.GameObject)"/>.
-    /// Adds the <see cref="Player.ActivatingWorkstation"/> event.
+    /// Patch the <see cref="WorkStation.UnconnectTablet(GameObject)"/>.
+    /// Adds the <see cref="Handlers.Player.ActivatingWorkstation"/> event.
     /// </summary>
     [HarmonyPatch(typeof(WorkStation), nameof(WorkStation.UnconnectTablet))]
     internal static class DeactivatingWorkstation
     {
-        private static bool Prefix(WorkStation __instance, GameObject taker)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            const int offset = 0;
+
+            // Search for the last "ldarg.1".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_1) + offset;
+
+            // Define the return label and add it to the last "ret" instruction.
+            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+
+            // var ev = new DeactivatingWorkstationEventArgs(Player.Get(taker), this, true);
+            //
+            // Handlers.Player.OnDeactivatingWorkstation(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance.CanTake(taker) || __instance._animationCooldown > 0f)
-                {
-                    return false;
-                }
+                // Player.Get(taker)
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                DeactivatingWorkstationEventArgs ev = new DeactivatingWorkstationEventArgs(Exiled.API.Features.Player.Get(taker), __instance);
-                Player.OnDeactivatingWorkstation(ev);
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
 
-                if (ev.IsAllowed)
-                {
-                    taker.GetComponent<Inventory>().AddNewItem(ItemType.WeaponManagerTablet, -4.65664672E+11f, 0, 0, 0);
-                    __instance.Network_playerConnected = null;
-                    __instance.NetworkisTabletConnected = false;
-                    __instance._animationCooldown = 3.5f;
-                }
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                return false;
-            }
-            catch (Exception exception)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.DeactivatingWorkstation: {exception}\n{exception.StackTrace}");
-                return true;
-            }
+                // var ev = new DeactivatingWorkstationEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DeactivatingWorkstationEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+
+                // Handlers.Player.OnDeactivatingWorkstation(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDeactivatingWorkstation))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DeactivatingWorkstationEventArgs), nameof(DeactivatingWorkstationEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

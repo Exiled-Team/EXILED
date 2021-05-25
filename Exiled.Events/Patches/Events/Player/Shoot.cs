@@ -39,6 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
+            const byte DAMAGE_LOCAL_INDEX = 13;
+
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // search for "this._hub" before the only "PlayerEffect.ServerDisable()"
@@ -81,9 +83,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
-            // Search for the last "Div" call before the only "PlayerStats.HurtPlayer()"
-            offset = 2;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Div) + offset;
+            // Search for the last "stloc.S <DAMAGE_LOCAL_INDEX>" call before the only "PlayerStats.HurtPlayer()"
+            offset = 1;
+            index = newInstructions.FindLastIndex(instruction =>
+                instruction.opcode == OpCodes.Stloc_S &&
+                ((LocalBuilder)instruction.operand).LocalIndex == DAMAGE_LOCAL_INDEX) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -101,7 +105,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // float num3
                 new CodeInstruction(OpCodes.Ldloc_S, 12),
                 // float num4
-                new CodeInstruction(OpCodes.Ldloc_S, 13),
+                new CodeInstruction(OpCodes.Ldloc_S, DAMAGE_LOCAL_INDEX),
 
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -123,7 +127,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // num4 = ev.Damage
                 new CodeInstruction(OpCodes.Ldloc_S, shotEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
-                new CodeInstruction(OpCodes.Stloc_S, 13),
+                new CodeInstruction(OpCodes.Stloc_S, DAMAGE_LOCAL_INDEX),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

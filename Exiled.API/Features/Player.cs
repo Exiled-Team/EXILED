@@ -117,6 +117,11 @@ namespace Exiled.API.Features
         public AmmoBox Ammo { get; private set; }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is viewing a hint.
+        /// </summary>
+        public bool HasHint { get; internal set; }
+
+        /// <summary>
         /// Gets the HintDisplay of the player.
         /// </summary>
         public HintDisplay HintDisplay { get; private set; }
@@ -374,7 +379,7 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether or not the palyer is cuffed.
+        /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
         public bool IsCuffed => CufferId != -1;
 
@@ -540,6 +545,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's unit name.
+        /// </summary>
+        public string UnitName
+        {
+            get => ReferenceHub.characterClassManager.NetworkCurUnitName;
+            set => ReferenceHub.characterClassManager.NetworkCurUnitName = value;
+        }
+
+        /// <summary>
         /// Gets or sets the player's health.
         /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
@@ -578,6 +592,15 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = (int)value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's artificial health decay.
+        /// </summary>
+        public float ArtificialHealthDecay
+        {
+            get => ReferenceHub.playerStats.artificialHpDecay;
+            set => ReferenceHub.playerStats.artificialHpDecay = value;
         }
 
         /// <summary>
@@ -780,6 +803,11 @@ namespace Exiled.API.Features
         /// Gets the current room the player is in.
         /// </summary>
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
+
+        /// <summary>
+        /// Gets the current zone the player is in.
+        /// </summary>
+        public ZoneType Zone => CurrentRoom.Zone;
 
         /// <summary>
         /// Gets or sets the player's group.
