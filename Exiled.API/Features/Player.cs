@@ -26,7 +26,7 @@ namespace Exiled.API.Features
 
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
-    
+
     using NorthwoodLib;
     using NorthwoodLib.Pools;
 
@@ -1354,7 +1354,7 @@ namespace Exiled.API.Features
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
-        
+
         /// <summary>
         /// Gets player's ping.
         /// </summary>
