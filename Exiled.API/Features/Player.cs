@@ -1356,7 +1356,7 @@ namespace Exiled.API.Features
         }
         
         /// <summary>
-        /// Get player ping.
+        /// Gets player's ping.
         /// </summary>
         /// <returns>Return player ping.</returns>
         public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
