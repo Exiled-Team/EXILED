@@ -1357,7 +1357,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Safely gets an <see cref="object"/> from Player.SessionVariables, then casts it to <typeparamref name="T"/>.
         /// </summary>
-        /// <typeparam name="T">The returned object.</typeparam>
+        /// <typeparam name="T">The returned object type.</typeparam>
         /// <param name="key">The key of the object to get.</param>
         /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
         /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
