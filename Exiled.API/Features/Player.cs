@@ -1355,7 +1355,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables">, then casts it to <typeparamref name="T"/>.
+        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The returned object type.</typeparam>
         /// <param name="key">The key of the object to get.</param>
