@@ -648,7 +648,11 @@ namespace Exiled.API.Features
         public Inventory.SyncItemInfo CurrentItem
         {
             get => Inventory.GetItemInHand();
-            set => Inventory.SetCurItem(value.id);
+            set
+            {
+                Inventory.SetCurItem(value.id);
+                Inventory.CallCmdSetUnic(value.uniq);
+            }
         }
 
         /// <summary>
