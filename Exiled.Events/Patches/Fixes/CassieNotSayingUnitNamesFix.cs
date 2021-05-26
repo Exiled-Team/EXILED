@@ -25,20 +25,17 @@ namespace Exiled.Events.Patches.Fixes
     {
         private static bool Prefix(NineTailedFoxNamingRule __instance, string regular, ref string __result)
         {
-            string result;
             try
             {
                 string[] array = Regex.Replace(regular, "<[^>]*?>", string.Empty).Split(new char[] { '-' });
 
-                result = $"NATO_{array[0][0]} {array[1]}";
+                __result = $"NATO_{array[0][0]} {array[1]}";
             }
             catch
             {
                 Log.Error("Error, couldn't convert '" + regular + "' into a CASSIE-readable form.");
-                result = "ERROR";
+                __result = "ERROR";
             }
-
-            __result = result;
 
             return false;
         }
