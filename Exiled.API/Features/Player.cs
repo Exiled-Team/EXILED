@@ -1170,10 +1170,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
-        public int CountItem(ItemType item)
-        {
-            return this.Inventory.items.Count(inventoryItem => inventoryItem.id == item);
-        }
+        public int CountItem(ItemType item) => Inventory.items.Count(inventoryItem => inventoryItem.id == item);
 
         /// <summary>
         /// Removes an item from the player's inventory.
