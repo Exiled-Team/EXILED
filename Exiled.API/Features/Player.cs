@@ -1359,6 +1359,25 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <param name="key">The key of the object to get.</param>
+        /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
+        /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetSessionVariable<T>(string key, out T result)
+        {
+            if (SessionVariables.TryGetValue(key, out var value) && value is T type)
+            {
+                result = type;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
+
+        /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
