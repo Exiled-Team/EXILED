@@ -1359,7 +1359,7 @@ namespace Exiled.API.Features
         /// Get player ping.
         /// </summary>
         /// <returns>Return player ping.</returns>
-        public int Ping() => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
+        public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
