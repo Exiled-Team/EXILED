@@ -649,7 +649,11 @@ namespace Exiled.API.Features
         public Inventory.SyncItemInfo CurrentItem
         {
             get => Inventory.GetItemInHand();
-            set => Inventory.SetCurItem(value.id);
+            set
+            {
+                Inventory.SetCurItem(value.id);
+                Inventory.CallCmdSetUnic(value.uniq);
+            }
         }
 
         /// <summary>
@@ -1167,6 +1171,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Counts how many items of a certain <see cref="ItemType"/> a player has.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
+        public int CountItem(ItemType item) => Inventory.items.Count(inventoryItem => inventoryItem.id == item);
+
+        /// <summary>
         /// Removes an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
@@ -1360,6 +1371,24 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>Return player ping.</returns>
         public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
+
+        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <param name="key">The key of the object to get.</param>
+        /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
+        /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetSessionVariable<T>(string key, out T result)
+        {
+            if (SessionVariables.TryGetValue(key, out var value) && value is T type)
+            {
+                result = type;
+                return true;
+            }
+
+            result = default;
+            return false;
+        }
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
