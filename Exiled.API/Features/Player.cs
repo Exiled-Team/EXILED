@@ -25,6 +25,7 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
+    using Mirror.LiteNetLib4Mirror;
 
     using NorthwoodLib;
     using NorthwoodLib.Pools;
@@ -1366,6 +1367,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets player's ping.
+        /// </summary>
+        /// <returns>Return player ping.</returns>
+        public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
+
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The returned object type.</typeparam>
