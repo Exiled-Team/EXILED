@@ -1382,6 +1382,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Show HitMarker.
+        /// </summary>
+        public void ShowHitMarker() => ReferenceHub.GetComponent<Scp173PlayerScript>()?.TargetHitMarker(Connection);
+
+        /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The returned object type.</typeparam>
