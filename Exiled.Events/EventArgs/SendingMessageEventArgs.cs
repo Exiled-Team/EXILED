@@ -9,8 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Features;
-
     /// <summary>
     /// Contains all the information after sending a C.A.S.S.I.E. message.
     /// </summary>
