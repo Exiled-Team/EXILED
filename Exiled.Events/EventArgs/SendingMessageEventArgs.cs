@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable SA1623
+
     using System;
 
     using Exiled.API.Features;
