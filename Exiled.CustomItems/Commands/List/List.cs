@@ -8,14 +8,8 @@
 namespace Exiled.CustomItems.Commands.List
 {
     using System;
-    using System.Text;
 
     using CommandSystem;
-
-    using Exiled.CustomItems.API.Features;
-    using Exiled.Permissions.Extensions;
-
-    using NorthwoodLib.Pools;
 
     /// <summary>
     /// The command to list all installed items.
@@ -50,7 +44,7 @@ namespace Exiled.CustomItems.Commands.List
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             response = $"Invalid subcommand! Available: registered, spawned, insideinventories";
-            return true;
+            return false;
         }
     }
 }

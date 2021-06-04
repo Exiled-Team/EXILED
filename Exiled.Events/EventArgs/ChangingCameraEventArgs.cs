@@ -20,14 +20,14 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingCameraEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="newCamera"><inheritdoc cref="Camera"/></param>
-        /// <param name="manaCost"><inheritdoc cref="APCost"/></param>
+        /// <param name="camera"><inheritdoc cref="Camera"/></param>
+        /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingCameraEventArgs(Player player, Camera079 newCamera, float manaCost, bool isAllowed = true)
+        public ChangingCameraEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
-            Camera = newCamera;
-            APCost = manaCost;
+            Camera = camera;
+            AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = isAllowed;
         }
 
@@ -42,14 +42,24 @@ namespace Exiled.Events.EventArgs
         public Camera079 Camera { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of AP that will be required to switch cameras.
+        /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
         /// </summary>
-        public float APCost { get; set; }
+        public float AuxiliaryPowerCost { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
+        /// </summary>
+        [Obsolete("Use AuxiliaryPowerCost instead.")]
+        public float APCost
+        {
+            get => AuxiliaryPowerCost;
+            set => AuxiliaryPowerCost = value;
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
-        /// Defaults to a value describing whether or not SCP-079 has enough AP to switch.
-        /// Can be set to true to allow a switch regardless of SCP-079's AP amount.
+        /// Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.
+        /// Can be set to true to allow a switch regardless of SCP-079's auxiliary power amount.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

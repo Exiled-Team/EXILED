@@ -25,7 +25,14 @@ namespace Exiled.Events.Handlers.Internal
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
+            {
                 ConfigManager.Reload();
+            }
+
+            if (Events.Instance.Config.ShouldReloadTranslationsAtRoundRestart)
+            {
+                TranslationManager.Reload();
+            }
 
             RoundSummary.RoundLock = false;
         }
@@ -43,15 +50,6 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnRoundStarted()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.ROUND_START);
-
-            foreach (API.Features.Player player in API.Features.Player.List)
-            {
-                if (player.IsOverwatchEnabled)
-                {
-                    player.IsOverwatchEnabled = false;
-                    Timing.CallDelayed(2f, () => player.IsOverwatchEnabled = true);
-                }
-            }
         }
 
         /// <inheritdoc cref="Player.OnChangingRole(ChangingRoleEventArgs)"/>

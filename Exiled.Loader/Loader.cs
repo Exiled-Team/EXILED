@@ -17,6 +17,10 @@ namespace Exiled.Loader
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Loader.Features;
+    using Exiled.Loader.Features.Configs;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugins.
@@ -92,6 +96,26 @@ namespace Exiled.Loader
         public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
+        /// Gets the serializer for configs and translations.
+        /// </summary>
+        public static ISerializer Serializer { get; } = new SerializerBuilder()
+            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
+            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .Build();
+
+        /// <summary>
+        /// Gets the deserializer for configs and translations.
+        /// </summary>
+        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
+
+        /// <summary>
         /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
         /// </summary>
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
@@ -104,6 +128,7 @@ namespace Exiled.Loader
             LoadPlugins();
 
             ConfigManager.Reload();
+            TranslationManager.Reload();
 
             EnablePlugins();
 
@@ -132,12 +157,14 @@ namespace Exiled.Loader
         {
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
-                    Assembly assembly = LoadAssembly(assemblyPath);
+                Assembly assembly = LoadAssembly(assemblyPath);
 
-                    if (assembly == null)
-                        continue;
+                if (assembly == null)
+                    continue;
 
-                    Locations[assembly] = assemblyPath;
+                Locations[assembly] = assemblyPath;
+
+                Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
             }
 
             foreach (Assembly assembly in Locations.Keys)
@@ -184,7 +211,7 @@ namespace Exiled.Loader
             {
                 foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
-                    if (!type.BaseType.IsGenericType || type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>))
+                    if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
                         continue;
@@ -284,6 +311,7 @@ namespace Exiled.Loader
             LoadPlugins();
 
             ConfigManager.Reload();
+            TranslationManager.Reload();
 
             EnablePlugins();
         }
@@ -317,18 +345,18 @@ namespace Exiled.Loader
             if (requiredVersion.Major != actualVersion.Major)
             {
                 // Assume that if the Required Major version is greater than the Actual Major version,
-                // Exled is outdated
+                // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
                     Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                     return true;
                 }
                 else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
                     Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                        $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
 
                     return true;
                 }
@@ -357,7 +385,7 @@ namespace Exiled.Loader
 
                     Dependencies.Add(assembly);
 
-                    Log.Info($"Loaded dependency {assembly.FullName}");
+                    Log.Info($"Loaded dependency {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
                 }
 
                 Log.Info("Dependencies loaded successfully!");

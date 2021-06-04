@@ -102,6 +102,7 @@ namespace Exiled.Events.Patches.Events.Player
                             float rotY;
                             if (randomPosition != null)
                             {
+                                __instance._pms.IsAFK = true;
                                 spawnPoint = randomPosition.transform.position;
                                 rotY = randomPosition.transform.rotation.eulerAngles.y;
 

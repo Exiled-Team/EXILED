@@ -16,7 +16,7 @@ namespace Exiled.Updater.GHApi.Settings
 
         public GetReleasesSettings(byte perPage, uint page)
         {
-            PerPage = (byte)Mathf.Clamp((int)perPage, 1, 100);
+            PerPage = (byte)Mathf.Clamp(perPage, 1, 100);
             Page = page;
         }
 

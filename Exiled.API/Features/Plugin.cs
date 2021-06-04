@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable SA1402
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -31,6 +32,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Plugin()
         {
+            Assembly = Assembly.GetCallingAssembly();
             Name = Assembly.GetName().Name;
             Prefix = Name.ToSnakeCase();
             Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
@@ -38,7 +40,7 @@ namespace Exiled.API.Features
         }
 
         /// <inheritdoc/>
-        public Assembly Assembly { get; } = Assembly.GetCallingAssembly();
+        public Assembly Assembly { get; protected set; }
 
         /// <inheritdoc/>
         public virtual string Name { get; }
@@ -68,6 +70,9 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public TConfig Config { get; } = new TConfig();
+
+        /// <inheritdoc/>
+        public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
         public virtual void OnEnabled()
@@ -144,5 +149,29 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public int CompareTo(IPlugin<IConfig> other) => -Priority.CompareTo(other.Priority);
+    }
+
+    /// <summary>
+    /// Expose how a plugin has to be made.
+    /// </summary>
+    /// <typeparam name="TConfig">The config type.</typeparam>
+    /// <typeparam name="TTranslation">The translation type.</typeparam>
+    public abstract class Plugin<TConfig, TTranslation> : Plugin<TConfig>
+        where TConfig : IConfig, new()
+        where TTranslation : ITranslation, new()
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Plugin{TConfig, TTranslation}"/> class.
+        /// </summary>
+        public Plugin()
+        {
+            Assembly = Assembly.GetCallingAssembly();
+            InternalTranslation = new TTranslation();
+        }
+
+        /// <summary>
+        /// Gets the plugin translations.
+        /// </summary>
+        public TTranslation Translation => (TTranslation)InternalTranslation;
     }
 }
