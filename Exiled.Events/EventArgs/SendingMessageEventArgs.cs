@@ -35,12 +35,12 @@ namespace Exiled.Events.EventArgs
         public string Words { get; set; }
 
         /// <summary>
-        /// Gets or sets if the message should be held.
+        /// Gets or sets a value indicating whether or not the message should be held.
         /// </summary>
         public bool MakeHold { get; set; }
 
         /// <summary>
-        /// Gets or sets if the message should make noise.
+        /// Gets or sets a value indicating whether or not the message should make noise.
         /// </summary>
         public bool MakeNoise { get; set; }
 
