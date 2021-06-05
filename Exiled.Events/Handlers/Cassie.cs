@@ -20,14 +20,14 @@ namespace Exiled.Events.Handlers
     public static class Cassie
     {
         /// <summary>
-        /// Invoked before authenticating a player.
+        /// Invoked before sending a cassie message.
         /// </summary>
         public static event CustomEventHandler<SendingMessageEventArgs> SendingMessage;
 
         /// <summary>
-        /// Called before pre-authenticating a player.
+        /// Called before sending a cassie message.
         /// </summary>
-        /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="SendingMessageEventArgs"/> instance.</param>
         public static void OnSendingMessage(SendingMessageEventArgs ev) => SendingMessage.InvokeSafely(ev);
     }
 }
