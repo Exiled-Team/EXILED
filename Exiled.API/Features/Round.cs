@@ -27,11 +27,6 @@ namespace Exiled.API.Features
         public static DateTime StartedTime => DateTime.Now - ElapsedTime;
 
         /// <summary>
-        /// Gets the round progress time.
-        /// </summary>
-        public static TimeSpan ProgressTime => DateTime.Now.Subtract(StartedTime);
-
-        /// <summary>
         /// Gets a value indicating whether the round is started or not.
         /// </summary>
         public static bool IsStarted => RoundSummary.RoundInProgress();
