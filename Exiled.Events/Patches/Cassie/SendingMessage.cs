@@ -24,6 +24,7 @@ namespace Exiled.Events.Patches.Events.Cassie
             try
             {
                 var ev = new SendingMessageEventArgs(words, makeHold, makeNoise);
+                Handlers.Cassie.OnSendingMessage(ev);
 
                 words = ev.Words;
                 makeHold = ev.MakeHold;
