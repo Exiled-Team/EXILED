@@ -912,7 +912,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
-        public bool NetworkforceStopInputs
+        public bool CanSendInputs
         {
             get => ReferenceHub.fpc.NetworkforceStopInputs;
             set => ReferenceHub.fpc.NetworkforceStopInputs = value;
