@@ -1382,7 +1382,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Show HitMarker.
+        /// Show a HitMarker.
         /// </summary>
         public void ShowHitMarker() => ReferenceHub.GetComponent<Scp173PlayerScript>()?.TargetHitMarker(Connection);
 
