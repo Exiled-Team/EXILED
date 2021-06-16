@@ -16,8 +16,9 @@ namespace Exiled.API.Features
     using CustomPlayerEffects;
 
     using Exiled.API.Enums;
-    using Exiled.API.Extensions;
-
+    using Exiled.API.Extensions; 
+    using Exiled.CustomItems.API.Features;
+    
     using Grenades;
 
     using Hints;
@@ -1115,7 +1116,12 @@ namespace Exiled.API.Features
         /// <param name="item">The item to be dropped.</param>
         public void DropItem(Inventory.SyncItemInfo item)
         {
-            Inventory.SetPickup(item.id, item.durability, Position, Inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
+            if (CustomItem.TryGet(item, out CustomItem cItem))
+            {
+                cItem.Durability = item.durability;
+                cItem.Spawn(this);
+            }
+            else Inventory.SetPickup(item.id, item.durability, Position, Inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
             Inventory.items.Remove(item);
         }
 
