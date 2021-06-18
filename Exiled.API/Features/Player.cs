@@ -1472,6 +1472,16 @@ namespace Exiled.API.Features
         public void RemoveHands()
         {
         }
+        
+        /// <summary>
+        /// Teleport the player to a room
+        /// </summary>
+        /// <param name="roomType">The room when player will be teleported</param>
+        public void SetPlayerRoom(RoomType roomType)
+        {
+            var room = Map.Rooms.Where(x => x.Type == roomType).FirstOrDefault();
+            ReferenceHub.playerMovementSync.OverridePosition(room.Position + Vector3.up * 1.5f, 0f);
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
