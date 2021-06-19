@@ -50,7 +50,7 @@ namespace Exiled.CustomItems.Commands
 
             if (arguments.Count < 2)
             {
-                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID/*]";
+                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID/all/*]";
                 return false;
             }
 
@@ -65,11 +65,10 @@ namespace Exiled.CustomItems.Commands
             switch (identifier)
             {
                 case "*":
+                case "all":
                     var eligiblePlayers = Player.List.Where(CheckEligible).ToList();
-                    foreach (var ply in eligiblePlayers)
-                    {
-                        item.Give(ply);
-                    }
+                    foreach (var player in eligiblePlayers)
+                        item.Give(player);
 
                     response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
                     return true;
