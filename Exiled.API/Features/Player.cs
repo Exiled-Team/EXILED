@@ -777,9 +777,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets or sets the current room the player is in.
         /// </summary>
-        public Room CurrentRoom => Map.FindParentRoom(GameObject);
+        public Room CurrentRoom
+        {
+            get => Map.FindParentRoom(GameObject);
+            set => ReferenceHub.playerMovementSync.OverridePosition(value.Position + Vector3.up * 1.5f, 0f);
+        }
 
         /// <summary>
         /// Gets or sets the player's group.
@@ -1473,15 +1477,6 @@ namespace Exiled.API.Features
         {
         }
         
-        /// <summary>
-        /// Teleport the player to a room
-        /// </summary>
-        /// <param name="roomType">The room when player will be teleported</param>
-        public void SetPlayerRoom(RoomType roomType)
-        {
-            var room = Map.Rooms.Where(x => x.Type == roomType).FirstOrDefault();
-            ReferenceHub.playerMovementSync.OverridePosition(room.Position + Vector3.up * 1.5f, 0f);
-        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
