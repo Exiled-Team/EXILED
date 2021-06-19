@@ -67,8 +67,8 @@ namespace Exiled.CustomItems.Commands
                 case "*":
                 case "all":
                     var eligiblePlayers = Player.List.Where(CheckEligible).ToList();
-                    foreach (var player in eligiblePlayers)
-                        item.Give(player);
+                    foreach (var ply in eligiblePlayers)
+                        item.Give(ply);
 
                     response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
                     return true;
