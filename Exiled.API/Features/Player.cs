@@ -1382,7 +1382,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Show a HitMarker.
+        /// Shows a HitMarker.
         /// </summary>
         public void ShowHitMarker() => ReferenceHub.characterClassManager.Scp173.TargetHitMarker(Connection);
 
