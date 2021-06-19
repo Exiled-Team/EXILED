@@ -21,22 +21,14 @@ namespace Exiled.Events.Patches.Events.Cassie
     {
         private static bool Prefix(ref string words, ref bool makeHold, ref bool makeNoise)
         {
-            try
-            {
-                var ev = new SendingMessageEventArgs(words, makeHold, makeNoise);
-                Handlers.Cassie.OnSendingMessage(ev);
+            var ev = new SendingMessageEventArgs(words, makeHold, makeNoise);
+            Handlers.Cassie.OnSendingMessage(ev);
 
-                words = ev.Words;
-                makeHold = ev.MakeHold;
-                makeNoise = ev.MakeNoise;
+            words = ev.Words;
+            makeHold = ev.MakeHold;
+            makeNoise = ev.MakeNoise;
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Cassie.SendingMessage: {e}\n{e.StackTrace}");
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }
