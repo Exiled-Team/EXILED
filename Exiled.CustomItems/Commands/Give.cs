@@ -50,43 +50,53 @@ namespace Exiled.CustomItems.Commands
 
             if (arguments.Count < 2)
             {
-                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID]";
+                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID/all/*]";
+                return false;
+            }
+
+            if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
+            {
+                response = $"Custom item {arguments.At(0)} not found!";
                 return false;
             }
 
             string identifier = string.Join(" ", arguments.Skip(1));
 
-            if (!(Player.Get(identifier) is Player player))
+            switch (identifier)
             {
-                response = $"Unable to find player: {identifier}.";
-                return false;
-            }
+                case "*":
+                case "all":
+                    var eligiblePlayers = Player.List.Where(CheckEligible).ToList();
+                    foreach (var ply in eligiblePlayers)
+                        item.Give(ply);
 
-            if (player.IsDead || player.Team == Team.SCP)
-            {
-                response = $"{player.Nickname}'s \"{player.Role}\" role cannot receive custom items!";
-                return false;
-            }
+                    response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";
+                    return true;
+                default:
+                    if (!(Player.Get(identifier) is Player player))
+                    {
+                        response = $"Unable to find player: {identifier}.";
+                        return false;
+                    }
 
-            if (player.Inventory.items.Count >= 8)
-            {
-                response = $"{player.Nickname}'s inventory is full!";
-                return false;
-            }
+                    if (!CheckEligible(player))
+                    {
+                        response = "Player cannot receive custom items!";
+                        return false;
+                    }
 
-            if (int.TryParse(arguments.At(0), out int id) && CustomItem.TryGive(player, id))
-            {
-                response = $"Custom item with ID {arguments.At(0)} given to {player.Nickname} ({player.UserId})";
-                return true;
+                    item.Give(player);
+                    response = $"{item.Name} given to {player.Nickname} ({player.UserId})";
+                    return true;
             }
-            else if (CustomItem.TryGive(player, arguments.At(0)))
-            {
-                response = $"Custom item {arguments.At(0)} given to {player.Nickname} ({player.UserId})";
-                return true;
-            }
+        }
 
-            response = $"custom item {arguments.At(0)} not found.";
-            return false;
+        /// <summary>
+        /// Checks if the player is eligible to receive custom items.
+        /// </summary>
+        private bool CheckEligible(Player player)
+        {
+            return player.IsAlive && !player.IsScp && !player.IsCuffed && player.Inventory.items.Count < 8;
         }
     }
 }
