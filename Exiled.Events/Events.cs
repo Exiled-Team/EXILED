@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace Exiled.Events
 {
     using System;
@@ -183,7 +185,7 @@ namespace Exiled.Events
             }
             catch (Exception exception)
             {
-                Log.Error($"Patching by attributes failed!\n{exception}");
+                Log.Error($"Patching by attributes failed!\n{exception.ToStringDemystified()}");
             }
         }
 
@@ -197,7 +199,7 @@ namespace Exiled.Events
             }
             catch (Exception e)
             {
-                Log.Error($"Patching in the inner types failed!\n{e}");
+                Log.Error($"Patching in the inner types failed!\n{e.ToStringDemystified()}");
             }
         }
 

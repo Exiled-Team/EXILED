@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace Exiled.API.Features
 {
     using System;
@@ -504,7 +506,7 @@ namespace Exiled.API.Features
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"{nameof(Scale)} error: {exception}");
+                    Log.Error($"{nameof(Scale)}:\n{exception.ToStringDemystified()}");
                 }
             }
         }
@@ -1058,7 +1060,7 @@ namespace Exiled.API.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
+                Log.Error($"{typeof(Player).FullName}.{nameof(Get)}: {exception.ToStringDemystified()}");
                 return null;
             }
         }

@@ -9,15 +9,19 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using CommandSystem.Commands;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Loader.Features;
     using Exiled.Loader.Features.Configs;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
@@ -35,11 +39,15 @@ namespace Exiled.Loader
             Log.Warn("You are running a public beta build. It is not compatible with another version of the game.");
 #endif
 
-            Log.SendRaw($"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}", ConsoleColor.DarkRed);
+            Log.SendRaw(
+                $"{Assembly.GetExecutingAssembly().GetName().Name} - Version {Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion}",
+                ConsoleColor.DarkRed);
 
             if (MultiAdminFeatures.MultiAdminUsed)
             {
-                Log.SendRaw($"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}", ConsoleColor.Cyan);
+                Log.SendRaw(
+                    $"Detected MultiAdmin! Version: {MultiAdminFeatures.MultiAdminVersion} | Features: {MultiAdminFeatures.MultiAdminModFeatures}",
+                    ConsoleColor.Cyan);
                 MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_START);
                 MultiAdminFeatures.CallAction(MultiAdminFeatures.ActionType.SET_SUPPORTED_FEATURES, MultiAdminFeatures.ModFeatures.All);
             }
@@ -63,7 +71,8 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the plugins list.
         /// </summary>
-        public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
+        public static SortedSet<IPlugin<IConfig>> Plugins { get; } =
+            new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
 
         /// <summary>
         /// Gets a dictionary containing the file paths of assemblies.
@@ -88,7 +97,8 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets a value indicating whether the debug should be shown or not.
         /// </summary>
-        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing || Config.Environment == EnvironmentType.Development;
+        public static bool ShouldDebugBeShown => Config.Environment == EnvironmentType.Testing ||
+                                                 Config.Environment == EnvironmentType.Development;
 
         /// <summary>
         /// Gets plugin dependencies.
@@ -110,7 +120,8 @@ namespace Exiled.Loader
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner),
+                deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
             .Build();
@@ -194,7 +205,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while loading an assembly at {path}! {exception}");
+                Log.Error($"Error while loading an assembly at {path}!\n{exception.ToStringDemystified()}");
             }
 
             return null;
@@ -211,7 +222,8 @@ namespace Exiled.Loader
             {
                 foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                 {
-                    if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
+                    if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) &&
+                                                         type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
                         continue;
@@ -230,9 +242,14 @@ namespace Exiled.Loader
                     }
                     else
                     {
-                        Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
+                        Log.Debug(
+                            $"Constructor wasn't found, searching for a property with the {type.FullName} type...",
+                            ShouldDebugBeShown);
 
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        var value = Array
+                            .Find(
+                                type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public),
+                                property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -240,7 +257,8 @@ namespace Exiled.Loader
 
                     if (plugin == null)
                     {
-                        Log.Error($"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
+                        Log.Error(
+                            $"{type.FullName} is a valid plugin, but it cannot be instantiated! It either doesn't have a public default constructor without any arguments or a static property of the {type.FullName} type!");
 
                         continue;
                     }
@@ -255,7 +273,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+                Log.Error(
+                    $"Error while initializing plugin {assembly.GetName().Name} (at {assembly.GetPath()})!\n{exception.ToStringDemystified()}");
             }
 
             return null;
@@ -278,7 +297,8 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {exception}");
+                    Log.Error(
+                        $"Plugin \"{plugin.Name}\" threw an exception while enabling:\n{exception.ToStringDemystified()}");
                 }
             }
         }
@@ -302,7 +322,8 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
+                    Log.Error(
+                        $"Plugin \"{plugin.Name}\" threw an exception while reloading:\n{exception.ToStringDemystified()}");
                 }
             }
 
@@ -330,7 +351,8 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
+                    Log.Error(
+                        $"Plugin \"{plugin.Name}\" threw an exception while disabling:\n{exception.ToStringDemystified()}");
                 }
             }
         }
@@ -348,8 +370,9 @@ namespace Exiled.Loader
                 // Exiled is outdated
                 if (requiredVersion.Major > actualVersion.Major)
                 {
-                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error(
+                        $"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
+                        $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
 
                     return true;
                 }
@@ -392,7 +415,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading dependencies! {exception}");
+                Log.Error($"An error has occurred while loading dependencies!\n{exception.ToStringDemystified()}");
             }
         }
     }
