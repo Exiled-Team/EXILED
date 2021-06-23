@@ -120,8 +120,7 @@ namespace Exiled.Loader
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner),
-                deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
             .IgnoreUnmatchedProperties()
             .Build();
