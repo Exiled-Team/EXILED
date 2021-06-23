@@ -22,12 +22,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before sending a cassie message.
         /// </summary>
-        public static event CustomEventHandler<SendingMessageEventArgs> SendingMessage;
+        public static event CustomEventHandler<SendingCassieMessageEventArgs> SendingCassieMessage;
 
         /// <summary>
         /// Called before sending a cassie message.
         /// </summary>
-        /// <param name="ev">The <see cref="SendingMessageEventArgs"/> instance.</param>
-        public static void OnSendingMessage(SendingMessageEventArgs ev) => SendingMessage.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="SendingCassieMessageEventArgs"/> instance.</param>
+        public static void OnSendingCassieMessage(SendingMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);
     }
 }
