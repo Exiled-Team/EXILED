@@ -5,11 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Diagnostics;
-
 namespace Exiled.CustomItems.API.Components
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Features;
 
