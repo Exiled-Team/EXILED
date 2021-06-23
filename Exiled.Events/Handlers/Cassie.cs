@@ -28,6 +28,6 @@ namespace Exiled.Events.Handlers
         /// Called before sending a cassie message.
         /// </summary>
         /// <param name="ev">The <see cref="SendingCassieMessageEventArgs"/> instance.</param>
-        public static void OnSendingCassieMessage(SendingMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);
+        public static void OnSendingCassieMessage(SendingCassieMessageEventArgs ev) => SendingCassieMessage.InvokeSafely(ev);
     }
 }
