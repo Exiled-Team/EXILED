@@ -908,7 +908,7 @@ namespace Exiled.API.Features
         /// Gets player's items.
         /// </summary>
         public Inventory.SyncListItemInfo Items => Inventory.items;
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
@@ -917,7 +917,7 @@ namespace Exiled.API.Features
             get => ReferenceHub.fpc.NetworkforceStopInputs;
             set => ReferenceHub.fpc.NetworkforceStopInputs = value;
         }
-        
+
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
