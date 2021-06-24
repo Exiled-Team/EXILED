@@ -782,7 +782,22 @@ namespace Exiled.API.Features
         public Room CurrentRoom
         {
             get => Map.FindParentRoom(GameObject);
-            set => ReferenceHub.playerMovementSync.OverridePosition(value.Position + Vector3.up * 1.5f, 0f);
+            set
+            {
+                PlayerMovementSync.FindSafePosition(value.Position, out Vector3 safePos);
+                switch (value.Type)
+                {
+                    case RoomType.HczTesla:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos + (Vector3.back * 4f));
+                        break;
+                    case RoomType.LczCurve:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos + (Vector3.back * 5f) + (Vector3.left * 5f), true);
+                        break;
+                    default:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos);
+                        break;
+                }
+            }
         }
 
         /// <summary>
