@@ -1491,7 +1491,6 @@ namespace Exiled.API.Features
         public void RemoveHands()
         {
         }
-        
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
