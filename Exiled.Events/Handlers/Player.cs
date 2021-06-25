@@ -311,6 +311,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRadioPresetEventArgs> ChangingRadioPreset;
 
         /// <summary>
+        /// Invoked before a player's MicroHID state is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
+
+        /// <summary>
+        /// Invoked before a player's MicroHID energy is changed.
+        /// </summary>
+        public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -651,5 +661,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
         public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's MicroHID state is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
+        public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's MicroHID energy is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
+        public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
     }
 }
