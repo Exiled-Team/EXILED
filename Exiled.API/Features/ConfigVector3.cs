@@ -14,8 +14,10 @@ namespace Exiled.API.Features
     /// <summary>
     /// A helper class used for storing <see cref="Vector3"/>s in config.
     /// </summary>
-    public class ConfigVector3 
+    public class ConfigVector3
     {
+        private Vector3 value = default;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigVector3"/> class.
         /// </summary>
@@ -40,34 +42,31 @@ namespace Exiled.API.Features
             Z = vector.z;
         }
 
-        private Vector3 _value = default;
-
         /// <summary>
         /// Gets the x value of the <see cref="Vector3"/>.
         /// </summary>
-        public float X {get; set;}
+        public float X { get; private set; }
 
         /// <summary>
         /// Gets the y value of the <see cref="Vector3"/>.
         /// </summary>
-        public float Y {get; set;}
+        public float Y { get; private set; }
 
         /// <summary>
         /// Gets the z value of the <see cref="Vector3"/>.
         /// </summary>
-        public float Z {get; set;}
+        public float Z { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="Vector3"/>.
         /// </summary>
         [YamlIgnore]
-        public Vector3 Value 
+        public Vector3 Value
         {
-            get 
+            get
             {
-                if(_value == default) {
+                if (_value == default)
                     _value = new Vector3(X, Y, Z);
-                }
 
                 return _value;
             }
