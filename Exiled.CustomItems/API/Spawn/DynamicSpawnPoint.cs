@@ -39,7 +39,7 @@ namespace Exiled.CustomItems.API.Spawn
         [YamlIgnore]
         public override ConfigVector3 Position
         {
-            get => Location.GetPosition().ToVector();
+            get => new ConfigVector3(Location.GetPosition());
             set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
         }
     }
