@@ -65,10 +65,10 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (_value == default)
-                    _value = new Vector3(X, Y, Z);
+                if (value == default)
+                    value = new Vector3(X, Y, Z);
 
-                return _value;
+                return value;
             }
         }
     }
