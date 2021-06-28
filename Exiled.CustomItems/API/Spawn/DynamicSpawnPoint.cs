@@ -9,6 +9,7 @@ namespace Exiled.CustomItems.API.Spawn
 {
     using System;
 
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     using YamlDotNet.Serialization;
@@ -36,7 +37,7 @@ namespace Exiled.CustomItems.API.Spawn
 
         /// <inheritdoc/>
         [YamlIgnore]
-        public override Vector Position
+        public override ConfigVector3 Position
         {
             get => Location.GetPosition().ToVector();
             set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
