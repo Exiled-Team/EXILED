@@ -367,7 +367,7 @@ namespace Exiled.CustomItems.API.Features
 
                 spawned++;
 
-                Spawn(spawnPoint.Position.ToVector3);
+                Spawn(spawnPoint.Position.Value);
 
                 Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
             }
