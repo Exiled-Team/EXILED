@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomItems.API.Spawn
 {
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     /// <summary>
@@ -27,6 +28,6 @@ namespace Exiled.CustomItems.API.Spawn
         /// <summary>
         /// Gets or sets this spawn point position.
         /// </summary>
-        public abstract Vector Position { get; set; }
+        public abstract ConfigVector3 Position { get; set; }
     }
 }
