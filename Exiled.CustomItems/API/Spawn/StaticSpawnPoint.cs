@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomItems.API.Spawn
 {
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     /// <summary>
@@ -21,6 +22,6 @@ namespace Exiled.CustomItems.API.Spawn
         public override float Chance { get; set; }
 
         /// <inheritdoc/>
-        public override Vector Position { get; set; }
+        public override ConfigVector3 Position { get; set; }
     }
 }
