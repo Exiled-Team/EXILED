@@ -72,13 +72,6 @@ namespace Exiled.CustomItems.API
         }
 
         /// <summary>
-        /// Converts a <see cref="Vector3"/> to a <see cref="Vector"/>.
-        /// </summary>
-        /// <param name="vector3">The <see cref="Vector3"/> to be converted.</param>
-        /// <returns>Returns the <see cref="Vector"/>.</returns>
-        public static Vector ToVector(this Vector3 vector3) => new Vector(vector3.x, vector3.y, vector3.z);
-
-        /// <summary>
         /// Reloads the current <see cref="Player"/>'s weapon.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who's weapon should be reloaded.</param>
