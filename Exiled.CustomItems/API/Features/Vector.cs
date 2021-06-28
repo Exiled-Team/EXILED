@@ -16,6 +16,7 @@ namespace Exiled.CustomItems.API.Features
     /// <summary>
     /// A yaml-serializable vector object.
     /// </summary>
+    [Obsolete("Use EXILED.API.Features.ConfigVector3.", true)]
     public struct Vector
     {
         /// <summary>
