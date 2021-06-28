@@ -12,17 +12,17 @@ namespace Exiled.API.Features
     using YamlDotNet.Serialization;
 
     /// <summary>
-    /// A helper struct used for storing Vector3s in config.
+    /// A helper class used for storing <see cref="Vector3"/>s in config.
     /// </summary>
-    public struct ConfigVector3 
+    public class ConfigVector3 
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigVector3"/> struct.
+        /// Initializes a new instance of the <see cref="ConfigVector3"/> class.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        public Badge(float x, float y, float z)
+        public ConfigVector3(float x, float y, float z)
         {
             X = x;
             Y = y;
@@ -30,10 +30,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigVector3"/> struct.
+        /// Initializes a new instance of the <see cref="ConfigVector3"/> class.
         /// </summary>
         /// <param name="vector">The <see cref="Vector3"/> containing the coordinates.</param>
-        public Badge(Vector3 vector)
+        public ConfigVector3(Vector3 vector)
         {
             X = vector.x;
             Y = vector.y;
@@ -60,7 +60,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Vector3"/>.
         /// </summary>
-        [JsonIgnore]
+        [YamlIgnore]
         public Vector3 Value 
         {
             get 
