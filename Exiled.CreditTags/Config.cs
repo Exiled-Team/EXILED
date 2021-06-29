@@ -20,7 +20,7 @@ namespace Exiled.CreditTags
         public bool IsEnabled { get; set; } = true;
 
         [Description("Info side - Badge, CustomPlayerInfo, FirstAvailable")]
-        public InfoSide Mode { get; private set; } = InfoSide.Badge;
+        public InfoSide Mode { get; private set; } = InfoSide.FirstAvailable;
 
         [Description("Overrides badge if exists")]
         public bool BadgeOverride { get; private set; } = false;
