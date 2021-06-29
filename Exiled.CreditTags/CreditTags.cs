@@ -123,20 +123,35 @@ namespace Exiled.CreditTags
             {
                 if (Ranks.TryGetValue(rank, out var value))
                 {
+                    bool canGetCreditBadge = force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) &&
+                                                      player.GlobalBadge == null);
+                    bool canGetCreditCustomInfo =
+                        string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
+
                     switch (Config.Mode)
                     {
                         case InfoSide.Badge:
-                            if (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge == null))
+                            if (canGetCreditBadge)
                             {
-                                player.RankName = value.Name;
-                                player.RankColor = value.Color;
+                                SetCreditBadge(player, value);
                             }
 
                             break;
                         case InfoSide.CustomPlayerInfo:
-                            if (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride)
+                            if (canGetCreditCustomInfo)
                             {
-                                player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
+                                SetCreditCustomInfo(player, value);
+                            }
+
+                            break;
+                        case InfoSide.FirstAvailable:
+                            if (canGetCreditBadge)
+                            {
+                                SetCreditBadge(player, value);
+                            }
+                            else if (canGetCreditCustomInfo)
+                            {
+                                SetCreditCustomInfo(player, value);
                             }
 
                             break;
@@ -150,5 +165,16 @@ namespace Exiled.CreditTags
         private void AttachHandler() => PlayerEvents.Verified += handler.OnPlayerVerify;
 
         private void UnattachHandler() => PlayerEvents.Verified -= handler.OnPlayerVerify;
+
+        private void SetCreditBadge(Player player, Rank value)
+        {
+            player.RankName = value.Name;
+            player.RankColor = value.Color;
+        }
+
+        private void SetCreditCustomInfo(Player player, Rank value)
+        {
+            player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
+        }
     }
 }
