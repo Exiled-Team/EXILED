@@ -39,6 +39,7 @@ namespace Exiled.Events.Extensions
                 catch (Exception ex)
                 {
                     LogException(ex, handler.Method.Name, handler.Method.ReflectedType.FullName, eventName);
+                    ExceptionHandler.TrySendingHelpMessage(ex);
                 }
             }
         }
@@ -63,6 +64,7 @@ namespace Exiled.Events.Extensions
                 catch (Exception ex)
                 {
                     LogException(ex, handler.Method.Name, handler.Method.ReflectedType?.FullName, eventName);
+                    ExceptionHandler.TrySendingHelpMessage(ex);
                 }
             }
         }

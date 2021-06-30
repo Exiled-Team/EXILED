@@ -195,6 +195,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"Error while loading an assembly at {path}! {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return null;
@@ -256,6 +257,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return null;
@@ -279,6 +281,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
         }
@@ -303,6 +306,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
 
@@ -331,6 +335,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
         }
@@ -393,6 +398,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while loading dependencies! {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
         }
     }

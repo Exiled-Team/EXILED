@@ -125,6 +125,7 @@ namespace Exiled.API.Features
                     catch (Exception exception)
                     {
                         Log.Error($"An error has occurred while registering a command: {exception}");
+                        ExceptionHandler.TrySendingHelpMessage(exception);
                     }
                 }
             }
