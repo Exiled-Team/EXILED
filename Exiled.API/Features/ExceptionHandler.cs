@@ -8,6 +8,8 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// .
@@ -26,7 +28,19 @@ namespace Exiled.API.Features
             switch (exception.GetType().Name)
             {
                 case "MissingMethodException":
-                    message = "This error can be fixed via updating Exiled or plugin to the latest version.";
+                    message = "This error can be fixed by updating Exiled or plugin to the latest version.";
+                    break;
+
+                case "FileNotFoundException":
+                    message = $"The \"{(exception as FileNotFoundException).FileName.Split(new char[] { ',' })[0]}.dll\" file is either missing or it outdated.";
+                    break;
+
+                case "YamlException":
+                    message = $"Check the line stated above. If you don't know what is the issue parse the .yml file through YAML Validator for example through this one: https://codebeautify.org/yaml-validator";
+                    break;
+
+                case "BadImageFormatException":
+                    message = $"The one or more .dll files are corrupt. Please reinstall them.";
                     break;
 
                 default:
