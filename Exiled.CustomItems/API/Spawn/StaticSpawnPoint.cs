@@ -21,6 +21,7 @@ namespace Exiled.CustomItems.API.Spawn
         public override float Chance { get; set; }
 
         /// <inheritdoc/>
+#pragma warning disable CS0618 // Type or member is obsolete
         public override Vector Position { get; set; }
     }
 }
