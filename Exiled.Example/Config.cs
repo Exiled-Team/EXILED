@@ -13,6 +13,8 @@ namespace Exiled.Example
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
 
+    using UnityEngine;
+
     /// <inheritdoc cref="IConfig"/>
     public sealed class Config : IConfig
     {
@@ -98,5 +100,11 @@ namespace Exiled.Example
         /// </summary>
         [Description("This is an example on how to use the Broadcast class, to send a broadcast to joined players")]
         public Broadcast JoinedBroadcast { get; private set; } = new Broadcast("Welcome to the server!", 15);
+
+        /// <summary>
+        /// Gets the Vector3 config.
+        /// </summary>
+        [Description("This is a Vector3 config, the same can be done by using a Vector2 or a Vector4")]
+        public Vector3 Vector3 { get; private set; } = new Vector3(1, 2, 3);
     }
 }

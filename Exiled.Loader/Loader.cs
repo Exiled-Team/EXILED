@@ -18,6 +18,8 @@ namespace Exiled.Loader
     using Exiled.API.Interfaces;
     using Exiled.Loader.Features;
     using Exiled.Loader.Features.Configs;
+    using Exiled.Loader.Features.Configs.CustomConverters;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
@@ -99,6 +101,7 @@ namespace Exiled.Loader
         /// Gets the serializer for configs and translations.
         /// </summary>
         public static ISerializer Serializer { get; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -109,6 +112,7 @@ namespace Exiled.Loader
         /// Gets the deserializer for configs and translations.
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
