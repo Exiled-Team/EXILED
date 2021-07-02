@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EnteringFemurBreaker: {e}\n{e.ToStringDemystified()}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EnteringFemurBreaker:\n{e.ToStringDemystified()}");
 
                 return true;
             }

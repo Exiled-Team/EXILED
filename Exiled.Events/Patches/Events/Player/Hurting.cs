@@ -74,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.ToStringDemystified()}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting:\n{e.ToStringDemystified()}");
                 return true;
             }
         }

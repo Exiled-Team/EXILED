@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.ToStringDemystified()}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp:\n{e.ToStringDemystified()}");
 
                 return true;
             }
