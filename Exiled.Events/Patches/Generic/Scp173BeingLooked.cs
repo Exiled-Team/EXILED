@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_2),
-                new CodeInstruction(OpCodes.Brtrue_S, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
