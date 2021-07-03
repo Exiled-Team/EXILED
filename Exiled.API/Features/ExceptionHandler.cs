@@ -9,7 +9,8 @@ namespace Exiled.API.Features
 {
     using System;
     using System.IO;
-    using System.Linq;
+
+    using YamlDotNet.Core;
 
     /// <summary>
     /// .
@@ -25,21 +26,21 @@ namespace Exiled.API.Features
         {
             string message = null;
 
-            switch (exception.GetType().Name)
+            switch (exception)
             {
-                case "MissingMethodException":
+                case MissingMethodException _:
                     message = "This error can be fixed by updating Exiled or plugin to the latest version.";
                     break;
 
-                case "FileNotFoundException":
-                    message = $"The \"{(exception as FileNotFoundException).FileName.Split(new char[] { ',' })[0]}.dll\" file is either missing or it outdated.";
+                case FileNotFoundException fileNotFound:
+                    message = $"The \"{fileNotFound.FileName.Split(new char[] { ',' })[0]}.dll\" file is either missing or is outdated.";
                     break;
 
-                case "YamlException":
+                case YamlException _:
                     message = $"Check the line stated above. If you don't know what is the issue parse the .yml file through YAML Validator for example through this one: https://codebeautify.org/yaml-validator";
                     break;
 
-                case "BadImageFormatException":
+                case BadImageFormatException _:
                     message = $"The one or more .dll files are corrupt. Please reinstall them.";
                     break;
 
@@ -54,10 +55,9 @@ namespace Exiled.API.Features
             }
             else
             {
-                #if DEBUG
+#if DEBUG
                 Log.Send(exception.GetType().Name, Discord.LogLevel.Warn, ConsoleColor.DarkYellow);
-                #endif
-
+#endif
                 return false;
             }
         }
