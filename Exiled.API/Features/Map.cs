@@ -118,6 +118,11 @@ namespace Exiled.API.Features
         public static Intercom.State IntercomState => Intercom.host.IntercomState;
 
         /// <summary>
+        /// Gets the current seed of the map.
+        /// </summary>
+        public static int Seed => MapGeneration.SeedSynchronizer.Seed;
+
+        /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
         public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
