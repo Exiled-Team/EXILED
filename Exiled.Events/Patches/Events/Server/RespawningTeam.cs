@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Server
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
 
     using Exiled.Events.EventArgs;
@@ -125,7 +126,7 @@ namespace Exiled.Events.Patches.Events.Server
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Server.RespawningTeam: {e}\n{e.StackTrace}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Server.RespawningTeam:\n{e.ToStringDemystified()}");
 
                 return true;
             }

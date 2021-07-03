@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -55,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"Exiled.Events.Patches.Events.Player.UsingMedicalItem: {exception}\n{exception.StackTrace}");
+                Log.Error($"Exiled.Events.Patches.Events.Player.UsingMedicalItem:\n{exception.ToStringDemystified()}");
 
                 return true;
             }

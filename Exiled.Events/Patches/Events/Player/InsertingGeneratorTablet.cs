@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
     using System;
+    using System.Diagnostics;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -104,7 +105,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet: {exception}\n{exception.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet:\n{exception.ToStringDemystified()}");
 
                 return true;
             }
