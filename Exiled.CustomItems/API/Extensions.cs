@@ -105,6 +105,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="vector3">The <see cref="Vector3"/> to be converted.</param>
         /// <returns>Returns the <see cref="Vector"/>.</returns>
+        [Obsolete("Use UnityEngine.Vector3 instead of Exiled.CustomItems.API.Features.Vector", false)]
         public static Vector ToVector(this Vector3 vector3) => new Vector(vector3.x, vector3.y, vector3.z);
 
         /// <summary>

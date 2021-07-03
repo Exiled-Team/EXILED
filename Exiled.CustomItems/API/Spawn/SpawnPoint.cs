@@ -27,6 +27,7 @@ namespace Exiled.CustomItems.API.Spawn
         /// <summary>
         /// Gets or sets this spawn point position.
         /// </summary>
+#pragma warning disable CS0618 // Type or member is obsolete
         public abstract Vector Position { get; set; }
     }
 }

@@ -16,6 +16,7 @@ namespace Exiled.CustomItems.API.Features
     /// <summary>
     /// A yaml-serializable vector object.
     /// </summary>
+    [Obsolete("Use UnityEngine.Vector3 instead.", false)]
     public struct Vector
     {
         /// <summary>
