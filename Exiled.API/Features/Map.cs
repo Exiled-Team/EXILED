@@ -118,7 +118,7 @@ namespace Exiled.API.Features
         public static Intercom.State IntercomState => Intercom.host.IntercomState;
 
         /// <summary>
-        /// Gets the current seed of the map.
+        /// Gets or sets the current seed of the map.
         /// </summary>
         public static int Seed
         {
