@@ -9,7 +9,6 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
 
     using Exiled.API.Extensions;
@@ -58,7 +57,7 @@ namespace Exiled.Loader
                         }
                         catch (YamlException yamlException)
                         {
-                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException.ToStringDemystified()}");
+                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException}");
 
                             deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
                         }
@@ -71,7 +70,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading translations!\n{exception.ToStringDemystified()}");
+                Log.Error($"An error has occurred while loading translations!\n{exception}");
 
                 return null;
             }
@@ -98,7 +97,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path:\n{exception.ToStringDemystified()}");
+                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path:\n{exception}");
 
                 return false;
             }
@@ -120,7 +119,7 @@ namespace Exiled.Loader
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"An error has occurred while serializing translations:\n{yamlException.ToStringDemystified()}");
+                Log.Error($"An error has occurred while serializing translations:\n{yamlException}");
 
                 return false;
             }
@@ -139,7 +138,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while reading translations from {Paths.Translations} path:\n{exception.ToStringDemystified()}");
+                Log.Error($"An error has occurred while reading translations from {Paths.Translations} path:\n{exception}");
             }
 
             return string.Empty;
