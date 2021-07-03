@@ -13,7 +13,6 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1513
 #pragma warning disable SA1512
     using System;
-    using System.Diagnostics;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -111,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception ex)
             {
-                Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{ex.ToStringDemystified()}");
+                Log.Error($"{typeof(InteractingDoor).FullName}.{nameof(Prefix)}:\n{ex}");
                 return true;
             }
         }

@@ -16,7 +16,6 @@
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
     <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
-    <PackageReference Include="Ben.Demystifier" Version="$(BenDemystifierVersion)" />
   </ItemGroup>
 
   <ItemGroup>

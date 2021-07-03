@@ -35,7 +35,7 @@ function CheckLastOperationStatus {
 
 function GetSolutionVersion {
     [XML]$PropsFile = Get-Content Exiled.props
-    $Version = $PropsFile.Project.PropertyGroup[3].Version
+    $Version = $PropsFile.Project.PropertyGroup[2].Version
     $Version = $Version.'#text'.Trim()
     return $Version
 }

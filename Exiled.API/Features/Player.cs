@@ -9,7 +9,6 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -505,7 +504,7 @@ namespace Exiled.API.Features
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"{nameof(Scale)}:\n{exception.ToStringDemystified()}");
+                    Log.Error($"{nameof(Scale)} error: {exception}");
                 }
             }
         }
@@ -1068,7 +1067,7 @@ namespace Exiled.API.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(Player).FullName}.{nameof(Get)}: {exception.ToStringDemystified()}");
+                Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
                 return null;
             }
         }

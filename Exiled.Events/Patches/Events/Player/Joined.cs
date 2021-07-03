@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
 #pragma warning disable SA1600 // Elements should be documented
     using System;
-    using System.Diagnostics;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -60,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(Joined).FullName}:\n{exception.ToStringDemystified()}");
+                Log.Error($"{typeof(Joined).FullName}:\n{exception}");
             }
         }
     }

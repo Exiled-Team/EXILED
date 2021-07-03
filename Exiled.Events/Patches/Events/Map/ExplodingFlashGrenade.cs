@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Map
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
     using CustomPlayerEffects;
 
@@ -67,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Map
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(ExplodingFlashGrenade).FullName}:\n{exception.ToStringDemystified()}");
+                Log.Error($"{typeof(ExplodingFlashGrenade).FullName}:\n{exception}");
 
                 return true;
             }

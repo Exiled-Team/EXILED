@@ -201,7 +201,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while loading an assembly at {path}!\n{exception.ToStringDemystified()}");
+                Log.Error($"Error while loading an assembly at {path}! {exception}");
             }
 
             return null;
@@ -262,7 +262,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.GetPath()})!\n{exception.ToStringDemystified()}");
+                Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
             }
 
             return null;
@@ -285,7 +285,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling:\n{exception.ToStringDemystified()}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {exception}");
                 }
             }
         }
@@ -309,7 +309,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading:\n{exception.ToStringDemystified()}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
                 }
             }
 
@@ -337,7 +337,7 @@ namespace Exiled.Loader
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling:\n{exception.ToStringDemystified()}");
+                    Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
                 }
             }
         }
@@ -363,7 +363,7 @@ namespace Exiled.Loader
                 else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
                     Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}.");
+                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
 
                     return true;
                 }
@@ -399,7 +399,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading dependencies!\n{exception.ToStringDemystified()}");
+                Log.Error($"An error has occurred while loading dependencies! {exception}");
             }
         }
     }

@@ -8,7 +8,6 @@
 namespace Exiled.Events.Extensions
 {
     using System;
-    using System.Diagnostics;
 
     using Exiled.API.Features;
 
@@ -71,7 +70,7 @@ namespace Exiled.Events.Extensions
         private static void LogException(Exception ex, string methodName, string sourceClassName, string eventName)
         {
             Log.Error($"Method \"{methodName}\" of the class \"{sourceClassName}\" caused an exception when handling the event \"{eventName}\"");
-            Log.Error(ex.ToStringDemystified());
+            Log.Error(ex);
         }
     }
 }

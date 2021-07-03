@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System;
-    using System.Diagnostics;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
@@ -41,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Kicked:\n{e.ToStringDemystified()}");
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Kicked: {e}\n{e.StackTrace}");
 
                 return true;
             }
