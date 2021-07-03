@@ -9,6 +9,7 @@ namespace Exiled.Permissions.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Text;
@@ -117,7 +118,7 @@ namespace Exiled.Permissions.Extensions
                     catch (YamlException exception)
                     {
                         Log.Error($"Unable to parse permission config for: {group.Key}.\n{exception.Message}.\nEnable debug to see stacktrace.");
-                        Log.Debug($"{exception.Message}\n{exception.StackTrace}");
+                        Log.Debug($"{exception.ToStringDemystified()}");
                     }
                 }
 
@@ -125,7 +126,7 @@ namespace Exiled.Permissions.Extensions
             }
             catch (Exception e)
             {
-                Log.Error($"Unable to parse permission config:\n{e}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
+                Log.Error($"Unable to parse permission config:\n{e.ToStringDemystified()}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
             }
 
             foreach (KeyValuePair<string, Group> group in Groups.Reverse())
@@ -144,7 +145,7 @@ namespace Exiled.Permissions.Extensions
                 catch (Exception e)
                 {
                     Log.Error($"Failed to load permissions/inheritance for: {group.Key}.\n{e.Message}.\nMake sure your config file is setup correctly, every group defined must include inheritance and permissions values, even if they are empty.");
-                    Log.Debug($"{e}", Instance.Config.ShouldDebugBeShown);
+                    Log.Debug($"{e.ToStringDemystified()}", Instance.Config.ShouldDebugBeShown);
                 }
             }
         }

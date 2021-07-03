@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
     using System.Reflection.Emit;
 
@@ -76,7 +77,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception ex)
             {
-                Log.Error($"{typeof(Verified).FullName}.{nameof(CallEvent)}:\n{ex}");
+                Log.Error($"{typeof(Verified).FullName}.{nameof(CallEvent)}:\n{ex.ToStringDemystified()}");
             }
         }
     }

@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.API.Components
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Features;
 
@@ -52,7 +53,7 @@ namespace Exiled.CustomItems.API.Components
             }
             catch (Exception exception)
             {
-                Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
+                Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception.ToStringDemystified()}");
             }
         }
     }

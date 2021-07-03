@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Player
 {
     using System;
+    using System.Diagnostics;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -39,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{exception}");
+                Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{exception.ToStringDemystified()}");
             }
         }
     }

@@ -9,6 +9,7 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
@@ -82,7 +83,7 @@ namespace Exiled.Loader
                         }
                         catch (YamlException yamlException)
                         {
-                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException}");
+                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead!\n{yamlException.ToStringDemystified()}");
 
                             deserializedConfigs.Add(plugin.Prefix, plugin.Config);
                         }
@@ -95,7 +96,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading configs! {exception}");
+                Log.Error($"An error has occurred while loading configs!\n{exception.ToStringDemystified()}");
 
                 return null;
             }
@@ -122,7 +123,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while saving configs to {Paths.Config} path: {exception}");
+                Log.Error($"An error has occurred while saving configs to {Paths.Config} path:\n{exception.ToStringDemystified()}");
 
                 return false;
             }
@@ -148,7 +149,7 @@ namespace Exiled.Loader
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"An error has occurred while serializing configs: {yamlException}");
+                Log.Error($"An error has occurred while serializing configs:\n{yamlException.ToStringDemystified()}");
 
                 return false;
             }
@@ -167,7 +168,7 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while reading configs from {Paths.Config} path: {exception}");
+                Log.Error($"An error has occurred while reading configs from {Paths.Config} path:\n{exception.ToStringDemystified()}");
             }
 
             return string.Empty;

@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -504,7 +505,7 @@ namespace Exiled.API.Features
                 }
                 catch (Exception exception)
                 {
-                    Log.Error($"{nameof(Scale)} error: {exception}");
+                    Log.Error($"{nameof(Scale)}:\n{exception.ToStringDemystified()}");
                 }
             }
         }
@@ -1067,7 +1068,7 @@ namespace Exiled.API.Features
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(Player).FullName}.{nameof(Get)} error: {exception}");
+                Log.Error($"{typeof(Player).FullName}.{nameof(Get)}: {exception.ToStringDemystified()}");
                 return null;
             }
         }
@@ -1380,6 +1381,11 @@ namespace Exiled.API.Features
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
         }
+
+        /// <summary>
+        /// Shows a HitMarker.
+        /// </summary>
+        public void ShowHitMarker() => ReferenceHub.characterClassManager.Scp173.TargetHitMarker(Connection);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
