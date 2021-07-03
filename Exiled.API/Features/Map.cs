@@ -120,7 +120,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current seed of the map.
         /// </summary>
-        public static int Seed => MapGeneration.SeedSynchronizer.Seed;
+        public static int Seed
+        {
+            get => MapGeneration.SeedSynchronizer.Seed;
+            set => MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
