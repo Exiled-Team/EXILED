@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
             if (__instance.NetworkEnergy == value)
                 return true;
 
-            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance, __instance.Energy, value);
+            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, __instance.Energy, value);
 
             Handlers.Player.OnUsingMicroHIDEnergy(ev);
 
