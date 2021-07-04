@@ -123,7 +123,11 @@ namespace Exiled.API.Features
         public static int Seed
         {
             get => MapGeneration.SeedSynchronizer.Seed;
-            set => MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
+            set
+            {
+                if (!MapGeneration.SeedSynchronizer.MapGenerated)
+                    MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
+            }
         }
 
         /// <summary>
