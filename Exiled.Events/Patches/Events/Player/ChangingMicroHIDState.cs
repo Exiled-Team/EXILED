@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
             if (__instance.CurrentHidState == value)
                 return true;
 
-            var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance.CurrentHidState, value);
+            var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, value);
 
             Handlers.Player.OnChangingMicroHIDState(ev);
 

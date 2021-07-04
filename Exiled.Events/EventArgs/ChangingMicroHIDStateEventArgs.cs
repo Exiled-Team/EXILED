@@ -23,9 +23,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMicroHIDStateEventArgs(Player player, MicroHID.MicroHidState oldState, MicroHID.MicroHidState newState, bool isAllowed = true)
+        public ChangingMicroHIDStateEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState oldState, MicroHID.MicroHidState newState, bool isAllowed = true)
         {
             Player = player;
+            MicroHID = microHID;
             OldState = oldState;
             NewState = newState;
             IsAllowed = isAllowed;
@@ -35,6 +36,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's using the MicroHID.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the MicroHID instance.
+        /// </summary>
+        public MicroHID MicroHID { get; }
 
         /// <summary>
         /// Gets the old MicroHID state.
