@@ -914,8 +914,8 @@ namespace Exiled.API.Features
         /// </summary>
         public bool CanSendInputs
         {
-            get => ReferenceHub.fpc.NetworkforceStopInputs;
-            set => ReferenceHub.fpc.NetworkforceStopInputs = value;
+            get => !ReferenceHub.fpc.NetworkforceStopInputs;
+            set => ReferenceHub.fpc.NetworkforceStopInputs = !value;
         }
 
         /// <summary>
