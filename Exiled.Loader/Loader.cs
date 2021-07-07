@@ -381,6 +381,10 @@ namespace Exiled.Loader
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
 
+                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
+                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
+                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
+
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {
                     Assembly assembly = LoadAssembly(dependency);
