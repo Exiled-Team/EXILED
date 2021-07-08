@@ -9,15 +9,20 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+
     using CommandSystem.Commands;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using Exiled.Loader.Features;
     using Exiled.Loader.Features.Configs;
+    using Exiled.Loader.Features.Configs.CustomConverters;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
@@ -99,6 +104,7 @@ namespace Exiled.Loader
         /// Gets the serializer for configs and translations.
         /// </summary>
         public static ISerializer Serializer { get; } = new SerializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -109,6 +115,7 @@ namespace Exiled.Loader
         /// Gets the deserializer for configs and translations.
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
@@ -377,6 +384,10 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
+
+                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
+                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
+                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
 
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {

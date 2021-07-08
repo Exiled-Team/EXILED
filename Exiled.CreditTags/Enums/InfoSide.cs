@@ -20,6 +20,11 @@ namespace Exiled.CreditTags.Enums
         CustomPlayerInfo,
 
         /// <summary>
+        /// Uses Badge if available, otherwise uses CustomPlayerInfo if available.
+        /// </summary>
+        FirstAvailable,
+
+        /// <summary>
         /// Includes both of them.
         /// </summary>
         Both = Badge,

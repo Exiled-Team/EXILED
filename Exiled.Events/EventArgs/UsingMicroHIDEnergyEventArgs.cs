@@ -20,13 +20,15 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="UsingMicroHIDEnergyEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="microHID"><inheritdoc cref="MicroHID"/></param>
         /// <param name="currentState"><inheritdoc cref="CurrentState"/></param>
         /// <param name="oldValue"><inheritdoc cref="OldValue"/></param>
         /// <param name="newValue"><inheritdoc cref="NewValue"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingMicroHIDEnergyEventArgs(Player player, MicroHID.MicroHidState currentState, float oldValue, float newValue, bool isAllowed = true)
+        public UsingMicroHIDEnergyEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState currentState, float oldValue, float newValue, bool isAllowed = true)
         {
             Player = player;
+            MicroHID = microHID;
             CurrentState = currentState;
             OldValue = oldValue;
             NewValue = newValue;
@@ -37,6 +39,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's using the MicroHID.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the MicroHID instance.
+        /// </summary>
+        public MicroHID MicroHID { get; }
 
         /// <summary>
         /// Gets the current state of the MicroHID.

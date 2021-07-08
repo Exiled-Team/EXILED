@@ -23,7 +23,11 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(MicroHID __instance, ref float value)
         {
-            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance.CurrentHidState, __instance.Energy, value);
+            // NetworkEnergy is set each frame, so this is to prevent calling the method each frame.
+            if (__instance.NetworkEnergy == value)
+                return true;
+
+            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, __instance.Energy, value);
 
             Handlers.Player.OnUsingMicroHIDEnergy(ev);
 

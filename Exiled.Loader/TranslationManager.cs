@@ -57,7 +57,7 @@ namespace Exiled.Loader
                         }
                         catch (YamlException yamlException)
                         {
-                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead! {yamlException}");
+                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException}");
 
                             deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
                         }

@@ -19,15 +19,22 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="UsingRadioBatteryEventArgs"/> class.
         /// </summary>
+        /// <param name="radio"><inheritdoc cref="Radio"/></param>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="charge"><inheritdoc cref="Charge"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingRadioBatteryEventArgs(Player player, float charge, bool isAllowed = true)
+        public UsingRadioBatteryEventArgs(Radio radio, Player player, float charge, bool isAllowed = true)
         {
+            Radio = radio;
             Player = player;
             Charge = charge;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the Radio which is being used.
+        /// </summary>
+        public Radio Radio { get; }
 
         /// <summary>
         /// Gets the player who's using the radio.
