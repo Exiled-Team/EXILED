@@ -345,23 +345,22 @@ namespace Exiled.Loader
             var requiredVersion = plugin.RequiredExiledVersion;
             var actualVersion = Version;
 
-            // Check Major version
-            // It's increased when an incompatible API change was made
-            if (requiredVersion.Major != actualVersion.Major)
+            // Check the version
+            if (requiredVersion != actualVersion)
             {
-                // Assume that if the Required Major version is greater than the Actual Major version,
+                // Assume that if the Required version is greater than the Actual version,
                 // Exiled is outdated
-                if (requiredVersion.Major > actualVersion.Major)
+                if (requiredVersion > actualVersion)
                 {
-                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error($"You're running an older version of Exiled ({Version})! {plugin.Name} won't be loaded! " +
+                              $"Required version to load it: {plugin.RequiredExiledVersion}");
 
                     return true;
                 }
-                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
+                else if (requiredVersion < actualVersion && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version})! " +
+                              $"Its Required Major version is {requiredVersion}, but excepted {actualVersion}. ");
 
                     return true;
                 }
