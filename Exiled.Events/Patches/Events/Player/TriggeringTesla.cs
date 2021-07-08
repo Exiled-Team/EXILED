@@ -27,33 +27,24 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(TeslaGateController __instance)
         {
-            try
+            foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
             {
-                foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
+                if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
+                    continue;
+                foreach (TeslaGate teslaGate in __instance.TeslaGates)
                 {
-                    if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
+                    if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
                         continue;
-                    foreach (TeslaGate teslaGate in __instance.TeslaGates)
-                    {
-                        if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
-                            continue;
 
-                        var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
-                        Player.OnTriggeringTesla(ev);
+                    var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
+                    Player.OnTriggeringTesla(ev);
 
-                        if (ev.IsTriggerable)
-                            teslaGate.ServerSideCode();
-                    }
+                    if (ev.IsTriggerable)
+                        teslaGate.ServerSideCode();
                 }
-
-                return false;
             }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
 
-                return true;
-            }
+            return false;
         }
     }
 }

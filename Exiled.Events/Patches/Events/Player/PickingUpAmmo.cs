@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="PickingUpAmmo.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -26,24 +26,15 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(AmmoSearchCompletor __instance)
         {
-            try
-            {
-                var ev = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+            var ev = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
 
-                Handlers.Player.OnPickingUpAmmo(ev);
+            Handlers.Player.OnPickingUpAmmo(ev);
 
-                // Allow future pick up of this ammo
-                if (!ev.IsAllowed)
-                    __instance.TargetPickup.InUse = false;
+            // Allow future pick up of this ammo
+            if (!ev.IsAllowed)
+                __instance.TargetPickup.InUse = false;
 
-                return ev.IsAllowed;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(PickingUpAmmo).FullName}\n{exception}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

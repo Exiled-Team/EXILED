@@ -24,40 +24,33 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(Inventory __instance, int i)
         {
-            try
+            if (__instance.itemUniq == i)
+                return;
+
+            int oldItemIndex = __instance.GetItemIndex();
+
+            if (oldItemIndex == -1 && i == -1)
+                return;
+
+            Inventory.SyncItemInfo oldItem = oldItemIndex == -1
+                ? new Inventory.SyncItemInfo() { id = ItemType.None }
+                : __instance.GetItemInHand();
+            Inventory.SyncItemInfo newItem = new Inventory.SyncItemInfo() { id = ItemType.None };
+
+            foreach (Inventory.SyncItemInfo item in __instance.items)
             {
-                if (__instance.itemUniq == i)
-                    return;
-
-                int oldItemIndex = __instance.GetItemIndex();
-
-                if (oldItemIndex == -1 && i == -1)
-                    return;
-
-                Inventory.SyncItemInfo oldItem = oldItemIndex == -1
-                    ? new Inventory.SyncItemInfo() { id = ItemType.None }
-                    : __instance.GetItemInHand();
-                Inventory.SyncItemInfo newItem = new Inventory.SyncItemInfo() { id = ItemType.None };
-
-                foreach (Inventory.SyncItemInfo item in __instance.items)
-                {
-                    if (item.uniq == i)
-                        newItem = item;
-                }
-
-                var ev = new ChangingItemEventArgs(API.Features.Player.Get(__instance.gameObject), oldItem, newItem);
-
-                Player.OnChangingItem(ev);
-
-                oldItemIndex = __instance.GetItemIndex();
-
-                if (oldItemIndex != -1)
-                    __instance.items[oldItemIndex] = ev.OldItem;
+                if (item.uniq == i)
+                    newItem = item;
             }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingItem: {e}\n{e.StackTrace}");
-            }
+
+            var ev = new ChangingItemEventArgs(API.Features.Player.Get(__instance.gameObject), oldItem, newItem);
+
+            Player.OnChangingItem(ev);
+
+            oldItemIndex = __instance.GetItemIndex();
+
+            if (oldItemIndex != -1)
+                __instance.items[oldItemIndex] = ev.OldItem;
         }
     }
 }

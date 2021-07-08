@@ -46,21 +46,14 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void Postfix(ReferenceHub __instance)
         {
-            try
-            {
-                // ReferenceHub is a component that is loaded first
-                if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
-                    return;
+            // ReferenceHub is a component that is loaded first
+            if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
+                return;
 
-                if (PlayerManager.players.Count >= CustomNetworkManager.slots)
-                    MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
+            if (PlayerManager.players.Count >= CustomNetworkManager.slots)
+                MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.SERVER_FULL);
 
-                CallEvent(__instance, out _);
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(Joined).FullName}:\n{exception}");
-            }
+            CallEvent(__instance, out _);
         }
     }
 }

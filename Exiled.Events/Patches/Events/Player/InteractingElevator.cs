@@ -25,41 +25,32 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(PlayerInteract __instance, GameObject elevator)
         {
-            try
-            {
-                if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                    ((__instance._hc.CufferId > 0 || __instance._hc.ForceCuff) && !PlayerInteract.CanDisarmedInteract) || elevator == null)
-                    return false;
-
-                Lift component = elevator.GetComponent<Lift>();
-                if (component == null)
-                    return false;
-
-                foreach (Lift.Elevator elevator2 in component.elevators)
-                {
-                    if (__instance.ChckDis(elevator2.door.transform.position))
-                    {
-                        var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2, component);
-
-                        Handlers.Player.OnInteractingElevator(ev);
-
-                        if (!ev.IsAllowed)
-                            return false;
-
-                        component.UseLift();
-                        __instance.OnInteract();
-                        return false;
-                    }
-                }
-
+            if (!__instance._playerInteractRateLimit.CanExecute(true) ||
+                ((__instance._hc.CufferId > 0 || __instance._hc.ForceCuff) && !PlayerInteract.CanDisarmedInteract) || elevator == null)
                 return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
 
-                return true;
+            Lift component = elevator.GetComponent<Lift>();
+            if (component == null)
+                return false;
+
+            foreach (Lift.Elevator elevator2 in component.elevators)
+            {
+                if (__instance.ChckDis(elevator2.door.transform.position))
+                {
+                    var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2, component);
+
+                    Handlers.Player.OnInteractingElevator(ev);
+
+                    if (!ev.IsAllowed)
+                        return false;
+
+                    component.UseLift();
+                    __instance.OnInteract();
+                    return false;
+                }
             }
+
+            return false;
         }
     }
 }

@@ -24,20 +24,11 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ServerRoles __instance, UserGroup group)
         {
-            try
-            {
-                var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
+            var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
 
-                Player.OnChangingGroup(ev);
+            Player.OnChangingGroup(ev);
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

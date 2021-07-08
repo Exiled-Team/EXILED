@@ -24,42 +24,33 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Intercom __instance, bool player)
         {
-            try
+            if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+                return false;
+
+            var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
+
+            if (player)
             {
-                if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
+                if (!__instance.ServerAllowToSpeak())
                     return false;
 
-                var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
+                Player.OnIntercomSpeaking(ev);
 
-                if (player)
-                {
-                    if (!__instance.ServerAllowToSpeak())
-                        return false;
-
-                    Player.OnIntercomSpeaking(ev);
-
-                    if (ev.IsAllowed)
-                        Intercom.host.RequestTransmission(__instance.gameObject);
-                }
-                else
-                {
-                    if (!(Intercom.host.Networkspeaker == __instance.gameObject))
-                        return false;
-
-                    Player.OnIntercomSpeaking(ev);
-
-                    if (ev.IsAllowed)
-                        Intercom.host.RequestTransmission(null);
-                }
-
-                return false;
+                if (ev.IsAllowed)
+                    Intercom.host.RequestTransmission(__instance.gameObject);
             }
-            catch (Exception e)
+            else
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.IntercomSpeaking: {e}\n{e.StackTrace}");
+                if (!(Intercom.host.Networkspeaker == __instance.gameObject))
+                    return false;
 
-                return true;
+                Player.OnIntercomSpeaking(ev);
+
+                if (ev.IsAllowed)
+                    Intercom.host.RequestTransmission(null);
             }
+
+            return false;
         }
     }
 }

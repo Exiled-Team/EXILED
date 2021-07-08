@@ -25,25 +25,16 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(GameObject player, ref string message)
         {
-            try
-            {
-                if (player == null)
-                    return false;
+            if (player == null)
+                return false;
 
-                var ev = new KickedEventArgs(API.Features.Player.Get(player), message);
+            var ev = new KickedEventArgs(API.Features.Player.Get(player), message);
 
-                Player.OnKicked(ev);
+            Player.OnKicked(ev);
 
-                message = ev.Reason;
+            message = ev.Reason;
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Kicked: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

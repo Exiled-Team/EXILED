@@ -22,25 +22,18 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(ReferenceHub __instance)
         {
-            try
-            {
-                // Means it's the server
-                if (!(Player.Get(__instance) is Player player))
-                    return;
+            // Means it's the server
+            if (!(Player.Get(__instance) is Player player))
+                return;
 
-                Handlers.Player.OnDestroying(new DestroyingEventArgs(player));
+            Handlers.Player.OnDestroying(new DestroyingEventArgs(player));
 
-                Player.Dictionary.Remove(player.GameObject);
-                Player.UnverifiedPlayers.Remove(__instance);
-                Player.IdsCache.Remove(player.Id);
+            Player.Dictionary.Remove(player.GameObject);
+            Player.UnverifiedPlayers.Remove(__instance);
+            Player.IdsCache.Remove(player.Id);
 
-                if (player.UserId != null)
-                    Player.UserIdsCache.Remove(player.UserId);
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(Destroying).FullName}.{nameof(Prefix)}:\n{exception}");
-            }
+            if (player.UserId != null)
+                Player.UserIdsCache.Remove(player.UserId);
         }
     }
 }

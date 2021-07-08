@@ -24,31 +24,22 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ConsumableAndWearableItems __instance)
         {
-            try
-            {
-                if (!__instance._interactRateLimit.CanExecute(true))
-                    return false;
-
-                for (int i = 0; i < __instance.usableItems.Length; ++i)
-                {
-                    if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
-                    {
-                        var ev = new StoppingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
-
-                        Player.OnStoppingMedicalItem(ev);
-
-                        __instance._cancel = ev.IsAllowed;
-                    }
-                }
-
+            if (!__instance._interactRateLimit.CanExecute(true))
                 return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.StoppingMedicalItem: {e}\n{e.StackTrace}");
 
-                return true;
+            for (int i = 0; i < __instance.usableItems.Length; ++i)
+            {
+                if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem && __instance.usableItems[i].cancelableTime > 0f)
+                {
+                    var ev = new StoppingMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+
+                    Player.OnStoppingMedicalItem(ev);
+
+                    __instance._cancel = ev.IsAllowed;
+                }
             }
+
+            return false;
         }
     }
 }

@@ -24,34 +24,25 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Handcuffs __instance)
         {
-            try
+            foreach (API.Features.Player target in API.Features.Player.List)
             {
-                foreach (API.Features.Player target in API.Features.Player.List)
+                if (target == null)
+                    continue;
+
+                if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
                 {
-                    if (target == null)
-                        continue;
+                    var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
 
-                    if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
-                    {
-                        var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
+                    Player.OnRemovingHandcuffs(ev);
 
-                        Player.OnRemovingHandcuffs(ev);
+                    if (ev.IsAllowed)
+                        target.CufferId = -1;
 
-                        if (ev.IsAllowed)
-                            target.CufferId = -1;
-
-                        break;
-                    }
+                    break;
                 }
-
-                return false;
             }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.RemovingHandcuffs: {e}\n{e.StackTrace}");
 
-                return true;
-            }
+            return false;
         }
     }
 }

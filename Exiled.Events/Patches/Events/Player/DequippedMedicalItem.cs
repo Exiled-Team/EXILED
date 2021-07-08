@@ -24,18 +24,11 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static void Prefix(ConsumableAndWearableItems __instance, ConsumableAndWearableItems.HealAnimation healAnimation, int mid)
         {
-            try
+            if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
             {
-                if (healAnimation == ConsumableAndWearableItems.HealAnimation.DequipMedicalItem)
-                {
-                    var ev = new DequippedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
+                var ev = new DequippedMedicalItemEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.usableItems[mid].inventoryID);
 
-                    Player.OnMedicalItemDequipped(ev);
-                }
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"{typeof(DequippedMedicalItem).FullName}:\n{e}");
+                Player.OnMedicalItemDequipped(ev);
             }
         }
     }

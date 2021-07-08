@@ -24,33 +24,25 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(CharacterClassManager __instance, bool value)
         {
-            try
+            ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+
+            Player.OnChangingMuteStatus(ev);
+
+            if (!ev.IsAllowed)
             {
-                ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
-
-                Player.OnChangingMuteStatus(ev);
-
-                if (!ev.IsAllowed)
+                if (value == true)
                 {
-                    if (value == true)
-                    {
-                        MuteHandler.RevokePersistentMute(__instance.UserId);
-                    }
-                    else
-                    {
-                        MuteHandler.IssuePersistentMute(__instance.UserId);
-                    }
-
-                    return false;
+                    MuteHandler.RevokePersistentMute(__instance.UserId);
+                }
+                else
+                {
+                    MuteHandler.IssuePersistentMute(__instance.UserId);
                 }
 
-                return true;
+                return false;
             }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"{typeof(ChangingMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
-                return true;
-            }
+
+            return true;
         }
     }
 }

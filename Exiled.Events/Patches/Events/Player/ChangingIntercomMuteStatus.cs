@@ -24,33 +24,25 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(CharacterClassManager __instance, bool value)
         {
-            try
+            ChangingIntercomMuteStatusEventArgs ev = new ChangingIntercomMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+
+            Player.OnChangingIntercomMuteStatus(ev);
+
+            if (!ev.IsAllowed)
             {
-                ChangingIntercomMuteStatusEventArgs ev = new ChangingIntercomMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
-
-                Player.OnChangingIntercomMuteStatus(ev);
-
-                if (!ev.IsAllowed)
+                if (value == true)
                 {
-                    if (value == true)
-                    {
-                        MuteHandler.RevokePersistentMute("ICOM-" + __instance.UserId);
-                    }
-                    else
-                    {
-                        MuteHandler.IssuePersistentMute("ICOM-" + __instance.UserId);
-                    }
-
-                    return false;
+                    MuteHandler.RevokePersistentMute("ICOM-" + __instance.UserId);
+                }
+                else
+                {
+                    MuteHandler.IssuePersistentMute("ICOM-" + __instance.UserId);
                 }
 
-                return true;
+                return false;
             }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"{typeof(ChangingIntercomMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
-                return true;
-            }
+
+            return true;
         }
     }
 }

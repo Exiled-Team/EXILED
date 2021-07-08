@@ -27,24 +27,15 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ref GrenadeManager __instance, ref int id, ref bool slowThrow, ref double time)
         {
-            try
-            {
-                var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, (GrenadeType)id, slowThrow, time);
+            var ev = new ThrowingGrenadeEventArgs(API.Features.Player.Get(__instance.gameObject), __instance, (GrenadeType)id, slowThrow, time);
 
-                Player.OnThrowingGrenade(ev);
+            Player.OnThrowingGrenade(ev);
 
-                id = (int)ev.Type;
-                slowThrow = ev.IsSlow;
-                time = ev.FuseTime;
+            id = (int)ev.Type;
+            slowThrow = ev.IsSlow;
+            time = ev.FuseTime;
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ThrowingGrenade: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }
