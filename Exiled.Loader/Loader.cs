@@ -202,7 +202,6 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"Error while loading an assembly at {path}! {exception}");
-                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return null;
@@ -364,10 +363,10 @@ namespace Exiled.Loader
 
                     return true;
                 }
-                else if (requiredVersion < actualVersion && !Config.ShouldLoadOutdatedPlugins)
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version})! " +
-                              $"Its Required Major version is {requiredVersion}, but excepted {actualVersion}. ");
+                    Log.Error($"{plugin.Name} requires EXILED version {requiredVersion}, however your current version ({actualVersion}) is significantly newer. " +
+                              $"This may cause issues with the plugin, so it will not be loaded. To change this, set should_load_outdated_plugins to true.");
 
                     return true;
                 }
@@ -408,7 +407,6 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while loading dependencies! {exception}");
-                ExceptionHandler.TrySendingHelpMessage(exception);
             }
         }
     }

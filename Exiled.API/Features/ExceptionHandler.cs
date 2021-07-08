@@ -13,7 +13,7 @@ namespace Exiled.API.Features
     using YamlDotNet.Core;
 
     /// <summary>
-    /// .
+    /// Handles exceptions that may occur while using EXILED or plugins.
     /// </summary>
     public static class ExceptionHandler
     {
@@ -29,7 +29,7 @@ namespace Exiled.API.Features
             switch (exception)
             {
                 case MissingMethodException _:
-                    message = "This error can be fixed by updating Exiled or plugin to the latest version.";
+                    message = "This error usually means EXILED or the plugin causing it are outdated, try updating.";
                     break;
 
                 case FileNotFoundException fileNotFound:
@@ -37,11 +37,11 @@ namespace Exiled.API.Features
                     break;
 
                 case YamlException _:
-                    message = $"Check the line stated above. If you don't know what is the issue parse the .yml file through YAML Validator for example through this one: https://codebeautify.org/yaml-validator";
+                    message = $"Check the line stated above. If you don't know what is the issue parse the .yml file through a YAML Validator.";
                     break;
 
                 case BadImageFormatException _:
-                    message = $"The one or more .dll files are corrupt. Please reinstall them.";
+                    message = "The dll file stated above is likely corrupted, this can usually be fixed by re-downloading it.";
                     break;
 
                 default:
