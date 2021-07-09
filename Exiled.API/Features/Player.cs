@@ -382,7 +382,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is cuffed.
         /// </summary>
-        public bool IsCuffed => CufferId != -1;
+        public bool IsCuffed => CufferId != -1 || ReferenceHub.handcuffs.ForceCuff;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
