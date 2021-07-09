@@ -31,45 +31,36 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(FlashGrenade __instance)
         {
-            try
-            {
-                Dictionary<Player, float> players = new Dictionary<Player, float>();
+            Dictionary<Player, float> players = new Dictionary<Player, float>();
 
-                foreach (GameObject gameObject in PlayerManager.players)
+            foreach (GameObject gameObject in PlayerManager.players)
+            {
+                Vector3 position = __instance.transform.position;
+                ReferenceHub hub = ReferenceHub.GetHub(gameObject);
+                Flashed effect = hub.playerEffectsController.GetEffect<Flashed>();
+                Deafened effect2 = hub.playerEffectsController.GetEffect<Deafened>();
+                if (effect == null || __instance.thrower == null ||
+                    (!__instance.Network_friendlyFlash && !effect.Flashable(
+                        ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance._ignoredLayers)))
+                    continue;
+
+                float num = __instance.powerOverDistance.Evaluate(
+                                Vector3.Distance(gameObject.transform.position, position) / ((position.y > 900f)
+                                    ? __instance.distanceMultiplierSurface
+                                    : __instance.distanceMultiplierFacility)) *
+                            __instance.powerOverDot.Evaluate(Vector3.Dot(hub.PlayerCameraReference.forward, (hub.PlayerCameraReference.position - position).normalized));
+                byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
+                if (b >= effect.Intensity && num > 0f)
                 {
-                    Vector3 position = __instance.transform.position;
-                    ReferenceHub hub = ReferenceHub.GetHub(gameObject);
-                    Flashed effect = hub.playerEffectsController.GetEffect<Flashed>();
-                    Deafened effect2 = hub.playerEffectsController.GetEffect<Deafened>();
-                    if (effect == null || __instance.thrower == null ||
-                        (!__instance.Network_friendlyFlash && !effect.Flashable(
-                            ReferenceHub.GetHub(__instance.thrower.gameObject), position, __instance._ignoredLayers)))
-                        continue;
-
-                    float num = __instance.powerOverDistance.Evaluate(
-                                    Vector3.Distance(gameObject.transform.position, position) / ((position.y > 900f)
-                                        ? __instance.distanceMultiplierSurface
-                                        : __instance.distanceMultiplierFacility)) *
-                                __instance.powerOverDot.Evaluate(Vector3.Dot(hub.PlayerCameraReference.forward, (hub.PlayerCameraReference.position - position).normalized));
-                    byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(num * 10f * __instance.maximumDuration), 1, 255);
-                    if (b >= effect.Intensity && num > 0f)
-                    {
-                        players.Add(Player.Get(gameObject), num);
-                    }
+                    players.Add(Player.Get(gameObject), num);
                 }
-
-                ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.throwerGameObject), players, false, __instance.gameObject);
-
-                Handlers.Map.OnExplodingGrenade(ev);
-
-                return ev.IsAllowed;
             }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(ExplodingFlashGrenade).FullName}:\n{exception}");
 
-                return true;
-            }
+            ExplodingGrenadeEventArgs ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.throwerGameObject), players, false, __instance.gameObject);
+
+            Handlers.Map.OnExplodingGrenade(ev);
+
+            return ev.IsAllowed;
         }
     }
 }

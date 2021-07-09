@@ -139,6 +139,7 @@ namespace Exiled.Events
             catch (Exception exception)
             {
                 Log.Error($"Patching failed!\n{exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
         }
 
@@ -184,6 +185,7 @@ namespace Exiled.Events
             catch (Exception exception)
             {
                 Log.Error($"Patching by attributes failed!\n{exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
         }
 
@@ -198,6 +200,7 @@ namespace Exiled.Events
             catch (Exception e)
             {
                 Log.Error($"Patching in the inner types failed!\n{e}");
+                ExceptionHandler.TrySendingHelpMessage(e);
             }
         }
 

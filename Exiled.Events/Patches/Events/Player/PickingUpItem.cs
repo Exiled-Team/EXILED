@@ -26,24 +26,15 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ItemSearchCompletor __instance)
         {
-            try
-            {
-                var ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+            var ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
 
-                Handlers.Player.OnPickingUpItem(ev);
+            Handlers.Player.OnPickingUpItem(ev);
 
-                // Allow future pick up of this item
-                if (!ev.IsAllowed)
-                    __instance.TargetPickup.InUse = false;
+            // Allow future pick up of this item
+            if (!ev.IsAllowed)
+                __instance.TargetPickup.InUse = false;
 
-                return ev.IsAllowed;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(PickingUpItem).FullName}\n{exception}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

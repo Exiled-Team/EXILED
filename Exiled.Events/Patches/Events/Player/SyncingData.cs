@@ -26,23 +26,14 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(AnimationController __instance, byte state, Vector2 v2)
         {
-            try
-            {
-                if (!__instance._mSyncRateLimit.CanExecute(false))
-                    return false;
+            if (!__instance._mSyncRateLimit.CanExecute(false))
+                return false;
 
-                var ev = new SyncingDataEventArgs(API.Features.Player.Get(__instance.gameObject), v2, state);
+            var ev = new SyncingDataEventArgs(API.Features.Player.Get(__instance.gameObject), v2, state);
 
-                Player.OnSyncingData(ev);
+            Player.OnSyncingData(ev);
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SyncingData: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

@@ -82,7 +82,8 @@ namespace Exiled.Loader
                         }
                         catch (YamlException yamlException)
                         {
-                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException}");
+                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException.Message}");
+                            ExceptionHandler.TrySendingHelpMessage(yamlException);
 
                             deserializedConfigs.Add(plugin.Prefix, plugin.Config);
                         }
@@ -95,7 +96,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading configs! {exception}");
+                Log.Error($"An error has occurred while loading configs! {exception.Message}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
 
                 return null;
             }
@@ -123,6 +125,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while saving configs to {Paths.Config} path: {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
 
                 return false;
             }
@@ -148,7 +151,8 @@ namespace Exiled.Loader
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"An error has occurred while serializing configs: {yamlException}");
+                Log.Error($"An error has occurred while serializing configs: {yamlException.Message}");
+                ExceptionHandler.TrySendingHelpMessage(yamlException);
 
                 return false;
             }
@@ -168,6 +172,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"An error has occurred while reading configs from {Paths.Config} path: {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return string.Empty;

@@ -192,6 +192,7 @@ namespace Exiled.Updater
             catch (Exception ex)
             {
                 Log.Error($"{nameof(FindUpdate)} threw an exception:\n{ex}");
+                ExceptionHandler.TrySendingHelpMessage(ex);
             }
 
             newVersion = default;

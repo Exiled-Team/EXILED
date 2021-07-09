@@ -26,39 +26,30 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(ConsumableAndWearableItems __instance)
         {
-            try
-            {
-                if (!__instance._medicalItemRateLimit.CanExecute(true))
-                    return false;
-
-                __instance._cancel = false;
-                if (__instance.cooldown > 0f)
-                    return false;
-
-                for (int i = 0; i < __instance.usableItems.Length; ++i)
-                {
-                    if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem &&
-                        __instance.usableCooldowns[i] <= 0.0)
-                    {
-                        var ev = new UsingMedicalItemEventArgs(Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
-
-                        Handlers.Player.OnUsingMedicalItem(ev);
-
-                        __instance.cooldown = ev.Cooldown;
-
-                        if (ev.IsAllowed)
-                            Timing.RunCoroutine(__instance.UseMedicalItem(i), Segment.FixedUpdate);
-                    }
-                }
-
+            if (!__instance._medicalItemRateLimit.CanExecute(true))
                 return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"Exiled.Events.Patches.Events.Player.UsingMedicalItem: {exception}\n{exception.StackTrace}");
 
-                return true;
+            __instance._cancel = false;
+            if (__instance.cooldown > 0f)
+                return false;
+
+            for (int i = 0; i < __instance.usableItems.Length; ++i)
+            {
+                if (__instance.usableItems[i].inventoryID == __instance._hub.inventory.curItem &&
+                    __instance.usableCooldowns[i] <= 0.0)
+                {
+                    var ev = new UsingMedicalItemEventArgs(Player.Get(__instance.gameObject), __instance._hub.inventory.curItem, __instance.usableItems[i].animationDuration);
+
+                    Handlers.Player.OnUsingMedicalItem(ev);
+
+                    __instance.cooldown = ev.Cooldown;
+
+                    if (ev.IsAllowed)
+                        Timing.RunCoroutine(__instance.UseMedicalItem(i), Segment.FixedUpdate);
+                }
             }
+
+            return false;
         }
     }
 }

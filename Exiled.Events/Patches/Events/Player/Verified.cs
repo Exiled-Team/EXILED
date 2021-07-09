@@ -56,28 +56,21 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void CallEvent(ServerRoles instance)
         {
-            try
-            {
-                Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
+            Player.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
 
-                // Means the player connected before WaitingForPlayers event is fired
-                // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
-                // Blame NorthWood
-                if (player == null)
-                    Joined.CallEvent(instance._hub, out player);
+            // Means the player connected before WaitingForPlayers event is fired
+            // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
+            // Blame NorthWood
+            if (player == null)
+                Joined.CallEvent(instance._hub, out player);
 
-                PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
-                player.IsVerified = true;
-                player.RawUserId = player.UserId.GetRawUserId();
+            PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
+            player.IsVerified = true;
+            player.RawUserId = player.UserId.GetRawUserId();
 
-                Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
+            Log.SendRaw($"Player {player.Nickname} ({player.UserId}) ({player.Id}) connected with the IP: {player.IPAddress}", ConsoleColor.Green);
 
-                PlayerEvents.OnVerified(new VerifiedEventArgs(player));
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"{typeof(Verified).FullName}.{nameof(CallEvent)}:\n{ex}");
-            }
+            PlayerEvents.OnVerified(new VerifiedEventArgs(player));
         }
     }
 }

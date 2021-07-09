@@ -24,32 +24,23 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(WeaponManager __instance, bool animationOnly)
         {
-            try
-            {
-                if (!__instance._iawRateLimit.CanExecute(false))
-                    return false;
+            if (!__instance._iawRateLimit.CanExecute(false))
+                return false;
 
-                int itemIndex = __instance._hub.inventory.GetItemIndex();
+            int itemIndex = __instance._hub.inventory.GetItemIndex();
 
-                if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count ||
-                    (__instance.curWeapon < 0 || __instance._hub.inventory.curItem !=
-                        __instance.weapons[__instance.curWeapon].inventoryID) ||
-                    __instance._hub.inventory.items[itemIndex].durability >=
-                    (double)__instance.weapons[__instance.curWeapon].maxAmmo)
-                    return false;
+            if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count ||
+                (__instance.curWeapon < 0 || __instance._hub.inventory.curItem !=
+                    __instance.weapons[__instance.curWeapon].inventoryID) ||
+                __instance._hub.inventory.items[itemIndex].durability >=
+                (double)__instance.weapons[__instance.curWeapon].maxAmmo)
+                return false;
 
-                var ev = new ReloadingWeaponEventArgs(API.Features.Player.Get(__instance.gameObject), animationOnly);
+            var ev = new ReloadingWeaponEventArgs(API.Features.Player.Get(__instance.gameObject), animationOnly);
 
-                Player.OnReloadingWeapon(ev);
+            Player.OnReloadingWeapon(ev);
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ReloadingWeapon: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            return ev.IsAllowed;
         }
     }
 }

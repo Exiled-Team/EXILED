@@ -263,6 +263,7 @@ namespace Exiled.Loader
             catch (Exception exception)
             {
                 Log.Error($"Error while initializing plugin {assembly.GetName().Name} (at {assembly.Location})! {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return null;
@@ -286,6 +287,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while enabling: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
         }
@@ -310,6 +312,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while reloading: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
 
@@ -338,6 +341,7 @@ namespace Exiled.Loader
                 catch (Exception exception)
                 {
                     Log.Error($"Plugin \"{plugin.Name}\" threw an exception while disabling: {exception}");
+                    ExceptionHandler.TrySendingHelpMessage(exception);
                 }
             }
         }
@@ -347,23 +351,22 @@ namespace Exiled.Loader
             var requiredVersion = plugin.RequiredExiledVersion;
             var actualVersion = Version;
 
-            // Check Major version
-            // It's increased when an incompatible API change was made
-            if (requiredVersion.Major != actualVersion.Major)
+            // Check the version
+            if (requiredVersion != actualVersion)
             {
-                // Assume that if the Required Major version is greater than the Actual Major version,
+                // Assume that if the Required version is greater than the Actual version,
                 // Exiled is outdated
-                if (requiredVersion.Major > actualVersion.Major)
+                if (requiredVersion > actualVersion)
                 {
-                    Log.Error($"You're running an older version of Exiled ({Version.ToString(3)})! {plugin.Name} won't be loaded! " +
-                              $"Required version to load it: {plugin.RequiredExiledVersion.ToString(3)}");
+                    Log.Error($"You're running an older version of Exiled ({Version})! {plugin.Name} won't be loaded! " +
+                              $"Required version to load it: {plugin.RequiredExiledVersion}");
 
                     return true;
                 }
                 else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+                    Log.Error($"{plugin.Name} requires EXILED version {requiredVersion}, however your current version ({actualVersion}) is significantly newer. " +
+                              $"This may cause issues with the plugin, so it will not be loaded. To change this, set should_load_outdated_plugins to true.");
 
                     return true;
                 }

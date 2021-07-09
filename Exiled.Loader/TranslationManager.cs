@@ -70,7 +70,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while loading translations!\n{exception}");
+                Log.Error($"An error has occurred while loading translations! {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
 
                 return null;
             }
@@ -97,7 +98,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path:\n{exception}");
+                Log.Error($"An error has occurred while saving translations to {Paths.Translations} path: {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
 
                 return false;
             }
@@ -119,7 +121,8 @@ namespace Exiled.Loader
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"An error has occurred while serializing translations:\n{yamlException}");
+                Log.Error($"An error has occurred while serializing translations: {yamlException.Message}");
+                ExceptionHandler.TrySendingHelpMessage(yamlException);
 
                 return false;
             }
@@ -138,7 +141,8 @@ namespace Exiled.Loader
             }
             catch (Exception exception)
             {
-                Log.Error($"An error has occurred while reading translations from {Paths.Translations} path:\n{exception}");
+                Log.Error($"An error has occurred while reading translations from {Paths.Translations} path: {exception}");
+                ExceptionHandler.TrySendingHelpMessage(exception);
             }
 
             return string.Empty;
