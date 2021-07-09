@@ -17,6 +17,8 @@ namespace Exiled.Events.Commands.Show
 
     using NorthwoodLib.Pools;
 
+    using RemoteAdmin;
+
     /// <summary>
     /// The command to show all plugins.
     /// </summary>
@@ -35,7 +37,7 @@ namespace Exiled.Events.Commands.Show
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             const string perm = "ee.showplugins";
-            if (!sender.CheckPermission(perm))
+            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor.Roles.RaEverywhere))
             {
                 response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
                 return false;
