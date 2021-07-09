@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -128,6 +126,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
+        /// Invoked after changing a player's role.
+        /// </summary>
+        public static event CustomEventHandler<ChangedRoleEventArgs> ChangedRole;
+
+        /// <summary>
         /// Invoked before throwing a grenade.
         /// </summary>
         public static event CustomEventHandler<ThrowingGrenadeEventArgs> ThrowingGrenade;
@@ -141,6 +144,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after an item has been dropped.
         /// </summary>
         public static event CustomEventHandler<ItemDroppedEventArgs> ItemDropped;
+
+        /// <summary>
+        /// Invoked before picking up an ammo.
+        /// </summary>
+        public static event CustomEventHandler<PickingUpAmmoEventArgs> PickingUpAmmo;
 
         /// <summary>
         /// Invoked before picking up an item.
@@ -293,6 +301,26 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingIntercomMuteStatusEventArgs> ChangingIntercomMuteStatus;
 
         /// <summary>
+        /// Invoked before a user's radio battery charge is changed.
+        /// </summary>
+        public static event CustomEventHandler<UsingRadioBatteryEventArgs> UsingRadioBattery;
+
+        /// <summary>
+        /// Invoked before a user's radio preset is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingRadioPresetEventArgs> ChangingRadioPreset;
+
+        /// <summary>
+        /// Invoked before a player's MicroHID state is changed.
+        /// </summary>
+        public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
+
+        /// <summary>
+        /// Invoked before a player's MicroHID energy is changed.
+        /// </summary>
+        public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -413,6 +441,12 @@ namespace Exiled.Events.Handlers
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>
+        /// Called after changing a player's role.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
+        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
         /// <param name="ev">The <see cref="ThrowingGrenadeEventArgs"/> instance.</param>
@@ -429,6 +463,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ItemDroppedEventArgs"/> instance.</param>
         public static void OnItemDropped(ItemDroppedEventArgs ev) => ItemDropped.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player picks up an ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpAmmoEventArgs"/> instance.</param>
+        public static void OnPickingUpAmmo(PickingUpAmmoEventArgs ev) => PickingUpAmmo.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a user picks up an item.
@@ -609,5 +649,29 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntercomMuteStatusEventArgs"/> instance.</param>
         public static void OnChangingIntercomMuteStatus(ChangingIntercomMuteStatusEventArgs ev) => ChangingIntercomMuteStatus.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a user's radio battery charge is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingRadioBatteryEventArgs"/> instance.</param>
+        public static void OnUsingRadioBattery(UsingRadioBatteryEventArgs ev) => UsingRadioBattery.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a user's radio preset is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
+        public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's MicroHID state is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
+        public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player's MicroHID energy is changed.
+        /// </summary>
+        /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
+        public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
     }
 }

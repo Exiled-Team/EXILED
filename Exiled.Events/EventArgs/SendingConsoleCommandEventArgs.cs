@@ -78,6 +78,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether the event can be executed or not.
         /// </summary>
+        [Obsolete("Use IsAllowed instead", true)]
         public bool Allow
         {
             get => IsAllowed;

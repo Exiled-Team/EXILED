@@ -17,8 +17,6 @@ namespace Exiled.API.Features
 
     using LightContainmentZoneDecontamination;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -118,6 +116,19 @@ namespace Exiled.API.Features
         /// Gets the current state of the intercom.
         /// </summary>
         public static Intercom.State IntercomState => Intercom.host.IntercomState;
+
+        /// <summary>
+        /// Gets or sets the current seed of the map.
+        /// </summary>
+        public static int Seed
+        {
+            get => MapGeneration.SeedSynchronizer.Seed;
+            set
+            {
+                if (!MapGeneration.SeedSynchronizer.MapGenerated)
+                    MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
@@ -403,11 +414,10 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
         /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
+        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).", true)]
         public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
         {
-            GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(roleType);
-
-            return randomPosition == null ? Vector3.zero : randomPosition.transform.position;
+            return Extensions.Role.GetRandomSpawnPoint(roleType);
         }
 
         /// <summary>

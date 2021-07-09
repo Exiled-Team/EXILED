@@ -8,8 +8,15 @@
 namespace Exiled.CustomItems
 {
     using System;
+    using System.Collections.Generic;
+
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.CustomItems.API.Features;
+
     using HarmonyLib;
+
+    using MEC;
 
     /// <summary>
     /// Handles all CustomItem API.
@@ -19,6 +26,8 @@ namespace Exiled.CustomItems
         private static readonly CustomItems Singleton = new CustomItems();
 
         private RoundHandler roundHandler;
+        private ServerHandler serverHandler;
+        private PlayerHandler playerHandler;
         private Harmony harmony;
 
         private CustomItems()
@@ -34,8 +43,14 @@ namespace Exiled.CustomItems
         public override void OnEnabled()
         {
             roundHandler = new RoundHandler();
+            serverHandler = new ServerHandler();
+            playerHandler = new PlayerHandler();
 
             Events.Handlers.Server.RoundStarted += roundHandler.OnRoundStarted;
+            Events.Handlers.Server.SendingRemoteAdminCommand += serverHandler.OnRemoteAdminCommand;
+
+            Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
+
             harmony = new Harmony($"com.{nameof(CustomItems)}.galaxy119-{DateTime.Now.Ticks}");
             harmony.PatchAll();
 
@@ -46,10 +61,15 @@ namespace Exiled.CustomItems
         public override void OnDisabled()
         {
             Events.Handlers.Server.RoundStarted -= roundHandler.OnRoundStarted;
+            Events.Handlers.Server.SendingRemoteAdminCommand -= serverHandler.OnRemoteAdminCommand;
+
+            Events.Handlers.Player.ChangingRole -= playerHandler.OnChangingRole;
+
             harmony.UnpatchAll();
 
             harmony = null;
             roundHandler = null;
+            serverHandler = null;
 
             base.OnDisabled();
         }

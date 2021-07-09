@@ -20,6 +20,8 @@ namespace Exiled.API.Extensions
 
     using Respawning;
 
+    using UnityEngine;
+
     /// <summary>
     /// A set of extensions for <see cref="Mirror"/> Networking.
     /// </summary>
@@ -70,7 +72,7 @@ namespace Exiled.API.Extensions
                     {
                         var bytecodes = property.GetSetMethod().GetMethodBody().GetILAsByteArray();
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
-                             SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -128,7 +130,7 @@ namespace Exiled.API.Extensions
         /// <param name="player">Only this player can see info.</param>
         /// <param name="target">Target to set info.</param>
         /// <param name="info">Setting info.</param>
-        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => SendFakeSyncVar(player, target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
@@ -153,6 +155,34 @@ namespace Exiled.API.Extensions
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.First().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise);
 
         /// <summary>
+        /// Changes the <see cref="Player"/>'s walking speed. Negative values will invert the player's controls.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="multiplier">Speed multiplier.</param>
+        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        public static void ChangeWalkingSpeed(this Player player, float multiplier, bool useCap = true)
+        {
+            if (useCap)
+                multiplier = Mathf.Clamp(multiplier, -2f, 2f);
+
+            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanWalkSpeedMultiplier), multiplier);
+        }
+
+        /// <summary>
+        /// Changes the <see cref="Player"/>'s running speed. Negative values will invert the player's controls.
+        /// </summary>
+        /// <param name="player">Player to change.</param>
+        /// <param name="multiplier">Speed multiplier.</param>
+        /// <param name="useCap">Allow <paramref name="multiplier"></paramref> values to be larger than safe amount.</param>
+        public static void ChangeRunningSpeed(this Player player, float multiplier, bool useCap = true)
+        {
+            if (useCap)
+                multiplier = Mathf.Clamp(multiplier, -1.4f, 1.4f);
+
+            SendFakeSyncVar(player, ServerConfigSynchronizer.Singleton.netIdentity, typeof(ServerConfigSynchronizer), nameof(ServerConfigSynchronizer.Singleton.NetworkHumanSprintSpeedMultiplier), multiplier);
+        }
+
+        /// <summary>
         /// Send fake values to client's <see cref="Mirror.SyncVarAttribute"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
@@ -160,7 +190,7 @@ namespace Exiled.API.Extensions
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
         /// <param name="value">Value of send to target.</param>
-        public static void SendFakeSyncVar(Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
+        public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
             Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
             {

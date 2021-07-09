@@ -42,6 +42,35 @@ namespace Exiled.CustomItems.API
         };
 
         /// <summary>
+        /// Resets the player's inventory to the provided list of items and/or customitems names, clearing any items it already possess.
+        /// </summary>
+        /// <param name="player">The player to which items will be given.</param>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
+        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
+        {
+            foreach (Inventory.SyncItemInfo item in player.Inventory.items)
+            {
+                if (CustomItem.TryGet(item, out CustomItem customItem))
+                    customItem.InsideInventories.Remove(item.uniq);
+            }
+
+            player.ClearInventory();
+
+            foreach (string item in newItems)
+            {
+                if (Enum.TryParse(item, true, out ItemType parsedItem))
+                {
+                    player.AddItem(parsedItem);
+                }
+                else if (!CustomItem.TryGive(player, item, displayMessage))
+                {
+                    Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.", CustomItems.Instance.Config.Debug);
+                }
+            }
+        }
+
+        /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
@@ -76,6 +105,7 @@ namespace Exiled.CustomItems.API
         /// </summary>
         /// <param name="vector3">The <see cref="Vector3"/> to be converted.</param>
         /// <returns>Returns the <see cref="Vector"/>.</returns>
+        [Obsolete("Use UnityEngine.Vector3 instead of Exiled.CustomItems.API.Features.Vector", false)]
         public static Vector ToVector(this Vector3 vector3) => new Vector(vector3.x, vector3.y, vector3.z);
 
         /// <summary>

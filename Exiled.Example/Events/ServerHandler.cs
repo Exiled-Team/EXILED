@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="Server.cs" company="Exiled Team">
+// <copyright file="ServerHandler.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Example.Handlers
+namespace Exiled.Example.Events
 {
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -14,15 +14,15 @@ namespace Exiled.Example.Handlers
     /// <summary>
     /// Handles server-related events.
     /// </summary>
-    internal sealed class Server
+    internal sealed class ServerHandler
     {
-        /// <inheritdoc cref="Events.Handlers.Server.OnWaitingForPlayers"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnWaitingForPlayers"/>
         public void OnWaitingForPlayers()
         {
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
-        /// <inheritdoc cref="Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
+        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
         public void OnEndingRound(EndingRoundEventArgs ev)
         {
             Log.Debug($"The round is ending, fetching leading team...");

@@ -77,7 +77,7 @@ namespace Exiled.CreditTags
 
         internal void MakeRequest(string userId, Action<ThreadSafeRequest> errorHandler, Action<string> successHandler, GameObject issuer)
         {
-            ThreadSafeRequest.Go($"{Url}?userid={userId.GetRawUserId()}", errorHandler, successHandler, issuer);
+            ThreadSafeRequest.Go($"{Url}?userid={userId.GetHashedUserId()}", errorHandler, successHandler, issuer);
         }
 
         // returns true if the player was in the cache
@@ -121,28 +121,56 @@ namespace Exiled.CreditTags
 
             void ShowRank(RankType rank)
             {
+                bool canReceiveCreditBadge = force ||
+                                             (((string.IsNullOrEmpty(player.RankName) &&
+                                                string.IsNullOrEmpty(player.ReferenceHub.serverRoles.HiddenBadge)) ||
+                                               Config.BadgeOverride) && player.GlobalBadge == null);
+                bool canReceiveCreditCustomInfo =
+                    string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
+
                 if (Ranks.TryGetValue(rank, out var value))
                 {
                     switch (Config.Mode)
                     {
                         case InfoSide.Badge:
-                            if (force || ((string.IsNullOrEmpty(player.RankName) || Config.BadgeOverride) && player.GlobalBadge == null))
+                            if (canReceiveCreditBadge)
                             {
-                                player.RankName = value.Name;
-                                player.RankColor = value.Color;
+                              SetCreditBadge(player, value);
                             }
 
                             break;
                         case InfoSide.CustomPlayerInfo:
-                            if (string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride)
+                            if (canReceiveCreditCustomInfo)
                             {
-                                player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
+                                SetCreditCustomInfo(player, value);
+                            }
+
+                            break;
+                        case InfoSide.FirstAvailable:
+                            if (canReceiveCreditBadge)
+                            {
+                                SetCreditBadge(player, value);
+                            }
+                            else if (canReceiveCreditCustomInfo)
+                            {
+                                SetCreditCustomInfo(player, value);
                             }
 
                             break;
                     }
                 }
             }
+        }
+
+        private void SetCreditBadge(Player player, Rank value)
+        {
+            player.RankName = value.Name;
+            player.RankColor = value.Color;
+        }
+
+        private void SetCreditCustomInfo(Player player, Rank value)
+        {
+            player.CustomInfo = $"<color=#{value.HexValue}>{value.Name}</color>";
         }
 
         private void RefreshHandler() => handler = new CreditsHandler();

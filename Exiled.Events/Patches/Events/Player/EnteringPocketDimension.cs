@@ -7,134 +7,109 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+
     using Exiled.API.Features;
-
-#pragma warning disable SA1313
-    using System;
-
-    using CustomPlayerEffects;
-
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.CallCmdMovePlayer(GameObject, int)"/>.
-    /// Adds the <see cref="Exiled.Events.Handlers.Player.EnteringPocketDimension"/> event.
+    /// Adds the <see cref="Handlers.Player.EnteringPocketDimension"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
     internal static class EnteringPocketDimension
     {
-        private static bool Prefix(Scp106PlayerScript __instance, GameObject ply, int t)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            var offset = -11;
+
+            // Search for the last "newobj".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
+
+            // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
+            var ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
+
+            // Define the return label and add it to the last "ret" instruction.
+            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+
+            // var ev = new EnteringPocketDimensionEventArgs(Player.Get(taker), Vector3.down * 1998.5f, Player.Get(this.gameObject), true);
+            //
+            // Handlers.Player.OnEnteringPocketDimension(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._iawRateLimit.CanExecute(true) || ply == null)
-                {
-                    return false;
-                }
+                // Player.Get(ply)
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                ReferenceHub hub = ReferenceHub.GetHub(ply);
-                CharacterClassManager ccm = hub != null ? hub.characterClassManager : null;
+                // Vector3.down * 1998.5f
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.down))),
+                new CodeInstruction(OpCodes.Ldc_R4, 1998.5f),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Vector3), "op_Multiply", new[] { typeof(Vector3), typeof(float) })),
 
-                if (ccm == null)
-                {
-                    return false;
-                }
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                if (!ServerTime.CheckSynchronization(t) || !__instance.iAm106 ||
-                    Vector3.Distance(hub.playerMovementSync.RealModelPosition, ply.transform.position) >= 3f ||
-                    !ccm.IsHuman() || ccm.GodMode || ccm.CurRole.team == Team.SCP)
-                {
-                    return false;
-                }
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                Vector3 position = ply.transform.position;
-                float num1 = Vector3.Distance(__instance._hub.playerMovementSync.RealModelPosition, position);
-                float num2 = Math.Abs(__instance._hub.playerMovementSync.RealModelPosition.y - position.y);
-                if ((num1 >= 1.8179999589920044 && num2 < 1.0199999809265137) ||
-                    (num1 >= 2.0999999046325684 && num2 < 1.9500000476837158) ||
-                    ((num1 >= 2.6500000953674316 && num2 < 2.200000047683716) ||
-                     (num1 >= 3.200000047683716 && num2 < 3.0)) || num1 >= 3.640000104904175)
-                {
-                    __instance._hub.characterClassManager.TargetConsolePrint(__instance.connectionToClient, $"106 MovePlayer command rejected - too big distance (code: T1). Distance: {num1}, Y Diff: {num2}.", "gray");
-                }
-                else if (Physics.Linecast(__instance._hub.playerMovementSync.RealModelPosition, ply.transform.position, __instance._hub.weaponManager.raycastServerMask))
-                {
-                    __instance._hub.characterClassManager.TargetConsolePrint(__instance.connectionToClient, $"106 MovePlayer command rejected - collider found between you and the target (code: T2). Distance: {num1}, Y Diff: {num2}.", "gray");
-                }
-                else
-                {
-                    var instanceHub = ReferenceHub.GetHub(__instance.gameObject);
-                    instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
-                    __instance.TargetHitMarker(__instance.connectionToClient, __instance.captureCooldown);
+                // var ev = new EnteringPocketDimensionEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringPocketDimensionEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
-                    if (Scp106PlayerScript._blastDoor.isClosed)
-                    {
-                        instanceHub.characterClassManager.RpcPlaceBlood(ply.transform.position, 1, 2f);
-                        instanceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(500f, instanceHub.LoggedNameFromRefHub(), DamageTypes.Scp106, instanceHub.playerId), ply);
-                    }
-                    else
-                    {
-                        Scp079Interactable.ZoneAndRoom otherRoom = hub.scp079PlayerScript.GetOtherRoom();
-                        Scp079Interactable.InteractableType[] filter = new Scp079Interactable.InteractableType[]
-                        {
-                            Scp079Interactable.InteractableType.Door, Scp079Interactable.InteractableType.Light,
-                            Scp079Interactable.InteractableType.Lockdown, Scp079Interactable.InteractableType.Tesla,
-                            Scp079Interactable.InteractableType.ElevatorUse,
-                        };
+                // Handlers.Player.OnEnteringPocketDimension(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringPocketDimension))),
 
-                        foreach (Scp079PlayerScript scp079PlayerScript in Scp079PlayerScript.instances)
-                        {
-                            bool flag = false;
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                            foreach (Scp079Interaction scp079Interaction in scp079PlayerScript.ReturnRecentHistory(12f, filter))
-                            {
-                                foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interaction.interactable
-                                    .currentZonesAndRooms)
-                                {
-                                    if (zoneAndRoom.currentZone == otherRoom.currentZone &&
-                                        zoneAndRoom.currentRoom == otherRoom.currentRoom)
-                                    {
-                                        flag = true;
-                                    }
-                                }
-                            }
+            // The index offset.
+            offset = -5;
 
-                            if (flag)
-                            {
-                                scp079PlayerScript.RpcGainExp(ExpGainType.PocketAssist, ccm.CurClass);
-                            }
-                        }
+            // The amount of instructions to remove.
+            const int instructionsToRemove = 3;
 
-                        var ev = new EnteringPocketDimensionEventArgs(API.Features.Player.Get(ply), Vector3.down * 1998.5f, API.Features.Player.Get(instanceHub));
+            // Search for the first "OverridePosition" method.
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+            (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
 
-                        Exiled.Events.Handlers.Player.OnEnteringPocketDimension(ev);
+            // Remove "Vector3.down * 1998.5f" instructions.
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
-                        if (!ev.IsAllowed)
-                            return false;
-
-                        hub.playerMovementSync.OverridePosition(ev.Position, 0f, true);
-
-                        instanceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(40f, instanceHub.LoggedNameFromRefHub(), DamageTypes.Scp106, instanceHub.playerId), ply);
-                    }
-
-                    PlayerEffectsController effectsController = hub.playerEffectsController;
-                    effectsController.GetEffect<Corroding>().IsInPd = true;
-                    effectsController.EnableEffect<Corroding>(0.0f, false);
-                }
-
-                return false;
-            }
-            catch (Exception e)
+            // ev.Position
+            newInstructions.InsertRange(index, new[]
             {
-                Exiled.API.Features.Log.Error($"{typeof(EnteringPocketDimension).FullName}:\n{e}");
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
+            });
 
-                return true;
-            }
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

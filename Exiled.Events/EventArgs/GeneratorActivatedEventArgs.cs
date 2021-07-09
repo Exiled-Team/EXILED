@@ -18,11 +18,21 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="GeneratorActivatedEventArgs"/> class.
         /// </summary>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
-        public GeneratorActivatedEventArgs(Generator079 generator) => Generator = generator;
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public GeneratorActivatedEventArgs(Generator079 generator, bool isAllowed = true)
+        {
+            Generator = generator;
+            IsAllowed = isAllowed;
+        }
 
         /// <summary>
         /// Gets the activated generator.
         /// </summary>
         public Generator079 Generator { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the generator can be activated or not.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }

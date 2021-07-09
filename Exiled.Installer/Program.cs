@@ -23,7 +23,6 @@ namespace Exiled.Installer
 
     using Octokit;
 
-    using Range = SemVer.Range;
     using Version = SemVer.Version;
 
     internal enum PathResolution

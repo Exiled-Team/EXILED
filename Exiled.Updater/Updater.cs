@@ -26,8 +26,6 @@ namespace Exiled.Updater
 
     using MEC;
 
-    using SemVer;
-
     using UnityEngine;
 
 #pragma warning disable SA1124 // Do not use regions

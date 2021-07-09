@@ -10,17 +10,11 @@ namespace Exiled.Loader
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text.RegularExpressions;
-
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-    using Exiled.Loader.Features.Configs;
-
     using YamlDotNet.Core;
     using YamlDotNet.Serialization;
-    using YamlDotNet.Serialization.NamingConventions;
-    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Used to handle plugin configs.
@@ -30,38 +24,32 @@ namespace Exiled.Loader
         /// <summary>
         /// Gets the config serializer.
         /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
-            .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
-            .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .Build();
+        [Obsolete("Moved to Loader.Serializer", true)]
+        public static ISerializer Serializer => Loader.Serializer;
 
         /// <summary>
-        /// Gets the config serializer.
+        /// Gets the config deserializer.
         /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
+        [Obsolete("Moved to Loader.Deserializer", true)]
+        public static IDeserializer Deserializer => Loader.Deserializer;
+
+        /// <inheritdoc cref="LoadSorted(string)"/>
+        [Obsolete("Replaced with LoadSorted(string)", true)]
+        public static Dictionary<string, IConfig> Load(string rawConfigs) => new Dictionary<string, IConfig>(LoadSorted(rawConfigs));
 
         /// <summary>
         /// Loads all plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
         /// <returns>Returns a dictionary of loaded configs.</returns>
-        public static Dictionary<string, IConfig> Load(string rawConfigs)
+        public static SortedDictionary<string, IConfig> LoadSorted(string rawConfigs)
         {
             try
             {
                 Log.Info("Loading plugin configs...");
 
-                rawConfigs = Regex.Replace(rawConfigs, @"\ !.*", string.Empty).Replace("!Dictionary[string,IConfig]", string.Empty);
-
-                Dictionary<string, object> rawDeserializedConfigs = Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
-                Dictionary<string, IConfig> deserializedConfigs = new Dictionary<string, IConfig>();
+                Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
+                SortedDictionary<string, IConfig> deserializedConfigs = new SortedDictionary<string, IConfig>(StringComparer.Ordinal);
 
                 if (!rawDeserializedConfigs.TryGetValue("exiled_loader", out object rawDeserializedConfig))
                 {
@@ -71,7 +59,7 @@ namespace Exiled.Loader
                 }
                 else
                 {
-                    deserializedConfigs.Add("exiled_loader", Deserializer.Deserialize<Config>(Serializer.Serialize(rawDeserializedConfig)));
+                    deserializedConfigs.Add("exiled_loader", Loader.Deserializer.Deserialize<Config>(Loader.Serializer.Serialize(rawDeserializedConfig)));
 
                     Loader.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
                 }
@@ -88,7 +76,7 @@ namespace Exiled.Loader
                     {
                         try
                         {
-                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Deserializer.Deserialize(Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
+                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
 
                             plugin.Config.CopyProperties(deserializedConfigs[plugin.Prefix]);
                         }
@@ -117,7 +105,7 @@ namespace Exiled.Loader
         /// Reads, Loads and Saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
-        public static bool Reload() => Save(Load(Read()));
+        public static bool Reload() => Save(LoadSorted(Read()));
 
         /// <summary>
         /// Saves plugin configs.
@@ -140,19 +128,23 @@ namespace Exiled.Loader
             }
         }
 
+        /// <inheritdoc cref="Save(SortedDictionary{string, IConfig})"/>
+        [Obsolete("Replaced with Save(SortedDictionary{string, IConfig})", true)]
+        public static bool Save(Dictionary<string, IConfig> configs) => Save(new SortedDictionary<string, IConfig>(configs));
+
         /// <summary>
         /// Saves plugin configs.
         /// </summary>
         /// <param name="configs">The configs to be saved.</param>
         /// <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
-        public static bool Save(Dictionary<string, IConfig> configs)
+        public static bool Save(SortedDictionary<string, IConfig> configs)
         {
             try
             {
                 if (configs == null || configs.Count == 0)
                     return false;
 
-                return Save(Serializer.Serialize(configs));
+                return Save(Loader.Serializer.Serialize(configs));
             }
             catch (YamlException yamlException)
             {

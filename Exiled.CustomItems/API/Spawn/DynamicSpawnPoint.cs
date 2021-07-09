@@ -36,6 +36,7 @@ namespace Exiled.CustomItems.API.Spawn
 
         /// <inheritdoc/>
         [YamlIgnore]
+#pragma warning disable CS0618 // Type or member is obsolete
         public override Vector Position
         {
             get => Location.GetPosition().ToVector();

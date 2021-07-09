@@ -59,7 +59,21 @@ namespace Exiled.CustomItems.API.Features
         public override float Durability { get; set; }
 
         /// <inheritdoc/>
-        public override void Spawn(Vector3 position) => Spawned.Add(Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType));
+        public override void Spawn(Vector3 position, out Pickup pickup)
+        {
+            pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+
+            Spawned.Add(pickup);
+        }
+
+        /// <inheritdoc/>
+        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
+        public override void Spawn(Vector3 position)
+        {
+            Pickup pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+
+            Spawned.Add(pickup);
+        }
 
         /// <inheritdoc/>
         public override void Give(Player player, bool displayMessage)
@@ -134,8 +148,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="ev"><see cref="HurtingEventArgs"/>.</param>
         protected virtual void OnHurting(HurtingEventArgs ev)
         {
-            if (ev.IsAllowed && ev.Attacker != ev.Target)
-                ev.Amount = Damage;
+            if (ev.IsAllowed)
+                ev.Amount = ev.Target.Role == RoleType.Scp106 ? Damage * 0.1f : Damage;
         }
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
@@ -196,7 +210,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem))
+            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.DamageType != DamageTypes.FromWeaponId(ev.Attacker.ReferenceHub.weaponManager.curWeapon))
                 return;
 
             OnHurting(ev);

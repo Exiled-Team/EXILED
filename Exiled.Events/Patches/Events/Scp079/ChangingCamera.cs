@@ -7,15 +7,20 @@
 
 namespace Exiled.Events.Patches.Events.Scp079
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallCmdSwitchCamera(ushort, bool)"/>.
@@ -24,50 +29,75 @@ namespace Exiled.Events.Patches.Events.Scp079
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdSwitchCamera))]
     internal static class ChangingCamera
     {
-        private static bool Prefix(Scp079PlayerScript __instance, ushort cameraId, bool lookatRotation)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            const int offset = 0;
+
+            // Search for the first "ldloc.1".
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+
+            // Define the first label of the last "ret" and retrieve it.
+            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+
+            // Declare a local variable of the type "ChangingCameraEventArgs"
+            var changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
+
+            // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana)
+            //
+            // Handlers.Scp079.OnChangingCamera(ev)
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            //
+            // num = ev.AuxiliaryPowerCost
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._interactRateLimit.CanExecute(true))
-                {
-                    return false;
-                }
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                if (!__instance.iAm079)
-                {
-                    return false;
-                }
+                // camera
+                new CodeInstruction(OpCodes.Ldloc_0),
 
-                Camera079 camera = API.Features.Map.GetCameraById(cameraId);
+                // num (auxiliary power cost)
+                new CodeInstruction(OpCodes.Ldloc_1),
 
-                if (camera == null)
-                {
-                    return false;
-                }
+                // !(num > this.curMana) --> num <= this.curMana
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
 
-                float num = __instance.CalculateCameraSwitchCost(camera.transform.position);
-                bool isAllowed = num <= __instance.curMana;
-                ChangingCameraEventArgs ev = new ChangingCameraEventArgs(API.Features.Player.Get(__instance.gameObject), camera, num, isAllowed);
-                Scp079.OnChangingCamera(ev);
-                if (ev.IsAllowed)
-                {
-                    __instance.RpcSwitchCamera(ev.Camera.cameraId, lookatRotation);
-                    __instance.Mana = Mathf.Clamp(__instance.Mana - ev.APCost, 0, __instance.maxMana);
-                    __instance.currentCamera = ev.Camera;
-                }
-                else if (ev.APCost > __instance.curMana)
-                {
-                    __instance.RpcNotEnoughMana(ev.APCost, __instance.curMana);
-                }
+                // var ev = new ChangingCameraEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingCameraEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, changingCameraEv.LocalIndex),
 
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"{typeof(ChangingCamera).FullName}.{nameof(Prefix)}:\n{e}");
+                // Handlers.Scp079.OnChangingCamera(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnChangingCamera))),
 
-                return true;
-            }
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
+                // num = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, changingCameraEv.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingCameraEventArgs), nameof(ChangingCameraEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_1),
+            });
+
+            for (var z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

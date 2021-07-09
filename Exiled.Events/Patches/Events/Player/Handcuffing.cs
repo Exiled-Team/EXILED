@@ -7,101 +7,73 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
-
-    using GameCore;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Handcuffs.CallCmdCuffTarget(GameObject)"/>.
-    /// Adds the <see cref="Player.Handcuffing"/> event.
+    /// Adds the <see cref="Handlers.Player.Handcuffing"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdCuffTarget))]
     internal static class Handcuffing
     {
-        private static bool Prefix(Handcuffs __instance, GameObject target)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // The index offset.
+            var offset = 0;
+
+            // Search for the last "ldloc.3".
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_3) + offset;
+
+            // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), flag);
+            //
+            // Handlers.Player.OnHandcuffing(ev);
+            //
+            // flag = ev.IsAllowed;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._interactRateLimit.CanExecute() || target == null ||
-                    Vector3.Distance(target.transform.position, __instance.transform.position) >
-                    __instance.raycastDistance * 1.10000002384186)
-                    return false;
-                Handcuffs handcuffs = ReferenceHub.GetHub(target).handcuffs;
-                if (handcuffs == null || __instance.MyReferenceHub.inventory.curItem != ItemType.Disarmer ||
-                    (__instance.MyReferenceHub.characterClassManager.CurClass < RoleType.Scp173 ||
-                     handcuffs.CufferId >= 0) || handcuffs.MyReferenceHub.inventory.curItem != ItemType.None)
-                    return false;
-                Team team1 = __instance.MyReferenceHub.characterClassManager.Classes
-                    .SafeGet(__instance.MyReferenceHub.characterClassManager.CurClass).team;
-                Team team2 = __instance.MyReferenceHub.characterClassManager.Classes
-                    .SafeGet(handcuffs.MyReferenceHub.characterClassManager.CurClass).team;
-                bool flag = false;
-                switch (team1)
-                {
-                    case Team.MTF:
-                        if (team2 == Team.CHI || team2 == Team.CDP)
-                            flag = true;
-                        if (team2 == Team.RSC && ConfigFile.ServerConfig.GetBool("mtf_can_cuff_researchers"))
-                        {
-                            flag = true;
-                        }
+                // Player.Get(this.gameObject);
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                        break;
-                    case Team.CHI:
-                        if (team2 == Team.MTF || team2 == Team.RSC)
-                            flag = true;
-                        if (team2 == Team.CDP && ConfigFile.ServerConfig.GetBool("ci_can_cuff_class_d"))
-                        {
-                            flag = true;
-                        }
+                // Player.Get(target);
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                        break;
-                    case Team.RSC:
-                        if (team2 == Team.CHI || team2 == Team.CDP)
-                        {
-                            flag = true;
-                        }
+                // IsAllowed = flag;
+                new CodeInstruction(OpCodes.Ldloc_3),
 
-                        break;
-                    case Team.CDP:
-                        if (team2 == Team.MTF || team2 == Team.RSC)
-                        {
-                            flag = true;
-                        }
+                // var ev = new HandcuffingEventArgs(...);
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
 
-                        break;
-                }
+                // Handlers.Player.OnHandcuffing(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
 
-                if (!flag)
-                    return false;
+                // flag = ev.IsAllowed;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            });
 
-                __instance.ClearTarget();
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                var ev = new HandcuffingEventArgs(API.Features.Player.Get(__instance.gameObject), API.Features.Player.Get(target));
-
-                Player.OnHandcuffing(ev);
-
-                if (!ev.IsAllowed)
-                    return false;
-
-                handcuffs.NetworkCufferId = __instance.MyReferenceHub.queryProcessor.PlayerId;
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Handcuffing: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -101,6 +101,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the RemoteAdmin permissions handler.
+        /// </summary>
+        public static PermissionsHandler PermissionsHandler => ServerStatic.PermissionsHandler;
+
+        /// <summary>
         /// Gets the Ip address of the server.
         /// </summary>
         public static string IpAddress => ServerConsole.Ip;

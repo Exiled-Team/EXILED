@@ -11,11 +11,14 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
+
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Utils;
+
     using HarmonyLib;
+
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
 

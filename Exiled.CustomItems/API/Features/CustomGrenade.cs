@@ -103,6 +103,7 @@ namespace Exiled.CustomItems.API.Features
         {
             Events.Handlers.Player.ThrowingGrenade += OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
+            Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
             base.SubscribeEvents();
         }
@@ -112,6 +113,7 @@ namespace Exiled.CustomItems.API.Features
         {
             Events.Handlers.Player.ThrowingGrenade -= OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
+            Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
             base.UnsubscribeEvents();
         }
@@ -129,6 +131,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="ev"><see cref="ExplodingGrenadeEventArgs"/>.</param>
         protected virtual void OnExploding(ExplodingGrenadeEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Handles the tracking of custom grenade pickups that are changed into live grenades by a frag grenade explosion.
+        /// </summary>
+        /// <param name="ev"><see cref="ChangingIntoGrenadeEventArgs"/>.</param>
+        protected virtual void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
         {
         }
 
@@ -174,6 +184,24 @@ namespace Exiled.CustomItems.API.Features
         {
             if (Check(ev.Grenade))
                 OnExploding(ev);
+        }
+
+        private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
+        {
+            if (!Check(ev.Pickup))
+                return;
+
+            ev.FuseTime = FuseTime;
+            ev.Type = Type;
+
+            OnChangingIntoGrenade(ev);
+
+            if (ev.IsAllowed)
+            {
+                Timing.CallDelayed(0.25f, () => Spawn(ev.Pickup.position, Vector3.zero, ev.FuseTime, ev.Type));
+                ev.Pickup.Delete();
+                ev.IsAllowed = false;
+            }
         }
     }
 }

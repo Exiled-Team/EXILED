@@ -25,6 +25,7 @@ namespace Exiled.API.Features
     using MEC;
 
     using Mirror;
+    using Mirror.LiteNetLib4Mirror;
 
     using NorthwoodLib;
     using NorthwoodLib.Pools;
@@ -115,6 +116,11 @@ namespace Exiled.API.Features
         /// Gets the player's ammo.
         /// </summary>
         public AmmoBox Ammo { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is viewing a hint.
+        /// </summary>
+        public bool HasHint { get; internal set; }
 
         /// <summary>
         /// Gets the HintDisplay of the player.
@@ -374,9 +380,9 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is cuffed.
+        /// Gets a value indicating whether or not the player is cuffed. Note: players can be cuffed without another player being the cuffer.
         /// </summary>
-        public bool IsCuffed => CufferId != -1;
+        public bool IsCuffed => CufferId != -1 || ReferenceHub.handcuffs.ForceCuff;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
@@ -540,6 +546,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's unit name.
+        /// </summary>
+        public string UnitName
+        {
+            get => ReferenceHub.characterClassManager.NetworkCurUnitName;
+            set => ReferenceHub.characterClassManager.NetworkCurUnitName = value;
+        }
+
+        /// <summary>
         /// Gets or sets the player's health.
         /// If the health is greater than the <see cref="MaxHealth"/>, the MaxHealth will also be changed to match the health.
         /// </summary>
@@ -578,6 +593,15 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = (int)value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's artificial health decay.
+        /// </summary>
+        public float ArtificialHealthDecay
+        {
+            get => ReferenceHub.playerStats.artificialHpDecay;
+            set => ReferenceHub.playerStats.artificialHpDecay = value;
         }
 
         /// <summary>
@@ -625,7 +649,11 @@ namespace Exiled.API.Features
         public Inventory.SyncItemInfo CurrentItem
         {
             get => Inventory.GetItemInHand();
-            set => Inventory.SetCurItem(value.id);
+            set
+            {
+                Inventory.SetCurItem(value.id);
+                Inventory.CallCmdSetUnic(value.uniq);
+            }
         }
 
         /// <summary>
@@ -782,6 +810,11 @@ namespace Exiled.API.Features
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
+        /// Gets the current zone the player is in.
+        /// </summary>
+        public ZoneType Zone => CurrentRoom.Zone;
+
+        /// <summary>
         /// Gets or sets the player's group.
         /// </summary>
         public UserGroup Group
@@ -866,9 +899,24 @@ namespace Exiled.API.Features
         public bool HasHands => false;
 
         /// <summary>
+        /// Gets player's ping.
+        /// </summary>
+        /// <returns>Return player ping.</returns>
+        public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
+
+        /// <summary>
         /// Gets player's items.
         /// </summary>
         public Inventory.SyncListItemInfo Items => Inventory.items;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the player can send inputs.
+        /// </summary>
+        public bool CanSendInputs
+        {
+            get => !ReferenceHub.fpc.NetworkforceStopInputs;
+            set => ReferenceHub.fpc.NetworkforceStopInputs = !value;
+        }
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
@@ -1138,6 +1186,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Counts how many items of a certain <see cref="ItemType"/> a player has.
+        /// </summary>
+        /// <param name="item">The item to search for.</param>
+        /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
+        public int CountItem(ItemType item) => Inventory.items.Count(inventoryItem => inventoryItem.id == item);
+
+        /// <summary>
         /// Removes an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be removed.</param>
@@ -1324,6 +1379,30 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
+
+        /// <summary>
+        /// Shows a HitMarker.
+        /// </summary>
+        public void ShowHitMarker() => ReferenceHub.characterClassManager.Scp173.TargetHitMarker(Connection);
+
+        /// <summary>
+        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <param name="key">The key of the object to get.</param>
+        /// <param name="result">When this method returns, contains the value associated with the specified key, if the key is found; otherwise, the default value for the type of the value parameter is used.</param>
+        /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetSessionVariable<T>(string key, out T result)
+        {
+            if (SessionVariables.TryGetValue(key, out var value) && value is T type)
+            {
+                result = type;
+                return true;
+            }
+
+            result = default;
+            return false;
         }
 
         /// <summary>
