@@ -25,10 +25,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="items"><inheritdoc cref="Items"/></param>
         /// <param name="hasPreservedPosition"><inheritdoc cref="HasPreservedPosition"/></param>
         /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangedRoleEventArgs(Player player, RoleType oldRole, List<ItemType> items, bool hasPreservedPosition, bool isEscaped)
+        public ChangedRoleEventArgs(Player player, RoleType oldRole, int oldCufferId, List<ItemType> items, bool hasPreservedPosition, bool isEscaped)
         {
             Player = player;
             OldRole = oldRole;
+            OldCufferId = oldCufferId;
             Items = items.AsReadOnly();
             HasPreservedPosition = hasPreservedPosition;
             IsEscaped = isEscaped;
@@ -45,7 +46,12 @@ namespace Exiled.Events.EventArgs
         public RoleType OldRole { get; }
 
         /// <summary>
-        /// Gets base items that the player has received.
+        /// Gets the id of the player's previous cuffer, or -1 if they were not cuffed.
+        /// </summary>
+        public int OldCufferId { get; }
+
+        /// <summary>
+        /// Gets items that the player had before their role was changed.
         /// </summary>
         public IReadOnlyList<ItemType> Items { get; }
 
