@@ -50,6 +50,12 @@ namespace Exiled.Events.EventArgs
         public int OldCufferId { get; }
 
         /// <summary>
+        /// Gets items that the player had before their role was changed.
+        /// </summary>
+        [Obsolete(true, "Use Player.Items instead.")]
+        public IReadOnlyList<ItemType> Items => Player.Items;
+
+        /// <summary>
         /// Gets a value indicating whether the player escaped or not.
         /// </summary>
         public bool IsEscaped { get; }
