@@ -52,7 +52,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets items that the player had before their role was changed.
         /// </summary>
-        [Obsolete(true, "Use Player.Items instead.")]
+        [Obsolete("Use Player.Items instead.", true)]
         public IReadOnlyList<ItemType> Items => Player.Items;
 
         /// <summary>
