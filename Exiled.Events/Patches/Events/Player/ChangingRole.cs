@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
                     classid = escapingEventArgs.NewRole;
                 }
 
-                var changedRoleEventArgs = new ChangedRoleEventArgs(player, player.Role, startItemsList, lite, escape);
+                var changedRoleEventArgs = new ChangedRoleEventArgs(player, player.Role, player.CufferId, lite, escape);
 
                 ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
                 ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
