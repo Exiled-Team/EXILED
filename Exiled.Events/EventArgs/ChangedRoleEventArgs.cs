@@ -53,7 +53,7 @@ namespace Exiled.Events.EventArgs
         /// Gets items that the player had before their role was changed.
         /// </summary>
         [Obsolete("Use Player.Items instead.", true)]
-        public IReadOnlyList<ItemType> Items => Player.Items;
+        public IReadOnlyList<ItemType> Items => Player.Items.Select(item => item.id).ToList().AsReadOnly();
 
         /// <summary>
         /// Gets a value indicating whether the player escaped or not.
