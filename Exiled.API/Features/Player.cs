@@ -805,9 +805,28 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current room the player is in.
+        /// Gets or sets the current room the player is in.
         /// </summary>
-        public Room CurrentRoom => Map.FindParentRoom(GameObject);
+        public Room CurrentRoom
+        {
+            get => Map.FindParentRoom(GameObject);
+            set
+            {
+                PlayerMovementSync.FindSafePosition(value.Position, out Vector3 safePos);
+                switch (value.Type)
+                {
+                    case RoomType.HczTesla:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos + (Vector3.back * 4f));
+                        break;
+                    case RoomType.LczCurve:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos + (Vector3.back * 5f) + (Vector3.left * 5f), true);
+                        break;
+                    default:
+                        ReferenceHub.playerMovementSync.ForceSafePosition(safePos);
+                        break;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the current zone the player is in.
