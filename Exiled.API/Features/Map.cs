@@ -508,7 +508,7 @@ namespace Exiled.API.Features
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public static Grenade Spawn(Vector3 position, Vector3 velocity, float fuseTime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        public static Grenade SpawnGrenade(Vector3 position, Vector3? velocity = null, float fuseTime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
@@ -518,15 +518,10 @@ namespace Exiled.API.Features
 
             Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
 
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
+            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity ?? Vector3.zero, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
             grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
 
             NetworkServer.Spawn(grenade.gameObject);
-
-            /*
-            if (ExplodeOnCollision)
-                grenade.gameObject.AddComponent<CollisionHandler>().Init(player.GameObject, grenade);
-            */
 
             return grenade;
         }
