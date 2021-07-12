@@ -862,7 +862,7 @@ namespace Exiled.API.Features
         /// </summary>
         public bool BadgeHidden
         {
-            get => string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
+            get => !string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
             set
             {
                 if (value)
