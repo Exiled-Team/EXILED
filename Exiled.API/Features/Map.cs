@@ -13,9 +13,15 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using Exiled.API.Enums;
+
+    using Grenades;
+
     using Interactables.Interobjects.DoorUtils;
 
     using LightContainmentZoneDecontamination;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -457,7 +463,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
-        public static Camera079 GetCameraByType(CameraType cameraType) =>
+        public static Camera079 GetCameraByType(Enums.CameraType cameraType) =>
             GetCameraById((ushort)cameraType);
 
         /// <summary>
@@ -491,6 +497,38 @@ namespace Exiled.API.Features
 
                 ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
+        }
+
+        /// <summary>
+        /// Spawns a live grenade object on the map.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
+        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
+        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
+        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
+        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
+        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
+        public static Grenade Spawn(Vector3 position, Vector3 velocity, float fuseTime = 3f, GrenadeType grenadeType = GrenadeType.FragGrenade, Player player = null)
+        {
+            if (player == null)
+                player = Server.Host;
+
+            GrenadeManager grenadeManager = player.GrenadeManager;
+            GrenadeSettings settings = grenadeManager.availableGrenades[(int)grenadeType];
+
+            Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
+
+            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
+            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
+
+            NetworkServer.Spawn(grenade.gameObject);
+
+            /*
+            if (ExplodeOnCollision)
+                grenade.gameObject.AddComponent<CollisionHandler>().Init(player.GameObject, grenade);
+            */
+
+            return grenade;
         }
 
         /// <summary>
