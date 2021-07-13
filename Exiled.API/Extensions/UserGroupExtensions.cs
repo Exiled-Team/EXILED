@@ -39,14 +39,10 @@ namespace Exiled.API.Extensions
         public static string GetKey(this UserGroup @this) => Server.PermissionsHandler._groups
             .FirstOrDefault(pair => pair.Value.EqualsTo(@this)).Key;
 
-        public static UserGroup GetValue(string GroupName)
+        public UserGroup FetchUserGroup(string GroupName)
         {
-            var groups = ServerStatic.GetPermissionsHandler().GetAllGroups();
-            if (groups.ContainsKey(GroupName))
-            {
-                return groups[GroupName];
-            }
-            return null;
+            ServerStatic.GetPermissionsHandler().GetAllGroups().TryGetValue(GroupName, out var userGroup);
+            return userGroup;
         }
     }
 }
