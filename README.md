@@ -102,6 +102,8 @@ To use MEC, you will need to reference ``Assembly-CSharp-firstpass.dll`` from th
 Example of calling a simple coroutine, that repeats itself with a delay between each loop:
 ```cs
 using MEC;
+using Exiled.API.Features;
+
 public void SomeMethod()
 {
     Timing.RunCoroutine(MyCoroutine());
@@ -109,10 +111,10 @@ public void SomeMethod()
 
 public IEnumerator<float> MyCoroutine()
 {
-    for(;;) //repeat the following infinitely
+    for (;;) //repeat the following infinitely
     {
-        Plugin.Info("Hey I'm a infinite loop!"); //Call Plugin.Info to print a line to the game console/server logs
-        yield return Timing.WaitForSecond(5f); //Tells the coroutine to wait 5 seconds before continuing, since this is at the end of the loop, it effectively stalls the loop from repeating for 5seconds.
+        Log.Info("Hey I'm a infinite loop!"); //Call Log.Info to print a line to the game console/server logs.
+        yield return Timing.WaitForSeconds(5f); //Tells the coroutine to wait 5 seconds before continuing, since this is at the end of the loop, it effectively stalls the loop from repeating for 5 seconds.
     }
 }
 ```
