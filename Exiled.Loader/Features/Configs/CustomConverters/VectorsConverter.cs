@@ -12,8 +12,6 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     using System.Globalization;
     using System.IO;
 
-    using Exiled.API.Features;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;
