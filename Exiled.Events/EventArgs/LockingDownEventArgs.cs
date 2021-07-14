@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------
-// <copyright file="LockdowningEventArgs.cs" company="Exiled Team">
+// <copyright file="LockingDownEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,16 +14,16 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations before SCP-079 lockdowns a room.
     /// </summary>
-    public class LockdowningEventArgs : EventArgs
+    public class LockingDownEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LockdowningEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="LockingDownEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="roomGameObject"><inheritdoc cref="RoomGameObject"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public LockdowningEventArgs(Player player, GameObject roomGameObject, float auxiliaryPowerCost, bool isAllowed = true)
+        public LockingDownEventArgs(Player player, GameObject roomGameObject, float auxiliaryPowerCost, bool isAllowed = true)
         {
             Player = player;
             RoomGameObject = roomGameObject;
@@ -37,9 +37,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the gameobject of the room that will be lockdowned.
+        /// Gets or sets the gameobject of the room that will be lockdowned.
         /// </summary>
-        public GameObject RoomGameObject { get; }
+        public GameObject RoomGameObject { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of auxiliary power required to lockdown a room.

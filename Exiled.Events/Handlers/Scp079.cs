@@ -64,7 +64,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before SCP-079 lockdowns a room.
         /// </summary>
-        public static event CustomEventHandler<LockdowningEventArgs> Lockdowning;
+        public static event CustomEventHandler<LockingDownEventArgs> LockingDown;
 
         /// <summary>
         /// Invoked before SCP-079 uses a speaker.
@@ -134,8 +134,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before SCP-079 lockdowns a room.
         /// </summary>
-        /// <param name="ev">The <see cref="LockdowningEventArgs"/> instance.</param>
-        public static void OnLockdowning(LockdowningEventArgs ev) => Lockdowning.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="LockingDownEventArgs"/> instance.</param>
+        public static void OnLockingDown(LockingDownEventArgs ev) => LockingDown.InvokeSafely(ev);
 
         /// <summary>
         /// Called before interacting with a speaker with SCP-079.

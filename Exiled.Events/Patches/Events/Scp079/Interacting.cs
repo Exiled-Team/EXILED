@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
-    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="LockdowningEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
+    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="LockingDownEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
     internal static class Interacting
@@ -186,10 +186,10 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region LockdowningEventArgs
+            #region LockingDownEventArgs
 
-            // Declare a local variable of the type "LockdowningEventArgs";
-            var lockdowningEv = generator.DeclareLocal(typeof(LockdowningEventArgs));
+            // Declare a local variable of the type "LockingDownEventArgs";
+            var lockingDown = generator.DeclareLocal(typeof(LockingDownEventArgs));
 
             offset = 5;
 
@@ -198,9 +198,9 @@ namespace Exiled.Events.Patches.Events.Scp079
             (string)instruction.operand == "Room Lockdown") + offset;
 
             // var roomGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom);
-            // var ev = new LockdowningEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
+            // var ev = new LockingDownEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
             //
-            // Handlers.Scp079.OnLockdowning(ev);
+            // Handlers.Scp079.OnLockingDown(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
@@ -219,8 +219,6 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentRoom))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string) })),
                 new CodeInstruction(OpCodes.Call, Method(typeof(GameObject), nameof(GameObject.Find))),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, 35),
 
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_3),
@@ -233,23 +231,28 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
 
-                // var ev = new LockdowningEventArgs(...)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockdowningEventArgs))[0]),
+                // var ev = new LockingDownEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockingDownEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, lockdowningEv.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, lockingDown.LocalIndex),
 
                 // Handlers.Scp079.OnLockdowning(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLockdowning))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLockingDown))),
 
                 // if (!ev.IsAllowed)
                 //   return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockdowningEventArgs), nameof(LockdowningEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
+                // roomGameObject = ev.RoomGameObject;
+                new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.RoomGameObject))),
+                new CodeInstruction(OpCodes.Stloc_S, 35),
+
                 // manaFromLabel = ev.AuxiliaryPowerCost
-                new CodeInstruction(OpCodes.Ldloc_S, lockdowningEv.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockdowningEventArgs), nameof(LockdowningEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.AuxiliaryPowerCost))),
                 new CodeInstruction(OpCodes.Stloc_3),
             });
 
