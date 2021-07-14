@@ -105,6 +105,6 @@ namespace Exiled.Example
         /// Gets the Vector3 config.
         /// </summary>
         [Description("This is a Vector3 config, the same can be done by using a Vector2 or a Vector4")]
-        public Vector3 Vector3 { get; private set; } = new Vector3(1, 2, 3);
+        public Vector3 Vector3 { get; private set; } = new Vector3(1.3f, -2.5f, 3);
     }
 }
