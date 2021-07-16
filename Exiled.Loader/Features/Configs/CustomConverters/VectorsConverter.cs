@@ -12,8 +12,6 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
     using System.Globalization;
     using System.IO;
 
-    using Exiled.API.Features;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -47,7 +45,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                     continue;
                 }
 
-                if (!parser.TryConsume<Scalar>(out var scalar) || !float.TryParse(scalar.Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var coordinate))
+                if (!parser.TryConsume<Scalar>(out var scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out var coordinate))
                 {
                     ListPool<object>.Shared.Return(coordinates);
                     throw new InvalidDataException($"Invalid float value.");
@@ -92,7 +90,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             foreach (var coordinate in coordinates)
             {
                 emitter.Emit(new Scalar(coordinate.Key));
-                emitter.Emit(new Scalar(coordinate.Value.ToString()));
+                emitter.Emit(new Scalar(coordinate.Value.ToString(CultureInfo.GetCultureInfo("en-US"))));
             }
 
             emitter.Emit(new MappingEnd());
