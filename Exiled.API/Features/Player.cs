@@ -1335,7 +1335,7 @@ namespace Exiled.API.Features
         {
             if (items.Count > 0)
             {
-                for (int i = 0; i < items.; i++)
+                for (int i = 0; i < items.Count; i++)
                     Inventory.AddNewItem(items[i]);
             }
         }
@@ -1368,8 +1368,8 @@ namespace Exiled.API.Features
         {
             if (items.Count > 0)
             {
-                for (int i = 0; i < items.; i++)
-                    Inventory.AddNewItem(items[i]);
+                for (int i = 0; i < items.Count; i++)
+                    Inventory.AddNewItem(items[i].id, items[i].durability, items[i].modSight, items[i].modBarrel, items[i].modOther);
             }
         }
 
