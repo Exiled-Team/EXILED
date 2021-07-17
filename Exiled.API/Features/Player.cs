@@ -1151,8 +1151,10 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        public void Broadcast(Broadcast broadcast)
+        /// <param name="overrideMode">Clears the player's broadcast before send the new one.</param>
+        public void Broadcast(Broadcast broadcast, bool overrideMode = false)
         {
+            if (overrideMode) ClearBroadcasts();
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
         }
@@ -1297,8 +1299,10 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        /// <param name="overrideMode">Clears the player's broadcast before send the new one.</param>
+        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool overrideMode = false)
         {
+            if (overrideMode) ClearBroadcasts();
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
         }
 
