@@ -38,7 +38,7 @@ namespace Exiled.API.Extensions
         /// <returns>The key of that group, or null if not found.</returns>
         public static string GetKey(this UserGroup @this) => Server.PermissionsHandler._groups
             .FirstOrDefault(pair => pair.Value.EqualsTo(@this)).Key;
-        
+
         /// <summary>
         /// Searches for a value of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
         /// </summary>
