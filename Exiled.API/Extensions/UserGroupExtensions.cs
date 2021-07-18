@@ -42,7 +42,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Searches for a value of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
         /// </summary>
-        /// <param name="this">The <see cref="string"/>.</param>
+        /// <param name="groupName">The <see cref="string"/>.</param>
         /// <returns>The value of that group, or null if not found.</returns>
         public static UserGroup GetValue(string groupName)
         {
