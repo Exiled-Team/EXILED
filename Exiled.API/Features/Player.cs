@@ -751,9 +751,7 @@ namespace Exiled.API.Features
                 if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
-                ReferenceHub.scp079PlayerScript.Lvl = value;
-
-                ReferenceHub.scp079PlayerScript.TargetLevelChanged(Connection, value);
+                ReferenceHub.scp079PlayerScript.ForceLevel(value, false);
             }
         }
 
@@ -1089,6 +1087,20 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
         public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
+
+        /// <summary>
+        /// Sets the player's level.
+        /// Only applies if the player is SCP-079.
+        /// </summary>
+        /// <param name="newLevel">The level to be set.</param>
+        /// <param name="displayNewLevel">Indicates whether the message should be displayed.</param>
+        public void SetLevel(byte newLevel, bool displayMessage)
+        {
+            if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
+                return;
+
+            ReferenceHub.scp079PlayerScript.ForceLevel(level, displayNewLevel);
+        }
 
         /// <summary>
         /// Sets the player's rank.
