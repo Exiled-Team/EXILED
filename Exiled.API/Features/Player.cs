@@ -1151,7 +1151,18 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        /// <param name="overrideMode">Clears the player's broadcast before send the new one.</param>
+        [Obsolete("Deprecated", false)]
+        public void Broadcast(Broadcast broadcast)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+        }
+
+        /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="overrideMode">Clears the player's broadcast before sending the new one.</param>
         public void Broadcast(Broadcast broadcast, bool overrideMode = false)
         {
             if (overrideMode) ClearBroadcasts();
@@ -1299,7 +1310,19 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        /// <param name="overrideMode">Clears the player's broadcast before send the new one.</param>
+        [Obsolete("Deprecated", false)]
+        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        {
+            Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        }
+
+        /// <summary>
+        /// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospaced.
+        /// </summary>
+        /// <param name="duration">The broadcast duration.</param>
+        /// <param name="message">The message to be broadcasted.</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="overrideMode">Clears the player's broadcast before sending the new one.</param>
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool overrideMode = false)
         {
             if (overrideMode) ClearBroadcasts();
