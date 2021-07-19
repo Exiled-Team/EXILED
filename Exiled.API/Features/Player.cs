@@ -400,6 +400,16 @@ namespace Exiled.API.Features
         public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
 
         /// <summary>
+        /// Gets the player's current animation.
+        /// </summary>
+        public int CurrentAnimation => ReferenceHub.animationController.curAnim;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is running.
+        /// </summary>
+        public bool IsRunning => ReferenceHub.animationController.curAnim == 1;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
         public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
