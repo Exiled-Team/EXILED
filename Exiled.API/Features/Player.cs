@@ -1151,7 +1151,7 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Deprecated", false)]
+        [Obsolete("Use Broadcast(Broadcast broadcast, bool overrideMode) instead.", false)]
         public void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
@@ -1310,7 +1310,7 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        [Obsolete("Deprecated", false)]
+        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool overrideMode) instead.", false)]
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
