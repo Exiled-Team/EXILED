@@ -405,9 +405,9 @@ namespace Exiled.API.Features
         public int CurrentAnimation => ReferenceHub.animationController.curAnim;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is running.
+        /// Gets a value indicating whether or not the player is sprinting.
         /// </summary>
-        public bool IsRunning => ReferenceHub.animationController.curAnim == 1;
+        public bool IsSprinting => ReferenceHub.animationController.curAnim == 1;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
