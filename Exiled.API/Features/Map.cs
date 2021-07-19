@@ -511,6 +511,9 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Grenade"/> being spawned.</returns>
         public static Grenade SpawnGrenade(Vector3 position, GrenadeType grenadeType = GrenadeType.FragGrenade, float fuseTime = 3f, Vector3? velocity = null, bool explodeOnCollision = false, Player player = null)
         {
+            if (!Enum.IsDefined(typeof(GrenadeType), grenadeType))
+                return null;
+
             if (player == null)
                 player = Server.Host;
 
