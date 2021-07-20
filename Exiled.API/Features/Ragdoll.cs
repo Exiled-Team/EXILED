@@ -321,12 +321,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Destroy the ragdoll.
+        /// Destroys the ragdoll.
         /// </summary>
-        public void Destroy() => Object.Destroy(GameObject);
+        public void Delete()
+        {
+            Object.Destroy(GameObject);
+            Map.RagdollsValue.Remove(this);
+        }
 
         /// <summary>
-        /// Spawn the ragdoll.
+        /// Spawns the ragdoll.
         /// </summary>
         public void Spawn() => Mirror.NetworkServer.Spawn(GameObject);
     }
