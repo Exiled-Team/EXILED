@@ -1324,7 +1324,9 @@ namespace Exiled.API.Features
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
         {
-            if (overrideMode) ClearBroadcasts();
+            if (shouldClearPrevious) 
+                ClearBroadcasts();
+
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
         }
 
