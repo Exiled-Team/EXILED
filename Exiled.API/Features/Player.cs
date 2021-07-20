@@ -1166,7 +1166,7 @@ namespace Exiled.API.Features
         public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
             if (broadcast.Show)
-                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
 
         /// <summary>
