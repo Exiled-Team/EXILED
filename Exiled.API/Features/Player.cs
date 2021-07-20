@@ -8,7 +8,7 @@
 namespace Exiled.API.Features
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.Generic;https://www.animeworld.tv/play/fumetsu-no-anata-e.tY9Ls/Tf-pb2
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -1087,20 +1087,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
         public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
-
-        /// <summary>
-        /// Sets the player's level.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        /// <param name="newLevel">The level to be set.</param>
-        /// <param name="displayNewLevel">Indicates whether the message should be displayed.</param>
-        public void SetLevel(byte newLevel, bool displayMessage)
-        {
-            if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
-                return;
-
-            ReferenceHub.scp079PlayerScript.ForceLevel(level, displayNewLevel);
-        }
 
         /// <summary>
         /// Sets the player's rank.
