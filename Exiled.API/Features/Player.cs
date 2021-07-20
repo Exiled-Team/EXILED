@@ -412,7 +412,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
-        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
+        public bool IsJumping => CurrentAnimation == 2;
 
         /// <summary>
         /// Gets the player's IP address.
