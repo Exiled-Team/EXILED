@@ -43,6 +43,11 @@ namespace Exiled.Events.Patches.Events.Player
                 ownerNick = ev.PlayerNickname;
                 playerId = ev.PlayerId;
 
+                Role role = __instance.hub.characterClassManager.Classes.SafeGet(classId);
+                GameObject gameObject = UnityEngine.Object.Instantiate(role.model_ragdoll, pos + role.ragdoll_offset.position, Quaternion.Euler(rot.eulerAngles + role.ragdoll_offset.rotation));
+
+                Exiled.API.Features.Map.RagdollsValue.Add(new API.Features.Ragdoll(gameObject.GetComponent<Ragdoll>()));
+
                 return ev.IsAllowed;
             }
             catch (Exception e)
