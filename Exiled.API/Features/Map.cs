@@ -189,7 +189,7 @@ namespace Exiled.API.Features
             return room;
         }
 
-                /// <summary>
+        /// <summary>
         /// Spawns a ragdoll for a player on a certain position.
         /// </summary>
         /// <param name="victim">Victim, represented as a player.</param>
