@@ -1151,7 +1151,7 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Use Broadcast(Broadcast broadcast, bool overrideMode) instead.", false)]
+        [Obsolete("Use Broadcast(Broadcast broadcast, bool shouldClearPrevious) instead.", true)]
         public void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
