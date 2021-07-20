@@ -199,7 +199,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
         public static Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true) =>
             Ragdoll.Spawn(
                         victim.Role,
@@ -237,7 +237,7 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
         public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 DamageTypes.DamageType deathCause,
@@ -275,7 +275,7 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
         public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 string victimNick,
@@ -318,7 +318,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The <see cref="Ragdoll"/> component created.</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
         public static Ragdoll SpawnRagdoll(
                 Role role,
                 global::Ragdoll.Info ragdollInfo,
