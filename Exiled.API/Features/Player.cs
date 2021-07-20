@@ -1163,7 +1163,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="overrideMode">Clears the player's broadcast before sending the new one.</param>
-        public void Broadcast(Broadcast broadcast, bool overrideMode = false)
+        public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
             if (overrideMode) ClearBroadcasts();
             if (broadcast.Show)
