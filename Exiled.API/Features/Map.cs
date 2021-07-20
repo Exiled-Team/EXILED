@@ -51,12 +51,18 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
+        /// <summary>
+        /// A list of <see cref="Ragdoll"/>s on the map.
+        /// </summary>
+        internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
+
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<DoorVariant> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
-
+        private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
+        
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         /// <summary>
@@ -93,6 +99,11 @@ namespace Exiled.API.Features
         /// Gets all <see cref="TeslaGate"/> objects.
         /// </summary>
         public static ReadOnlyCollection<TeslaGate> TeslaGates => ReadOnlyTeslasValue;
+
+        /// <summary>
+        /// Gets all <see cref="Ragdoll"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
