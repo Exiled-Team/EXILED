@@ -45,8 +45,8 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
-        /// used in <see cref="SpawnRagdoll(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
-        /// and <see cref="SpawnRagdoll(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
+        /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
+        /// and <see cref="Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -145,7 +145,7 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        ///     var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
         /// }
         /// </code>
         /// </example>
@@ -191,7 +191,7 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        ///     var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
         /// }
         /// </code>
         /// </example>
@@ -236,7 +236,7 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+        ///     var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
         /// }
         /// </code>
         /// </example>
@@ -291,7 +291,7 @@ namespace Exiled.API.Features
         /// // Code to spawn a fake ragdoll
         /// if (ev.Player == MyPlugin.TheInmortalPlayer)
         /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(RoleType.ClassD, DamageTypes.Fall, "The Falling Guy", new Vector3(1234f, -1f, 4321f));
+        ///     var fakeRagdoll = Ragdoll.Spawn(RoleType.ClassD, DamageTypes.Fall, "The Falling Guy", new Vector3(1234f, -1f, 4321f));
         /// }
         /// </code>
         /// </example>
