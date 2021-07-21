@@ -410,6 +410,16 @@ namespace Exiled.API.Features
         public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is walking.
+        /// </summary>
+        public bool IsWalking => MoveState == PlayerMovementState.Walking;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sneaking.
+        /// </summary>
+        public bool IsSneaking => MoveState == PlayerMovementState.Sneaking;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
         public bool IsJumping => CurrentAnimation == 2;
