@@ -83,7 +83,7 @@ namespace Exiled.Example.Events
             if (!Instance.Config.JoinedBroadcast.Show)
                 return;
 
-            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type);
+            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type, false);
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
