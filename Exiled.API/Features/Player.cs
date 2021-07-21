@@ -1368,8 +1368,8 @@ namespace Exiled.API.Features
         {
             if (items.Count > 0)
             {
-                foreach (Inventory.SyncItemInfo item in items)
-                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
             }
         }
 
