@@ -390,8 +390,6 @@ namespace Exiled.API.Features
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
         public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
-            if (shouldClearPrevious)
-                ClearBroadcasts();
 
             if (broadcast.Show)
                 Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
