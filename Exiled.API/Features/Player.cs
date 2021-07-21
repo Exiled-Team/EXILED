@@ -537,6 +537,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether or not the player is voice chatting.
+        /// </summary>
+        public bool IsVoiceChatting => Player.GameObject.TryGetComponent(out Radio radio) && radio.isVoiceChatting;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is transmitting.
+        /// </summary>
+        public bool IsTransmitting => Player.GameObject.TryGetComponent(out Radio radio) && radio.isTransmitting;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player has godmode enabled.
         /// </summary>
         public bool IsGodModeEnabled
