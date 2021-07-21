@@ -392,7 +392,7 @@ namespace Exiled.API.Features
         {
 
             if (broadcast.Show)
-                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
 
         /// <summary>
