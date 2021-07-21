@@ -8,7 +8,7 @@
 namespace Exiled.API.Features
 {
     using System;
-    using System.Collections.Generic;https://www.animeworld.tv/play/fumetsu-no-anata-e.tY9Ls/Tf-pb2
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
