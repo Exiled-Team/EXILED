@@ -1335,8 +1335,8 @@ namespace Exiled.API.Features
         {
             if (items.Count > 0)
             {
-                foreach (ItemType itemType in items)
-                    Inventory.AddNewItem(itemType);
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
             }
         }
 
