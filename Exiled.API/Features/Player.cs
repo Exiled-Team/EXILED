@@ -1323,7 +1323,7 @@ namespace Exiled.API.Features
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
-                    Inventory.AddNewItem(itemType);
+                    AddItem(itemType);
             }
         }
 
