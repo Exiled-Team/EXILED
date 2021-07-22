@@ -104,6 +104,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
+                Radio = value.GetComponent<Radio>();
             }
         }
 
@@ -121,6 +122,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
         public bool HasHint { get; internal set; }
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s Radio.
+        /// </summary>
+        public Radio Radio { get; private set; }
 
         /// <summary>
         /// Gets the HintDisplay of the player.
@@ -539,12 +545,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is voice chatting.
         /// </summary>
-        public bool IsVoiceChatting => Player.GameObject.TryGetComponent(out Radio radio) && radio.isVoiceChatting;
+        public bool IsVoiceChatting => Radio.isVoiceChatting;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is transmitting.
         /// </summary>
-        public bool IsTransmitting => Player.GameObject.TryGetComponent(out Radio radio) && radio.isTransmitting;
+        public bool IsTransmitting => Radio.isTransmitting;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player has godmode enabled.
