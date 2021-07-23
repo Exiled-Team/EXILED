@@ -43,12 +43,22 @@ namespace Exiled.Events.Patches.Events.Player
                 ownerNick = ev.PlayerNickname;
                 playerId = ev.PlayerId;
 
+                if (!ev.IsAllowed)
+                    return false;
+
                 Role role = __instance.hub.characterClassManager.Classes.SafeGet(classId);
+                if (role.model_ragdoll == null)
+                    return false;
                 GameObject gameObject = UnityEngine.Object.Instantiate(role.model_ragdoll, pos + role.ragdoll_offset.position, Quaternion.Euler(rot.eulerAngles + role.ragdoll_offset.rotation));
+                Ragdoll component = gameObject.GetComponent<Ragdoll>();
+                component.Networkowner = new Ragdoll.Info(ownerID, ownerNick, ragdollInfo, role, playerId);
+                component.NetworkallowRecall = allowRecall;
+                component.NetworkPlayerVelo = velocity;
+                Exiled.API.Features.Ragdoll ragdoll = new API.Features.Ragdoll(component);
+                Mirror.NetworkServer.Spawn(ragdoll.GameObject);
+                Exiled.API.Features.Map.RagdollsValue.Add(ragdoll);
 
-                Exiled.API.Features.Map.RagdollsValue.Add(new API.Features.Ragdoll(gameObject.GetComponent<Ragdoll>()));
-
-                return ev.IsAllowed;
+                return false;
             }
             catch (Exception e)
             {
@@ -59,3 +69,4 @@ namespace Exiled.Events.Patches.Events.Player
         }
     }
 }
+
