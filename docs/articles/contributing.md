@@ -51,11 +51,11 @@ You can also get it via NuGet: ```nuget install docfx.console```
 
 ### Writing and building docs
 
-All of our articles live in the docs/ directory in the root of the repository. To make a new article, simply create a new Markdown (.md) file in the docs/articles folder with a descriptive name. Then, add it to the toc.yml located in that same folder. For more information on toc.yml formatting, check the [DocFX documentation.](https://dotnet.github.io/docfx/tutorial/intro_toc.html#yaml-format-toc-tocyml)
+All of our articles live in the `docs/` directory in the root of the repository. To make a new article, simply create a new Markdown (.md) file in the docs/articles folder with a descriptive name. Then, add it to the `toc.yml` located in that same folder. For more information on toc.yml formatting, check the [DocFX documentation.](https://dotnet.github.io/docfx/tutorial/intro_toc.html#yaml-format-toc-tocyml)
 
 You can then write your article using Markdown. For more information on Markdown syntax, check out [Markdown Guide.](https://www.markdownguide.org/)
 
-To build documentation, run ```docfx docfx.json``` and the completed documentation will be generated in `_site/`. Do not push `_site` to GitHub, as GitHub Actions will generate updated documentation when it is pushed to master.
+To build documentation, run ```docfx docfx.json``` and the completed documentation will be generated in `_site/`.
 
 You can then open `_site/index.html` in your favorite web browser to preview the results.
 
