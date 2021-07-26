@@ -1370,10 +1370,64 @@ namespace Exiled.API.Features
         public void AddItem(ItemType itemType) => Inventory.AddNewItem(itemType);
 
         /// <summary>
+        /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        public void AddItem(ItemType itemType, int amount)
+        {
+            if (amount > 0)
+            {
+                for (int i = 0; i < amount; i++)
+                    AddItem(itemType);
+            }
+        }
+
+        /// <summary>
+        /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        public void AddItem(List<ItemType> items)
+        {
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
+            }
+        }
+
+        /// <summary>
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
         public void AddItem(Inventory.SyncItemInfo item) => Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+
+        /// <summary>
+        /// Add the amount of items to the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        public void AddItem(Inventory.SyncItemInfo item, int amount)
+        {
+            if (amount > 0)
+            {
+                for (int i = 0; i < amount; i++)
+                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+            }
+        }
+
+        /// <summary>
+        /// Add the list of items to the player's inventory.
+        /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        public void AddItem(List<Inventory.SyncItemInfo> items)
+        {
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
+            }
+        }
 
         /// <summary>
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
