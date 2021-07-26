@@ -1173,10 +1173,22 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        [Obsolete("Use Broadcast(Broadcast broadcast, bool shouldClearPrevious) instead.", true)]
         public void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+        }
+
+        /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
+        public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
 
         /// <summary>
@@ -1325,8 +1337,24 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
+        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious) instead.", true)]
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
+            Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        }
+
+        /// <summary>
+        /// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospaced.
+        /// </summary>
+        /// <param name="duration">The broadcast duration.</param>
+        /// <param name="message">The message to be broadcasted.</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
+        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        {
+            if (shouldClearPrevious)
+                ClearBroadcasts();
+
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
         }
 
