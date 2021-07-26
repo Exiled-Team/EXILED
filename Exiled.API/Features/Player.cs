@@ -404,9 +404,29 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the player's current animation.
+        /// </summary>
+        public int CurrentAnimation => ReferenceHub.animationController.curAnim;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sprinting.
+        /// </summary>
+        public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is walking.
+        /// </summary>
+        public bool IsWalking => MoveState == PlayerMovementState.Walking;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sneaking.
+        /// </summary>
+        public bool IsSneaking => MoveState == PlayerMovementState.Sneaking;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
-        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
+        public bool IsJumping => CurrentAnimation == 2;
 
         /// <summary>
         /// Gets the player's IP address.
