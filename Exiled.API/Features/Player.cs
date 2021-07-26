@@ -395,9 +395,13 @@ namespace Exiled.API.Features
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
-        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
         /// </summary>
-        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+        public PlayerMovementState MoveState
+        {
+            get => ReferenceHub.animationController.MoveState;
+            set => ReferenceHub.animationController.Network_curMoveState = (byte)value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
