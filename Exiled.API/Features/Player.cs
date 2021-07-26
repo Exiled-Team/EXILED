@@ -751,9 +751,7 @@ namespace Exiled.API.Features
                 if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
-                ReferenceHub.scp079PlayerScript.Lvl = value;
-
-                ReferenceHub.scp079PlayerScript.TargetLevelChanged(Connection, value);
+                ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
             }
         }
 
