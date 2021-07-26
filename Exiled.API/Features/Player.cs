@@ -1223,6 +1223,12 @@ namespace Exiled.API.Features
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
 
         /// <summary>
+        /// Heals the player by not exceeding the <see cref="MaxHealth"/>.
+        /// </summary>
+        /// <param name="amount">The amount of HP given to the player.</param>
+        public void Heal(float amount) => ReferenceHub.playerStats.HealHPAmount(amount);
+
+        /// <summary>
         /// Hurts the player.
         /// </summary>
         /// <param name="damage">The damage to be inflicted.</param>
