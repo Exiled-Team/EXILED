@@ -32,6 +32,7 @@
     "dest": "_site",
     "globalMetadata": {
       "_appTitle": "EXILED Docs",
+      "_enableSearch": true,
       "_gitContribute": {
         "repo": "https://github.com/Exiled-Team/EXILED",
         "branch": "dev"
