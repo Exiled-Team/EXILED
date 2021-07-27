@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+    using System;
 #pragma warning disable SA1313
 
     using Exiled.API.Features;
@@ -23,20 +24,29 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(MicroHID __instance, ref MicroHID.MicroHidState value)
         {
-            // NetworkCurrentHid state is set each frame, so this  is to prevent calling the method each frame.
-            if (__instance.CurrentHidState == value)
+            try
+            {
+                // NetworkCurrentHid state is set each frame, so this  is to prevent calling the method each frame.
+                if (__instance.CurrentHidState == value)
+                    return true;
+
+                var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, value);
+
+                Handlers.Player.OnChangingMicroHIDState(ev);
+
+                if (!ev.IsAllowed)
+                    return false;
+
+                value = ev.NewState;
+
                 return true;
+            }
+            catch (Exception e)
+            {
+                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingMicroHIDState: {e}\n{e.StackTrace}");
 
-            var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, value);
-
-            Handlers.Player.OnChangingMicroHIDState(ev);
-
-            if (!ev.IsAllowed)
-                return false;
-
-            value = ev.NewState;
-
-            return true;
+                return true;
+            }
         }
     }
 }
