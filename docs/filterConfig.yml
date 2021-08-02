@@ -1,12 +1,6 @@
 apiRules:
   - exclude:
-      uidRegex: Exiled.CreditTags
-      type: Namespace
-  - exclude:
       uidRegex: Exiled.Updater
-      type: Namespace
-  - exclude:
-      uidRegex: Exiled.Loader
       type: Namespace
   - exclude:
       uidRegex: Exiled.Example
