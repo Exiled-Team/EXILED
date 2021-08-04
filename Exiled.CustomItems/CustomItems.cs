@@ -25,7 +25,6 @@ namespace Exiled.CustomItems
     {
         private static readonly CustomItems Singleton = new CustomItems();
 
-        private Random rng = new Random();
         private RoundHandler roundHandler;
         private ServerHandler serverHandler;
         private PlayerHandler playerHandler;
@@ -39,11 +38,6 @@ namespace Exiled.CustomItems
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
         public static CustomItems Instance => Singleton;
-
-        /// <summary>
-        /// Gets a random number generator.
-        /// </summary>
-        internal Random Rng => rng;
 
         /// <inheritdoc />
         public override void OnEnabled()

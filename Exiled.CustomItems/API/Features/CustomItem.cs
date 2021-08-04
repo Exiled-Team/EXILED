@@ -17,6 +17,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
+    using Exiled.Loader;
 
     using MEC;
 
@@ -474,14 +475,14 @@ namespace Exiled.CustomItems.API.Features
                     {
                         Locker locker =
                             LockerManager.singleton.lockers[
-                                Instance.Rng.Next(LockerManager.singleton.lockers.Length)];
+                                Loader.Random.Next(LockerManager.singleton.lockers.Length)];
                         if (locker._itemsToSpawn == null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
-                        LockerChamber chamber = locker.chambers[Instance.Rng.Next(Mathf.Max(0, locker.chambers.Length - 1))];
+                        LockerChamber chamber = locker.chambers[Loader.Random.Next(Mathf.Max(0, locker.chambers.Length - 1))];
 
                         foreach (Locker.ItemToSpawn item in locker._itemsToSpawn.ToList())
                         {
