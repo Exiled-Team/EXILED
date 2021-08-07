@@ -321,7 +321,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Destroys the ragdoll.
+        /// Deletes the ragdoll.
         /// </summary>
         public void Delete()
         {
