@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomItems.API.Spawn
 {
-    using Exiled.CustomItems.API.Features;
+    using UnityEngine;
 
     /// <summary>
     /// Defines item spawn properties.
@@ -27,7 +27,6 @@ namespace Exiled.CustomItems.API.Spawn
         /// <summary>
         /// Gets or sets this spawn point position.
         /// </summary>
-#pragma warning disable CS0618 // Type or member is obsolete
-        public abstract Vector Position { get; set; }
+        public abstract Vector3 Position { get; set; }
     }
 }

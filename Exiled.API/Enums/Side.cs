@@ -19,14 +19,14 @@ namespace Exiled.API.Enums
 
         /// <summary>
         /// Mobile Task Forces team.
-        /// Contains <see cref="RoleType.Scientist"/>, <see cref="RoleType.FacilityGuard"/>, <see cref="RoleType.NtfCadet"/>, <see cref="RoleType.NtfLieutenant"/>,
-        /// <see cref="RoleType.NtfCommander"/> and <see cref="RoleType.NtfScientist"/>.
+        /// Contains <see cref="RoleType.Scientist"/>, <see cref="RoleType.FacilityGuard"/>, <see cref="RoleType.NtfPrivate"/>, <see cref="RoleType.NtfSergeant"/>,
+        /// <see cref="RoleType.NtfCaptain"/> and <see cref="RoleType.NtfSpecialist"/>.
         /// </summary>
         Mtf,
 
         /// <summary>
         /// Chaos Insurgency team.
-        /// Contains <see cref="RoleType.ClassD"/> and <see cref="RoleType.ChaosInsurgency"/>.
+        /// Contains <see cref="RoleType.ClassD"/>, <see cref="RoleType.ChaosConscript"/>, <see cref="RoleType.ChaosRepressor"/>, <see cref="RoleType.ChaosRifleman"/> and <see cref="RoleType.ChaosMarauder"/>.
         /// </summary>
         ChaosInsurgency,
 

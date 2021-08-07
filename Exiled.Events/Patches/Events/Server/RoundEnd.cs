@@ -87,7 +87,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
-                    roundSummary._roundEnded = true;
+                    roundSummary.RoundEnded = true;
                 }
                 else
                 {
@@ -100,11 +100,11 @@ namespace Exiled.Events.Patches.Events.Server
                         ++num6;
                     if (num6 <= 1)
                     {
-                        roundSummary._roundEnded = true;
+                        roundSummary.RoundEnded = true;
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary._roundEnded);
+                var endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
@@ -118,9 +118,9 @@ namespace Exiled.Events.Patches.Events.Server
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
-                roundSummary._roundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
+                roundSummary.RoundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
 
-                if (roundSummary._roundEnded)
+                if (roundSummary.RoundEnded)
                 {
                     FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;

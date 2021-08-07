@@ -9,49 +9,30 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using UnityEngine;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all informations before the server spawns an item.
+    /// Contains all information before the server spawns an item.
     /// </summary>
     public class SpawningItemEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningItemEventArgs"/> class.
         /// </summary>
-        /// <param name="id"><inheritdoc cref="Id"/></param>
-        /// <param name="pos"><inheritdoc cref="Position"/></param>
-        /// <param name="rot"><inheritdoc cref="Rotation"/></param>
-        /// <param name="locked"><inheritdoc cref="Locked"/></param>
+        /// <param name="pickupBase"><inheritdoc cref="Pickup"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SpawningItemEventArgs(ItemType id, Vector3 pos, Quaternion rot, bool locked, bool isAllowed = true)
+        public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)
         {
-            Id = id;
-            Position = pos;
-            Rotation = rot;
-            Locked = locked;
+            Pickup = Pickup.Get(pickupBase);
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets or sets the item to be dropped.
+        /// Gets or sets a value indicating the pickup being spawned.
         /// </summary>
-        public ItemType Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the position to spawn the item.
-        /// </summary>
-        public Vector3 Position { get; set; }
-
-        /// <summary>
-        /// Gets or sets the rotation to spawn the item.
-        /// </summary>
-        public Quaternion Rotation { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the pickup will be locked.
-        /// </summary>
-        public bool Locked { get; set; }
+        public Pickup Pickup { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be spawned.

@@ -31,17 +31,25 @@ namespace Exiled.Events.Patches.Events.Player
     {
         internal static void CallEvent(ReferenceHub hub, out Player player)
         {
-            player = new PlayerAPI(hub);
-
-            Player.UnverifiedPlayers.Add(hub, player);
-            var p = player;
-            Timing.CallDelayed(0.25f, () =>
+            try
             {
-                if (p.IsMuted)
-                    p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
-            });
+                player = new PlayerAPI(hub);
 
-            PlayerEvents.OnJoined(new JoinedEventArgs(player));
+                Player.UnverifiedPlayers.Add(hub, player);
+                var p = player;
+                Timing.CallDelayed(0.25f, () =>
+                {
+                    if (p.IsMuted)
+                        p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
+                });
+
+                PlayerEvents.OnJoined(new JoinedEventArgs(player));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(CallEvent)}: {e}\n{e.StackTrace}");
+                player = null;
+            }
         }
 
         private static void Postfix(ReferenceHub __instance)

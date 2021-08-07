@@ -53,9 +53,18 @@ namespace Exiled.API.Features
         public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="DoorVariant"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<DoorVariant> Doors { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the intensity of the lights in the room.
+        /// </summary>
+        public float LightIntensity
+        {
+            get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
+            set => FlickerableLightController.Network_lightIntensityMultiplier = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the lights in this room are currently flickered off.
@@ -69,12 +78,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
-
-        /// <summary>
-        /// Sets the intensity of the lights in the room.
-        /// </summary>
-        /// <param name="intensity">The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</param>
-        public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
@@ -212,28 +215,9 @@ namespace Exiled.API.Features
             }
         }
 
-        private static List<DoorVariant> FindDoors(GameObject gameObject)
+        private static IEnumerable<DoorVariant> FindDoors(GameObject gameObject)
         {
-            List<DoorVariant> doorList = new List<DoorVariant>();
-            foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
-            {
-                foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
-                {
-                    if (zoneAndRoom.currentRoom == gameObject.name && zoneAndRoom.currentZone == gameObject.transform.parent.name)
-                    {
-                        if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
-                        {
-                            DoorVariant door = scp079Interactable.GetComponent<DoorVariant>();
-                            if (!doorList.Contains(door))
-                            {
-                                doorList.Add(door);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return doorList;
+            return gameObject.GetComponentsInChildren<DoorVariant>().ToList();
         }
 
         private void Start()

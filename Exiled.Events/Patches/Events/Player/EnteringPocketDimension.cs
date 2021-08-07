@@ -24,10 +24,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.CallCmdMovePlayer(GameObject, int)"/>.
+    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMovePlayer(GameObject, int)"/>.
     /// Adds the <see cref="Handlers.Player.EnteringPocketDimension"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMovePlayer))]
     internal static class EnteringPocketDimension
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Events.Player
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -11;
+            var offset = -12;
 
             // Search for the last "newobj".
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;

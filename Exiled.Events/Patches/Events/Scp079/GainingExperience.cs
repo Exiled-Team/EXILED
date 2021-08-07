@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1123
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -28,10 +27,10 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.CallRpcGainExp(ExpGainType, RoleType)"/>.
+    /// Patches <see cref="Scp079PlayerScript.UserCode_RpcGainExp(ExpGainType, RoleType)"/>.
     /// Adds the <see cref="Handlers.Scp079.GainingExperience"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallRpcGainExp))]
+    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_RpcGainExp))]
     internal static class GainingExperience
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

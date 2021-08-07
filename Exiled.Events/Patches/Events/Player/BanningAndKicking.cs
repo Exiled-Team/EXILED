@@ -22,13 +22,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="BanPlayer.BanUser(GameObject, int, string, string, bool)"/>.
+    /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
     /// Adds the <see cref="Player.Banning"/> and <see cref="Player.Kicking"/>events.
     /// </summary>
-    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool) })]
+    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool) })]
     internal static class BanningAndKicking
     {
-        private static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
+        private static bool Prefix(GameObject user, long duration, string reason, string issuer, bool isGlobalBan)
         {
             try
             {

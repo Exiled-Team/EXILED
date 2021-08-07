@@ -7,51 +7,74 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
-    using Exiled.Events;
+#pragma warning disable SA1118
+
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="WeaponManager.RpcPlaceDecal(bool, sbyte, Vector3, Quaternion)"/>.
+    /// Patches <see cref="GunShoot.SpawnDecal"/>.
     /// Adds the <see cref="Map.PlacingDecal"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.RpcPlaceDecal))]
+    [HarmonyPatch(typeof(GunShoot), nameof(GunShoot.SpawnDecal))]
     internal static class PlacingBloodAndDecal
     {
-        private static bool Prefix(WeaponManager __instance, bool isBlood, ref int type, ref Vector3 pos, ref Quaternion rot)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (isBlood)
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            const int offset = 0;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_2) + offset;
+            Label returnLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(PlacingDecalEventArgs));
+
+            newInstructions.InsertRange(index, new[]
             {
-                var ev = new PlacingBloodEventArgs(
-                    API.Features.Player.Get(__instance.gameObject),
-                    pos,
-                    __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass).bloodType,
-                    1);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GunShoot), nameof(GunShoot.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingDecalEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnPlacingDecal))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlacingDecalEventArgs), nameof(PlacingDecalEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlacingDecalEventArgs), nameof(PlacingDecalEventArgs.TypeObject))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlacingDecalEventArgs), nameof(PlacingDecalEventArgs.Position))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlacingDecalEventArgs), nameof(PlacingDecalEventArgs.Rotation))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(GameObject), nameof(GameObject.Instantiate), new[] { typeof(GameObject), typeof(Vector3), typeof(Quaternion) })),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(PlacingBloodAndDecal), nameof(GetTransform))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Transform), nameof(Transform.SetParent), new[] { typeof(Transform) })),
+                new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
+            });
 
-                pos = ev.Position;
-                __instance._hub.characterClassManager.Classes.SafeGet(__instance._hub.characterClassManager.CurClass).bloodType = ev.Type;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                Map.OnPlacingBlood(ev);
-
-                return ev.IsAllowed && Events.Instance.Config.CanSpawnBlood;
-            }
-            else
-            {
-                var ev = new PlacingDecalEventArgs(API.Features.Player.Get(__instance.gameObject), pos, rot, type);
-
-                Map.OnPlacingDecal(ev);
-
-                pos = ev.Position;
-                rot = ev.Rotation;
-                type = ev.Type;
-
-                return ev.IsAllowed;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static Transform GetTransform(RaycastHit hit) => hit.collider.transform;
     }
 }

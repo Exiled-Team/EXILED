@@ -7,9 +7,22 @@
 
 namespace Exiled.Example.Events
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+
+    using InventorySystem;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Coin;
+
+    using MEC;
+
+    using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Handles server-related events.
@@ -31,6 +44,18 @@ namespace Exiled.Example.Events
                 Log.Error($"The round has ended in a draw!");
             else
                 Log.Info($"The leading team is actually: {ev.LeadingTeam}.");
+        }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
+        public void OnRoundStarted()
+        {
+            Log.Info("A round has started!");
+            Timing.CallDelayed(2f, () =>
+            {
+                Item item = new Item(ItemType.Flashlight);
+                Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
+                Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
+            });
         }
     }
 }

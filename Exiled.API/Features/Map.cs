@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -106,7 +105,7 @@ namespace Exiled.API.Features
         {
             ownerHLAPI_id = null,
             PlayerId = -1,
-            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.Com15, -1),
+            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.None, -1, false),
             ClassColor = new Color(1f, 0.556f, 0f),
             FullName = "Class-D",
             Nick = "[REDACTED]",
@@ -249,7 +248,7 @@ namespace Exiled.API.Features
                 string mirrorOwnerId = null)
         {
             var @default = DefaultRagdollOwner;
-            return SpawnRagdoll(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
+            return SpawnRagdoll(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1, false), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
         }
 
         /// <summary>
@@ -363,16 +362,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Spawns hands at the specified position with specified rotation.
-        /// </summary>
-        /// <param name="position">Hands position.</param>
-        /// <param name="rotation">Hands rotation.</param>
-        [Obsolete("Removed from the base-game.", true)]
-        public static void SpawnHands(Vector3 position, Quaternion rotation)
-        {
-        }
-
-        /// <summary>
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
@@ -410,17 +399,6 @@ namespace Exiled.API.Features
         public static void ClearBroadcasts() => Server.Broadcast.RpcClearElements();
 
         /// <summary>
-        /// Gets a random spawn point of a <see cref="RoleType"/>.
-        /// </summary>
-        /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
-        /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
-        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).", true)]
-        public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
-        {
-            return Extensions.Role.GetRandomSpawnPoint(roleType);
-        }
-
-        /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
         public static void StartDecontamination()
@@ -434,7 +412,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="isHeavyContainmentZoneOnly">Indicates whether or not only lights in the heavy containment zone will be turned off.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.ServerOvercharge(duration, isHeavyContainmentZoneOnly);
 
         /// <summary>
         /// Gets the camera with the given ID.

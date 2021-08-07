@@ -46,24 +46,15 @@ namespace Exiled.Events.Handlers
         /// Invoked after a player uses a medical item.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="MedicalItemDequipped"/>, if a player's class has
+        /// Invoked after <see cref="ItemUsed"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
-        public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
-
-        /// <summary>
-        /// Invoked after a player dequips a medical item.
-        /// </summary>
-        /// <remarks>
-        /// Invoked before <see cref="MedicalItemUsed"/>, if a player cancels the
-        /// use of a medical item, won't fire.
-        /// </remarks>
-        public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
+        public static event CustomEventHandler<UsedItemEventArgs> ItemUsed;
 
         /// <summary>
         /// Invoked after a player has stopped the use of a medical item.
         /// </summary>
-        public static event CustomEventHandler<StoppingMedicalItemEventArgs> StoppingMedicalItem;
+        public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
 
         /// <summary>
         /// Invoked after a player interacted with something.
@@ -83,7 +74,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
-        public static event CustomEventHandler<UsingMedicalItemEventArgs> UsingMedicalItem;
+        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
         /// <summary>
         /// Invoked after a player has joined the server.
@@ -124,11 +115,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before changing a player's role.
         /// </summary>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
-
-        /// <summary>
-        /// Invoked after changing a player's role.
-        /// </summary>
-        public static event CustomEventHandler<ChangedRoleEventArgs> ChangedRole;
 
         /// <summary>
         /// Invoked before throwing a grenade.
@@ -281,16 +267,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ReceivingEffectEventArgs> ReceivingEffect;
 
         /// <summary>
-        /// Invoked before a workstation is activated.
-        /// </summary>
-        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
-
-        /// <summary>
-        /// Invoked before a workstation is deactivated.
-        /// </summary>
-        public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
-
-        /// <summary>
         /// Invoked before an user's mute status is changed.
         /// </summary>
         public static event CustomEventHandler<ChangingMuteStatusEventArgs> ChangingMuteStatus;
@@ -313,7 +289,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a player's MicroHID state is changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
+        public static event CustomEventHandler<ChangingMicroHidStateEventArgs> ChangingMicroHIDState;
 
         /// <summary>
         /// Invoked before a player's MicroHID energy is changed.
@@ -353,20 +329,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a player used a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="UsedMedicalItemEventArgs"/> instance.</param>
-        public static void OnMedicalItemUsed(UsedMedicalItemEventArgs ev) => MedicalItemUsed.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after a player dequipped a medical item.
-        /// </summary>
-        /// <param name="ev">The <see cref="DequippedMedicalItemEventArgs"/> instance.</param>
-        public static void OnMedicalItemDequipped(DequippedMedicalItemEventArgs ev) => MedicalItemDequipped.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
+        public static void OnItemUsed(UsedItemEventArgs ev) => ItemUsed.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has stopped the use of a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="StoppingMedicalItemEventArgs"/> instance.</param>
-        public static void OnStoppingMedicalItem(StoppingMedicalItemEventArgs ev) => StoppingMedicalItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="CancellingItemUseEventArgs"/> instance.</param>
+        public static void OnCancellingItemUse(CancellingItemUseEventArgs ev) => CancellingItemUse.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player interacted with something.
@@ -389,8 +359,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before using a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="UsingMedicalItemEventArgs"/> instance.</param>
-        public static void OnUsingMedicalItem(UsingMedicalItemEventArgs ev) => UsingMedicalItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has joined the server.
@@ -439,12 +409,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after changing a player's role.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
-        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before throwing a grenade.
@@ -627,18 +591,6 @@ namespace Exiled.Events.Handlers
         public static void OnReceivingEffect(ReceivingEffectEventArgs ev) => ReceivingEffect.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a workstation is activated.
-        /// </summary>
-        /// <param name="ev">The <see cref="ActivatingWorkstationEventArgs"/> instance.</param>
-        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a workstation is deactivated.
-        /// </summary>
-        /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
-        public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before an user's mute status is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMuteStatusEventArgs"/> instance.</param>
@@ -666,7 +618,7 @@ namespace Exiled.Events.Handlers
         /// Called before a player's MicroHID state is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
-        public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
+        public static void OnChangingMicroHIDState(ChangingMicroHidStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player's MicroHID energy is changed.

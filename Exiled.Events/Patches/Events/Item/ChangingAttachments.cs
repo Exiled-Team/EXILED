@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Item
-{
+{/*
 #pragma warning disable SA1118
 
     using System.Collections.Generic;
@@ -82,5 +82,5 @@ namespace Exiled.Events.Patches.Events.Item
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }
+    }*/
 }

@@ -8,11 +8,14 @@
 namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
+    using InventorySystem.Items;
+
     /// <summary>
-    /// Contains all informations of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
     /// </summary>
     public class OwnerEscapingEventArgs : EscapingEventArgs
     {
@@ -21,7 +24,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
-        public OwnerEscapingEventArgs(Inventory.SyncItemInfo item, EscapingEventArgs ev)
+        public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
             : this(item, ev.Player, ev.NewRole, ev.IsAllowed)
         {
         }
@@ -33,7 +36,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
         /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
         /// <param name="isAllowed"><inheritdoc cref="EscapingEventArgs.IsAllowed"/></param>
-        public OwnerEscapingEventArgs(Inventory.SyncItemInfo item, Player player, RoleType newRole, bool isAllowed = true)
+        public OwnerEscapingEventArgs(Item item, Player player, RoleType newRole, bool isAllowed = true)
             : base(player, newRole, isAllowed)
         {
             Item = item;
@@ -42,6 +45,6 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <summary>
         /// Gets the item in the player's inventory.
         /// </summary>
-        public Inventory.SyncItemInfo Item { get; }
+        public Item Item { get; }
     }
 }

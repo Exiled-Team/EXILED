@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Map
-{
+{/*
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
@@ -71,5 +71,5 @@ namespace Exiled.Events.Patches.Events.Map
                 return true;
             }
         }
-    }
+    }*/
 }

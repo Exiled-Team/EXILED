@@ -23,10 +23,10 @@ namespace Exiled.Events.Patches.Events.Scp106
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdContain106"/>.
+    /// Patches <see cref="PlayerInteract.UserCode_CmdContain106"/>.
     /// Adds the <see cref="Handlers.Scp106.Containing"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdContain106))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdContain106))]
     internal static class Containing
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

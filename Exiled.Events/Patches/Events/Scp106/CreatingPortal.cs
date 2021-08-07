@@ -24,10 +24,10 @@ namespace Exiled.Events.Patches.Events.Scp106
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.CallCmdMakePortal"/>.
+    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMakePortal"/>.
     /// Adds the <see cref="Handlers.Scp106.CreatingPortal"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMakePortal))]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMakePortal))]
     internal static class CreatingPortal
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -74,16 +74,20 @@ namespace Exiled.Events.Patches.Events.Scp106
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.Position))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Vector3), nameof(Vector3.zero))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(CreatingPortalEventArgs), nameof(CreatingPortalEventArgs.Position))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.SetPortalPosition))),
-                new CodeInstruction(OpCodes.Ret),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static void SetPortal(Scp106PlayerScript script, Vector3 pos, Vector3 pos2)
+        {
         }
     }
 }

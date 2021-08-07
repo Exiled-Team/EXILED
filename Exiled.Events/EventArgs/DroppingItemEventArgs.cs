@@ -10,22 +10,28 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all informations before a player drops an item.
+    /// Contains all information before a player drops an item.
     /// </summary>
     public class DroppingItemEventArgs : EventArgs
     {
+        private bool isAllowed = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DroppingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
+        /// <param name="serial">The Serial number of the item.</param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingItemEventArgs(Player player, Inventory.SyncItemInfo item, bool isAllowed = true)
+        public DroppingItemEventArgs(Player player, ushort serial, bool isAllowed = true)
         {
             Player = player;
-            Item = item;
+            Item = player.Inventory.UserInventory.Items.TryGetValue(serial, out ItemBase pickupBase) ? Item.Get(pickupBase) : null;
             IsAllowed = isAllowed;
         }
 
@@ -37,11 +43,26 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the item to be dropped.
         /// </summary>
-        public Inventory.SyncItemInfo Item { get; set; }
+        public Item Item { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be dropped.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed
+        {
+            get
+            {
+                if (Player.Role == RoleType.Spectator)
+                    isAllowed = true;
+                return isAllowed;
+            }
+
+            set
+            {
+                if (Player.Role == RoleType.Spectator)
+                    value = true;
+                isAllowed = value;
+            }
+        }
     }
 }

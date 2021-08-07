@@ -18,9 +18,19 @@ namespace Exiled.Events.Handlers
     public static class Scp914
     {
         /// <summary>
-        /// Invoked before SCP-914 upgrades players and items.
+        /// Invoked before SCP-914 upgrades a item.
         /// </summary>
-        public static event CustomEventHandler<UpgradingItemsEventArgs> UpgradingItems;
+        public static event CustomEventHandler<UpgradingItemEventArgs> UpgradingItem;
+
+        /// <summary>
+        /// Invoked before SCP-914 upgrades an item in a player's inventory.
+        /// </summary>
+        public static event CustomEventHandler<UpgradingInventoryItemEventArgs> UpgradingInventoryItem;
+
+        /// <summary>
+        /// Invoked before SCP-914 upgrades a player.
+        /// </summary>
+        public static event CustomEventHandler<UpgradingPlayerEventArgs> UpgradingPlayer;
 
         /// <summary>
         /// Invoked before activating the SCP-914 machine.
@@ -33,10 +43,22 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingKnobSettingEventArgs> ChangingKnobSetting;
 
         /// <summary>
-        /// Called before SCP-914 upgrades players and items.
+        /// Called before SCP-914 upgrades a item.
         /// </summary>
-        /// <param name="ev">The <see cref="UpgradingItemsEventArgs"/> instance.</param>
-        public static void OnUpgradingItems(UpgradingItemsEventArgs ev) => UpgradingItems.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UpgradingItemEventArgs"/> instance.</param>
+        public static void OnUpgradingItem(UpgradingItemEventArgs ev) => UpgradingItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-914 upgrades an item in a player's inventory.
+        /// </summary>
+        /// <param name="ev">The <see cref="UpgradingInventoryItemEventArgs"/> instance.</param>
+        public static void OnUpgradingInventoryItem(UpgradingInventoryItemEventArgs ev) => UpgradingInventoryItem.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-914 upgrades a player.
+        /// </summary>
+        /// <param name="ev">The <see cref="UpgradingPlayerEventArgs"/> instance.</param>
+        public static void OnUpgradingPlayer(UpgradingPlayerEventArgs ev) => UpgradingPlayer.InvokeSafely(ev);
 
         /// <summary>
         /// Called before activating the SCP-914 machine.

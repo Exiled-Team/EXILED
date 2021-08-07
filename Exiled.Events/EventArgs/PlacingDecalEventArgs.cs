@@ -7,8 +7,10 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable SA1401
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     using UnityEngine;
@@ -19,26 +21,35 @@ namespace Exiled.Events.EventArgs
     public class PlacingDecalEventArgs : EventArgs
     {
         /// <summary>
+        /// The Type Object used by the GunShoot to determine decal type.
+        /// </summary>
+        internal GameObject TypeObject;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="PlacingDecalEventArgs"/> class.
         /// </summary>
         /// <param name="owner"><inheritdoc cref="Owner"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        /// <param name="rotation"><inheritdoc cref="Rotation"/></param>
+        /// <param name="hit"><inheritdoc cref="RaycastHit"/></param>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PlacingDecalEventArgs(Player owner, Vector3 position, Quaternion rotation, int type, bool isAllowed = true)
+        /// <param name="shoot"><inheritdoc cref="GunShoot"/></param>
+        public PlacingDecalEventArgs(Player owner, RaycastHit hit, GameObject type, GunShoot shoot)
         {
             Owner = owner;
-            Position = position;
-            Rotation = rotation;
-            Type = type;
-            IsAllowed = isAllowed;
+            Position = hit.point;
+            Rotation = Quaternion.LookRotation(hit.normal);
+            GunShoot = shoot;
+            TypeObject = type;
         }
 
         /// <summary>
         /// Gets the decal owner.
         /// </summary>
         public Player Owner { get; }
+
+        /// <summary>
+        /// Gets the <see cref="GunShoot"/> that is placing the decal.
+        /// </summary>
+        public GunShoot GunShoot { get; }
 
         /// <summary>
         /// Gets or sets the decal position.
@@ -53,7 +64,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the decal type.
         /// </summary>
-        public int Type { get; set; }
+        public DecalType Type
+        {
+            get => DecalTypes.GetDecalType(TypeObject, GunShoot);
+            set => TypeObject = DecalTypes.GetDecalObject(value, GunShoot);
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the decal can be placed.

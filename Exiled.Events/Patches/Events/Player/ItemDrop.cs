@@ -7,60 +7,69 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using InventorySystem.Items;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
+    using Player = Exiled.Events.Handlers.Player;
+
     /// <summary>
-    /// Patches <see cref="Inventory.CallCmdDropItem(int)"/>.
-    /// Adds the <see cref="Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
+    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
+    /// Adds the <see cref="Handlers.Player.ItemDropped"/> and <see cref="Handlers.Player.DroppingItem"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
+    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropItem))]
     internal static class ItemDrop
     {
-        private static bool Prefix(Inventory __instance, int itemInventoryIndex)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
+            LocalBuilder item = generator.DeclareLocal(typeof(Item));
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(0, new[]
             {
-                if (!__instance._iawRateLimit.CanExecute(true) || itemInventoryIndex < 0 ||
-                    itemInventoryIndex >= __instance.items.Count)
-                    return false;
+                // Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                Inventory.SyncItemInfo syncItemInfo = __instance.items[itemInventoryIndex];
+                // GetItem(player, itemSerial)
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-                if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
-                    return false;
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                var droppingItemEventArgs =
-                    new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo);
+                // var ev = new DroppingItemEventArgs(Player, Item, true)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingItemEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+            });
 
-                Player.OnDroppingItem(droppingItemEventArgs);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                syncItemInfo = droppingItemEventArgs.Item;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                if (!droppingItemEventArgs.IsAllowed)
-                    return false;
-
-                Pickup droppedPickup = __instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position, __instance.camera.transform.rotation, syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
-
-                __instance.items.RemoveAt(itemInventoryIndex);
-
-                var itemDroppedEventArgs = new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
-
-                Player.OnItemDropped(itemDroppedEventArgs);
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ItemDrop: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static ItemBase GetItem(Exiled.API.Features.Player player, ushort serial) => player.TryGetItem(serial, out ItemBase item) ? item : null;
     }
 }

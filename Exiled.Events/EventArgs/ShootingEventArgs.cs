@@ -11,10 +11,12 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.Firearms.BasicMessages;
+
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before a player fires a weapon.
+    /// Contains all information before a player fires a weapon.
     /// </summary>
     public class ShootingEventArgs : EventArgs
     {
@@ -22,15 +24,11 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ShootingEventArgs"/> class.
         /// </summary>
         /// <param name="shooter"><inheritdoc cref="Shooter"/></param>
-        /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ShootingEventArgs(Player shooter, GameObject target, Vector3 position, bool isAllowed = true)
+        /// <param name="msg"><inheritdoc cref="ShotMessage"/></param>
+        public ShootingEventArgs(Player shooter, ShotMessage msg)
         {
             Shooter = shooter;
-            Target = target;
-            Position = position;
-            IsAllowed = isAllowed;
+            ShotMessage = msg;
         }
 
         /// <summary>
@@ -39,18 +37,57 @@ namespace Exiled.Events.EventArgs
         public Player Shooter { get; }
 
         /// <summary>
-        /// Gets the target the player's shooting at.
+        /// Gets or sets the <see cref="ShotMessage"/> for the event.
         /// </summary>
-        public GameObject Target { get; }
+        public ShotMessage ShotMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the position of the shot.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector3 ShotPosition
+        {
+            get => ShotMessage.TargetPosition;
+            set
+            {
+                ShotMessage msg = ShotMessage;
+                ShotMessage = new ShotMessage
+                {
+                    ShooterPosition = msg.ShooterPosition,
+                    ShooterCameraRotation = msg.ShooterCameraRotation,
+                    ShooterCharacterRotation = msg.ShooterCharacterRotation,
+                    ShooterWeaponSerial = msg.ShooterWeaponSerial,
+                    TargetPosition = value,
+                    TargetRotation = msg.TargetRotation,
+                    TargetNetId = msg.TargetNetId,
+                };
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the nedId of the target of the shot.
+        /// </summary>
+        public uint TargetNetId
+        {
+            get => ShotMessage.TargetNetId;
+            set
+            {
+                ShotMessage msg = ShotMessage;
+                ShotMessage = new ShotMessage
+                {
+                    ShooterPosition = msg.ShooterPosition,
+                    ShooterCameraRotation = msg.ShooterCameraRotation,
+                    ShooterCharacterRotation = msg.ShooterCharacterRotation,
+                    ShooterWeaponSerial = msg.ShooterWeaponSerial,
+                    TargetPosition = msg.TargetPosition,
+                    TargetRotation = msg.TargetRotation,
+                    TargetNetId = value,
+                };
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the shot can be fired.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

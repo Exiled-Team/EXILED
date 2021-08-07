@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using InventorySystem.Items.Pickups;
+
     /// <summary>
     /// Contains all information for when the server is turning a pickup into a live grenade.
     /// </summary>
@@ -20,10 +22,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup">The <see cref="Pickup"/> being changed.</param>
         /// <param name="fuseTime">The duration, in seconds, of the fuse time to be used when the grenade goes live.</param>
         /// <param name="isAllowed">Whether or not the event is allowed to continue.</param>
-        public ChangingIntoGrenadeEventArgs(Pickup pickup, float fuseTime = 3f, bool isAllowed = true)
+        public ChangingIntoGrenadeEventArgs(ItemPickupBase pickup, float fuseTime = 3f, bool isAllowed = true)
         {
             Pickup = pickup;
-            Type = pickup.itemId;
+            Type = pickup.NetworkInfo.ItemId;
             FuseTime = fuseTime;
             IsAllowed = isAllowed;
         }
@@ -31,7 +33,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating the pickup being changed.
         /// </summary>
-        public Pickup Pickup { get; }
+        public ItemPickupBase Pickup { get; }
 
         /// <summary>
         /// Gets or sets a value indicating what type of grenade will be spawned.

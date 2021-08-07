@@ -9,11 +9,11 @@ namespace Exiled.Events
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.Events.Patches.Events.Player;
     using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
@@ -57,12 +57,6 @@ namespace Exiled.Events
         public static Events Instance => LazyInstance.Value;
 
         /// <summary>
-        /// Gets a list of types and methods for which EXILED patches should not be run.
-        /// </summary>
-        [Obsolete("Use DisabledPatchesHashSet instead.")]
-        public static List<MethodBase> DisabledPatches { get; } = new List<MethodBase>();
-
-        /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.
         /// </summary>
         public static HashSet<MethodBase> DisabledPatchesHashSet { get; } = new HashSet<MethodBase>();
@@ -80,8 +74,11 @@ namespace Exiled.Events
         {
             base.OnEnabled();
 
+            Stopwatch watch = Stopwatch.StartNew();
             Patch();
 
+            watch.Stop();
+            Log.Info($"Patching completed in {watch.Elapsed}");
             SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
             Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
@@ -104,7 +101,6 @@ namespace Exiled.Events
             Unpatch();
 
             DisabledPatchesHashSet.Clear();
-            DisabledPatches.Clear();
 
             SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
@@ -143,15 +139,10 @@ namespace Exiled.Events
         }
 
         /// <summary>
-        /// Checks the <see cref="DisabledPatches"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
+        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
         /// </summary>
         public void ReloadDisabledPatches()
         {
-            foreach (MethodBase method in DisabledPatches)
-            {
-                DisabledPatchesHashSet.Add(method);
-            }
-
             foreach (MethodBase method in DisabledPatchesHashSet)
             {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
@@ -201,16 +192,8 @@ namespace Exiled.Events
             }
         }
 
-        private void PatchCompilerMess()
-        {
-            UsedMedicalItem.Patch();
-            WaitingForPlayers.Patch();
-        }
+        private void PatchCompilerMess() => WaitingForPlayers.Patch();
 
-        private void UnpatchCompilerMess()
-        {
-            UsedMedicalItem.Unpatch();
-            WaitingForPlayers.Unpatch();
-        }
+        private void UnpatchCompilerMess() => WaitingForPlayers.Unpatch();
     }
 }

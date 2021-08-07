@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Cassie
 {
-    using System;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using HarmonyLib;

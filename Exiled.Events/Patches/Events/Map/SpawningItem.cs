@@ -7,45 +7,59 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
-#pragma warning disable SA1313
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using InventorySystem.Items.Pickups;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.Spawn"/>.
+    /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.
     /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawnedItem"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]
+    [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {
-        private static IEnumerator<float> Postfix(IEnumerator<float> values, RandomItemSpawner.SpawnerItemToSpawn __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, __instance._locked, true);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Handlers.Map.OnSpawningItem(ev);
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawnedItemEventArgs));
+            Label returnLabel = generator.DefineLabel();
 
-            if (ev.IsAllowed)
+            newInstructions.InsertRange(index, new[]
             {
-                Pickup pickup = ReferenceHub.GetHub(PlayerManager.localPlayer).inventory.SetPickup(ev.Id, 0.0f, Vector3.zero, Quaternion.identity, 0, 0, 0);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnSpawningItem))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
-                yield return float.NegativeInfinity;
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
+                new CodeInstruction(OpCodes.Starg, 0),
+            });
 
-                HostItemSpawner.SetPos(pickup, ev.Position, ev.Id, ev.Rotation.eulerAngles);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                pickup.RefreshDurability(true, true);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                if (ev.Locked)
-                    pickup.Locked = true;
-
-                SpawnedItemEventArgs spawned_ev = new SpawnedItemEventArgs(pickup);
-
-                Handlers.Map.OnSpawnedItem(spawned_ev);
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

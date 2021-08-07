@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Player
-{
+{/*
 #pragma warning disable SA1313
     using System;
 
@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
                     if (target == null)
                         continue;
 
-                    if (target.CufferId == __instance.MyReferenceHub.queryProcessor.PlayerId)
+                    if (target.CufferId == ReferenceHub.GetHub(__instance.gameObject).queryProcessor.PlayerId)
                     {
                         var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
 
@@ -39,7 +39,6 @@ namespace Exiled.Events.Patches.Events.Player
 
                         if (ev.IsAllowed)
                             target.CufferId = -1;
-
                         break;
                     }
                 }
@@ -53,5 +52,5 @@ namespace Exiled.Events.Patches.Events.Player
                 return true;
             }
         }
-    }
+    }*/
 }

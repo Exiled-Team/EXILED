@@ -7,57 +7,53 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using InventorySystem.Items;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="Inventory.CallCmdSetUnic(int)"/>.
-    /// Adds the <see cref="Player.ChangingItem"/> event.
+    /// Patches <see cref="InventorySystem.Inventory.CurInstance"/>.
+    /// Adds the <see cref="Handlers.Player.ChangingItem"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdSetUnic))]
+    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.CurInstance), MethodType.Setter)]
     internal static class ChangingItem
     {
-        private static void Prefix(Inventory __instance, int i)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int index = 0;
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingItemEventArgs));
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (__instance.itemUniq == i)
-                    return;
+                // Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingItemEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingItem))),
+            });
 
-                int oldItemIndex = __instance.GetItemIndex();
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                if (oldItemIndex == -1 && i == -1)
-                    return;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                Inventory.SyncItemInfo oldItem = oldItemIndex == -1
-                    ? new Inventory.SyncItemInfo() { id = ItemType.None }
-                    : __instance.GetItemInHand();
-                Inventory.SyncItemInfo newItem = new Inventory.SyncItemInfo() { id = ItemType.None };
-
-                foreach (Inventory.SyncItemInfo item in __instance.items)
-                {
-                    if (item.uniq == i)
-                        newItem = item;
-                }
-
-                var ev = new ChangingItemEventArgs(API.Features.Player.Get(__instance.gameObject), oldItem, newItem);
-
-                Player.OnChangingItem(ev);
-
-                oldItemIndex = __instance.GetItemIndex();
-
-                if (oldItemIndex != -1)
-                    __instance.items[oldItemIndex] = ev.OldItem;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingItem: {e}\n{e.StackTrace}");
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

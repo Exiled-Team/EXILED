@@ -14,29 +14,12 @@ namespace Exiled.Loader
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
     using YamlDotNet.Core;
-    using YamlDotNet.Serialization;
 
     /// <summary>
     /// Used to handle plugin configs.
     /// </summary>
     public static class ConfigManager
     {
-        /// <summary>
-        /// Gets the config serializer.
-        /// </summary>
-        [Obsolete("Moved to Loader.Serializer", true)]
-        public static ISerializer Serializer => Loader.Serializer;
-
-        /// <summary>
-        /// Gets the config deserializer.
-        /// </summary>
-        [Obsolete("Moved to Loader.Deserializer", true)]
-        public static IDeserializer Deserializer => Loader.Deserializer;
-
-        /// <inheritdoc cref="LoadSorted(string)"/>
-        [Obsolete("Replaced with LoadSorted(string)", true)]
-        public static Dictionary<string, IConfig> Load(string rawConfigs) => new Dictionary<string, IConfig>(LoadSorted(rawConfigs));
-
         /// <summary>
         /// Loads all plugin configs.
         /// </summary>
@@ -127,10 +110,6 @@ namespace Exiled.Loader
                 return false;
             }
         }
-
-        /// <inheritdoc cref="Save(SortedDictionary{string, IConfig})"/>
-        [Obsolete("Replaced with Save(SortedDictionary{string, IConfig})", true)]
-        public static bool Save(Dictionary<string, IConfig> configs) => Save(new SortedDictionary<string, IConfig>(configs));
 
         /// <summary>
         /// Saves plugin configs.

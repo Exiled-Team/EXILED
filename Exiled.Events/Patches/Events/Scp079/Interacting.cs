@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1123
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -26,30 +25,29 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
+    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.
     /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
     /// </summary>
-    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
+    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdInteract))]
     internal static class Interacting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             #region InteractingTeslaEventArgs
 
             // Index offset.
-            var offset = 5;
+            int offset = -1;
 
             // Find first "ldstr Tesla Gate Burst", then add the offset to get "ldloc.3".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-            (string)instruction.operand == "Tesla Gate Burst") + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + offset;
 
             // Get the return label.
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // Declare a local variable of the type "InteractingTeslaEventArgs";
-            var interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
+            LocalBuilder interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
 
             // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, manaFromLabel <= this.curMana);
             //
@@ -65,64 +63,25 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // teslaGameObject.GetComponent<TeslaGate>();
-                new CodeInstruction(OpCodes.Ldloc_S, 4),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(GameObject), nameof(GameObject.GetComponent), generics: new[] { typeof(TeslaGate) })),
+                new CodeInstruction(OpCodes.Ldloc_S, 32),
 
                 // manaFromLabel
-                new CodeInstruction(OpCodes.Ldloc_3),
-
-                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
-                new CodeInstruction(OpCodes.Ldloc_3),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
-                new CodeInstruction(OpCodes.Cgt),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Ldloc_2),
 
                 // var ev = new InteractingTeslaEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingTeslaEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, interactingTeslaEv.LocalIndex),
-
-                // Handlers.Map.OnInteractingTesla(ev);
+                new CodeInstruction(OpCodes.Stloc, interactingTeslaEv.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnInteractingTesla))),
-
-                // if (!ev.IsAllowed)
-                //   return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingTeslaEventArgs), nameof(InteractingTeslaEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
-
-                // manaFromLabel = ev.AuxiliaryPowerCost
-                new CodeInstruction(OpCodes.Ldloc_S, interactingTeslaEv.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, interactingTeslaEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingTeslaEventArgs), nameof(InteractingTeslaEventArgs.AuxiliaryPowerCost))),
-                new CodeInstruction(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Stloc_2),
             };
 
             newInstructions.InsertRange(index, instructionsToInsert);
-
-            var instructionsToMoveOffset = 10;
-            var instructionsToMoveCount = 13;
-
-            // GameObject teslaGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom + "/Gate");
-            //
-            // if (gameObject == null)
-            //   return;
-            var instructionsToMove = newInstructions.GetRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
-
-            // Move the instructions block to the start of the transpiler and and remove it.
-            newInstructions.RemoveRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
-            newInstructions.InsertRange(index, instructionsToMove);
-
-            // New index offset.
-            var newOffest = -2;
-
-            // Find first "teslaGate.RpcInstantBurst" method, then add the offset to get "ldloc.s 4".
-            var newIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + newOffest;
-
-            // Move all labels from the first moved instruction.
-            newInstructions[newIndex].MoveLabelsFrom(newInstructions[index]);
 
             #endregion
 
@@ -151,15 +110,15 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // doorVariant
-                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Ldloc_0),
 
                 // manaFromLabel
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
 
                 // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
                 new CodeInstruction(OpCodes.Cgt),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
@@ -181,7 +140,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, interactingDoorEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
-                new CodeInstruction(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Stloc_2),
             });
 
             #endregion
@@ -217,14 +176,14 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.FindParentRoom))),
 
                 // manaFromLabel
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
 
                 // !(manaFromLabel * 1.5f > this.curMana) --> manaFromLabel * 1.5f <= this.curMana
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldc_R4, 1.5f),
                 new CodeInstruction(OpCodes.Mul),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
                 new CodeInstruction(OpCodes.Cgt),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
@@ -246,7 +205,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, startingSpeakerEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartingSpeakerEventArgs), nameof(StartingSpeakerEventArgs.AuxiliaryPowerCost))),
-                new CodeInstruction(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Stloc_2),
             });
 
             #endregion
@@ -332,15 +291,15 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // camera
-                new CodeInstruction(OpCodes.Ldloc_S, 12),
+                new CodeInstruction(OpCodes.Ldloc_S, 9),
 
                 // manaFromLabel
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
 
                 // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
                 new CodeInstruction(OpCodes.Cgt),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
@@ -362,39 +321,10 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, elevatorTeleportEv.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ElevatorTeleportingEventArgs), nameof(ElevatorTeleportingEventArgs.AuxiliaryPowerCost))),
-                new CodeInstruction(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Stloc_2),
             };
 
             newInstructions.InsertRange(index, instructionsToInsert);
-
-            instructionsToMoveOffset = 10;
-            instructionsToMoveCount = 30;
-
-            // Camera079 camera = null;
-            //
-            // foreach (global::Scp079Interactable scp079Interactable in this.nearbyInteractables)
-            // {
-            //   if (scp079Interactable.type == Scp079Interactable.InteractableType.ElevatorTeleport)
-            //     camera = scp079Interactable.optionalObject.GetComponent<Camera079>();
-            // }
-            //
-            // if (camera != null)
-            //   return;
-            instructionsToMove = newInstructions.GetRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
-
-            // Move the instructions block to the start of the transpiler and and remove it.
-            newInstructions.RemoveRange(index + instructionsToInsert.Length + instructionsToMoveOffset, instructionsToMoveCount);
-            newInstructions.InsertRange(index, instructionsToMove);
-
-            // New index offset.
-            newOffest = -4;
-
-            // Find first "teslaGate.RpcInstantBurst" method, then add the offset to get "ldarg.0".
-            newIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.RpcSwitchCamera))) + newOffest;
-
-            // Move all labels from the first moved instruction.
-            newInstructions[newIndex].MoveLabelsFrom(newInstructions[index]);
 
             #endregion
 

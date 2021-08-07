@@ -24,10 +24,10 @@ namespace Exiled.Events.Patches.Events.Scp106
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.CallCmdUsePortal"/>.
+    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
     /// Adds the <see cref="Scp106.Teleporting"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdUsePortal))]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
     internal static class Teleporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

@@ -50,8 +50,8 @@ namespace Exiled.Events.Patches.Events.Player
 
                             if (ev.IsAllowed)
                             {
-                                component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), player);
-                                __instance._lureSpj.SetState(true);
+                                component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0, true), player, true);
+                                __instance._lureSpj.SetState(false, true);
                             }
                         }
                     }

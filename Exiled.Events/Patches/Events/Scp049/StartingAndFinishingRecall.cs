@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp049
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -17,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Scp049
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
 

@@ -16,10 +16,10 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="Intercom.CallCmdSetTransmit(bool)"/>.
+    /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
     /// Adds the <see cref="Player.IntercomSpeaking"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Intercom), nameof(Intercom.CallCmdSetTransmit))]
+    [HarmonyPatch(typeof(Intercom), nameof(Intercom.UserCode_CmdSetTransmit))]
     internal static class IntercomSpeaking
     {
         private static bool Prefix(Intercom __instance, bool player)

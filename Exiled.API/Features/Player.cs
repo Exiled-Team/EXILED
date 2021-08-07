@@ -17,10 +17,14 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
-
-    using Grenades;
+    using Exiled.API.Features.Items;
 
     using Hints;
+
+    using InventorySystem;
+    using InventorySystem.Disarming;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
 
@@ -41,30 +45,40 @@ namespace Exiled.API.Features
     /// </summary>
     public class Player
     {
+#pragma warning disable SA1401
+        /// <summary>
+        /// A list of the player's items.
+        /// </summary>
+        internal readonly List<Item> ItemsValue = new List<Item>(8);
+#pragma warning restore SA1401
+
+        private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="referenceHub">The <see cref="ReferenceHub"/> of the player to be encapsulated.</param>
-        public Player(ReferenceHub referenceHub) => ReferenceHub = referenceHub;
+        public Player(ReferenceHub referenceHub)
+        {
+            readOnlyItems = ItemsValue.AsReadOnly();
+            ReferenceHub = referenceHub;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
         /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
-        public Player(GameObject gameObject) => ReferenceHub = ReferenceHub.GetHub(gameObject);
+        public Player(GameObject gameObject)
+        {
+            readOnlyItems = ItemsValue.AsReadOnly();
+            ReferenceHub = ReferenceHub.GetHub(gameObject);
+        }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="Player"/> class.
         /// </summary>
-        ~Player()
-        {
-            HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
-#pragma warning disable CS0618 // Type or member is obsolete
-            ListPool<int>.Shared.Return(TargetGhosts);
-#pragma warning restore CS0618 // Type or member is obsolete
-        }
+        ~Player() => HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
 
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
@@ -99,23 +113,21 @@ namespace Exiled.API.Features
 
                 referenceHub = value;
                 GameObject = value.gameObject;
-                Ammo = value.ammoBox;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
-                GrenadeManager = value.GetComponent<GrenadeManager>();
             }
         }
+
+        /// <summary>
+        /// Gets the player's ammo.
+        /// </summary>
+        public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject { get; private set; }
-
-        /// <summary>
-        /// Gets the player's ammo.
-        /// </summary>
-        public AmmoBox Ammo { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the player is viewing a hint.
@@ -135,18 +147,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
-        [Obsolete("Use CameraTransform instead.", true)]
-        public Transform PlayerCamera => CameraTransform;
-
-        /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
-        /// </summary>
         public Transform CameraTransform { get; private set; }
-
-        /// <summary>
-        /// Gets the player's grenade manager.
-        /// </summary>
-        public GrenadeManager GrenadeManager { get; private set; }
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -248,33 +249,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's player info area bitmask.
-        /// You can hide player info elements with this.
-        /// </summary>
-        [Obsolete("Use InfoArea instead.", true)]
-        public PlayerInfoArea PlayerInfoArea
-        {
-            get => InfoArea;
-            set => InfoArea = value;
-        }
-
-        /// <summary>
         /// Gets or sets the player's custom player info string.
         /// </summary>
         public string CustomInfo
         {
             get => ReferenceHub.nicknameSync.Network_customPlayerInfoString;
             set => ReferenceHub.nicknameSync.Network_customPlayerInfoString = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the player's custom player info string.
-        /// </summary>
-        [Obsolete("Use CustomInfo instead.", true)]
-        public string CustomPlayerInfo
-        {
-            get => CustomInfo;
-            set => CustomInfo = value;
         }
 
         /// <summary>
@@ -300,12 +280,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who can't see the player.
         /// </summary>
-        [Obsolete("Use 'TargetGhostsSet' instead, will be removed in future releases.")]
-        public List<int> TargetGhosts { get; } = ListPool<int>.Shared.Rent();
-
-        /// <summary>
-        /// Gets a list of player ids who can't see the player.
-        /// </summary>
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
@@ -323,12 +297,35 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the cuffer <see cref="Player"/> id.
+        /// Gets or sets a value indicating the cuffer <see cref="Player"/>.
         /// </summary>
-        public int CufferId
+        public Player Cuffer
         {
-            get => ReferenceHub.handcuffs.NetworkCufferId;
-            set => ReferenceHub.handcuffs.NetworkCufferId = value;
+            get
+            {
+                foreach (DisarmedPlayers.DisarmedEntry disarmed in DisarmedPlayers.Entries)
+                {
+                    if (Get(disarmed.DisarmedPlayer) == this)
+                        return Get(disarmed.Disarmer);
+                }
+
+                return null;
+            }
+
+            set
+            {
+                for (int i = 0; i < DisarmedPlayers.Entries.Count; i++)
+                {
+                    if (DisarmedPlayers.Entries[i].DisarmedPlayer == Inventory.netId)
+                    {
+                        DisarmedPlayers.Entries.RemoveAt(i);
+                        break;
+                    }
+                }
+
+                if (value != null)
+                    Inventory.SetDisarmedStatus(value.Inventory);
+            }
         }
 
         /// <summary>
@@ -382,17 +379,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is cuffed. Note: players can be cuffed without another player being the cuffer.
         /// </summary>
-        public bool IsCuffed => CufferId != -1 || ReferenceHub.handcuffs.ForceCuff;
+        public bool IsCuffed => Cuffer != null;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
         /// </summary>
-        public bool IsReloading => ReferenceHub.weaponManager.IsReloading();
+        public bool IsReloading => CurrentItem is Exiled.API.Features.Items.Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
-        /// <summary>
+        /*/// <summary>
         /// Gets a value indicating whether or not the player is zooming with a weapon.
         /// </summary>
-        public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
+        // public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;*/
 
         /// <summary>
         /// Gets the player's current <see cref="PlayerMovementState"/>.
@@ -418,12 +415,6 @@ namespace Exiled.API.Features
             get => ReferenceHub.serverRoles.NoclipReady;
             set => ReferenceHub.serverRoles.NoclipReady = value;
         }
-
-        /// <summary>
-        /// Gets the player's command sender instance.
-        /// </summary>
-        [Obsolete("Use Sender instead.", true)]
-        public CommandSender CommandSender => Sender;
 
         /// <summary>
         /// Gets the player's command sender instance.
@@ -485,7 +476,7 @@ namespace Exiled.API.Features
         /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
         /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
         /// </summary>
-        public bool IsFriendlyFireEnabled { get; set; }
+        public bool IsFriendlyFireEnabled { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the player's scale.
@@ -583,12 +574,12 @@ namespace Exiled.API.Features
         /// Gets or sets the player's artificial health.
         /// If the health is greater than the <see cref="MaxArtificialHealth"/>, it will also be changed to match the artificial health.
         /// </summary>
-        public float ArtificialHealth
+        public ushort ArtificialHealth
         {
-            get => ReferenceHub.playerStats.unsyncedArtificialHealth;
+            get => ReferenceHub.playerStats.NetworkArtificialHealth;
             set
             {
-                ReferenceHub.playerStats.unsyncedArtificialHealth = value;
+                ReferenceHub.playerStats.NetworkArtificialHealth = value;
 
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = (int)value;
@@ -600,19 +591,8 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealthDecay
         {
-            get => ReferenceHub.playerStats.artificialHpDecay;
-            set => ReferenceHub.playerStats.artificialHpDecay = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the player's adrenaline health.
-        /// If the health is greater than the <see cref="MaxAdrenalineHealth"/>, the MaxAdrenalineHealth will also be changed to match the adrenaline health.
-        /// </summary>
-        [Obsolete("Use ArtificialHealth instead.", true)]
-        public float AdrenalineHealth
-        {
-            get => ArtificialHealth;
-            set => ArtificialHealth = value;
+            get => ReferenceHub.playerStats.NetworkArtificialHpDecay;
+            set => ReferenceHub.playerStats.NetworkArtificialHpDecay = value;
         }
 
         /// <summary>
@@ -620,18 +600,8 @@ namespace Exiled.API.Features
         /// </summary>
         public int MaxArtificialHealth
         {
-            get => ReferenceHub.playerStats.maxArtificialHealth;
-            set => ReferenceHub.playerStats.maxArtificialHealth = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the player's maximum adrenaline health.
-        /// </summary>
-        [Obsolete("Use MaxArtificialHealth instead.", true)]
-        public int MaxAdrenalineHealth
-        {
-            get => MaxArtificialHealth;
-            set => MaxArtificialHealth = value;
+            get => ReferenceHub.playerStats.MaxArtificialHealth;
+            set => ReferenceHub.playerStats.MaxArtificialHealth = value;
         }
 
         /// <summary>
@@ -646,20 +616,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the item in the player's hand, returns the default value if empty.
         /// </summary>
-        public Inventory.SyncItemInfo CurrentItem
+        public Item CurrentItem
         {
-            get => Inventory.GetItemInHand();
+            get => Item.Get(Inventory.CurInstance);
+
             set
             {
-                Inventory.SetCurItem(value.id);
-                Inventory.CallCmdSetUnic(value.uniq);
+                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    AddItem(value.Base);
+
+                Inventory.ServerSelectItem(value.Serial);
             }
         }
-
-        /// <summary>
-        /// Gets the index of the current item in hand.
-        /// </summary>
-        public int CurrentItemIndex => Inventory.GetItemIndex();
 
         /// <summary>
         /// Gets or sets the abilities of SCP-079. Can be null.
@@ -707,7 +675,7 @@ namespace Exiled.API.Features
         /// Gets or sets the doors this player has locked. Can be null.
         /// Only applies if the player is SCP-079.
         /// </summary>
-        public SyncListUInt LockedDoors
+        public SyncList<uint> LockedDoors
         {
             get => ReferenceHub.scp079PlayerScript?.lockedDoors;
             set
@@ -828,7 +796,7 @@ namespace Exiled.API.Features
         /// </summary>
         public string RankColor
         {
-            get => ReferenceHub.serverRoles.NetworkMyColor;
+            get => ReferenceHub.serverRoles.Network_myColor;
             set => ReferenceHub.serverRoles.SetColor(value);
         }
 
@@ -837,7 +805,7 @@ namespace Exiled.API.Features
         /// </summary>
         public string RankName
         {
-            get => ReferenceHub.serverRoles.NetworkMyText;
+            get => ReferenceHub.serverRoles.Network_myText;
             set => ReferenceHub.serverRoles.SetText(value);
         }
 
@@ -868,7 +836,7 @@ namespace Exiled.API.Features
                 if (value)
                     ReferenceHub.characterClassManager.CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.CmdRequestShowTag(false);
             }
         }
 
@@ -883,31 +851,15 @@ namespace Exiled.API.Features
         public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets a player's SCP-330 usages counter.
-        /// </summary>
-        [Obsolete("Removed from the base-game.", true)]
-        public int Scp330Usages
-        {
-            get => -1;
-            set { }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether player has hands.
-        /// </summary>
-        [Obsolete("Removed from the base-game.", true)]
-        public bool HasHands => false;
-
-        /// <summary>
         /// Gets player's ping.
         /// </summary>
         /// <returns>Return player ping.</returns>
         public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
 
         /// <summary>
-        /// Gets player's items.
+        /// Gets the player's items.
         /// </summary>
-        public Inventory.SyncListItemInfo Items => Inventory.items;
+        public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
@@ -957,6 +909,13 @@ namespace Exiled.API.Features
         /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
         /// <returns>Returns a player or null if not found.</returns>
         public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
+
+        /// <summary>
+        /// Gets the Player belonging to a specific NetID, if any.
+        /// </summary>
+        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <returns>The player owning the netId, or null if not found.</returns>
+        public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
         /// <summary>
         /// Gets the Player belonging to the GameObject, if any.
@@ -1072,10 +1031,6 @@ namespace Exiled.API.Features
             }
         }
 
-        /// <inheritdoc cref="Map.GetCameraById(ushort)"/>
-        [Obsolete("Use Map.GetCameraById instead.")]
-        public Camera079 GetCameraById(ushort cameraId) => Map.GetCameraById(cameraId);
-
         /// <summary>
         /// Sets the camera the player is currently located at.
         /// Only applies if the player is SCP-079.
@@ -1089,6 +1044,25 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
         public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
+
+        /// <summary>
+        /// Forces the player to reload their current weapon.
+        /// </summary>
+        public void ReloadWeapon()
+        {
+            if (CurrentItem is Exiled.API.Features.Items.Firearm firearm)
+                firearm.Base.AmmoManagerModule.ServerTryReload();
+            else
+                throw new InvalidOperationException("You may only reload weapons.");
+        }
+
+        /// <summary>
+        /// Tries to get an item from a player's inventory.
+        /// </summary>
+        /// <param name="serial">The <see cref="ushort"/> unique identifier of the item.</param>
+        /// <param name="item">The <see cref="ItemBase"/> found. Null if it doesn't exist.</param>
+        /// <returns>True if the item is found.</returns>
+        public bool TryGetItem(ushort serial, out ItemBase item) => Inventory.UserInventory.Items.TryGetValue(serial, out item);
 
         /// <summary>
         /// Sets the player's rank.
@@ -1128,11 +1102,9 @@ namespace Exiled.API.Features
             if (cuffer?.ReferenceHub == null)
                 return;
 
-            if (!IsCuffed &&
-                cuffer.Inventory.items.Any(item => item.id == ItemType.Disarmer) &&
-                Vector3.Distance(Position, cuffer.Position) <= 130f)
+            if (!IsCuffed && Vector3.Distance(Position, cuffer.Position) <= 130f)
             {
-                CufferId = cuffer.Id;
+                Cuffer = cuffer;
             }
         }
 
@@ -1158,50 +1130,60 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Drops an item from the player's inventory.
-        /// </summary>
-        /// <param name="item">The item to be dropped.</param>
-        public void DropItem(Inventory.SyncItemInfo item)
-        {
-            Inventory.SetPickup(item.id, item.durability, Position, Inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
-            Inventory.items.Remove(item);
-        }
-
-        /// <summary>
         /// Indicates whether or not the player has an item.
         /// </summary>
-        /// <param name="targetItem">The item to search for.</param>
+        /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
-        public bool HasItem(ItemType targetItem)
-        {
-            foreach (Inventory.SyncItemInfo item in this.Inventory.items)
-            {
-                if (item.id == targetItem)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public bool HasItem(ItemType item) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
-        public int CountItem(ItemType item) => Inventory.items.Count(inventoryItem => inventoryItem.id == item);
+        public int CountItem(ItemType item) => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
-        /// Removes an item from the player's inventory.
+        /// Removes an <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
-        /// <param name="item">The item to be removed.</param>
-        public void RemoveItem(Inventory.SyncItemInfo item) => Inventory.items.Remove(item);
+        /// <param name="id">The <see cref="ItemBase"/> id to be removed.</param>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
+        public bool RemoveItem(ushort id)
+        {
+            if (!Inventory.UserInventory.Items.TryGetValue(id, out ItemBase @base))
+                return false;
+
+            Inventory.ServerRemoveItem(id, @base.PickupDropModel);
+            return true;
+        }
 
         /// <summary>
-        /// Removes the held item from the player's inventory.
+        /// Removes an <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
-        public void RemoveItem() => Inventory.items.Remove(ReferenceHub.inventory.GetItemInHand());
+        /// <param name="item">The <see cref="ItemBase"/> to be removed.</param>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
+        public bool RemoveItem(ItemBase item)
+        {
+            if (Items.All(i => i.Base != item))
+                return false;
+
+            ItemsValue.Remove(Item.Get(item));
+            Inventory.ServerRemoveItem(item.PickupDropModel.NetworkInfo.Serial, item.PickupDropModel);
+            return true;
+        }
+
+        /// <summary>
+        /// Removes an <see cref="Item"/> from the player's inventory.
+        /// </summary>
+        /// <param name="item">The <see cref="Item"/> to remove.</param>
+        /// <returns>A value indicating whether the <see cref="Item"/> was removed or not.</returns>
+        public bool RemoveItem(Item item) => RemoveItem(item.Base);
+
+        /// <summary>
+        /// Removes the held <see cref="ItemBase"/> from the player's inventory.
+        /// </summary>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
+        public bool RemoveHeldItem() => RemoveItem(CurrentItem);
 
         /// <summary>
         /// Sends a console message to the player's console.
@@ -1231,9 +1213,10 @@ namespace Exiled.API.Features
         /// <param name="damageType">The damage type.</param>
         /// <param name="attackerName">The attacker name.</param>
         /// <param name="attackerId">The attacker player id.</param>
-        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0)
+        /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom or not.</param>
+        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
         {
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId), GameObject);
+            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
         }
 
         /// <summary>
@@ -1243,6 +1226,19 @@ namespace Exiled.API.Features
         /// <param name="attacker">The attacker.</param>
         /// <param name="damageType">The damage type.</param>
         public void Hurt(float damage, Player attacker, DamageTypes.DamageType damageType = default) => Hurt(damage, damageType, attacker?.Nickname, attacker?.Id ?? 0);
+
+        /// <summary>
+        /// Heals the player.
+        /// </summary>
+        /// <param name="amount">The amount of health to heal.</param>
+        /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
+        public void Heal(float amount, bool overrideMaxHealth = false)
+        {
+            if (!overrideMaxHealth)
+                ReferenceHub.playerStats.HealHPAmount(amount);
+            else
+                Health += amount;
+        }
 
         /// <summary>
         /// Kills the player.
@@ -1311,13 +1307,38 @@ namespace Exiled.API.Features
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
-        public void AddItem(ItemType itemType) => Inventory.AddNewItem(itemType);
+        /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType) => Item.Get(Inventory.ServerAddItem(itemType));
 
         /// <summary>
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
-        public void AddItem(Inventory.SyncItemInfo item) => Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+        public void AddItem(Item item) => AddItem(item.Base);
+
+        /// <summary>
+        /// Adds an item to the player's inventory.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
+        /// <returns>The <see cref="Item"/> that was added.</returns>
+        public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+
+        /// <summary>
+        /// Add an item to the player's inventory.
+        /// </summary>
+        /// <param name="itemBase">The item to be added.</param>
+        /// <returns>The item that was added.</returns>
+        public Item AddItem(ItemBase itemBase)
+        {
+            Item item = Item.Get(itemBase);
+            Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
+
+            itemBase.OnAdded(itemBase.PickupDropModel.NetworkInfo.Serial, itemBase.PickupDropModel);
+            ItemsValue.Add(item);
+
+            Inventory.SendItemsNextFrame = true;
+            return item;
+        }
 
         /// <summary>
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
@@ -1338,33 +1359,30 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        public void ResetInventory(List<Inventory.SyncItemInfo> newItems) => ResetInventory(newItems.Select(item => item.id).ToList());
+        public void ResetInventory(List<ItemBase> newItems)
+        {
+            ClearInventory();
+
+            if (newItems.Count > 0)
+            {
+                foreach (ItemBase item in newItems)
+                    AddItem(item);
+            }
+        }
 
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        public void ClearInventory() => Inventory.Clear();
+        public void ClearInventory()
+        {
+            foreach (Item item in Items)
+                RemoveItem(item);
+        }
 
         /// <summary>
         /// Drops all items in the player's inventory, including all ammo and items.
         /// </summary>
-        public void DropItems() => Inventory.ServerDropAll();
-
-        /// <summary>
-        /// Sets the amount of a specified <see cref="AmmoType">ammo type</see>.
-        /// </summary>
-        /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
-        /// <param name="amount">The amount of ammo to be set.</param>
-        [Obsolete("Use Ammo instead.", true)]
-        public void SetAmmo(AmmoType ammoType, uint amount) => ReferenceHub.ammoBox[(int)ammoType] = amount;
-
-        /// <summary>
-        /// Gets the amount of a specified <see cref="AmmoType"/>.
-        /// </summary>
-        /// <param name="ammoType">The <see cref="AmmoType"/> to get the amount from.</param>
-        /// <returns>Returns the amount of the chosen <see cref="AmmoType"/>.</returns>
-        [Obsolete("Use Ammo instead.", true)]
-        public uint GetAmmo(AmmoType ammoType) => ReferenceHub.ammoBox[(int)ammoType];
+        public void DropItems() => Inventory.ServerDropEverything();
 
         /// <summary>
         /// Simple way to show a hint to the player.
@@ -1384,7 +1402,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shows a HitMarker.
         /// </summary>
-        public void ShowHitMarker() => ReferenceHub.characterClassManager.Scp173.TargetHitMarker(Connection);
+        public void ShowHitMarker() => GameObject.GetComponent<SingleBulletHitreg>().ShowHitIndicator(ReferenceHub.playerStats.netId, 0.01f, Position);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
@@ -1414,7 +1432,7 @@ namespace Exiled.API.Features
             where T : PlayerEffect
         {
             if (ReferenceHub.playerEffectsController.AllEffects.TryGetValue(typeof(T), out PlayerEffect playerEffect))
-                return playerEffect.Enabled;
+                return playerEffect.IsEnabled;
 
             return false;
         }
@@ -1425,10 +1443,7 @@ namespace Exiled.API.Features
         public void DisableAllEffects()
         {
             foreach (KeyValuePair<Type, PlayerEffect> effect in ReferenceHub.playerEffectsController.AllEffects)
-            {
-                if (effect.Value.Enabled)
-                    effect.Value.ServerDisable();
-            }
+                effect.Value.IsEnabled = false;
         }
 
         /// <summary>
@@ -1445,7 +1460,7 @@ namespace Exiled.API.Features
         public void DisableEffect(EffectType effect)
         {
             if (TryGetEffect(effect, out var playerEffect))
-                playerEffect.ServerDisable();
+                playerEffect.IsEnabled = false;
         }
 
         /// <summary>
@@ -1543,14 +1558,6 @@ namespace Exiled.API.Features
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
-
-        /// <summary>
-        /// Removes the player's hands.
-        /// </summary>
-        [Obsolete("Removed from the base-game.", true)]
-        public void RemoveHands()
-        {
-        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";

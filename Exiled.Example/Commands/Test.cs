@@ -8,10 +8,12 @@
 namespace Exiled.Example.Commands
 {
     using System;
+    using System.Linq;
 
     using CommandSystem;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     using RemoteAdmin;
 
@@ -33,10 +35,8 @@ namespace Exiled.Example.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender is PlayerCommandSender player)
-                response = $"{Player.Get(player.SenderId).Nickname} sent the command!";
-            else
-                response = "The command has been sent from the server console!";
+            Player player = Player.Get(((CommandSender)sender).SenderId);
+            response = player != null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 
             // Return true if the command was executed successfully; otherwise, false.
             return true;

@@ -7,10 +7,15 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System.Linq;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items;
 
     /// <summary>
-    /// Contains all informations before a player's held item changes.
+    /// Contains all information before a player's held item changes.
     /// </summary>
     public class ChangingItemEventArgs : System.EventArgs
     {
@@ -18,13 +23,11 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="oldItem"><inheritdoc cref="OldItem"/></param>
         /// <param name="newItem"><inheritdoc cref="NewItem"/></param>
-        public ChangingItemEventArgs(Player player, Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
+        public ChangingItemEventArgs(Player player, ItemBase newItem)
         {
             Player = player;
-            OldItem = oldItem;
-            NewItem = newItem;
+            NewItem = Item.Get(newItem);
         }
 
         /// <summary>
@@ -33,13 +36,13 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the old item.
+        /// Gets or sets the new item.
         /// </summary>
-        public Inventory.SyncItemInfo OldItem { get; set; }
+        public Item NewItem { get; set; }
 
         /// <summary>
-        /// Gets the new item.
+        /// Gets or sets a value indicating whether the event is allowed to continue.
         /// </summary>
-        public Inventory.SyncItemInfo NewItem { get; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

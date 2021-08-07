@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Map
-{
+{/*
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
@@ -265,5 +265,5 @@ namespace Exiled.Events.Patches.Events.Map
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }
+    }*/
 }

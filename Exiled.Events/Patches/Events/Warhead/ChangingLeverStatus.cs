@@ -21,10 +21,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUsePanel"/>.
+    /// Patches <see cref="PlayerInteract.UserCode_CmdSwitchAWButton"/>.
     /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUsePanel))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
     internal static class ChangingLeverStatus
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

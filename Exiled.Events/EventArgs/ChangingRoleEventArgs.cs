@@ -9,11 +9,12 @@ namespace Exiled.Events.EventArgs
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player's <see cref="RoleType"/> changes.
+    /// Contains all information before a player's <see cref="RoleType"/> changes.
     /// </summary>
     public class ChangingRoleEventArgs : EventArgs
     {
@@ -22,15 +23,14 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newRole"><inheritdoc cref="NewRole"/></param>
-        /// <param name="items"><inheritdoc cref="Items"/></param>
-        /// <param name="shouldPreservePosition"><inheritdoc cref="ShouldPreservePosition"/></param>
+        /// <param name="shouldPreservePosition"><inheritdoc cref="Lite"/></param>
         /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangingRoleEventArgs(Player player, RoleType newRole, List<ItemType> items, bool shouldPreservePosition, bool isEscaped)
+        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, bool isEscaped)
         {
             Player = player;
             NewRole = newRole;
-            Items = items;
-            ShouldPreservePosition = shouldPreservePosition;
+            Items = InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole) ? InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items.ToList() : new List<ItemType>();
+            Lite = shouldPreservePosition;
             IsEscaped = isEscaped;
         }
 
@@ -45,7 +45,7 @@ namespace Exiled.Events.EventArgs
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets base items that the player will receive.
+        /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
         public List<ItemType> Items { get; }
 
@@ -55,8 +55,13 @@ namespace Exiled.Events.EventArgs
         public bool IsEscaped { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the position has to be preserved after changing the role.
+        /// Gets or sets a value indicating whether the position and items has to be preserved after changing the role.
         /// </summary>
-        public bool ShouldPreservePosition { get; set; }
+        public bool Lite { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the event can continue.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }

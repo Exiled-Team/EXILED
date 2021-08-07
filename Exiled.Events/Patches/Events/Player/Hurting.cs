@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
                 API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
-                if (target == null || target.IsHost)
+                if (target == null || target.IsHost || target.Role == RoleType.Spectator)
                     return true;
 
                 if (info.GetDamageType() == DamageTypes.Recontainment && target.Role == RoleType.Scp079)

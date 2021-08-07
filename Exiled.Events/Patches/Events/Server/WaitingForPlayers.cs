@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Server
 
         internal static void Patch()
         {
-            const string innerName = "<Init>d__112";
+            const string innerName = "<Init>d__119";
             const string methodName = "MoveNext";
 
             type = AccessTools.Inner(typeof(CharacterClassManager), innerName);

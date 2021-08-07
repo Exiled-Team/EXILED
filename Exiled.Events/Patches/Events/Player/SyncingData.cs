@@ -18,10 +18,10 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="AnimationController.CallCmdSyncData(byte, Vector2)"/>.
+    /// Patches <see cref="AnimationController.UserCode_CmdSyncData(byte, Vector2)"/>.
     /// Adds the <see cref="Player.SyncingData"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.CallCmdSyncData))]
+    [HarmonyPatch(typeof(AnimationController), nameof(AnimationController.UserCode_CmdSyncData))]
     internal static class SyncingData
     {
         private static bool Prefix(AnimationController __instance, byte state, Vector2 v2)

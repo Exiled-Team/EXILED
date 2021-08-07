@@ -15,28 +15,50 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using Searching;
+    using InventorySystem.Items.Firearms.Ammo;
 
     /// <summary>
-    /// Patches <see cref="ItemSearchCompletor.Complete"/>.
+    /// Patches <see cref="InventorySystem.Searching.ItemSearchCompletor.Complete"/>.
     /// Adds the <see cref="Handlers.Player.PickingUpItem"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.Complete))]
+    [HarmonyPatch(typeof(InventorySystem.Searching.ItemSearchCompletor), nameof(InventorySystem.Searching.ItemSearchCompletor.Complete))]
     internal static class PickingUpItem
     {
-        private static bool Prefix(ItemSearchCompletor __instance)
+        private static bool Prefix(InventorySystem.Searching.ItemSearchCompletor __instance)
         {
             try
             {
-                var ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+                if (__instance.TargetPickup is AmmoPickup ammoPickup)
+                {
+                    var ammoEv = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), ammoPickup);
 
-                Handlers.Player.OnPickingUpItem(ev);
+                    Handlers.Player.OnPickingUpAmmo(ammoEv);
 
-                // Allow future pick up of this item
-                if (!ev.IsAllowed)
-                    __instance.TargetPickup.InUse = false;
+                    if (!ammoEv.IsAllowed)
+                    {
+                        __instance.TargetPickup.Info.InUse = false;
+                        __instance.TargetPickup.NetworkInfo = __instance.TargetPickup.Info;
+                    }
 
-                return ev.IsAllowed;
+                    __instance.TargetPickup.Info.Serial = ammoEv.Pickup.Serial;
+                    return ammoEv.IsAllowed;
+                }
+                else
+                {
+                    var ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+
+                    Handlers.Player.OnPickingUpItem(ev);
+                    __instance.TargetPickup.Info.Serial = ev.Pickup.Serial;
+
+                    // Allow future pick up of this item
+                    if (!ev.IsAllowed)
+                    {
+                        __instance.TargetPickup.Info.InUse = false;
+                        __instance.TargetPickup.NetworkInfo = __instance.TargetPickup.Info;
+                    }
+
+                    return ev.IsAllowed;
+                }
             }
             catch (Exception exception)
             {

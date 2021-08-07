@@ -74,7 +74,7 @@ namespace Exiled.CustomItems.Commands.List
 
                 foreach (int insideInventory in customItem.InsideInventories)
                 {
-                    Player owner = Player.List.FirstOrDefault(player => player.Inventory.items.Any(item => item.uniq == insideInventory));
+                    Player owner = Player.List.FirstOrDefault(player => player.Inventory.UserInventory.Items.Any(item => item.Key == insideInventory));
 
                     message.Append(insideInventory).Append(". ");
 

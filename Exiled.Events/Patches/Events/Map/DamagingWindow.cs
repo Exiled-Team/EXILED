@@ -8,9 +8,8 @@
 namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
-    using Mirror;
+
     using NorthwoodLib.Pools;
     using static HarmonyLib.AccessTools;
 

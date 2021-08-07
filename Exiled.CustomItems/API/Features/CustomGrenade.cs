@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.CustomItems.API.Features
-{
+{/*
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -203,5 +203,5 @@ namespace Exiled.CustomItems.API.Features
                 ev.IsAllowed = false;
             }
         }
-    }
+    }*/
 }

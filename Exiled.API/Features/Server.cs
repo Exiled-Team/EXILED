@@ -8,7 +8,6 @@
 namespace Exiled.API.Features
 {
     using System.Reflection;
-
     using Mirror;
 
     /// <summary>
@@ -30,12 +29,7 @@ namespace Exiled.API.Features
             get
             {
                 if (host == null || host.ReferenceHub == null)
-                {
-                    if (PlayerManager.localPlayer != null)
-                        host = new Player(PlayerManager.localPlayer);
-                    else
-                        host = null;
-                }
+                    host = PlayerManager.localPlayer != null ? new Player(PlayerManager.localPlayer) : null;
 
                 return host;
             }
@@ -130,7 +124,7 @@ namespace Exiled.API.Features
         public static void Restart()
         {
             // Used here fastRestart: true, don't know if it makes sense other than no delays in the call to change the scene
-            Round.Restart(fastRestart: true, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.Restart);
+            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
         }
 
         /// <summary>
@@ -138,13 +132,13 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Shutdown()
         {
-            var pStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
+            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
 
             // To avoid delays between reconnecting players, just kick them
-            if (pStats != null)
-                pStats.RpcRoundrestart(0f, false);
+            if (playerStats != null)
+                playerStats.RpcRoundrestart(0f, false);
 
-            Round.Restart(fastRestart: false, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.Shutdown);
+            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
         }
 
         /// <summary>
@@ -155,12 +149,15 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is false, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
-            var pStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-            if (pStats == null)
+            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
+
+            if (playerStats == null)
                 return false;
 
-            pStats.RpcRoundrestartRedirect(.35f, redirectPort);
-            Round.Restart(fastRestart: true, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.Restart);
+            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
+
+            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
+
             return true;
         }
 
@@ -172,13 +169,22 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is false, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
-            var pStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-            if (pStats == null)
+            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
+
+            if (playerStats == null)
                 return false;
 
-            pStats.RpcRoundrestartRedirect(.35f, redirectPort);
-            Round.Restart(fastRestart: false, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.Shutdown);
+            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
+
+            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
             return true;
         }
+
+        /// <summary>
+        /// Runs a server command.
+        /// </summary>
+        /// <param name="command">The command to be run.</param>
+        /// <param name="sender">The <see cref="CommandSender"/> running the command.</param>
+        public static void RunCommand(string command, CommandSender sender = null) => GameCore.Console.singleton.TypeCommand(command, sender ?? host.Sender);
     }
 }
