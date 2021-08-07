@@ -62,7 +62,7 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
-        
+
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         /// <summary>
@@ -113,8 +113,7 @@ namespace Exiled.API.Features
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
         /// </remarks>
-        [Obsolete("Use Ragdoll.DefaultRagdollOwner instead.")]
-        public static Ragdoll.Info DefaultRagdollOwner { get; } = new Ragdoll.Info()
+        public static global::Ragdoll.Info DefaultRagdollOwner { get; } = new global::Ragdoll.Info()
         {
             ownerHLAPI_id = null,
             PlayerId = -1,
@@ -210,7 +209,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
         public static Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true) =>
             Ragdoll.Spawn(
                         victim.Role,
@@ -248,7 +247,7 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
         public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 DamageTypes.DamageType deathCause,
@@ -286,7 +285,7 @@ namespace Exiled.API.Features
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
         public static Ragdoll SpawnRagdoll(
                 RoleType roleType,
                 string victimNick,
@@ -329,7 +328,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <returns>The <see cref="Ragdoll"/> component created.</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead.")]
+        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
         public static Ragdoll SpawnRagdoll(
                 Role role,
                 global::Ragdoll.Info ragdollInfo,
@@ -353,8 +352,23 @@ namespace Exiled.API.Features
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        [Obsolete("Use Broadcast(Broadcast, shouldClearPrevious)", true)]
         public static void Broadcast(Broadcast broadcast)
         {
+            if (broadcast.Show)
+                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
+        {
+            if (shouldClearPrevious)
+                ClearBroadcasts();
+
             if (broadcast.Show)
                 Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
         }
@@ -365,8 +379,24 @@ namespace Exiled.API.Features
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
+        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious)", true)]
         public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
+            Server.Broadcast.RpcAddElement(message, duration, type);
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
+        /// <param name="duration">The duration in seconds.</param>
+        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        {
+            if (shouldClearPrevious)
+                ClearBroadcasts();
+
             Server.Broadcast.RpcAddElement(message, duration, type);
         }
 
