@@ -25,7 +25,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="EscapingEventArgs"/> instance.</param>
         public OwnerEscapingEventArgs(Item item, EscapingEventArgs ev)
-            : this(item, ev.Player, ev.NewRole, ev.IsAllowed)
+            : this(item, ev.Player)
         {
         }
 
@@ -34,10 +34,8 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="player"><inheritdoc cref="EscapingEventArgs.Player"/></param>
-        /// <param name="newRole"><inheritdoc cref="EscapingEventArgs.NewRole"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="EscapingEventArgs.IsAllowed"/></param>
-        public OwnerEscapingEventArgs(Item item, Player player, RoleType newRole, bool isAllowed = true)
-            : base(player, newRole, isAllowed)
+        public OwnerEscapingEventArgs(Item item, Player player)
+            : base(player)
         {
             Item = item;
         }

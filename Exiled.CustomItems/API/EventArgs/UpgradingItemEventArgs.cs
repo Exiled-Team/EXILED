@@ -16,7 +16,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Scp914;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/>'s inventory item is upgraded.
     /// </summary>
     public class UpgradingItemEventArgs : UpgradingInventoryItemEventArgs
     {

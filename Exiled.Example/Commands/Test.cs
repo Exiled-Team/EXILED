@@ -36,6 +36,8 @@ namespace Exiled.Example.Commands
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             Player player = Player.Get(((CommandSender)sender).SenderId);
+            Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
+            player.ClearInventory();
             response = player != null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 
             // Return true if the command was executed successfully; otherwise, false.

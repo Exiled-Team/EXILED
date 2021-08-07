@@ -15,6 +15,8 @@ namespace Exiled.Example.Events
 
     using InventorySystem.Items.Usables;
 
+    using UnityEngine;
+
     using static Example;
 
     /// <summary>
@@ -32,6 +34,12 @@ namespace Exiled.Example.Events
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             Log.Info($"{ev.Player?.Nickname} ({ev.Player?.Role}) is changing his role! The new role will be {ev?.NewRole}!");
+            if (ev.NewRole == RoleType.Tutorial)
+            {
+                ev.Items.Clear();
+                ev.Items.Add(ItemType.Flashlight);
+                ev.Items.Add(ItemType.Medkit);
+            }
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingItem(ChangingItemEventArgs)"/>
@@ -169,6 +177,19 @@ namespace Exiled.Example.Events
             Log.Info($"{ev.Player.Nickname} is dropping {ev.Item.Type}!");
             if (ev.Item.Type == ItemType.Adrenaline)
                 ev.IsAllowed = false;
+        }
+
+        public void OnSpawning(SpawningEventArgs ev)
+        {
+            if (ev.RoleType == RoleType.Scientist)
+                ev.Position = new Vector3(53f, 1020f, -44f);
+        }
+
+        public void OnEscaping(EscapingEventArgs ev)
+        {
+            if (ev.Player.Role == RoleType.Scientist)
+                ev.NewRole = RoleType.Tutorial;
+            Log.Info($"{ev.Player.Nickname} is trying to escape! Their new role will be {ev.NewRole}");
         }
     }
 }

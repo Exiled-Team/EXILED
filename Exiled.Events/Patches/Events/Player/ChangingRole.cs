@@ -8,14 +8,18 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
+    using Exiled.Loader;
 
     using HarmonyLib;
+
+    using MEC;
 
     using NorthwoodLib.Pools;
 
@@ -23,9 +27,11 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
+    using Player = Exiled.Events.Handlers.Player;
+
     /// <summary>
     /// Patches <see cref="CharacterClassManager.SetPlayersClass(RoleType, GameObject, bool, bool)"/>.
-    /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
+    /// Adds the <see cref="Handlers.Player.ChangingRole"/> and <see cref="Handlers.Player.Escaping"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
     internal static class ChangingRole
@@ -33,7 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int index = 0;
+            int offset = 0;
+            int index = 0;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -92,6 +99,21 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Starg, 3),
             });
 
+            offset = 1;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call) + offset;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(CheckItems))),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+            });
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -100,15 +122,26 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool IsSame(RoleType type, RoleType type2) => type == type2;
-
-        private static bool CheckItems(RoleType type, List<ItemType> items) => items == InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList();
+        private static bool CheckItems(RoleType type, List<ItemType> items) =>
+            !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
+                ? items == new List<ItemType>()
+                : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
-            player.ClearInventory();
-            foreach (ItemType type in items)
-                player.AddItem(type);
+            Timing.CallDelayed(0.5f, () =>
+            {
+                try
+                {
+                    player.ClearInventory();
+                    foreach (ItemType type in items)
+                        player.AddItem(type);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {e}");
+                }
+            });
         }
     }
 }

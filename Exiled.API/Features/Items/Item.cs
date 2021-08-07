@@ -47,7 +47,6 @@ namespace Exiled.API.Features.Items
             Type = itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             BaseToItem.Add(itemBase, this);
-            SerialToItem.Add(Serial, this);
         }
 
         /// <summary>
@@ -63,7 +62,6 @@ namespace Exiled.API.Features.Items
             Type = itemBase.ItemTypeId;
             Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
             BaseToItem.Add(itemBase, this);
-            SerialToItem.Add(Serial, this);
         }
 
         /// <summary>

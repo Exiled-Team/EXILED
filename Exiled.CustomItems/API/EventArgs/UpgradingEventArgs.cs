@@ -17,7 +17,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> escapes.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Item"/> gets upgraded.
     /// </summary>
     public class UpgradingEventArgs : Exiled.Events.EventArgs.UpgradingItemEventArgs
     {

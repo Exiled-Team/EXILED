@@ -57,13 +57,13 @@ namespace Exiled.Events.Patches.Events.Player
                 // Exiled.Events.Handlers.Player.OnSpawning(ev);
                 new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.Events.Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
                 // this._pms.OnPlayerClassChange(ev.Position, ev.RotationY)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._pms))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.Position))),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.RotationY))),

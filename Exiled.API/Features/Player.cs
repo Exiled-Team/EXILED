@@ -1375,8 +1375,9 @@ namespace Exiled.API.Features
         /// </summary>
         public void ClearInventory()
         {
-            foreach (Item item in Items)
-                RemoveItem(item);
+            Inventory.UserInventory.Items.Clear();
+            Inventory.SendItemsNextFrame = true;
+            ItemsValue.Clear();
         }
 
         /// <summary>
