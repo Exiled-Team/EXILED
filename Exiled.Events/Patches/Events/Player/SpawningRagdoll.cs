@@ -28,7 +28,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Exiled.API.Features.Log.Debug("Start Prefix");
                 var ev = new SpawningRagdollEventArgs(
                     ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(__instance.gameObject), pos, rot, velocity, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
 
@@ -47,7 +46,6 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!ev.IsAllowed)
                     return false;
 
-                Exiled.API.Features.Log.Debug("Spawning Ragdoll");
                 Role role = __instance.hub.characterClassManager.Classes.SafeGet(classId);
                 if (role.model_ragdoll == null)
                     return false;
@@ -56,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Player
                 component.Networkowner = new Ragdoll.Info(ownerID, ownerNick, ragdollInfo, role, playerId);
                 component.NetworkallowRecall = allowRecall;
                 component.NetworkPlayerVelo = velocity;
-                Exiled.API.Features.Ragdoll ragdoll = new API.Features.Ragdoll(component);
+                Exiled.API.Features.Ragdoll ragdoll = new Exiled.API.Features.Ragdoll(component);
                 Mirror.NetworkServer.Spawn(ragdoll.GameObject);
                 Exiled.API.Features.Map.RagdollsValue.Add(ragdoll);
 
