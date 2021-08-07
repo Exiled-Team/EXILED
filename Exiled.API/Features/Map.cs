@@ -19,6 +19,8 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
+    using Object = UnityEngine.Object;
+
     /// <summary>
     /// A set of tools to easily handle the in-game map.
     /// </summary>
