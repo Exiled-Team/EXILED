@@ -179,12 +179,14 @@ namespace Exiled.Example.Events
                 ev.IsAllowed = false;
         }
 
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnSpawning(SpawningEventArgs)"/>
         public void OnSpawning(SpawningEventArgs ev)
         {
             if (ev.RoleType == RoleType.Scientist)
                 ev.Position = new Vector3(53f, 1020f, -44f);
         }
 
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>
         public void OnEscaping(EscapingEventArgs ev)
         {
             if (ev.Player.Role == RoleType.Scientist)

@@ -41,6 +41,7 @@
 
   <!-- Disable warning about disabled generation of xml files on debug build -->
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);SA0001</NoWarn>
   </PropertyGroup>
 
