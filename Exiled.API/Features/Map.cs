@@ -19,8 +19,6 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-    using Object = UnityEngine.Object;
-
     /// <summary>
     /// A set of tools to easily handle the in-game map.
     /// </summary>
@@ -352,7 +350,6 @@ namespace Exiled.API.Features
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Use Broadcast(Broadcast, shouldClearPrevious)", true)]
         public static void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
@@ -362,41 +359,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts a message to all players.
         /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
-        public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
-        {
-            if (shouldClearPrevious)
-                ClearBroadcasts();
-
-            if (broadcast.Show)
-                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
-        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious)", true)]
         public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
-            Server.Broadcast.RpcAddElement(message, duration, type);
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
-        /// <param name="duration">The duration in seconds.</param>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
-        /// <param name="type">The broadcast type.</param>
-        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
-        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
-        {
-            if (shouldClearPrevious)
-                ClearBroadcasts();
-
             Server.Broadcast.RpcAddElement(message, duration, type);
         }
 
