@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - exiled-3.0
+  workflow_dispatch:
+    branches:
+      - exiled3.0
 
 env:
   EXILED_REFERENCES_URL: ${{ secrets.BETA_REFS }}
