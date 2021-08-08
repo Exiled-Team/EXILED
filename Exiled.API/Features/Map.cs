@@ -46,6 +46,11 @@ namespace Exiled.API.Features
         internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
 
         /// <summary>
+        /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
+        /// </summary>
+        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
+
+        /// <summary>
         /// A list of <see cref="TeslaGate"/>s on the map.
         /// </summary>
         internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
@@ -55,13 +60,14 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -92,6 +98,11 @@ namespace Exiled.API.Features
         /// Gets all <see cref="TeslaGate"/> objects.
         /// </summary>
         public static ReadOnlyCollection<TeslaGate> TeslaGates => ReadOnlyTeslasValue;
+
+        /// <summary>
+        /// Gets all <see cref="PocketDimensionTeleport"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,

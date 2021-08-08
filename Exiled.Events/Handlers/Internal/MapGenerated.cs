@@ -19,6 +19,8 @@ namespace Exiled.Events.Handlers.Internal
 
     using UnityEngine;
 
+    using Object = UnityEngine.Object;
+
     /// <summary>
     /// Handles <see cref="Exiled.Events.Handlers.Map.Generated"/> event.
     /// </summary>
@@ -52,6 +54,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateCameras();
             GenerateTeslaGates();
             GenerateLifts();
+            GeneratePocketTeleports();
         }
 
         private static void GenerateRooms()
@@ -101,5 +104,7 @@ namespace Exiled.Events.Handlers.Internal
         private static void GenerateLifts() => Map.LiftsValue.AddRange(UnityEngine.Object.FindObjectsOfType<Lift>());
 
         private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(UnityEngine.Object.FindObjectsOfType<TeslaGate>());
+
+        private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
     }
 }
