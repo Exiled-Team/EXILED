@@ -171,25 +171,12 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // GameObject.Find(this.currentZone + "/" + this.currentRoom) => roomGameObject
+                // this.CurrentRoom
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentZone))),
-                new CodeInstruction(OpCodes.Ldstr, "/"),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentRoom))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string) })),
-                new CodeInstruction(OpCodes.Call, Method(typeof(GameObject), nameof(GameObject.Find))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CurrentRoom))),
 
                 // manaFromLabel
-                new CodeInstruction(OpCodes.Ldloc_3),
-
-                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
-                new CodeInstruction(OpCodes.Ldloc_3),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
-                new CodeInstruction(OpCodes.Cgt),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Ldloc_2),
 
                 // var ev = new LockingDownEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockingDownEventArgs))[0]),
@@ -197,7 +184,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, lockingDown.LocalIndex),
 
-                // Handlers.Scp079.OnLockdowning(ev);
+                // Handlers.Scp079.OnLockingDown(ev);
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLockingDown))),
 
                 // if (!ev.IsAllowed)
@@ -205,28 +192,11 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
-                // roomGameObject = ev.RoomGameObject;
-                new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.RoomGameObject))),
-                new CodeInstruction(OpCodes.Stloc_S, 35),
-
                 // manaFromLabel = ev.AuxiliaryPowerCost
                 new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.AuxiliaryPowerCost))),
-                new CodeInstruction(OpCodes.Stloc_3),
+                new CodeInstruction(OpCodes.Stloc_2),
             });
-
-            offset = 4;
-
-            // Find the operand "Attempting lockdown...", then add the offset to get "ldloc.3"
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
-            (string)instruction.operand == "Attempting lockdown...") + offset;
-
-            const int instructionsToRemove = 8;
-
-            // Remove "GameObject gameObject2 = GameObject.Find(this.currentZone + "/" + this.currentRoom)" instructions.
-            // instead of this gameObject use roomGameObject from before;
-            newInstructions.RemoveRange(index, instructionsToRemove);
 
             #endregion
 
@@ -238,8 +208,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             offset = -1;
 
             // Find the first 1.5f, then add the offset to get "ldloc.3".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 &&
-            (float)instruction.operand == 1.5f) + offset;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_R4 && (float)instruction.operand == 1.5f) + offset;
 
             // var ev = new StartingSpeakerEventArgs(Player.Get(this.gameObject), Map.FindParentRoom(this.currentCamera.gameObject), manaFromLabel, manaFromLabel * 1.5f <= this.curMana);
             //

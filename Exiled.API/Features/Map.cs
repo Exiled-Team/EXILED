@@ -14,8 +14,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
 
-    using Grenades;
-
     using Interactables.Interobjects.DoorUtils;
 
     using LightContainmentZoneDecontamination;
@@ -382,34 +380,11 @@ namespace Exiled.API.Features
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Use Broadcast(Broadcast, shouldClearPrevious)", true)]
-        public static void Broadcast(Broadcast broadcast)
-        {
-            if (broadcast.Show)
-                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
         public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
-        /// <param name="duration">The duration in seconds.</param>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
-        /// <param name="type">The broadcast type.</param>
-        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious)", true)]
-        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
-        {
-            Server.Broadcast.RpcAddElement(message, duration, type);
         }
 
         /// <summary>
@@ -516,6 +491,7 @@ namespace Exiled.API.Features
             }
         }
 
+        /*
         /// <summary>
         /// Spawns a live grenade object on the map.
         /// </summary>
@@ -549,6 +525,7 @@ namespace Exiled.API.Features
 
             return grenade;
         }
+        */
 
         /// <summary>
         /// Clears the lazy loading game object cache.

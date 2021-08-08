@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.API.Features.Components
-{
+{/*
     using System;
 
     using Exiled.API.Features;
@@ -55,5 +55,5 @@ namespace Exiled.API.Features.Components
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
             }
         }
-    }
+    }*/
 }

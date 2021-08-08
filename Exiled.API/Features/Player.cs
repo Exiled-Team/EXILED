@@ -137,7 +137,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s Radio.
         /// </summary>
-        public Radio Radio => ReferenceHub.radio;
+        public global::Radio Radio => ReferenceHub.radio;
 
         /// <summary>
         /// Gets the HintDisplay of the player.
@@ -1182,11 +1182,7 @@ namespace Exiled.API.Features
         /// Drops an item from the player's inventory.
         /// </summary>
         /// <param name="item">The item to be dropped.</param>
-        public void DropItem(Inventory.SyncItemInfo item)
-        {
-            Inventory.SetPickup(item.id, item.durability, Position, Inventory.camera.transform.rotation, item.modSight, item.modBarrel, item.modOther);
-            Inventory.items.Remove(item);
-        }
+        public void DropItem(Item item) => Inventory.ServerDropItem(item.Serial);
 
         /// <summary>
         /// Indicates whether or not the player has an item.
@@ -1453,12 +1449,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(Inventory.SyncItemInfo item, int amount)
+        public void AddItem(Item item, int amount)
         {
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
-                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+                    AddItem(item);
             }
         }
 
@@ -1466,7 +1462,7 @@ namespace Exiled.API.Features
         /// Add the list of items to the player's inventory.
         /// </summary>
         /// <param name="items">The list of items to be added.</param>
-        public void AddItem(List<Inventory.SyncItemInfo> items)
+        public void AddItem(List<Item> items)
         {
             if (items.Count > 0)
             {

@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Tesla = tesla;
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.ReferenceHub.scp079PlayerScript.Mana;
+            IsAllowed = auxiliaryPowerCost <= player.Energy;
         }
 
         /// <summary>
