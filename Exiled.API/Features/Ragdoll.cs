@@ -101,14 +101,32 @@ namespace Exiled.API.Features
         public Room Room => Map.FindParentRoom(GameObject);
 
         /// <summary>
-        /// Gets the ragdoll's position.
+        /// Gets or sets the ragdoll's position.
         /// </summary>
-        public Vector3 Position => ragdoll.transform.position;
+        public Vector3 Position
+        {
+            get => ragdoll.transform.position;
+            set
+            {
+                Mirror.NetworkServer.UnSpawn(GameObject);
+                ragdoll.transform.position = value;
+                Mirror.NetworkServer.Spawn(GameObject);
+            }
+        }
 
         /// <summary>
-        /// Gets the ragdoll's scale.
+        /// Gets or sets the ragdoll's scale.
         /// </summary>
-        public Vector3 Scale => ragdoll.transform.localScale;
+        public Vector3 Scale
+        {
+            get => ragdoll.transform.localScale;
+            set
+            {
+                Mirror.NetworkServer.UnSpawn(GameObject);
+                ragdoll.transform.localScale = value;
+                Mirror.NetworkServer.Spawn(GameObject);
+            }
+        }
 
         /// <summary>
         /// Spawns a ragdoll for a player on a certain position.
