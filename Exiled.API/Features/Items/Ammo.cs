@@ -20,10 +20,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Ammo"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Ammo(ItemBase itemBase)
+        public Ammo(AmmoItem itemBase)
             : base(itemBase)
         {
-            Base = (AmmoItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>

@@ -33,10 +33,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Armor(ItemBase itemBase)
+        public Armor(BodyArmor itemBase)
             : base(itemBase)
         {
-            Base = (BodyArmor)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>

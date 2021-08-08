@@ -37,6 +37,10 @@ namespace Exiled.Example.Commands
         {
             Player player = Player.Get(((CommandSender)sender).SenderId);
             Log.Warn($"{player.Items.Count} -- {player.Inventory.UserInventory.Items.Count}");
+            foreach (Pickup pickup in Map.Pickups)
+                Log.Warn($"{pickup.Type} ({pickup.Serial}) -- {pickup.Position}");
+            foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
+                Log.Warn($"{teleport.type}");
             player.ClearInventory();
             response = player != null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 

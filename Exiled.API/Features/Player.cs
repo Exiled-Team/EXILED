@@ -1385,7 +1385,13 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
-        public Item AddItem(ItemType itemType) => Item.Get(Inventory.ServerAddItem(itemType));
+        public Item AddItem(ItemType itemType)
+        {
+            Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            if (item is Firearm firearm)
+                firearm.Ammo = firearm.MaxAmmo;
+            return item;
+        }
 
         /// <summary>
         /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.

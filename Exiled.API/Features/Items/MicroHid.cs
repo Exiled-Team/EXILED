@@ -22,10 +22,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="MicroHid"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public MicroHid(ItemBase itemBase)
+        public MicroHid(MicroHIDItem itemBase)
             : base(itemBase)
         {
-            Base = (MicroHIDItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>

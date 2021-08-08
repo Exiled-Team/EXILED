@@ -28,10 +28,11 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Firearm(ItemBase itemBase)
+        public Firearm(InventorySystem.Items.Firearms.Firearm itemBase)
             : base(itemBase)
         {
-            Base = (InventorySystem.Items.Firearms.Firearm)itemBase;
+            Base = itemBase;
+            Log.Warn($"new from base: {itemBase.Status.Ammo} -- {itemBase._status.Ammo}");
         }
 
         /// <summary>

@@ -20,10 +20,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Usable"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Usable(ItemBase itemBase)
+        public Usable(UsableItem itemBase)
             : base(itemBase)
         {
-            Base = (UsableItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>

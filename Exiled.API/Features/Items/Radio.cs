@@ -23,10 +23,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Radio(ItemBase itemBase)
+        public Radio(RadioItem itemBase)
             : base(itemBase)
         {
-            Base = (RadioItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>

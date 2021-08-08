@@ -14,8 +14,14 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.Ammo;
+    using InventorySystem.Items.Keycards;
+    using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.Radio;
+    using InventorySystem.Items.Usables;
 
     using Mirror;
 
@@ -118,16 +124,34 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="itemBase">The <see cref="ItemBase"/> to convert into an item.</param>
         /// <returns>The item wrapper for the given <see cref="ItemBase"/>.</returns>
-        public static Item Get(ItemBase itemBase) =>
-            itemBase == null ? null :
-            BaseToItem.ContainsKey(itemBase) ? BaseToItem[itemBase] :
-            itemBase.ItemTypeId.IsWeapon() ? new Firearm(itemBase) :
-            itemBase.ItemTypeId.IsAmmo() ? new Ammo(itemBase) :
-            itemBase.ItemTypeId.IsArmor() ? new Armor(itemBase) :
-            itemBase.ItemTypeId.IsKeycard() ? new Keycard(itemBase) :
-            itemBase.ItemTypeId.IsMedical() ? new Usable(itemBase) :
-            itemBase.ItemTypeId == ItemType.Radio ? new Radio(itemBase) :
-            itemBase.ItemTypeId == ItemType.MicroHID ? new MicroHid(itemBase) : new Item(itemBase);
+        public static Item Get(ItemBase itemBase)
+        {
+            if (itemBase == null)
+                return null;
+
+            if (BaseToItem.ContainsKey(itemBase))
+                return BaseToItem[itemBase];
+
+            switch (itemBase)
+            {
+                case InventorySystem.Items.Firearms.Firearm firearm:
+                    return new Firearm(firearm);
+                case KeycardItem keycard:
+                    return new Keycard(keycard);
+                case UsableItem usable:
+                    return new Usable(usable);
+                case RadioItem radio:
+                    return new Radio(radio);
+                case MicroHIDItem micro:
+                    return new MicroHid(micro);
+                case BodyArmor armor:
+                    return new Armor(armor);
+                case AmmoItem ammo:
+                    return new Ammo(ammo);
+                default:
+                    return new Item(itemBase);
+            }
+        }
 
         /// <summary>
         /// Gives this item to a <see cref="Player"/>.

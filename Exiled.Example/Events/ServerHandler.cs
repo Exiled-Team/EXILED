@@ -53,6 +53,7 @@ namespace Exiled.Example.Events
             Timing.CallDelayed(2f, () =>
             {
                 Item item = new Item(ItemType.Flashlight);
+                item.Scale = new Vector3(3, 3, 3);
                 Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
                 Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
             });

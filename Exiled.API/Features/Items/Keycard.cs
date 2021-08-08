@@ -22,10 +22,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Keycard(ItemBase itemBase)
+        public Keycard(KeycardItem itemBase)
             : base(itemBase)
         {
-            Base = (KeycardItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>
