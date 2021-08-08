@@ -246,7 +246,7 @@ namespace Exiled.API.Features
             List<Camera079> cameraList = new List<Camera079>();
             foreach (Camera079 camera in Map.Cameras)
             {
-                if (camera.Room.gameObject == gameObject) 
+                if (camera.Room().gameObject == gameObject) 
                 {
                     cameraList.Add(camera);
                 }
