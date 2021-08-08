@@ -5,8 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Components
-{/*
+namespace Exiled.API.Features.Components
+{
     using System;
 
     using Exiled.API.Features;
@@ -18,7 +18,6 @@ namespace Exiled.CustomItems.API.Components
     /// <summary>
     /// Collision Handler for grenades.
     /// </summary>
-    [Obsolete("Use the CollisionHandler from EXILED.API.Features.Components instead.", true)]
     public class CollisionHandler : MonoBehaviour
     {
         /// <summary>
@@ -56,5 +55,5 @@ namespace Exiled.CustomItems.API.Components
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
             }
         }
-    }*/
+    }
 }

@@ -96,8 +96,8 @@ namespace Exiled.Example.Events
             if (!Instance.Config.JoinedBroadcast.Show)
                 return;
 
-            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type);
             Log.Info($"{ev.Player.Nickname} has authenticated! Their Player ID is {ev.Player.Id} and UserId is {ev.Player.UserId}");
+            ev.Player.Broadcast(Instance.Config.JoinedBroadcast.Duration, Instance.Config.JoinedBroadcast.Content, Instance.Config.JoinedBroadcast.Type, false);
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>

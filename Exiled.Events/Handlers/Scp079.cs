@@ -48,6 +48,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ElevatorTeleportingEventArgs> ElevatorTeleporting;
 
         /// <summary>
+        /// Invoked before SCP-079 lockdowns a room.
+        /// </summary>
+        public static event CustomEventHandler<LockingDownEventArgs> LockingDown;
+
+        /// <summary>
         /// Invoked before SCP-079 uses a speaker.
         /// </summary>
         public static event CustomEventHandler<StartingSpeakerEventArgs> StartingSpeaker;
@@ -97,6 +102,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ElevatorTeleportingEventArgs"/> instance.</param>
         public static void OnElevatorTeleporting(ElevatorTeleportingEventArgs ev) => ElevatorTeleporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-079 lockdowns a room.
+        /// </summary>
+        /// <param name="ev">The <see cref="LockingDownEventArgs"/> instance.</param>
+        public static void OnLockingDown(LockingDownEventArgs ev) => LockingDown.InvokeSafely(ev);
 
         /// <summary>
         /// Called before interacting with a speaker with SCP-079.

@@ -157,7 +157,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<IntercomSpeakingEventArgs> IntercomSpeaking;
 
         /// <summary>
-        /// Invoked after a player shoots a weapon.
+        /// Invoked after a player gets shot.
         /// </summary>
         public static event CustomEventHandler<ShotEventArgs> Shot;
 

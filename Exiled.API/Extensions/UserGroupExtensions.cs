@@ -32,11 +32,22 @@ namespace Exiled.API.Extensions
                && @this.RequiredKickPower == other.RequiredKickPower;
 
         /// <summary>
-        /// Searches for a key of a group in the <see cref="PermissionsHandler">RemoveAdmin</see> config.
+        /// Searches for a key of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
         /// </summary>
         /// <param name="this">The <see cref="UserGroup"/>.</param>
         /// <returns>The key of that group, or null if not found.</returns>
         public static string GetKey(this UserGroup @this) => Server.PermissionsHandler._groups
             .FirstOrDefault(pair => pair.Value.EqualsTo(@this)).Key;
+
+        /// <summary>
+        /// Searches for a value of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
+        /// </summary>
+        /// <param name="groupName">The <see cref="string"/>.</param>
+        /// <returns>The value of that group, or null if not found.</returns>
+        public static UserGroup GetValue(string groupName)
+        {
+            ServerStatic.GetPermissionsHandler().GetAllGroups().TryGetValue(groupName, out var userGroup);
+            return userGroup;
+        }
     }
 }

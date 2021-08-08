@@ -14,7 +14,6 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.CustomItems.API.Components;
     using Exiled.Events.EventArgs;
 
     using Grenades;
@@ -93,7 +92,7 @@ namespace Exiled.CustomItems.API.Features
             NetworkServer.Spawn(grenade.gameObject);
 
             if (ExplodeOnCollision)
-                grenade.gameObject.AddComponent<CollisionHandler>().Init(player.GameObject, grenade);
+                grenade.gameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init(player.GameObject, grenade);
 
             return grenade;
         }

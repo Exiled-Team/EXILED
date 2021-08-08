@@ -12,9 +12,15 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using Exiled.API.Enums;
+
+    using Grenades;
+
     using Interactables.Interobjects.DoorUtils;
 
     using LightContainmentZoneDecontamination;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -376,6 +382,7 @@ namespace Exiled.API.Features
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        [Obsolete("Use Broadcast(Broadcast, shouldClearPrevious)", true)]
         public static void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
@@ -385,11 +392,38 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts a message to all players.
         /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="type">The broadcast type.</param>
+        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious)", true)]
         public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
+            Server.Broadcast.RpcAddElement(message, duration, type);
+        }
+
+        /// <summary>
+        /// Broadcasts a message to all players.
+        /// </summary>
+        /// <param name="duration">The duration in seconds.</param>
+        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        {
+            if (shouldClearPrevious)
+                ClearBroadcasts();
+
             Server.Broadcast.RpcAddElement(message, duration, type);
         }
 
@@ -446,7 +480,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
-        public static Camera079 GetCameraByType(CameraType cameraType) =>
+        public static Camera079 GetCameraByType(Enums.CameraType cameraType) =>
             GetCameraById((ushort)cameraType);
 
         /// <summary>
@@ -480,6 +514,40 @@ namespace Exiled.API.Features
 
                 ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
+        }
+
+        /// <summary>
+        /// Spawns a live grenade object on the map.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
+        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
+        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
+        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
+        /// <param name="explodeOnCollision">Should the grenade explode on collision with wall/floor.</param>
+        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
+        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
+        public static Grenade SpawnGrenade(Vector3 position, GrenadeType grenadeType = GrenadeType.FragGrenade, float fuseTime = 3f, Vector3? velocity = null, bool explodeOnCollision = false, Player player = null)
+        {
+            if (!Enum.IsDefined(typeof(GrenadeType), grenadeType))
+                return null;
+
+            if (player == null)
+                player = Server.Host;
+
+            GrenadeManager grenadeManager = player.GrenadeManager;
+            GrenadeSettings settings = grenadeManager.availableGrenades[(int)grenadeType];
+
+            Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
+
+            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity ?? Vector3.zero, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
+            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
+
+            if (explodeOnCollision)
+                grenade.gameObject.AddComponent<Components.CollisionHandler>().Init(player.GameObject, grenade);
+
+            NetworkServer.Spawn(grenade.gameObject);
+
+            return grenade;
         }
 
         /// <summary>
