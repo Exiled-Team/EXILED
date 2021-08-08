@@ -32,23 +32,23 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -1;
+            int offset = -1;
 
             // Search for the last "request.Accept()" and then removes the offset, to get "ldarg.1" index.
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt
-            && (MethodInfo)instruction.operand == Method(typeof(ConnectionRequest), nameof(ConnectionRequest.Accept))) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt
+                                                                     && (MethodInfo)instruction.operand == Method(typeof(ConnectionRequest), nameof(ConnectionRequest.Accept))) + offset;
 
             // Declare a string local variable.
-            var failedMessage = generator.DeclareLocal(typeof(string));
+            LocalBuilder failedMessage = generator.DeclareLocal(typeof(string));
 
             // Define an else label.
-            var elseLabel = generator.DefineLabel();
+            Label elseLabel = generator.DefineLabel();
 
             // Search for the operand of the last "br.s".
-            var returnLabel = newInstructions.FindLast(instruction => instruction.opcode == OpCodes.Br_S).operand;
+            object returnLabel = newInstructions.FindLast(instruction => instruction.opcode == OpCodes.Br_S).operand;
 
             // var ev = new PreAuthenticatingEventArgs(text, request, request.Data.Position, b3, text2, true);
             //

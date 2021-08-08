@@ -35,13 +35,13 @@ namespace Exiled.Events.Patches.Events.Warhead
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // Generate the return label.
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new StoppingEventArgs(Player.Get(disabler), true);
             //

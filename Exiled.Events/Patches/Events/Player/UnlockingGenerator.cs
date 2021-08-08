@@ -32,17 +32,17 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = -4;
 
             // Find the starting index by searching for "call" of "set_NetworkisDoorUnlocked".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == PropertySetter(typeof(Generator079), nameof(Generator079.NetworkisDoorUnlocked))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+                                                                 (MethodInfo)instruction.operand == PropertySetter(typeof(Generator079), nameof(Generator079.NetworkisDoorUnlocked))) + offset;
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // var ev = new UnlockingGeneratorEventArgs(Player.Get(person), this, flag);
             //

@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     if (duration > 0)
                     {
-                        var ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
+                        BanningEventArgs ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
 
                         Player.OnBanning(ev);
 
@@ -140,7 +140,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                     else if (duration == 0)
                     {
-                        var ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
+                        KickingEventArgs ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
 
                         Player.OnKicking(ev);
 

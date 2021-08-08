@@ -32,19 +32,19 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset;
             const int offset = 0;
 
             // Search for the last "ldarg.0".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
             // Get the return label.
-            var returnLabel = newInstructions[index - 1].operand;
+            object returnLabel = newInstructions[index - 1].operand;
 
             // Declare CreatingPortalEventArgs local variable.
-            var ev = generator.DeclareLocal(typeof(CreatingPortalEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(CreatingPortalEventArgs));
 
             // var ev = new CreatingPortalEventArgs(Player.Get(this.gameObject), raycastHit.point - Vector3.up, true);
             //

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -21,6 +22,8 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     using UnityEngine;
+
+    using Console = GameCore.Console;
 
     /// <summary>
     /// Patches <see cref="RoundSummary.Start"/>.
@@ -104,7 +107,7 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
+                EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
@@ -135,7 +138,7 @@ namespace Exiled.Events.Patches.Events.Server
                     {
                         newList.scps_except_zombies -= newList.zombies;
 
-                        var roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
+                        RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
@@ -171,8 +174,8 @@ namespace Exiled.Events.Patches.Events.Server
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
                         {
-                            var generics = m.GetGenericArguments();
-                            var paramseters = m.GetParameters();
+                            Type[] generics = m.GetGenericArguments();
+                            ParameterInfo[] paramseters = m.GetParameters();
                             return m.Name == "CancelWith"
                             && generics.Length == 1
                             && paramseters.Length == 2

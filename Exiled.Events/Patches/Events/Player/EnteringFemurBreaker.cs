@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
                         if (component1.Classes.SafeGet(component1.CurClass).team != Team.SCP &&
                             component1.CurClass != RoleType.Spectator && !component1.GodMode)
                         {
-                            var ev = new EnteringFemurBreakerEventArgs(API.Features.Player.Get(component2.gameObject));
+                            EnteringFemurBreakerEventArgs ev = new EnteringFemurBreakerEventArgs(API.Features.Player.Get(component2.gameObject));
 
                             Player.OnEnteringFemurBreaker(ev);
 

@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                 if (__instance.TargetPickup is AmmoPickup ammoPickup)
                 {
-                    var ammoEv = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), ammoPickup);
+                    PickingUpAmmoEventArgs ammoEv = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), ammoPickup);
 
                     Handlers.Player.OnPickingUpAmmo(ammoEv);
 
@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else
                 {
-                    var ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+                    PickingUpItemEventArgs ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
 
                     Handlers.Player.OnPickingUpItem(ev);
                     __instance.TargetPickup.Info.Serial = ev.Pickup.Serial;

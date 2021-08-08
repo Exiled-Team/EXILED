@@ -32,9 +32,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
-                var bypassDenied = false;
-                var allowInteracting = false;
+                InteractingDoorEventArgs ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
+                bool bypassDenied = false;
+                bool allowInteracting = false;
 
                 if (__instance.ActiveLocks != 0)
                 {

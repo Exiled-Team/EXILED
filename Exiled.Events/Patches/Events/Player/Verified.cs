@@ -29,10 +29,10 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
-            var did = false;
+            MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
+            bool did = false;
 
-            using (var nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
+            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
             {
                 while (nextEnumerator.MoveNext())
                 {

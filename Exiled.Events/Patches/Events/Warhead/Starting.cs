@@ -31,19 +31,19 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 0;
 
             // Search for the last "ldsfld".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = newInstructions[index].labels;
+            List<Label> startingLabels = newInstructions[index].labels;
 
             // Get the return label.
-            var returnLabel = newInstructions[index - 1].labels[0];
+            Label returnLabel = newInstructions[index - 1].labels[0];
 
             // Remove "ldsfld AlphaWarheadController::Host" & "AlphawarheadController.Host.StartDetonation()".
             newInstructions.RemoveRange(index, 2);

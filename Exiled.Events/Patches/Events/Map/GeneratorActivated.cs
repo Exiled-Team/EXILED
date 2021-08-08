@@ -29,16 +29,16 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 1;
 
             // Search for the third "ldarg.0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // Get the first label of the first "ret".
-            var returnLabel = newInstructions[index - offset].labels[0];
+            Label returnLabel = newInstructions[index - offset].labels[0];
 
             // var ev = new GeneratorActivatedEventArgs(this, true);
             //

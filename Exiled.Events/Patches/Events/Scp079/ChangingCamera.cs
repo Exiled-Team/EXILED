@@ -31,19 +31,19 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 0;
 
             // Search for the first "ldloc.1".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
             // Define the first label of the last "ret" and retrieve it.
-            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
 
             // Declare a local variable of the type "ChangingCameraEventArgs"
-            var changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
+            LocalBuilder changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
 
             // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana)
             //
@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Stloc_1),
             });
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

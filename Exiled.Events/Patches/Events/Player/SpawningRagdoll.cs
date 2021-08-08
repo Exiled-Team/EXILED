@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new SpawningRagdollEventArgs(
+                SpawningRagdollEventArgs ev = new SpawningRagdollEventArgs(
                     ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(__instance.gameObject), pos, rot, velocity, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
 
                 Player.OnSpawningRagdoll(ev);

@@ -122,7 +122,7 @@ namespace Exiled.Events
             {
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
 #if DEBUG
-                var lastDebugStatus = Harmony.DEBUG;
+                bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
                 SafePatchCompilerMess();

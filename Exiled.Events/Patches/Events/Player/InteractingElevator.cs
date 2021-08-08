@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+    using Exiled.Events.EventArgs;
+
 #pragma warning disable SA1313
     /// <summary>
     /// Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)"/>.
@@ -31,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!__instance.ChckDis(elevator1.door.transform.position))
                         continue;
 
-                    var interactingEventArgs = new Exiled.Events.EventArgs.InteractingElevatorEventArgs(Exiled.API.Features.Player.Get(__instance._hub), elevator1, component);
+                    InteractingElevatorEventArgs interactingEventArgs = new Exiled.Events.EventArgs.InteractingElevatorEventArgs(Exiled.API.Features.Player.Get(__instance._hub), elevator1, component);
                     Exiled.Events.Handlers.Player.OnInteractingElevator(interactingEventArgs);
 
                     if (interactingEventArgs.IsAllowed)

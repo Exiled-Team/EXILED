@@ -32,29 +32,29 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = -2;
 
             // Find the index of "playerStats.SetHpAmount" method and add the offset.
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+                                                                     (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
 
             // Define the return label and add it to the starting instruction.
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
             newInstructions[index].WithLabels(returnLabel);
 
             // Used to identify the real attacker,
             // if `info.IsPlayer` is true, transfers control to the label `attacterPlayerGetAfterInstance`
-            var attackerInstanceVsHitInfoSource = generator.DefineLabel();
-            var attacterPlayerGetAfterInstance = generator.DefineLabel();
+            Label attackerInstanceVsHitInfoSource = generator.DefineLabel();
+            Label attacterPlayerGetAfterInstance = generator.DefineLabel();
 
             // Declare the attacker local variable.
-            var attacker = generator.DeclareLocal(typeof(Player));
+            LocalBuilder attacker = generator.DeclareLocal(typeof(Player));
 
             // Declare the target local variable.
-            var target = generator.DeclareLocal(typeof(Player));
+            LocalBuilder target = generator.DeclareLocal(typeof(Player));
 
             // Player attacker = Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
             // Player target = Player.Get(go);

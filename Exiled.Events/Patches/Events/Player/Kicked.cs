@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (player == null)
                     return false;
 
-                var ev = new KickedEventArgs(API.Features.Player.Get(player), message);
+                KickedEventArgs ev = new KickedEventArgs(API.Features.Player.Get(player), message);
 
                 Player.OnKicked(ev);
 

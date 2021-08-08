@@ -30,8 +30,8 @@ namespace Exiled.Events.Patches.Generic
             const int offset = -3;
             const int continueLabelOffset = -3;
 
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            var index = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Div);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int index = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Div);
 
             // Quick check if it's the end
             if (index + 1 >= newInstructions.Count)
@@ -46,14 +46,14 @@ namespace Exiled.Events.Patches.Generic
             // Continuation pointer
             // Used to continue execution
             // if both checks fail
-            var continueLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
             newInstructions[newInstructions.FindIndex(ci => ci.opcode == OpCodes.Leave_S) + continueLabelOffset].WithLabels(continueLabel);
 
             // Second check pointer
             // We use it to pass execution
             // to the second check if the first check fails,
             // otherwise the second check won't be executed
-            var secondCheckPointer = generator.DefineLabel();
+            Label secondCheckPointer = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {

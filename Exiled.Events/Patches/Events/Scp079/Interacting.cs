@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             //
             // if (!ev.IsAllowed)
             //   return;
-            var instructionsToInsert = new[]
+            CodeInstruction[] instructionsToInsert = new[]
             {
                 // Player.Get(this.gameObject)
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -89,7 +89,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             #region TriggeringDoorEventArgs
 
             // Declare a local variable of the type "TriggeringDoorEventArgs";
-            var interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
+            LocalBuilder interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
 
             offset = 10;
 
@@ -149,7 +149,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             #region LockingDownEventArgs
 
             // Declare a local variable of the type "LockingDownEventArgs";
-            var lockingDown = generator.DeclareLocal(typeof(LockingDownEventArgs));
+            LocalBuilder lockingDown = generator.DeclareLocal(typeof(LockingDownEventArgs));
 
             offset = 5;
 
@@ -203,7 +203,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             #region StartingSpeakerEventArgs
 
             // Declare a local variable of the type "StartingSpeakerEventArgs";
-            var startingSpeakerEv = generator.DeclareLocal(typeof(StartingSpeakerEventArgs));
+            LocalBuilder startingSpeakerEv = generator.DeclareLocal(typeof(StartingSpeakerEventArgs));
 
             offset = -1;
 
@@ -329,7 +329,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             (string)instruction.operand == "Elevator Teleport") + offset;
 
             // Declare a local variable of the type "ElevatorTeleportingEventArgs";
-            var elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
+            LocalBuilder elevatorTeleportEv = generator.DeclareLocal(typeof(ElevatorTeleportingEventArgs));
 
             // var ev = new ElevatorTeleportingEventArgs(Player.Get(this.gameObject), camera, manaFromLabel, manaFromLabel <= this.curMana);
             //
@@ -382,7 +382,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

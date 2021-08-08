@@ -31,16 +31,16 @@ namespace Exiled.Events.Patches.Events.Scp106
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 1;
 
             // Search for the last "bne.un.s" and add 1 to get the index of the last "ldloca.s".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
 
             // Get the return label.
-            var returnLabel = newInstructions[index - 1].operand;
+            object returnLabel = newInstructions[index - 1].operand;
 
             // var ev = new ContainingEventArgs(Player.Get(keyValuePair.Key), Player.Get(PlayerInteract._hub), true);
             //

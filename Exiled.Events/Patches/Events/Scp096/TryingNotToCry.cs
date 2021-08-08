@@ -29,16 +29,16 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 0;
 
             // Search for last "lfsfld".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             // Get the return label from the instruction.
-            var returnLabel = newInstructions[index - 1].labels[0];
+            Label returnLabel = newInstructions[index - 1].labels[0];
 
             // var ev = new TryingNotToCryEventArgs(Scp096 scp096, Player player, door, true);
             //

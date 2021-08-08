@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -102,8 +103,8 @@ namespace Exiled.Events.Patches.Events.Server
             // Moving 2 indexes forward skipping the access itself and 'brtrue'
             const sbyte skipOpcodes = 2;
 
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            var patchIndex = newInstructions.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int patchIndex = newInstructions.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
 
 #if DEBUG
             LogL($"Patch index: {patchIndex}");
@@ -117,29 +118,29 @@ namespace Exiled.Events.Patches.Events.Server
 
             patchIndex += skipOpcodes;
 
-            var retEnd = generator.DefineLabel();
+            Label retEnd = generator.DefineLabel();
             newInstructions[patchIndex].WithLabels(retEnd);
 
-            var callPlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
-            var newLocalReportingEventArgs = AccessTools.Constructor(
-                typeof(EventArgs.LocalReportingEventArgs),
+            MethodInfo callPlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
+            ConstructorInfo newLocalReportingEventArgs = AccessTools.Constructor(
+                typeof(Exiled.Events.EventArgs.LocalReportingEventArgs),
                 new[] { typeof(API.Features.Player), typeof(API.Features.Player), typeof(string), typeof(bool) });
 
-            var locLocalReportEventArgs = generator.DeclareLocal(typeof(EventArgs.LocalReportingEventArgs));
-            var locIndexLocalReportEventArgs = locLocalReportEventArgs.LocalIndex;
+            LocalBuilder locLocalReportEventArgs = generator.DeclareLocal(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs));
+            int locIndexLocalReportEventArgs = locLocalReportEventArgs.LocalIndex;
             const byte argIndexReason = 2;
 
-            var callOnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(EventArgs.LocalReportingEventArgs) });
-            var callLocalReportingEventArgsGETIsAllowed = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.IsAllowed));
-            var callLocalReportingEventArgsGETReason = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.Reason));
-            var callSuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
+            MethodInfo callOnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(Exiled.Events.EventArgs.LocalReportingEventArgs) });
+            MethodInfo callLocalReportingEventArgsGETIsAllowed = AccessTools.PropertyGetter(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), nameof(Exiled.Events.EventArgs.LocalReportingEventArgs.IsAllowed));
+            MethodInfo callLocalReportingEventArgsGETReason = AccessTools.PropertyGetter(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), nameof(Exiled.Events.EventArgs.LocalReportingEventArgs.Reason));
+            MethodInfo callSuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
 
-            var internalReportDataRootClass = typeof(CheaterReport);
+            Type internalReportDataRootClass = typeof(CheaterReport);
             const string internalReportDataNestedClassName = "<>c__DisplayClass13_0";
             const string internalReportDataNestedClassReasonFieldName = "reason";
 
-            var internalReportDataNestedClass = internalReportDataRootClass.GetNestedType(internalReportDataNestedClassName, BindingFlags.NonPublic);
-            var fieldReason = AccessTools.Field(internalReportDataNestedClass, internalReportDataNestedClassReasonFieldName);
+            Type internalReportDataNestedClass = internalReportDataRootClass.GetNestedType(internalReportDataNestedClassName, BindingFlags.NonPublic);
+            FieldInfo fieldReason = AccessTools.Field(internalReportDataNestedClass, internalReportDataNestedClassReasonFieldName);
 #if DEBUG
             void LogL(string value) =>
                 API.Features.Log.Debug($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: {value}", true);
@@ -155,10 +156,10 @@ namespace Exiled.Events.Patches.Events.Server
             if (internalReportDataNestedClass == null)
             {
                 LogL($"I see, the {nameof(internalReportDataNestedClass)} is null, trying to find the {nameof(internalReportDataNestedClassReasonFieldName)} field in all nested types...");
-                var nestedTypes = internalReportDataNestedClass.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var nestedType in nestedTypes)
+                Type[] nestedTypes = internalReportDataNestedClass.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
+                foreach (Type nestedType in nestedTypes)
                 {
-                    var reasonField = nestedType.GetField(internalReportDataNestedClassReasonFieldName);
+                    FieldInfo reasonField = nestedType.GetField(internalReportDataNestedClassReasonFieldName);
                     if (reasonField != null)
                     {
                         LogL($"Found the {nameof(internalReportDataNestedClassReasonFieldName)}! It's {reasonField.Name} in the {nestedType.FullName}!");
@@ -237,6 +238,6 @@ namespace Exiled.Events.Patches.Events.Server
 
         // Try to replace the reason as a field,
         // it didn't work for me
-        private static void SuperReasonReplacer(EventArgs.LocalReportingEventArgs ev, ref string reason) => reason = ev.Reason;
+        private static void SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, ref string reason) => reason = ev.Reason;
     }
 }

@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // offset variable
             const int offset = 2;
@@ -38,10 +38,10 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset;
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // Add the return label
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
             newInstructions[index - 1].WithLabels(returnLabel);
 
             // var ev = new ChangingWarheadLeverStatusEventArgs(Player.Get(component), true);

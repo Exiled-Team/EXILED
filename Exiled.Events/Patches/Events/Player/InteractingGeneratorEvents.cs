@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
                         switch (__instance.isDoorOpen)
                         {
                             case false:
-                                var openingEventArgs = new OpeningGeneratorEventArgs(player, __instance);
+                                OpeningGeneratorEventArgs openingEventArgs = new OpeningGeneratorEventArgs(player, __instance);
 
                                 Player.OnOpeningGenerator(openingEventArgs);
 
@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                                 break;
                             case true:
-                                var closingEventArgs = new ClosingGeneratorEventArgs(player, __instance);
+                                ClosingGeneratorEventArgs closingEventArgs = new ClosingGeneratorEventArgs(player, __instance);
 
                                 Player.OnClosingGenerator(closingEventArgs);
 
@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Player
                         if (__instance.isTabletConnected || !__instance.isDoorOpen || (__instance._localTime <= 0.0 || Generator079.mainGenerator.forcedOvercharge))
                             break;
 
-                        var insertingEventArgs = new InsertingGeneratorTabletEventArgs(player, __instance);
+                        InsertingGeneratorTabletEventArgs insertingEventArgs = new InsertingGeneratorTabletEventArgs(player, __instance);
                         Player.OnInsertingGeneratorTablet(insertingEventArgs);
 
                         if (insertingEventArgs.IsAllowed)
@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                         break;
                     case PlayerInteract.Generator079Operations.Cancel:
-                        var ejectingEventArgs = new EjectingGeneratorTabletEventArgs(player, __instance);
+                        EjectingGeneratorTabletEventArgs ejectingEventArgs = new EjectingGeneratorTabletEventArgs(player, __instance);
                         Player.OnEjectingGeneratorTablet(ejectingEventArgs);
 
                         if (ejectingEventArgs.IsAllowed)

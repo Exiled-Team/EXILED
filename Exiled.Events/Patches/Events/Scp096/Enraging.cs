@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static bool Prefix(Scp096 __instance)
         {
-            var ev = new EnragingEventArgs(__instance, API.Features.Player.Get(__instance.Hub));
+            EnragingEventArgs ev = new EnragingEventArgs(__instance, API.Features.Player.Get(__instance.Hub));
 
             Handlers.Scp096.OnEnraging(ev);
 

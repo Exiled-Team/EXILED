@@ -35,16 +35,16 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // Declare a local variable of the type "GainingExperienceEventArgs".
-            var gainingExperienceEv = generator.DeclareLocal(typeof(GainingExperienceEventArgs));
+            LocalBuilder gainingExperienceEv = generator.DeclareLocal(typeof(GainingExperienceEventArgs));
 
             // Define the continue label.
-            var continueLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             // Define the return label.
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new GainingExperienceEventArgs(Player.Get(this.gameObject), type, (float)details, true)
             newInstructions.InsertRange(0, new[]
@@ -72,11 +72,11 @@ namespace Exiled.Events.Patches.Events.Scp079
             #region ExpGainType.KillAssist and ExpGainType.PocketAssist
 
             // The index offset.
-            var offset = 0;
+            int offset = 0;
 
             // Search for the first "call NetworkServer.active".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+                                                                 (MethodInfo)instruction.operand == PropertyGetter(typeof(NetworkServer), nameof(NetworkServer.active))) + offset;
 
             // ev.Amount = num2
             // goto continueLabel
@@ -157,7 +157,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
             });
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

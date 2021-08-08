@@ -14,6 +14,7 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
     using Mirror;
@@ -89,6 +90,15 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the scale for the item.
+        /// </summary>
+        public Vector3 Scale
+        {
+            get => Base.PickupDropModel.gameObject.transform.localScale;
+            set => Base.PickupDropModel.gameObject.transform.localScale = value;
+        }
+
+        /// <summary>
         /// Gets the <see cref="ItemBase"/> of the item.
         /// </summary>
         public ItemBase Base { get; }
@@ -140,9 +150,17 @@ namespace Exiled.API.Features.Items
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            if (ipb is FirearmPickup firearmPickup)
+            {
+                firearmPickup.Status = new FirearmStatus(((Firearm)this).MaxAmmo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                firearmPickup.NetworkStatus = firearmPickup.Status;
+            }
+
             NetworkServer.Spawn(ipb.gameObject);
             ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
-            return Pickup.Get(ipb);
+            Pickup pickup = Pickup.Get(ipb);
+            pickup.Scale = Scale;
+            return pickup;
         }
     }
 }

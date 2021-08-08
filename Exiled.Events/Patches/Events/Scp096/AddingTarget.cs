@@ -34,19 +34,19 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = 1;
+            int offset = 1;
 
             // Search for the third "ldarg.0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // Get the return label from the "ret" instruction.
-            var returnLabel = newInstructions[index - offset].labels[0];
+            Label returnLabel = newInstructions[index - offset].labels[0];
 
             // Declare AddingTargetEventArgs, to be able to store its instance with "stloc.s".
-            var ev = generator.DeclareLocal(typeof(AddingTargetEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(AddingTargetEventArgs));
 
             // var ev = new AddingTargetEventArgs(Player.Get(this.Hub), Player.Get(target), 70, this.EnrageTimePerReset);
             //
@@ -91,14 +91,14 @@ namespace Exiled.Events.Patches.Events.Scp096
             });
 
             offset = -1;
-            var instructionsToRemove = 2;
+            int instructionsToRemove = 2;
 
             // Search for the sixth "ldarg.0".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
             (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
 
             // Extract all labels from it.
-            var addResetLabels = newInstructions[index].ExtractLabels();
+            List<Label> addResetLabels = newInstructions[index].ExtractLabels();
 
             // Remove "this.AddReset()"
             newInstructions.RemoveRange(index, instructionsToRemove);

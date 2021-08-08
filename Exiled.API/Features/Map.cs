@@ -13,10 +13,15 @@ namespace Exiled.API.Features
     using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
 
+    using InventorySystem.Items.Pickups;
+
     using LightContainmentZoneDecontamination;
+
+    using MapGeneration.Distributors;
 
     using Mirror;
 
@@ -50,6 +55,11 @@ namespace Exiled.API.Features
         internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
 
         /// <summary>
+        /// A list of <see cref="Locker"/>s on the map.
+        /// </summary>
+        internal static readonly List<Locker> LockersValue = new List<Locker>(250);
+
+        /// <summary>
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
         internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
@@ -65,6 +75,7 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
@@ -107,6 +118,29 @@ namespace Exiled.API.Features
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
         /// </summary>
         public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+
+        /// <summary>
+        /// Gets all <see cref="Locker"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+
+        /// <summary>
+        /// gets all <see cref="Pickup"/>s on the map.
+        /// </summary>
+        public static ReadOnlyCollection<Pickup> Pickups
+        {
+            get
+            {
+                List<Pickup> pickups = new List<Pickup>();
+                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
+                {
+                    if (Pickup.Get(itemPickupBase) is Pickup pickup)
+                        pickups.Add(pickup);
+                }
+
+                return pickups.AsReadOnly();
+            }
+        }
 
         /// <summary>
         /// Gets the Default <see cref="Ragdoll.Info"/>,
@@ -537,6 +571,8 @@ namespace Exiled.API.Features
             LiftsValue.Clear();
             TeslasValue.Clear();
             CamerasValue.Clear();
+            TeleportsValue.Clear();
+            LockersValue.Clear();
         }
     }
 }

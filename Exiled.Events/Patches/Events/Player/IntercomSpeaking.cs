@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
                     return false;
 
-                var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
+                IntercomSpeakingEventArgs ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
 
                 if (player)
                 {

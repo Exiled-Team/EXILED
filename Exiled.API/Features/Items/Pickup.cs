@@ -83,6 +83,21 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets or sets the pickup's scale value.
+        /// </summary>
+        public Vector3 Scale
+        {
+            get => Base.gameObject.transform.localScale;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.localScale = value;
+                NetworkServer.Spawn(gameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the weight of the item.
         /// </summary>
         public float Weight

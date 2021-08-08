@@ -102,7 +102,7 @@ namespace Exiled.Events.Patches.Generic
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
-                            if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
+                            if (!ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub targetHub))
                                 continue;
 
                             Player currentTarget = GetPlayerOrServer(targetHub.gameObject);
@@ -174,9 +174,9 @@ namespace Exiled.Events.Patches.Generic
                     // We do another FOR for the ghost things
                     // because it's hard to do it without
                     // whole code changes in the game code
-                    for (var z = 0; z < __instance._usedData; z++)
+                    for (int z = 0; z < __instance._usedData; z++)
                     {
-                        var ppd = __instance._transmitBuffer[z];
+                        PlayerPositionData ppd = __instance._transmitBuffer[z];
 
                         // Do you remember the bug
                         // when you can't pick up any item?
@@ -191,7 +191,7 @@ namespace Exiled.Events.Patches.Generic
                         if (ppd.position == GhostPos)
                             continue;
 
-                        if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
+                        if (!ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub targetHub))
                             continue;
 
                         Player target = GetPlayerOrServer(targetHub.gameObject);
@@ -261,7 +261,7 @@ namespace Exiled.Events.Patches.Generic
 
         private static Player GetPlayerOrServer(GameObject gameObject)
         {
-            var refHub = ReferenceHub.GetHub(gameObject);
+            ReferenceHub refHub = ReferenceHub.GetHub(gameObject);
 
             // The only reason is that the server is also a player,
             // and we've seen a lot of NullRef exceptions at the place

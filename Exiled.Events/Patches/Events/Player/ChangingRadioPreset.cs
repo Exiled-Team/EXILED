@@ -22,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static bool Prefix(Radio __instance, ref byte value)
         {
-            var ev = new ChangingRadioPresetEventArgs(Player.Get(__instance.gameObject), __instance.NetworkcurRangeId, value);
+            ChangingRadioPresetEventArgs ev = new ChangingRadioPresetEventArgs(Player.Get(__instance.gameObject), __instance.NetworkcurRangeId, value);
 
             Handlers.Player.OnChangingRadioPreset(ev);
 
