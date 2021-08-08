@@ -493,6 +493,8 @@ namespace Exiled.CustomItems.API.Features
                         Vector3 position = chamber.spawnpoint.transform.position;
                         Spawn(position, out _);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", Instance.Config.Debug);
+
+                        break;
                     }
                 }
                 else
