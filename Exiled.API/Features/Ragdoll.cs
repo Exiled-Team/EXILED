@@ -44,9 +44,9 @@ namespace Exiled.API.Features
         internal Ragdoll(global::Ragdoll ragdoll) => this.ragdoll = ragdoll;
 
         /// <summary>
-        /// Gets the Default <see cref="Ragdoll.Info"/>,
+        /// Gets the Default <see cref="global::Ragdoll.Info"/>,
         /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
-        /// and <see cref="Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
+        /// and <see cref="Spawn(Role, global::Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
