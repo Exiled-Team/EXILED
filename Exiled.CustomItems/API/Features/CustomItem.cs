@@ -476,7 +476,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Item item) => Check(item.Base);
+        public virtual bool Check(Item item) => item != null && Check(item.Base);
 
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
@@ -627,7 +627,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Spawn(ev.Player, item, out _);
 
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 

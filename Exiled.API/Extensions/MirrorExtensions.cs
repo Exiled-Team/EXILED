@@ -70,9 +70,15 @@ namespace Exiled.API.Extensions
                         .SelectMany(x => x.GetProperties())
                         .Where(m => m.Name.StartsWith("Network")))
                     {
-                        var bytecodes = property.GetSetMethod().GetMethodBody().GetILAsByteArray();
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        var setMethod = property.GetSetMethod();
+                        if (setMethod == null)
+                            continue;
+                        var methodBody = setMethod.GetMethodBody();
+                        if (methodBody == null)
+                            continue;
+                        var bytecodes = methodBody.GetILAsByteArray();
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType?.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType?.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
