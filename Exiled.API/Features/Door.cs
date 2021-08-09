@@ -147,7 +147,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Breaks the specified door, if it is not already broken.
         /// </summary>
-        /// <param name="door">The <see cref="DoorVariant"/> to break.</param>
         /// <returns>True if the door was broken, false if it was unable to be broken, or was already broken before.</returns>
         public bool BreakDoor()
         {
@@ -186,7 +185,7 @@ namespace Exiled.API.Features
                     basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
                     break;
                 case CheckpointDoor chkPt:
-                    chkPt.RpcPlayBeepSound((byte) Mathf.Min((int) beep, 3));
+                    chkPt.RpcPlayBeepSound((byte)Mathf.Min((int)beep, 3));
                     break;
             }
         }
