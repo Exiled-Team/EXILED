@@ -198,11 +198,10 @@ namespace Exiled.Permissions.Extensions
             if (string.IsNullOrEmpty(permission))
                 return false;
 
-            if (player == null
-                || player.GameObject == null
-                || Groups == null
-                || Groups.Count == 0
-                || player.ReferenceHub.isDedicatedServer)
+            if (Server.Host == player)
+                return true;
+
+            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
             {
                 return false;
             }

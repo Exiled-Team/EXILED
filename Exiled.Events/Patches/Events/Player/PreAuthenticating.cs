@@ -38,14 +38,19 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -1;
 
             // Search for the last "request.Accept()" and then removes the offset, to get "ldarg.1" index.
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt
-                                                                     && (MethodInfo)instruction.operand == Method(typeof(ConnectionRequest), nameof(ConnectionRequest.Accept))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == PropertyGetter(typeof(NetManager), nameof(NetManager.ConnectedPeersCount))) + offset;
 
             // Declare a string local variable.
             LocalBuilder failedMessage = generator.DeclareLocal(typeof(string));
 
             // Define an else label.
             Label elseLabel = generator.DefineLabel();
+            Label fullRejectLabel = generator.DefineLabel();
+            newInstructions[index + 4].WithLabels(elseLabel);
+            int rejectIndex = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Br_S) + 1;
+            newInstructions[rejectIndex].WithLabels(fullRejectLabel);
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(PreAuthenticatingEventArgs));
 
             // Search for the operand of the last "br.s".
             object returnLabel = newInstructions.FindLast(instruction => instruction.opcode == OpCodes.Br_S).operand;
@@ -85,11 +90,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc_S, 12),
 
                 // true
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldloc_S, 27),
 
                 // var ev = new PreAuthenticatingEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PreAuthenticatingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnPreAuthenticating(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPreAuthenticating))),
@@ -98,6 +105,9 @@ namespace Exiled.Events.Patches.Events.Player
                 // {
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brtrue_S, elseLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PreAuthenticatingEventArgs), nameof(PreAuthenticatingEventArgs.ServerFull))),
+                new CodeInstruction(OpCodes.Brtrue, fullRejectLabel),
 
                 // var failedMessage = string.Format($"Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin.", text, request.RemoteEndPoint);
                 new CodeInstruction(OpCodes.Ldstr, "Player {0} tried to preauthenticated from endpoint {1}, but the request has been rejected by a plugin."),
@@ -119,13 +129,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))),
                 new CodeInstruction(OpCodes.Br_S, returnLabel),
-
-                // }
-                // else
-                // {
-                //   CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode();
-                //   [...]
-                new CodeInstruction(OpCodes.Call, Method(typeof(CustomLiteNetLib4MirrorTransport), nameof(CustomLiteNetLib4MirrorTransport.PreauthDisableIdleMode))).WithLabels(elseLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
