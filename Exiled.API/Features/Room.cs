@@ -251,7 +251,7 @@ namespace Exiled.API.Features
                     cameraList.Add(camera);
                 }
             }
-            
+
             return cameraList;
         }
 
