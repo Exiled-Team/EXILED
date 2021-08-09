@@ -96,6 +96,15 @@ namespace Exiled.API.Features
         public string Nametag => Base.TryGetComponent(out DoorNametagExtension name) ? name.GetName : null;
 
         /// <summary>
+        /// Gets or sets the required permissions to open the door.
+        /// </summary>
+        public DoorPermissions RequiredPermissions
+        {
+            get => Base.RequiredPermissions;
+            set => Base.RequiredPermissions = value;
+        }
+
+        /// <summary>
         /// Gets or sets the max health of the door, if it is breakable.
         /// </summary>
         public float MaxHealth
