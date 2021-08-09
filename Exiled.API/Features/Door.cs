@@ -13,7 +13,10 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
+    using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="DoorVariant"/>.
@@ -46,6 +49,38 @@ namespace Exiled.API.Features
             : DoorType.UnknownDoor;
 
         /// <summary>
+        /// Gets or sets a value indicating whether the door is open.
+        /// </summary>
+        public bool Open
+        {
+            get => Base.IsConsideredOpen();
+            set => Base.NetworkTargetState = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether SCP-106 can walk through the door.
+        /// </summary>
+        public bool AllowsScp106
+        {
+            get => Base.UsedBy106;
+            set => Base.UsedBy106 = value;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the door is locked.
+        /// </summary>
+        public bool IsLocked => DoorLockType != DoorLockType.None;
+
+        /// <summary>
+        /// Gets or sets the door lock type.
+        /// </summary>
+        public DoorLockType DoorLockType
+        {
+            get => (DoorLockType)Base.NetworkActiveLocks;
+            set => Base.ServerChangeLock((DoorLockReason)value, value != DoorLockType.None);
+        }
+
+        /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
         /// </summary>
         public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
@@ -58,7 +93,38 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a nametag of a door.
         /// </summary>
-        public string Nametag => Base.TryGetComponent<DoorNametagExtension>(out var name) ? name.GetName : null;
+        public string Nametag => Base.TryGetComponent(out DoorNametagExtension name) ? name.GetName : null;
+
+        /// <summary>
+        /// Gets or sets the max health of the door, if it is breakable.
+        /// </summary>
+        public float MaxHealth
+        {
+            get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
+            set
+            {
+                if (Base is BreakableDoor breakable)
+                    breakable._maxHealth = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the doors remaining health, if it is breakable.
+        /// </summary>
+        public float Health => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
+
+        /// <summary>
+        /// Gets or sets the damage types this door ignores, if it is breakable.
+        /// </summary>
+        public DoorDamageType IgnoredDamageTypes
+        {
+            get => Base is BreakableDoor breakable ? breakable._ignoredDamageSources : DoorDamageType.None;
+            set
+            {
+                if (Base is BreakableDoor breakable)
+                    breakable._ignoredDamageSources = value;
+            }
+        }
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
@@ -83,6 +149,37 @@ namespace Exiled.API.Features
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Damages the door, if it's breakable.
+        /// </summary>
+        /// <param name="amount">The amount of damage to deal.</param>
+        /// <param name="type">The damage type to use.</param>
+        /// <returns>True if the door was damaged.</returns>
+        public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
+
+        /// <summary>
+        /// Tries to pry the door open.
+        /// </summary>
+        /// <returns>True if the door was able to be pried open.</returns>
+        public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
+
+        /// <summary>
+        /// Makes the door play a beep sound.
+        /// </summary>
+        /// <param name="beep">The beep sound to play.</param>
+        public void PlaySound(DoorBeepType beep)
+        {
+            switch (Base)
+            {
+                case BasicDoor basic:
+                    basic.RpcPlayBeepSound(beep != DoorBeepType.InteractionAllowed);
+                    break;
+                case CheckpointDoor chkPt:
+                    chkPt.RpcPlayBeepSound((byte) Mathf.Min((int) beep, 3));
+                    break;
+            }
         }
 
         /// <summary>
