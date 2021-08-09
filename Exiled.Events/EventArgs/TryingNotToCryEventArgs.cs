@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
         {
             Scp096 = scp096;
             Player = player;
-            Door = door;
+            Door = Door.Get(door);
             IsAllowed = isAllowed;
         }
 
@@ -46,9 +46,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="DoorVariant"/> to be cried on.
+        /// Gets the <see cref="Door"/> to be cried on.
         /// </summary>
-        public DoorVariant Door { get; }
+        public Door Door { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-096 can try not to cry.

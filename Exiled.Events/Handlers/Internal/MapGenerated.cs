@@ -46,7 +46,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateCache();
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
-            DoorExtensions.RegisterDoorTypesOnLevelLoad();
+            Door.RegisterDoorTypesOnLevelLoad();
         }
 
         private static void GenerateCache()
@@ -100,7 +100,11 @@ namespace Exiled.Events.Handlers.Internal
             ListPool<GameObject>.Shared.Return(roomObjects);
         }
 
-        private static void GenerateDoors() => Map.DoorsValue.AddRange(Object.FindObjectsOfType<DoorVariant>());
+        private static void GenerateDoors()
+        {
+            foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
+                Map.DoorsValue.Add(Door.Get(doorVariant));
+        }
 
         private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
 

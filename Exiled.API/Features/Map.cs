@@ -40,9 +40,9 @@ namespace Exiled.API.Features
         internal static readonly List<Room> RoomsValue = new List<Room>(250);
 
         /// <summary>
-        /// A list of <see cref="DoorVariant"/>s on the map.
+        /// A list of <see cref="Door"/>s on the map.
         /// </summary>
-        internal static readonly List<DoorVariant> DoorsValue = new List<DoorVariant>(250);
+        internal static readonly List<Door> DoorsValue = new List<Door>(250);
 
         /// <summary>
         /// A list of <see cref="Camera079"/>s on the map.
@@ -70,7 +70,7 @@ namespace Exiled.API.Features
         internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<DoorVariant> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
@@ -95,9 +95,9 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<Room> Rooms => ReadOnlyRoomsValue;
 
         /// <summary>
-        /// Gets all <see cref="DoorVariant"/> objects.
+        /// Gets all <see cref="Door"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<DoorVariant> Doors => ReadOnlyDoorsValue;
+        public static ReadOnlyCollection<Door> Doors => ReadOnlyDoorsValue;
 
         /// <summary>
         /// Gets all <see cref="Camera079"/> objects.
@@ -496,11 +496,11 @@ namespace Exiled.API.Features
         /// Gets the door with the given door name.
         /// </summary>
         /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="DoorVariant"/> or null if a door with this name doesn't exist.</returns>
-        public static DoorVariant GetDoorByName(string doorName)
+        /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
+        public static Door GetDoorByName(string doorName)
         {
-            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nameExtension);
-            return nameExtension == null ? null : nameExtension.TargetDoor;
+            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
+            return nameExtension == null ? null : Door.Get(nameExtension.TargetDoor);
         }
 
         /// <summary>

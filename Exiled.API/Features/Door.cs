@@ -1,43 +1,82 @@
 // -----------------------------------------------------------------------
-// <copyright file="DoorExtensions.cs" company="Exiled Team">
+// <copyright file="Door.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Extensions
+namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Exiled.API.Enums;
-    using Exiled.API.Features;
+    using Exiled.API.Extensions;
 
     using Interactables.Interobjects.DoorUtils;
 
-#pragma warning disable SA1123 // Do not place regions within elements
-
     /// <summary>
-    /// Contains extensions related to <see cref="DoorVariant"/>.
+    /// A wrapper class for <see cref="DoorVariant"/>.
     /// </summary>
-    public static class DoorExtensions
+    public class Door
     {
         private static readonly Dictionary<int, DoorType> OrderedDoorTypes = new Dictionary<int, DoorType>();
+        private static readonly Dictionary<DoorVariant, Door> DoorVariantToDoor = new Dictionary<DoorVariant, Door>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Door"/> class.
+        /// </summary>
+        /// <param name="door"><inheritdoc cref="Base"/></param>
+        public Door(DoorVariant door)
+        {
+            DoorVariantToDoor.Add(door, this);
+            Base = door;
+        }
+
+        /// <summary>
+        /// Gets the base-game <see cref="DoorVariant"/> for this door.
+        /// </summary>
+        public DoorVariant Base { get; }
 
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
-        /// <param name="door">The Door to check.</param>
-        /// <returns>The <see cref="DoorType"/>.</returns>
-        public static DoorType Type(this DoorVariant door) => OrderedDoorTypes.TryGetValue(door.GetInstanceID(), out var doorType) ? doorType : DoorType.UnknownDoor;
+        public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
+            ? doorType
+            : DoorType.UnknownDoor;
+
+        /// <summary>
+        /// Gets a value indicating whether or not this door is breakable.
+        /// </summary>
+        public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
+
+        /// <summary>
+        /// Gets the door's Instance ID.
+        /// </summary>
+        public int InstanceId => Base.GetInstanceID();
+
+        /// <summary>
+        /// Gets a nametag of a door.
+        /// </summary>
+        public string Nametag => Base.TryGetComponent<DoorNametagExtension>(out var name) ? name.GetName : null;
+
+        /// <summary>
+        /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
+        /// </summary>
+        /// <param name="doorVariant"><inheritdoc cref="Base"/></param>
+        /// <returns><inheritdoc cref="Door"/></returns>
+        public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
+            ? DoorVariantToDoor[doorVariant]
+            : new Door(doorVariant);
 
         /// <summary>
         /// Breaks the specified door, if it is not already broken.
         /// </summary>
         /// <param name="door">The <see cref="DoorVariant"/> to break.</param>
         /// <returns>True if the door was broken, false if it was unable to be broken, or was already broken before.</returns>
-        public static bool BreakDoor(this DoorVariant door)
+        public bool BreakDoor()
         {
-            if (door is IDamageableDoor dmg && !dmg.IsDestroyed)
+            if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
             {
                 dmg.ServerDamage(ushort.MaxValue, DoorDamageType.ServerCommand);
                 return true;
@@ -47,56 +86,33 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Indicates when the door can be broken.
-        /// </summary>
-        /// <param name="door">The <see cref="DoorVariant"/>.</param>
-        /// <returns>true if the door can be broken; otherwise, false.</returns>
-        public static bool IsBreakable(this DoorVariant door) => door is IDamageableDoor dDoor && !dDoor.IsDestroyed;
-
-        /// <summary>
-        /// Gets a nametag of a door.
-        /// </summary>
-        /// <param name="door">The <see cref="DoorVariant"/>.</param>
-        /// <returns>A nametag of the door or null.</returns>
-        public static string GetNametag(this DoorVariant door) => door.TryGetComponent<DoorNametagExtension>(out var name) ? name.GetName : null;
-
-        /// <summary>
-        /// Gets all the <see cref="DoorType"/> values for the <see cref="DoorVariant"/> instances using <see cref="DoorVariant"/> and <see cref="UnityEngine.GameObject"/> name.
+        /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()
         {
             OrderedDoorTypes.Clear();
-            var doors = Map.Doors;
+            ReadOnlyCollection<Door> doors = Map.Doors;
 
-            var doorCount = doors.Count;
+            int doorCount = doors.Count;
             for (int i = 0; i < doorCount; i++)
             {
-                var door = doors[i];
-                var doorID = door.GetInstanceID();
+                Door door = doors[i];
+                int doorID = door.InstanceId;
 
-                var doorNameTag = door.GetNametag();
-                var doorName = doorNameTag ?? door.name.RemoveBracketsOnEndOfName();
-
-                var doorType = GetDoorType(doorName);
+                DoorType doorType = door.GetDoorType();
 
                 OrderedDoorTypes.Add(doorID, doorType);
             }
         }
 
-        private static DoorType GetDoorType(string doorName)
+        private DoorType GetDoorType()
         {
-            switch (doorName)
+            switch (Nametag.RemoveBracketsOnEndOfName())
             {
-                #region GameObject names
-
                 case "Prison BreakableDoor":
                     return DoorType.PrisonDoor;
 
-                #endregion
-
                 // Doors contains the DoorNameTagExtension component
-                #region Door names
-
                 case "CHECKPOINT_LCZ_A":
                     return DoorType.CheckpointLczA;
                 case "CHECKPOINT_EZ_HCZ":
@@ -164,32 +180,21 @@ namespace Exiled.API.Extensions
                 case "SURFACE_GATE":
                     return DoorType.SurfaceGate;
 
-                #endregion
-
                 // Doors spawned by the DoorSpawnPoint component
-                #region DoorSpawnPoint names
-
                 case "LCZ_CAFE":
                     return DoorType.LczCafe;
                 case "173_BOTTOM":
                     return DoorType.Scp173Bottom;
 
-                #endregion
-
                 // Doors contains the Door component,
                 // also gameobject names
-                #region Outdated doors
-
                 case "LightContainmentDoor":
                     return DoorType.LightContainmentDoor;
                 case "EntrDoor":
                     return DoorType.EntranceDoor;
-
-                #endregion
-
                 default:
                     // All door gameobject names are separated by a whitespace
-                    doorName = doorName.GetBefore(' ');
+                    string doorName = Nametag.GetBefore(' ');
                     switch (doorName)
                     {
                         case "LCZ":

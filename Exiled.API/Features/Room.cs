@@ -15,6 +15,8 @@ namespace Exiled.API.Features
 
     using Interactables.Interobjects.DoorUtils;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     /// <summary>
@@ -53,9 +55,9 @@ namespace Exiled.API.Features
         public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="DoorVariant"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<DoorVariant> Doors { get; private set; }
+        public IEnumerable<Door> Doors { get; private set; }
 
         /// <summary>
         /// Gets or sets the intensity of the lights in the room.
@@ -215,9 +217,12 @@ namespace Exiled.API.Features
             }
         }
 
-        private static IEnumerable<DoorVariant> FindDoors(GameObject gameObject)
+        private static IEnumerable<Door> FindDoors(GameObject gameObject)
         {
-            return gameObject.GetComponentsInChildren<DoorVariant>().ToList();
+            List<Door> doors = new List<Door>();
+            foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
+                doors.Add(Door.Get(doorVariant));
+            return doors;
         }
 
         private void Start()
