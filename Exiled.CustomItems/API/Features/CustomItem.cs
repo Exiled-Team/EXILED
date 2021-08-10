@@ -17,6 +17,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
+    using Exiled.Loader;
 
     using MEC;
 
@@ -468,9 +469,40 @@ namespace Exiled.CustomItems.API.Features
 
                 spawned++;
 
-                Spawn(spawnPoint.Position.ToVector3, out _);
+                if (spawnPoint is DynamicSpawnPoint dynamicSpawnPoint && dynamicSpawnPoint.Location == SpawnLocation.InsideLocker)
+                {
+                    for (int i = 0; i < 50; i++)
+                    {
+                        Locker locker =
+                            LockerManager.singleton.lockers[
+                                Loader.Random.Next(LockerManager.singleton.lockers.Length)];
+                        if (locker._itemsToSpawn == null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
+                            continue;
+                        }
 
-                Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
+                        LockerChamber chamber = locker.chambers[Loader.Random.Next(Mathf.Max(0, locker.chambers.Length - 1))];
+
+                        foreach (Locker.ItemToSpawn item in locker._itemsToSpawn.ToList())
+                        {
+                            if (item._pos == chamber.spawnpoint.position)
+                                locker._itemsToSpawn.Remove(item);
+                        }
+
+                        Vector3 position = chamber.spawnpoint.transform.position;
+                        Spawn(position, out _);
+                        Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", Instance.Config.Debug);
+
+                        break;
+                    }
+                }
+                else
+                {
+                    Spawn(spawnPoint.Position.ToVector3, out _);
+
+                    Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
+                }
             }
 
             return spawned;
@@ -699,7 +731,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Spawn(ev.Player, item, out _);
 
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -721,7 +753,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Spawn(ev.Target, item, out _);
 
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+                MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -743,7 +775,7 @@ namespace Exiled.CustomItems.API.Features
 
                 Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out _);
 
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
+                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
         }
 
@@ -809,7 +841,7 @@ namespace Exiled.CustomItems.API.Features
         {
             if (!Check(ev.NewItem))
             {
-                Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName));
+                MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_displayName));
                 return;
             }
 
