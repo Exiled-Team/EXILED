@@ -114,6 +114,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before changing a player's role.
         /// </summary>
+        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
@@ -403,6 +404,7 @@ namespace Exiled.Events.Handlers
         /// Called before changing a player's role.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
+        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>

@@ -16,6 +16,8 @@ namespace Exiled.API.Features
     using Interactables.Interobjects;
     using Interactables.Interobjects.DoorUtils;
 
+    using Mirror;
+
     using UnityEngine;
 
     /// <summary>
@@ -132,6 +134,21 @@ namespace Exiled.API.Features
             {
                 if (Base is BreakableDoor breakable)
                     breakable._ignoredDamageSources = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size scale of the door.
+        /// </summary>
+        public Vector3 Scale
+        {
+            get => Base.gameObject.transform.localScale;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.localScale = value;
+                NetworkServer.Spawn(gameObject);
             }
         }
 
