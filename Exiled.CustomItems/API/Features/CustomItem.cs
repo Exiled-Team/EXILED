@@ -66,6 +66,11 @@ namespace Exiled.CustomItems.API.Features
         public virtual float Durability { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether a pickup will be spawned when player escapes or not.
+        /// </summary>
+        public virtual bool ShouldSpawnPickupOnEscape { get; set; } = true;
+
+        /// <summary>
         /// Gets or sets the ItemType to use for this item.
         /// </summary>
         public virtual ItemType Type
@@ -773,7 +778,8 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out _);
+                if (ShouldSpawnPickupOnEscape)
+                    Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out _);
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
