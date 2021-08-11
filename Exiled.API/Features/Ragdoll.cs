@@ -16,7 +16,7 @@ namespace Exiled.API.Features
     /// </summary>
     public class Ragdoll
     {
-        private readonly global::Ragdoll ragdoll;
+        public readonly global::Ragdoll ragdoll;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
