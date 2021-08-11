@@ -1283,7 +1283,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Resets the player' stamina.
         /// </summary>
-        public void ResetStamina => ReferenceHub.fpc.ResetStamina();
+        public void ResetStamina() => ReferenceHub.fpc.ResetStamina();
 
         /// <summary>
         /// Hurts the player.
