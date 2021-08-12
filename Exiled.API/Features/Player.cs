@@ -1281,7 +1281,7 @@ namespace Exiled.API.Features
         public void Heal(float amount) => ReferenceHub.playerStats.HealHPAmount(amount);
 
         /// <summary>
-        /// Resets the player' stamina.
+        /// Resets the player's stamina.
         /// </summary>
         public void ResetStamina() => ReferenceHub.fpc.ResetStamina();
 
