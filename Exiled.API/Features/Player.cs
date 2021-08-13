@@ -466,7 +466,7 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
-        /// Gets player's <see cref="NetworkIdentity"/>.
+        /// Gets the player's <see cref="NetworkIdentity"/>.
         /// </summary>
         public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
 
