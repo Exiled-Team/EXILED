@@ -68,7 +68,7 @@ namespace Exiled.API.Interfaces
         TConfig Config { get; }
 
         /// <summary>
-        /// Gets the internally used translations. Plugins should implement <inheritdoc cref="Plugin{TConfig, TTranslation}"/> and use <inheritdoc cref="Plugin{TConfig, TTranslation}.Translation"/>.
+        /// Gets the internally used translations. Plugins should implement <see cref="Plugin{TConfig, TTranslation}"/> and use <see cref="Plugin{TConfig, TTranslation}.Translation"/>.
         /// </summary>
         ITranslation InternalTranslation { get; }
 
