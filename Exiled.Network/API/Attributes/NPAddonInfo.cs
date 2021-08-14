@@ -10,22 +10,22 @@ namespace Exiled.Network.API.Attributes
     using System;
 
     /// <summary>
-    /// Info about addon.
+    /// Info about the addon.
     /// </summary>
     public class NPAddonInfo : Attribute
     {
         /// <summary>
-        /// Gets or sets AddonID.
+        /// Gets or sets the AddonID.
         /// </summary>
         public string AddonID { get; set; }
 
         /// <summary>
-        /// Gets or sets AddonName.
+        /// Gets or sets the AddonName.
         /// </summary>
         public string AddonName { get; set; }
 
         /// <summary>
-        /// Gets or sets AddonVersion.
+        /// Gets or sets the AddonVersion.
         /// </summary>
         public Version AddonVersion { get; set; }
 

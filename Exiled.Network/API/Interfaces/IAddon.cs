@@ -26,12 +26,12 @@ namespace Exiled.Network.API.Interfaces
         NPLogger Logger { get; set; }
 
         /// <summary>
-        /// On addon is enabled.
+        /// Called when the addon is enabled.
         /// </summary>
         void OnEnable();
 
         /// <summary>
-        /// On receive message from server.
+        /// Called when a message is received from a server.
         /// </summary>
         /// <param name="server">Received from.</param>
         /// <param name="reader">Reader data.</param>
@@ -44,14 +44,14 @@ namespace Exiled.Network.API.Interfaces
         void OnReady(NPServer server);
 
         /// <summary>
-        /// On command received from dedicated app.
+        /// Called when a console command is received.
         /// </summary>
         /// <param name="cmd"> Command name.</param>
         /// <param name="arguments"> Command arguments.</param>
         void OnConsoleCommand(string cmd, List<string> arguments);
 
         /// <summary>
-        /// On server command response.
+        /// Called when a server console response is received.
         /// </summary>
         /// <param name="server"> Received from.</param>
         /// <param name="command"> Command name.</param>
