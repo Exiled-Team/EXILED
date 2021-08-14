@@ -102,7 +102,7 @@ namespace Exiled.Network.API
                         CommandName = cmd.Key,
                         Description = cmd.Value.Description,
                         Permission = cmd.Value.Permission,
-                        isRaCommand = cmd.Value.IsRaCommand,
+                        IsRaCommand = cmd.Value.IsRaCommand,
                     });
                 }
             }

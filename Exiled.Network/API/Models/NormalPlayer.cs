@@ -81,7 +81,7 @@ namespace Exiled.Network.API.Models
         {
             get
             {
-                return new Position() { x = player.Position.x, y = player.Position.y, z = player.Position.z };
+                return new Position() { X = player.Position.x, Y = player.Position.y, Z = player.Position.z };
             }
 
             set
@@ -95,7 +95,7 @@ namespace Exiled.Network.API.Models
         {
             get
             {
-                return new Rotation() { x = player.Rotation.x, y = player.Rotation.y, z = player.Rotation.z };
+                return new Rotation() { X = player.Rotation.x, Y = player.Rotation.y, Z = player.Rotation.z };
             }
 
             set

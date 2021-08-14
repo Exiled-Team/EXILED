@@ -107,7 +107,7 @@ namespace Exiled.Network.API.Models
         /// <param name="isAdminOnly">Is displayed only for admins.</param>
         public void SendBroadcast(string message, ushort duration, bool isAdminOnly = false)
         {
-            PacketProcessor.Send<SendBroadcastPacket>(Peer, new SendBroadcastPacket() { Message = message, isAdminOnly = isAdminOnly, Duration = duration }, DeliveryMethod.ReliableOrdered);
+            PacketProcessor.Send<SendBroadcastPacket>(Peer, new SendBroadcastPacket() { Message = message, IsAdminOnly = isAdminOnly, Duration = duration }, DeliveryMethod.ReliableOrdered);
         }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace Exiled.Network.API.Models
         /// <param name="isAdminOnly">Is displayed only for admins.</param>
         public void SendHint(string message, float duration, bool isAdminOnly = false)
         {
-            PacketProcessor.Send<SendHintPacket>(Peer, new SendHintPacket() { Message = message, isAdminOnly = isAdminOnly, Duration = duration }, DeliveryMethod.ReliableOrdered);
+            PacketProcessor.Send<SendHintPacket>(Peer, new SendHintPacket() { Message = message, IsAdminOnly = isAdminOnly, Duration = duration }, DeliveryMethod.ReliableOrdered);
         }
 
         /// <summary>

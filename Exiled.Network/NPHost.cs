@@ -140,7 +140,7 @@ namespace Exiled.Network
 
             foreach (var addon in Addons)
             {
-                addon.Value.Addon.OnConsoleResponse(server, packet.Command, packet.Response, packet.isRemoteAdmin);
+                addon.Value.Addon.OnConsoleResponse(server, packet.Command, packet.Response, packet.IsRemoteAdmin);
             }
         }
 

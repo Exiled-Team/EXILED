@@ -96,7 +96,7 @@ namespace Exiled.Network
         public override void RaReply(string text, bool success, bool logToConsole, string overrideDisplay)
         {
             GameCore.Console.AddLog("[RA Reply] " + text, success ? Color.green : Color.red, false);
-            this.client.PacketProcessor.Send<ConsoleResponsePacket>(this.client.NetworkListener, new ConsoleResponsePacket() { Command = command, isRemoteAdmin = true, Response = text }, DeliveryMethod.ReliableOrdered);
+            this.client.PacketProcessor.Send<ConsoleResponsePacket>(this.client.NetworkListener, new ConsoleResponsePacket() { Command = command, IsRemoteAdmin = true, Response = text }, DeliveryMethod.ReliableOrdered);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Exiled.Network
         public override void Print(string text)
         {
             GameCore.Console.AddLog(text, Color.green, false);
-            this.client.PacketProcessor.Send<ConsoleResponsePacket>(this.client.NetworkListener, new ConsoleResponsePacket() { Command = command, isRemoteAdmin = false, Response = text }, DeliveryMethod.ReliableOrdered);
+            this.client.PacketProcessor.Send<ConsoleResponsePacket>(this.client.NetworkListener, new ConsoleResponsePacket() { Command = command, IsRemoteAdmin = false, Response = text }, DeliveryMethod.ReliableOrdered);
         }
     }
 }

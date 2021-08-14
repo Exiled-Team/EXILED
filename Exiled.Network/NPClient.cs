@@ -284,14 +284,14 @@ namespace Exiled.Network
 
                             if (realPlayer.SessionVariables.TryGetValue("SP", out object sendP))
                             {
-                                if ((bool)sendP && (player.Position.x != realPlayer.Position.x || player.Position.y != realPlayer.Position.y || player.Position.z != realPlayer.Position.z))
+                                if ((bool)sendP && (player.Position.X != realPlayer.Position.x || player.Position.Y != realPlayer.Position.y || player.Position.Z != realPlayer.Position.z))
                                 {
                                     writer = new NetDataWriter();
                                     player.Position = new Position()
                                     {
-                                        x = realPlayer.Position.x,
-                                        y = realPlayer.Position.y,
-                                        z = realPlayer.Position.z,
+                                        X = realPlayer.Position.x,
+                                        Y = realPlayer.Position.y,
+                                        Z = realPlayer.Position.z,
                                     };
                                     writer.Put<Position>(player.Position);
                                     PacketProcessor.Send<UpdatePlayerInfoPacket>(NetworkListener, new UpdatePlayerInfoPacket() { UserID = player.UserID, Type = (byte)14, Data = writer.Data }, DeliveryMethod.ReliableOrdered);
@@ -300,14 +300,14 @@ namespace Exiled.Network
 
                             if (realPlayer.SessionVariables.TryGetValue("SP", out object sendR))
                             {
-                                if ((bool)sendR && (player.Rotation.x != realPlayer.Rotation.x || player.Rotation.y != realPlayer.Rotation.y || player.Rotation.z != realPlayer.Rotation.z))
+                                if ((bool)sendR && (player.Rotation.X != realPlayer.Rotation.x || player.Rotation.Y != realPlayer.Rotation.y || player.Rotation.Z != realPlayer.Rotation.z))
                                 {
                                     writer = new NetDataWriter();
                                     player.Rotation = new Rotation()
                                     {
-                                        x = realPlayer.Rotation.x,
-                                        y = realPlayer.Rotation.y,
-                                        z = realPlayer.Rotation.z,
+                                        X = realPlayer.Rotation.x,
+                                        Y = realPlayer.Rotation.y,
+                                        Z = realPlayer.Rotation.z,
                                     };
                                     writer.Put<Rotation>(player.Rotation);
                                     PacketProcessor.Send<UpdatePlayerInfoPacket>(NetworkListener, new UpdatePlayerInfoPacket() { UserID = player.UserID, Type = (byte)15, Data = writer.Data }, DeliveryMethod.ReliableOrdered);
@@ -339,7 +339,7 @@ namespace Exiled.Network
             {
                 if (!string.IsNullOrEmpty(command.CommandName))
                 {
-                    if (!command.isRaCommand && command.CommandName == ev.Name.ToUpper())
+                    if (!command.IsRaCommand && command.CommandName == ev.Name.ToUpper())
                     {
                         ev.IsAllowed = false;
                         PacketProcessor.Send<ExecuteCommandPacket>(NetworkListener, new ExecuteCommandPacket() { UserID = ev.Player.UserId, AddonID = command.AddonID, CommandName = command.CommandName, Arguments = ev.Arguments.ToArray() }, DeliveryMethod.ReliableOrdered);
@@ -354,7 +354,7 @@ namespace Exiled.Network
             {
                 if (!string.IsNullOrEmpty(command.CommandName))
                 {
-                    if (command.isRaCommand && command.CommandName == ev.Name.ToUpper())
+                    if (command.IsRaCommand && command.CommandName == ev.Name.ToUpper())
                     {
                         ev.IsAllowed = false;
                         PacketProcessor.Send<ExecuteCommandPacket>(NetworkListener, new ExecuteCommandPacket() { UserID = ev.Sender.UserId, AddonID = command.AddonID, CommandName = command.CommandName, Arguments = ev.Arguments.ToArray() }, DeliveryMethod.ReliableOrdered);
@@ -395,7 +395,7 @@ namespace Exiled.Network
         {
             foreach (var plr in Player.List)
             {
-                if (plr.ReferenceHub.serverRoles.LocalRemoteAdmin || !packet.isAdminOnly)
+                if (plr.ReferenceHub.serverRoles.LocalRemoteAdmin || !packet.IsAdminOnly)
                     plr.ShowHint(packet.Message, packet.Duration);
             }
         }
@@ -431,7 +431,7 @@ namespace Exiled.Network
 
         private void OnSendBroadcast(SendBroadcastPacket packet, NetPeer peer)
         {
-            if (packet.isAdminOnly)
+            if (packet.IsAdminOnly)
             {
                 foreach (var plr in Player.List)
                 {
@@ -551,7 +551,7 @@ namespace Exiled.Network
             registerdCommands = packet.Commands;
             foreach (var command in registerdCommands)
             {
-                Logger.Info($"Command {command.CommandName} registered from addon {command.AddonID}, isRa?: {command.isRaCommand}");
+                Logger.Info($"Command {command.CommandName} registered from addon {command.AddonID}, isRa?: {command.IsRaCommand}");
             }
         }
 

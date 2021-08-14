@@ -1,31 +1,68 @@
+// -----------------------------------------------------------------------
+// <copyright file="CommandInfoPacket.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
 namespace Exiled.Network.API.Packets
 {
     using LiteNetLib.Utils;
 
+    /// <summary>
+    /// Command info.
+    /// </summary>
     public struct CommandInfoPacket : INetSerializable
     {
+        /// <summary>
+        /// Gets addon id.
+        /// </summary>
         public string AddonID;
-        public string CommandName;
-        public string Description;
-        public string Permission;
-        public bool isRaCommand;
 
+        /// <summary>
+        /// Gets command name.
+        /// </summary>
+        public string CommandName;
+
+        /// <summary>
+        /// Gets command description.
+        /// </summary>
+        public string Description;
+
+        /// <summary>
+        /// Gets command permission.
+        /// </summary>
+        public string Permission;
+
+        /// <summary>
+        /// Gets if is remoteadmin command.
+        /// </summary>
+        public bool IsRaCommand;
+
+        /// <summary>
+        /// Deserialize.
+        /// </summary>
+        /// <param name="reader">Data reader.</param>
         public void Deserialize(NetDataReader reader)
         {
             AddonID = reader.GetString();
             CommandName = reader.GetString();
             Description = reader.GetString();
             Permission = reader.GetString();
-            isRaCommand = reader.GetBool();
+            IsRaCommand = reader.GetBool();
         }
 
+        /// <summary>
+        /// Serializer.
+        /// </summary>
+        /// <param name="writer">Data writer.</param>
         public void Serialize(NetDataWriter writer)
         {
             writer.Put(AddonID);
             writer.Put(CommandName);
             writer.Put(Description);
             writer.Put(Permission);
-            writer.Put(isRaCommand);
+            writer.Put(IsRaCommand);
         }
     }
 }
