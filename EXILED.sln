@@ -25,7 +25,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CustomItems", "Exile
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.CreditTags", "Exiled.CreditTags\Exiled.CreditTags.csproj", "{9FEBCAEA-EB51-46D0-BC04-F74789A40079}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Exiled.Network", "Exiled.Network\Exiled.Network.csproj", "{FAC6E3C7-E076-43D7-AAA4-D20306C887B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Network", "Exiled.Network\Exiled.Network.csproj", "{FAC6E3C7-E076-43D7-AAA4-D20306C887B3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.DedicatedNetwork", "Exiled.DedicatedNetwork\Exiled.DedicatedNetwork.csproj", "{98301EAD-205C-4D9D-BE41-25070554C78C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{FAC6E3C7-E076-43D7-AAA4-D20306C887B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAC6E3C7-E076-43D7-AAA4-D20306C887B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAC6E3C7-E076-43D7-AAA4-D20306C887B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98301EAD-205C-4D9D-BE41-25070554C78C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98301EAD-205C-4D9D-BE41-25070554C78C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98301EAD-205C-4D9D-BE41-25070554C78C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98301EAD-205C-4D9D-BE41-25070554C78C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

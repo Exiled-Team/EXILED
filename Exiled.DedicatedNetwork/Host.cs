@@ -1,11 +1,11 @@
 // -----------------------------------------------------------------------
-// <copyright file="NPHost.cs" company="Exiled Team">
+// <copyright file="Host.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Network
+namespace Exiled.DedicatedNetwork
 {
     using System;
     using System.Collections.Generic;
@@ -14,47 +14,50 @@ namespace Exiled.Network
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
-    using Exiled.API.Features;
+    using System.Threading.Tasks;
+
+    using Exiled.Network;
     using Exiled.Network.API;
     using Exiled.Network.API.Attributes;
     using Exiled.Network.API.Interfaces;
     using Exiled.Network.API.Models;
     using Exiled.Network.API.Packets;
+
     using LiteNetLib;
     using LiteNetLib.Utils;
-    using MEC;
 
     /// <summary>
-    /// Network host.
+    /// Dedicated host.
     /// </summary>
-    public class NPHost : NPManager, INetEventListener
+    public class Host : NPManager, INetEventListener
     {
-        private MainClass plugin;
+        private DedicatedConfig config;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPHost"/> class.
+        /// Initializes a new instance of the <see cref="Host"/> class.
         /// </summary>
-        /// <param name="plugin">Plugin class.</param>
-        public NPHost(MainClass plugin)
+        public Host()
         {
-            this.plugin = plugin;
-            Logger = new PluginLogger();
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pluginDir = Path.Combine(folderPath, "EXILED", "Plugins", "NetworkedPlugins");
-            if (!Directory.Exists(pluginDir))
-                Directory.CreateDirectory(pluginDir);
-            if (!Directory.Exists(Path.Combine(pluginDir, "addons-" + Server.Port)))
-                Directory.CreateDirectory(Path.Combine(pluginDir, "addons-" + Server.Port));
-            string[] addonsFiles = Directory.GetFiles(Path.Combine(pluginDir, "addons-" + Server.Port), "*.dll");
+            Logger = new ConsoleLogger();
+
+            if (!File.Exists("./config.yml"))
+                File.WriteAllText("./config.yml", YamlDS.Serializer.Serialize(new DedicatedConfig()));
+
+            config = YamlDS.Deserializer.Deserialize<DedicatedConfig>(File.ReadAllText("./config.yml"));
+            if (!Directory.Exists("./addons"))
+                Directory.CreateDirectory("./addons");
+
+            string[] addonsFiles = Directory.GetFiles("./addons", "*.dll");
             Logger.Info($"Loading {addonsFiles.Length} addons.");
             foreach (var file in addonsFiles)
             {
                 Assembly a = Assembly.LoadFrom(file);
                 try
                 {
+                    string addonID = string.Empty;
                     foreach (Type t in a.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
                     {
-                        if (!t.BaseType.IsGenericType || t.BaseType.GetGenericTypeDefinition() != typeof(NPAddonHost<>))
+                        if (!t.BaseType.IsGenericType || t.BaseType.GetGenericTypeDefinition() != typeof(NPAddonDedicated<>))
                         {
                             continue;
                         }
@@ -75,25 +78,24 @@ namespace Exiled.Network
                         }
 
                         if (addon == null)
-                        {
                             continue;
-                        }
 
                         NPAddonInfo addonInfo = (NPAddonInfo)Attribute.GetCustomAttribute(t, typeof(NPAddonInfo));
                         addon.Manager = this;
                         addon.Logger = Logger;
                         addon.AddonId = addonInfo.AddonID;
-                        addon.DefaultPath = Path.Combine(pluginDir, $"addons-{Server.Port}");
+                        addonID = addonInfo.AddonID;
+                        addon.DefaultPath = Path.Combine("addons");
                         addon.AddonPath = Path.Combine(addon.DefaultPath, addonInfo.AddonName);
-                        if (Addons.ContainsKey(addonInfo.AddonID))
+                        if (Addons.TryGetValue(addonInfo.AddonID, out NPAddonItem addonExists))
                         {
-                            Logger.Error($"Addon {Addons[addonInfo.AddonID].Info.AddonName} already have id {addonInfo.AddonName}.");
+                            Logger.Error($"Addon {addonExists.Info.AddonName} already have id {addonInfo.AddonID}.");
                             break;
                         }
 
                         Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         LoadAddonConfig(addon.AddonId);
-                        Logger.Info($"Loading addon {addonInfo.AddonName}.");
+                        Logger.Info($"Loading addon {addonInfo.AddonVersion}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");
                         foreach (var type in a.GetTypes())
@@ -129,8 +131,13 @@ namespace Exiled.Network
             PacketProcessor.SubscribeReusable<UpdatePlayerInfoPacket, NetPeer>(OnUpdatePlayerInfo);
             PacketProcessor.SubscribeReusable<ConsoleResponsePacket, NetPeer>(OnConsoleResponse);
             NetworkListener = new NetManager(this);
-            NetworkListener.Start(plugin.Config.HostPort);
-            Timing.RunCoroutine(RefreshPolls());
+            Logger.Info($"IP: {config.HostAddress}");
+            Logger.Info($"Port: {config.HostPort}");
+            NetworkListener.Start(config.HostPort);
+            Task.Factory.StartNew(async () =>
+            {
+                await RefreshPolls();
+            });
         }
 
         private void OnConsoleResponse(ConsoleResponsePacket packet, NetPeer peer)
@@ -150,15 +157,13 @@ namespace Exiled.Network
                 return;
 
             if (!server.Players.ContainsKey(packet.UserID))
-            {
                 server.Players.Add(packet.UserID, new NPPlayer(server, packet.UserID));
-                Logger.Info($"Add missing player {packet.UserID}.");
-            }
 
             if (!server.Players.TryGetValue(packet.UserID, out NPPlayer player))
                 return;
 
             NetDataReader reader = new NetDataReader(packet.Data);
+
             switch (packet.Type)
             {
                 case 0:
@@ -261,6 +266,7 @@ namespace Exiled.Network
         {
             if (!Servers.TryGetValue(peer, out NPServer server))
                 return;
+
             string adds = string.Empty;
             List<CommandInfoPacket> cmds = new List<CommandInfoPacket>();
             List<string> addonsId = new List<string>();
@@ -274,15 +280,15 @@ namespace Exiled.Network
             }
 
             Logger.Info($"Received addons from server {server.FullAddress}, {adds}");
-            PacketProcessor.Send<ReceiveCommandsPacket>(NetworkListener, new ReceiveCommandsPacket() { Commands = cmds }, DeliveryMethod.ReliableOrdered);
-            PacketProcessor.Send<ReceiveAddonsPacket>(NetworkListener, new ReceiveAddonsPacket() { AddonIds = addonsId.ToArray() }, DeliveryMethod.ReliableOrdered);
+            PacketProcessor.Send<ReceiveCommandsPacket>(peer, new ReceiveCommandsPacket() { Commands = cmds }, DeliveryMethod.ReliableOrdered);
+            PacketProcessor.Send<ReceiveAddonsPacket>(peer, new ReceiveAddonsPacket() { AddonIds = addonsId.ToArray() }, DeliveryMethod.ReliableOrdered);
         }
 
-        private IEnumerator<float> RefreshPolls()
+        private async Task RefreshPolls()
         {
             while (true)
             {
-                yield return Timing.WaitForOneFrame;
+                await Task.Delay(15);
                 if (NetworkListener != null)
                 {
                     if (NetworkListener.IsRunning)
@@ -316,7 +322,14 @@ namespace Exiled.Network
         /// <inheritdoc/>
         public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
         {
-            PacketProcessor.ReadAllPackets(reader, peer);
+            try
+            {
+                PacketProcessor.ReadAllPackets(reader, peer);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Failed in {peer.EndPoint.Address}, {ex}");
+            }
         }
 
         /// <inheritdoc/>
@@ -334,7 +347,7 @@ namespace Exiled.Network
         {
             if (request.Data.TryGetString(out string key))
             {
-                if (key == plugin.Config.HostConnectionKey)
+                if (key == config.HostConnectionKey)
                 {
                     if (request.Data.TryGetUShort(out ushort port))
                     {

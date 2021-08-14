@@ -76,10 +76,10 @@ namespace Exiled.Network.API
                     Directory.CreateDirectory(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName));
 
                 if (!File.Exists(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")))
-                    File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Loader.Loader.Serializer.Serialize(npdi.Addon.Config));
+                    File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), YamlDS.Serializer.Serialize(npdi.Addon.Config));
 
                 var cfg = (IConfig)Loader.Loader.Deserializer.Deserialize(File.ReadAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")), npdi.Addon.Config.GetType());
-                File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Loader.Loader.Serializer.Serialize(cfg));
+                File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), YamlDS.Serializer.Serialize(cfg));
                 npdi.Addon.Config.CopyProperties(cfg);
             }
         }

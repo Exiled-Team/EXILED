@@ -9,6 +9,9 @@ namespace Exiled.Network
 {
     using Exiled.API.Features;
 
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+
     /// <inheritdoc/>
     public class MainClass : Plugin<PluginConfig>
     {

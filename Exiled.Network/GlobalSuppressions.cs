@@ -30,6 +30,3 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:Fields should be private", Justification = "<Pending>", Scope = "member", Target = "~F:Exiled.Network.API.NPManager.Logger")]
 [assembly: SuppressMessage("StyleCop.CSharp.OrderingRules", "SA1201:Elements should appear in the correct order", Justification = "<Pending>", Scope = "member", Target = "~P:Exiled.Network.NPClient.CanSendData")]
 [assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1600:Elements should be documented", Justification = "<Pending>", Scope = "type", Target = "~T:Exiled.Network.API.Interfaces.IAddon`1")]
-[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1618:Generic type parameters should be documented", Justification = "<Pending>", Scope = "type", Target = "~T:Exiled.Network.API.NPAddonClient`1")]
-[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1618:Generic type parameters should be documented", Justification = "<Pending>", Scope = "type", Target = "~T:Exiled.Network.API.NPAddonDedicated`1")]
-[assembly: SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1618:Generic type parameters should be documented", Justification = "<Pending>", Scope = "type", Target = "~T:Exiled.Network.API.NPAddonHost`1")]

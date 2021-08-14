@@ -1,28 +1,19 @@
 // -----------------------------------------------------------------------
-// <copyright file="PluginConfig.cs" company="Exiled Team">
+// <copyright file="DedicatedConfig.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Network
+namespace Exiled.DedicatedNetwork
 {
     using System.ComponentModel;
 
-    using Exiled.API.Interfaces;
-
-    /// <inheritdoc/>
-    public class PluginConfig : IConfig
+    /// <summary>
+    /// Network config.
+    /// </summary>
+    public class DedicatedConfig
     {
-        /// <inheritdoc/>
-        public bool IsEnabled { get; set; } = true;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether gets or sets if network running as host.
-        /// </summary>
-        [Description("Is running as host.")]
-        public bool IsHost { get; set; } = false;
-
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets connection key.
         /// </summary>

@@ -20,7 +20,7 @@ namespace Exiled.Network.API
     /// <summary>
     /// Network Host Addon.
     /// </summary>
-    /// <param name="TConfig">Addon Config.</param>
+    /// <typeparam name="TConfig">The config type.</typeparam>
     public abstract class NPAddonHost<TConfig> : IAddon<TConfig>
         where TConfig : IConfig, new()
     {

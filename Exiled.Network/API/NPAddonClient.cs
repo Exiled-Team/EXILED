@@ -17,7 +17,7 @@ namespace Exiled.Network.API
     /// <summary>
     /// Network Client Addon.
     /// </summary>
-    /// <param name="TConfig">Addon Config.</param>
+    /// <typeparam name="TConfig">The config type.</typeparam>
     public abstract class NPAddonClient<TConfig> : IAddon<TConfig>
         where TConfig : IConfig, new()
     {

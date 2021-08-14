@@ -45,7 +45,7 @@ namespace Exiled.Network
         {
             this.plugin = plugin;
             defaultdata = new NetDataWriter();
-            defaultdata.Put(plugin.Config.hostConnectionKey);
+            defaultdata.Put(plugin.Config.HostConnectionKey);
             defaultdata.Put(Server.Port);
             defaultdata.Put(CustomNetworkManager.slots);
             Logger = new PluginLogger();
@@ -380,7 +380,7 @@ namespace Exiled.Network
             PacketProcessor.SubscribeReusable<ExecuteConsoleCommandPacket, NetPeer>(OnExecuteConsoleCommand);
             NetworkListener = new NetManager(this);
             NetworkListener.Start();
-            NetworkListener.Connect(plugin.Config.hostAddress, plugin.Config.hostPort, defaultdata);
+            NetworkListener.Connect(plugin.Config.HostAddress, plugin.Config.HostPort, defaultdata);
             Timing.RunCoroutine(RefreshPolls());
             Timing.RunCoroutine(SendPlayersInfo());
         }
@@ -631,8 +631,8 @@ namespace Exiled.Network
         private IEnumerator<float> Reconnect()
         {
             yield return Timing.WaitForSeconds(5f);
-            Logger.Info($"Reconnecting to {plugin.Config.hostAddress}:{plugin.Config.hostPort}...");
-            NetworkListener.Connect(plugin.Config.hostAddress, plugin.Config.hostPort, defaultdata);
+            Logger.Info($"Reconnecting to {plugin.Config.HostAddress}:{plugin.Config.HostPort}...");
+            NetworkListener.Connect(plugin.Config.HostAddress, plugin.Config.HostPort, defaultdata);
         }
 
         /// <inheritdoc/>
