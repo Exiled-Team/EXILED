@@ -49,8 +49,7 @@ namespace Exiled.Network
             defaultdata.Put(Server.Port);
             defaultdata.Put(CustomNetworkManager.slots);
             Logger = new PluginLogger();
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string pluginDir = Path.Combine(folderPath, "EXILED", "Plugins", "NetworkedPlugins");
+            string pluginDir = Path.Combine(Paths.Plugins, "Exiled.Network");
             if (!Directory.Exists(pluginDir))
                 Directory.CreateDirectory(pluginDir);
             if (!Directory.Exists(Path.Combine(pluginDir, "addons-" + Server.Port)))
@@ -85,9 +84,7 @@ namespace Exiled.Network
                         }
 
                         if (addon == null)
-                        {
                             continue;
-                        }
 
                         NPAddonInfo addonInfo = (NPAddonInfo)Attribute.GetCustomAttribute(t, typeof(NPAddonInfo));
                         addon.Manager = this;

@@ -15,6 +15,21 @@ namespace Exiled.Network.API.Attributes
     public class NPAddonInfo : Attribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="NPAddonInfo"/> class.
+        /// </summary>
+        /// <param name="addonId">Addon Id.</param>
+        /// <param name="addonName">Addon Name.</param>
+        /// <param name="addonVersion">Version.</param>
+        /// <param name="addonAuthor">Author.</param>
+        public NPAddonInfo(string addonId, string addonName, string addonAuthor, string addonVersion)
+        {
+            this.AddonID = addonId;
+            this.AddonName = addonName;
+            this.AddonAuthor = addonAuthor;
+            this.AddonVersion = new Version(addonVersion);
+        }
+
+        /// <summary>
         /// Gets or sets the AddonID.
         /// </summary>
         public string AddonID { get; set; }

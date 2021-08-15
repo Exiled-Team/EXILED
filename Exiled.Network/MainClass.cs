@@ -19,7 +19,7 @@ namespace Exiled.Network
         public override string Name { get; } = "Exiled.Network";
 
         /// <inheritdoc/>
-        public override string Prefix { get; } = "exiled.network";
+        public override string Prefix { get; } = "exiled_network";
 
         /// <inheritdoc/>
         public override string Author { get; } = "Killers0992";

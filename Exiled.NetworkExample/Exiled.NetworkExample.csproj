@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <AssemblyName>Exiled.Network</AssemblyName>
+    <AssemblyName>Exiled.NetworkExample</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
     <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj" />
+    <ProjectReference Include="..\Exiled.Network\Exiled.Network.csproj" />
   </ItemGroup>
 
   <ItemGroup>
