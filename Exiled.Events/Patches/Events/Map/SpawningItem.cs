@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
@@ -17,49 +18,31 @@ namespace Exiled.Events.Patches.Events.Map
 
     using InventorySystem.Items.Pickups;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.
-    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawnedItem"/> events.
+    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawningItem"/> events.
     /// </summary>
     [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(ItemPickupBase ipb)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            const int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
-            LocalBuilder ev = generator.DeclareLocal(typeof(SpawnedItemEventArgs));
-            Label returnLabel = generator.DefineLabel();
-
-            newInstructions.InsertRange(index, new[]
+            if (ipb != null)
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningItemEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnSpawningItem))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                var ev = new SpawningItemEventArgs(ipb, true);
+                Handlers.Map.OnSpawningItem(ev);
+                return ev.IsAllowed;
+            }
 
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningItemEventArgs), nameof(SpawningItemEventArgs.Pickup))),
-                new CodeInstruction(OpCodes.Starg, 0),
-            });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return false;
         }
     }
 }

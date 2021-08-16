@@ -11,6 +11,10 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using UnityEngine;
+
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
     /// Contains all informations before adding a target to SCP-096.
     /// </summary>
@@ -21,15 +25,17 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="scp096"><inheritdoc cref="Scp096"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="ahpToAdd"><inheritdoc cref="AhpToAdd"/></param>
         /// <param name="enrageTimeToAdd"><inheritdoc cref="EnrageTimeToAdd"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AddingTargetEventArgs(Player scp096, Player target, int ahpToAdd, float enrageTimeToAdd, bool isAllowed = true)
+        public AddingTargetEventArgs(Player scp096, Player target, float enrageTimeToAdd, bool isAllowed = true)
         {
             Scp096 = scp096;
             Target = target;
-            AhpToAdd = ahpToAdd;
-            EnrageTimeToAdd = enrageTimeToAdd;
+            EnrageTimeToAdd = scp096.CurrentScp is Scp096 scp
+                ? scp.AddedTimeThisRage + enrageTimeToAdd <= scp.MaximumAddedEnrageTime
+                    ? enrageTimeToAdd
+                    : Mathf.Abs((scp.AddedTimeThisRage + enrageTimeToAdd) - scp.MaximumAddedEnrageTime)
+                : 0f;
             IsAllowed = isAllowed;
         }
 
@@ -42,11 +48,6 @@ namespace Exiled.Events.EventArgs
         /// Gets the <see cref="Player"/> being added as a target.
         /// </summary>
         public Player Target { get; }
-
-        /// <summary>
-        /// Gets or sets the amount of AHP to add to SCP-096 if <see cref="IsAllowed"/> is true.
-        /// </summary>
-        public int AhpToAdd { get; set; }
 
         /// <summary>
         /// Gets or sets how much time is added to SCP-096's enrage timer if <see cref="IsAllowed"/> is true.

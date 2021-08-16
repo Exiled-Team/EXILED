@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Generic
                 Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add))) + offset;
 
             // Declare Player, to be able to store its instance with "stloc.2".
-            generator.DeclareLocal(typeof(Player));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             // Define the continue label and add it.
             Label continueLabel = generator.DefineLabel();
@@ -53,14 +53,16 @@ namespace Exiled.Events.Patches.Generic
             //   continue;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
                 new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue, continueLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
                 new CodeInstruction(OpCodes.Brfalse, continueLabel),

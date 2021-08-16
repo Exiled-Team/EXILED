@@ -65,9 +65,6 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // 70
-                new CodeInstruction(OpCodes.Ldc_I4_S, 70),
-
                 // this.EnrageTimePerReset;
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimePerReset))),
@@ -122,19 +119,6 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
-            });
-
-            // Get the index of the last "ldc.i4.s".
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S);
-
-            // Remove "ldc.i4.s" instruction.
-            newInstructions.RemoveAt(index);
-
-            // Load "ev.AhpToAdd" instead of 70.
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.AhpToAdd))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

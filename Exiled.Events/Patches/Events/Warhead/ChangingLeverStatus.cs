@@ -5,71 +5,53 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+namespace Exiled.Events.Patches.Events.Warhead
 {
 #pragma warning disable SA1118
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+#pragma warning disable SA1313
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
-
-    using static HarmonyLib.AccessTools;
-
     /// <summary>
     /// Patches <see cref="PlayerInteract.UserCode_CmdSwitchAWButton"/>.
     /// Adds the <see cref="Handlers.Warhead.ChangingLeverStatus"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUsePanel))]
     internal static class ChangingLeverStatus
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(PlayerInteract __instance, PlayerInteract.AlphaPanelOperations n)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            // offset variable
-            const int offset = 2;
-
-            // Find last brtrue.s
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Brtrue_S) + offset;
-
-            // Get the count to find the previous index
-            int oldCount = newInstructions.Count;
-
-            // Add the return label
-            Label returnLabel = generator.DefineLabel();
-            newInstructions[index - 1].WithLabels(returnLabel);
-
-            // var ev = new ChangingWarheadLeverStatusEventArgs(Player.Get(component), true);
-            //
-            // Handlers.Player.OnChangingWarheadLeverStatus(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
-            newInstructions.InsertRange(index, new[]
+            if (!__instance.CanInteract)
+                return false;
+            ReferenceHub component = __instance._hub;
+            AlphaWarheadNukesitePanel nukeside = AlphaWarheadOutsitePanel.nukeside;
+            if (!__instance.ChckDis(nukeside.transform.position))
+                return false;
+            switch (n)
             {
-                 new CodeInstruction(OpCodes.Ldloc_0),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingLeverStatusEventArgs))[0]),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnChangingLeverStatus))),
-                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
-                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-            });
+                case PlayerInteract.AlphaPanelOperations.Cancel:
+                    __instance.OnInteract();
+                    AlphaWarheadController.Host.CancelDetonation(__instance.gameObject);
+                    ServerLogs.AddLog(ServerLogs.Modules.Warhead, component.LoggedNameFromRefHub() + " cancelled the Alpha Warhead detonation.", ServerLogs.ServerLogType.GameEvent);
+                    break;
+                case PlayerInteract.AlphaPanelOperations.Lever:
+                    __instance.OnInteract();
+                    if (!nukeside.AllowChangeLevelState())
+                        break;
+                    var ev = new ChangingLeverStatusEventArgs(Player.Get(component), nukeside.Networkenabled, true);
+                    Handlers.Warhead.OnChangingLeverStatus(ev);
+                    if (!ev.IsAllowed)
+                        return false;
+                    nukeside.Networkenabled = !nukeside.enabled;
+                    __instance.RpcLeverSound();
+                    ServerLogs.AddLog(ServerLogs.Modules.Warhead, component.LoggedNameFromRefHub() + " set the Alpha Warhead status to " + nukeside.enabled.ToString() + ".", ServerLogs.ServerLogType.GameEvent);
+                    break;
+            }
 
-            // Restore labels on the first injected instructions
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return false;
         }
     }
 }

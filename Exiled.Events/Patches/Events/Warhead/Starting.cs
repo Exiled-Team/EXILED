@@ -39,14 +39,8 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Search for the last "ldsfld".
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
-            // Get the starting labels and remove all of them from the original instruction.
-            List<Label> startingLabels = newInstructions[index].labels;
-
             // Get the return label.
-            Label returnLabel = newInstructions[index - 1].labels[0];
-
-            // Remove "ldsfld AlphaWarheadController::Host" & "AlphawarheadController.Host.StartDetonation()".
-            newInstructions.RemoveRange(index, 2);
+            Label returnLabel = generator.DefineLabel();
 
             // if (!Warhead.CanBeStarted)
             //   return;
@@ -57,9 +51,6 @@ namespace Exiled.Events.Patches.Events.Warhead
             //
             // if (!ev.IsAllowed)
             //   return;
-            //
-            // AlphaWarheadController.Host.doorsOpen = false;
-            // AlphaWarheadController.Host.NetworkinProgress = true;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))),
@@ -81,8 +72,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(AlphaWarheadController), nameof(AlphaWarheadController.NetworkinProgress))),
             });
 
-            // Add the starting labels to the first injected instruction.
-            newInstructions[index].WithLabels(startingLabels);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

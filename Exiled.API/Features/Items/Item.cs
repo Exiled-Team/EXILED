@@ -21,6 +21,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Radio;
+    using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
 
     using Mirror;

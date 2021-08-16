@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     /// <summary>
@@ -20,10 +21,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ChangingLeverStatusEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="curState"><inheritdoc cref="CurrentState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingLeverStatusEventArgs(Player player, bool isAllowed = true)
+        public ChangingLeverStatusEventArgs(Player player, bool curState, bool isAllowed = true)
         {
             Player = player;
+            CurrentState = curState;
             IsAllowed = isAllowed;
         }
 
@@ -31,6 +34,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's changing the warhead status.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the lever is enabled.
+        /// </summary>
+        public bool CurrentState { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the lever status will change.

@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -68,21 +69,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SpawningItemEventArgs> SpawningItem;
 
         /// <summary>
-        /// Invoked after an item is spawned.
-        /// </summary>
-        public static event CustomEventHandler<SpawnedItemEventArgs> SpawnedItem;
-
-        /// <summary>
         /// Invoked after the map is generated.
         /// </summary>
         public static event CustomEventHandler Generated;
 
-        /*
         /// <summary>
         /// Invoked before the server changes a pickup into a grenade, when triggered by an explosion.
         /// </summary>
         public static event CustomEventHandler<ChangingIntoGrenadeEventArgs> ChangingIntoGrenade;
-        */
 
         /// <summary>
         /// Called before placing a decal.
@@ -145,22 +139,14 @@ namespace Exiled.Events.Handlers
         public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after an item is spawned.
-        /// </summary>
-        /// <param name="ev">The <see cref="SpawnedItemEventArgs"/> instance.</param>
-        public static void OnSpawnedItem(SpawnedItemEventArgs ev) => SpawnedItem.InvokeSafely(ev);
-
-        /// <summary>
         /// Called after the map is generated.
         /// </summary>
         public static void OnGenerated() => Generated.InvokeSafely();
 
-        /*
         /// <summary>
-        /// Called before the server changes a <see cref="Pickup"/> into a <see cref="Grenade"/> when hit by an explosion.
+        /// Called before the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
         public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
-        */
     }
 }
