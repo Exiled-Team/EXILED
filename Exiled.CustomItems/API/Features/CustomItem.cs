@@ -24,6 +24,8 @@ namespace Exiled.CustomItems.API.Features
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
+    using MapGeneration.Distributors;
+
     using MEC;
 
     using UnityEngine;
@@ -33,6 +35,7 @@ namespace Exiled.CustomItems.API.Features
     using static CustomItems;
 
     using Item = Exiled.API.Features.Items.Item;
+    using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
@@ -404,23 +407,17 @@ namespace Exiled.CustomItems.API.Features
                     for (int i = 0; i < 50; i++)
                     {
                         Locker locker =
-                            LockerManager.singleton.lockers[
-                                Loader.Random.Next(LockerManager.singleton.lockers.Length)];
-                        if (locker._itemsToSpawn == null)
+                            Map.Lockers[
+                                Loader.Random.Next(Map.Lockers.Count)];
+                        if (locker.Loot == null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
-                        LockerChamber chamber = locker.chambers[Loader.Random.Next(Mathf.Max(0, locker.chambers.Length - 1))];
+                        LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
 
-                        foreach (Locker.ItemToSpawn item in locker._itemsToSpawn.ToList())
-                        {
-                            if (item._pos == chamber.spawnpoint.position)
-                                locker._itemsToSpawn.Remove(item);
-                        }
-
-                        Vector3 position = chamber.spawnpoint.transform.position;
+                        Vector3 position = chamber._spawnpoint.transform.position;
                         Spawn(position, out _);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", Instance.Config.Debug);
 

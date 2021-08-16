@@ -55,7 +55,7 @@ namespace Exiled.API.Features
         {
             ownerHLAPI_id = null,
             PlayerId = -1,
-            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.Com15, -1),
+            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.None, -1, false),
             ClassColor = new Color(1f, 0.556f, 0f),
             FullName = "Class-D",
             Nick = "[REDACTED]",
@@ -340,7 +340,7 @@ namespace Exiled.API.Features
                 string mirrorOwnerId = null)
         {
             var @default = DefaultRagdollOwner;
-            return Spawn(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
+            return Spawn(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1, false), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
         }
 
         /// <summary>
