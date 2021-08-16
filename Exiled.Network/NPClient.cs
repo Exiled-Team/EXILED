@@ -35,6 +35,13 @@ namespace Exiled.Network
     {
         private MainClass plugin;
 
+        private bool canSendData = false;
+        private CoroutineHandle refreshPolls;
+        private CoroutineHandle sendPlayerInfo;
+        private CoroutineHandle dataChecker;
+        private Dictionary<string, NPPlayer> players = new Dictionary<string, NPPlayer>();
+        private List<CommandInfoPacket> registerdCommands = new List<CommandInfoPacket>();
+
         private NetDataWriter defaultdata;
 
         /// <summary>
@@ -100,6 +107,9 @@ namespace Exiled.Network
 
                         Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         LoadAddonConfig(addon.AddonId);
+                        if (!addon.Config.IsEnabled)
+                            return;
+
                         Logger.Info($"Loading addon {addonInfo.AddonName}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");
@@ -120,12 +130,30 @@ namespace Exiled.Network
             StartNetworkClient();
         }
 
+        /// <summary>
+        /// Unload network client.
+        /// </summary>
+        public void Unload()
+        {
+            if (refreshPolls != null)
+                Timing.KillCoroutines(refreshPolls);
+
+            if (sendPlayerInfo != null)
+                Timing.KillCoroutines(sendPlayerInfo);
+
+            if (dataChecker != null)
+                Timing.KillCoroutines(dataChecker);
+        }
+
+        private static int GetMethodHash(Type invokeClass, string methodName)
+        {
+            return (invokeClass.FullName.GetStableHashCode() * 503) + methodName.GetStableHashCode();
+        }
+
         private void Server_WaitingForPlayers()
         {
             UpdatePlayers();
         }
-
-        private Dictionary<string, NPPlayer> players = new Dictionary<string, NPPlayer>();
 
         private void Player_Verified(VerifiedEventArgs ev)
         {
@@ -160,7 +188,7 @@ namespace Exiled.Network
                 {
                     foreach (var plr in players)
                     {
-                        if (!CanSendData)
+                        if (!canSendData)
                             continue;
                         var realPlayer = Player.Get(plr.Key);
                         var player = plr.Value;
@@ -328,8 +356,6 @@ namespace Exiled.Network
             }
         }
 
-        private bool CanSendData { get; set; } = false;
-
         private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
         {
             foreach (var command in registerdCommands)
@@ -378,8 +404,8 @@ namespace Exiled.Network
             NetworkListener = new NetManager(this);
             NetworkListener.Start();
             NetworkListener.Connect(plugin.Config.HostAddress, plugin.Config.HostPort, defaultdata);
-            Timing.RunCoroutine(RefreshPolls());
-            Timing.RunCoroutine(SendPlayersInfo());
+            refreshPolls = Timing.RunCoroutine(RefreshPolls());
+            sendPlayerInfo = Timing.RunCoroutine(SendPlayersInfo());
         }
 
         private void OnExecuteConsoleCommand(ExecuteConsoleCommandPacket packet, NetPeer peer)
@@ -540,7 +566,7 @@ namespace Exiled.Network
                 }
             }
 
-            CanSendData = true;
+            canSendData = true;
         }
 
         private void OnReceiveCommandsData(ReceiveCommandsPacket packet, NetPeer peer)
@@ -552,14 +578,12 @@ namespace Exiled.Network
             }
         }
 
-        private List<CommandInfoPacket> registerdCommands = new List<CommandInfoPacket>();
-
         /// <summary>
         /// Redirect client to other server.
         /// </summary>
         /// <param name="hub">Player.</param>
         /// <param name="port">Server port.</param>
-        public void SendClientToServer(Player hub, ushort port)
+        private void SendClientToServer(Player hub, ushort port)
         {
             var serverPS = hub.ReferenceHub.playerStats;
             NetworkWriter writer = NetworkWriterPool.GetWriter();
@@ -574,11 +598,6 @@ namespace Exiled.Network
             };
             hub.Connection.Send<RpcMessage>(msg, 0);
             NetworkWriterPool.Recycle(writer);
-        }
-
-        private static int GetMethodHash(Type invokeClass, string methodName)
-        {
-            return (invokeClass.FullName.GetStableHashCode() * 503) + methodName.GetStableHashCode();
         }
 
         private IEnumerator<float> RefreshPolls()
@@ -623,8 +642,6 @@ namespace Exiled.Network
             PacketProcessor.Send<ReceivePlayersDataPacket>(NetworkListener, new ReceivePlayersDataPacket() { Players = players }, DeliveryMethod.ReliableOrdered);
         }
 
-        private CoroutineHandle dataChecker;
-
         private IEnumerator<float> Reconnect()
         {
             yield return Timing.WaitForSeconds(5f);
@@ -650,7 +667,7 @@ namespace Exiled.Network
             Logger.Info($"Client disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
             Timing.RunCoroutine(Reconnect());
             registerdCommands.Clear();
-            CanSendData = false;
+            canSendData = false;
             if (dataChecker != null)
                 Timing.KillCoroutines(dataChecker);
         }

@@ -29,6 +29,7 @@ namespace Exiled.Network
     /// </summary>
     public class NPHost : NPManager, INetEventListener
     {
+        private CoroutineHandle refreshPolls;
         private MainClass plugin;
 
         /// <summary>
@@ -90,8 +91,11 @@ namespace Exiled.Network
                             break;
                         }
 
-                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         LoadAddonConfig(addon.AddonId);
+                        if (!addon.Config.IsEnabled)
+                            return;
+
+                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         Logger.Info($"Loading addon {addonInfo.AddonName}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");
@@ -115,6 +119,15 @@ namespace Exiled.Network
             StartNetworkHost();
         }
 
+        /// <summary>
+        /// Unload network host.
+        /// </summary>
+        public void Unload()
+        {
+            if (refreshPolls != null)
+                Timing.KillCoroutines(refreshPolls);
+        }
+
         private void StartNetworkHost()
         {
             PacketProcessor.RegisterNestedType<CommandInfoPacket>();
@@ -129,7 +142,7 @@ namespace Exiled.Network
             PacketProcessor.SubscribeReusable<ConsoleResponsePacket, NetPeer>(OnConsoleResponse);
             NetworkListener = new NetManager(this);
             NetworkListener.Start(plugin.Config.HostPort);
-            Timing.RunCoroutine(RefreshPolls());
+            refreshPolls = Timing.RunCoroutine(RefreshPolls());
         }
 
         private void OnConsoleResponse(ConsoleResponsePacket packet, NetPeer peer)

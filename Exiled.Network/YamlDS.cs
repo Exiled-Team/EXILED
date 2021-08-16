@@ -16,7 +16,7 @@ namespace Exiled.Network
     public class YamlDS
     {
         /// <summary>
-        /// Gets the serializer for configs and translations.
+        /// Gets the serializer for configs.
         /// </summary>
         public static ISerializer Serializer { get; } = new SerializerBuilder()
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -24,7 +24,7 @@ namespace Exiled.Network
             .Build();
 
         /// <summary>
-        /// Gets the deserializer for configs and translations.
+        /// Gets the deserializer for configs.
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
             .IgnoreFields()

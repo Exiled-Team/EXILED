@@ -17,6 +17,7 @@ namespace Exiled.Network
     public class CustomConsoleExecutor : CommandSender
     {
         private readonly string command;
+        private readonly NPClient client;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomConsoleExecutor"/> class.
@@ -28,8 +29,6 @@ namespace Exiled.Network
             this.client = client;
             this.command = cmd;
         }
-
-        private NPClient client;
 
         /// <summary>
         /// Gets sender id.

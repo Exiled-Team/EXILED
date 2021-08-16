@@ -22,6 +22,21 @@ namespace Exiled.Network.API
     public class NPManager
     {
         /// <summary>
+        /// Packet Processor.
+        /// </summary>
+        public readonly NetPacketProcessor PacketProcessor = new NetPacketProcessor();
+
+        /// <summary>
+        /// Logger.
+        /// </summary>
+        public NPLogger Logger;
+
+        /// <summary>
+        /// Network Listener.
+        /// </summary>
+        public NetManager NetworkListener;
+
+        /// <summary>
         /// Gets or sets dictionary of all loaded addons.
         /// </summary>
         public Dictionary<string, NPAddonItem> Addons = new Dictionary<string, NPAddonItem>();
@@ -109,20 +124,5 @@ namespace Exiled.Network.API
 
             return cmds;
         }
-
-        /// <summary>
-        /// Logger.
-        /// </summary>
-        public static NPLogger Logger;
-
-        /// <summary>
-        /// Packet Processor.
-        /// </summary>
-        public readonly NetPacketProcessor PacketProcessor = new NetPacketProcessor();
-
-        /// <summary>
-        /// Network Listener.
-        /// </summary>
-        public NetManager NetworkListener;
     }
 }

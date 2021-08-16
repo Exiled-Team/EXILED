@@ -37,6 +37,9 @@ namespace Exiled.Network.API
         /// <inheritdoc/>
         public string AddonPath { get; set; }
 
+        /// <inheritdoc/>
+        public TConfig Config { get; } = new TConfig();
+
         /// <summary>
         /// Send data to client.
         /// </summary>
@@ -157,9 +160,6 @@ namespace Exiled.Network.API
         public virtual void OnConsoleResponse(NPServer server, string command, string response, bool isRa)
         {
         }
-
-        /// <inheritdoc/>
-        public TConfig Config { get; } = new TConfig();
 
         /// <summary>
         /// Compare configs.

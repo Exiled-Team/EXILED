@@ -20,24 +20,24 @@ namespace Exiled.DedicatedNetwork
         /// <summary>
         /// Host instance.
         /// </summary>
-        public static Host Host;
+        private static Host host;
 
         private static void Main(string[] args)
         {
-            if (!Directory.Exists("./dependencies"))
-                Directory.CreateDirectory("./dependencies");
-            string[] depsFIles = Directory.GetFiles("./dependencies", "*.dll");
+            if (!Directory.Exists("dependencies"))
+                Directory.CreateDirectory("dependencies");
+            string[] depsFIles = Directory.GetFiles("dependencies", "*.dll");
             foreach (var deps in depsFIles)
             {
                 Assembly a = Assembly.LoadFrom(deps);
             }
 
-            Host = new Host();
+            host = new Host();
             while (true)
             {
                 var line = Console.ReadLine();
                 var proc = line.Split(' ');
-                foreach (var h in Host.Addons)
+                foreach (var h in host.Addons)
                 {
                     h.Value.Addon.OnConsoleCommand(proc[0], proc.Skip(1).ToList());
                 }

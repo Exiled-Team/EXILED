@@ -40,14 +40,14 @@ namespace Exiled.DedicatedNetwork
         {
             Logger = new ConsoleLogger();
 
-            if (!File.Exists("./config.yml"))
-                File.WriteAllText("./config.yml", YamlDS.Serializer.Serialize(new DedicatedConfig()));
+            if (!File.Exists("config.yml"))
+                File.WriteAllText("config.yml", YamlDS.Serializer.Serialize(new DedicatedConfig()));
 
-            config = YamlDS.Deserializer.Deserialize<DedicatedConfig>(File.ReadAllText("./config.yml"));
-            if (!Directory.Exists("./addons"))
-                Directory.CreateDirectory("./addons");
+            config = YamlDS.Deserializer.Deserialize<DedicatedConfig>(File.ReadAllText("config.yml"));
+            if (!Directory.Exists("addons"))
+                Directory.CreateDirectory("addons");
 
-            string[] addonsFiles = Directory.GetFiles("./addons", "*.dll");
+            string[] addonsFiles = Directory.GetFiles("addons", "*.dll");
             Logger.Info($"Loading {addonsFiles.Length} addons.");
             foreach (var file in addonsFiles)
             {
@@ -93,8 +93,11 @@ namespace Exiled.DedicatedNetwork
                             break;
                         }
 
-                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         LoadAddonConfig(addon.AddonId);
+                        if (!addon.Config.IsEnabled)
+                            return;
+
+                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         Logger.Info($"Loading addon {addonInfo.AddonVersion}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");

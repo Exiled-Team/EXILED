@@ -15,6 +15,9 @@ namespace Exiled.Network
     /// <inheritdoc/>
     public class MainClass : Plugin<PluginConfig>
     {
+        private NPClient client;
+        private NPHost host;
+
         /// <inheritdoc/>
         public override string Name { get; } = "Exiled.Network";
 
@@ -23,9 +26,6 @@ namespace Exiled.Network
 
         /// <inheritdoc/>
         public override string Author { get; } = "Killers0992";
-
-        private NPClient client;
-        private NPHost host;
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -40,8 +40,17 @@ namespace Exiled.Network
         /// <inheritdoc/>
         public override void OnDisabled()
         {
-            client = null;
-            host = null;
+            if (client != null)
+            {
+                client.Unload();
+                client = null;
+            }
+
+            if (host != null)
+            {
+                host.Unload();
+                host = null;
+            }
         }
     }
 }
