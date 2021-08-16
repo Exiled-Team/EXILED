@@ -466,6 +466,11 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
+        /// Gets the player's <see cref="NetworkIdentity"/>.
+        /// </summary>
+        public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is the host.
         /// </summary>
         public bool IsHost => ReferenceHub.isDedicatedServer;
