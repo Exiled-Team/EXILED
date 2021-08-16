@@ -25,7 +25,7 @@ namespace Exiled.Network
         public override string Prefix { get; } = "exiled_network";
 
         /// <inheritdoc/>
-        public override string Author { get; } = "Killers0992";
+        public override string Author { get; } = "Exiled Team";
 
         /// <inheritdoc/>
         public override void OnEnabled()
