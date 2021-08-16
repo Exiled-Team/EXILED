@@ -484,7 +484,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.MTF || Team == Team.RSC;
+        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.RSC;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
@@ -1255,6 +1255,11 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="amount">The amount of HP given to the player.</param>
         public void Heal(float amount) => ReferenceHub.playerStats.HealHPAmount(amount);
+
+        /// <summary>
+        /// Resets the player's stamina.
+        /// </summary>
+        public void ResetStamina() => ReferenceHub.fpc.ResetStamina();
 
         /// <summary>
         /// Hurts the player.

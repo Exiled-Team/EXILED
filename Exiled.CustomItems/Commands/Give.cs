@@ -16,6 +16,8 @@ namespace Exiled.CustomItems.Commands
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
 
+    using RemoteAdmin;
+
     /// <summary>
     /// The command to give a player an item.
     /// </summary>
@@ -48,15 +50,36 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            if (arguments.Count < 2)
+            if (arguments.Count == 0)
             {
-                response = "give [Custom item name/Custom item ID] [Nickname/PlayerID/UserID/all/*]";
+                response = "give <Custom item name/Custom item ID> [Nickname/PlayerID/UserID/all/*]";
                 return false;
             }
 
             if (!CustomItem.TryGet(arguments.At(0), out CustomItem item))
             {
                 response = $"Custom item {arguments.At(0)} not found!";
+                return false;
+            }
+
+            if (arguments.Count == 1)
+            {
+                if (sender is PlayerCommandSender playerCommandSender)
+                {
+                    var player = Player.Get(playerCommandSender.SenderId);
+
+                    if (!CheckEligible(player))
+                    {
+                        response = "You cannot receive custom items!";
+                        return false;
+                    }
+
+                    item.Give(player);
+                    response = $"{item.Name} given to {player.Nickname} ({player.UserId})";
+                    return true;
+                }
+
+                response = "Failed to provide a valid player, please follow the syntax.";
                 return false;
             }
 

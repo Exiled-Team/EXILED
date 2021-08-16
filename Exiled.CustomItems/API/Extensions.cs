@@ -152,7 +152,7 @@ namespace Exiled.CustomItems.API
                 case SpawnLocation.InsideSurfaceNuke:
                     return "SURFACE_NUKE";
                 case SpawnLocation.Inside079Secondary:
-                    return "079_SECONDARY";
+                    return "079_SECOND";
                 case SpawnLocation.Inside173Connector:
                     return "173_CONNECTOR";
                 case SpawnLocation.InsideServersBottom:
