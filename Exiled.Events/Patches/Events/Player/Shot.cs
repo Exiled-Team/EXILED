@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -17,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
@@ -39,8 +41,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = 1;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_S && i.operand == (object)6) + offset;
+            int offset = 2;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(FirearmBaseStats), nameof(FirearmBaseStats.DamageAtDistance))) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 

@@ -229,6 +229,9 @@ namespace Exiled.API.Features
 
         private DoorType GetDoorType()
         {
+            if (Nametag == null)
+                return DoorType.UnknownDoor;
+
             switch (Nametag.RemoveBracketsOnEndOfName())
             {
                 case "Prison BreakableDoor":

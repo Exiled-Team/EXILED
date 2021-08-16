@@ -1149,22 +1149,11 @@ namespace Exiled.API.Features
         /// Sets the player's <see cref="RoleType"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleType"/> to be set.</param>
+        /// <param name="reason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
         /// <param name="lite">Indicates whether it should preserve the position and inventory after changing the role or not.</param>
-        /// <param name="isEscaped">Indicates whether the player is escaped or not.</param>
-        public void SetRole(RoleType newRole, bool lite = false, bool isEscaped = false)
+        public void SetRole(RoleType newRole, SpawnReason reason = SpawnReason.ForceClass, bool lite = false)
         {
-            ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, lite, isEscaped);
-        }
-
-        /// <summary>
-        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
-        /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Use Broadcast(Broadcast broadcast, bool shouldClearPrevious) instead.", true)]
-        public void Broadcast(Broadcast broadcast)
-        {
-            if (broadcast.Show)
-                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+            ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, (CharacterClassManager.SpawnReason)reason, lite);
         }
 
         /// <summary>

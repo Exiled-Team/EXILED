@@ -145,7 +145,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnShooting(ShootingEventArgs)"/>
         public void OnShooting(ShootingEventArgs ev)
         {
-            Log.Info($"{ev.Shooter.Nickname} is shooting a {ev.Shooter.CurrentItem.Type}! Target Pos: {ev.ShotPosition} Target object ID: {ev.TargetNetId}");
+            Log.Info($"{ev.Shooter.Nickname} is shooting a {ev.Shooter.CurrentItem.Type}! Target Pos: {ev.ShotPosition} Target object ID: {ev.TargetNetId} Allowed: {ev.IsAllowed}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnReloadingWeapon(ReloadingWeaponEventArgs)"/>

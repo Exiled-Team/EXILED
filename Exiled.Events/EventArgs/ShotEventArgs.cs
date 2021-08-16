@@ -29,7 +29,7 @@ namespace Exiled.Events.EventArgs
         {
             Shooter = shooter;
             Damage = damage;
-            Distance = Vector3.Distance(shooter.Position, hit.point);
+            Distance = hit.distance;
 
             if (destructible is HitboxIdentity)
             {

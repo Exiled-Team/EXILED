@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     /// <summary>
@@ -24,14 +25,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newRole"><inheritdoc cref="NewRole"/></param>
         /// <param name="shouldPreservePosition"><inheritdoc cref="Lite"/></param>
-        /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, bool isEscaped)
+        /// <param name="reason"><inheritdoc cref="Reason"/></param>
+        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
         {
             Player = player;
             NewRole = newRole;
             Items = InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole) ? InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items.ToList() : new List<ItemType>();
             Lite = shouldPreservePosition;
-            IsEscaped = isEscaped;
+            Reason = (SpawnReason)reason;
         }
 
         /// <summary>
@@ -50,9 +51,9 @@ namespace Exiled.Events.EventArgs
         public List<ItemType> Items { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player escaped or not.
+        /// Gets or sets the reason for their class change.
         /// </summary>
-        public bool IsEscaped { get; set; }
+        public SpawnReason Reason { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the position and items has to be preserved after changing the role.

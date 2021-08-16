@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -39,14 +40,16 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = -4;
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret) + offset;
+            int index = newInstructions.Count + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShootingEventArgs));
 
+            Label returnLabelModAmmo = generator.DefineLabel();
             Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Pop),
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -56,10 +59,26 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShooting))),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse, returnLabelModAmmo),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.ShotMessage))),
                 new CodeInstruction(OpCodes.Starg, 1),
+                new CodeInstruction(OpCodes.Ldloc_1),
+            });
+
+            newInstructions.InsertRange(newInstructions.Count - 1, new[]
+            {
+               new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(returnLabelModAmmo),
+               new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.IsAllowed))),
+               new CodeInstruction(OpCodes.Brtrue, returnLabel),
+               new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+               new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShootingEventArgs), nameof(ShootingEventArgs.Shooter))),
+               new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.CurrentItem))),
+               new CodeInstruction(OpCodes.Dup),
+               new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Ammo))),
+               new CodeInstruction(OpCodes.Ldc_I4_1),
+               new CodeInstruction(OpCodes.Add),
+               new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Firearm), nameof(Firearm.Ammo))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

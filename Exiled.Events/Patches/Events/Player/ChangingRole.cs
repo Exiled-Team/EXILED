@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Player
     using Player = Exiled.Events.Handlers.Player;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.SetPlayersClass(RoleType, GameObject, bool, bool)"/>.
+    /// Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)"/>.
     /// Adds the <see cref="Handlers.Player.ChangingRole"/> and <see cref="Handlers.Player.Escaping"/> events.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
@@ -95,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Starg, 2),
 
                 // escape = ev.IsEscaped
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsEscaped))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg, 3),
             });
 

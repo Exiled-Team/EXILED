@@ -487,7 +487,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the camera with the given camera type.
         /// </summary>
-        /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
+        /// <param name="cameraType">The <see cref="Enums.CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
         public static Camera079 GetCameraByType(Enums.CameraType cameraType) =>
             GetCameraById((ushort)cameraType);

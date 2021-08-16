@@ -11,6 +11,7 @@ namespace Exiled.CustomItems.API.Features
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -611,7 +612,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.IsEscaped)
+            if (ev.Reason == SpawnReason.Escaped)
                 return;
 
             foreach (Item item in ev.Player.Items.ToList())
