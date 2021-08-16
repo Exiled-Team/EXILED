@@ -12,6 +12,10 @@ namespace Exiled.Network.API.Interfaces
     using Exiled.Network.API.Models;
     using LiteNetLib.Utils;
 
+    /// <summary>
+    /// Network Addon.
+    /// </summary>
+    /// <typeparam name="TConfig">The config type.</typeparam>
     public interface IAddon<out TConfig> : IComparable<IAddon<IConfig>>
         where TConfig : IConfig
     {
@@ -24,6 +28,26 @@ namespace Exiled.Network.API.Interfaces
         /// Gets or sets logger.
         /// </summary>
         NPLogger Logger { get; set; }
+
+        /// <summary>
+        /// Gets or sets addon id.
+        /// </summary>
+        string AddonId { get; set; }
+
+        /// <summary>
+        /// Gets or sets default path.
+        /// </summary>
+        string DefaultPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets addon path.
+        /// </summary>
+        string AddonPath { get; set; }
+
+        /// <summary>
+        /// Gets addon config.
+        /// </summary>
+        TConfig Config { get; }
 
         /// <summary>
         /// Called when the addon is enabled.
@@ -58,25 +82,5 @@ namespace Exiled.Network.API.Interfaces
         /// <param name="response"> Response.</param>
         /// <param name="isRa"> Is Ra Command.</param>
         void OnConsoleResponse(NPServer server, string command, string response, bool isRa);
-
-        /// <summary>
-        /// Gets or sets addon id.
-        /// </summary>
-        string AddonId { get; set; }
-
-        /// <summary>
-        /// Gets or sets default path.
-        /// </summary>
-        string DefaultPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets addon path.
-        /// </summary>
-        string AddonPath { get; set; }
-
-        /// <summary>
-        /// Gets addon config.
-        /// </summary>
-        TConfig Config { get; }
     }
 }

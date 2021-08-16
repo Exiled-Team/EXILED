@@ -41,7 +41,6 @@ namespace Exiled.Network
         private CoroutineHandle dataChecker;
         private Dictionary<string, NPPlayer> players = new Dictionary<string, NPPlayer>();
         private List<CommandInfoPacket> registerdCommands = new List<CommandInfoPacket>();
-
         private NetDataWriter defaultdata;
 
         /// <summary>
@@ -143,6 +142,63 @@ namespace Exiled.Network
 
             if (dataChecker != null)
                 Timing.KillCoroutines(dataChecker);
+        }
+
+        /// <inheritdoc/>
+        public void OnPeerConnected(NetPeer peer)
+        {
+            Logger.Info("Client connected to host.");
+            List<string> addon = new List<string>();
+            foreach (var addon2 in Addons)
+                addon.Add(addon2.Key);
+            PacketProcessor.Send<ReceiveAddonsPacket>(peer, new ReceiveAddonsPacket() { AddonIds = addon.ToArray() }, DeliveryMethod.ReliableOrdered);
+            Logger.Info("Addons info sended to host, waiting to response...");
+            dataChecker = Timing.RunCoroutine(DataCheckers());
+        }
+
+        /// <inheritdoc/>
+        public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
+        {
+            Logger.Info($"Client disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
+            Timing.RunCoroutine(Reconnect());
+            registerdCommands.Clear();
+            canSendData = false;
+            if (dataChecker != null)
+                Timing.KillCoroutines(dataChecker);
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+        {
+            Logger.Error($"Network error from endpoint {endPoint.Address}, {socketError}");
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
+        {
+            try
+            {
+                PacketProcessor.ReadAllPackets(reader, peer);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error while receiving data from server {ex}");
+            }
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void OnConnectionRequest(ConnectionRequest request)
+        {
         }
 
         private static int GetMethodHash(Type invokeClass, string methodName)
@@ -578,11 +634,6 @@ namespace Exiled.Network
             }
         }
 
-        /// <summary>
-        /// Redirect client to other server.
-        /// </summary>
-        /// <param name="hub">Player.</param>
-        /// <param name="port">Server port.</param>
         private void SendClientToServer(Player hub, ushort port)
         {
             var serverPS = hub.ReferenceHub.playerStats;
@@ -647,63 +698,6 @@ namespace Exiled.Network
             yield return Timing.WaitForSeconds(5f);
             Logger.Info($"Reconnecting to {plugin.Config.HostAddress}:{plugin.Config.HostPort}...");
             NetworkListener.Connect(plugin.Config.HostAddress, plugin.Config.HostPort, defaultdata);
-        }
-
-        /// <inheritdoc/>
-        public void OnPeerConnected(NetPeer peer)
-        {
-            Logger.Info("Client connected to host.");
-            List<string> addon = new List<string>();
-            foreach (var addon2 in Addons)
-                addon.Add(addon2.Key);
-            PacketProcessor.Send<ReceiveAddonsPacket>(peer, new ReceiveAddonsPacket() { AddonIds = addon.ToArray() }, DeliveryMethod.ReliableOrdered);
-            Logger.Info("Addons info sended to host, waiting to response...");
-            dataChecker = Timing.RunCoroutine(DataCheckers());
-        }
-
-        /// <inheritdoc/>
-        public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
-        {
-            Logger.Info($"Client disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
-            Timing.RunCoroutine(Reconnect());
-            registerdCommands.Clear();
-            canSendData = false;
-            if (dataChecker != null)
-                Timing.KillCoroutines(dataChecker);
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
-        {
-            Logger.Error($"Network error from endpoint {endPoint.Address}, {socketError}");
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
-        {
-            try
-            {
-                PacketProcessor.ReadAllPackets(reader, peer);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"Error while receiving data from server {ex}");
-            }
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void OnConnectionRequest(ConnectionRequest request)
-        {
         }
     }
 }

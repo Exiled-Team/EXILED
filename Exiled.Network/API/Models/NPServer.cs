@@ -18,16 +18,6 @@ namespace Exiled.Network.API.Models
     public class NPServer
     {
         /// <summary>
-        /// Packet processor.
-        /// </summary>
-        public readonly NetPacketProcessor PacketProcessor;
-
-        /// <summary>
-        /// Server peer.
-        /// </summary>
-        public readonly NetPeer Peer;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NPServer"/> class.
         /// </summary>
         /// <param name="server">Server.</param>
@@ -43,6 +33,16 @@ namespace Exiled.Network.API.Models
             this.ServerPort = port;
             this.MaxPlayers = maxPlayers;
         }
+
+        /// <summary>
+        /// Gets or sets Packet processor.
+        /// </summary>
+        public NetPacketProcessor PacketProcessor { get; set; }
+
+        /// <summary>
+        /// Gets or sets Server peer.
+        /// </summary>
+        public NetPeer Peer { get; set; }
 
         /// <summary>
         /// Gets server address.

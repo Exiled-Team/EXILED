@@ -128,6 +128,68 @@ namespace Exiled.Network
                 Timing.KillCoroutines(refreshPolls);
         }
 
+        /// <inheritdoc/>
+        public void OnPeerConnected(NetPeer peer)
+        {
+            Logger.Info($"Client {peer.EndPoint.Address.ToString()} connected to host.");
+        }
+
+        /// <inheritdoc/>
+        public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
+        {
+            if (Servers.TryGetValue(peer, out NPServer server))
+            {
+                Logger.Info($"Client {server.FullAddress} disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
+                Servers.Remove(peer);
+            }
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+        {
+            Logger.Error($"Network error from endpoint {endPoint.Address}, {socketError}");
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
+        {
+            PacketProcessor.ReadAllPackets(reader, peer);
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
+        {
+        }
+
+        /// <inheritdoc/>
+        public void OnConnectionRequest(ConnectionRequest request)
+        {
+            if (request.Data.TryGetString(out string key))
+            {
+                if (key == plugin.Config.HostConnectionKey)
+                {
+                    if (request.Data.TryGetUShort(out ushort port))
+                    {
+                        if (request.Data.TryGetInt(out int maxplayers))
+                        {
+                            var peer = request.Accept();
+                            if (!Servers.ContainsKey(peer))
+                                Servers.Add(peer, new NPServer(peer, PacketProcessor, peer.EndPoint.Address.ToString(), port, maxplayers));
+                            else
+                                Servers[peer] = new NPServer(peer, PacketProcessor, peer.EndPoint.Address.ToString(), port, maxplayers);
+                            Logger.Info($"New server added {peer.EndPoint.Address.ToString()}, port: {port}");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
         private void StartNetworkHost()
         {
             PacketProcessor.RegisterNestedType<CommandInfoPacket>();
@@ -299,68 +361,6 @@ namespace Exiled.Network
                 {
                     if (NetworkListener.IsRunning)
                         NetworkListener.PollEvents();
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public void OnPeerConnected(NetPeer peer)
-        {
-            Logger.Info($"Client {peer.EndPoint.Address.ToString()} connected to host.");
-        }
-
-        /// <inheritdoc/>
-        public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
-        {
-            if (Servers.TryGetValue(peer, out NPServer server))
-            {
-                Logger.Info($"Client {server.FullAddress} disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
-                Servers.Remove(peer);
-            }
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
-        {
-            Logger.Error($"Network error from endpoint {endPoint.Address}, {socketError}");
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkReceive(NetPeer peer, NetPacketReader reader, DeliveryMethod deliveryMethod)
-        {
-            PacketProcessor.ReadAllPackets(reader, peer);
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkReceiveUnconnected(IPEndPoint remoteEndPoint, NetPacketReader reader, UnconnectedMessageType messageType)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void OnNetworkLatencyUpdate(NetPeer peer, int latency)
-        {
-        }
-
-        /// <inheritdoc/>
-        public void OnConnectionRequest(ConnectionRequest request)
-        {
-            if (request.Data.TryGetString(out string key))
-            {
-                if (key == plugin.Config.HostConnectionKey)
-                {
-                    if (request.Data.TryGetUShort(out ushort port))
-                    {
-                        if (request.Data.TryGetInt(out int maxplayers))
-                        {
-                            var peer = request.Accept();
-                            if (!Servers.ContainsKey(peer))
-                                Servers.Add(peer, new NPServer(peer, PacketProcessor, peer.EndPoint.Address.ToString(), port, maxplayers));
-                            else
-                                Servers[peer] = new NPServer(peer, PacketProcessor, peer.EndPoint.Address.ToString(), port, maxplayers);
-                            Logger.Info($"New server added {peer.EndPoint.Address.ToString()}, port: {port}");
-                            return;
-                        }
-                    }
                 }
             }
         }

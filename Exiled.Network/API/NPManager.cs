@@ -22,31 +22,31 @@ namespace Exiled.Network.API
     public class NPManager
     {
         /// <summary>
-        /// Packet Processor.
+        /// Gets or sets Packet Processor.
         /// </summary>
-        public readonly NetPacketProcessor PacketProcessor = new NetPacketProcessor();
+        public NetPacketProcessor PacketProcessor { get; set; } = new NetPacketProcessor();
 
         /// <summary>
-        /// Logger.
+        /// Gets or sets Logger.
         /// </summary>
-        public NPLogger Logger;
+        public NPLogger Logger { get; set; }
 
         /// <summary>
-        /// Network Listener.
+        /// Gets or sets Network Listener.
         /// </summary>
-        public NetManager NetworkListener;
+        public NetManager NetworkListener { get; set; }
 
         /// <summary>
         /// Gets or sets dictionary of all loaded addons.
         /// </summary>
-        public Dictionary<string, NPAddonItem> Addons = new Dictionary<string, NPAddonItem>();
+        public Dictionary<string, NPAddonItem> Addons { get; set; } = new Dictionary<string, NPAddonItem>();
 
         /// <summary>
         /// Gets or sets dictionary of all online servers.
         /// </summary>
-        public Dictionary<NetPeer, NPServer> Servers = new Dictionary<NetPeer, NPServer>();
+        public Dictionary<NetPeer, NPServer> Servers { get; set; } = new Dictionary<NetPeer, NPServer>();
 
-        private readonly Dictionary<string, Dictionary<string, ICommand>> commands = new Dictionary<string, Dictionary<string, ICommand>>();
+        private Dictionary<string, Dictionary<string, ICommand>> Commands { get; set; } = new Dictionary<string, Dictionary<string, ICommand>>();
 
         /// <summary>
         /// Register command from addon.
@@ -55,11 +55,11 @@ namespace Exiled.Network.API
         /// <param name="command">Command interface.</param>
         public void RegisterCommand(string addonId, ICommand command)
         {
-            if (!commands.ContainsKey(addonId))
-                commands.Add(addonId, new Dictionary<string, ICommand>());
-            if (!commands[addonId].ContainsKey(command.CommandName.ToUpper()))
+            if (!Commands.ContainsKey(addonId))
+                Commands.Add(addonId, new Dictionary<string, ICommand>());
+            if (!Commands[addonId].ContainsKey(command.CommandName.ToUpper()))
             {
-                commands[addonId].Add(command.CommandName.ToUpper(), command);
+                Commands[addonId].Add(command.CommandName.ToUpper(), command);
                 Logger.Info($"Command {command.CommandName.ToUpper()} registered in addon {addonId}");
             }
         }
@@ -73,9 +73,9 @@ namespace Exiled.Network.API
         /// <param name="arguments">Command arguments.</param>
         public void ExecuteCommand(PlayerFuncs plr, string addonId, string commandName, List<string> arguments)
         {
-            if (commands[addonId].ContainsKey(commandName.ToUpper()))
+            if (Commands[addonId].ContainsKey(commandName.ToUpper()))
             {
-                commands[addonId][commandName.ToUpper()].Invoke(plr, arguments);
+                Commands[addonId][commandName.ToUpper()].Invoke(plr, arguments);
             }
         }
 
@@ -107,7 +107,7 @@ namespace Exiled.Network.API
         public List<CommandInfoPacket> GetCommands(string addonId)
         {
             List<CommandInfoPacket> cmds = new List<CommandInfoPacket>();
-            if (commands.TryGetValue(addonId, out Dictionary<string, ICommand> outCmds))
+            if (Commands.TryGetValue(addonId, out Dictionary<string, ICommand> outCmds))
             {
                 foreach (var cmd in outCmds)
                 {

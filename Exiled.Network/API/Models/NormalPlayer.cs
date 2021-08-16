@@ -17,6 +17,8 @@ namespace Exiled.Network.API.Models
     /// </summary>
     public class NormalPlayer : PlayerFuncs
     {
+        private readonly Player player;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NormalPlayer"/> class.
         /// </summary>
@@ -25,8 +27,6 @@ namespace Exiled.Network.API.Models
         {
             this.player = player;
         }
-
-        private readonly Player player;
 
         /// <inheritdoc/>
         public override string UserName => player.Nickname;
