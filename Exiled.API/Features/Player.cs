@@ -1529,6 +1529,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets all the active <see cref="PlayerEffect"/>.
+        /// </summary>
+        public List<PlayerEffect> GetAllEffects()
+        {
+            List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
+            for (int i = 0; i < (int) EffectType.Visuals939; i++)
+            {
+              if (GetEffect((EffectType) i).Intensity > 0)
+                ActiveEffects.Add(GetEffect((EffectType)i));
+            }
+            
+            return ActiveEffects;
+        }
+        
+        /// <summary>
         /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to change the intensity of.</typeparam>
@@ -1543,7 +1558,7 @@ namespace Exiled.API.Features
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
-
+        
         /// <summary>
         /// Removes the player's hands.
         /// </summary>
