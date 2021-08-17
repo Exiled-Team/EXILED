@@ -15,15 +15,12 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Loader;
 
     using HarmonyLib;
 
     using MEC;
 
     using NorthwoodLib.Pools;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 

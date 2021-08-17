@@ -118,9 +118,9 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked before throwing a grenade.
+        /// Invoked before throwing an item.
         /// </summary>
-        public static event CustomEventHandler<ThrowingGrenadeEventArgs> ThrowingGrenade;
+        public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
 
         /// <summary>
         /// Invoked before dropping an item.
@@ -250,12 +250,12 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a player inserts a workstation tablet into a generator.
         /// </summary>
-        public static event CustomEventHandler<InsertingGeneratorTabletEventArgs> InsertingGeneratorTablet;
+        public static event CustomEventHandler<ActivatingGeneratorEventArgs> ActivatingGenerator;
 
         /// <summary>
         /// Invoked before a player ejects the workstation tablet out of a generator.
         /// </summary>
-        public static event CustomEventHandler<EjectingGeneratorTabletEventArgs> EjectingGeneratorTablet;
+        public static event CustomEventHandler<StoppingGeneratorEventArgs> StoppingGenerator;
 
         /// <summary>
         /// Invoked before a player receives a status effect.
@@ -410,8 +410,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowingGrenadeEventArgs"/> instance.</param>
-        public static void OnThrowingGrenade(ThrowingGrenadeEventArgs ev) => ThrowingGrenade.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
+        public static void OnThrowingItem(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping an item.
@@ -566,14 +566,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a player inserts a workstation tablet into a generator.
         /// </summary>
-        /// <param name="ev">The <see cref="InsertingGeneratorTabletEventArgs"/> instance.</param>
-        public static void OnInsertingGeneratorTablet(InsertingGeneratorTabletEventArgs ev) => InsertingGeneratorTablet.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance.</param>
+        public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player ejects the workstation tablet out of a generator.
         /// </summary>
-        /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
-        public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance.</param>
+        public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player receives a status effect.

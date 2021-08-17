@@ -27,7 +27,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.GetDamageName()}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
+            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.Tool}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
@@ -103,7 +103,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
         public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is trying to unlock a generator in {ev.Generator?.CurRoom} room");
+            Log.Info($"{ev.Player?.Nickname} is trying to unlock a generator in {ev.Player?.CurrentRoom} room");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDestroying(DestroyingEventArgs)"/>

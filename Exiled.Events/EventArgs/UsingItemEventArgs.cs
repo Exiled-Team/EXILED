@@ -9,7 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Usables;
 
     /// <summary>

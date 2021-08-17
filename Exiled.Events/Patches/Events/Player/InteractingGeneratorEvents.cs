@@ -15,83 +15,140 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using Interactables.Interobjects.DoorUtils;
+
+    using InventorySystem.Items.Keycards;
+
+    using MapGeneration.Distributors;
 
     /// <summary>
-    /// Patches <see cref="Generator079.Interact(GameObject, PlayerInteract.Generator079Operations)"/>.
-    /// Adds the <see cref="Player.InsertingGeneratorTablet"/> event.
+    /// Patches <see cref="Scp079Generator.ServerInteract(ReferenceHub, byte)"/>.
+    /// Adds the <see cref="Player.ActivatingGenerator"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Generator079), nameof(Generator079.Interact))]
+    [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.ServerInteract))]
     internal static class InteractingGeneratorEvents
     {
-        private static bool Prefix(Generator079 __instance, GameObject person, PlayerInteract.Generator079Operations command)
+        private static bool Prefix(Scp079Generator __instance, ReferenceHub ply, byte colliderId)
         {
             try
             {
-                API.Features.Player player = API.Features.Player.Get(person);
-                switch (command)
+                if ((__instance._cooldownStopwatch.IsRunning && __instance._cooldownStopwatch.Elapsed.TotalSeconds <
+                    __instance._targetCooldown) || (colliderId != 0 && !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open)))
+                    return false;
+                __instance._cooldownStopwatch.Stop();
+                switch (colliderId)
                 {
-                    case PlayerInteract.Generator079Operations.Door:
-                        bool isAllowed = true;
-                        switch (__instance.isDoorOpen)
+                    case 0:
+                        if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Unlocked))
                         {
-                            case false:
-                                OpeningGeneratorEventArgs openingEventArgs = new OpeningGeneratorEventArgs(player, __instance);
+                            if (__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open))
+                            {
+                                var closingGenEvent =
+                                    new ClosingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                Player.OnClosingGenerator(closingGenEvent);
+                                if (!closingGenEvent.IsAllowed)
+                                {
+                                    __instance.RpcDenied();
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                var openingGenEvent =
+                                    new OpeningGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                Player.OnOpeningGenerator(openingGenEvent);
+                                if (!openingGenEvent.IsAllowed)
+                                {
+                                    __instance.RpcDenied();
+                                    break;
+                                }
+                            }
 
-                                Player.OnOpeningGenerator(openingEventArgs);
-
-                                isAllowed = openingEventArgs.IsAllowed;
-
-                                break;
-                            case true:
-                                ClosingGeneratorEventArgs closingEventArgs = new ClosingGeneratorEventArgs(player, __instance);
-
-                                Player.OnClosingGenerator(closingEventArgs);
-
-                                isAllowed = closingEventArgs.IsAllowed;
-
-                                break;
+                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Open, !__instance.HasFlag(__instance._flags, Scp079Generator.GeneratorFlags.Open));
+                            __instance._targetCooldown = __instance._doorToggleCooldownTime;
+                            break;
                         }
 
-                        if (isAllowed)
-                            __instance.OpenClose(person);
+                        bool flag =
+                            (!(ply.inventory.CurInstance != null) ||
+                             !(ply.inventory.CurInstance is KeycardItem curInstance2)
+                                ? 0
+                                : (curInstance2.Permissions.HasFlagFast(__instance._requiredPermission) ? 1 : 0)) != 0;
+                        var unlockingEvent = new UnlockingGeneratorEventArgs(API.Features.Player.Get(ply), __instance, flag);
+                        Player.OnUnlockingGenerator(unlockingEvent);
+
+                        if (unlockingEvent.IsAllowed)
+                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Unlocked, true);
                         else
                             __instance.RpcDenied();
-
+                        __instance._targetCooldown = __instance._unlockCooldownTime;
                         break;
-                    case PlayerInteract.Generator079Operations.Tablet:
-                        if (__instance.isTabletConnected || !__instance.isDoorOpen || (__instance._localTime <= 0.0 || Generator079.mainGenerator.forcedOvercharge))
+                    case 1:
+                        if ((ply.characterClassManager.IsHuman() || __instance.Activating) && !__instance.Engaged)
+                        {
+                            if (__instance.Activating)
+                            {
+                                var stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                Player.OnStoppingGenerator(stoppingGen);
+                                if (!stoppingGen.IsAllowed)
+                                {
+                                    __instance.RpcDenied();
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                var activatingEvent =
+                                    new ActivatingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                                Player.OnActivatingGenerator(activatingEvent);
+                                if (!activatingEvent.IsAllowed)
+                                {
+                                    __instance.RpcDenied();
+                                    break;
+                                }
+                            }
+
+                            __instance.Activating = !__instance.Activating;
+                            if (__instance.Activating)
+                                __instance._leverStopwatch.Restart();
+                            __instance._targetCooldown = __instance._doorToggleCooldownTime;
                             break;
-
-                        InsertingGeneratorTabletEventArgs insertingEventArgs = new InsertingGeneratorTabletEventArgs(player, __instance);
-                        Player.OnInsertingGeneratorTablet(insertingEventArgs);
-
-                        if (insertingEventArgs.IsAllowed)
-                            __instance.NetworkisTabletConnected = true;
-                        else
-                            __instance.RpcDenied();
+                        }
 
                         break;
-                    case PlayerInteract.Generator079Operations.Cancel:
-                        EjectingGeneratorTabletEventArgs ejectingEventArgs = new EjectingGeneratorTabletEventArgs(player, __instance);
-                        Player.OnEjectingGeneratorTablet(ejectingEventArgs);
+                    case 2:
+                        if (__instance.Activating && !__instance.Engaged)
+                        {
+                            var stoppingGen = new StoppingGeneratorEventArgs(API.Features.Player.Get(ply), __instance);
+                            Player.OnStoppingGenerator(stoppingGen);
+                            if (!stoppingGen.IsAllowed)
+                            {
+                                __instance.RpcDenied();
+                                break;
+                            }
 
-                        if (ejectingEventArgs.IsAllowed)
-                            __instance.EjectTablet();
-                        else
-                            __instance.RpcDenied();
+                            __instance.ServerSetFlag(Scp079Generator.GeneratorFlags.Activating, false);
+                            __instance._targetCooldown = __instance._unlockCooldownTime;
+                            break;
+                        }
 
+                        break;
+                    default:
+                        __instance._targetCooldown = 1f;
                         break;
                 }
 
-                return false;
+                __instance._cooldownStopwatch.Restart();
             }
             catch (Exception exception)
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InsertingGeneratorTablet: {exception}\n{exception.StackTrace}");
+                API.Features.Log.Error(
+                    $"Exiled.Events.Patches.Events.Player.InteractingGeneratorEvent: {exception}\n{exception.StackTrace}");
 
                 return true;
             }
+
+            return false;
         }
     }
 }

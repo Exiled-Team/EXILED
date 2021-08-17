@@ -12,8 +12,6 @@ namespace Exiled.Events.EventArgs
 
     using MapGeneration;
 
-    using UnityEngine;
-
     /// <summary>
     /// Contains all information before SCP-079 lockdowns a room.
     /// </summary>

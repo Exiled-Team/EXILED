@@ -13,6 +13,11 @@ namespace Exiled.API.Enums
     public enum RadioRange
     {
         /// <summary>
+        /// The radio is disabled.
+        /// </summary>
+        Disabled = -1,
+
+        /// <summary>
         /// The shortest range with the least battery usage.
         /// </summary>
         Short,

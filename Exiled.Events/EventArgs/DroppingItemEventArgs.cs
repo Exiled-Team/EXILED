@@ -13,7 +13,6 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     using InventorySystem.Items;
-    using InventorySystem.Items.Pickups;
 
     /// <summary>
     /// Contains all information before a player drops an item.

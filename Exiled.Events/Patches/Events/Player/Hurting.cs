@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (target == null || target.IsHost || target.Role == RoleType.Spectator)
                     return true;
 
-                if (info.GetDamageType() == DamageTypes.Recontainment && target.Role == RoleType.Scp079)
+                if (info.Tool.Equals(DamageTypes.Recontainment) && target.Role == RoleType.Scp079)
                 {
                     Scp079.OnRecontained(new RecontainedEventArgs(target));
                     DiedEventArgs eventArgs = new DiedEventArgs(null, target, info);
@@ -54,14 +54,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Player.OnHurting(ev);
 
-                info = ev.HitInformations;
+                info = ev.HitInformation;
 
                 if (!ev.IsAllowed)
                     return false;
 
                 if (!ev.Target.IsGodModeEnabled && (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth))
                 {
-                    DyingEventArgs dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformations);
+                    DyingEventArgs dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformation);
 
                     Player.OnDying(dyingEventArgs);
 

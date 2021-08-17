@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="InsertingGeneratorTabletEventArgs.cs" company="Exiled Team">
+// <copyright file="ActivatingGeneratorEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -11,18 +11,20 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using MapGeneration.Distributors;
+
     /// <summary>
-    /// Contains all informations before a player inserts a tablet into a generator.
+    /// Contains all information before a player inserts a tablet into a generator.
     /// </summary>
-    public class InsertingGeneratorTabletEventArgs : EventArgs
+    public class ActivatingGeneratorEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InsertingGeneratorTabletEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ActivatingGeneratorEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InsertingGeneratorTabletEventArgs(Player player, Generator079 generator, bool isAllowed = true)
+        public ActivatingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
             Generator = generator;
@@ -35,9 +37,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Generator079"/> instance.
+        /// Gets the <see cref="Scp079Generator"/> instance.
         /// </summary>
-        public Generator079 Generator { get; }
+        public Scp079Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the tablet can be inserted.

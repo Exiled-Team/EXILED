@@ -8,23 +8,12 @@
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1118
-    using System.Collections.Generic;
-    using System.Reflection;
-    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
     using InventorySystem.Items.Pickups;
-
-    using Mirror;
-
-    using NorthwoodLib.Pools;
-
-    using UnityEngine;
-
-    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.

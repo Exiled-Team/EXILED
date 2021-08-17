@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using System.Linq;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 

@@ -93,7 +93,20 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of activated generators.
         /// </summary>
-        public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
+        public static int ActivatedGenerators
+        {
+            get
+            {
+                int i = 0;
+                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
+                {
+                    if (gen.Engaged)
+                        i++;
+                }
+
+                return i;
+            }
+        }
 
         /// <summary>
         /// Gets all <see cref="Room"/> objects.
@@ -284,8 +297,11 @@ namespace Exiled.API.Features
         /// Turns off all lights of the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        /// <param name="isHeavyContainmentZoneOnly">Indicates whether or not only lights in the heavy containment zone will be turned off.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.ServerOvercharge(duration, isHeavyContainmentZoneOnly);
+        public static void TurnOffAllLights(float duration)
+        {
+            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
+                controller.ServerFlickerLights(duration);
+        }
 
         /// <summary>
         /// Gets the camera with the given ID.

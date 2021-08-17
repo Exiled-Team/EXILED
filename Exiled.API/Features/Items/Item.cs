@@ -149,6 +149,17 @@ namespace Exiled.API.Features.Items
                     return new Armor(armor);
                 case AmmoItem ammo:
                     return new Ammo(ammo);
+                case ThrowableItem throwable:
+                    switch (throwable.Projectile)
+                    {
+                        case FlashbangGrenade _:
+                            return new FlashGrenade(throwable);
+                        case ExplosionGrenade _:
+                            return new ExplosiveGrenade(throwable);
+                        default:
+                            return new Throwable(throwable);
+                    }
+
                 default:
                     return new Item(itemBase);
             }
