@@ -18,6 +18,9 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.Modules;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -32,7 +35,22 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
-            Log.Warn($"new from base: {itemBase.Status.Ammo} -- {itemBase._status.Ammo}");
+
+            switch (Base)
+            {
+                case AutomaticFirearm auto:
+                    Base.AmmoManagerModule =
+                        new AutomaticAmmoManager(auto, auto._baseMaxAmmo, 1, auto._boltTravelTime == 0);
+                    break;
+                case Shotgun shotgun:
+                    Base.AmmoManagerModule = new TubularMagazineAmmoManager(shotgun, Serial, shotgun._ammoCapacity, shotgun._numberOfChambers, 0.5f, 3, "ShellsToLoad", ActionName.Zoom, ActionName.Shoot);
+                    break;
+                default:
+                    Base.AmmoManagerModule = new ClipLoadedInternalMagAmmoManager(Base, 6);
+                    break;
+            }
+
+            Base._status = new FirearmStatus(MaxAmmo, FirearmStatusFlags.MagazineInserted, 0);
         }
 
         /// <summary>
@@ -40,12 +58,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Firearm(ItemType type)
-            : base(type)
+            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = (InventorySystem.Items.Firearms.Firearm)itemBase;
         }
 
         /// <inheritdoc cref="Item.Base"/>
@@ -57,7 +71,12 @@ namespace Exiled.API.Features.Items
         public byte Ammo
         {
             get => Base.Status.Ammo;
-            set => Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
+            set
+            {
+                FirearmStatus status = Base._status;
+                Base._status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
+                Base.OnStatusChanged(status, Base._status);
+            }
         }
 
         /// <summary>
@@ -110,7 +129,7 @@ namespace Exiled.API.Features.Items
             set
             {
                 if (Base is AutomaticFirearm auto)
-                    auto._recoil = value;
+                    auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern);
                 else
                     throw new InvalidOperationException("You cannot change the recoil pattern of non-automatic weapons.");
             }

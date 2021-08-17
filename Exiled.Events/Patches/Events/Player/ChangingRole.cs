@@ -18,6 +18,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using InventorySystem.Items.Firearms.Attachments;
+
     using MEC;
 
     using NorthwoodLib.Pools;
@@ -51,6 +53,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ceq),
@@ -132,7 +136,9 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     player.ClearInventory();
                     foreach (ItemType type in items)
-                        player.AddItem(type);
+                    {
+                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, player.AddItem(type).Base);
+                    }
                 }
                 catch (Exception e)
                 {

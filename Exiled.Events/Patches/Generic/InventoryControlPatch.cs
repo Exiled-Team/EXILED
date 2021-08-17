@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void AddItem(Player player, ItemBase item) => player.ItemsValue.Add(Item.Get(item));
+        private static void AddItem(Player player, ItemBase item) => player?.ItemsValue.Add(Item.Get(item));
     }
 
     /// <summary>
@@ -94,6 +94,6 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void RemoveItem(Player player, ItemBase item) => player.ItemsValue.Remove(Item.Get(item));
+        private static void RemoveItem(Player player, ItemBase item) => player?.ItemsValue.Remove(Item.Get(item));
     }
 }

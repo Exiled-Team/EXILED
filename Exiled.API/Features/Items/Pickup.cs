@@ -94,6 +94,7 @@ namespace Exiled.API.Features.Items
                 NetworkServer.UnSpawn(gameObject);
                 gameObject.transform.localScale = value;
                 NetworkServer.Spawn(gameObject);
+                gameObject.transform.localScale = Vector3.one;
             }
         }
 

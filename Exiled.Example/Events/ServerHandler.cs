@@ -9,6 +9,8 @@ namespace Exiled.Example.Events
 {
     using System;
 
+    using CameraShaking;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
@@ -17,12 +19,15 @@ namespace Exiled.Example.Events
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Coin;
+    using InventorySystem.Items.Firearms;
 
     using MEC;
 
     using UnityEngine;
 
+    using Firearm = Exiled.API.Features.Items.Firearm;
     using Object = UnityEngine.Object;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Handles server-related events.
@@ -35,27 +40,25 @@ namespace Exiled.Example.Events
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
-        public void OnEndingRound(EndingRoundEventArgs ev)
-        {
-            Log.Debug($"The round is ending, fetching leading team...");
-
-            if (ev.LeadingTeam == LeadingTeam.Draw)
-                Log.Error($"The round has ended in a draw!");
-            else
-                Log.Info($"The leading team is actually: {ev.LeadingTeam}.");
-        }
-
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
             Log.Info("A round has started!");
             Timing.CallDelayed(2f, () =>
             {
-                Item item = new Item(ItemType.Flashlight);
-                item.Scale = new Vector3(3, 3, 3);
-                Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
-                Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
+                try
+                {
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Item item = new Item(ItemType.Flashlight) { Scale = new Vector3(5, 5, 5) };
+                        Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
+                        Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"{nameof(OnRoundStarted)}: {e}");
+                }
             });
         }
     }

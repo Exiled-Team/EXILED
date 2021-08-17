@@ -24,6 +24,7 @@ namespace Exiled.API.Features
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
@@ -1386,9 +1387,14 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
+            Log.Info($"{AttachmentsServerHandler.PlayerPreferences.Count} -- {AttachmentsServerHandler.PlayerPreferences.ContainsKey(ReferenceHub)}");
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, item.Base);
             if (item is Firearm firearm)
+            {
                 firearm.Ammo = firearm.MaxAmmo;
+            }
+
             return item;
         }
 
@@ -1443,6 +1449,8 @@ namespace Exiled.API.Features
             Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
 
             itemBase.OnAdded(itemBase.PickupDropModel.NetworkInfo.Serial, itemBase.PickupDropModel);
+            if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
+                AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, firearm);
             ItemsValue.Add(item);
 
             Inventory.SendItemsNextFrame = true;

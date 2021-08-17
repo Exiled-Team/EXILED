@@ -72,7 +72,6 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Server.WaitingForPlayers += serverHandler.OnWaitingForPlayers;
             Exiled.Events.Handlers.Server.RoundStarted += serverHandler.OnRoundStarted;
-            Exiled.Events.Handlers.Server.EndingRound += serverHandler.OnEndingRound;
 
             Exiled.Events.Handlers.Player.Destroying += playerHandler.OnDestroying;
             Exiled.Events.Handlers.Player.Spawning += playerHandler.OnSpawning;
@@ -122,7 +121,6 @@ namespace Exiled.Example
         {
             Exiled.Events.Handlers.Server.WaitingForPlayers -= serverHandler.OnWaitingForPlayers;
             Exiled.Events.Handlers.Server.RoundStarted -= serverHandler.OnRoundStarted;
-            Exiled.Events.Handlers.Server.EndingRound -= serverHandler.OnEndingRound;
 
             Exiled.Events.Handlers.Player.Destroying -= playerHandler.OnDestroying;
             Exiled.Events.Handlers.Player.Dying -= playerHandler.OnDying;

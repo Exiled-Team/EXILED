@@ -62,14 +62,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Item(ItemType type)
+            : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = itemBase;
-            Type = itemBase.ItemTypeId;
-            Serial = itemBase.PickupDropModel.NetworkInfo.Serial;
-            BaseToItem.Add(itemBase, this);
         }
 
         /// <summary>
@@ -99,11 +93,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the scale for the item.
         /// </summary>
-        public Vector3 Scale
-        {
-            get => Base.PickupDropModel.gameObject.transform.localScale;
-            set => Base.PickupDropModel.gameObject.transform.localScale = value;
-        }
+        public Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets the <see cref="ItemBase"/> of the item.
@@ -114,6 +104,14 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
         public ItemType Type { get; internal set; }
+
+        /// <summary>
+        /// Gets the Weight of the item.
+        /// </summary>
+        public float Weight
+        {
+            get => Base.Weight;
+        }
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.
@@ -177,18 +175,19 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public Pickup Spawn(Vector3 position, Quaternion rotation)
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation)
         {
             if (Base.PickupDropModel.Info.ItemId == ItemType.None)
                 Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
+            Base.PickupDropModel.Info.Weight = Weight;
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
             Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
 
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
             if (ipb is FirearmPickup firearmPickup)
             {
-                firearmPickup.Status = new FirearmStatus(((Firearm)this).MaxAmmo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                firearmPickup.Status = new FirearmStatus(((Firearm)this).Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
                 firearmPickup.NetworkStatus = firearmPickup.Status;
             }
 

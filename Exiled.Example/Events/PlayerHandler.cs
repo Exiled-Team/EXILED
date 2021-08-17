@@ -7,6 +7,8 @@
 
 namespace Exiled.Example.Events
 {
+    using CameraShaking;
+
     using CustomPlayerEffects;
 
     using Exiled.API.Features;
@@ -14,6 +16,8 @@ namespace Exiled.Example.Events
     using Exiled.Events.EventArgs;
 
     using InventorySystem.Items.Usables;
+
+    using MEC;
 
     using UnityEngine;
 
@@ -45,6 +49,14 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingItem(ChangingItemEventArgs)"/>
         public void OnChangingItem(ChangingItemEventArgs ev)
         {
+            Timing.CallDelayed(2f, () =>
+            {
+                if (ev.Player.CurrentItem is Firearm firearm)
+                {
+                    Log.Info($"{ev.Player.Nickname} has a firearm!");
+                    firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
+                }
+            });
             Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player.CurrentItem == null ? "NONE" : ev.Player.CurrentItem.Type.ToString())} item to {(ev.NewItem == null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 
