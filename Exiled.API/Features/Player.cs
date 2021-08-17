@@ -1531,10 +1531,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all the active <see cref="PlayerEffect"/>.
         /// </summary>
-        public List<PlayerEffect> GetAllEffects()
+        public ReadOnlyCollection<PlayerEffect> GetAllEffects()
         {
-            List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
-            for (int i = 0; i < (int) EffectType.Visuals939; i++)
+            ReadOnlyCollection<PlayerEffect> ActiveEffects = new ReadOnlyCollection<PlayerEffect>();
+            for (int i = 0; i < Enum.GetValue(typeof(EffectType)).GetUpperBound(0); i++)
             {
               if (GetEffect((EffectType) i).Intensity > 0)
                 ActiveEffects.Add(GetEffect((EffectType)i));
