@@ -1701,10 +1701,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="type">The <see cref="EffectType"/> to change.</param>
         /// <param name="intensity">The new intensity to use.</param>
-        public void ChangeEffectIntensity(EffectType type, byte intensity)
+        /// <param name="duration">The new duration to add to the effect.</param>
+        public void ChangeEffectIntensity(EffectType type, byte intensity, float duration = 0)
         {
             if (TryGetEffect(type, out PlayerEffect pEffect))
+            {
                 pEffect.Intensity = intensity;
+                pEffect.ServerChangeDuration(duration, true);
+            }
         }
 
         /// <summary>
