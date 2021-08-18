@@ -1387,7 +1387,6 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
-            Log.Info($"{AttachmentsServerHandler.PlayerPreferences.Count} -- {AttachmentsServerHandler.PlayerPreferences.ContainsKey(ReferenceHub)}");
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, item.Base);
             if (item is Firearm firearm)
