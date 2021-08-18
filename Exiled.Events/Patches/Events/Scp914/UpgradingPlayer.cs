@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Scp914
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -42,6 +43,14 @@ namespace Exiled.Events.Patches.Events.Scp914
             LocalBuilder curSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
             LocalBuilder ev = generator.DeclareLocal(typeof(UpgradingPlayerEventArgs));
 
+            int removalOffset = -9;
+            int removalIndex = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + removalOffset;
+            for (int i = 0; i < 10; i++)
+            {
+                newInstructions.RemoveAt(removalIndex);
+            }
+
+
             newInstructions.InsertRange(index, new[]
             {
                 // curSetting = setting;
@@ -60,6 +69,9 @@ namespace Exiled.Events.Patches.Events.Scp914
 
                 // setting
                 new CodeInstruction(OpCodes.Ldarg, 4),
+
+                // moveVector
+                new CodeInstruction(OpCodes.Ldarg_3),
 
                 // var ev = new UpgradingPlayerEventArgs(player, upgradeInventory, heldonly, setting);
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UpgradingPlayerEventArgs))[0]),
@@ -89,6 +101,15 @@ namespace Exiled.Events.Patches.Events.Scp914
                 // setting = ev.KnobSetting
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.KnobSetting))),
                 new CodeInstruction(OpCodes.Starg, 4),
+
+                // ply.playerMovementSync.OverridePosition(ev.OutputPosition);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UpgradingPlayerEventArgs), nameof(UpgradingPlayerEventArgs.OutputPosition))),
+                new CodeInstruction(OpCodes.Ldc_R4, 0.0f),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))),
             });
 
             offset = 0;
