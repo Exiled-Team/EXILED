@@ -1536,8 +1536,8 @@ namespace Exiled.API.Features
             ReadOnlyCollection<PlayerEffect> ActiveEffects = new ReadOnlyCollection<PlayerEffect>();
             foreach (var effect in ReferenceHub.playerEffectsController.AllEffects)
             {
-              if (GetEffect((EffectType)effect.Value).Intensity > 0)
-                ActiveEffects.Add(GetEffect((EffectType)effect.Value));
+              if (effect.Value).Intensity > 0)
+                ActiveEffects.Add(effect.Value));
             }
             
             return ActiveEffects;
