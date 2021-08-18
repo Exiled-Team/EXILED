@@ -50,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Scp914
                 newInstructions.RemoveAt(removalIndex);
             }
 
-
             newInstructions.InsertRange(index, new[]
             {
                 // curSetting = setting;
