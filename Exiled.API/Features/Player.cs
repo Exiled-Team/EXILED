@@ -1697,6 +1697,17 @@ namespace Exiled.API.Features
             where T : PlayerEffect => ReferenceHub.playerEffectsController.ChangeEffectIntensity<T>(intensity);
 
         /// <summary>
+        /// Changes the intensity of a <see cref="PlayerEffect"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="EffectType"/> to change.</param>
+        /// <param name="intensity">The new intensity to use.</param>
+        public void ChangeEffectIntensity(EffectType type, byte intensity)
+        {
+            if (TryGetEffect(type, out PlayerEffect pEffect))
+                pEffect.Intensity = intensity;
+        }
+
+        /// <summary>
         /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
