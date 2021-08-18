@@ -46,7 +46,7 @@ namespace Exiled.Events.Commands.Reload
 
             Handlers.Server.OnReloadedConfigs();
 
-            foreach (var plugin in Loader.Plugin)
+            foreach (var plugin in Loader.Plugins)
             {
                 plugin.OnUnregisteringCommands();
                 plugin.OnRegisteringCommands();
