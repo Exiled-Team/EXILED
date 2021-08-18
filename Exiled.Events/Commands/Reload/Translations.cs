@@ -46,6 +46,12 @@ namespace Exiled.Events.Commands.Reload
 
             Handlers.Server.OnReloadedTranslations();
 
+            foreach (var plugin in Loader.Plugin)
+            {
+                plugin.OnUnregisteringCommands();
+                plugin.OnRegisteringCommands();
+            }
+
             response = "Plugin translations have been reloaded successfully!";
             return haveBeenReloaded;
         }
