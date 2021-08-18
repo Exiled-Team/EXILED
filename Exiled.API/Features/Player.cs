@@ -1534,10 +1534,10 @@ namespace Exiled.API.Features
         public ReadOnlyCollection<PlayerEffect> GetAllEffects()
         {
             ReadOnlyCollection<PlayerEffect> ActiveEffects = new ReadOnlyCollection<PlayerEffect>();
-            for (int i = 0; i < Enum.GetValue(typeof(EffectType)).GetUpperBound(0); i++)
+            foreach (var effect in ReferenceHub.playerEffectsController.AllEffects)
             {
-              if (GetEffect((EffectType) i).Intensity > 0)
-                ActiveEffects.Add(GetEffect((EffectType)i));
+              if (GetEffect((EffectType)effect.Value).Intensity > 0)
+                ActiveEffects.Add(GetEffect((EffectType)effect.Value));
             }
             
             return ActiveEffects;
