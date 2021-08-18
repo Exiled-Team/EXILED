@@ -48,9 +48,10 @@ namespace Exiled.Example.Events
             {
                 try
                 {
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < Enum.GetValues(typeof(ItemType)).GetUpperBound(0); i++)
                     {
-                        Item item = new Item(ItemType.Flashlight) { Scale = new Vector3(5, 5, 5) };
+                        Item item = new Item((ItemType)i);
+                        Log.Warn($"{nameof(OnRoundStarted)}: {(ItemType)i} -- {item.Type}");
                         Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
                         Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
                     }

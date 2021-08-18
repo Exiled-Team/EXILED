@@ -177,8 +177,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation)
         {
-            if (Base.PickupDropModel.Info.ItemId == ItemType.None)
-                Base.PickupDropModel.Info.ItemId = Type;
+            Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
             Base.PickupDropModel.Info.Weight = Weight;
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
@@ -187,7 +186,32 @@ namespace Exiled.API.Features.Items
             ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
             if (ipb is FirearmPickup firearmPickup)
             {
-                firearmPickup.Status = new FirearmStatus(((Firearm)this).Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                if (this is Firearm firearm)
+                {
+                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                }
+                else
+                {
+                    byte ammo;
+                    switch (Base)
+                    {
+                        case AutomaticFirearm auto:
+                            ammo = auto._baseMaxAmmo;
+                            break;
+                        case Shotgun shotgun:
+                            ammo = shotgun._ammoCapacity;
+                            break;
+                        case Revolver _:
+                            ammo = 6;
+                            break;
+                        default:
+                            ammo = 0;
+                            break;
+                    }
+
+                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                }
+
                 firearmPickup.NetworkStatus = firearmPickup.Status;
             }
 

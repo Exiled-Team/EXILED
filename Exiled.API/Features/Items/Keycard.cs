@@ -22,10 +22,17 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Keycard(KeycardItem itemBase)
+        public Keycard(ItemBase itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            if (!(itemBase is KeycardItem key))
+            {
+                Log.Warn($"{nameof(Keycard)}.ctor: {itemBase} is not a valid Keycard! {nameof(itemBase)}");
+                return;
+            }
+
+            Log.Warn($"{nameof(itemBase)}");
+            Base = key;
         }
 
         /// <summary>
@@ -33,12 +40,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Keycard(ItemType type)
-            : base(type)
+            : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = (KeycardItem)itemBase;
         }
 
         /// <inheritdoc cref="Item.Base"/>
