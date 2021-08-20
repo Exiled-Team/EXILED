@@ -31,7 +31,7 @@ namespace Exiled.Bootstrap
         /// </summary>
         public static void Load()
         {
-            if (new Version(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision) != ExpectedGameVersion)
+            if (!GameCore.Version.CompatibilityCheck(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision, (byte)ExpectedGameVersion.Major, (byte)ExpectedGameVersion.Minor, (byte)ExpectedGameVersion.Revision, GameCore.Version.BackwardCompatibility, GameCore.Version.BackwardRevision))
             {
                 ServerConsole.AddLog("[Exiled.Bootstrap] The version of EXILED you are trying to load is not compatible with the version of the game being used. EXILED will not be loaded.", ConsoleColor.DarkRed);
                 return;
