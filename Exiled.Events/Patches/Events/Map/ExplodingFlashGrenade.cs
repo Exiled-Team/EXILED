@@ -32,18 +32,18 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(FlashbangGrenade __instance)
         {
-            if (!NetworkServer.active || __instance.PreviousOwner == null)
+            if (!NetworkServer.active || __instance.PreviousOwner.Hub == null)
                 return false;
             double time = __instance._blindingOverDistance.keys[__instance._blindingOverDistance.length - 1].time;
             float num = (float)(time * time);
             List<Player> players = ListPool<Player>.Shared.Rent();
             foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
             {
-                if (!(allHub.Value == null) && ((__instance.transform.position - allHub.Value.transform.position).sqrMagnitude <= (double)num && !(allHub.Value == __instance.PreviousOwner) && HitboxIdentity.CheckFriendlyFire(__instance._attackerRole, allHub.Value.characterClassManager.CurClass)))
+                if (!(allHub.Value == null) && ((__instance.transform.position - allHub.Value.transform.position).sqrMagnitude <= (double)num && !(allHub.Value == __instance.PreviousOwner.Hub) && HitboxIdentity.CheckFriendlyFire(__instance.PreviousOwner.Role, allHub.Value.characterClassManager.CurClass)))
                     players.Add(Player.Get(allHub.Value));
             }
 
-            var ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.PreviousOwner), __instance, players);
+            var ev = new ExplodingGrenadeEventArgs(Player.Get(__instance.PreviousOwner.Hub), __instance, players);
             Handlers.Map.OnExplodingGrenade(ev);
             if (!ev.IsAllowed)
                 return false;

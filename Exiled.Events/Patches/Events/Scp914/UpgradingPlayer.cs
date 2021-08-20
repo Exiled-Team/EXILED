@@ -112,9 +112,9 @@ namespace Exiled.Events.Patches.Events.Scp914
             });
 
             offset = 0;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_3) + offset;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
             Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 7].WithLabels(continueLabel);
+            newInstructions[index + 6].WithLabels(continueLabel);
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new[]

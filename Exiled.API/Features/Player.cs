@@ -1447,7 +1447,7 @@ namespace Exiled.API.Features
             Item item = Item.Get(itemBase);
             Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
 
-            itemBase.OnAdded(itemBase.PickupDropModel.NetworkInfo.Serial, itemBase.PickupDropModel);
+            itemBase.OnAdded(itemBase.PickupDropModel);
             if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, firearm);
             ItemsValue.Add(item);

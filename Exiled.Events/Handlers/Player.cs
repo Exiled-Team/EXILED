@@ -524,19 +524,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a player interacts with a door.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player interacts with an elevator.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingElevator(InteractingElevatorEventArgs ev) => InteractingElevator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player interacts with a locker.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingLocker(InteractingLockerEventArgs ev) => InteractingLocker.InvokeSafely(ev);
 
         /// <summary>

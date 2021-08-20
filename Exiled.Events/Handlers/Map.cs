@@ -23,7 +23,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before placing decals.
         /// </summary>
-        public static event CustomEventHandler<PlacingDecalEventArgs> PlacingDecal;
+        public static event CustomEventHandler<PlacingBulletHole> PlacingBulletHole;
 
         /// <summary>
         /// Invoked before placing bloods.
@@ -83,31 +83,31 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before placing a decal.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
-        public static void OnPlacingDecal(PlacingDecalEventArgs ev) => PlacingDecal.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
         public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
 
         /// <summary>
         /// Called before announcing the light containment zone decontamination.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
         public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev) => AnnouncingDecontamination.InvokeSafely(ev);
 
         /// <summary>
         /// Called before announcing an SCP termination.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
         public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev) => AnnouncingScpTermination.InvokeSafely(ev);
 
         /// <summary>
         /// Called before announcing the NTF entrance.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>

@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
             return new List<CodeInstruction>
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemBase), nameof(ItemBase.Owner))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ItemBase), nameof(ItemBase.Owner))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedItemEventArgs))[0]),

@@ -14,6 +14,8 @@ namespace Exiled.Events.Patches.Events.Map
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
+    using Footprinting;
+
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
@@ -70,6 +72,7 @@ namespace Exiled.Events.Patches.Events.Map
                 // Player.Get(this.PreviousOwner);
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // this
