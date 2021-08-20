@@ -1354,18 +1354,6 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
-        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious) instead.", true)]
-        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
-        {
-            Server.Broadcast.TargetAddElement(Connection, message, duration, type);
-        }
-
-        /// <summary>
-        /// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospaced.
-        /// </summary>
-        /// <param name="duration">The broadcast duration.</param>
-        /// <param name="message">The message to be broadcasted.</param>
-        /// <param name="type">The broadcast type.</param>
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
         {
