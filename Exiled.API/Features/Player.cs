@@ -35,7 +35,7 @@ namespace Exiled.API.Features
     using RemoteAdmin;
 
     using UnityEngine;
-
+    using System.Collections.ObjectModel;
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
     /// </summary>
