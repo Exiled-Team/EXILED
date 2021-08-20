@@ -773,7 +773,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.uniq);
 
-                Spawn(Role.GetRandomSpawnPoint(ev.NewRole), item, out _);
+                Timing.CallDelayed(1.5f, () => Spawn(ev.Player, item, out _));
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
