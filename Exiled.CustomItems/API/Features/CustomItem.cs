@@ -699,7 +699,7 @@ namespace Exiled.CustomItems.API.Features
 
                 InsideInventories.Remove(item.Serial);
 
-                Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, out _);
+                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, out _));
 
                 Exiled.API.Extensions.MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
