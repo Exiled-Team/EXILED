@@ -49,10 +49,11 @@ namespace Exiled.Bootstrap
                 ServerConsole.AddLog("[Exiled.Bootstrap] Exiled is loading...", ConsoleColor.DarkRed);
 
                 string rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED");
-                string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
                 if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                     rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "EXILED-Testing");
+
+                string dependenciesPath = Path.Combine(rootPath, "Plugins", "dependencies");
 
                 if (!Directory.Exists(rootPath))
                     Directory.CreateDirectory(rootPath);
