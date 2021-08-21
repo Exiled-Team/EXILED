@@ -366,3 +366,6 @@ FodyWeavers.xsd
 
 # NuGet
 NuGet.config
+
+# DocFX site
+_site/

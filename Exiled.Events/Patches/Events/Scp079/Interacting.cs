@@ -9,7 +9,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1118
 #pragma warning disable SA1123
-    using System;
+
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.CallCmdInteract(string, GameObject)"/>.
-    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
+    /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="LockingDownEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdInteract))]
     internal static class Interacting
@@ -183,6 +183,90 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringDoorEventArgs), nameof(TriggeringDoorEventArgs.AuxiliaryPowerCost))),
                 new CodeInstruction(OpCodes.Stloc_3),
             });
+
+            #endregion
+
+            #region LockingDownEventArgs
+
+            // Declare a local variable of the type "LockingDownEventArgs";
+            var lockingDown = generator.DeclareLocal(typeof(LockingDownEventArgs));
+
+            offset = 5;
+
+            // Find the operand "Room Lockdown", then add the offset to get "ldloc.3"
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
+            (string)instruction.operand == "Room Lockdown") + offset;
+
+            // var roomGameObject = GameObject.Find(this.currentZone + "/" + this.currentRoom);
+            // var ev = new LockingDownEventArgs(player, roomGameObject, manaFromLabel, manaFromLabel <= this.curMana);
+            //
+            // Handlers.Scp079.OnLockingDown(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                // Player.Get(this.gameObject) => player
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+
+                // GameObject.Find(this.currentZone + "/" + this.currentRoom) => roomGameObject
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentZone))),
+                new CodeInstruction(OpCodes.Ldstr, "/"),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.currentRoom))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string), typeof(string) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(GameObject), nameof(GameObject.Find))),
+
+                // manaFromLabel
+                new CodeInstruction(OpCodes.Ldloc_3),
+
+                // !(manaFromLabel > this.curMana) --> manaFromLabel <= this.curMana
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Cgt),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ceq),
+
+                // var ev = new LockingDownEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LockingDownEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, lockingDown.LocalIndex),
+
+                // Handlers.Scp079.OnLockdowning(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnLockingDown))),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // roomGameObject = ev.RoomGameObject;
+                new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.RoomGameObject))),
+                new CodeInstruction(OpCodes.Stloc_S, 35),
+
+                // manaFromLabel = ev.AuxiliaryPowerCost
+                new CodeInstruction(OpCodes.Ldloc_S, lockingDown.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LockingDownEventArgs), nameof(LockingDownEventArgs.AuxiliaryPowerCost))),
+                new CodeInstruction(OpCodes.Stloc_3),
+            });
+
+            offset = 4;
+
+            // Find the operand "Attempting lockdown...", then add the offset to get "ldloc.3"
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldstr &&
+            (string)instruction.operand == "Attempting lockdown...") + offset;
+
+            const int instructionsToRemove = 8;
+
+            // Remove "GameObject gameObject2 = GameObject.Find(this.currentZone + "/" + this.currentRoom)" instructions.
+            // instead of this gameObject use roomGameObject from before;
+            newInstructions.RemoveRange(index, instructionsToRemove);
 
             #endregion
 

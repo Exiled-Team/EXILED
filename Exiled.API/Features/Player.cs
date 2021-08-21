@@ -104,6 +104,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
                 GrenadeManager = value.GetComponent<GrenadeManager>();
+                Radio = value.GetComponent<Radio>();
             }
         }
 
@@ -121,6 +122,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player is viewing a hint.
         /// </summary>
         public bool HasHint { get; internal set; }
+
+        /// <summary>
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s Radio.
+        /// </summary>
+        public Radio Radio { get; private set; }
 
         /// <summary>
         /// Gets the HintDisplay of the player.
@@ -395,14 +401,38 @@ namespace Exiled.API.Features
         public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;
 
         /// <summary>
-        /// Gets the player's current <see cref="PlayerMovementState"/>.
+        /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
         /// </summary>
-        public PlayerMovementState MoveState => ReferenceHub.animationController.MoveState;
+        public PlayerMovementState MoveState
+        {
+            get => ReferenceHub.animationController.MoveState;
+            set => ReferenceHub.animationController.Network_curMoveState = (byte)value;
+        }
+
+        /// <summary>
+        /// Gets the player's current animation.
+        /// </summary>
+        public int CurrentAnimation => ReferenceHub.animationController.curAnim;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sprinting.
+        /// </summary>
+        public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is walking.
+        /// </summary>
+        public bool IsWalking => MoveState == PlayerMovementState.Walking;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is sneaking.
+        /// </summary>
+        public bool IsSneaking => MoveState == PlayerMovementState.Sneaking;
 
         /// <summary>
         /// Gets a value indicating whether or not the player is jumping.
         /// </summary>
-        public bool IsJumping => ReferenceHub.animationController.curAnim == 2;
+        public bool IsJumping => CurrentAnimation == 2;
 
         /// <summary>
         /// Gets the player's IP address.
@@ -436,6 +466,11 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
+        /// Gets the player's <see cref="NetworkIdentity"/>.
+        /// </summary>
+        public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
+
+        /// <summary>
         /// Gets a value indicating whether or not the player is the host.
         /// </summary>
         public bool IsHost => ReferenceHub.isDedicatedServer;
@@ -464,7 +499,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.MTF || Team == Team.RSC;
+        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.RSC;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
@@ -535,6 +570,16 @@ namespace Exiled.API.Features
             get => ReferenceHub.characterClassManager.NetworkIntercomMuted;
             set => ReferenceHub.characterClassManager.NetworkIntercomMuted = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is voice chatting.
+        /// </summary>
+        public bool IsVoiceChatting => Radio.isVoiceChatting;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player is transmitting.
+        /// </summary>
+        public bool IsTransmitting => Radio.isTransmitting;
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player has godmode enabled.
@@ -751,9 +796,7 @@ namespace Exiled.API.Features
                 if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
-                ReferenceHub.scp079PlayerScript.Lvl = value;
-
-                ReferenceHub.scp079PlayerScript.TargetLevelChanged(Connection, value);
+                ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
             }
         }
 
@@ -862,7 +905,7 @@ namespace Exiled.API.Features
         /// </summary>
         public bool BadgeHidden
         {
-            get => string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
+            get => !string.IsNullOrEmpty(ReferenceHub.serverRoles.HiddenBadge);
             set
             {
                 if (value)
@@ -1151,10 +1194,22 @@ namespace Exiled.API.Features
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        [Obsolete("Use Broadcast(Broadcast broadcast, bool shouldClearPrevious) instead.", true)]
         public void Broadcast(Broadcast broadcast)
         {
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type);
+        }
+
+        /// <summary>
+        /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
+        /// </summary>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
+        public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
+        {
+            if (broadcast.Show)
+                Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
         }
 
         /// <summary>
@@ -1223,6 +1278,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="reason">The disconnection reason.</param>
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
+
+        /// <summary>
+        /// Heals the player by not exceeding the <see cref="MaxHealth"/>.
+        /// </summary>
+        /// <param name="amount">The amount of HP given to the player.</param>
+        public void Heal(float amount) => ReferenceHub.playerStats.HealHPAmount(amount);
+
+        /// <summary>
+        /// Resets the player's stamina.
+        /// </summary>
+        public void ResetStamina() => ReferenceHub.fpc.ResetStamina();
 
         /// <summary>
         /// Hurts the player.
@@ -1297,8 +1363,24 @@ namespace Exiled.API.Features
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
         /// <param name="type">The broadcast type.</param>
+        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious) instead.", true)]
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
+            Server.Broadcast.TargetAddElement(Connection, message, duration, type);
+        }
+
+        /// <summary>
+        /// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospaced.
+        /// </summary>
+        /// <param name="duration">The broadcast duration.</param>
+        /// <param name="message">The message to be broadcasted.</param>
+        /// <param name="type">The broadcast type.</param>
+        /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
+        public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
+        {
+            if (shouldClearPrevious)
+                ClearBroadcasts();
+
             Server.Broadcast.TargetAddElement(Connection, message, duration, type);
         }
 
@@ -1314,10 +1396,64 @@ namespace Exiled.API.Features
         public void AddItem(ItemType itemType) => Inventory.AddNewItem(itemType);
 
         /// <summary>
+        /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        public void AddItem(ItemType itemType, int amount)
+        {
+            if (amount > 0)
+            {
+                for (int i = 0; i < amount; i++)
+                    AddItem(itemType);
+            }
+        }
+
+        /// <summary>
+        /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        public void AddItem(List<ItemType> items)
+        {
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
+            }
+        }
+
+        /// <summary>
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
         public void AddItem(Inventory.SyncItemInfo item) => Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+
+        /// <summary>
+        /// Add the amount of items to the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        public void AddItem(Inventory.SyncItemInfo item, int amount)
+        {
+            if (amount > 0)
+            {
+                for (int i = 0; i < amount; i++)
+                    Inventory.AddNewItem(item.id, item.durability, item.modSight, item.modBarrel, item.modOther);
+            }
+        }
+
+        /// <summary>
+        /// Add the list of items to the player's inventory.
+        /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        public void AddItem(List<Inventory.SyncItemInfo> items)
+        {
+            if (items.Count > 0)
+            {
+                for (int i = 0; i < items.Count; i++)
+                    AddItem(items[i]);
+            }
+        }
 
         /// <summary>
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
