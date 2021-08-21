@@ -30,7 +30,12 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             NewRole = newRole;
-            Items = InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole) ? InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items.ToList() : new List<ItemType>();
+            if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
+            {
+                foreach (global::ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
+                    Items.Add((ItemType)itemType);
+            }
+
             Lite = shouldPreservePosition;
             Reason = (SpawnReason)reason;
         }
@@ -48,7 +53,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
-        public List<ItemType> Items { get; }
+        public List<ItemType> Items { get; } = new List<ItemType>();
 
         /// <summary>
         /// Gets or sets the reason for their class change.

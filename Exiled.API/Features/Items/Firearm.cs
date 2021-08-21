@@ -58,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Firearm(ItemType type)
-            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
         {
         }
 
@@ -87,7 +87,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="AmmoType"/> of the Firearm.
         /// </summary>
-        public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
+        public AmmoType AmmoType => ((ItemType)Base.AmmoType).GetAmmoType();
 
         /// <summary>
         /// Gets the <see cref="DamageTypes.DamageType"/> of the firearm.

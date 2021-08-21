@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
+    using Exiled.API.Enums;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Pickup(ItemType type)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue((global::ItemType)type, out ItemBase itemBase))
                 return;
 
             Base = itemBase.PickupDropModel;
@@ -119,7 +119,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
-        public ItemType Type => Base.NetworkInfo.ItemId;
+        public ItemType Type => (ItemType)Base.NetworkInfo.ItemId;
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).

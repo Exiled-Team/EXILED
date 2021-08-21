@@ -28,54 +28,11 @@ namespace Exiled.API.Extensions
     public static class ItemExtensions
     {
         /// <summary>
-        /// Spawns a <see cref="ItemPickupBase"/> in a desired <see cref="Vector3"/> position.
-        /// </summary>
-        /// <param name="itemType">The type of the item to be spawned.</param>
-        /// <param name="position">Where the item will be spawned.</param>
-        /// <param name="rotation">The rotation. We recommend you to use <see cref="Quaternion.Euler(float, float, float)"/>.</param>
-        /// <param name="weight"><inheritdoc cref="PickupSyncInfo.Weight"/></param>
-        /// <param name="isLocked"><inheritdoc cref="PickupSyncInfo.Locked"/></param>
-        /// <returns>Returns the spawned <see cref="ItemPickupBase"/>.</returns>
-        public static Pickup Spawn(this ItemType itemType, Vector3 position, Quaternion rotation = default, float weight = float.MinValue, bool isLocked = false)
-        {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(itemType, out ItemBase itemBase))
-                return null;
-
-            ItemPickupBase ipb = Object.Instantiate(itemBase.PickupDropModel, position, rotation);
-            ipb.Info.ItemId = itemType;
-            ipb.Info.Weight = weight;
-            ipb.Info.Locked = isLocked;
-            ItemDistributor.SpawnPickup(ipb);
-
-            return Pickup.Get(ipb);
-        }
-
-        /// <summary>
-        /// Spawns a <see cref="ItemPickupBase"/> in a desired <see cref="Vector3"/> position.
-        /// </summary>
-        /// <param name="item">The <see cref="ItemBase"/> of the item to be spawned.</param>
-        /// <param name="position">Where the item will be spawned.</param>
-        /// <param name="rotation">The rotation. We recommend you to use <see cref="Quaternion.Euler(float, float, float)"/>.</param>
-        /// <param name="weight"><inheritdoc cref="PickupSyncInfo.Weight"/></param>
-        /// <param name="isLocked"><inheritdoc cref="PickupSyncInfo.Locked"/></param>
-        /// <returns>Returns the spawned <see cref="ItemPickupBase"/>.</returns>
-        public static Pickup Spawn(this ItemBase item, Vector3 position, Quaternion rotation = default, float weight = float.MinValue, bool isLocked = false)
-        {
-            ItemPickupBase ipb = Object.Instantiate(item.PickupDropModel, position, rotation);
-            ipb.Info.ItemId = item.ItemTypeId;
-            ipb.Info.Weight = weight;
-            ipb.Info.Locked = isLocked;
-            ItemDistributor.SpawnPickup(ipb);
-
-            return Pickup.Get(ipb);
-        }
-
-        /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an ammo.
         /// </summary>
         /// <param name="item">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an ammo or not.</returns>
-        public static bool IsAmmo(this ItemType item) => item == ItemType.Ammo9x19 || item == ItemType.Ammo12gauge || item == ItemType.Ammo44cal || item == ItemType.Ammo556x45 || item == ItemType.Ammo762x39;
+        public static bool IsAmmo(this ItemType item) => item == ItemType.Ammo9X19 || item == ItemType.Ammo12Gauge || item == ItemType.Ammo44Cal || item == ItemType.Ammo556X45 || item == ItemType.Ammo762X39;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a weapon.
@@ -85,29 +42,29 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether the <see cref="ItemType"/> is a weapon or not.</returns>
         public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type == ItemType.GunCrossvec ||
             type == ItemType.GunLogicer || type == ItemType.GunRevolver || type == ItemType.GunShotgun ||
-            type == ItemType.GunAK || type == ItemType.GunCOM15 || type == ItemType.GunCOM18 ||
-            type == ItemType.GunE11SR || type == ItemType.GunFSP9 || (checkMicro && type == ItemType.MicroHID);
+            type == ItemType.GunAk || type == ItemType.GunCom15 || type == ItemType.GunCom18 ||
+            type == ItemType.GunE11Sr || type == ItemType.GunFsp9 || (checkMicro && type == ItemType.MicroHid);
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is an SCP.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
-        public static bool IsScp(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207;
+        public static bool IsScp(this ItemType type) => type == ItemType.Scp018 || type == ItemType.Scp500 || type == ItemType.Scp268 || type == ItemType.Scp207;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a throwable item.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a throwable item or not.</returns>
-        public static bool IsThrowable(this ItemType type) => type == ItemType.SCP018 || type == ItemType.GrenadeHE || type == ItemType.GrenadeFlash;
+        public static bool IsThrowable(this ItemType type) => type == ItemType.Scp018 || type == ItemType.GrenadeHe || type == ItemType.GrenadeFlash;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a medical item.
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a medical item or not.</returns>
-        public static bool IsMedical(this ItemType type) => type == ItemType.Painkillers || type == ItemType.Medkit || type == ItemType.SCP500 || type == ItemType.Adrenaline;
+        public static bool IsMedical(this ItemType type) => type == ItemType.Painkillers || type == ItemType.Medkit || type == ItemType.Scp500 || type == ItemType.Adrenaline;
 
         /// <summary>
         /// Check if an <see cref="ItemType">item</see> is a utility item.
@@ -131,9 +88,9 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
         public static bool IsKeycard(this ItemType type) =>
             type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
-            type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
-            type == ItemType.KeycardNTFLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
-            type == ItemType.KeycardResearchCoordinator || type == ItemType.KeycardNTFOfficer || type == ItemType.KeycardZoneManager;
+            type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNtfCommander ||
+            type == ItemType.KeycardNtfLieutenant || type == ItemType.KeycardO5 || type == ItemType.KeycardScientist ||
+            type == ItemType.KeycardResearchCoordinator || type == ItemType.KeycardNtfOfficer || type == ItemType.KeycardZoneManager;
 
         /// <summary>
         /// Gets the default ammo of a weapon.
@@ -142,7 +99,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out var itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue((global::ItemType)item, out var itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
                 return 0;
 
             return firearm.AmmoManagerModule.MaxAmmo;
@@ -157,15 +114,15 @@ namespace Exiled.API.Extensions
         {
             switch (type)
             {
-                case ItemType.Ammo9x19:
+                case ItemType.Ammo9X19:
                     return AmmoType.Nato9;
-                case ItemType.Ammo556x45:
+                case ItemType.Ammo556X45:
                     return AmmoType.Nato556;
-                case ItemType.Ammo762x39:
+                case ItemType.Ammo762X39:
                     return AmmoType.Nato762;
-                case ItemType.Ammo12gauge:
+                case ItemType.Ammo12Gauge:
                     return AmmoType.Ammo12Gauge;
-                case ItemType.Ammo44cal:
+                case ItemType.Ammo44Cal:
                     return AmmoType.Ammo44Cal;
                 default:
                     return AmmoType.None;
@@ -182,15 +139,15 @@ namespace Exiled.API.Extensions
             switch (type)
             {
                 case AmmoType.Nato556:
-                    return ItemType.Ammo556x45;
+                    return ItemType.Ammo556X45;
                 case AmmoType.Nato762:
-                    return ItemType.Ammo762x39;
+                    return ItemType.Ammo762X39;
                 case AmmoType.Nato9:
-                    return ItemType.Ammo9x19;
+                    return ItemType.Ammo9X19;
                 case AmmoType.Ammo12Gauge:
-                    return ItemType.Ammo12gauge;
+                    return ItemType.Ammo12Gauge;
                 case AmmoType.Ammo44Cal:
-                    return ItemType.Ammo44cal;
+                    return ItemType.Ammo44Cal;
                 default:
                     return ItemType.None;
             }

@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Linq;
     using System.Reflection.Emit;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -123,9 +124,9 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool CheckItems(RoleType type, List<ItemType> items) =>
+        private static bool CheckItems(RoleType type, List<global::ItemType> items) =>
             !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
-                ? items == new List<ItemType>()
+                ? items == new List<global::ItemType>()
                 : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)

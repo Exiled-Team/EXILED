@@ -373,7 +373,12 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="pickup">The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Vector3 position, out Pickup pickup) => Spawned.Add(pickup = Type.Spawn(position, default, Weight));
+        public virtual void Spawn(Vector3 position, out Pickup pickup)
+        {
+            pickup = new Item(Type).Spawn(position);
+            pickup.Weight = Weight;
+            Spawned.Add(pickup);
+        }
 
         /// <summary>
         /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific position.

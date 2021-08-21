@@ -297,10 +297,15 @@ namespace Exiled.API.Features
         /// Turns off all lights of the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        public static void TurnOffAllLights(float duration)
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
-                controller.ServerFlickerLights(duration);
+            {
+                Room room = controller.GetComponentInParent<Room>();
+                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
+                    controller.ServerFlickerLights(duration);
+            }
         }
 
         /// <summary>

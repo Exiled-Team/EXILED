@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Extensions;
+    using Exiled.API.Enums;
 
     using InventorySystem;
     using InventorySystem.Items;
@@ -52,7 +52,7 @@ namespace Exiled.API.Features.Items
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
-            Type = itemBase.ItemTypeId;
+            Type = (ItemType)itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             BaseToItem.Add(itemBase, this);
         }
@@ -62,7 +62,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance(type, false))
+            : this(Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
         {
         }
 
@@ -175,9 +175,9 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation)
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
         {
-            Base.PickupDropModel.Info.ItemId = Type;
+            Base.PickupDropModel.Info.ItemId = (global::ItemType)Type;
             Base.PickupDropModel.Info.Position = position;
             Base.PickupDropModel.Info.Weight = Weight;
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);

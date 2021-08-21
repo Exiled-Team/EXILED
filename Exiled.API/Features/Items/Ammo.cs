@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
-    using InventorySystem;
-    using InventorySystem.Items;
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.Firearms.Ammo;
 
     /// <summary>
@@ -31,12 +31,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Ammo(ItemType type)
-            : base(type)
+            : this((AmmoItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = (AmmoItem)itemBase;
         }
 
         /// <inheritdoc cref="Item.Base"/>

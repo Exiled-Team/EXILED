@@ -11,6 +11,7 @@ namespace Exiled.Example.Events
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;

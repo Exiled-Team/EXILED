@@ -70,7 +70,8 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override void Spawn(Vector3 position, out Pickup pickup)
         {
-            pickup = Type.Spawn(position, default, Weight);
+            pickup = new Item(Type).Spawn(position);
+            pickup.Weight = Weight;
             if (pickup.Base is FirearmPickup firearmPickup)
             {
                 firearmPickup.Status = new FirearmStatus(ClipSize, FirearmStatusFlags.MagazineInserted, firearmPickup.NetworkStatus.Attachments);
@@ -172,15 +173,15 @@ namespace Exiled.CustomItems.API.Features
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!", Instance.Config.Debug);
 
             AmmoType ammoType = ((Firearm)ev.Player.CurrentItem).AmmoType;
-            ushort amountToReload = (ushort)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
+            ushort amountToReload = (ushort)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()]);
 
             if (amountToReload <= 0)
                 return;
 
             ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
-            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
-            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()] -= amountToReload;
             ((Firearm)ev.Player.CurrentItem).Ammo += (byte)amountToReload;
 
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({(Firearm)ev.Player.CurrentItem}/{ClipSize})]!", Instance.Config.Debug);

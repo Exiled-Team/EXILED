@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     /// <summary>
     /// Facility zone types.
     /// </summary>
+    [Flags]
     public enum ZoneType
     {
         /// <summary>

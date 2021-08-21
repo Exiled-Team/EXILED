@@ -7,8 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
-    using InventorySystem;
-    using InventorySystem.Items;
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>
@@ -31,12 +31,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
         public Throwable(ItemType type)
-            : base(type)
+            : this((ThrowableItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
-                return;
-
-            Base = (ThrowableItem)itemBase;
         }
 
         /// <summary>
