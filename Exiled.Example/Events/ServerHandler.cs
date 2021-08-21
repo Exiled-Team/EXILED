@@ -43,24 +43,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
         public void OnRoundStarted()
         {
-            Log.Info("A round has started!");
-            Timing.CallDelayed(2f, () =>
-            {
-                try
-                {
-                    for (int i = 0; i < Enum.GetValues(typeof(ItemType)).GetUpperBound(0); i++)
-                    {
-                        Item item = new Item((ItemType)i);
-                        Log.Warn($"{nameof(OnRoundStarted)}: {(ItemType)i} -- {item.Type}");
-                        Pickup pickup = item.Spawn(new Vector3(53f, 1020f, -44f), default);
-                        Log.Info($"Spawned {pickup.Type} ({pickup.Serial}) at {pickup.Position}.  Weight: {pickup.Weight} Is Locked: {pickup.Locked}");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"{nameof(OnRoundStarted)}: {e}");
-                }
-            });
+            Log.Info($"A round has started with {Player.Dictionary.Count} players!");
         }
     }
 }

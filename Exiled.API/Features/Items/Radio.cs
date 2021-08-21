@@ -70,5 +70,10 @@ namespace Exiled.API.Features.Items
                     MinuteCostWhenTalking = value.TalkingUsage,
                 };
         }
+
+        /// <summary>
+        /// Turns off the radio.
+        /// </summary>
+        public void Disable() => Base._radio.ForceDisableRadio();
     }
 }

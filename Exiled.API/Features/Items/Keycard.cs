@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Enums;
+
     using Interactables.Interobjects.DoorUtils;
 
     using InventorySystem;
@@ -22,17 +24,10 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Keycard(ItemBase itemBase)
+        public Keycard(KeycardItem itemBase)
             : base(itemBase)
         {
-            if (!(itemBase is KeycardItem key))
-            {
-                Log.Warn($"{nameof(Keycard)}.ctor: {itemBase} is not a valid Keycard! {nameof(itemBase)}");
-                return;
-            }
-
-            Log.Warn($"{nameof(itemBase)}");
-            Base = key;
+            Base = itemBase;
         }
 
         /// <summary>
@@ -40,7 +35,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Keycard(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance(type, false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
         {
         }
 
@@ -53,7 +48,7 @@ namespace Exiled.API.Features.Items
         public Enums.KeycardPermissions Permissions
         {
             get => (Enums.KeycardPermissions)Base.Permissions;
-            set => Base.Permissions = (KeycardPermissions)value;
+            set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
     }
 }

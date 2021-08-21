@@ -30,15 +30,17 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Throwable"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
-        public Throwable(ItemType type)
-            : this((ThrowableItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+        /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
+        /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
+        public Throwable(ItemType type, Player player = null)
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false) : (ThrowableItem)player.Inventory.CreateItemInstance((global::ItemType)type, true))
         {
         }
 
         /// <summary>
         /// Gets the <see cref="ThrowableItem"/> base for this item.
         /// </summary>
-        public new ThrowableItem Base { get; }
+        public new ThrowableItem Base { get; internal set; }
 
         /// <summary>
         /// Gets the <see cref="ThrownProjectile"/> for this item.
@@ -53,5 +55,11 @@ namespace Exiled.API.Features.Items
             get => Base._pinPullTime;
             set => Base._pinPullTime = value;
         }
+
+        /// <summary>
+        /// Throws the item.
+        /// </summary>
+        /// <param name="fullForce">Whether to use full or half force.</param>
+        public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce);
     }
 }

@@ -17,6 +17,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Ammo;
+    using InventorySystem.Items.Flashlight;
     using InventorySystem.Items.Keycards;
     using InventorySystem.Items.MicroHID;
     using InventorySystem.Items.Pickups;
@@ -54,6 +55,8 @@ namespace Exiled.API.Features.Items
             Base = itemBase;
             Type = (ItemType)itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
+            if (Serial == 0)
+                Serial = ItemSerialGenerator.GenerateNext();
             BaseToItem.Add(itemBase, this);
         }
 
@@ -83,6 +86,9 @@ namespace Exiled.API.Features.Items
                 {
                     value = ItemSerialGenerator.GenerateNext();
                 }
+
+                if (Base == null || Base.PickupDropModel == null)
+                    return;
 
                 Base.PickupDropModel.Info.Serial = value;
                 Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
@@ -147,6 +153,8 @@ namespace Exiled.API.Features.Items
                     return new Armor(armor);
                 case AmmoItem ammo:
                     return new Ammo(ammo);
+                case FlashlightItem flashlight:
+                    return new Flashlight(flashlight);
                 case ThrowableItem throwable:
                     switch (throwable.Projectile)
                     {

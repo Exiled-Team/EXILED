@@ -76,12 +76,6 @@ namespace Exiled.CustomItems.API.Features
         public abstract SpawnProperties SpawnProperties { get; set; }
 
         /// <summary>
-        /// Gets or sets the item durability.
-        /// </summary>
-        [YamlIgnore]
-        public virtual byte Durability { get; set; }
-
-        /// <summary>
         /// Gets or sets the ItemType to use for this item.
         /// </summary>
         public virtual ItemType Type

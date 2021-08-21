@@ -119,6 +119,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the number of players currently on the server.
+        /// </summary>
+        public static int PlayerCount => Player.Dictionary.Count;
+
+        /// <summary>
+        /// Gets or sets the maximum number of players able to be on the server.
+        /// </summary>
+        public static int MaxPlayerCount
+        {
+            get => CustomNetworkManager.slots;
+            set => CustomNetworkManager.slots = value;
+        }
+
+        /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
         public static void Restart()

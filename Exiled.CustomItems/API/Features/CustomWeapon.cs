@@ -57,15 +57,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
-        public virtual byte ClipSize
-        {
-            get => Durability;
-            set => Durability = value;
-        }
-
-        /// <inheritdoc/>
-        [YamlIgnore]
-        public override byte Durability { get; set; }
+        public virtual byte ClipSize { get; set; }
 
         /// <inheritdoc/>
         public override void Spawn(Vector3 position, out Pickup pickup)

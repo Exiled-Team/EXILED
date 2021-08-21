@@ -23,14 +23,17 @@ namespace Exiled.API.Features.Items
         public ExplosiveGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
+            Base = itemBase;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
-        public ExplosiveGrenade(ItemType type)
-            : base(type)
+        /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
+        /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
+        public ExplosiveGrenade(ItemType type, Player player = null)
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false) : (ThrowableItem)player.Inventory.CreateItemInstance((global::ItemType)type, true))
         {
         }
 

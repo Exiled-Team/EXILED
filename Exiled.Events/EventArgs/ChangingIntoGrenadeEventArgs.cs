@@ -9,6 +9,9 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
+    using Exiled.API.Features.Items;
+
     using InventorySystem.Items.Pickups;
 
     /// <summary>
@@ -24,8 +27,8 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed">Whether or not the event is allowed to continue.</param>
         public ChangingIntoGrenadeEventArgs(ItemPickupBase pickup, float fuseTime = 3f, bool isAllowed = true)
         {
-            Pickup = pickup;
-            Type = pickup.NetworkInfo.ItemId;
+            Pickup = Pickup.Get(pickup);
+            Type = (ItemType)pickup.NetworkInfo.ItemId;
             FuseTime = fuseTime;
             IsAllowed = isAllowed;
         }
@@ -33,7 +36,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating the pickup being changed.
         /// </summary>
-        public ItemPickupBase Pickup { get; }
+        public Pickup Pickup { get; }
 
         /// <summary>
         /// Gets or sets a value indicating what type of grenade will be spawned.

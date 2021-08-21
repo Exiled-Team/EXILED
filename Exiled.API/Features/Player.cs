@@ -1517,6 +1517,40 @@ namespace Exiled.API.Features
         public void DropItems() => Inventory.ServerDropEverything();
 
         /// <summary>
+        /// Causes the player to throw a grenade.
+        /// </summary>
+        /// <param name="type">The <see cref="GrenadeType"/> to be thrown.</param>
+        /// <param name="fullForce">Whether to throw with full or half force.</param>
+        /// <returns>The <see cref="Throwable"/> item that was spawned.</returns>
+        public Throwable ThrowGrenade(GrenadeType type, bool fullForce = true)
+        {
+            Throwable throwable;
+            switch (type)
+            {
+                case GrenadeType.Flashbang:
+                    throwable = new FlashGrenade(ItemType.GrenadeFlash);
+                    break;
+                default:
+                    throwable = new ExplosiveGrenade(type == GrenadeType.Scp018 ? ItemType.Scp018 : ItemType.GrenadeHe);
+                    break;
+            }
+
+            ThrowItem(throwable, fullForce);
+            return throwable;
+        }
+
+        /// <summary>
+        /// Throw an item.
+        /// </summary>
+        /// <param name="throwable">The <see cref="Throwable"/> to be thrown.</param>
+        /// <param name="fullForce">Whether to throw with full or half force.</param>
+        public void ThrowItem(Throwable throwable, bool fullForce = true)
+        {
+            throwable.Base.Owner = ReferenceHub;
+            throwable.Throw(fullForce);
+        }
+
+        /// <summary>
         /// Simple way to show a hint to the player.
         /// </summary>
         /// <param name="message">The message to be shown.</param>
