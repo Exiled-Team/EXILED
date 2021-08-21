@@ -22,6 +22,8 @@ namespace Exiled.Loader
     using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
 
+    using NorthwoodLib;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
@@ -53,6 +55,8 @@ namespace Exiled.Loader
             // "Useless" check for now, since configs will be loaded after loading all plugins.
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
+            if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
+                Paths.Reload($"EXILED-Testing");
 
             if (!Directory.Exists(Paths.Configs))
                 Directory.CreateDirectory(Paths.Configs);
