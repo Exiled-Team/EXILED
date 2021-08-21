@@ -7,169 +7,145 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Enums;
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using InventorySystem.Items.Firearms.Attachments;
+
+    using MEC;
+
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
+
+    using Player = Exiled.Events.Handlers.Player;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.SetPlayersClass(RoleType, GameObject, bool, bool)"/>.
-    /// Adds the <see cref="Player.ChangingRole"/> and <see cref="Player.Escaping"/> events.
+    /// Patches <see cref="CharacterClassManager.SetClassIDAdv(RoleType, bool, CharacterClassManager.SpawnReason, bool)"/>.
+    /// Adds the <see cref="Handlers.Player.ChangingRole"/> and <see cref="Handlers.Player.Escaping"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))]
+    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassIDAdv))]
     internal static class ChangingRole
     {
-        private static bool Prefix(CharacterClassManager __instance, ref RoleType classid, GameObject ply, bool lite = false, bool escape = false)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int offset = 0;
+            int index = 0;
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
+            LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                // Somehow we've seen spam
-                // here with a NullReferenceException,
-                // so there are more null checks here
-                if (ply == null
-                || !ply.TryGetComponent<CharacterClassManager>(out var ccm)
-                || ccm == null
-                || !ccm.IsVerified)
+                // Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+
+                // id
+                new CodeInstruction(OpCodes.Ldarg_1),
+
+                // lite
+                new CodeInstruction(OpCodes.Ldarg_2),
+
+                // escape
+                new CodeInstruction(OpCodes.Ldarg_3),
+
+                // var ev = new ChangingRoleEventArgs(player, id, lite, escape)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRoleEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+
+                // Handlers.Player.OnChangingRole(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnChangingRole))),
+
+                // if (!ev.IsAllowed)
+                //    return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // id = ev.NewRole;
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
+                new CodeInstruction(OpCodes.Starg, 1),
+
+                // lite = ev.Lite
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
+                new CodeInstruction(OpCodes.Starg, 2),
+
+                // escape = ev.IsEscaped
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
+                new CodeInstruction(OpCodes.Starg, 3),
+            });
+
+            offset = 1;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call) + offset;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(CheckItems))),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
+            });
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static bool CheckItems(RoleType type, List<global::ItemType> items) =>
+            !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
+                ? items == new List<global::ItemType>()
+                : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
+
+        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
+        {
+            Timing.CallDelayed(0.5f, () =>
+            {
+                try
                 {
-                    return false;
-                }
-
-                var player = API.Features.Player.Get(ply);
-
-                var startItemsList = ListPool<ItemType>.Shared.Rent(__instance.Classes.SafeGet(classid).startItems);
-                var changingRoleEventArgs = new ChangingRoleEventArgs(player, classid, startItemsList, lite, escape);
-
-                Player.OnChangingRole(changingRoleEventArgs);
-
-                lite = changingRoleEventArgs.ShouldPreservePosition;
-                escape = changingRoleEventArgs.IsEscaped;
-
-                if (classid != RoleType.Spectator && changingRoleEventArgs.NewRole == RoleType.Spectator)
-                {
-                    var diedEventArgs = new DiedEventArgs(API.Features.Server.Host, changingRoleEventArgs.Player, new PlayerStats.HitInfo(-1, "Dedicated Server", DamageTypes.None, 0));
-                    Player.OnDied(diedEventArgs);
-                }
-
-                classid = changingRoleEventArgs.NewRole;
-
-                if (escape)
-                {
-                    var escapingEventArgs = new EscapingEventArgs(player, classid);
-
-                    Player.OnEscaping(escapingEventArgs);
-
-                    if (!escapingEventArgs.IsAllowed)
-                        return false;
-
-                    classid = escapingEventArgs.NewRole;
-                }
-
-                var changedRoleEventArgs = new ChangedRoleEventArgs(player, player.Role, player.CufferId, lite, escape);
-
-                ply.GetComponent<CharacterClassManager>().SetClassIDAdv(classid, lite, escape);
-                ply.GetComponent<PlayerStats>().SetHPAmount(__instance.Classes.SafeGet(classid).maxHP);
-                ply.GetComponent<FirstPersonController>().ResetStamina();
-
-                if (lite)
-                {
-                    Player.OnChangedRole(changedRoleEventArgs);
-
-                    ListPool<ItemType>.Shared.Return(startItemsList);
-                    return false;
-                }
-
-                Inventory component = ply.GetComponent<Inventory>();
-                List<Inventory.SyncItemInfo> list = ListPool<Inventory.SyncItemInfo>.Shared.Rent();
-                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
-                {
-                    foreach (Inventory.SyncItemInfo item in component.items)
-                        list.Add(item);
-                }
-
-                component.items.Clear();
-                foreach (ItemType id in changingRoleEventArgs.Items)
-                {
-                    component.AddNewItem(id, -4.65664672E+11f, 0, 0, 0);
-                }
-
-                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
-                {
-                    foreach (Inventory.SyncItemInfo syncItemInfo in list)
+                    player.ClearInventory();
+                    foreach (ItemType type in items)
                     {
-                        if (CharacterClassManager.PutItemsInInvAfterEscaping)
-                        {
-                            var itemByID = component.GetItemByID(syncItemInfo.id);
-                            bool flag = false;
-                            InventoryCategory[] categories = __instance._search.categories;
-                            int i = 0;
-                            while (i < categories.Length)
-                            {
-                                InventoryCategory inventoryCategory = categories[i];
-                                if (inventoryCategory.itemType == itemByID.itemCategory &&
-                                    (itemByID.itemCategory != ItemCategory.None ||
-                                     itemByID.itemCategory != ItemCategory.None))
-                                {
-                                    int num = 0;
-                                    foreach (Inventory.SyncItemInfo syncItemInfo2 in component.items)
-                                    {
-                                        if (component.GetItemByID(syncItemInfo2.id).itemCategory ==
-                                            itemByID.itemCategory)
-                                        {
-                                            num++;
-                                        }
-                                    }
-
-                                    if (num >= inventoryCategory.maxItems)
-                                    {
-                                        flag = true;
-                                        break;
-                                    }
-
-                                    break;
-                                }
-                                else
-                                {
-                                    i++;
-                                }
-                            }
-
-                            if (component.items.Count >= 8 || flag)
-                            {
-                                component.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance._pms.RealModelPosition, Quaternion.Euler(__instance._pms.Rotations.x, __instance._pms.Rotations.y, 0f), syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
-                            }
-                            else
-                            {
-                                component.AddNewItem(syncItemInfo.id, syncItemInfo.durability, syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
-                            }
-                        }
-                        else
-                        {
-                            component.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance._pms.RealModelPosition, Quaternion.Euler(__instance._pms.Rotations.x, __instance._pms.Rotations.y, 0f), syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
-                        }
+                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, player.AddItem(type).Base);
                     }
                 }
-
-                ListPool<Inventory.SyncItemInfo>.Shared.Return(list);
-
-                Player.OnChangedRole(changedRoleEventArgs);
-
-                ListPool<ItemType>.Shared.Return(startItemsList);
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingRole: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+                catch (Exception e)
+                {
+                    Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {e}");
+                }
+            });
         }
     }
 }

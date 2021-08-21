@@ -10,9 +10,10 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all informations before a player's weapon is reloaded.
+    /// Contains all information before a player's weapon is reloaded.
     /// </summary>
     public class ReloadingWeaponEventArgs : EventArgs
     {
@@ -20,24 +21,23 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ReloadingWeaponEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="isAnimationOnly"><inheritdoc cref="IsAnimationOnly"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ReloadingWeaponEventArgs(Player player, bool isAnimationOnly, bool isAllowed = true)
+        public ReloadingWeaponEventArgs(Player player, bool isAllowed = true)
         {
+            Firearm = player.CurrentItem as Firearm;
             Player = player;
-            IsAnimationOnly = isAnimationOnly;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the <see cref="Firearm"/> being reloaded.
+        /// </summary>
+        public Firearm Firearm { get; }
 
         /// <summary>
         /// Gets the player who's reloading the weapon.
         /// </summary>
         public Player Player { get; }
-
-        /// <summary>
-        /// Gets a value indicating whether only the reload animation is being reproduced or not.
-        /// </summary>
-        public bool IsAnimationOnly { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the weapon can be reloaded.

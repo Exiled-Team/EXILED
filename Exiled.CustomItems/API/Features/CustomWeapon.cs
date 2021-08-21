@@ -9,15 +9,24 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+
+    using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Pickups;
 
     using UnityEngine;
 
     using YamlDotNet.Serialization;
 
     using static CustomItems;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
+    using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
     public abstract class CustomWeapon : CustomItem
@@ -48,29 +57,18 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
-        public virtual uint ClipSize
-        {
-            get => (uint)Durability;
-            set => Durability = value;
-        }
-
-        /// <inheritdoc/>
-        [YamlIgnore]
-        public override float Durability { get; set; }
+        public virtual byte ClipSize { get; set; }
 
         /// <inheritdoc/>
         public override void Spawn(Vector3 position, out Pickup pickup)
         {
-            pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
-
-            Spawned.Add(pickup);
-        }
-
-        /// <inheritdoc/>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public override void Spawn(Vector3 position)
-        {
-            Pickup pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+            pickup = new Item(Type).Spawn(position);
+            pickup.Weight = Weight;
+            if (pickup.Base is FirearmPickup firearmPickup)
+            {
+                firearmPickup.Status = new FirearmStatus(ClipSize, FirearmStatusFlags.MagazineInserted, firearmPickup.NetworkStatus.Attachments);
+                firearmPickup.NetworkStatus = firearmPickup.Status;
+            }
 
             Spawned.Add(pickup);
         }
@@ -78,19 +76,14 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override void Give(Player player, bool displayMessage)
         {
-            Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
+            Item item = player.AddItem(Type);
+
+            if (item is Firearm firearm)
             {
-                durability = ClipSize,
-                id = Type,
-                uniq = ++Inventory._uniqId,
-                modBarrel = Modifiers.BarrelType,
-                modSight = Modifiers.SightType,
-                modOther = Modifiers.OtherType,
-            };
+                firearm.Ammo = ClipSize;
+            }
 
-            player.Inventory.items.Add(syncItemInfo);
-
-            InsideInventories.Add(syncItemInfo.uniq);
+            InsideInventories.Add(item.Serial);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);
@@ -164,32 +157,26 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            uint remainingClip = (uint)ev.Player.CurrentItem.durability;
+            byte remainingClip = ((Firearm)ev.Player.CurrentItem).Ammo;
 
             if (remainingClip >= ClipSize)
                 return;
 
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!", Instance.Config.Debug);
 
-            if (ev.IsAnimationOnly)
-            {
-                ev.Player.ReloadWeapon();
-            }
-            else
-            {
-                int ammoType = ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType;
-                uint amountToReload = Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType]);
+            AmmoType ammoType = ((Firearm)ev.Player.CurrentItem).AmmoType;
+            ushort amountToReload = (ushort)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()]);
 
-                if (amountToReload <= 0)
-                    return;
+            if (amountToReload <= 0)
+                return;
 
-                ev.Player.ReferenceHub.weaponManager.scp268.ServerDisable();
+            ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
-                ev.Player.Ammo[ammoType] -= amountToReload;
-                ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.GetItemIndex(), ev.Player.CurrentItem.durability + amountToReload);
+            ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()] -= amountToReload;
+            ev.Player.Ammo[(global::ItemType)ammoType.GetItemType()] -= amountToReload;
+            ((Firearm)ev.Player.CurrentItem).Ammo += (byte)amountToReload;
 
-                Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({ev.Player.CurrentItem.durability}/{ClipSize})]!", Instance.Config.Debug);
-            }
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({(Firearm)ev.Player.CurrentItem}/{ClipSize})]!", Instance.Config.Debug);
         }
 
         private void OnInternalShooting(ShootingEventArgs ev)
@@ -210,7 +197,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.DamageType != DamageTypes.FromWeaponId(ev.Attacker.ReferenceHub.weaponManager.curWeapon))
+            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.DamageType != ((Firearm)ev.Attacker.CurrentItem).DamageType)
                 return;
 
             OnHurting(ev);

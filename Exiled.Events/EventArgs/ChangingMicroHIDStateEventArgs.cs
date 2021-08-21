@@ -11,20 +11,22 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.MicroHID;
+
     /// <summary>
     /// Contains all information before MicroHID state is changed.
     /// </summary>
-    public class ChangingMicroHIDStateEventArgs : EventArgs
+    public class ChangingMicroHidStateEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingMicroHIDStateEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingMicroHidStateEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="microHID"><inheritdoc cref="MicroHID"/></param>
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMicroHIDStateEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState oldState, MicroHID.MicroHidState newState, bool isAllowed = true)
+        public ChangingMicroHidStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
         {
             Player = player;
             MicroHID = microHID;
@@ -41,17 +43,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the MicroHID instance.
         /// </summary>
-        public MicroHID MicroHID { get; }
+        public MicroHIDItem MicroHID { get; }
 
         /// <summary>
         /// Gets the old MicroHID state.
         /// </summary>
-        public MicroHID.MicroHidState OldState { get; }
+        public HidState OldState { get; }
 
         /// <summary>
         /// Gets or sets the new MicroHID state.
         /// </summary>
-        public MicroHID.MicroHidState NewState { get; set; }
+        public HidState NewState { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the MicroHID state can be changed or not.

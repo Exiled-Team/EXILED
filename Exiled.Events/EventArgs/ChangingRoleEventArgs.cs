@@ -9,11 +9,13 @@ namespace Exiled.Events.EventArgs
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before a player's <see cref="RoleType"/> changes.
+    /// Contains all information before a player's <see cref="RoleType"/> changes.
     /// </summary>
     public class ChangingRoleEventArgs : EventArgs
     {
@@ -22,16 +24,20 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="newRole"><inheritdoc cref="NewRole"/></param>
-        /// <param name="items"><inheritdoc cref="Items"/></param>
-        /// <param name="shouldPreservePosition"><inheritdoc cref="ShouldPreservePosition"/></param>
-        /// <param name="isEscaped"><inheritdoc cref="IsEscaped"/></param>
-        public ChangingRoleEventArgs(Player player, RoleType newRole, List<ItemType> items, bool shouldPreservePosition, bool isEscaped)
+        /// <param name="shouldPreservePosition"><inheritdoc cref="Lite"/></param>
+        /// <param name="reason"><inheritdoc cref="Reason"/></param>
+        public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)
         {
             Player = player;
             NewRole = newRole;
-            Items = items;
-            ShouldPreservePosition = shouldPreservePosition;
-            IsEscaped = isEscaped;
+            if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
+            {
+                foreach (global::ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
+                    Items.Add((ItemType)itemType);
+            }
+
+            Lite = shouldPreservePosition;
+            Reason = (SpawnReason)reason;
         }
 
         /// <summary>
@@ -45,18 +51,23 @@ namespace Exiled.Events.EventArgs
         public RoleType NewRole { get; set; }
 
         /// <summary>
-        /// Gets base items that the player will receive.
+        /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
-        public List<ItemType> Items { get; }
+        public List<ItemType> Items { get; } = new List<ItemType>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player escaped or not.
+        /// Gets or sets the reason for their class change.
         /// </summary>
-        public bool IsEscaped { get; set; }
+        public SpawnReason Reason { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the position has to be preserved after changing the role.
+        /// Gets or sets a value indicating whether the position and items has to be preserved after changing the role.
         /// </summary>
-        public bool ShouldPreservePosition { get; set; }
+        public bool Lite { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the event can continue.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }

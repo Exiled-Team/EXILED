@@ -7,19 +7,45 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="WeaponManager.GetShootPermission(CharacterClassManager, bool)"/>.
+    /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission), new Type[] { typeof(CharacterClassManager), typeof(bool) })]
+    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
     internal static class IndividualFriendlyFire
     {
-        private static bool Prefix(WeaponManager __instance, ref bool forceFriendlyFire, ref bool __result) => !(__result = Player.Get(__instance.gameObject).IsFriendlyFireEnabled || forceFriendlyFire || Server.FriendlyFire);
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(0, new[]
+            {
+                // Player.Get(attacker)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // if (!player.IsFriendlyFireEnabled)
+                //    goto continue label
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsFriendlyFireEnabled))),
+                new CodeInstruction(OpCodes.Starg, 2),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
     }
 }

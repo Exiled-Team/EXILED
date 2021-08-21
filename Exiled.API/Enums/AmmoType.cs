@@ -13,21 +13,37 @@ namespace Exiled.API.Enums
     public enum AmmoType
     {
         /// <summary>
+        /// Not ammo.
+        /// </summary>
+        None,
+
+        /// <summary>
         /// 5.56mm Ammunition.
-        /// Used by <see cref="ItemType.GunE11SR"/>.
+        /// Used by <see cref="ItemType.GunE11Sr"/>.
         /// </summary>
         Nato556,
 
         /// <summary>
         /// 7.62mm Ammunition.
-        /// Used by <see cref="ItemType.GunMP7"/> and <see cref="ItemType.GunLogicer"/>.
+        /// Used by and <see cref="ItemType.GunLogicer"/>.
         /// </summary>
         Nato762,
 
         /// <summary>
         /// 9mm Ammunition.
-        /// Used by <see cref="ItemType.GunCOM15"/>, <see cref="ItemType.GunProject90"/> and <see cref="ItemType.GunUSP"/>.
+        /// Used by <see cref="ItemType.GunCom15"/>,.
         /// </summary>
         Nato9,
+
+        /// <summary>
+        /// 12 gauge shotgun ammo.
+        /// Used by <see cref="ItemType.GunShotgun"/>
+        /// </summary>
+        Ammo12Gauge,
+
+        /// <summary>
+        /// 44 caliber.
+        /// </summary>
+        Ammo44Cal,
     }
 }

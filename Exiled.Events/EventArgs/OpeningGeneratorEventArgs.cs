@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using MapGeneration.Distributors;
+
     /// <summary>
     /// Contains all informations before a player opens a generator.
     /// </summary>
@@ -22,7 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public OpeningGeneratorEventArgs(Player player, Generator079 generator, bool isAllowed = true)
+        public OpeningGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
             Generator = generator;
@@ -37,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the generator that is opening.
         /// </summary>
-        public Generator079 Generator { get; }
+        public Scp079Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the generator can be opened.

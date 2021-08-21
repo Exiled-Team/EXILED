@@ -35,20 +35,20 @@ namespace Exiled.Events.Patches.Events.Scp096
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 1;
 
             // Search for "Stloc_0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_0) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_0) + offset;
 
             // Get the return label from the last instruction.
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // Create the damage labels.
-            var targetDamageLabel = generator.DefineLabel();
-            var nonTargetDamageLabel = generator.DefineLabel();
+            Label targetDamageLabel = generator.DefineLabel();
+            Label nonTargetDamageLabel = generator.DefineLabel();
 
             // if (!ChargedPlayers.Add(ReferenceHub)
             //   return;
@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // ChargePlayers.Clear();
             newInstructions.InsertRange(0, new[]

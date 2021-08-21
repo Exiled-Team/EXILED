@@ -14,9 +14,14 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
-    using Grenades;
+    using Footprinting;
+
+    using InventorySystem.Items;
+    using InventorySystem.Items.Pickups;
+    using InventorySystem.Items.ThrowableProjectiles;
 
     using MEC;
 
@@ -54,53 +59,61 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public abstract float FuseTime { get; set; }
 
-        /// <inheritdoc/>
-        [YamlIgnore]
-        public override float Durability { get; set; }
-
         /// <summary>
         /// Gets a value indicating what thrown grenades are currently being tracked.
         /// </summary>
         [YamlIgnore]
-        protected HashSet<GameObject> Tracked { get; } = new HashSet<GameObject>();
+        protected HashSet<ThrownProjectile> Tracked { get; } = new HashSet<ThrownProjectile>();
 
         /// <summary>
         /// Spawns a live grenade object on the map.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
-        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
+        /// <param name="force">The amount of force to throw with.</param>
         /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
         /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
         /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public virtual Grenade Spawn(Vector3 position, Vector3 velocity, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeFrag, Player player = null)
+        /// <returns>The <see cref="Pickup"/> being spawned.</returns>
+        public virtual Pickup Throw(Vector3 position, float force, float fuseTime = 3f, ItemType grenadeType = ItemType.GrenadeHe, Player player = null)
         {
             if (player == null)
                 player = Server.Host;
 
-            GrenadeManager grenadeManager = player.GrenadeManager;
-            GrenadeSettings settings =
-                grenadeManager.availableGrenades.FirstOrDefault(g => g.inventoryID == grenadeType);
+            Throwable throwable = new Throwable(grenadeType, player);
 
-            Grenade grenade = GameObject.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
-
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
-
-            Tracked.Add(grenade.gameObject);
-
-            NetworkServer.Spawn(grenade.gameObject);
+            ThrownProjectile thrownProjectile = UnityEngine.Object.Instantiate(throwable.Projectile, position, throwable.Owner.CameraTransform.rotation);
+            Transform transform = thrownProjectile.transform;
+            PickupSyncInfo newInfo = new PickupSyncInfo()
+            {
+                ItemId = (global::ItemType)throwable.Type,
+                Locked = !throwable.Base._repickupable,
+                Serial = ItemSerialGenerator.GenerateNext(),
+                Weight = Weight,
+                Position = transform.position,
+                Rotation = new LowPrecisionQuaternion(transform.rotation),
+            };
+            if (thrownProjectile is TimeGrenade time)
+                time._fuseTime = fuseTime;
+            thrownProjectile.NetworkInfo = newInfo;
+            thrownProjectile.PreviousOwner = new Footprint(throwable.Owner.ReferenceHub);
+            NetworkServer.Spawn(thrownProjectile.gameObject);
+            thrownProjectile.InfoReceived(default, newInfo);
+            Rigidbody component;
+            if (thrownProjectile.TryGetComponent(out component))
+                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, force, throwable.Base.FullThrowSettings.UpwardsFactor);
+            thrownProjectile.ServerActivate();
+            Tracked.Add(thrownProjectile);
 
             if (ExplodeOnCollision)
-                grenade.gameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init(player.GameObject, grenade);
+                thrownProjectile.gameObject.AddComponent<Exiled.API.Features.Components.CollisionHandler>().Init(player.GameObject, (EffectGrenade)thrownProjectile);
 
-            return grenade;
+            return Pickup.Get(thrownProjectile);
         }
 
         /// <inheritdoc/>
         protected override void SubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingGrenade += OnInternalThrowing;
+            Events.Handlers.Player.ThrowingItem += OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade += OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade += OnInternalChangingIntoGrenade;
 
@@ -110,7 +123,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         protected override void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ThrowingGrenade -= OnInternalThrowing;
+            Events.Handlers.Player.ThrowingItem -= OnInternalThrowing;
             Events.Handlers.Map.ExplodingGrenade -= OnInternalExplodingGrenade;
             Events.Handlers.Map.ChangingIntoGrenade -= OnInternalChangingIntoGrenade;
 
@@ -120,8 +133,8 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Handles tracking thrown custom grenades.
         /// </summary>
-        /// <param name="ev"><see cref="ThrowingGrenadeEventArgs"/>.</param>
-        protected virtual void OnThrowing(ThrowingGrenadeEventArgs ev)
+        /// <param name="ev"><see cref="ThrowingItemEventArgs"/>.</param>
+        protected virtual void OnThrowing(ThrowingItemEventArgs ev)
         {
         }
 
@@ -154,13 +167,17 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="grenade">The <see cref="GameObject"/> of the grenade to check.</param>
         /// <returns>True if it is a custom grenade.</returns>
-        protected bool Check(GameObject grenade) => Tracked.Contains(grenade);
+        protected bool Check(ThrownProjectile grenade) => Tracked.Contains(grenade);
 
-        private void OnInternalThrowing(ThrowingGrenadeEventArgs ev)
+        private void OnInternalThrowing(ThrowingItemEventArgs ev)
         {
+            if (ev.RequestType == ThrowRequest.BeginThrow)
+                return;
+
             if (!Check(ev.Player.CurrentItem))
                 return;
 
+            Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
             OnThrowing(ev);
 
             if (!ev.IsAllowed)
@@ -168,21 +185,21 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            InsideInventories.Remove(ev.Player.CurrentItem.uniq);
+            InsideInventories.Remove(ev.Player.CurrentItem.Serial);
 
             ev.Player.RemoveItem(ev.Player.CurrentItem);
 
-            Timing.CallDelayed(1f, () =>
-            {
-                Vector3 position = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
-                Spawn(position, ev.Player.CameraTransform.forward * 9f, FuseTime, Type, ev.Player);
-            });
+            Vector3 position = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
+            Throw(position, 3f, FuseTime, Type, ev.Player);
         }
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
             if (Check(ev.Grenade))
+            {
+                Log.Debug($"A {Name} is exploding!!", CustomItems.Instance.Config.Debug);
                 OnExploding(ev);
+            }
         }
 
         private void OnInternalChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
@@ -197,8 +214,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (ev.IsAllowed)
             {
-                Timing.CallDelayed(0.25f, () => Spawn(ev.Pickup.position, Vector3.zero, ev.FuseTime, ev.Type));
-                ev.Pickup.Delete();
+                Timing.CallDelayed(0.25f, () => Throw(ev.Pickup.Position, 0f, ev.FuseTime, ev.Type));
+                ev.Pickup.Destroy();
                 ev.IsAllowed = false;
             }
         }

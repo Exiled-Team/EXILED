@@ -9,34 +9,14 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
-
-    using HarmonyLib;
+    using InventorySystem.Items.MicroHID;
 
     /// <summary>
-    /// Patches <see cref="MicroHID.NetworkCurrentHidState"/>.
+    /// Patches <see cref="MicroHIDItem.State"/>.
     /// Adds the <see cref="Handlers.Player.OnChangingMicroHIDState"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(MicroHID), nameof(MicroHID.NetworkCurrentHidState), MethodType.Setter)]
     internal static class ChangingMicroHIDState
     {
-        private static bool Prefix(MicroHID __instance, ref MicroHID.MicroHidState value)
-        {
-            // NetworkCurrentHid state is set each frame, so this  is to prevent calling the method each frame.
-            if (__instance.CurrentHidState == value)
-                return true;
-
-            var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, value);
-
-            Handlers.Player.OnChangingMicroHIDState(ev);
-
-            if (!ev.IsAllowed)
-                return false;
-
-            value = ev.NewState;
-
-            return true;
-        }
+        // TODO: this
     }
 }

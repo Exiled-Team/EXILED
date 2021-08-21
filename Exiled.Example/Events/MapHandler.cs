@@ -20,13 +20,13 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnExplodingGrenade(ExplodingGrenadeEventArgs)"/>
         public void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
         {
-            Log.Info($"A frag grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetToDamages.Select(player => $"[{player.Key.Nickname} ({player.Value} HP)]"))}");
+            Log.Info($"A grenade thrown by {ev.Thrower.Nickname} is exploding: {ev.Grenade.name}\n[Targets]\n\n{string.Join("\n", ev.TargetsToAffect.Select(player => $"[{player.Nickname}]"))}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Map.OnGeneratorActivated(GeneratorActivatedEventArgs)"/>
         public void OnGeneratorActivated(GeneratorActivatedEventArgs ev)
         {
-            Log.Info($"A generator has been activated in {ev.Generator.CurRoom}!");
+            Log.Info($"A generator has been activated in {ev.Generator.gameObject.GetComponent<Room>()?.Name}!");
         }
     }
 }

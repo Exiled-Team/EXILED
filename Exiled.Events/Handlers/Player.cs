@@ -46,24 +46,15 @@ namespace Exiled.Events.Handlers
         /// Invoked after a player uses a medical item.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="MedicalItemDequipped"/>, if a player's class has
+        /// Invoked after <see cref="ItemUsed"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
-        public static event CustomEventHandler<UsedMedicalItemEventArgs> MedicalItemUsed;
-
-        /// <summary>
-        /// Invoked after a player dequips a medical item.
-        /// </summary>
-        /// <remarks>
-        /// Invoked before <see cref="MedicalItemUsed"/>, if a player cancels the
-        /// use of a medical item, won't fire.
-        /// </remarks>
-        public static event CustomEventHandler<DequippedMedicalItemEventArgs> MedicalItemDequipped;
+        public static event CustomEventHandler<UsedItemEventArgs> ItemUsed;
 
         /// <summary>
         /// Invoked after a player has stopped the use of a medical item.
         /// </summary>
-        public static event CustomEventHandler<StoppingMedicalItemEventArgs> StoppingMedicalItem;
+        public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
 
         /// <summary>
         /// Invoked after a player interacted with something.
@@ -83,7 +74,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
-        public static event CustomEventHandler<UsingMedicalItemEventArgs> UsingMedicalItem;
+        public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
         /// <summary>
         /// Invoked after a player has joined the server.
@@ -123,27 +114,18 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before changing a player's role.
         /// </summary>
+        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked after changing a player's role.
+        /// Invoked before throwing an item.
         /// </summary>
-        public static event CustomEventHandler<ChangedRoleEventArgs> ChangedRole;
-
-        /// <summary>
-        /// Invoked before throwing a grenade.
-        /// </summary>
-        public static event CustomEventHandler<ThrowingGrenadeEventArgs> ThrowingGrenade;
+        public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
 
         /// <summary>
         /// Invoked before dropping an item.
         /// </summary>
         public static event CustomEventHandler<DroppingItemEventArgs> DroppingItem;
-
-        /// <summary>
-        /// Invoked after an item has been dropped.
-        /// </summary>
-        public static event CustomEventHandler<ItemDroppedEventArgs> ItemDropped;
 
         /// <summary>
         /// Invoked before picking up an ammo.
@@ -268,27 +250,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a player inserts a workstation tablet into a generator.
         /// </summary>
-        public static event CustomEventHandler<InsertingGeneratorTabletEventArgs> InsertingGeneratorTablet;
+        public static event CustomEventHandler<ActivatingGeneratorEventArgs> ActivatingGenerator;
 
         /// <summary>
         /// Invoked before a player ejects the workstation tablet out of a generator.
         /// </summary>
-        public static event CustomEventHandler<EjectingGeneratorTabletEventArgs> EjectingGeneratorTablet;
+        public static event CustomEventHandler<StoppingGeneratorEventArgs> StoppingGenerator;
 
         /// <summary>
         /// Invoked before a player receives a status effect.
         /// </summary>
         public static event CustomEventHandler<ReceivingEffectEventArgs> ReceivingEffect;
-
-        /// <summary>
-        /// Invoked before a workstation is activated.
-        /// </summary>
-        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
-
-        /// <summary>
-        /// Invoked before a workstation is deactivated.
-        /// </summary>
-        public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
         /// Invoked before an user's mute status is changed.
@@ -313,7 +285,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a player's MicroHID state is changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
+        public static event CustomEventHandler<ChangingMicroHidStateEventArgs> ChangingMicroHIDState;
 
         /// <summary>
         /// Invoked before a player's MicroHID energy is changed.
@@ -353,20 +325,14 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after a player used a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="UsedMedicalItemEventArgs"/> instance.</param>
-        public static void OnMedicalItemUsed(UsedMedicalItemEventArgs ev) => MedicalItemUsed.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after a player dequipped a medical item.
-        /// </summary>
-        /// <param name="ev">The <see cref="DequippedMedicalItemEventArgs"/> instance.</param>
-        public static void OnMedicalItemDequipped(DequippedMedicalItemEventArgs ev) => MedicalItemDequipped.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
+        public static void OnItemUsed(UsedItemEventArgs ev) => ItemUsed.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has stopped the use of a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="StoppingMedicalItemEventArgs"/> instance.</param>
-        public static void OnStoppingMedicalItem(StoppingMedicalItemEventArgs ev) => StoppingMedicalItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="CancellingItemUseEventArgs"/> instance.</param>
+        public static void OnCancellingItemUse(CancellingItemUseEventArgs ev) => CancellingItemUse.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player interacted with something.
@@ -389,8 +355,8 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before using a medical item.
         /// </summary>
-        /// <param name="ev">The <see cref="UsingMedicalItemEventArgs"/> instance.</param>
-        public static void OnUsingMedicalItem(UsingMedicalItemEventArgs ev) => UsingMedicalItem.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
+        public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a player has joined the server.
@@ -438,31 +404,20 @@ namespace Exiled.Events.Handlers
         /// Called before changing a player's role.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
+        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after changing a player's role.
-        /// </summary>
-        /// <param name="ev">The <see cref="ChangedRoleEventArgs"/> instance.</param>
-        public static void OnChangedRole(ChangedRoleEventArgs ev) => ChangedRole.InvokeSafely(ev);
 
         /// <summary>
         /// Called before throwing a grenade.
         /// </summary>
-        /// <param name="ev">The <see cref="ThrowingGrenadeEventArgs"/> instance.</param>
-        public static void OnThrowingGrenade(ThrowingGrenadeEventArgs ev) => ThrowingGrenade.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ThrowingItemEventArgs"/> instance.</param>
+        public static void OnThrowingItem(ThrowingItemEventArgs ev) => ThrowingItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called before dropping an item.
         /// </summary>
         /// <param name="ev">The <see cref="DroppingItemEventArgs"/> instance.</param>
         public static void OnDroppingItem(DroppingItemEventArgs ev) => DroppingItem.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called after a player drops an item.
-        /// </summary>
-        /// <param name="ev">The <see cref="ItemDroppedEventArgs"/> instance.</param>
-        public static void OnItemDropped(ItemDroppedEventArgs ev) => ItemDropped.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player picks up an ammo.
@@ -569,19 +524,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a player interacts with a door.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player interacts with an elevator.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingElevator(InteractingElevatorEventArgs ev) => InteractingElevator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player interacts with a locker.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingDecalEventArgs"/> instance.</param>
+        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
         public static void OnInteractingLocker(InteractingLockerEventArgs ev) => InteractingLocker.InvokeSafely(ev);
 
         /// <summary>
@@ -611,32 +566,20 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a player inserts a workstation tablet into a generator.
         /// </summary>
-        /// <param name="ev">The <see cref="InsertingGeneratorTabletEventArgs"/> instance.</param>
-        public static void OnInsertingGeneratorTablet(InsertingGeneratorTabletEventArgs ev) => InsertingGeneratorTablet.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance.</param>
+        public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player ejects the workstation tablet out of a generator.
         /// </summary>
-        /// <param name="ev">The <see cref="EjectingGeneratorTabletEventArgs"/> instance.</param>
-        public static void OnEjectingGeneratorTablet(EjectingGeneratorTabletEventArgs ev) => EjectingGeneratorTablet.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance.</param>
+        public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player receives a status effect.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingEffectEventArgs"/> instance.</param>
         public static void OnReceivingEffect(ReceivingEffectEventArgs ev) => ReceivingEffect.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a workstation is activated.
-        /// </summary>
-        /// <param name="ev">The <see cref="ActivatingWorkstationEventArgs"/> instance.</param>
-        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a workstation is deactivated.
-        /// </summary>
-        /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
-        public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
         /// Called before an user's mute status is changed.
@@ -666,7 +609,7 @@ namespace Exiled.Events.Handlers
         /// Called before a player's MicroHID state is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
-        public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
+        public static void OnChangingMicroHIDState(ChangingMicroHidStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player's MicroHID energy is changed.

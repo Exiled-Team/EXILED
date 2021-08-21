@@ -8,8 +8,8 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-
     using Exiled.API.Features;
+    using MapGeneration.Distributors;
 
     /// <summary>
     /// Contains all informations before a player interacts with a locker.
@@ -49,10 +49,6 @@ namespace Exiled.Events.EventArgs
         /// Gets the interacting chamber.
         /// </summary>
         public LockerChamber Chamber { get; }
-
-        /// <inheritdoc cref="LockerId" />
-        [Obsolete("Use LockerId instead", true)]
-        public int Id => LockerId;
 
         /// <summary>
         /// Gets the locker id.

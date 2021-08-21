@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Fixes
-{
+{/*
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -40,5 +40,5 @@ namespace Exiled.Events.Patches.Fixes
                 }
             }
         }
-    }
+    }*/
 }

@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Events.Server
 {
 #pragma warning disable SA1313
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -21,6 +22,8 @@ namespace Exiled.Events.Patches.Events.Server
     using HarmonyLib;
 
     using UnityEngine;
+
+    using Console = GameCore.Console;
 
     /// <summary>
     /// Patches <see cref="RoundSummary.Start"/>.
@@ -87,7 +90,7 @@ namespace Exiled.Events.Patches.Events.Server
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
-                    roundSummary._roundEnded = true;
+                    roundSummary.RoundEnded = true;
                 }
                 else
                 {
@@ -100,11 +103,11 @@ namespace Exiled.Events.Patches.Events.Server
                         ++num6;
                     if (num6 <= 1)
                     {
-                        roundSummary._roundEnded = true;
+                        roundSummary.RoundEnded = true;
                     }
                 }
 
-                var endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary._roundEnded);
+                EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
@@ -118,9 +121,9 @@ namespace Exiled.Events.Patches.Events.Server
 
                 Server.OnEndingRound(endingRoundEventArgs);
 
-                roundSummary._roundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
+                roundSummary.RoundEnded = endingRoundEventArgs.IsRoundEnded && endingRoundEventArgs.IsAllowed;
 
-                if (roundSummary._roundEnded)
+                if (roundSummary.RoundEnded)
                 {
                     FriendlyFireConfig.PauseDetector = true;
                     string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
@@ -135,7 +138,7 @@ namespace Exiled.Events.Patches.Events.Server
                     {
                         newList.scps_except_zombies -= newList.zombies;
 
-                        var roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
+                        RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
@@ -171,8 +174,8 @@ namespace Exiled.Events.Patches.Events.Server
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
                         {
-                            var generics = m.GetGenericArguments();
-                            var paramseters = m.GetParameters();
+                            Type[] generics = m.GetGenericArguments();
+                            ParameterInfo[] paramseters = m.GetParameters();
                             return m.Name == "CancelWith"
                             && generics.Length == 1
                             && paramseters.Length == 2

@@ -45,7 +45,7 @@ namespace Exiled.CustomItems.Commands.List
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("customitems.list.insideinventories") && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor.Roles.RaEverywhere))
+            if (!sender.CheckPermission("customitems.list.insideinventories") && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
             {
                 response = "Permission Denied, required: customitems.list.insideinventories";
                 return false;
@@ -74,7 +74,7 @@ namespace Exiled.CustomItems.Commands.List
 
                 foreach (int insideInventory in customItem.InsideInventories)
                 {
-                    Player owner = Player.List.FirstOrDefault(player => player.Inventory.items.Any(item => item.uniq == insideInventory));
+                    Player owner = Player.List.FirstOrDefault(player => player.Inventory.UserInventory.Items.Any(item => item.Key == insideInventory));
 
                     message.Append(insideInventory).Append(". ");
 

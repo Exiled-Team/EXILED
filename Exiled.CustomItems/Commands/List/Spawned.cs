@@ -12,8 +12,11 @@ namespace Exiled.CustomItems.Commands.List
 
     using CommandSystem;
 
+    using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
     using Exiled.Permissions.Extensions;
+
+    using InventorySystem.Items.Pickups;
 
     using NorthwoodLib.Pools;
 
@@ -69,7 +72,7 @@ namespace Exiled.CustomItems.Commands.List
                 count += customItem.Spawned.Count;
 
                 foreach (Pickup spawned in customItem.Spawned)
-                    message.AppendLine(spawned.position.ToString());
+                    message.AppendLine(spawned.Position.ToString());
             }
 
             if (message.Length == 0)

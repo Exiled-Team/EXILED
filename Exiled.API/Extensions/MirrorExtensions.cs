@@ -58,7 +58,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Gets a all DirtyBit <see cref="ulong"/> from <see cref="String"/>(format:classname.methodname).
+        /// Gets a all DirtyBit <see cref="ulong"/> from <see cref="StringExtensions"/>(format:classname.methodname).
         /// </summary>
         public static ReadOnlyDictionary<string, ulong> SyncVarDirtyBits
         {
@@ -70,9 +70,15 @@ namespace Exiled.API.Extensions
                         .SelectMany(x => x.GetProperties())
                         .Where(m => m.Name.StartsWith("Network")))
                     {
-                        var bytecodes = property.GetSetMethod().GetMethodBody().GetILAsByteArray();
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType.Name}.{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        var setMethod = property.GetSetMethod();
+                        if (setMethod == null)
+                            continue;
+                        var methodBody = setMethod.GetMethodBody();
+                        if (methodBody == null)
+                            continue;
+                        var bytecodes = methodBody.GetILAsByteArray();
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType?.Name}.{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType?.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -194,14 +200,14 @@ namespace Exiled.API.Extensions
         {
             Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
             {
-                targetWriter.WritePackedUInt64(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
             };
 
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
-            NetworkWriter writer2 = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, customSyncVarGenerator, writer, writer2);
-            NetworkServer.SendToClientOfPlayer(target.ReferenceHub.networkIdentity, new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -224,7 +230,7 @@ namespace Exiled.API.Extensions
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
         {
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
             foreach (var value in values)
                 WriterExtensions[value.GetType()].Invoke(null, new object[] { writer, value });
@@ -249,10 +255,10 @@ namespace Exiled.API.Extensions
         /// <param name="customAction">Custom writing action.</param>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
-            NetworkWriter writer2 = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
-            NetworkServer.SendToClientOfPlayer(target.ReferenceHub.networkIdentity, new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -300,8 +306,8 @@ namespace Exiled.API.Extensions
                 }
             }
 
-            owner.WritePackedUInt64(dirty);
-            observer.WritePackedUInt64(dirty & dirty_o);
+            owner.WriteUInt64(dirty);
+            observer.WriteUInt64(dirty & dirty_o);
 
             int position = owner.Position;
             owner.WriteInt32(0);

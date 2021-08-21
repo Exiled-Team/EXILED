@@ -45,11 +45,5 @@ namespace Exiled.Events.EventArgs
             get => isGlobal;
             set { /* Setter will be removed */ }
         }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the event can be executed or not.
-        /// </summary>
-        [Obsolete("Doesn't work", true)]
-        public bool IsAllowed { get; set; }
     }
 }

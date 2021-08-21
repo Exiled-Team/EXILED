@@ -9,12 +9,13 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before spawning a player.
+    /// Contains all information before spawning a player.
     /// </summary>
     public class SpawningEventArgs : EventArgs
     {
@@ -23,14 +24,21 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        /// <param name="rotationY"><inheritdoc cref="RotationY"/></param>
-        public SpawningEventArgs(Player player, RoleType roleType, Vector3 position, float rotationY)
+        public SpawningEventArgs(Player player, RoleType roleType)
         {
             Player = player;
             RoleType = roleType;
-            Position = position;
-            RotationY = rotationY;
+            (Vector3 postion, float rotation) = roleType.GetRandomSpawnProperties();
+            if (postion == Vector3.zero)
+            {
+                Position = player.ReferenceHub.characterClassManager.DeathPosition;
+                RotationY = 0f;
+            }
+            else
+            {
+                Position = postion;
+                RotationY = rotation;
+            }
         }
 
         /// <summary>

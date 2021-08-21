@@ -7,11 +7,12 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -19,9 +20,10 @@ namespace Exiled.Events.Patches.Events.Server
     using NorthwoodLib.Pools;
 
     using Respawning;
-    using Respawning.NamingRules;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
+
+    using Server = Exiled.Events.Handlers.Server;
 
     /// <summary>
     /// Patch the <see cref="RespawnManager.Spawn"/>.
@@ -30,105 +32,70 @@ namespace Exiled.Events.Patches.Events.Server
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
     internal static class RespawningTeam
     {
-        private static bool Prefix(RespawnManager __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
+            LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!RespawnWaveGenerator.SpawnableTeams.TryGetValue(__instance.NextKnownTeam, out SpawnableTeam spawnableTeam) ||
-                    __instance.NextKnownTeam == SpawnableTeamType.None)
-                {
-                    ServerConsole.AddLog("Fatal error. Team '" + __instance.NextKnownTeam + "' is undefined.", ConsoleColor.Red);
-                }
-                else
-                {
-                    List<API.Features.Player> list = ListPool<API.Features.Player>.Shared.Rent(API.Features.Player.List.Where(player => player.IsDead && !player.IsOverwatchEnabled));
+                // List<Player> players = GetPlayers(list1);
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
 
-                    if (__instance._prioritySpawn)
-                    {
-                        var tempList = ListPool<API.Features.Player>.Shared.Rent();
+                // num
+                new CodeInstruction(OpCodes.Ldloc_3),
 
-                        tempList.AddRange(list.OrderBy(item => item.ReferenceHub.characterClassManager.DeathTime));
+                // this.NextKnownTeam
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                        ListPool<API.Features.Player>.Shared.Return(list);
+                // var ev = new RespawningTeamEventArgs(players, num, this.NextKnownTeam)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RespawningTeamEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
-                        list = tempList;
-                    }
-                    else
-                    {
-                        list.ShuffleList();
-                    }
+                // Handlers.Server.OnRespawningTeam(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
-                    // Code that should be here is in RespawningTeamEventArgs::ReissueNextKnownTeam
-                    var ev = new RespawningTeamEventArgs(list, __instance.NextKnownTeam);
+                // if (!ev.IsAllowed)
+                //    return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
 
-                    Handlers.Server.OnRespawningTeam(ev);
+                // num = ev.MaximumRespawnAmount
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.MaximumRespawnAmount))),
+                new CodeInstruction(OpCodes.Stloc_3),
 
-                    if (ev.IsAllowed && ev.SpawnableTeam != null)
-                    {
-                        while (list.Count > ev.MaximumRespawnAmount)
-                            list.RemoveAt(list.Count - 1);
+                // spawnableTeamHandler = ev.SpawnableTeam
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.SpawnableTeam))),
+                new CodeInstruction(OpCodes.Stloc_0),
 
-                        list.ShuffleList();
+                // list1 = GetHubs(ev.Players)
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.Players))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetHubs))),
+                new CodeInstruction(OpCodes.Stloc_1),
+            });
 
-                        List<ReferenceHub> referenceHubList = ListPool<ReferenceHub>.Shared.Rent();
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                        foreach (API.Features.Player me in list)
-                        {
-                            try
-                            {
-                                RoleType classid = ev.SpawnableTeam.Value.ClassQueue[Mathf.Min(referenceHubList.Count, spawnableTeam.ClassQueue.Length - 1)];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                                me.ReferenceHub.characterClassManager.SetPlayersClass(classid, me.ReferenceHub.gameObject);
-
-                                referenceHubList.Add(me.ReferenceHub);
-
-                                ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " respawned as " + classid + ".", ServerLogs.ServerLogType.GameEvent);
-                            }
-                            catch (Exception ex)
-                            {
-                                if (me != null)
-                                    ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Player " + me.ReferenceHub.LoggedNameFromRefHub() + " couldn't be spawned. Err msg: " + ex.Message, ServerLogs.ServerLogType.GameEvent);
-                                else
-                                    ServerLogs.AddLog(ServerLogs.Modules.ClassChange, "Couldn't spawn a player - target's ReferenceHub is null.", ServerLogs.ServerLogType.GameEvent);
-                            }
-                        }
-
-                        if (referenceHubList.Count > 0)
-                        {
-                            ServerLogs.AddLog(ServerLogs.Modules.ClassChange, $"RespawnManager has successfully spawned {referenceHubList.Count} players as {__instance.NextKnownTeam}!", ServerLogs.ServerLogType.GameEvent);
-                            RespawnTickets.Singleton.GrantTickets(__instance.NextKnownTeam, -referenceHubList.Count * spawnableTeam.TicketRespawnCost);
-
-                            if (UnitNamingRules.TryGetNamingRule(__instance.NextKnownTeam, out UnitNamingRule rule))
-                            {
-                                rule.GenerateNew(__instance.NextKnownTeam, out string regular);
-                                foreach (ReferenceHub referenceHub in referenceHubList)
-                                {
-                                    referenceHub.characterClassManager.NetworkCurSpawnableTeamType =
-                                        (byte)__instance.NextKnownTeam;
-                                    referenceHub.characterClassManager.NetworkCurUnitName = regular;
-                                }
-
-                                rule.PlayEntranceAnnouncement(regular);
-                            }
-
-                            RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.UponRespawn, __instance.NextKnownTeam);
-                        }
-
-                        ListPool<ReferenceHub>.Shared.Return(referenceHubList);
-                    }
-
-                    ListPool<API.Features.Player>.Shared.Return(list);
-                    __instance.NextKnownTeam = SpawnableTeamType.None;
-                }
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Server.RespawningTeam: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static List<Player> GetPlayers(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
+
+        private static List<ReferenceHub> GetHubs(List<Player> players) => players.Select(p => p.ReferenceHub).ToList();
     }
 }

@@ -22,13 +22,12 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost, bool isAllowed = true)
+        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost)
         {
             Player = player;
             Tesla = tesla;
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = isAllowed;
+            IsAllowed = auxiliaryPowerCost <= player.Energy;
         }
 
         /// <summary>

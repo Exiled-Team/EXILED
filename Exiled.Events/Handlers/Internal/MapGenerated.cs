@@ -15,9 +15,13 @@ namespace Exiled.Events.Handlers.Internal
 
     using Interactables.Interobjects.DoorUtils;
 
+    using MapGeneration.Distributors;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// Handles <see cref="Exiled.Events.Handlers.Map.Generated"/> event.
@@ -38,11 +42,11 @@ namespace Exiled.Events.Handlers.Internal
         /// </remarks>
         public static void OnMapGenerated()
         {
-            API.Features.Map.ClearCache();
+            Map.ClearCache();
             GenerateCache();
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
-            DoorExtensions.RegisterDoorTypesOnLevelLoad();
+            Door.RegisterDoorTypesOnLevelLoad();
         }
 
         private static void GenerateCache()
@@ -52,6 +56,8 @@ namespace Exiled.Events.Handlers.Internal
             GenerateCameras();
             GenerateTeslaGates();
             GenerateLifts();
+            GeneratePocketTeleports();
+            GenerateLockers();
         }
 
         private static void GenerateRooms()
@@ -71,7 +77,7 @@ namespace Exiled.Events.Handlers.Internal
             // Add the pocket dimension since it is not tagged Room.
             const string PocketPath = "HeavyRooms/PocketWorld";
 
-            var pocket = GameObject.Find(PocketPath);
+            GameObject pocket = GameObject.Find(PocketPath);
 
             if (pocket == null)
                 Log.Send($"[{typeof(Map).FullName}]: Pocket Dimension not found. The name or location in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
@@ -81,25 +87,33 @@ namespace Exiled.Events.Handlers.Internal
             // Add the surface since it is not tagged Room. Add it last so we can use it as a default room since it never changes.
             const string surfaceRoomName = "Outside";
 
-            var surface = GameObject.Find(surfaceRoomName);
+            GameObject surface = GameObject.Find(surfaceRoomName);
 
             if (surface == null)
                 Log.Send($"[{typeof(Map).FullName}]: Surface not found. The name in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
             else
                 roomObjects.Add(surface);
 
-            foreach (var roomObject in roomObjects)
-                Exiled.API.Features.Map.RoomsValue.Add(Room.CreateComponent(roomObject));
+            foreach (GameObject roomObject in roomObjects)
+                Map.RoomsValue.Add(Room.CreateComponent(roomObject));
 
             ListPool<GameObject>.Shared.Return(roomObjects);
         }
 
-        private static void GenerateDoors() => Map.DoorsValue.AddRange(UnityEngine.Object.FindObjectsOfType<DoorVariant>());
+        private static void GenerateDoors()
+        {
+            foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
+                Map.DoorsValue.Add(Door.Get(doorVariant));
+        }
 
-        private static void GenerateCameras() => Map.CamerasValue.AddRange(UnityEngine.Object.FindObjectsOfType<Camera079>());
+        private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
 
-        private static void GenerateLifts() => Map.LiftsValue.AddRange(UnityEngine.Object.FindObjectsOfType<Lift>());
+        private static void GenerateLifts() => Map.LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
 
-        private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(UnityEngine.Object.FindObjectsOfType<TeslaGate>());
+        private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
+
+        private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
+
+        private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
     }
 }

@@ -32,19 +32,19 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var exiledPlayerLocal = generator.DeclareLocal(typeof(Player));
+            LocalBuilder exiledPlayerLocal = generator.DeclareLocal(typeof(Player));
 
             // --------- Player check ---------
             // The check is a check that this is a player, if it isn't a player, then we simply call return
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
             // Find the first null check of the NetworkIdentity component
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
 
             // Get the return label from the instruction at the index.
-            var returnLabel = newInstructions[index].operand;
+            object returnLabel = newInstructions[index].operand;
 
             newInstructions.InsertRange(index + 1, new[]
             {
@@ -61,14 +61,14 @@ namespace Exiled.Events.Patches.Events.Player
             // --------- FailingEscapePocketDimension ---------
 
             // The index offset.
-            var offset = 2;
+            int offset = 2;
 
             // Find the starting index by searching for "ldfld" of "BlastDoor.isClosed".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
             instruction.operand is FieldInfo finfo && finfo == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
             returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
@@ -105,7 +105,7 @@ namespace Exiled.Events.Patches.Events.Player
             (MethodInfo)instruction.operand == Method(typeof(Component), nameof(Component.GetComponent), generics: new[] { typeof(PlayerMovementSync) })) + offset;
 
             // Declare EscapingPocketDimensionEventArgs local variable.
-            var ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
 
             // var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), tpPosition);
             //

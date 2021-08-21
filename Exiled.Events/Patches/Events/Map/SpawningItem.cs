@@ -7,45 +7,31 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-    using System.Collections.Generic;
-#pragma warning disable SA1313
+#pragma warning disable SA1118
 
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using UnityEngine;
+    using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Patches <see cref="RandomItemSpawner.SpawnerItemToSpawn.Spawn"/>.
-    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawnedItem"/> events.
+    /// Patches <see cref="MapGeneration.Distributors.ItemDistributor.SpawnPickup"/>.
+    /// Adds the <see cref="Handlers.Map.SpawningItem"/> and <see cref="Handlers.Map.SpawningItem"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(RandomItemSpawner.SpawnerItemToSpawn), nameof(RandomItemSpawner.SpawnerItemToSpawn.Spawn))]
+    [HarmonyPatch(typeof(MapGeneration.Distributors.ItemDistributor), nameof(MapGeneration.Distributors.ItemDistributor.SpawnPickup))]
     internal static class SpawningItem
     {
-        private static IEnumerator<float> Postfix(IEnumerator<float> values, RandomItemSpawner.SpawnerItemToSpawn __instance)
+        private static bool Prefix(ItemPickupBase ipb)
         {
-            SpawningItemEventArgs ev = new SpawningItemEventArgs(__instance._id, __instance._pos, __instance._rot, __instance._locked, true);
-
-            Handlers.Map.OnSpawningItem(ev);
-
-            if (ev.IsAllowed)
+            if (ipb != null)
             {
-                Pickup pickup = ReferenceHub.GetHub(PlayerManager.localPlayer).inventory.SetPickup(ev.Id, 0.0f, Vector3.zero, Quaternion.identity, 0, 0, 0);
-
-                yield return float.NegativeInfinity;
-
-                HostItemSpawner.SetPos(pickup, ev.Position, ev.Id, ev.Rotation.eulerAngles);
-
-                pickup.RefreshDurability(true, true);
-
-                if (ev.Locked)
-                    pickup.Locked = true;
-
-                SpawnedItemEventArgs spawned_ev = new SpawnedItemEventArgs(pickup);
-
-                Handlers.Map.OnSpawnedItem(spawned_ev);
+                var ev = new SpawningItemEventArgs(ipb, true);
+                Handlers.Map.OnSpawningItem(ev);
+                return ev.IsAllowed;
             }
+
+            return false;
         }
     }
 }

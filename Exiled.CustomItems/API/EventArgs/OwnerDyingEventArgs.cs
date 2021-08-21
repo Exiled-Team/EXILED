@@ -7,12 +7,14 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
-    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
+    using Item = Exiled.API.Features.Items.Item;
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Contains all informations of a <see cref="CustomItem"/> before a <see cref="Player"/> dies.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Exiled.API.Features.Player"/> dies.
     /// </summary>
     public class OwnerDyingEventArgs : DyingEventArgs
     {
@@ -21,7 +23,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
-        public OwnerDyingEventArgs(Inventory.SyncItemInfo item, DyingEventArgs ev)
+        public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
             : this(item, ev.Killer, ev.Target, ev.HitInformation, ev.IsAllowed)
         {
         }
@@ -34,7 +36,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
         /// <param name="hitInformation"><inheritdoc cref="DyingEventArgs.HitInformation"/></param>
         /// <param name="isAllowed"><inheritdoc cref="DyingEventArgs.IsAllowed"/></param>
-        public OwnerDyingEventArgs(Inventory.SyncItemInfo item, Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
+        public OwnerDyingEventArgs(Item item, Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
             : base(killer, target, hitInformation, isAllowed)
         {
             Item = item;
@@ -43,6 +45,6 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <summary>
         /// Gets the item in the player's inventory.
         /// </summary>
-        public Inventory.SyncItemInfo Item { get; }
+        public Item Item { get; }
     }
 }

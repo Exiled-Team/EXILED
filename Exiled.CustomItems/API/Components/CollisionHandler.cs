@@ -6,7 +6,7 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.CustomItems.API.Components
-{
+{/*
     using System;
 
     using Exiled.API.Features;
@@ -56,5 +56,5 @@ namespace Exiled.CustomItems.API.Components
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
             }
         }
-    }
+    }*/
 }

@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs
         public InteractingDoorEventArgs(Player player, DoorVariant door, bool isAllowed = true)
         {
             Player = player;
-            Door = door;
+            Door = Door.Get(door);
             IsAllowed = isAllowed;
         }
 
@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="Door"/> instance.
         /// </summary>
-        public DoorVariant Door { get; set; }
+        public Door Door { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the door.
