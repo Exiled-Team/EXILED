@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // Player.Get(this._hub)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(Exiled.API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Exiled.API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // GetItem(player, itemSerial)
                 new CodeInstruction(OpCodes.Ldarg_1),

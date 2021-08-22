@@ -112,7 +112,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             if (patchIndex == -1)
             {
-                API.Features.Log.Warn($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: Couldn't find index for patching!");
+                API.Features.Log.Warn($"{nameof(LocalReporting)}-{nameof(Transpiler)}: Couldn't find index for patching!");
                 yield break;
             }
 

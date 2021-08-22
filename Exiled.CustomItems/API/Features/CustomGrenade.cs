@@ -85,7 +85,7 @@ namespace Exiled.CustomItems.API.Features
             Transform transform = thrownProjectile.transform;
             PickupSyncInfo newInfo = new PickupSyncInfo()
             {
-                ItemId = (global::ItemType)throwable.Type,
+                ItemId = throwable.Type,
                 Locked = !throwable.Base._repickupable,
                 Serial = ItemSerialGenerator.GenerateNext(),
                 Weight = Weight,

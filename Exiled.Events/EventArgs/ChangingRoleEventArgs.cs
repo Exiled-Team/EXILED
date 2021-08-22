@@ -32,8 +32,8 @@ namespace Exiled.Events.EventArgs
             NewRole = newRole;
             if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(newRole))
             {
-                foreach (global::ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
-                    Items.Add((ItemType)itemType);
+                foreach (ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
+                    Items.Add(itemType);
             }
 
             Lite = shouldPreservePosition;

@@ -31,7 +31,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Usable(ItemType type)
-            : this((UsableItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 

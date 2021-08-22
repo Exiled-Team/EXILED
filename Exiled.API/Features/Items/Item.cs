@@ -53,7 +53,7 @@ namespace Exiled.API.Features.Items
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
-            Type = (ItemType)itemBase.ItemTypeId;
+            Type = itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             if (Serial == 0)
                 Serial = ItemSerialGenerator.GenerateNext();
@@ -65,7 +65,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
@@ -185,7 +185,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
         {
-            Base.PickupDropModel.Info.ItemId = (global::ItemType)Type;
+            Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
             Base.PickupDropModel.Info.Weight = Weight;
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);

@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="UsableItemsController.ServerReceivedStatus"/>.
     /// Adds the <see cref="Handlers.Player.UsingItem"/> event.
     /// </summary>
-    [HarmonyLib.HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
+    [HarmonyPatch(typeof(UsableItemsController), nameof(UsableItemsController.ServerReceivedStatus))]
     internal static class UsingAndCancellingItemUse
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

@@ -111,7 +111,7 @@ namespace Exiled.API.Extensions
             {
                 if (sendSpawnMessageMethodInfoValue == null)
                 {
-                    sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+                    sendSpawnMessageMethodInfoValue = typeof(NetworkServer).GetMethod("SendSpawnMessage", BindingFlags.NonPublic | BindingFlags.Static);
                 }
 
                 return sendSpawnMessageMethodInfoValue;

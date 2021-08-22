@@ -99,7 +99,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue((global::ItemType)item, out var itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out var itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
                 return 0;
 
             return firearm.AmmoManagerModule.MaxAmmo;

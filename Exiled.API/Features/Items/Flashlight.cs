@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Flashlight(ItemType type)
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 

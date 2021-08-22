@@ -33,8 +33,8 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!__instance.ChckDis(elevator1.door.transform.position))
                         continue;
 
-                    InteractingElevatorEventArgs interactingEventArgs = new Exiled.Events.EventArgs.InteractingElevatorEventArgs(Exiled.API.Features.Player.Get(__instance._hub), elevator1, component);
-                    Exiled.Events.Handlers.Player.OnInteractingElevator(interactingEventArgs);
+                    InteractingElevatorEventArgs interactingEventArgs = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance._hub), elevator1, component);
+                    Handlers.Player.OnInteractingElevator(interactingEventArgs);
 
                     if (interactingEventArgs.IsAllowed)
                     {
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (System.Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
 
                 return true;
             }

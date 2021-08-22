@@ -44,7 +44,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Armor(ItemType type)
-            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
@@ -165,7 +165,7 @@ namespace Exiled.API.Features.Items
                 List<ArmorAmmoLimit> limits = new List<ArmorAmmoLimit>();
                 for (int i = 0; i < Base.AmmoLimits.Length; i++)
                 {
-                    limits.Add(new ArmorAmmoLimit(((ItemType)Base.AmmoLimits[i].AmmoType).GetAmmoType(), Base.AmmoLimits[i].Limit));
+                    limits.Add(new ArmorAmmoLimit(Base.AmmoLimits[i].AmmoType.GetAmmoType(), Base.AmmoLimits[i].Limit));
                 }
 
                 return limits;
@@ -179,7 +179,7 @@ namespace Exiled.API.Features.Items
                     ArmorAmmoLimit limit = value[i];
                     limits.Add(new BodyArmor.ArmorAmmoLimit
                     {
-                        AmmoType = (global::ItemType)limit.AmmoType.GetItemType(),
+                        AmmoType = limit.AmmoType.GetItemType(),
                         Limit = limit.Limit,
                     });
                 }

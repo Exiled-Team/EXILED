@@ -50,7 +50,7 @@ namespace Exiled.Events.Commands.Show
             // Append a new line to start the response on a new line
             sb.AppendLine();
 
-            SortedSet<IPlugin<IConfig>> plugins = Exiled.Loader.Loader.Plugins;
+            SortedSet<IPlugin<IConfig>> plugins = Loader.Loader.Plugins;
             int enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
 
             // Append two new lines before the list

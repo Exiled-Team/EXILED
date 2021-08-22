@@ -34,7 +34,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
         public Radio(ItemType type)
-            : this((RadioItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 

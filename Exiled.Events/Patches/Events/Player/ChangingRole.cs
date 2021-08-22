@@ -126,9 +126,9 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool CheckItems(RoleType type, List<global::ItemType> items) =>
+        private static bool CheckItems(RoleType type, List<ItemType> items) =>
             !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
-                ? items == new List<global::ItemType>()
+                ? items == new List<ItemType>()
                 : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
@@ -148,7 +148,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(player.Role))
                     {
-                        foreach (KeyValuePair<global::ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
+                        foreach (KeyValuePair<ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
                         {
                             player.Inventory.ServerSetAmmo(kvp.Key, kvp.Value);
                             player.Inventory.SendAmmoNextFrame = true;

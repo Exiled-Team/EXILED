@@ -123,7 +123,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's ammo.
         /// </summary>
-        public Dictionary<global::ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
+        public Dictionary<ItemType, ushort> Ammo => Inventory.UserInventory.ReserveAmmo;
 
         /// <summary>
         /// Gets the encapsulated <see cref="UnityEngine.GameObject"/>.
@@ -390,7 +390,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player is reloading a weapon.
         /// </summary>
-        public bool IsReloading => CurrentItem is Exiled.API.Features.Items.Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
+        public bool IsReloading => CurrentItem is Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
         /*/// <summary>
         /// Gets a value indicating whether or not the player is zooming with a weapon.
@@ -627,7 +627,7 @@ namespace Exiled.API.Features
                 ReferenceHub.playerStats.NetworkArtificialHealth = value;
 
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = (int)value;
+                    MaxArtificialHealth = value;
             }
         }
 
@@ -1093,7 +1093,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void ReloadWeapon()
         {
-            if (CurrentItem is Exiled.API.Features.Items.Firearm firearm)
+            if (CurrentItem is Firearm firearm)
                 firearm.Base.AmmoManagerModule.ServerTryReload();
             else
                 throw new InvalidOperationException("You may only reload weapons.");
@@ -1184,14 +1184,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
-        public bool HasItem(ItemType item) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == (global::ItemType)item);
+        public bool HasItem(ItemType item) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>How many items of that <see cref="ItemType"/> the player has.</returns>
-        public int CountItem(ItemType item) => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == (global::ItemType)item);
+        public int CountItem(ItemType item) => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
         /// Removes an <see cref="ItemBase"/> from the player's inventory.
@@ -1375,7 +1375,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
         public Item AddItem(ItemType itemType)
         {
-            Item item = Item.Get(Inventory.ServerAddItem((global::ItemType)itemType));
+            Item item = Item.Get(Inventory.ServerAddItem(itemType));
             AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, item.Base);
             if (item is Firearm firearm)
             {
@@ -1423,7 +1423,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
-        public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem((global::ItemType)pickup.Type, pickup.Serial, pickup.Base));
+        public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
         /// <summary>
         /// Add an item to the player's inventory.
