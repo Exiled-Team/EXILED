@@ -47,7 +47,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the Default <see cref="RagDoll.Info"/>,
-        /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
+        /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
