@@ -108,10 +108,9 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(CheckItems))),
-                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ShouldUpdateInv))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
@@ -126,10 +125,9 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool CheckItems(RoleType type, List<ItemType> items) =>
-            !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
-                ? items == new List<ItemType>()
-                : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
+        private static bool ShouldUpdateInv(RoleType type, CharacterClassManager.SpawnReason reason) =>
+            (reason != CharacterClassManager.SpawnReason.Escaped ||
+             !CharacterClassManager.KeepItemsAfterEscaping) && type != RoleType.Spectator;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
