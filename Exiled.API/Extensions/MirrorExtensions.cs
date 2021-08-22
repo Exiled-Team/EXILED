@@ -314,6 +314,7 @@ namespace Exiled.API.Extensions
                 {
                     behaviour = behaviorOwner.NetworkBehaviours[i];
                     behaviorDirty = (byte)i;
+                    break;
                 }
             }
 
