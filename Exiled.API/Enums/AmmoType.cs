@@ -19,7 +19,7 @@ namespace Exiled.API.Enums
 
         /// <summary>
         /// 5.56mm Ammunition.
-        /// Used by <see cref="ItemType.GunE11Sr"/>.
+        /// Used by <see cref="ItemType.GunE11SR"/>.
         /// </summary>
         Nato556,
 
@@ -31,7 +31,7 @@ namespace Exiled.API.Enums
 
         /// <summary>
         /// 9mm Ammunition.
-        /// Used by <see cref="ItemType.GunCom15"/>,.
+        /// Used by <see cref="ItemType.GunCOM15"/>,.
         /// </summary>
         Nato9,
 

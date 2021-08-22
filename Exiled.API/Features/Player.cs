@@ -1531,7 +1531,7 @@ namespace Exiled.API.Features
                     throwable = new FlashGrenade(ItemType.GrenadeFlash);
                     break;
                 default:
-                    throwable = new ExplosiveGrenade(type == GrenadeType.Scp018 ? ItemType.Scp018 : ItemType.GrenadeHe);
+                    throwable = new ExplosiveGrenade(type == GrenadeType.Scp018 ? ItemType.SCP018 : ItemType.GrenadeHE);
                     break;
             }
 

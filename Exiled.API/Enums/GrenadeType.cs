@@ -14,7 +14,7 @@ namespace Exiled.API.Enums
     {
         /// <summary>
         /// Frag grenade.
-        /// Used by <see cref="ItemType.GrenadeHe"/>.
+        /// Used by <see cref="ItemType.GrenadeHE"/>.
         /// </summary>
         FragGrenade,
 
@@ -26,7 +26,7 @@ namespace Exiled.API.Enums
 
         /// <summary>
         /// Scp018 ball.
-        /// Used by <see cref="ItemType.Scp018"/>.
+        /// Used by <see cref="ItemType.SCP018"/>.
         /// </summary>
         Scp018,
     }
