@@ -256,12 +256,12 @@ namespace Exiled.API.Extensions
         /// <example>
         /// EffectOnlySCP207.
         /// <code>
-        ///  player.SendCustomSync(player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-        ///   writer.WritePackedUInt64(1ul);                                     // DirtyObjectsBit
-        ///   writer.WritePackedUInt32((uint)1);                                 // DirtyIndexCount
-        ///   writer.WriteByte((byte) SyncList&lt;byte&gt;.Operation.OP_SET);    // Operations
-        ///   writer.WritePackedUInt32((uint)17);                                // EditIndex
-        ///   writer.WriteByte((byte)1);                                         // Value
+        ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
+        ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
+        ///   writer.WriteUInt32(1);                                             // DirtyIndexCount
+        ///   writer.WriteByte((byte)SyncList&lt;byte&gt;.Operation.OP_SET);     // Operations
+        ///   writer.WriteUInt32(17);                                            // EditIndex
+        ///   writer.WriteByte(1);                                               // Value
         ///  });
         /// </code>
         /// </example>
