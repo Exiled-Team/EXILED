@@ -292,40 +292,44 @@ namespace Exiled.API.Extensions
         // Make custom writer(private)
         private static void MakeCustomSyncWriter(NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customSyncObject, Action<NetworkWriter> customSyncVar, NetworkWriter owner, NetworkWriter observer)
         {
-            ulong dirty = 0ul;
-            ulong dirty_o = 0ul;
+            byte behaviorDirty = 0;
             NetworkBehaviour behaviour = null;
+
+            // Get NetworkBehaviors index (behaviorDirty use index)
             for (int i = 0; i < behaviorOwner.NetworkBehaviours.Length; i++)
             {
-                behaviour = behaviorOwner.NetworkBehaviours[i];
-                if (behaviour.GetType() == targetType)
+                if (behaviorOwner.NetworkBehaviours[i].GetType() == targetType)
                 {
-                    dirty |= 1UL << i;
-                    if (behaviour.syncMode == SyncMode.Observers)
-                        dirty_o |= 1UL << i;
+                    behaviour = behaviorOwner.NetworkBehaviours[i];
+                    behaviorDirty = (byte)i;
                 }
             }
 
-            owner.WriteUInt64(dirty);
-            observer.WriteUInt64(dirty & dirty_o);
+            // Write target NetworkBehavior's dirty
+            owner.WriteByte(behaviorDirty);
 
+            // Write init position
             int position = owner.Position;
             owner.WriteInt32(0);
             int position2 = owner.Position;
 
+            // Write custom sync data
             if (customSyncObject != null)
                 customSyncObject.Invoke(owner);
             else
                 behaviour.SerializeObjectsDelta(owner);
 
+            // Write custom syncvar
             customSyncVar?.Invoke(owner);
 
+            // Write syncdata position data
             int position3 = owner.Position;
             owner.Position = position;
             owner.WriteInt32(position3 - position2);
             owner.Position = position3;
 
-            if (dirty_o != 0ul)
+            // Copy owner to observer
+            if (behaviour.syncMode != SyncMode.Observers)
             {
                 ArraySegment<byte> arraySegment = owner.ToArraySegment();
                 observer.WriteBytes(arraySegment.Array, position, owner.Position - position);
