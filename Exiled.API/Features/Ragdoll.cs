@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
+    using RagDoll = global::Ragdoll;
+
     /// <summary>
     /// A set of tools to handle the ragdolls more easily.
     /// </summary>
@@ -22,7 +24,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
-        /// <param name="ragdollInfo"><see cref="global::Ragdoll.Info"/> object containing the ragdoll's info.</param>
+        /// <param name="ragdollInfo"><see cref="RagDoll.Info"/> object containing the ragdoll's info.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
@@ -40,13 +42,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
-        /// <param name="ragdoll">The encapsulated <see cref="global::Ragdoll"/>.</param>
+        /// <param name="ragdoll">The encapsulated <see cref="RagDoll"/>.</param>
         internal Ragdoll(global::Ragdoll ragdoll) => this.ragdoll = ragdoll;
 
         /// <summary>
-        /// Gets the Default <see cref="global::Ragdoll.Info"/>,
+        /// Gets the Default <see cref="RagDoll.Info"/>,
         /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
-        /// and <see cref="Spawn(Role, global::Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -62,7 +63,7 @@ namespace Exiled.API.Features
         };
 
         /// <summary>
-        /// Gets the <see cref="global::Ragdoll"/>.
+        /// Gets the <see cref="RagDoll"/>.
         /// </summary>
         public global::Ragdoll Base => ragdoll;
 
@@ -173,7 +174,7 @@ namespace Exiled.API.Features
         /// </code>
         /// </example>
         /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
-        /// <param name="ragdollInfo"><see cref="global::Ragdoll.Info"/> object containing the ragdoll's info.</param>
+        /// <param name="ragdollInfo"><see cref="RagDoll.Info"/> object containing the ragdoll's info.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
@@ -219,7 +220,7 @@ namespace Exiled.API.Features
         /// </code>
         /// </example>
         /// <param name="role">The <see cref="Role"/> to use as ragdoll.</param>
-        /// <param name="ragdollInfo"><see cref="global::Ragdoll.Info"/> object containing the ragdoll's info.</param>
+        /// <param name="ragdollInfo"><see cref="RagDoll.Info"/> object containing the ragdoll's info.</param>
         /// <param name="position">Where the ragdoll will be spawned.</param>
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>

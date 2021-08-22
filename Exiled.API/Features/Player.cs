@@ -457,7 +457,7 @@ namespace Exiled.API.Features
         public NetworkConnection Connection => ReferenceHub.scp079PlayerScript.connectionToClient;
 
         /// <summary>
-        /// Gets the player's <see cref="NetworkIdentity"/>.
+        /// Gets the player's <see cref="Mirror.NetworkIdentity"/>.
         /// </summary>
         public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
 
@@ -956,7 +956,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the Player belonging to a specific NetID, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
         /// <returns>The player owning the netId, or null if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 

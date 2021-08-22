@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Items
         public new KeycardItem Base { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="KeycardPermissions"/> of the keycard.
+        /// Gets or sets the <see cref="Enums.KeycardPermissions"/> of the keycard.
         /// </summary>
         public Enums.KeycardPermissions Permissions
         {
