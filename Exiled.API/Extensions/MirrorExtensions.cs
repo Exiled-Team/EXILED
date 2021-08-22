@@ -77,8 +77,8 @@ namespace Exiled.API.Extensions
                         if (methodBody == null)
                             continue;
                         var bytecodes = methodBody.GetILAsByteArray();
-                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.DeclaringType?.Name}.{property.Name}"))
-                            SyncVarDirtyBitsValue.Add($"{property.DeclaringType?.Name}.{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
+                        if (!SyncVarDirtyBitsValue.ContainsKey($"{property.PropertyType.Name}:{property.Name}"))
+                            SyncVarDirtyBitsValue.Add($"{property.PropertyType.Name}:{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
                 }
 
@@ -200,7 +200,7 @@ namespace Exiled.API.Extensions
         {
             Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"]);
+                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{value.GetType().Name}:{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
             };
 
@@ -218,7 +218,7 @@ namespace Exiled.API.Extensions
         /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
-        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{targetType.Name}.{propertyName}"] });
+        public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{targetType.GetProperty(propertyName)?.PropertyType.Name}:{propertyName}"] });
 
         /// <summary>
         /// Send fake values to client's <see cref="Mirror.ClientRpcAttribute"/>.
