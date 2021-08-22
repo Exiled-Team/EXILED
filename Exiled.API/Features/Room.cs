@@ -69,6 +69,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the color of the lights in the room.
+        /// </summary>
+        public Color Color
+        {
+            get => FlickerableLightController?.Network_warheadLightColor;
+            set => FlickerableLightController.Network_warheadLightColor = value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera079"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Camera079> Cameras { get; private set; }
