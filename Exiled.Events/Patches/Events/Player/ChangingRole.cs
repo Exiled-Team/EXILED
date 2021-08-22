@@ -15,10 +15,12 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
+    using InventorySystem;
     using InventorySystem.Items.Firearms.Attachments;
 
     using MEC;
@@ -138,7 +140,19 @@ namespace Exiled.Events.Patches.Events.Player
                     player.ClearInventory();
                     foreach (ItemType type in items)
                     {
-                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, player.AddItem(type).Base);
+                        Item item = player.AddItem(type);
+                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, item.Base);
+                        if (item is Firearm firearm)
+                            firearm.Ammo = firearm.MaxAmmo;
+                    }
+
+                    if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(player.Role))
+                    {
+                        foreach (KeyValuePair<global::ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
+                        {
+                            player.Inventory.ServerSetAmmo(kvp.Key, kvp.Value);
+                            player.Inventory.SendAmmoNextFrame = true;
+                        }
                     }
                 }
                 catch (Exception e)

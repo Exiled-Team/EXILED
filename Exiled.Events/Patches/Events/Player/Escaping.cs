@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -52,10 +53,11 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Stloc, role.LocalIndex),
             });
 
-            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Ldc_I4_S || i.opcode == OpCodes.Ldc_I4_4 || i.opcode == OpCodes.Ldc_I4_8))
+            foreach (CodeInstruction ins in newInstructions.FindAll(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetPlayersClass))))
             {
-                newInstructions.Insert(newInstructions.IndexOf(ins), new CodeInstruction(OpCodes.Ldloc, role.LocalIndex));
-                newInstructions.Remove(ins);
+                index = newInstructions.IndexOf(ins) - 5;
+                newInstructions.RemoveAt(index);
+                newInstructions.Insert(index, new CodeInstruction(OpCodes.Ldloc, role.LocalIndex));
             }
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

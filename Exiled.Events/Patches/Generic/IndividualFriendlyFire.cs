@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
+#pragma warning disable SA1313
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -25,27 +26,11 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
     internal static class IndividualFriendlyFire
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static void Prefix(HitboxIdentity __instance, ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig = false)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            Label continueLabel = generator.DefineLabel();
-
-            newInstructions.InsertRange(0, new[]
-            {
-                // Player.Get(attacker)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                // if (!player.IsFriendlyFireEnabled)
-                //    goto continue label
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsFriendlyFireEnabled))),
-                new CodeInstruction(OpCodes.Starg, 2),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            Player player = Player.Get(attacker);
+            if (player != null && player.IsFriendlyFireEnabled)
+                ignoreConfig = true;
         }
     }
 }
