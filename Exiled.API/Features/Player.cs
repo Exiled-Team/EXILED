@@ -1208,26 +1208,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Removes an <see cref="ItemBase"/> from the player's inventory.
-        /// </summary>
-        /// <param name="item">The <see cref="ItemBase"/> to be removed.</param>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
-        public bool RemoveItem(ItemBase item)
-        {
-            if (Items.All(i => i.Base != item))
-                return false;
-
-            ItemsValue.Remove(Item.Get(item));
-            Inventory.ServerRemoveItem(item.PickupDropModel.NetworkInfo.Serial, item.PickupDropModel);
-            return true;
-        }
-
-        /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
         /// <returns>A value indicating whether the <see cref="Item"/> was removed or not.</returns>
-        public bool RemoveItem(Item item) => RemoveItem(item.Base);
+        public bool RemoveItem(Item item) => RemoveItem(item.Serial);
 
         /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
