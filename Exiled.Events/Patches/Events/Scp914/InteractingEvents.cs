@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 case Scp914InteractCode.ChangeMode:
                     Scp914KnobSetting scp914KnobSetting;
                     if (__instance._knobSetting + 1 > Scp914KnobSetting.VeryFine)
-                        scp914KnobSetting = Scp914KnobSetting.Coarse;
+                        scp914KnobSetting = Scp914KnobSetting.Rough;
                     else
                         scp914KnobSetting = __instance._knobSetting + 1;
                     ChangingKnobSettingEventArgs ev = new ChangingKnobSettingEventArgs(Player.Get(ply), scp914KnobSetting);
