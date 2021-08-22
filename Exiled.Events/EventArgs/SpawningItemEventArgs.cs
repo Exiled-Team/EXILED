@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
     using InventorySystem.Items.Pickups;
@@ -25,7 +26,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)
         {
+            if (pickupBase.Info.Serial > 0)
+            {
+                pickupBase.Info.Serial = 0;
+                pickupBase.NetworkInfo = pickupBase.Info;
+            }
+
             Pickup = Pickup.Get(pickupBase);
+            Log.Warn($"{pickupBase.Info.Serial}:{pickupBase.NetworkInfo.Serial}:{pickupBase.NetworkInfo.ItemId}::{Pickup.Serial}:{Pickup.Type}");
             IsAllowed = isAllowed;
         }
 

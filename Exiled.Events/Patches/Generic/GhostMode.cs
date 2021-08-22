@@ -160,7 +160,7 @@ namespace Exiled.Events.Patches.Generic
                                     if (scp096 != null)
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                    if (player.Role != RoleType.Scp079
+                                    if (currentTarget != player && player.Role != RoleType.Scp079
                                         && player.Role != RoleType.Spectator
                                         && !flag2)
                                     {
