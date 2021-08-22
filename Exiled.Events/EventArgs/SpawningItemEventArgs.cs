@@ -33,7 +33,6 @@ namespace Exiled.Events.EventArgs
             }
 
             Pickup = Pickup.Get(pickupBase);
-            Log.Warn($"{pickupBase.Info.Serial}:{pickupBase.NetworkInfo.Serial}:{pickupBase.NetworkInfo.ItemId}::{Pickup.Serial}:{Pickup.Type}");
             IsAllowed = isAllowed;
         }
 
