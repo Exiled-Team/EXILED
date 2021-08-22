@@ -253,6 +253,18 @@ namespace Exiled.API.Extensions
         /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
         /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
         /// <param name="customAction">Custom writing action.</param>
+        /// <example>
+        /// EffectOnlySCP207.
+        /// <code>
+        ///  player.SendCustomSync(player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
+        ///   writer.WritePackedUInt64(1ul);                                     // DirtyObjectsBit
+        ///   writer.WritePackedUInt32((uint)1);                                 // DirtyIndexCount
+        ///   writer.WriteByte((byte) SyncList&lt;byte&gt;.Operation.OP_SET);    // Operations
+        ///   writer.WritePackedUInt32((uint)17);                                // EditIndex
+        ///   writer.WriteByte((byte)1);                                         // Value
+        ///  });
+        /// </code>
+        /// </example>
         public static void SendFakeSyncObject(Player target, NetworkIdentity behaviorOwner, Type targetType, Action<NetworkWriter> customAction)
         {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
