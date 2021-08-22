@@ -8,20 +8,17 @@
 namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
     using System.Reflection.Emit;
-
-    using CustomPlayerEffects;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
-    using Grenades;
+    using Footprinting;
 
     using HarmonyLib;
+
+    using InventorySystem.Items.ThrowableProjectiles;
 
     using NorthwoodLib.Pools;
 
@@ -29,236 +26,75 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
-#pragma warning disable SA1123 // Do not place regions within elements
-
     /// <summary>
-    /// Patches <see cref="FragGrenade.ServersideExplosion()"/>.
+    /// Patches <see cref="ExplosionGrenade.Explode()"/>.
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FragGrenade), nameof(FragGrenade.ServersideExplosion))]
+    [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.Explode))]
     internal static class ExplodingFragGrenade
     {
+        /// <summary>
+        /// Trims colliders from the given array.
+        /// </summary>
+        /// <param name="ev"><inheritdoc cref="ExplodingGrenadeEventArgs"/></param>
+        /// <param name="colliderArray">The list of colliders to trim from.</param>
+        /// <returns>An array of colliders.</returns>
+        public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
+        {
+            List<Collider> colliders = new List<Collider>();
+            foreach (Collider collider in colliderArray)
+            {
+                if (collider.TryGetComponent(out IDestructible dest) &&
+                    ReferenceHub.TryGetHubNetID(dest.NetworkId, out ReferenceHub hub) &&
+                    Player.Get(hub) is Player player && !ev.TargetsToAffect.Contains(player))
+                {
+                    colliders.Add(collider);
+                }
+                else
+                {
+                    colliders.Add(collider);
+                }
+            }
+
+            return colliders.ToArray();
+        }
+
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_2) + offset;
+            Label returnLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(ExplodingGrenadeEventArgs));
 
-            #region Locals
-
-            // Declare Dictionary<Player, float> local variable.
-            var players = generator.DeclareLocal(typeof(Dictionary<Player, float>));
-
-            // Declare Dictionary<Player, float>.Enumerator local variable.
-            var playerEnumerator = generator.DeclareLocal(typeof(Dictionary<Player, float>.Enumerator));
-
-            // Declare KeyValuePair<Player, float> local variable.
-            var playerKeyValuePair = generator.DeclareLocal(typeof(KeyValuePair<Player, float>));
-
-            #endregion
-
-            #region Labels
-
-            // Define the return label.
-            var returnLabel = generator.DefineLabel();
-
-            // Define the foreach labels.
-            var foreachFirstLabel = generator.DefineLabel();
-            var foreachSecondLabel = generator.DefineLabel();
-
-            #endregion
-
-            // var players = new Dictionary<Player, float>();
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(Dictionary<Player, float>))[0]),
-                new CodeInstruction(OpCodes.Stloc_S, players.LocalIndex),
-            });
-
-            #region ENABLE EFFECTS INSTRUCTIONS
-
-            var startOffset = -1;
-            var finishOffset = 0;
-
-            // Search for the first index of instructions to remove, inside the foreach.
-            var firstIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(PlayerStats), nameof(PlayerStats.ccm))) + startOffset;
-
-            // Search for the last index of instructions to remove, inside the foreach.
-            var lastIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(PlayerEffectsController), nameof(PlayerEffectsController.EnableEffect), new[] { typeof(PlayerEffect), typeof(float), typeof(bool) })) + finishOffset;
-
-            // Save enable effects instructions and remove them all.
-            var enableEffectsInstructions = newInstructions.GetRange(firstIndex, lastIndex - firstIndex + 1);
-            newInstructions.RemoveRange(firstIndex, lastIndex - firstIndex + 1);
-
-            // Clear all labels of the first instruction.
-            enableEffectsInstructions[0].labels.Clear();
-
-            // Save the label of the "brtrue.s" instruction, and change it to redirect to the new foreach.
-            var oldForeachFirstLabel = enableEffectsInstructions[3].operand;
-            enableEffectsInstructions[3].operand = foreachFirstLabel;
-
-            #endregion
-
-            #region HURT INSTRUCTIONS
-
-            startOffset = 2;
-            finishOffset = 1;
-
-            // Search for the first index of instructions to remove, inside the foreach.
-            firstIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(Physics), nameof(Physics.Linecast), new[] { typeof(Vector3), typeof(Vector3), typeof(int) })) + startOffset;
-
-            // Search for the last index of instructions to remove, inside the foreach.
-            lastIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer), new[] { typeof(PlayerStats.HitInfo), typeof(GameObject), typeof(bool), typeof(bool) })) + finishOffset;
-
-            // Redirect "br.s" instruction (break) to the old foreach.
-            newInstructions[lastIndex + 1].operand = oldForeachFirstLabel;
-
-            // Save "component2.HurtPlayer()" instructions and remove them all.
-            var hurtPlayerInstructions = newInstructions.GetRange(firstIndex, lastIndex - firstIndex + 1);
-            newInstructions.RemoveRange(firstIndex, lastIndex - firstIndex + 1);
-
-            // players.Add(Player.Get(gameObject), damage);
-            newInstructions.InsertRange(firstIndex, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloca_S, 12),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Key))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Ldloc_S, 14),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.Add), new[] { typeof(Player), typeof(float) })),
-            });
-
-            #endregion
-
-            // Get the index of the penultimate instruction;
-            var index = newInstructions.Count - 2;
-
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
-
-            // var ev = new ExplodingGrenadeEventArgs(players, true, grenadeGameObject, true);
-            //
-            // Handlers.Map.OnExplodingGrenade(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return result;
-            //
-            // foreach (var player in players)
-            // {
-            //   foreachBody;
-            //   hurtPlayerInstructions;
-            //   enableEffectsInstructions;
-            // }
-            var explodingGrenadeEvent = new[]
-            {
+                // Player.Get(this.PreviousOwner);
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Grenade), nameof(Grenade.throwerGameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+
+                // this
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExplodingGrenadeEventArgs))[0]),
+
+                // Collider[]
+                new CodeInstruction(OpCodes.Ldloc_2),
+
+                new CodeInstruction(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(Collider[]) })),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnExplodingGrenade))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-            };
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ExplodingFragGrenade), nameof(TrimColliders))),
+                new CodeInstruction(OpCodes.Stloc_2),
+            });
 
-            var foreachStart = new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_S, players.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<Player, float>), nameof(Dictionary<Player, float>.GetEnumerator))),
-                new CodeInstruction(OpCodes.Stloc_S, playerEnumerator.LocalIndex),
-
-                new CodeInstruction(OpCodes.Br_S, foreachFirstLabel).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginExceptionBlock)),
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachSecondLabel),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.Current))),
-                new CodeInstruction(OpCodes.Stloc_S, playerKeyValuePair.LocalIndex),
-            };
-
-            // Fill local variables of hurtPlayerInstructions
-            //
-            // damage = playerKeyValuePair.Value;
-            // playerStats = playerKeyValuePair.Key.ReferenceHub.playerStats;
-            // keyValuePair = new KeyValuePair<GameObject, ReferenceHub>(playerKeyValuePair.Key.ReferenceHub.gameObject, playerKeyValuePair.Key.ReferenceHub);
-            var foreachBody = new[]
-            {
-                new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Value))),
-                new CodeInstruction(OpCodes.Stloc_S, 14),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats))),
-                new CodeInstruction(OpCodes.Stloc_S, 13),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Ldloca_S, playerKeyValuePair.LocalIndex),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<Player, float>), nameof(KeyValuePair<Player, float>.Key))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ReferenceHub))),
-                new CodeInstruction(OpCodes.Newobj, typeof(KeyValuePair<GameObject, ReferenceHub>).GetConstructor(new[] { typeof(GameObject), typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Stloc_S, 12),
-            };
-
-            var foreachEnd = new[]
-            {
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithLabels(foreachFirstLabel),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Dictionary<Player, float>.Enumerator), nameof(Dictionary<Player, float>.Enumerator.MoveNext))),
-                new CodeInstruction(OpCodes.Brtrue_S, foreachSecondLabel),
-                new CodeInstruction(OpCodes.Leave_S, returnLabel),
-
-                // --- Clean up ---
-                new CodeInstruction(OpCodes.Ldloca_S, playerEnumerator.LocalIndex).WithBlocks(new ExceptionBlock(ExceptionBlockType.BeginFinallyBlock)),
-                new CodeInstruction(OpCodes.Constrained, typeof(Dictionary<Player, float>.Enumerator)),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(IDisposable), nameof(IDisposable.Dispose))),
-                new CodeInstruction(OpCodes.Endfinally).WithBlocks(new ExceptionBlock(ExceptionBlockType.EndExceptionBlock)),
-            };
-
-            // Insert all instructions.
-            newInstructions.InsertRange(index, explodingGrenadeEvent
-                .Concat(foreachStart)
-                .Concat(foreachBody)
-                .Concat(hurtPlayerInstructions)
-                .Concat(enableEffectsInstructions)
-                .Concat(foreachEnd));
-
-            // Add the starting labels to the first injected instruction.
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
-
-            // Add the return label to the penultimate instruction.
-            newInstructions[newInstructions.Count - 2].labels.Add(returnLabel);
-
-            // We do that to prevent doors and glass being broken if the event wasn't allowed.
-            // Refer to #290 PR.
-            var physicsOverlapLoopStart = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Br);
-            var physicsOverlapLoopEnd = newInstructions.FindIndex(ci => ci.opcode == OpCodes.Blt
-            && ci.operand is Label l
-            && newInstructions[physicsOverlapLoopStart + 1].labels.Contains(l));
-
-            // Also take 'LDC.I4.0' & 'STLOC.S 4'
-            physicsOverlapLoopStart -= 2;
-
-            var physicsOverlapLoopCount = physicsOverlapLoopEnd - physicsOverlapLoopStart + 1;
-
-            var physicsOverlapLoop = newInstructions.GetRange(
-                physicsOverlapLoopStart,
-                physicsOverlapLoopCount);
-
-            newInstructions.RemoveRange(physicsOverlapLoopStart, physicsOverlapLoopCount);
-
-            // Find the index of the ExplodingGrenadeEventArgs::IsAllowed call we inserted.
-            var foreachStartIndex = newInstructions.FindIndex(ci =>
-            ci.opcode == OpCodes.Callvirt
-            && ci.operand is MethodInfo v
-            && v == PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))) + 2;
-
-            newInstructions.InsertRange(foreachStartIndex, physicsOverlapLoop);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

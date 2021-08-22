@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Scp096
         {
             if (__instance.Charging && __instance.Enraged && (!gate.TargetState /* && gate.doorType == Door.DoorTypes.HeavyGate */))
             {
-                var ev = new StartPryingGateEventArgs(API.Features.Player.Get(__instance.Hub), gate);
+                StartPryingGateEventArgs ev = new StartPryingGateEventArgs(API.Features.Player.Get(__instance.Hub), gate);
 
                 Handlers.Scp096.OnStartPryingGate(ev);
 

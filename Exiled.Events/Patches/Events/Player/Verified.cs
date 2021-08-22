@@ -24,15 +24,15 @@ namespace Exiled.Events.Patches.Events.Player
 
 #pragma warning disable SA1600 // Elements should be documented
 
-    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.CallCmdServerSignatureComplete))]
+    [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
-            var did = false;
+            MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
+            bool did = false;
 
-            using (var nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
+            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
             {
                 while (nextEnumerator.MoveNext())
                 {

@@ -8,11 +8,13 @@
 namespace Exiled.Events.Commands.Show
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Text;
 
     using CommandSystem;
 
+    using Exiled.API.Interfaces;
     using Exiled.Permissions.Extensions;
 
     using NorthwoodLib.Pools;
@@ -43,13 +45,13 @@ namespace Exiled.Events.Commands.Show
                 return false;
             }
 
-            var sb = StringBuilderPool.Shared.Rent();
+            StringBuilder sb = StringBuilderPool.Shared.Rent();
 
             // Append a new line to start the response on a new line
             sb.AppendLine();
 
-            var plugins = Exiled.Loader.Loader.Plugins;
-            var enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
+            SortedSet<IPlugin<IConfig>> plugins = Exiled.Loader.Loader.Plugins;
+            int enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
 
             // Append two new lines before the list
             sb.Append("Total number of plugins: ").Append(plugins.Count).AppendLine()
@@ -59,9 +61,9 @@ namespace Exiled.Events.Commands.Show
 
             StringBuilder AppendNewRow() => sb.AppendLine().Append("\t");
 
-            for (var z = 0; z < plugins.Count; z++)
+            for (int z = 0; z < plugins.Count; z++)
             {
-                var plugin = plugins.ElementAt(z);
+                IPlugin<IConfig> plugin = plugins.ElementAt(z);
 
                 sb.Append(string.IsNullOrEmpty(plugin.Name) ? "(Unknown)" : plugin.Name).Append(":");
 

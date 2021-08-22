@@ -14,11 +14,11 @@ namespace Exiled.Events.EventArgs
     using global::Scp914;
 
     /// <summary>
-    /// Contains all informations before a player changes the SCP-914 knob setting.
+    /// Contains all information before a player changes the SCP-914 knob setting.
     /// </summary>
     public class ChangingKnobSettingEventArgs : EventArgs
     {
-        private Scp914Knob knobSetting;
+        private Scp914KnobSetting knobSetting;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingKnobSettingEventArgs"/> class.
@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="knobSetting"><inheritdoc cref="KnobSetting"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingKnobSettingEventArgs(Player player, Scp914Knob knobSetting, bool isAllowed = true)
+        public ChangingKnobSettingEventArgs(Player player, Scp914KnobSetting knobSetting, bool isAllowed = true)
         {
             Player = player;
             KnobSetting = knobSetting;
@@ -41,10 +41,10 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the SCP-914 knob setting.
         /// </summary>
-        public Scp914Knob KnobSetting
+        public Scp914KnobSetting KnobSetting
         {
             get => knobSetting;
-            set => knobSetting = value > Scp914Machine.knobStateMax ? Scp914Machine.knobStateMin : value;
+            set => knobSetting = value > Scp914KnobSetting.VeryFine ? Scp914KnobSetting.Coarse : value;
         }
 
         /// <summary>

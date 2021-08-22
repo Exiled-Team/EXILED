@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Door"/> to be pried open.
+        /// Gets the <see cref="PryableDoor"/> to be pried open.
         /// </summary>
         public PryableDoor Gate { get; }
 

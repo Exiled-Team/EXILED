@@ -47,16 +47,6 @@ namespace Exiled.Events.EventArgs
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power that will be removed for the first time when using speakers through SCP-079.
-        /// </summary>
-        [Obsolete("Use AuxiliaryPowerCost instead.", true)]
-        public float APDrain
-        {
-            get => AuxiliaryPowerCost;
-            set => AuxiliaryPowerCost = value;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can use the speaker.
         /// </summary>
         public bool IsAllowed { get; set; }

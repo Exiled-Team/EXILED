@@ -7,9 +7,27 @@
 
 namespace Exiled.Example.Events
 {
+    using System;
+
+    using CameraShaking;
+
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+
+    using InventorySystem;
+    using InventorySystem.Items;
+    using InventorySystem.Items.Coin;
+    using InventorySystem.Items.Firearms;
+
+    using MEC;
+
+    using UnityEngine;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
+    using Object = UnityEngine.Object;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Handles server-related events.
@@ -22,15 +40,10 @@ namespace Exiled.Example.Events
             Log.Info("I'm waiting for players!"); // This is an example of information messages sent to your console!
         }
 
-        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnEndingRound(EndingRoundEventArgs)"/>
-        public void OnEndingRound(EndingRoundEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Server.OnRoundStarted"/>
+        public void OnRoundStarted()
         {
-            Log.Debug($"The round is ending, fetching leading team...");
-
-            if (ev.LeadingTeam == LeadingTeam.Draw)
-                Log.Error($"The round has ended in a draw!");
-            else
-                Log.Info($"The leading team is actually: {ev.LeadingTeam}.");
+            Log.Info($"A round has started with {Player.Dictionary.Count} players!");
         }
     }
 }

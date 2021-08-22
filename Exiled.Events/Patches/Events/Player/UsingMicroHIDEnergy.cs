@@ -9,34 +9,17 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
 
-    using Exiled.API.Features;
-    using Exiled.Events.EventArgs;
-
     using HarmonyLib;
 
+    using InventorySystem.Items.MicroHID;
+
     /// <summary>
-    /// Patches <see cref="MicroHID.NetworkEnergy"/>.
+    /// Patches <see cref="MicroHIDItem.ExecuteServerside"/>.
     /// Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(MicroHID), nameof(MicroHID.NetworkEnergy), MethodType.Setter)]
+    [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class UsingMicroHIDEnergy
     {
-        private static bool Prefix(MicroHID __instance, ref float value)
-        {
-            // NetworkEnergy is set each frame, so this is to prevent calling the method each frame.
-            if (__instance.NetworkEnergy == value)
-                return true;
-
-            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, __instance.Energy, value);
-
-            Handlers.Player.OnUsingMicroHIDEnergy(ev);
-
-            if (!ev.IsAllowed)
-                return false;
-
-            value = ev.NewValue;
-
-            return true;
-        }
+        // TODO: This
     }
 }

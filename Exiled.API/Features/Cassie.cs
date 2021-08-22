@@ -19,7 +19,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
-        public static bool IsSpeaking => !NineTailedFoxAnnouncer.singleton.Free;
+        public static bool IsSpeaking => NineTailedFoxAnnouncer.singleton.queue.Count != 0;
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.

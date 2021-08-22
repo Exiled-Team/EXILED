@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
+                ChangingGroupEventArgs ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
 
                 Player.OnChangingGroup(ev);
 

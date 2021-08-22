@@ -14,15 +14,15 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     /// <summary>
-    /// Patches <see cref="Radio.NetworkcurPreset"/>.
+    /// Patches <see cref="Radio.NetworkcurRangeId"/>.
     /// Adds the <see cref="Handlers.Player.ChangingRadioPreset"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Radio), nameof(Radio.NetworkcurPreset), MethodType.Setter)]
+    [HarmonyPatch(typeof(Radio), nameof(Radio.NetworkcurRangeId), MethodType.Setter)]
     internal static class ChangingRadioPreset
     {
         private static bool Prefix(Radio __instance, ref byte value)
         {
-            var ev = new ChangingRadioPresetEventArgs(Player.Get(__instance.gameObject), __instance.curPreset, value);
+            ChangingRadioPresetEventArgs ev = new ChangingRadioPresetEventArgs(Player.Get(__instance.gameObject), __instance.NetworkcurRangeId, value);
 
             Handlers.Player.OnChangingRadioPreset(ev);
 

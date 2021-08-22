@@ -46,7 +46,7 @@ namespace Exiled.API.Extensions
                 case EffectType.Panic: return typeof(Panic);
                 case EffectType.Poisoned: return typeof(Poisoned);
                 case EffectType.Scp207: return typeof(Scp207);
-                case EffectType.Scp268: return typeof(Scp268);
+                case EffectType.Invisible: return typeof(Invisible);
                 case EffectType.SinkHole: return typeof(SinkHole);
                 case EffectType.Visuals939: return typeof(Visuals939);
             }

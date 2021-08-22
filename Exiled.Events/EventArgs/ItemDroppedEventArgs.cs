@@ -10,9 +10,12 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all informations after a player drops an item.
+    /// Contains all information after a player drops an item.
     /// </summary>
     public class ItemDroppedEventArgs : EventArgs
     {
@@ -21,10 +24,10 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
-        public ItemDroppedEventArgs(Player player, Pickup pickup)
+        public ItemDroppedEventArgs(Player player, ItemPickupBase pickup)
         {
             Player = player;
-            Pickup = pickup;
+            Pickup = Pickup.Get(pickup);
         }
 
         /// <summary>

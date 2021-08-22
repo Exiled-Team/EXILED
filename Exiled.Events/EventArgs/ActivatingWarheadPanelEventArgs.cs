@@ -8,7 +8,6 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-    using System.Collections.Generic;
 
     using Exiled.API.Features;
 
@@ -21,14 +20,10 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ActivatingWarheadPanelEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="permissions"><inheritdoc cref="Permissions"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ActivatingWarheadPanelEventArgs(Player player, List<string> permissions, bool isAllowed = true)
+        public ActivatingWarheadPanelEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-#pragma warning disable CS0618 // Type or member is obsolete
-            Permissions = permissions;
-#pragma warning restore CS0618 // Type or member is obsolete
             IsAllowed = isAllowed;
         }
 
@@ -36,12 +31,6 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's trying to activate the warhead panel.
         /// </summary>
         public Player Player { get; }
-
-        /// <summary>
-        /// Gets a list of permissions, required to activate the warhead panel.
-        /// </summary>
-        [Obsolete("No longer supported")]
-        public List<string> Permissions { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the warhead can be activated.

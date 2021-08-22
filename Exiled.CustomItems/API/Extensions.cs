@@ -10,7 +10,6 @@ namespace Exiled.CustomItems.API
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
 
     using Interactables.Interobjects.DoorUtils;
@@ -42,35 +41,6 @@ namespace Exiled.CustomItems.API
         };
 
         /// <summary>
-        /// Resets the player's inventory to the provided list of items and/or customitems names, clearing any items it already possess.
-        /// </summary>
-        /// <param name="player">The player to which items will be given.</param>
-        /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
-        {
-            foreach (Inventory.SyncItemInfo item in player.Inventory.items)
-            {
-                if (CustomItem.TryGet(item, out CustomItem customItem))
-                    customItem.InsideInventories.Remove(item.uniq);
-            }
-
-            player.ClearInventory();
-
-            foreach (string item in newItems)
-            {
-                if (Enum.TryParse(item, true, out ItemType parsedItem))
-                {
-                    player.AddItem(parsedItem);
-                }
-                else if (!CustomItem.TryGive(player, item, displayMessage))
-                {
-                    Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.", CustomItems.Instance.Config.Debug);
-                }
-            }
-        }
-
-        /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
@@ -99,20 +69,6 @@ namespace Exiled.CustomItems.API
 
             return transform.position + (Vector3.up * 1.5f) + (transform.forward * (ReversedLocations.Contains(location) ? -3f : 3f));
         }
-
-        /// <summary>
-        /// Converts a <see cref="Vector3"/> to a <see cref="Vector"/>.
-        /// </summary>
-        /// <param name="vector3">The <see cref="Vector3"/> to be converted.</param>
-        /// <returns>Returns the <see cref="Vector"/>.</returns>
-        [Obsolete("Use UnityEngine.Vector3 instead of Exiled.CustomItems.API.Features.Vector", false)]
-        public static Vector ToVector(this Vector3 vector3) => new Vector(vector3.x, vector3.y, vector3.z);
-
-        /// <summary>
-        /// Reloads the current <see cref="Player"/>'s weapon.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> who's weapon should be reloaded.</param>
-        public static void ReloadWeapon(this Player player) => player.ReferenceHub.weaponManager.RpcReload(player.ReferenceHub.weaponManager.curWeapon);
 
         /// <summary>
         /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.

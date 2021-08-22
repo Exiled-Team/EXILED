@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.MicroHID;
+
     /// <summary>
     /// Contains all information before MicroHID energy is changed.
     /// </summary>
@@ -25,7 +27,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldValue"><inheritdoc cref="OldValue"/></param>
         /// <param name="newValue"><inheritdoc cref="NewValue"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingMicroHIDEnergyEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState currentState, float oldValue, float newValue, bool isAllowed = true)
+        public UsingMicroHIDEnergyEventArgs(Player player, MicroHIDItem microHID, HidState currentState, float oldValue, float newValue, bool isAllowed = true)
         {
             Player = player;
             MicroHID = microHID;
@@ -43,12 +45,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the MicroHID instance.
         /// </summary>
-        public MicroHID MicroHID { get; }
+        public MicroHIDItem MicroHID { get; }
 
         /// <summary>
         /// Gets the current state of the MicroHID.
         /// </summary>
-        public MicroHID.MicroHidState CurrentState { get; }
+        public HidState CurrentState { get; }
 
         /// <summary>
         /// Gets the old MicroHID energy value.

@@ -70,5 +70,11 @@ namespace Exiled.Events
         /// </summary>
         [Description("The maximum shield amount for Scp096")]
         public int Scp096MaxShieldAmount { get; set; } = 350;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to log RA commands.
+        /// </summary>
+        [Description("Whether or not to log RA commands.")]
+        public bool LogRaCommands { get; set; } = true;
     }
 }

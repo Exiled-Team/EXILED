@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -91,7 +92,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// A call to our <see cref="Handlers.Server.OnLocalReporting"/> method
     /// is inserted into it which returns the bool value that determines further processing of the report.
     /// </summary>
-    [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.CallCmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]
+    [HarmonyPatch(typeof(CheaterReport), nameof(CheaterReport.UserCode_CmdReport), typeof(int), typeof(string), typeof(byte[]), typeof(bool))]
 #pragma warning restore CS1570 // XML comment has badly formed XML
 #pragma warning disable SA1604 // Element documentation should have summary
     internal static class LocalReporting
@@ -102,8 +103,8 @@ namespace Exiled.Events.Patches.Events.Server
             // Moving 2 indexes forward skipping the access itself and 'brtrue'
             const sbyte skipOpcodes = 2;
 
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            var patchIndex = newInstructions.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int patchIndex = newInstructions.FindLastIndex((instr) => instr.opcode == OpCodes.Ldarg_S && (byte)instr.operand == 4);
 
 #if DEBUG
             LogL($"Patch index: {patchIndex}");
@@ -117,51 +118,51 @@ namespace Exiled.Events.Patches.Events.Server
 
             patchIndex += skipOpcodes;
 
-            var retEnd = generator.DefineLabel();
+            Label retEnd = generator.DefineLabel();
             newInstructions[patchIndex].WithLabels(retEnd);
 
-            var call_PlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
-            var new_LocalReportingEventArgs = AccessTools.Constructor(
-                typeof(EventArgs.LocalReportingEventArgs),
+            MethodInfo callPlayerGet = AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) });
+            ConstructorInfo newLocalReportingEventArgs = AccessTools.Constructor(
+                typeof(Exiled.Events.EventArgs.LocalReportingEventArgs),
                 new[] { typeof(API.Features.Player), typeof(API.Features.Player), typeof(string), typeof(bool) });
 
-            var loc_LocalReportEventArgs = generator.DeclareLocal(typeof(EventArgs.LocalReportingEventArgs));
-            var loc_index_LocalReportEventArgs = loc_LocalReportEventArgs.LocalIndex;
-            const byte arg_index_reason = 2;
+            LocalBuilder locLocalReportEventArgs = generator.DeclareLocal(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs));
+            int locIndexLocalReportEventArgs = locLocalReportEventArgs.LocalIndex;
+            const byte argIndexReason = 2;
 
-            var call_OnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(EventArgs.LocalReportingEventArgs) });
-            var call_LocalReportingEventArgs_get_IsAllowed = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.IsAllowed));
-            var call_LocalReportingEventArgs_get_Reason = AccessTools.PropertyGetter(typeof(EventArgs.LocalReportingEventArgs), nameof(EventArgs.LocalReportingEventArgs.Reason));
-            var call_SuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
+            MethodInfo callOnLocalReporting = AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting), new[] { typeof(Exiled.Events.EventArgs.LocalReportingEventArgs) });
+            MethodInfo callLocalReportingEventArgsGETIsAllowed = AccessTools.PropertyGetter(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), nameof(Exiled.Events.EventArgs.LocalReportingEventArgs.IsAllowed));
+            MethodInfo callLocalReportingEventArgsGETReason = AccessTools.PropertyGetter(typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), nameof(Exiled.Events.EventArgs.LocalReportingEventArgs.Reason));
+            MethodInfo callSuperReasonReplacer = AccessTools.Method(typeof(LocalReporting), nameof(SuperReasonReplacer), new[] { typeof(Exiled.Events.EventArgs.LocalReportingEventArgs), typeof(string).MakeByRefType() });
 
-            var internal_report_data_root_class = typeof(CheaterReport);
-            const string internal_report_data_nested_class_name = "<>c__DisplayClass13_0";
-            const string internal_report_data_nested_class_reason_field_name = "reason";
+            Type internalReportDataRootClass = typeof(CheaterReport);
+            const string internalReportDataNestedClassName = "<>c__DisplayClass13_0";
+            const string internalReportDataNestedClassReasonFieldName = "reason";
 
-            var internal_report_data_nested_class = internal_report_data_root_class.GetNestedType(internal_report_data_nested_class_name, BindingFlags.NonPublic);
-            var field_reason = AccessTools.Field(internal_report_data_nested_class, internal_report_data_nested_class_reason_field_name);
+            Type internalReportDataNestedClass = internalReportDataRootClass.GetNestedType(internalReportDataNestedClassName, BindingFlags.NonPublic);
+            FieldInfo fieldReason = AccessTools.Field(internalReportDataNestedClass, internalReportDataNestedClassReasonFieldName);
 #if DEBUG
             void LogL(string value) =>
                 API.Features.Log.Debug($"{nameof(LocalReporting)}-{nameof(LocalReporting.Transpiler)}: {value}", true);
 
-            LogL($"{nameof(call_PlayerGet)} is null: {call_PlayerGet == null}");
-            LogL($"{nameof(new_LocalReportingEventArgs)} is null: {new_LocalReportingEventArgs == null}");
-            LogL($"{nameof(call_OnLocalReporting)} is null: {call_OnLocalReporting == null}");
-            LogL($"{nameof(call_LocalReportingEventArgs_get_IsAllowed)} is null: {call_LocalReportingEventArgs_get_IsAllowed == null}");
-            LogL($"{nameof(call_LocalReportingEventArgs_get_Reason)} is null: {call_LocalReportingEventArgs_get_Reason == null}");
-            LogL($"{nameof(internal_report_data_nested_class)} is null: {internal_report_data_nested_class == null}");
-            LogL($"{nameof(field_reason)} is null: {field_reason == null}");
-            LogL($"{nameof(field_reason)} is called '{field_reason?.Name}'");
-            if (internal_report_data_nested_class == null)
+            LogL($"{nameof(callPlayerGet)} is null: {callPlayerGet == null}");
+            LogL($"{nameof(newLocalReportingEventArgs)} is null: {newLocalReportingEventArgs == null}");
+            LogL($"{nameof(callOnLocalReporting)} is null: {callOnLocalReporting == null}");
+            LogL($"{nameof(callLocalReportingEventArgsGETIsAllowed)} is null: {callLocalReportingEventArgsGETIsAllowed == null}");
+            LogL($"{nameof(callLocalReportingEventArgsGETReason)} is null: {callLocalReportingEventArgsGETReason == null}");
+            LogL($"{nameof(internalReportDataNestedClass)} is null: {internalReportDataNestedClass == null}");
+            LogL($"{nameof(fieldReason)} is null: {fieldReason == null}");
+            LogL($"{nameof(fieldReason)} is called '{fieldReason?.Name}'");
+            if (internalReportDataNestedClass == null)
             {
-                LogL($"I see, the {nameof(internal_report_data_nested_class)} is null, trying to find the {nameof(internal_report_data_nested_class_reason_field_name)} field in all nested types...");
-                var nestedTypes = internal_report_data_root_class.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
-                foreach (var nestedType in nestedTypes)
+                LogL($"I see, the {nameof(internalReportDataNestedClass)} is null, trying to find the {nameof(internalReportDataNestedClassReasonFieldName)} field in all nested types...");
+                Type[] nestedTypes = internalReportDataNestedClass.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
+                foreach (Type nestedType in nestedTypes)
                 {
-                    var reasonField = nestedType.GetField(internal_report_data_nested_class_reason_field_name);
+                    FieldInfo reasonField = nestedType.GetField(internalReportDataNestedClassReasonFieldName);
                     if (reasonField != null)
                     {
-                        LogL($"Found the {nameof(internal_report_data_nested_class_reason_field_name)}! It's {reasonField.Name} in the {nestedType.FullName}!");
+                        LogL($"Found the {nameof(internalReportDataNestedClassReasonFieldName)}! It's {reasonField.Name} in the {nestedType.FullName}!");
                     }
                 }
             }
@@ -172,58 +173,58 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 // Issuer: Player
                 new CodeInstruction(OpCodes.Ldloc_3), // reporter: ReferenceHub
-                new CodeInstruction(OpCodes.Call, call_PlayerGet),
+                new CodeInstruction(OpCodes.Call, callPlayerGet),
 
                 // Target: Player
                 new CodeInstruction(OpCodes.Ldloc_2), // reported: ReferenceHub
-                new CodeInstruction(OpCodes.Call, call_PlayerGet),
+                new CodeInstruction(OpCodes.Call, callPlayerGet),
 
                 // Reason: string
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, field_reason),
+                new CodeInstruction(OpCodes.Ldfld, fieldReason),
 
                 // IsAllowed: bool
                 new CodeInstruction(OpCodes.Ldc_I4_1), // true: bool
 
                 // Creating object
-                new CodeInstruction(OpCodes.Newobj, new_LocalReportingEventArgs),
+                new CodeInstruction(OpCodes.Newobj, newLocalReportingEventArgs),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, loc_index_LocalReportEventArgs),
+                new CodeInstruction(OpCodes.Stloc_S, locIndexLocalReportEventArgs),
 
                 // Invoking the event
-                new CodeInstruction(OpCodes.Call, call_OnLocalReporting),
+                new CodeInstruction(OpCodes.Call, callOnLocalReporting),
 
                 // Replacing the reason
 
                 // Replacing the reason in the nested type
-                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
+                new CodeInstruction(OpCodes.Ldloc_S, locIndexLocalReportEventArgs),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldflda, field_reason),
-                new CodeInstruction(OpCodes.Call, call_SuperReasonReplacer),
+                new CodeInstruction(OpCodes.Ldflda, fieldReason),
+                new CodeInstruction(OpCodes.Call, callSuperReasonReplacer),
 
                 // Replacing the reason in the arg
-                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
-                new CodeInstruction(OpCodes.Ldarga_S, arg_index_reason),
-                new CodeInstruction(OpCodes.Call, call_SuperReasonReplacer),
+                new CodeInstruction(OpCodes.Ldloc_S, locIndexLocalReportEventArgs),
+                new CodeInstruction(OpCodes.Ldarga_S, argIndexReason),
+                new CodeInstruction(OpCodes.Call, callSuperReasonReplacer),
 
 #if DEBUG
                 new CodeInstruction(OpCodes.Ldstr, "Final nested type reason: "),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldfld, field_reason),
+                new CodeInstruction(OpCodes.Ldfld, fieldReason),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug))),
 
                 new CodeInstruction(OpCodes.Ldstr, "Final arg reason: "),
-                new CodeInstruction(OpCodes.Ldarg_S, arg_index_reason),
+                new CodeInstruction(OpCodes.Ldarg_S, argIndexReason),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Log), nameof(API.Features.Log.Debug))),
 #endif
 
                 // Checking for availability to continue
-                new CodeInstruction(OpCodes.Ldloc_S, loc_index_LocalReportEventArgs),
-                new CodeInstruction(OpCodes.Call, call_LocalReportingEventArgs_get_IsAllowed),
+                new CodeInstruction(OpCodes.Ldloc_S, locIndexLocalReportEventArgs),
+                new CodeInstruction(OpCodes.Call, callLocalReportingEventArgsGETIsAllowed),
                 new CodeInstruction(OpCodes.Brtrue_S, retEnd),
                 new CodeInstruction(OpCodes.Ret),
             });
@@ -237,6 +238,6 @@ namespace Exiled.Events.Patches.Events.Server
 
         // Try to replace the reason as a field,
         // it didn't work for me
-        private static void SuperReasonReplacer(EventArgs.LocalReportingEventArgs ev, ref string reason) => reason = ev.Reason;
+        private static void SuperReasonReplacer(Exiled.Events.EventArgs.LocalReportingEventArgs ev, ref string reason) => reason = ev.Reason;
     }
 }

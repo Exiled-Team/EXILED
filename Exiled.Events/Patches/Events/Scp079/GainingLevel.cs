@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static bool Prefix(Scp079PlayerScript __instance, ref int newLvl)
         {
-            var ev = new GainingLevelEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.curLvl - 1, newLvl);
+            GainingLevelEventArgs ev = new GainingLevelEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._curLvl - 1, newLvl);
 
             Scp079.OnGainingLevel(ev);
 

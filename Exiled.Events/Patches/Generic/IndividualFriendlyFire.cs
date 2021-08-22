@@ -7,19 +7,30 @@
 
 namespace Exiled.Events.Patches.Generic
 {
+#pragma warning disable SA1118
 #pragma warning disable SA1313
-    using System;
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="WeaponManager.GetShootPermission(CharacterClassManager, bool)"/>.
+    /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.GetShootPermission), new Type[] { typeof(CharacterClassManager), typeof(bool) })]
+    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
     internal static class IndividualFriendlyFire
     {
-        private static bool Prefix(WeaponManager __instance, ref bool forceFriendlyFire, ref bool __result) => !(__result = Player.Get(__instance.gameObject).IsFriendlyFireEnabled || forceFriendlyFire || Server.FriendlyFire);
+        private static void Prefix(HitboxIdentity __instance, ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig = false)
+        {
+            Player player = Player.Get(attacker);
+            if (player != null && player.IsFriendlyFireEnabled)
+                ignoreConfig = true;
+        }
     }
 }

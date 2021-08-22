@@ -16,64 +16,53 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using InventorySystem;
+    using InventorySystem.Disarming;
 
-    using UnityEngine;
+    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
+    using Events = Exiled.Events.Events;
+
     /// <summary>
-    /// Patches <see cref="Handcuffs.CallCmdCuffTarget(GameObject)"/>.
+    /// Patches <see cref="DisarmedPlayers.SetDisarmedStatus"/>.
     /// Adds the <see cref="Handlers.Player.Handcuffing"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.CallCmdCuffTarget))]
+    [HarmonyPatch(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus))]
     internal static class Handcuffing
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Inventory inv, Inventory disarmer)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            // The index offset.
-            var offset = 0;
-
-            // Search for the last "ldloc.3".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_3) + offset;
-
-            // var ev = new HandcuffingEventArgs(Player.Get(this.gameObject), Player.Get(target), flag);
-            //
-            // Handlers.Player.OnHandcuffing(ev);
-            //
-            // flag = ev.IsAllowed;
-            newInstructions.InsertRange(index, new[]
+            bool flag;
+            do
             {
-                // Player.Get(this.gameObject);
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                flag = true;
+                for (int index = 0; index < DisarmedPlayers.Entries.Count; ++index)
+                {
+                    if ((int)DisarmedPlayers.Entries[index].DisarmedPlayer == (int)inv.netId)
+                    {
+                        var uncuffing =
+                            new RemovingHandcuffsEventArgs(Player.Get(DisarmedPlayers.Entries[index].Disarmer), Player.Get(inv._hub));
+                        Handlers.Player.OnRemovingHandcuffs(uncuffing);
+                        if (!uncuffing.IsAllowed)
+                            return false;
+                        DisarmedPlayers.Entries.RemoveAt(index);
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            while (!flag);
+            if (!(disarmer != null))
+                return false;
+            var disarming = new HandcuffingEventArgs(Player.Get(disarmer._hub), Player.Get(inv._hub));
+            Handlers.Player.OnHandcuffing(disarming);
+            if (!disarming.IsAllowed)
+                return false;
+            DisarmedPlayers.Entries.Add(new DisarmedPlayers.DisarmedEntry(inv.netId, disarmer.netId));
 
-                // Player.Get(target);
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-
-                // IsAllowed = flag;
-                new CodeInstruction(OpCodes.Ldloc_3),
-
-                // var ev = new HandcuffingEventArgs(...);
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-
-                // Handlers.Player.OnHandcuffing(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
-
-                // flag = ev.IsAllowed;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Stloc_3),
-            });
-
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
-
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return false;
         }
     }
 }
