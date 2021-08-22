@@ -94,13 +94,7 @@ namespace Exiled.CustomItems.API.Features
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
         [YamlIgnore]
-        public HashSet<int> InsideInventories { get; } = new HashSet<int>();
-
-        /// <summary>
-        /// Gets the list of spawned custom items being tracked as the current item.
-        /// </summary>
-        [YamlIgnore]
-        public HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
+        public HashSet<int> TrackedSerials { get; } = new HashSet<int>();
 
         /// <summary>
         /// Gets a value indicating whether whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
@@ -191,7 +185,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if the item is a custom item.</returns>
         public static bool TryGet(Item item, out CustomItem customItem)
         {
-            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.InsideInventories.Contains(item.Serial));
+            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
 
             return customItem != null;
         }
@@ -204,7 +198,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if the pickup is a custom item.</returns>
         public static bool TryGet(Pickup pickup, out CustomItem customItem)
         {
-            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Spawned.Contains(pickup));
+            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(pickup.Serial));
 
             return customItem != null;
         }
@@ -371,7 +365,7 @@ namespace Exiled.CustomItems.API.Features
         {
             pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
-            Spawned.Add(pickup);
+            TrackedSerials.Add(pickup.Serial);
         }
 
         /// <summary>
@@ -380,7 +374,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
         /// <param name="pickup">The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Vector3 position, Item item, out Pickup pickup) => Spawned.Add(pickup = item.Spawn(position, default));
+        public virtual void Spawn(Vector3 position, Item item, out Pickup pickup) => TrackedSerials.Add((pickup = item.Spawn(position)).Serial);
 
         /// <summary>
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.
@@ -455,7 +449,8 @@ namespace Exiled.CustomItems.API.Features
         {
             player.AddItem(item);
 
-            InsideInventories.Add(item.Serial);
+            if (!TrackedSerials.Contains(item.Serial))
+                TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);
@@ -491,21 +486,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Pickup pickup) => Spawned.Contains(pickup);
-
-        /// <summary>
-        /// Checks the specified inventory item to see if it is a custom item.
-        /// </summary>
-        /// <param name="item">The <see cref="ItemBase"/> to check.</param>
-        /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(ItemBase item) => InsideInventories.Contains(item.PickupDropModel.NetworkInfo.Serial);
+        public virtual bool Check(Pickup pickup) => TrackedSerials.Contains(pickup.Serial);
 
         /// <summary>
         /// Checks the specified inventory item to see if it is a custom item.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Item item) => item != null && Check(item.Base);
+        public virtual bool Check(Item item) => item != null && TrackedSerials.Contains(item.Serial);
 
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
@@ -616,8 +604,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void OnWaitingForPlayers()
         {
-            InsideInventories.Clear();
-            Spawned.Clear();
+            TrackedSerials.Clear();
         }
 
         /// <summary>
@@ -650,7 +637,7 @@ namespace Exiled.CustomItems.API.Features
 
                 OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item.Base, ev));
 
-                InsideInventories.Remove(item.Serial);
+                TrackedSerials.Remove(item.Serial);
 
                 ev.Player.RemoveItem(item);
 
@@ -674,7 +661,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Target.RemoveItem(item);
 
-                InsideInventories.Remove(item.Serial);
+                TrackedSerials.Remove(item.Serial);
 
                 Spawn(ev.Target, item, out _);
 
@@ -696,7 +683,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                InsideInventories.Remove(item.Serial);
+                TrackedSerials.Remove(item.Serial);
 
                 Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item, out _));
 
@@ -718,7 +705,7 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Target.RemoveItem(item);
 
-                InsideInventories.Remove(item.Serial);
+                TrackedSerials.Remove(item.Serial);
 
                 Spawn(ev.Target, item, out _);
             }
@@ -736,7 +723,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            InsideInventories.Remove(ev.Item.Serial);
+            TrackedSerials.Remove(ev.Item.Serial);
 
             ev.Player.RemoveItem(ev.Item);
 
@@ -756,8 +743,6 @@ namespace Exiled.CustomItems.API.Features
             ev.IsAllowed = false;
 
             Give(ev.Player, ev.Pickup);
-
-            Spawned.Remove(ev.Pickup);
 
             ev.Pickup.Destroy();
         }

@@ -70,7 +70,7 @@ namespace Exiled.CustomItems.API.Features
                 firearmPickup.NetworkStatus = firearmPickup.Status;
             }
 
-            Spawned.Add(pickup);
+            TrackedSerials.Add(pickup.Serial);
         }
 
         /// <inheritdoc/>
@@ -83,7 +83,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.Ammo = ClipSize;
             }
 
-            InsideInventories.Add(item.Serial);
+            TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);

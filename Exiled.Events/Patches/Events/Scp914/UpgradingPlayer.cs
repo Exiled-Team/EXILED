@@ -19,6 +19,8 @@ namespace Exiled.Events.Patches.Events.Scp914
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
+    using global::Scp914.Processors;
+
     using HarmonyLib;
 
     using InventorySystem.Items;
@@ -111,10 +113,10 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))),
             });
 
-            offset = 0;
-            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
+            offset = -4;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Scp914ItemProcessor), nameof(Scp914ItemProcessor.OnInventoryItemUpgraded))) + offset;
             Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 6].WithLabels(continueLabel);
+            newInstructions[index + 5].WithLabels(continueLabel);
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new[]
@@ -128,8 +130,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ItemBase item = GetItem
-                new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Call, Method(typeof(UpgradingPlayer), nameof(GetItem))),
+                new CodeInstruction(OpCodes.Ldloc, 6),
 
                 // setting
                 new CodeInstruction(OpCodes.Ldarg, 4),
@@ -163,6 +164,10 @@ namespace Exiled.Events.Patches.Events.Scp914
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp) => kvp.Value;
+        private static ItemBase GetItem(KeyValuePair<uint, ItemBase> kvp)
+        {
+            Log.Error($"{kvp.Key} - {kvp.Value.ItemTypeId} - {kvp.Value.ItemSerial}");
+            return kvp.Value;
+        }
     }
 }

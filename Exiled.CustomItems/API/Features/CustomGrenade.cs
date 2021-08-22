@@ -185,7 +185,7 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            InsideInventories.Remove(ev.Player.CurrentItem.Serial);
+            TrackedSerials.Remove(ev.Player.CurrentItem.Serial);
 
             ev.Player.RemoveItem(ev.Player.CurrentItem);
 

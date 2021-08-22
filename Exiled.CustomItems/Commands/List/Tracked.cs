@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="InsideInventories.cs" company="Exiled Team">
+// <copyright file="Tracked.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -22,16 +22,16 @@ namespace Exiled.CustomItems.Commands.List
     using RemoteAdmin;
 
     /// <inheritdoc/>
-    internal sealed class InsideInventories : ICommand
+    internal sealed class Tracked : ICommand
     {
-        private InsideInventories()
+        private Tracked()
         {
         }
 
         /// <summary>
         /// Gets the command instance.
         /// </summary>
-        public static InsideInventories Instance { get; } = new InsideInventories();
+        public static Tracked Instance { get; } = new Tracked();
 
         /// <inheritdoc/>
         public string Command { get; } = "insideinventories";
@@ -63,16 +63,16 @@ namespace Exiled.CustomItems.Commands.List
 
             foreach (CustomItem customItem in CustomItem.Registered)
             {
-                if (customItem.InsideInventories.Count == 0)
+                if (customItem.TrackedSerials.Count == 0)
                     continue;
 
                 message.AppendLine()
                     .Append('[').Append(customItem.Id).Append(". ").Append(customItem.Name).Append(" (").Append(customItem.Type).Append(')')
-                    .Append(" {").Append(customItem.InsideInventories.Count).AppendLine("}]").AppendLine();
+                    .Append(" {").Append(customItem.TrackedSerials.Count).AppendLine("}]").AppendLine();
 
-                count += customItem.InsideInventories.Count;
+                count += customItem.TrackedSerials.Count;
 
-                foreach (int insideInventory in customItem.InsideInventories)
+                foreach (int insideInventory in customItem.TrackedSerials)
                 {
                     Player owner = Player.List.FirstOrDefault(player => player.Inventory.UserInventory.Items.Any(item => item.Key == insideInventory));
 

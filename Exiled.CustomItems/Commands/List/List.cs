@@ -36,8 +36,7 @@ namespace Exiled.CustomItems.Commands.List
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(Registered.Instance);
-            RegisterCommand(Spawned.Instance);
-            RegisterCommand(InsideInventories.Instance);
+            RegisterCommand(Tracked.Instance);
         }
 
         /// <inheritdoc/>
