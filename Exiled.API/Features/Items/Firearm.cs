@@ -63,7 +63,7 @@ namespace Exiled.API.Features.Items
         public new InventorySystem.Items.Firearms.Firearm Base { get; }
 
         /// <summary>
-        /// Gets or sets the amount of ammo in the weapon.
+        /// Gets or sets the amount of ammo in the firearm.
         /// </summary>
         public byte Ammo
         {
@@ -82,7 +82,7 @@ namespace Exiled.API.Features.Items
         public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
 
         /// <summary>
-        /// Gets the <see cref="AmmoType"/> of the Firearm.
+        /// Gets the <see cref="AmmoType"/> of the firearm.
         /// </summary>
         public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
 
@@ -92,12 +92,12 @@ namespace Exiled.API.Features.Items
         public DamageTypes.DamageType DamageType => Base.DamageType;
 
         /// <summary>
-        /// Gets a value indicating whether the Firearm is being aimed or not.
+        /// Gets a value indicating whether the firearm is being aimed.
         /// </summary>
         public bool Aiming => Base.AdsModule.ServerAds;
 
         /// <summary>
-        /// Gets a value indicating whether the Firearm's flashlight module is enabled or not.
+        /// Gets a value indicating whether the firearm's flashlight module is enabled.
         /// </summary>
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
