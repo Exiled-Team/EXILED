@@ -98,8 +98,7 @@ namespace Exiled.CustomItems.API.Features
             thrownProjectile.PreviousOwner = new Footprint(throwable.Owner.ReferenceHub);
             NetworkServer.Spawn(thrownProjectile.gameObject);
             thrownProjectile.InfoReceived(default, newInfo);
-            Rigidbody component;
-            if (thrownProjectile.TryGetComponent(out component))
+            if (thrownProjectile.TryGetComponent(out Rigidbody component))
                 throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, force, throwable.Base.FullThrowSettings.UpwardsFactor);
             thrownProjectile.ServerActivate();
             Tracked.Add(thrownProjectile);
