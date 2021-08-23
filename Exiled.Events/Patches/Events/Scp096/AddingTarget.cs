@@ -105,6 +105,7 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             newInstructions.InsertRange(index, new[]
             {
+                // timeToAdd = this.AddedTimeThisRage + ev.EnrageTimeToAdd
                 // if (timeToadd > this.MaximumAddedEnrageTime)
                 //     return;
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(addResetLabels),
