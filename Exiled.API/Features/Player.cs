@@ -25,6 +25,7 @@ namespace Exiled.API.Features
     using InventorySystem.Disarming;
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
@@ -392,10 +393,15 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsReloading => CurrentItem is Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
-        /*/// <summary>
-        /// Gets a value indicating whether or not the player is zooming with a weapon.
+        /// <summary>
+        /// Gets a value indicating whether or not the player is aiming with a weapon.
         /// </summary>
-        // public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;*/
+        public bool IsAimingWeapon => CurrentItem is Firearm firearm && firearm.Base.AdsModule.ServerAds;
+
+        /// <summary>
+        /// Gets a value indicating whether or not the player has enabled weapon's flashlight module.
+        /// </summary>
+        public bool HasFlashlightModuleEnabled => CurrentItem is Firearm firearm && firearm.Base.Status.Flags.HasFlagFast(InventorySystem.Items.Firearms.FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
         /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
