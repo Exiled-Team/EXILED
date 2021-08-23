@@ -60,9 +60,9 @@ namespace Exiled.CustomItems.API.Features
         public virtual byte ClipSize { get; set; }
 
         /// <inheritdoc/>
-        public override void Spawn(Vector3 position, out Pickup pickup)
+        public override Pickup Spawn(Vector3 position)
         {
-            pickup = new Item(Type).Spawn(position);
+            var pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
             if (pickup.Base is FirearmPickup firearmPickup)
             {
@@ -71,6 +71,7 @@ namespace Exiled.CustomItems.API.Features
             }
 
             TrackedSerials.Add(pickup.Serial);
+            return pickup;
         }
 
         /// <inheritdoc/>
