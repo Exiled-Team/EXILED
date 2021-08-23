@@ -9,10 +9,10 @@ namespace Exiled.Events.Patches.Fixes
 {
 #pragma warning disable SA1313
     using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection.Emit;
 
     using HarmonyLib;
+
     using NorthwoodLib.Pools;
 
     /// <summary>
