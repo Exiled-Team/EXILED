@@ -97,13 +97,36 @@ namespace Exiled.Events.Patches.Events.Scp096
             // Extract all labels from it.
             List<Label> addResetLabels = newInstructions[index].ExtractLabels();
 
+            // Declare timeToAdd, to be able to temp its float with "stloc".
+            LocalBuilder timeToAdd = generator.DeclareLocal(typeof(float));
+
             // Remove "this.AddReset()"
             newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(index, new[]
             {
-                // this.EnrageTimeLeft += ev.EnrageTimeToAdd
+                // if (timeToadd > this.MaximumAddedEnrageTime)
+                //     return;
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(addResetLabels),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
+                new CodeInstruction(OpCodes.Add),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, timeToAdd.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.MaximumAddedEnrageTime))),
+                new CodeInstruction(OpCodes.Bgt_Un_S, returnLabel),
+
+                // timeToadd = this.MaximumAddedEnrageTime - timeToadd;
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.MaximumAddedEnrageTime))),
+                new CodeInstruction(OpCodes.Ldloc, timeToAdd.LocalIndex),
+                new CodeInstruction(OpCodes.Sub),
+                new CodeInstruction(OpCodes.Stloc, timeToAdd.LocalIndex),
+
+                // this.EnrageTimeLeft += ev.EnrageTimeToAdd
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -111,12 +134,11 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
 
-                // this.AddedTimeThisRage += ev.EnrageTimeToAdd
+                // this.AddedTimeThisRage += timeToAdd
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
+                new CodeInstruction(OpCodes.Ldloc, timeToAdd.LocalIndex),
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
             });
