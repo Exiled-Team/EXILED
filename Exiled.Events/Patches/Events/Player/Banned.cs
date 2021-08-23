@@ -20,14 +20,24 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]
     internal static class Banned
     {
-        private static void Prefix(BanDetails ban, BanHandler.BanType banType, out string __state)
+        private static void Prefix(BanDetails ban, BanHandler.BanType banType, out API.Features.Player __state)
         {
-            __state = ban.Issuer;
+            API.Features.Player issuerPlayer;
+            if (issuer.Contains("("))
+            {
+                issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+            }
+            else
+            {
+                issuerPlayer = Server.Host;
+            }
+
+            _state = issuerPlayer;
         }
 
-        private static void Postfix(BanDetails ban, BanHandler.BanType banType, string __state)
+        private static void Postfix(BanDetails ban, BanHandler.BanType banType, API.Features.Player __state)
         {
-            BannedEventArgs ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), API.Features.Player.Get(__state), ban, banType);
+            BannedEventArgs ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), __state, ban, banType);
 
             Player.OnBanned(ev);
         }
