@@ -29,20 +29,28 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
+                foreach (TeslaGate teslaGate in __instance.TeslaGates)
                 {
-                    if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
+                    if (!teslaGate.isActiveAndEnabled || teslaGate.InProgress)
                         continue;
-                    foreach (TeslaGate teslaGate in __instance.TeslaGates)
+
+                    foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
                     {
-                        if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
+                        if (allHub.Value.isDedicatedServer || allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
                             continue;
 
-                        TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
-                        Player.OnTriggeringTesla(ev);
+                        bool inIdleRange = teslaGate.PlayerInIdleRange(allHub.Value);
+                        if (teslaGate.PlayerInRange(allHub.Value))
+                        {
+                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
+                            Player.OnTriggeringTesla(ev);
 
-                        if (ev.IsTriggerable)
-                            teslaGate.ServerSideCode();
+                            if (ev.IsTriggerable)
+                                teslaGate.ServerSideCode();
+                        }
+
+                        if (inIdleRange != teslaGate.isIdling)
+                            teslaGate.ServerSideIdle(inIdleRange);
                     }
                 }
 
