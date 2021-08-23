@@ -14,13 +14,10 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -80,7 +77,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// gets the max ammo for this firearm.
+        /// Gets the max ammo for this firearm.
         /// </summary>
         public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
 
@@ -93,6 +90,16 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="DamageTypes.DamageType"/> of the firearm.
         /// </summary>
         public DamageTypes.DamageType DamageType => Base.DamageType;
+
+        /// <summary>
+        /// Gets a value indicating whether the Firearm is being aimed or not.
+        /// </summary>
+        public bool Aiming => Base.AdsModule.ServerAds;
+
+        /// <summary>
+        /// Gets a value indicating whether the Firearm's flashlight module is enabled or not.
+        /// </summary>
+        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
         /// Gets or sets the <see cref="FirearmAttachment"/>s of the firearm.
