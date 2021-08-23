@@ -223,7 +223,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            item.Spawn(position);
+            pickup = item.Spawn(position);
 
             return true;
         }
@@ -242,7 +242,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            item.Spawn(position);
+            pickup = item.Spawn(position);
 
             return true;
         }
@@ -334,7 +334,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
 
         /// <summary>
@@ -344,14 +344,14 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(float x, float y, float z, Item item) => Spawn(new Vector3(x, y, z), item);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Player player) => Spawn(player.Position);
 
         /// <summary>
@@ -359,14 +359,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Player player, Item item) => Spawn(player.Position, item);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position)
         {
             var pickup = new Item(Type).Spawn(position);
@@ -381,7 +381,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
         /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <returns>The <see cref="ItemPickupBase"/> component of the spawned <see cref="CustomItem"/>.</returns>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item)
         {
             var pickup = item.Spawn(position, default);
