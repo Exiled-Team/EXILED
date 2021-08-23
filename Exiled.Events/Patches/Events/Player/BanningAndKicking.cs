@@ -21,6 +21,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
+    using Server = Exiled.API.Features.Server;
+
     /// <summary>
     /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
     /// Adds the <see cref="Player.Banning"/> and <see cref="Player.Kicking"/>events.
@@ -41,7 +43,15 @@ namespace Exiled.Events.Patches.Events.Player
                 string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 
                 API.Features.Player targetPlayer = API.Features.Player.Get(user);
-                API.Features.Player issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(')).TrimEnd(')')) ?? API.Features.Server.Host;
+                API.Features.Player issuerPlayer;
+                if (issuer.Contains("("))
+                {
+                    issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+                }
+                else
+                {
+                    issuerPlayer = Server.Host;
+                }
 
                 try
                 {
