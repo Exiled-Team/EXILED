@@ -42,6 +42,8 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions[index].labels.Add(returnLabel);
 
+            // if (true) return true;
+            // else return Player.Get(ReferenceHub).IsFriendlyFireEnabled;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
@@ -72,12 +74,17 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
+            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
             newInstructions.InsertRange(index, new[]
             {
+                // AttackerFootprint.Hub
                 new CodeInstruction(OpCodes.Ldarg_3),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+
+                // this.TargetHub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(HitboxIdentity), nameof(HitboxIdentity.TargetHub))),
+
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
             });
@@ -108,12 +115,17 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
+            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
             newInstructions.InsertRange(index, new[]
             {
+                // this.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+
+                // targetReferenceHub
                 new CodeInstruction(OpCodes.Ldloc_3),
+
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
             });
@@ -141,13 +153,18 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
+            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
             newInstructions.InsertRange(index, new[]
             {
+                // this.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+
+                // KeyValuePair<GameObject, ReferenceHub>.Value (target ReferenceHub)
                 new CodeInstruction(OpCodes.Ldloca_S, 2),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
+
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
             });
@@ -178,11 +195,16 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
+            // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
             newInstructions.InsertRange(index, new[]
             {
+                // Scp018Projectile.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(Scp018Projectile), nameof(Scp018Projectile.PreviousOwner))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+
+                // targetReferenceHub
                 new CodeInstruction(OpCodes.Ldloc_1),
+
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
             });
