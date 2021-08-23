@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Server = Exiled.API.Features.Server;
+
     /// <summary>
     /// Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType)"/>.
     /// Adds the <see cref="Player.Banned"/> event.
@@ -23,16 +25,16 @@ namespace Exiled.Events.Patches.Events.Player
         private static void Prefix(BanDetails ban, BanHandler.BanType banType, out API.Features.Player __state)
         {
             API.Features.Player issuerPlayer;
-            if (issuer.Contains("("))
+            if (ban.Issuer.Contains("("))
             {
-                issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+                issuerPlayer = API.Features.Player.Get(ban.Issuer.Substring(ban.Issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
             }
             else
             {
                 issuerPlayer = Server.Host;
             }
 
-            _state = issuerPlayer;
+            __state = issuerPlayer;
         }
 
         private static void Postfix(BanDetails ban, BanHandler.BanType banType, API.Features.Player __state)
