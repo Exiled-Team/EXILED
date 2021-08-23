@@ -9,9 +9,11 @@ namespace Exiled.Events.Patches.Fixes
 {
 #pragma warning disable SA1313
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection.Emit;
 
     using HarmonyLib;
+    using NorthwoodLib.Pools;
 
     /// <summary>
     /// Fixes <see cref="CharacterClassManager.NetworkMuted"/> property.
@@ -21,18 +23,16 @@ namespace Exiled.Events.Patches.Fixes
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            bool isNOPDetected = false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            foreach (CodeInstruction instruction in instructions)
-            {
-                if (instruction.opcode == OpCodes.Nop)
-                    isNOPDetected = true;
+            int index = newInstructions.FindLastIndex(x => x.opcode == OpCodes.Brfalse) - 1;
 
-                if (!isNOPDetected)
-                    yield return new CodeInstruction(OpCodes.Nop);
-                else
-                    yield return instruction;
-            }
+            newInstructions.RemoveRange(index, 19);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
