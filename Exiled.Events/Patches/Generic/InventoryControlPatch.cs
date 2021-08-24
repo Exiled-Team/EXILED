@@ -96,22 +96,18 @@ namespace Exiled.Events.Patches.Generic
 
         private static void RemoveItem(Player player, ushort serial)
         {
-            Log.Debug($"{nameof(RemoveItem)}: Removing {serial}");
             if (player == null)
             {
-                Log.Debug($"{nameof(RemoveItem)}: PLAYER IS NULL");
                 return;
             }
 
             if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
             {
-                Log.Debug($"{nameof(RemoveItem)}: Player does not have this item.");
                 return;
             }
 
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
-            Log.Debug($"{nameof(RemoveItem)}: Player item removed.");
         }
     }
 }
