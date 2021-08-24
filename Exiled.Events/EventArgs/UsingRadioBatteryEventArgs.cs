@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the radio battery charge.
+        /// Gets or sets the radio battery drain per second.
         /// </summary>
         public float Charge { get; set; }
 
