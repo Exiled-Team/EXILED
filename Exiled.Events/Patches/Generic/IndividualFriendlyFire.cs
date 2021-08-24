@@ -18,6 +18,8 @@ namespace Exiled.Events.Patches.Generic
     using Exiled.API.Extensions;
     using Exiled.API.Features;
 
+    using Footprinting;
+
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
@@ -29,38 +31,43 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
+    /// Checks friendly fire rules.
+    /// </summary>
+    public static class IndividualFriendlyFire
+    {
+        /// <summary>
+        /// Checks if there can be damage between two players, according to the FF rules.
+        /// </summary>
+        /// <param name="attackerHub">The person attacking.</param>
+        /// <param name="victimHub">The person being attacked.</param>
+        /// <param name="attackerRole">The attackers current role.</param>
+        /// <returns>True if the attacker can damage the victim.</returns>
+        public static bool CheckFriendlyFirePlayerFriendly(ReferenceHub attackerHub, ReferenceHub victimHub, RoleType attackerRole)
+        {
+            if (Server.FriendlyFire)
+                return true;
+            if (attackerHub == null || victimHub == null)
+                return true;
+            Player attacker = Player.Get(attackerHub);
+            Player victim = Player.Get(victimHub);
+            if (attacker == null || victim == null)
+                return true;
+
+            return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();
+        }
+    }
+
+    /// <summary>
     /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
-    internal static class IndividualFriendlyFire
+    internal static class HitboxIdentityCheckFriendlyFire
     {
         private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
         {
             try
             {
-                if (Server.FriendlyFire)
-                {
-                    __result = true;
-                    Log.Debug(__result + "ff");
-                    return false;
-                }
-
-                if (attacker == null || victim == null)
-                {
-                    __result = true;
-                    Log.Debug(__result + "null");
-                    return false;
-                }
-
-                Player attackingPlayer = Player.Get(attacker);
-                Player victimPlayer = Player.Get(victim);
-                if (attackingPlayer == null || victimPlayer == null)
-                {
-                    __result = true;
-                    return false;
-                }
-
-                __result = attackingPlayer.Team != victimPlayer.Team || attackingPlayer.IsFriendlyFireEnabled;
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker == null ? RoleType.None : attacker.characterClassManager.CurClass);
 
                 return false;
             }
@@ -92,14 +99,15 @@ namespace Exiled.Events.Patches.Generic
             {
                 // AttackerFootprint.Hub
                 new CodeInstruction(OpCodes.Ldarg_3),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                 // this.TargetHub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(HitboxIdentity), nameof(HitboxIdentity.TargetHub))),
 
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -119,12 +127,12 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int TARGET_IS_OWNER_INDEX = 5;
+            const int targetIsOwnerIndex = 5;
             const int offset = 6;
             const int instructionsToRemove = 8;
 
             int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Stloc_S &&
-                ((LocalBuilder)code.operand).LocalIndex == TARGET_IS_OWNER_INDEX) + offset;
+                ((LocalBuilder)code.operand).LocalIndex == targetIsOwnerIndex) + offset;
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
@@ -134,13 +142,15 @@ namespace Exiled.Events.Patches.Generic
                 // this.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                 // targetReferenceHub
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldflda, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -172,14 +182,16 @@ namespace Exiled.Events.Patches.Generic
                 // this.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                 // KeyValuePair<GameObject, ReferenceHub>.Value (target ReferenceHub)
                 new CodeInstruction(OpCodes.Ldloca_S, 2),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
 
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldflda, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -199,12 +211,12 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int REFERENCE_HUB_INDEX = 1;
+            const int referenceHubIndex = 1;
             const int offset = 5;
             const int instructionsToRemove = 7;
 
             int index = newInstructions.FindLastIndex(code => code.opcode == OpCodes.Ldloca_S &&
-                ((LocalBuilder)code.operand).LocalIndex == REFERENCE_HUB_INDEX) + offset;
+                ((LocalBuilder)code.operand).LocalIndex == referenceHubIndex) + offset;
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
@@ -213,13 +225,15 @@ namespace Exiled.Events.Patches.Generic
             {
                 // Scp018Projectile.PreviousOwner.Hub
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(Scp018Projectile), nameof(Scp018Projectile.PreviousOwner))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
 
                 // targetReferenceHub
                 new CodeInstruction(OpCodes.Ldloc_1),
 
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldflda, Field(typeof(Scp018Projectile), nameof(Scp018Projectile.PreviousOwner))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
