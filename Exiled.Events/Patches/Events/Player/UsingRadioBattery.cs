@@ -52,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Player
             // if (!ev.IsAllowed)
             //   return;
             //
-            // num = ev.Charge;
+            // num = ev.Drain;
             newInstructions.InsertRange(index, new[]
             {
                 // this
@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
-                // num = ev.Charge
+                // num = ev.Drain
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Drain))),
                 new CodeInstruction(OpCodes.Stloc_0),
