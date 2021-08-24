@@ -24,13 +24,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="radio"><inheritdoc cref="Radio"/></param>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="charge"><inheritdoc cref="Drain"/></param>
+        /// <param name="drain"><inheritdoc cref="Drain"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float charge, bool isAllowed = true)
+        public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float drain, bool isAllowed = true)
         {
             Radio = (Radio)Item.Get(radio);
             Player = player;
-            Drain = charge;
+            Drain = drain;
             IsAllowed = isAllowed;
         }
 
