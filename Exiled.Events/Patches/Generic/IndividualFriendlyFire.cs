@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1402
 #pragma warning disable SA1649
 #pragma warning disable SA1313
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -35,23 +36,39 @@ namespace Exiled.Events.Patches.Generic
     {
         private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
         {
-            if (ignoreConfig || Server.FriendlyFire)
+            try
             {
-                __result = true;
+                if (Server.FriendlyFire)
+                {
+                    __result = true;
+                    Log.Debug(__result + "ff");
+                    return false;
+                }
+
+                if (attacker == null || victim == null)
+                {
+                    __result = true;
+                    Log.Debug(__result + "null");
+                    return false;
+                }
+
+                Player attackingPlayer = Player.Get(attacker);
+                Player victimPlayer = Player.Get(victim);
+                if (attackingPlayer == null || victimPlayer == null)
+                {
+                    __result = true;
+                    return false;
+                }
+
+                __result = attackingPlayer.Team != victimPlayer.Team || attackingPlayer.IsFriendlyFireEnabled;
+
                 return false;
             }
-
-            Player attackingPlayer = Player.Get(attacker);
-            Player victimPlayer = Player.Get(victim);
-            if (attacker == null || victim == null)
+            catch (Exception e)
             {
-                __result = false;
-                return false;
+                Log.Error($"{e}");
+                return true;
             }
-
-            __result = attackingPlayer.Team != victimPlayer.Team || attackingPlayer.IsFriendlyFireEnabled;
-
-            return false;
         }
     }
 

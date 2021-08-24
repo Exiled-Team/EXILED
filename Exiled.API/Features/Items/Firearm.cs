@@ -70,9 +70,9 @@ namespace Exiled.API.Features.Items
             get => Base.Status.Ammo;
             set
             {
-                FirearmStatus status = Base._status;
-                Base._status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
-                Base.OnStatusChanged(status, Base._status);
+                FirearmStatus status = Base.Status;
+                Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
+                Base.OnStatusChanged(status, Base.Status);
             }
         }
 

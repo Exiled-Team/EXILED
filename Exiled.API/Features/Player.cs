@@ -1410,7 +1410,7 @@ namespace Exiled.API.Features
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
-        public void AddItem(Item item) => AddItem(item.Base);
+        public void AddItem(Item item) => AddItem(item.Base, item);
 
         /// <summary>
         /// Adds an item to the player's inventory.
@@ -1423,13 +1423,22 @@ namespace Exiled.API.Features
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="itemBase">The item to be added.</param>
+        /// <param name="item">The <see cref="Item"/> object of the item.</param>
         /// <returns>The item that was added.</returns>
-        public Item AddItem(ItemBase itemBase)
+        public Item AddItem(ItemBase itemBase, Item item = null)
         {
-            Item item = Item.Get(itemBase);
-            Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
+            if (item == null)
+                item = Item.Get(itemBase);
 
+            int ammo = -1;
+            if (item is Firearm firearm1)
+            {
+                ammo = firearm1.Ammo;
+            }
+
+            Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
             itemBase.OnAdded(itemBase.PickupDropModel);
+
             if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
             {
                 Dictionary<ItemType, uint> dict;
@@ -1443,7 +1452,7 @@ namespace Exiled.API.Features
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
                 if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
                     flags |= FirearmStatusFlags.FlashlightEnabled;
-                firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+                firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
             }
 
             ItemsValue.Add(item);

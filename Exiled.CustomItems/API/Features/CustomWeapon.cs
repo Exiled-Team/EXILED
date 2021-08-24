@@ -17,7 +17,10 @@ namespace Exiled.CustomItems.API.Features
 
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Pickups;
+
+    using MEC;
 
     using UnityEngine;
 
@@ -64,14 +67,38 @@ namespace Exiled.CustomItems.API.Features
         {
             var pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
-            if (pickup.Base is FirearmPickup firearmPickup)
-            {
-                firearmPickup.Status = new FirearmStatus(ClipSize, FirearmStatusFlags.MagazineInserted, firearmPickup.NetworkStatus.Attachments);
-                firearmPickup.NetworkStatus = firearmPickup.Status;
-            }
 
             TrackedSerials.Add(pickup.Serial);
             return pickup;
+        }
+
+        /// <inheritdoc/>
+        public override Pickup Spawn(Vector3 position, Item item)
+        {
+            if (item is Firearm firearm)
+            {
+                byte ammo = firearm.Ammo;
+                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
+                var pickup = firearm.Spawn(position);
+
+                TrackedSerials.Add(pickup.Serial);
+
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (pickup.Base is FirearmPickup firearmPickup)
+                    {
+                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.NetworkStatus = firearmPickup.Status;
+                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                    }
+                });
+
+                return pickup;
+            }
+            else
+            {
+                return base.Spawn(position, item);
+            }
         }
 
         /// <inheritdoc/>
@@ -151,11 +178,17 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Player.CurrentItem))
                 return;
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..", Instance.Config.Debug);
             OnReloading(ev);
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event ended. {ev.IsAllowed}", Instance.Config.Debug);
             if (!ev.IsAllowed)
+            {
+                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event turned is allowed to false, returning.", Instance.Config.Debug);
                 return;
+            }
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Continuing with internal reload..", Instance.Config.Debug);
             ev.IsAllowed = false;
 
             byte remainingClip = ((Firearm)ev.Player.CurrentItem).Ammo;
@@ -166,7 +199,16 @@ namespace Exiled.CustomItems.API.Features
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!", Instance.Config.Debug);
 
             AmmoType ammoType = ((Firearm)ev.Player.CurrentItem).AmmoType;
-            ushort amountToReload = (ushort)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
+
+            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType()))
+            {
+                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.", Instance.Config.Debug);
+                return;
+            }
+
+            ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
+
+            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
 
             if (amountToReload <= 0)
                 return;
@@ -174,10 +216,9 @@ namespace Exiled.CustomItems.API.Features
             ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
 
             ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
-            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
-            ((Firearm)ev.Player.CurrentItem).Ammo += (byte)amountToReload;
+            ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
 
-            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({(Firearm)ev.Player.CurrentItem}/{ClipSize})]!", Instance.Config.Debug);
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!", Instance.Config.Debug);
         }
 
         private void OnInternalShooting(ShootingEventArgs ev)

@@ -22,6 +22,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.Loader;
 
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
     using MapGeneration.Distributors;
@@ -34,6 +35,7 @@ namespace Exiled.CustomItems.API.Features
 
     using static CustomItems;
 
+    using Firearm = Exiled.API.Features.Items.Firearm;
     using Item = Exiled.API.Features.Items.Item;
     using Map = Exiled.API.Features.Map;
     using Player = Exiled.API.Features.Player;
@@ -378,7 +380,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position, Item item)
         {
-            var pickup = item.Spawn(position, default);
+            Pickup pickup = item.Spawn(position);
             TrackedSerials.Add(pickup.Serial);
 
             return pickup;
@@ -455,6 +457,7 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
+            Log.Debug($"{nameof(Name)}.{nameof(Give)}: Item Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
             player.AddItem(item);
 
             if (!TrackedSerials.Contains(item.Serial))
