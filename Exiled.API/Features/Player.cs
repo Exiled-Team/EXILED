@@ -26,6 +26,7 @@ namespace Exiled.API.Features
     using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
@@ -1099,12 +1100,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the player to reload their current weapon.
         /// </summary>
+        /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
         public void ReloadWeapon()
         {
             if (CurrentItem is Firearm firearm)
+            {
                 firearm.Base.AmmoManagerModule.ServerTryReload();
+                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+            }
             else
+            {
                 throw new InvalidOperationException("You may only reload weapons.");
+            }
         }
 
         /// <summary>
@@ -1436,7 +1443,7 @@ namespace Exiled.API.Features
                 ammo = firearm1.Ammo;
             }
 
-            Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
+            Inventory.UserInventory.Items[item.Serial] = itemBase;
             itemBase.OnAdded(itemBase.PickupDropModel);
 
             if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)

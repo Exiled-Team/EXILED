@@ -457,7 +457,8 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
-            Log.Debug($"{nameof(Name)}.{nameof(Give)}: Item Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
+            Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
+
             player.AddItem(item);
 
             if (!TrackedSerials.Contains(item.Serial))
@@ -480,7 +481,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, player.AddItem(Type), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.

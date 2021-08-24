@@ -44,8 +44,6 @@ namespace Exiled.API.Features.Items
         /// </summary>
         internal static readonly Dictionary<ushort, Item> SerialToItem = new Dictionary<ushort, Item>();
 
-        private ushort id;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
@@ -56,7 +54,16 @@ namespace Exiled.API.Features.Items
             Type = itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             if (Serial == 0)
-                Serial = ItemSerialGenerator.GenerateNext();
+            {
+                ushort serial = ItemSerialGenerator.GenerateNext();
+                Serial = serial;
+#if DEBUG
+                Log.Debug($"{nameof(Item)}.ctor: Generating new serial number. Serial should now be: {serial}. // {Serial}");
+#endif
+            }
+#if DEBUG
+            Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
+#endif
             BaseToItem.Add(itemBase, this);
         }
 
@@ -70,30 +77,13 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the unique serial number for the item.
+        /// Gets or sets the unique serial number for the item.
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                id = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
-                return id;
-            }
+            get => Base.ItemSerial;
 
-            internal set
-            {
-                if (value == 0)
-                {
-                    value = ItemSerialGenerator.GenerateNext();
-                }
-
-                if (Base == null || Base.PickupDropModel == null)
-                    return;
-
-                Base.PickupDropModel.Info.Serial = value;
-                Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-                id = value;
-            }
+            set => Base.ItemSerial = value;
         }
 
         /// <summary>

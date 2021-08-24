@@ -166,30 +166,33 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="grenade">The <see cref="GameObject"/> of the grenade to check.</param>
         /// <returns>True if it is a custom grenade.</returns>
-        protected bool Check(ThrownProjectile grenade) => Tracked.Contains(grenade);
+        protected bool Check(ThrownProjectile grenade) => TrackedSerials.Contains(grenade.Info.Serial);
 
         private void OnInternalThrowing(ThrowingItemEventArgs ev)
         {
-            if (ev.RequestType == ThrowRequest.BeginThrow)
-                return;
-
             if (!Check(ev.Player.CurrentItem))
                 return;
 
             Log.Debug($"{ev.Player.Nickname} has thrown a {Name}!", CustomItems.Instance.Config.Debug);
+            if (ev.RequestType == ThrowRequest.BeginThrow)
+            {
+                OnThrowing(ev);
+                if (!ev.IsAllowed)
+                    ev.IsAllowed = false;
+                return;
+            }
+
             OnThrowing(ev);
 
-            if (!ev.IsAllowed)
-                return;
-
-            ev.IsAllowed = false;
-
-            TrackedSerials.Remove(ev.Player.CurrentItem.Serial);
-
-            ev.Player.RemoveItem(ev.Player.CurrentItem);
-
-            Vector3 position = ev.Player.CameraTransform.TransformPoint(new Vector3(0.0715f, 0.0225f, 0.45f));
-            Throw(position, 3f, FuseTime, Type, ev.Player);
+            switch (ev.Item)
+            {
+                case ExplosiveGrenade explosiveGrenade:
+                    explosiveGrenade.FuseTime = FuseTime;
+                    break;
+                case FlashGrenade flashGrenade:
+                    flashGrenade.FuseTime = FuseTime;
+                    break;
+            }
         }
 
         private void OnInternalExplodingGrenade(ExplodingGrenadeEventArgs ev)

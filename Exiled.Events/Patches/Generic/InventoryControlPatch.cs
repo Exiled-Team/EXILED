@@ -27,6 +27,7 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
+    using Events = Exiled.Events.Events;
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>
@@ -69,22 +70,21 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="API.Features.Player.Items"/>.
     /// </summary>
-    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerDropItem))]
+    [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     internal static class InventoryControlRemovePatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = -3;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
-                Method(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))) + offset;
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Throw) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlRemovePatch), nameof(RemoveItem))),
             });
 
@@ -94,6 +94,24 @@ namespace Exiled.Events.Patches.Generic
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void RemoveItem(Player player, ItemBase item) => player?.ItemsValue.Remove(Item.Get(item));
+        private static void RemoveItem(Player player, ushort serial)
+        {
+            Log.Debug($"{nameof(RemoveItem)}: Removing {serial}");
+            if (player == null)
+            {
+                Log.Debug($"{nameof(RemoveItem)}: PLAYER IS NULL");
+                return;
+            }
+
+            if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
+            {
+                Log.Debug($"{nameof(RemoveItem)}: Player does not have this item.");
+                return;
+            }
+
+            ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
+            player.ItemsValue.Remove(Item.Get(itemBase));
+            Log.Debug($"{nameof(RemoveItem)}: Player item removed.");
+        }
     }
 }

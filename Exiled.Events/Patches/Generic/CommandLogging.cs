@@ -38,22 +38,40 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="sender">The sender of the command.</param>
         public static void LogCommand(string query, CommandSender sender)
         {
-            if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
-                return;
+            try
+            {
+                if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
+                    return;
 
-            Player player = sender is PlayerCommandSender playerCommandSender
-                ? Player.Get(playerCommandSender)
-                : Server.Host;
+                Player player = sender is PlayerCommandSender playerCommandSender
+                    ? Player.Get(playerCommandSender)
+                    : Server.Host;
 
-            string logMessage =
-                $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
-            string directory = Path.Combine(Paths.Exiled, "Logs");
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
-            string filePath = Path.Combine(directory, $"{Server.Port}-RAlog.txt");
-            if (!File.Exists(filePath))
-                File.Create(filePath).Close();
-            File.AppendAllText(filePath, logMessage);
+                string logMessage = string.Empty;
+                try
+                {
+                    logMessage =
+                        $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player == null}\n{e}");
+                }
+
+                if (string.IsNullOrEmpty(logMessage))
+                    return;
+                string directory = Path.Combine(Paths.Exiled, "Logs");
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+                string filePath = Path.Combine(directory, $"{Server.Port}-RAlog.txt");
+                if (!File.Exists(filePath))
+                    File.Create(filePath).Close();
+                File.AppendAllText(filePath, logMessage);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender == null}\n{e}");
+            }
         }
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
