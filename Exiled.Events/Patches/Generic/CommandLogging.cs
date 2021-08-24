@@ -38,15 +38,15 @@ namespace Exiled.Events.Patches.Generic
         /// <param name="sender">The sender of the command.</param>
         public static void LogCommand(string query, CommandSender sender)
         {
-            string[] args = query.Trim().Split(QueryProcessor.SpaceArray, 512, StringSplitOptions.RemoveEmptyEntries);
-            if (args[0].ToUpperInvariant() == "REQUEST_DATA")
+            if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
                 return;
 
             Player player = sender is PlayerCommandSender playerCommandSender
                 ? Player.Get(playerCommandSender)
                 : Server.Host;
 
-            string logMessage = $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
+            string logMessage =
+                $"[{DateTime.Now}] {(player == Server.Host ? "Server Console" : $"{player.Nickname} ({player.UserId}) {player.IPAddress}")} has run the command {query}.\n";
             string directory = Path.Combine(Paths.Exiled, "Logs");
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);

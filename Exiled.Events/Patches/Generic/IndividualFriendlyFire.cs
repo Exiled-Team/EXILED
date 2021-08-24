@@ -14,6 +14,7 @@ namespace Exiled.Events.Patches.Generic
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     using HarmonyLib;
@@ -32,30 +33,25 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
     internal static class IndividualFriendlyFire
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            Label returnLabel = generator.DefineLabel();
-
-            int index = newInstructions.Count - 1;
-
-            newInstructions[index].labels.Add(returnLabel);
-
-            // if (true) return true;
-            // else return Player.Get(ReferenceHub).IsFriendlyFireEnabled;
-            newInstructions.InsertRange(index, new[]
+            if (ignoreConfig || Server.FriendlyFire)
             {
-                new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsFriendlyFireEnabled))),
-            });
+                __result = true;
+                return false;
+            }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            Player attackingPlayer = Player.Get(attacker);
+            Player victimPlayer = Player.Get(victim);
+            if (attacker == null || victim == null)
+            {
+                __result = false;
+                return false;
+            }
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            __result = attackingPlayer.Team != victimPlayer.Team || attackingPlayer.IsFriendlyFireEnabled;
+
+            return false;
         }
     }
 
