@@ -6,99 +6,99 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Player
-{/*
-#pragma warning disable SA1313
-    using System;
+{
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+    using Interactables.Interobjects.DoorUtils;
+    using MapGeneration.Distributors;
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUseLocker(byte, byte)"/>.
-    /// Adds the <see cref="Player.InteractingLocker"/> event.
+    /// Patches <see cref="Locker.ServerInteract(ReferenceHub, byte)"/>.
+    /// Adds the <see cref="Handlers.Player.InteractingLocker"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseLocker))]
+    [HarmonyPatch(typeof(Locker), nameof(Locker.ServerInteract))]
     internal static class InteractingLocker
     {
-        private static bool Prefix(PlayerInteract __instance, byte lockerId, byte chamberNumber)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.operand is MethodInfo methodInfo
+            && methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied))) + offset;
+
+            var openLockerLabel = newInstructions[index].labels[0];
+
+            offset = 1;
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+
+            var runChecksLabel = newInstructions[index].labels[0];
+
+            // Remove the default IsAllowed check.
+            newInstructions.RemoveRange(index, 13);
+
+            var evLabel = generator.DefineLabel();
+            var trueLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                    (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
-                    return false;
+                // Player.Get(ply);
+                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(runChecksLabel),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                LockerManager singleton = LockerManager.singleton;
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
 
-                if (lockerId >= singleton.lockers.Length)
-                    return false;
+                // this.__instance.Chambers[colliderId]
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldelem_Ref),
 
-                if (!__instance.ChckDis(singleton.lockers[lockerId].gameObject.position) ||
-                    !singleton.lockers[lockerId].supportsStandarizedAnimation)
-                    return false;
+                // colliderId
+                new CodeInstruction(OpCodes.Ldarg_2),
 
-                if (chamberNumber >= singleton.lockers[lockerId].chambers.Length)
-                    return false;
+                // __instance.CheckPerms(__instance.Chambers[colliderId].RequiredPermissions, ply) || ply.serverRoles.BypassMode
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Locker), nameof(Locker.Chambers))),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(LockerChamber), nameof(LockerChamber.RequiredPermissions))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Locker), nameof(Locker.CheckPerms), new[] { typeof(KeycardPermissions), typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Brtrue_S, trueLabel),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ReferenceHub), nameof(ReferenceHub.serverRoles))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ServerRoles), nameof(ServerRoles.BypassMode))),
+                new CodeInstruction(OpCodes.Br_S, evLabel),
+                new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(trueLabel),
 
-                if (singleton.lockers[lockerId].chambers[chamberNumber].doorAnimator == null)
-                    return false;
+                // var ev = new AddingTargetEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingLockerEventArgs))[0]).WithLabels(evLabel),
 
-                if (!singleton.lockers[lockerId].chambers[chamberNumber].CooldownAtZero())
-                    return false;
+                // Handlers.Player.OnInteractingLocker(ev)
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnInteractingLocker))),
 
-                singleton.lockers[lockerId].chambers[chamberNumber].SetCooldown();
+                // if (ev.IsAllowed) goto openLockerLabel
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingLockerEventArgs), nameof(InteractingLockerEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, openLockerLabel),
+            });
 
-                string accessToken = singleton.lockers[lockerId].chambers[chamberNumber].accessToken;
-                var itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                var ev = new InteractingLockerEventArgs(
-                    API.Features.Player.Get(__instance.gameObject),
-                    singleton.lockers[lockerId],
-                    singleton.lockers[lockerId].chambers[chamberNumber],
-                    lockerId,
-                    chamberNumber,
-                    string.IsNullOrEmpty(accessToken) || (itemById != null && itemById.permissions.Contains(accessToken)) || __instance._sr.BypassMode);
-
-                Player.OnInteractingLocker(ev);
-
-                if (ev.IsAllowed)
-                {
-                    bool flag = (singleton.openLockers[lockerId] & 1 << chamberNumber) != 1 << chamberNumber;
-                    singleton.ModifyOpen(lockerId, chamberNumber, flag);
-                    singleton.RpcDoSound(lockerId, chamberNumber, flag);
-                    bool anyOpen = true;
-                    for (int i = 0; i < singleton.lockers[lockerId].chambers.Length; i++)
-                    {
-                        if ((singleton.openLockers[lockerId] & 1 << i) == 1 << i)
-                        {
-                            anyOpen = false;
-                            break;
-                        }
-                    }
-
-                    singleton.lockers[lockerId].LockPickups(!flag, chamberNumber, anyOpen);
-                    if (!string.IsNullOrEmpty(accessToken))
-                    {
-                        singleton.RpcChangeMaterial(lockerId, chamberNumber, false);
-                    }
-                }
-                else
-                {
-                    singleton.RpcChangeMaterial(lockerId, chamberNumber, true);
-                }
-
-                __instance.OnInteract();
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingLocker:\n{e}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }*/
+    }
 }
