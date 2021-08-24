@@ -131,17 +131,15 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
-            Timing.CallDelayed(0.5f, () =>
+            player.ClearInventory();
+            Timing.CallDelayed(1.5f, () =>
             {
                 try
                 {
-                    player.ClearInventory();
+                    items.Reverse();
                     foreach (ItemType type in items)
                     {
                         Item item = player.AddItem(type);
-                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, item.Base);
-                        if (item is Firearm firearm)
-                            firearm.Ammo = firearm.MaxAmmo;
                     }
 
                     if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(player.Role))

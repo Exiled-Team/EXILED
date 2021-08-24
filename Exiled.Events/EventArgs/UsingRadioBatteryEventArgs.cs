@@ -10,6 +10,9 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Radio;
 
     /// <summary>
     /// Contains all informations before radio battery charge is changed.
@@ -21,13 +24,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="radio"><inheritdoc cref="Radio"/></param>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="charge"><inheritdoc cref="Charge"/></param>
+        /// <param name="charge"><inheritdoc cref="Drain"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public UsingRadioBatteryEventArgs(Radio radio, Player player, float charge, bool isAllowed = true)
+        public UsingRadioBatteryEventArgs(RadioItem radio, Player player, float charge, bool isAllowed = true)
         {
-            Radio = radio;
+            Radio = (Radio)Item.Get(radio);
             Player = player;
-            Charge = charge;
+            Drain = charge;
             IsAllowed = isAllowed;
         }
 
@@ -44,7 +47,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the radio battery drain per second.
         /// </summary>
-        public float Charge { get; set; }
+        public float Drain { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the radio battery charge can be changed or not.

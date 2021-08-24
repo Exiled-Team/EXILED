@@ -24,6 +24,7 @@ namespace Exiled.API.Features
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.Modules;
 
@@ -40,6 +41,8 @@ namespace Exiled.API.Features
     using RemoteAdmin;
 
     using UnityEngine;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
@@ -1205,10 +1208,7 @@ namespace Exiled.API.Features
         /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
         public bool RemoveItem(ushort id)
         {
-            if (!Inventory.UserInventory.Items.TryGetValue(id, out ItemBase @base))
-                return false;
-
-            Inventory.ServerRemoveItem(id, @base.PickupDropModel);
+            Inventory.ServerRemoveItem(id, null);
             return true;
         }
 
@@ -1360,10 +1360,20 @@ namespace Exiled.API.Features
         public Item AddItem(ItemType itemType)
         {
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
-            AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, item.Base);
             if (item is Firearm firearm)
             {
-                firearm.Ammo = firearm.MaxAmmo;
+                Dictionary<ItemType, uint> dict;
+                uint code;
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
+                    dict.TryGetValue(itemType, out code))
+                {
+                    firearm.Base.ApplyAttachmentsCode(code, true);
+                }
+
+                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
 
             return item;
@@ -1421,7 +1431,21 @@ namespace Exiled.API.Features
 
             itemBase.OnAdded(itemBase.PickupDropModel);
             if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
-                AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, firearm);
+            {
+                Dictionary<ItemType, uint> dict;
+                uint code;
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
+                    dict.TryGetValue(item.Type, out code))
+                {
+                    firearm.ApplyAttachmentsCode(code, true);
+                }
+
+                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                firearm.Status = new FirearmStatus(firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+            }
+
             ItemsValue.Add(item);
 
             Inventory.SendItemsNextFrame = true;
@@ -1490,8 +1514,8 @@ namespace Exiled.API.Features
         /// </summary>
         public void ClearInventory()
         {
-            Inventory.UserInventory.Items.Clear();
-            Inventory.SendItemsNextFrame = true;
+            while (Inventory.UserInventory.Items.Count > 0)
+                Inventory.ServerRemoveItem(Inventory.UserInventory.Items.ElementAt(0).Key, null);
             ItemsValue.Clear();
         }
 

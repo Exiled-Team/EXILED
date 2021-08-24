@@ -85,7 +85,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // num = ev.Charge
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Charge))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Drain))),
                 new CodeInstruction(OpCodes.Stloc_0),
             });
 
