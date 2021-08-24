@@ -132,7 +132,7 @@ namespace Exiled.Events.Patches.Events.Player
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
             player.ClearInventory();
-            Timing.CallDelayed(1.5f, () =>
+            Timing.CallDelayed(0.25f, () =>
             {
                 try
                 {
