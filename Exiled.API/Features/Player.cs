@@ -1740,11 +1740,11 @@ namespace Exiled.API.Features
         /// </summary>
         public ReadOnlyCollection<PlayerEffect> GetActiveEffects()
         {
-            List<PlayerEffect> ActiveEffects = new ReadOnlyCollection<PlayerEffect>();
+            List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
             foreach (var effect in ReferenceHub.playerEffectsController.AllEffects)
             {
-              if (effect.Value.Intensity > 0)
-                ActiveEffects.Add(effect.Value);
+                if (effect.Value.Intensity > 0)
+                    ActiveEffects.Add(effect.Value);
             }
 
             return new ReadOnlyCollection<PlayerEffect>(ActiveEffects);
