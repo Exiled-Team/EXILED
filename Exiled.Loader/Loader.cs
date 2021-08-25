@@ -12,6 +12,9 @@ namespace Exiled.Loader
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Security.Principal;
+    using System.Threading;
 
     using CommandSystem.Commands.Shared;
 
@@ -125,12 +128,22 @@ namespace Exiled.Loader
             .IgnoreUnmatchedProperties()
             .Build();
 
+        private static bool IsAdministrator => RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            ? new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator)
+            : geteuid() == 0;
+
         /// <summary>
         /// Runs the plugin manager, by loading all dependencies, plugins, configs and then enables all plugins.
         /// </summary>
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
+            if (IsAdministrator)
+            {
+                ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.Red);
+                Thread.Sleep(5000);
+            }
+
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
@@ -375,6 +388,10 @@ namespace Exiled.Loader
             return false;
         }
 
+#pragma warning disable SA1300
+        [DllImport("libc")]
+        private static extern uint geteuid();
+#pragma warning restore
         /// <summary>
         /// Loads all dependencies.
         /// </summary>
