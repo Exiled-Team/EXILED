@@ -1559,7 +1559,7 @@ namespace Exiled.API.Features
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
-        
+
         /// <summary>
         /// Removes the player's hands.
         /// </summary>
