@@ -18,7 +18,7 @@ namespace Exiled.Permissions
     /// </summary>
     public sealed class Permissions : Plugin<Config>
     {
-        private static readonly Lazy<Permissions> LazyInstance = new Lazy<Permissions>(() => new Permissions());
+        private static Permissions instance;
 
         private Permissions()
         {
@@ -27,11 +27,13 @@ namespace Exiled.Permissions
         /// <summary>
         /// Gets the permissions instance.
         /// </summary>
-        public static Permissions Instance => LazyInstance.Value;
+        public static Permissions Instance => instance;
 
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            instance = this;
+
             base.OnEnabled();
 
             Timing.CallDelayed(5f, () =>

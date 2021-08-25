@@ -26,8 +26,7 @@ namespace Exiled.Events
     /// </summary>
     public sealed class Events : Plugin<Config>
     {
-#pragma warning disable 0618
-        private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
+        private static Events instance;
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
@@ -54,7 +53,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the plugin instance.
         /// </summary>
-        public static Events Instance => LazyInstance.Value;
+        public static Events Instance => instance;
 
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.
@@ -72,6 +71,7 @@ namespace Exiled.Events
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            instance = this;
             base.OnEnabled();
 
             Stopwatch watch = Stopwatch.StartNew();
