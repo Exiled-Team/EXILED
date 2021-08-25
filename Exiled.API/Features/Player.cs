@@ -10,19 +10,15 @@ namespace Exiled.API.Features
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
-    using System.Collections.ObjectModel;
-
     using CustomPlayerEffects;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
-
     using Hints;
-
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
@@ -30,21 +26,14 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-
     using MEC;
-
     using Mirror;
     using Mirror.LiteNetLib4Mirror;
-
     using NorthwoodLib;
     using NorthwoodLib.Pools;
-
     using PlayableScps;
-
     using RemoteAdmin;
-
     using UnityEngine;
-
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
@@ -1734,22 +1723,23 @@ namespace Exiled.API.Features
 
             throw new ArgumentException("The given type is invalid.");
         }
-        
+
         /// <summary>
         /// Gets all the active <see cref="PlayerEffect"/>.
         /// </summary>
+        /// <returns>A list with all active effects.</returns>
         public ReadOnlyCollection<PlayerEffect> GetActiveEffects()
         {
-            List<PlayerEffect> ActiveEffects = new List<PlayerEffect>();
+            List<PlayerEffect> activeEffects = new List<PlayerEffect>();
             foreach (var effect in ReferenceHub.playerEffectsController.AllEffects)
             {
                 if (effect.Value.Intensity > 0)
-                    ActiveEffects.Add(effect.Value);
+                    activeEffects.Add(effect.Value);
             }
 
-            return new ReadOnlyCollection<PlayerEffect>(ActiveEffects);
+            return new ReadOnlyCollection<PlayerEffect>(activeEffects);
         }
-        
+
         /// <summary>
         /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
