@@ -15,7 +15,7 @@ namespace Exiled.Events.Patches.Fixes
     [HarmonyPatch(typeof(PlayableScpsController), nameof(PlayableScpsController.Update))]
     internal class PlayableScpControllerPatch
     {
-        private static bool Prefox()
+        private static bool Prefix()
         {
             if (ReferenceHub.LocalHub == null)
                 return false;
