@@ -44,7 +44,7 @@ namespace Exiled.API.Features.Items
         public Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
-            Serial = pickupBase.NetworkInfo.Serial;
+            Serial = pickupBase.NetworkInfo.Serial == 0 ? ItemSerialGenerator.GenerateNext() : pickupBase.NetworkInfo.Serial;
             BaseToItem.Add(pickupBase, this);
         }
 
@@ -54,7 +54,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Pickup(ItemType type)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue((global::ItemType)type, out ItemBase itemBase))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
                 return;
 
             Base = itemBase.PickupDropModel;
@@ -119,7 +119,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
-        public ItemType Type => (ItemType)Base.NetworkInfo.ItemId;
+        public ItemType Type => Base.NetworkInfo.ItemId;
 
         /// <summary>
         /// Gets or sets a value indicating whether the pickup is locked (can't be picked up).

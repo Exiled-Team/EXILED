@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Scp914.OnUpgradingItem(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp914), nameof(Handlers.Scp914.OnUpgradingItem))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnUpgradingItem))),
 
                 // if (!ev.IsAllowed)
                 //    return;

@@ -108,10 +108,9 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(CheckItems))),
-                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ShouldUpdateInv))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
@@ -126,29 +125,26 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool CheckItems(RoleType type, List<global::ItemType> items) =>
-            !InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(type)
-                ? items == new List<global::ItemType>()
-                : InventorySystem.Configs.StartingInventories.DefinedInventories[type].Items.ToList() == items;
+        private static bool ShouldUpdateInv(RoleType type, CharacterClassManager.SpawnReason reason) =>
+            (reason != CharacterClassManager.SpawnReason.Escaped ||
+             !CharacterClassManager.KeepItemsAfterEscaping) && type != RoleType.Spectator;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
-            Timing.CallDelayed(0.5f, () =>
+            player.ClearInventory();
+            Timing.CallDelayed(0.25f, () =>
             {
                 try
                 {
-                    player.ClearInventory();
+                    items.Reverse();
                     foreach (ItemType type in items)
                     {
                         Item item = player.AddItem(type);
-                        AttachmentsServerHandler.SetupProvidedWeapon(player.ReferenceHub, item.Base);
-                        if (item is Firearm firearm)
-                            firearm.Ammo = firearm.MaxAmmo;
                     }
 
                     if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(player.Role))
                     {
-                        foreach (KeyValuePair<global::ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
+                        foreach (KeyValuePair<ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
                         {
                             player.Inventory.ServerSetAmmo(kvp.Key, kvp.Value);
                             player.Inventory.SendAmmoNextFrame = true;

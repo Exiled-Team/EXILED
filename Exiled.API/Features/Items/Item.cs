@@ -44,8 +44,6 @@ namespace Exiled.API.Features.Items
         /// </summary>
         internal static readonly Dictionary<ushort, Item> SerialToItem = new Dictionary<ushort, Item>();
 
-        private ushort id;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
@@ -53,10 +51,19 @@ namespace Exiled.API.Features.Items
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
-            Type = (ItemType)itemBase.ItemTypeId;
+            Type = itemBase.ItemTypeId;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             if (Serial == 0)
-                Serial = ItemSerialGenerator.GenerateNext();
+            {
+                ushort serial = ItemSerialGenerator.GenerateNext();
+                Serial = serial;
+#if DEBUG
+                Log.Debug($"{nameof(Item)}.ctor: Generating new serial number. Serial should now be: {serial}. // {Serial}");
+#endif
+            }
+#if DEBUG
+            Log.Debug($"{nameof(Item)}.ctor: New item created with Serial: {Serial}");
+#endif
             BaseToItem.Add(itemBase, this);
         }
 
@@ -65,35 +72,18 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
         public Item(ItemType type)
-            : this(Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
         /// <summary>
-        /// Gets the unique serial number for the item.
+        /// Gets or sets the unique serial number for the item.
         /// </summary>
         public ushort Serial
         {
-            get
-            {
-                id = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
-                return id;
-            }
+            get => Base.ItemSerial;
 
-            internal set
-            {
-                if (value == 0)
-                {
-                    value = ItemSerialGenerator.GenerateNext();
-                }
-
-                if (Base == null || Base.PickupDropModel == null)
-                    return;
-
-                Base.PickupDropModel.Info.Serial = value;
-                Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
-                id = value;
-            }
+            set => Base.ItemSerial = value;
         }
 
         /// <summary>
@@ -185,7 +175,7 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
         {
-            Base.PickupDropModel.Info.ItemId = (global::ItemType)Type;
+            Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
             Base.PickupDropModel.Info.Weight = Weight;
             Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);

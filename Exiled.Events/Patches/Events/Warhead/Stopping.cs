@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStopping))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StoppingEventArgs), nameof(StoppingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Warhead), nameof(API.Features.Warhead.IsLocked))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.IsLocked))),
                 new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
             });
 

@@ -21,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Cassie
         private static bool Prefix(ref string words, ref bool makeHold, ref bool makeNoise)
         {
             SendingCassieMessageEventArgs ev = new SendingCassieMessageEventArgs(words, makeHold, makeNoise);
-            Handlers.Cassie.OnSendingCassieMessage(ev);
+            Cassie.OnSendingCassieMessage(ev);
 
             words = ev.Words;
             makeHold = ev.MakeHold;

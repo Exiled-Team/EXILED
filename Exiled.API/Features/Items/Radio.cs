@@ -34,12 +34,21 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
         public Radio(ItemType type)
-            : this((RadioItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
         /// <inheritdoc cref="Item.Base"/>
         public new RadioItem Base { get; }
+
+        /// <summary>
+        /// Gets or sets the percentage of the radio's battery.
+        /// </summary>
+        public byte BatteryLevel
+        {
+            get => Base.BatteryPercent;
+            set => Base.BatteryPercent = value;
+        }
 
         /// <summary>
         /// Gets or sets the current <see cref="RadioRange"/>.

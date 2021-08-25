@@ -44,6 +44,7 @@ namespace Exiled.Example.Events
                 ev.Items.Clear();
                 ev.Items.Add(ItemType.Flashlight);
                 ev.Items.Add(ItemType.Medkit);
+                Timing.CallDelayed(0.5f, () => ev.Player.AddItem(ItemType.Radio));
             }
         }
 

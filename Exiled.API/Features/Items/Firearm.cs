@@ -14,13 +14,10 @@ namespace Exiled.API.Features.Items
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
 
-    using InventorySystem;
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
-
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.Firearms.Firearm"/>.
@@ -58,7 +55,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Firearm(ItemType type)
-            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
@@ -66,33 +63,43 @@ namespace Exiled.API.Features.Items
         public new InventorySystem.Items.Firearms.Firearm Base { get; }
 
         /// <summary>
-        /// Gets or sets the amount of ammo in the weapon.
+        /// Gets or sets the amount of ammo in the firearm.
         /// </summary>
         public byte Ammo
         {
             get => Base.Status.Ammo;
             set
             {
-                FirearmStatus status = Base._status;
-                Base._status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
-                Base.OnStatusChanged(status, Base._status);
+                FirearmStatus status = Base.Status;
+                Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
+                Base.OnStatusChanged(status, Base.Status);
             }
         }
 
         /// <summary>
-        /// gets the max ammo for this firearm.
+        /// Gets the max ammo for this firearm.
         /// </summary>
         public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
 
         /// <summary>
-        /// Gets the <see cref="AmmoType"/> of the Firearm.
+        /// Gets the <see cref="AmmoType"/> of the firearm.
         /// </summary>
-        public AmmoType AmmoType => ((ItemType)Base.AmmoType).GetAmmoType();
+        public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
 
         /// <summary>
         /// Gets the <see cref="DamageTypes.DamageType"/> of the firearm.
         /// </summary>
         public DamageTypes.DamageType DamageType => Base.DamageType;
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm is being aimed.
+        /// </summary>
+        public bool Aiming => Base.AdsModule.ServerAds;
+
+        /// <summary>
+        /// Gets a value indicating whether the firearm's flashlight module is enabled.
+        /// </summary>
+        public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
         /// Gets or sets the <see cref="FirearmAttachment"/>s of the firearm.

@@ -39,7 +39,7 @@ namespace Exiled.Events.Commands.Show
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
             const string perm = "ee.showplugins";
-            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor.Roles.RaEverywhere))
+            if (!sender.CheckPermission(perm) && (sender is PlayerCommandSender playerSender && !playerSender.QueryProcessor._roles.RaEverywhere))
             {
                 response = $"You can't get a list of all plugins, you don't have \"{perm}\" permissions.";
                 return false;
@@ -50,7 +50,7 @@ namespace Exiled.Events.Commands.Show
             // Append a new line to start the response on a new line
             sb.AppendLine();
 
-            SortedSet<IPlugin<IConfig>> plugins = Exiled.Loader.Loader.Plugins;
+            SortedSet<IPlugin<IConfig>> plugins = Loader.Loader.Plugins;
             int enabledPluginCount = plugins.Where(plugin => plugin.Config.IsEnabled).Count();
 
             // Append two new lines before the list

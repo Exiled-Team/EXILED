@@ -33,7 +33,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
         public MicroHid(ItemType type)
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 

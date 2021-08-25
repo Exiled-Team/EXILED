@@ -56,13 +56,13 @@ namespace Exiled.Events.Patches.Events.Player
                 component.NetworkPlayerVelo = velocity;
                 Exiled.API.Features.Ragdoll ragdoll = new Exiled.API.Features.Ragdoll(component);
                 Mirror.NetworkServer.Spawn(ragdoll.GameObject);
-                Exiled.API.Features.Map.RagdollsValue.Add(ragdoll);
+                API.Features.Map.RagdollsValue.Add(ragdoll);
 
                 return false;
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
 
                 return true;
             }

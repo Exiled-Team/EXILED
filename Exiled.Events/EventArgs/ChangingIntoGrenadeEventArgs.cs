@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs
         public ChangingIntoGrenadeEventArgs(ItemPickupBase pickup, float fuseTime = 3f, bool isAllowed = true)
         {
             Pickup = Pickup.Get(pickup);
-            Type = (ItemType)pickup.NetworkInfo.ItemId;
+            Type = pickup.NetworkInfo.ItemId;
             FuseTime = fuseTime;
             IsAllowed = isAllowed;
         }

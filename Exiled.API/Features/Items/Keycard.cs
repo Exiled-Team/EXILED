@@ -35,7 +35,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
         public Keycard(ItemType type)
-            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance((global::ItemType)type, false))
+            : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
