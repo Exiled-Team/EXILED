@@ -8,6 +8,7 @@
 namespace Exiled.API.Features
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -1732,7 +1733,22 @@ namespace Exiled.API.Features
 
             throw new ArgumentException("The given type is invalid.");
         }
+        
+        /// <summary>
+        /// Gets all the active <see cref="PlayerEffect"/>.
+        /// </summary>
+        public ReadOnlyCollection<PlayerEffect> GetActiveEffects()
+        {
+            ReadOnlyCollection<PlayerEffect> ActiveEffects = new ReadOnlyCollection<PlayerEffect>();
+            foreach (var effect in ReferenceHub.playerEffectsController.AllEffects)
+            {
+              if (effect.Value.Intensity > 0)
+                ActiveEffects.Add(effect.Value);
+            }
 
+            return ActiveEffects;
+        }
+        
         /// <summary>
         /// Changes the intensity of a <see cref="PlayerEffect">status effect</see>.
         /// </summary>
