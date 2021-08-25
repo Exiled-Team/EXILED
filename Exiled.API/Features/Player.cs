@@ -24,7 +24,9 @@ namespace Exiled.API.Features
     using InventorySystem;
     using InventorySystem.Disarming;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
+    using InventorySystem.Items.Firearms.BasicMessages;
     using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
@@ -40,6 +42,8 @@ namespace Exiled.API.Features
     using RemoteAdmin;
 
     using UnityEngine;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
@@ -131,7 +135,7 @@ namespace Exiled.API.Features
         public GameObject GameObject { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is viewing a hint.
+        /// Gets a value indicating whether the player is viewing a hint.
         /// </summary>
         public bool HasHint { get; internal set; }
 
@@ -222,7 +226,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is verified.
+        /// Gets a value indicating whether the player is verified.
         /// </summary>
         /// <remarks>
         /// This is always false if online_mode is set to false.
@@ -269,17 +273,17 @@ namespace Exiled.API.Features
         public Dictionary<string, object> SessionVariables { get; } = new Dictionary<string, object>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is invisible.
+        /// Gets or sets a value indicating whether the player is invisible.
         /// </summary>
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player can be tracked.
+        /// Gets a value indicating whether the player can be tracked.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is connected to the server.
+        /// Gets a value indicating whether the player is connected to the server.
         /// </summary>
         public bool IsConnected => GameObject != null;
 
@@ -289,12 +293,12 @@ namespace Exiled.API.Features
         public HashSet<int> TargetGhostsHashSet { get; } = HashSetPool<int>.Shared.Rent();
 
         /// <summary>
-        /// Gets a value indicating whether or not the player has Remote Admin access.
+        /// Gets a value indicating whether the player has Remote Admin access.
         /// </summary>
         public bool RemoteAdminAccess => ReferenceHub.serverRoles.RemoteAdmin;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's overwatch is enabled.
+        /// Gets or sets a value indicating whether the player's overwatch is enabled.
         /// </summary>
         public bool IsOverwatchEnabled
         {
@@ -383,19 +387,24 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is cuffed. Note: players can be cuffed without another player being the cuffer.
+        /// Gets a value indicating whether the player is cuffed. Note: players can be cuffed without another player being the cuffer.
         /// </summary>
         public bool IsCuffed => Cuffer != null;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is reloading a weapon.
+        /// Gets a value indicating whether the player is reloading a weapon.
         /// </summary>
         public bool IsReloading => CurrentItem is Firearm firearm && !firearm.Base.AmmoManagerModule.Standby;
 
-        /*/// <summary>
-        /// Gets a value indicating whether or not the player is zooming with a weapon.
+        /// <summary>
+        /// Gets a value indicating whether the player is aiming with a weapon.
         /// </summary>
-        // public bool IsZooming => ReferenceHub.weaponManager.NetworksyncZoomed;*/
+        public bool IsAimingDownWeapon => CurrentItem is Firearm firearm && firearm.Aiming;
+
+        /// <summary>
+        /// Gets a value indicating whether the player has enabled weapon's flashlight module.
+        /// </summary>
+        public bool HasFlashlightModuleEnabled => CurrentItem is Firearm firearm && firearm.FlashlightEnabled;
 
         /// <summary>
         /// Gets or sets the player's current <see cref="PlayerMovementState"/>.
@@ -412,22 +421,22 @@ namespace Exiled.API.Features
         public int CurrentAnimation => ReferenceHub.animationController.curAnim;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is sprinting.
+        /// Gets a value indicating whether the player is sprinting.
         /// </summary>
         public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is walking.
+        /// Gets a value indicating whether the player is walking.
         /// </summary>
         public bool IsWalking => MoveState == PlayerMovementState.Walking;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is sneaking.
+        /// Gets a value indicating whether the player is sneaking.
         /// </summary>
         public bool IsSneaking => MoveState == PlayerMovementState.Sneaking;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is jumping.
+        /// Gets a value indicating whether the player is jumping.
         /// </summary>
         public bool IsJumping => CurrentAnimation == 2;
 
@@ -437,7 +446,7 @@ namespace Exiled.API.Features
         public string IPAddress => ReferenceHub.networkIdentity.connectionToClient.address;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the <see cref="Player"/> has No-clip enabled.
+        /// Gets or sets a value indicating whether the <see cref="Player"/> has No-clip enabled.
         /// </summary>
         /// <returns><see cref="bool"/> indicating status.</returns>
         public bool NoClipEnabled
@@ -462,33 +471,33 @@ namespace Exiled.API.Features
         public NetworkIdentity NetworkIdentity => ReferenceHub.networkIdentity;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is the host.
+        /// Gets a value indicating whether the player is the host.
         /// </summary>
         public bool IsHost => ReferenceHub.isDedicatedServer;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is alive.
+        /// Gets a value indicating whether the player is alive.
         /// </summary>
         public bool IsAlive => !IsDead;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is dead.
+        /// Gets a value indicating whether the player is dead.
         /// </summary>
         public bool IsDead => Team == Team.RIP;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any NTF rank.
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any SCP rank.
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// </summary>
         public bool IsScp => Team == Team.SCP;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
         public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.RSC;
 
@@ -508,7 +517,7 @@ namespace Exiled.API.Features
         public Side Side => Team.GetSide();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player friendly fire is enabled or not.
+        /// Gets or sets a value indicating whether the player friendly fire is enabled.
         /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
         /// </summary>
         public bool IsFriendlyFireEnabled { get; set; } = false;
@@ -536,7 +545,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's bypass mode is enabled or not.
+        /// Gets or sets a value indicating whether the player's bypass mode is enabled.
         /// </summary>
         public bool IsBypassModeEnabled
         {
@@ -545,7 +554,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is muted.
+        /// Gets or sets a value indicating whether the player is muted.
         /// </summary>
         public bool IsMuted
         {
@@ -554,7 +563,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player is intercom muted.
+        /// Gets or sets a value indicating whether the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
         {
@@ -563,17 +572,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is voice chatting.
+        /// Gets a value indicating whether the player is voice chatting.
         /// </summary>
         public bool IsVoiceChatting => ReferenceHub.radio.UsingVoiceChat;
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is transmitting.
+        /// Gets a value indicating whether the player is transmitting.
         /// </summary>
         public bool IsTransmitting => ReferenceHub.radio.UsingRadio;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player has godmode enabled.
+        /// Gets or sets a value indicating whether the player has godmode enabled.
         /// </summary>
         public bool IsGodModeEnabled
         {
@@ -802,7 +811,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the staff bypass is enabled or not.
+        /// Gets a value indicating whether the staff bypass is enabled.
         /// </summary>
         public bool IsStaffBypassEnabled => ReferenceHub.serverRoles.BypassStaff;
 
@@ -869,7 +878,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player's badge is hidden.
+        /// Gets or sets a value indicating whether the player's badge is hidden.
         /// </summary>
         public bool BadgeHidden
         {
@@ -884,7 +893,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether or not the player is in the pocket dimension.
+        /// Gets a value indicating whether the player is in the pocket dimension.
         /// </summary>
         public bool IsInPocketDimension => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
 
@@ -905,7 +914,7 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can send inputs.
+        /// Gets or sets a value indicating whether the player can send inputs.
         /// </summary>
         public bool CanSendInputs
         {
@@ -1091,12 +1100,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the player to reload their current weapon.
         /// </summary>
+        /// <exception cref="InvalidOperationException">If the item is not a firearm.</exception>
         public void ReloadWeapon()
         {
             if (CurrentItem is Firearm firearm)
+            {
                 firearm.Base.AmmoManagerModule.ServerTryReload();
+                Connection.Send(new RequestMessage(firearm.Serial, RequestType.Reload));
+            }
             else
+            {
                 throw new InvalidOperationException("You may only reload weapons.");
+            }
         }
 
         /// <summary>
@@ -1156,7 +1171,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleType"/> to be set.</param>
         /// <param name="reason">The <see cref="SpawnReason"/> defining why the player's role was changed.</param>
-        /// <param name="lite">Indicates whether it should preserve the position and inventory after changing the role or not.</param>
+        /// <param name="lite">Indicates whether it should preserve the position and inventory after changing the role.</param>
         public void SetRole(RoleType newRole, SpawnReason reason = SpawnReason.ForceClass, bool lite = false)
         {
             ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, (CharacterClassManager.SpawnReason)reason, lite);
@@ -1180,7 +1195,7 @@ namespace Exiled.API.Features
         public void DropItem(Item item) => Inventory.ServerDropItem(item.Serial);
 
         /// <summary>
-        /// Indicates whether or not the player has an item.
+        /// Indicates whether the player has an item.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
@@ -1197,13 +1212,10 @@ namespace Exiled.API.Features
         /// Removes an <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
         /// <param name="id">The <see cref="ItemBase"/> id to be removed.</param>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
         public bool RemoveItem(ushort id)
         {
-            if (!Inventory.UserInventory.Items.TryGetValue(id, out ItemBase @base))
-                return false;
-
-            Inventory.ServerRemoveItem(id, @base.PickupDropModel);
+            Inventory.ServerRemoveItem(id, null);
             return true;
         }
 
@@ -1211,13 +1223,13 @@ namespace Exiled.API.Features
         /// Removes an <see cref="Item"/> from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
-        /// <returns>A value indicating whether the <see cref="Item"/> was removed or not.</returns>
+        /// <returns>A value indicating whether the <see cref="Item"/> was removed.</returns>
         public bool RemoveItem(Item item) => RemoveItem(item.Serial);
 
         /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed or not.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
         public bool RemoveHeldItem() => RemoveItem(CurrentItem);
 
         /// <summary>
@@ -1253,7 +1265,7 @@ namespace Exiled.API.Features
         /// <param name="damageType">The damage type.</param>
         /// <param name="attackerName">The attacker name.</param>
         /// <param name="attackerId">The attacker player id.</param>
-        /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom or not.</param>
+        /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
         public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
         {
             ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
@@ -1271,7 +1283,7 @@ namespace Exiled.API.Features
         /// Heals the player.
         /// </summary>
         /// <param name="amount">The amount of health to heal.</param>
-        /// <param name="overrideMaxHealth">Whether or not healing should exceed their max health.</param>
+        /// <param name="overrideMaxHealth">Whether healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
@@ -1320,7 +1332,7 @@ namespace Exiled.API.Features
         /// Sends a message to the player's Remote Admin console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
-        /// <param name="success">Indicates whether the message should be highlighted as success or not.</param>
+        /// <param name="success">Indicates whether the message should be highlighted as success.</param>
         /// <param name="pluginName">The plugin name.</param>
         public void RemoteAdminMessage(string message, bool success = true, string pluginName = null)
         {
@@ -1355,10 +1367,20 @@ namespace Exiled.API.Features
         public Item AddItem(ItemType itemType)
         {
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
-            AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, item.Base);
             if (item is Firearm firearm)
             {
-                firearm.Ammo = firearm.MaxAmmo;
+                Dictionary<ItemType, uint> dict;
+                uint code;
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
+                    dict.TryGetValue(itemType, out code))
+                {
+                    firearm.Base.ApplyAttachmentsCode(code, true);
+                }
+
+                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
             }
 
             return item;
@@ -1395,7 +1417,7 @@ namespace Exiled.API.Features
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
-        public void AddItem(Item item) => AddItem(item.Base);
+        public void AddItem(Item item) => AddItem(item.Base, item);
 
         /// <summary>
         /// Adds an item to the player's inventory.
@@ -1408,15 +1430,38 @@ namespace Exiled.API.Features
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="itemBase">The item to be added.</param>
+        /// <param name="item">The <see cref="Item"/> object of the item.</param>
         /// <returns>The item that was added.</returns>
-        public Item AddItem(ItemBase itemBase)
+        public Item AddItem(ItemBase itemBase, Item item = null)
         {
-            Item item = Item.Get(itemBase);
-            Inventory.UserInventory.Items[itemBase.PickupDropModel.NetworkInfo.Serial] = itemBase;
+            if (item == null)
+                item = Item.Get(itemBase);
 
+            int ammo = -1;
+            if (item is Firearm firearm1)
+            {
+                ammo = firearm1.Ammo;
+            }
+
+            Inventory.UserInventory.Items[item.Serial] = itemBase;
             itemBase.OnAdded(itemBase.PickupDropModel);
+
             if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
-                AttachmentsServerHandler.SetupProvidedWeapon(ReferenceHub, firearm);
+            {
+                Dictionary<ItemType, uint> dict;
+                uint code;
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
+                    dict.TryGetValue(item.Type, out code))
+                {
+                    firearm.ApplyAttachmentsCode(code, true);
+                }
+
+                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+            }
+
             ItemsValue.Add(item);
 
             Inventory.SendItemsNextFrame = true;
@@ -1485,8 +1530,8 @@ namespace Exiled.API.Features
         /// </summary>
         public void ClearInventory()
         {
-            Inventory.UserInventory.Items.Clear();
-            Inventory.SendItemsNextFrame = true;
+            while (Inventory.UserInventory.Items.Count > 0)
+                Inventory.ServerRemoveItem(Inventory.UserInventory.Items.ElementAt(0).Key, null);
             ItemsValue.Clear();
         }
 
@@ -1569,10 +1614,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="bool"/> describing whether or not the given <see cref="PlayerEffect">status effect</see> is currently enabled.
+        /// Gets a <see cref="bool"/> describing whether the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
-        /// <returns>A <see cref="bool"/> determining whether or not the player effect is active.</returns>
+        /// <returns>A <see cref="bool"/> determining whether the player effect is active.</returns>
         public bool GetEffectActive<T>()
             where T : PlayerEffect
         {
@@ -1632,7 +1677,7 @@ namespace Exiled.API.Features
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
-        /// <returns>A bool indicating whether or not the effect was valid and successfully enabled.</returns>
+        /// <returns>A bool indicating whether the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
 
@@ -1665,7 +1710,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
         /// <param name="playerEffect">The <see cref="PlayerEffect"/>.</param>
-        /// <returns>A bool indicating whether or not the <paramref name="playerEffect"/> was successfully gotten.</returns>
+        /// <returns>A bool indicating whether the <paramref name="playerEffect"/> was successfully gotten.</returns>
         public bool TryGetEffect(EffectType effect, out PlayerEffect playerEffect)
         {
             playerEffect = GetEffect(effect);

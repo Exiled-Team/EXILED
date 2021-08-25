@@ -42,6 +42,15 @@ namespace Exiled.API.Features.Items
         public new RadioItem Base { get; }
 
         /// <summary>
+        /// Gets or sets the percentage of the radio's battery.
+        /// </summary>
+        public byte BatteryLevel
+        {
+            get => Base.BatteryPercent;
+            set => Base.BatteryPercent = value;
+        }
+
+        /// <summary>
         /// Gets or sets the current <see cref="RadioRange"/>.
         /// </summary>
         public RadioRange Range

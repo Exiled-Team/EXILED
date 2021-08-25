@@ -13,6 +13,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Server = Exiled.API.Features.Server;
+
     /// <summary>
     /// Patches <see cref="BanHandler.IssueBan(BanDetails, BanHandler.BanType)"/>.
     /// Adds the <see cref="Player.Banned"/> event.
@@ -20,14 +22,24 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(BanHandler), nameof(BanHandler.IssueBan))]
     internal static class Banned
     {
-        private static void Prefix(BanDetails ban, BanHandler.BanType banType, out string __state)
+        private static void Prefix(BanDetails ban, BanHandler.BanType banType, out API.Features.Player __state)
         {
-            __state = ban.Issuer;
+            API.Features.Player issuerPlayer;
+            if (ban.Issuer.Contains("("))
+            {
+                issuerPlayer = API.Features.Player.Get(ban.Issuer.Substring(ban.Issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+            }
+            else
+            {
+                issuerPlayer = Server.Host;
+            }
+
+            __state = issuerPlayer;
         }
 
-        private static void Postfix(BanDetails ban, BanHandler.BanType banType, string __state)
+        private static void Postfix(BanDetails ban, BanHandler.BanType banType, API.Features.Player __state)
         {
-            BannedEventArgs ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), API.Features.Player.Get(__state), ban, banType);
+            BannedEventArgs ev = new BannedEventArgs(string.IsNullOrEmpty(ban.Id) ? null : API.Features.Player.Get(ban.Id), __state, ban, banType);
 
             Player.OnBanned(ev);
         }

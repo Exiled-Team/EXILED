@@ -22,15 +22,13 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="locker"><inheritdoc cref="Locker"/></param>
         /// <param name="lockerChamber"><inheritdoc cref="Chamber"/></param>
-        /// <param name="lockerId"><inheritdoc cref="LockerId"/></param>
         /// <param name="chamberId"><inheritdoc cref="ChamberId"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte lockerId, byte chamberId, bool isAllowed)
+        public InteractingLockerEventArgs(Player player, Locker locker, LockerChamber lockerChamber, byte chamberId, bool isAllowed)
         {
             Player = player;
             Locker = locker;
             Chamber = lockerChamber;
-            LockerId = lockerId;
             ChamberId = chamberId;
             IsAllowed = isAllowed;
         }
@@ -49,11 +47,6 @@ namespace Exiled.Events.EventArgs
         /// Gets the interacting chamber.
         /// </summary>
         public LockerChamber Chamber { get; }
-
-        /// <summary>
-        /// Gets the locker id.
-        /// </summary>
-        public byte LockerId { get; }
 
         /// <summary>
         /// Gets the chamber id.

@@ -20,6 +20,8 @@ namespace Exiled.API.Features.Components
     /// </summary>
     public class CollisionHandler : MonoBehaviour
     {
+        private bool initialized;
+
         /// <summary>
         /// Gets the thrower of the grenade.
         /// </summary>
@@ -39,12 +41,15 @@ namespace Exiled.API.Features.Components
         {
             Owner = owner;
             Grenade = (EffectGrenade)grenade;
+            initialized = true;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             try
             {
+                if (!initialized)
+                    return;
                 if (Owner == null)
                     Log.Error($"Owner is null!");
                 if (Grenade == null)
@@ -61,6 +66,7 @@ namespace Exiled.API.Features.Components
             catch (Exception exception)
             {
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
+                Destroy(this);
             }
         }
     }
