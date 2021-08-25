@@ -189,7 +189,7 @@ namespace Exiled.Network.API.Models
         private void SendClientToServer(Player hub, ushort port)
         {
             var serverPS = hub.ReferenceHub.playerStats;
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             writer.WriteSingle(1f);
             writer.WriteUInt16(port);
             RpcMessage msg = new RpcMessage

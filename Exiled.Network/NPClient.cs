@@ -49,6 +49,7 @@ namespace Exiled.Network
         /// <param name="plugin">Plugin class.</param>
         public NPClient(MainClass plugin)
         {
+            NPManager.Singleton = this;
             this.plugin = plugin;
             defaultdata = new NetDataWriter();
             defaultdata.Put(plugin.Config.HostConnectionKey);
@@ -121,8 +122,6 @@ namespace Exiled.Network
             }
 
             Logger.Info($"Starting CLIENT network...");
-            Exiled.Events.Handlers.Server.SendingRemoteAdminCommand += Server_SendingRemoteAdminCommand;
-            Exiled.Events.Handlers.Server.SendingConsoleCommand += Server_SendingConsoleCommand;
             Exiled.Events.Handlers.Player.Destroying += Player_Destroying;
             Exiled.Events.Handlers.Player.Verified += Player_Verified;
             Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
@@ -161,6 +160,11 @@ namespace Exiled.Network
         {
             Logger.Info($"Client disconnected from host. (Info: {disconnectInfo.Reason.ToString()})");
             Timing.RunCoroutine(Reconnect());
+            foreach (var command in registerdCommands)
+            {
+                command.UnregisterCommand();
+            }
+
             registerdCommands.Clear();
             canSendData = false;
             if (dataChecker != null)
@@ -412,36 +416,6 @@ namespace Exiled.Network
             }
         }
 
-        private void Server_SendingConsoleCommand(Exiled.Events.EventArgs.SendingConsoleCommandEventArgs ev)
-        {
-            foreach (var command in registerdCommands)
-            {
-                if (!string.IsNullOrEmpty(command.CommandName))
-                {
-                    if (!command.IsRaCommand && command.CommandName == ev.Name.ToUpper())
-                    {
-                        ev.IsAllowed = false;
-                        PacketProcessor.Send<ExecuteCommandPacket>(NetworkListener, new ExecuteCommandPacket() { UserID = ev.Player.UserId, AddonID = command.AddonID, CommandName = command.CommandName, Arguments = ev.Arguments.ToArray() }, DeliveryMethod.ReliableOrdered);
-                    }
-                }
-            }
-        }
-
-        private void Server_SendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
-        {
-            foreach (var command in registerdCommands)
-            {
-                if (!string.IsNullOrEmpty(command.CommandName))
-                {
-                    if (command.IsRaCommand && command.CommandName == ev.Name.ToUpper())
-                    {
-                        ev.IsAllowed = false;
-                        PacketProcessor.Send<ExecuteCommandPacket>(NetworkListener, new ExecuteCommandPacket() { UserID = ev.Sender.UserId, AddonID = command.AddonID, CommandName = command.CommandName, Arguments = ev.Arguments.ToArray() }, DeliveryMethod.ReliableOrdered);
-                    }
-                }
-            }
-        }
-
         private void StartNetworkClient()
         {
             PacketProcessor.RegisterNestedType<CommandInfoPacket>();
@@ -637,7 +611,7 @@ namespace Exiled.Network
         private void SendClientToServer(Player hub, ushort port)
         {
             var serverPS = hub.ReferenceHub.playerStats;
-            NetworkWriter writer = NetworkWriterPool.GetWriter();
+            PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             writer.WriteSingle(1f);
             writer.WriteUInt16(port);
             RpcMessage msg = new RpcMessage

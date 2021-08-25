@@ -18,6 +18,11 @@ namespace Exiled.Network
         private NPClient client;
         private NPHost host;
 
+        /// <summary>
+        /// Gets or Sets singleton of main plugin class.
+        /// </summary>
+        public static MainClass Singleton { get; set; }
+
         /// <inheritdoc/>
         public override string Name { get; } = "Exiled.Network";
 

@@ -22,6 +22,11 @@ namespace Exiled.Network.API
     public class NPManager
     {
         /// <summary>
+        /// Gets or Sets singleton of npmanager.
+        /// </summary>
+        public static NPManager Singleton { get; set; }
+
+        /// <summary>
         /// Gets or sets Packet Processor.
         /// </summary>
         public NetPacketProcessor PacketProcessor { get; set; } = new NetPacketProcessor();

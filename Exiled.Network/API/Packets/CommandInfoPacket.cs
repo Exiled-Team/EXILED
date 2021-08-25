@@ -7,6 +7,8 @@
 
 namespace Exiled.Network.API.Packets
 {
+    using CommandSystem;
+
     using LiteNetLib.Utils;
 
     /// <summary>
@@ -40,6 +42,11 @@ namespace Exiled.Network.API.Packets
         public bool IsRaCommand;
 
         /// <summary>
+        /// Gets generated command.
+        /// </summary>
+        public ICommand Command;
+
+        /// <summary>
         /// Deserialize.
         /// </summary>
         /// <param name="reader">Data reader.</param>
@@ -50,6 +57,28 @@ namespace Exiled.Network.API.Packets
             Description = reader.GetString();
             Permission = reader.GetString();
             IsRaCommand = reader.GetBool();
+
+            var cmd = new TemplateCommand();
+            cmd.AssignedAddonID = AddonID;
+            cmd.DummyCommand = CommandName;
+            cmd.DummyDescription = Description;
+            cmd.Permission = Permission;
+
+            if (IsRaCommand)
+                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Add(cmd.GetType(), cmd);
+            else
+                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Add(cmd.GetType(), cmd);
+        }
+
+        /// <summary>
+        /// Unregister command.
+        /// </summary>
+        public void UnregisterCommand()
+        {
+            if (IsRaCommand)
+                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Remove(Command.GetType());
+            else
+                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Remove(Command.GetType());
         }
 
         /// <summary>

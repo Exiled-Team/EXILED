@@ -38,6 +38,7 @@ namespace Exiled.Network
         /// <param name="plugin">Plugin class.</param>
         public NPHost(MainClass plugin)
         {
+            NPManager.Singleton = this;
             this.plugin = plugin;
             Logger = new PluginLogger();
             string pluginDir = Path.Combine(Paths.Plugins, "Exiled.Network");
