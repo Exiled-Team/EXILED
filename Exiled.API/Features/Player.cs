@@ -13,6 +13,7 @@ namespace Exiled.API.Features
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
+    using System.Collections.ObjectModel;
 
     using CustomPlayerEffects;
 
