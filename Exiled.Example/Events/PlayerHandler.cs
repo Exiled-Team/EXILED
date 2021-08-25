@@ -197,7 +197,11 @@ namespace Exiled.Example.Events
         public void OnSpawning(SpawningEventArgs ev)
         {
             if (ev.RoleType == RoleType.Scientist)
+            {
                 ev.Position = new Vector3(53f, 1020f, -44f);
+                Timing.CallDelayed(1f, () => ev.Player.CurrentItem = new Firearm(ItemType.GunCrossvec));
+                Timing.CallDelayed(1f, () => ev.Player.AddItem(ItemType.GunLogicer));
+            }
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscaping(EscapingEventArgs)"/>

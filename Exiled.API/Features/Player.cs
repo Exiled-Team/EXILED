@@ -677,9 +677,11 @@ namespace Exiled.API.Features
             set
             {
                 if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                {
                     AddItem(value.Base);
+                }
 
-                Inventory.ServerSelectItem(value.Serial);
+                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
             }
         }
 
@@ -1443,6 +1445,7 @@ namespace Exiled.API.Features
                 ammo = firearm1.Ammo;
             }
 
+            itemBase.Owner = ReferenceHub;
             Inventory.UserInventory.Items[item.Serial] = itemBase;
             itemBase.OnAdded(itemBase.PickupDropModel);
 
@@ -1460,6 +1463,11 @@ namespace Exiled.API.Features
                 if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
                     flags |= FirearmStatusFlags.FlashlightEnabled;
                 firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+            }
+
+            if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+            {
+                acquisitionConfirmationTrigger.ServerConfirmAcqusition();
             }
 
             ItemsValue.Add(item);
