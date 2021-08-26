@@ -609,7 +609,7 @@ namespace Exiled.Events.Handlers
         /// Called before a player's MicroHID state is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
-        public static void OnChangingMicroHIDState(ChangingMicroHidStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
+        public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player's MicroHID energy is changed.
