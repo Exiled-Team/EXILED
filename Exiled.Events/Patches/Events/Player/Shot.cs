@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // distance = hitInfo.distance
                 new CodeInstruction(OpCodes.Ldloc_3),
 
-                // component (IDestrucible)
+                // component (IDestructible)
                 new CodeInstruction(OpCodes.Ldloc, 5),
 
                 // damage
@@ -120,7 +120,7 @@ namespace Exiled.Events.Patches.Events.Player
                     // distance = hitInfo.distance
                     new CodeInstruction(OpCodes.Ldloc_2),
 
-                    // component (IDestrucible)
+                    // component (IDestructible)
                     new CodeInstruction(OpCodes.Ldloc, 4),
 
                     // damage
