@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
