@@ -20,10 +20,6 @@ namespace Exiled.Permissions
     {
         private static Permissions instance;
 
-        private Permissions()
-        {
-        }
-
         /// <summary>
         /// Gets the permissions instance.
         /// </summary>

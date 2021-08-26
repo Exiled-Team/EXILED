@@ -1538,9 +1538,8 @@ namespace Exiled.API.Features
         /// </summary>
         public void ClearInventory()
         {
-            while (Inventory.UserInventory.Items.Count > 0)
-                Inventory.ServerRemoveItem(Inventory.UserInventory.Items.ElementAt(0).Key, null);
-            ItemsValue.Clear();
+            while (Items.Count > 0)
+                RemoveItem(Items.ElementAt(0));
         }
 
         /// <summary>

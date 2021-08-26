@@ -33,10 +33,6 @@ namespace Exiled.Events
         /// </summary>
         private int patchesCounter;
 
-        private Events()
-        {
-        }
-
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate.
         /// </summary>
