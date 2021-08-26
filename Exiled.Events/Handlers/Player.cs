@@ -285,7 +285,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before a player's MicroHID state is changed.
         /// </summary>
-        public static event CustomEventHandler<ChangingMicroHidStateEventArgs> ChangingMicroHIDState;
+        public static event CustomEventHandler<ChangingMicroHIDStateEventArgs> ChangingMicroHIDState;
 
         /// <summary>
         /// Invoked before a player's MicroHID energy is changed.
