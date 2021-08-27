@@ -1214,12 +1214,25 @@ namespace Exiled.API.Features
         /// Removes an <see cref="Item"/> from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
+        /// <param name="destroy">Whether or not to destroy the item.</param>
         /// <returns>A value indicating whether the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(Item item)
+        public bool RemoveItem(Item item, bool destroy = true)
         {
             if (!ItemsValue.Contains(item))
                 return false;
-            Inventory.ServerRemoveItem(item.Serial, null);
+            if (destroy)
+            {
+                Inventory.ServerRemoveItem(item.Serial, null);
+            }
+            else
+            {
+                if (CurrentItem != null && CurrentItem.Serial == item.Serial)
+                    Inventory.NetworkCurItem = ItemIdentifier.None;
+
+                Inventory.UserInventory.Items.Remove(item.Serial);
+                ItemsValue.Remove(item);
+                Inventory.SendItemsNextFrame = true;
+            }
 
             return true;
         }
@@ -1564,17 +1577,8 @@ namespace Exiled.API.Features
         /// <param name="destroy">Whether ot not to fully destroy the old items.</param>
         public void ClearInventory(bool destroy = true)
         {
-            if (destroy)
-            {
-                while (Items.Count > 0)
-                    RemoveItem(Items.ElementAt(0));
-            }
-            else
-            {
-                ItemsValue.Clear();
-                Inventory.UserInventory.Items.Clear();
-                Inventory.SendItemsNextFrame = true;
-            }
+            while (Items.Count > 0)
+                RemoveItem(Items.ElementAt(0), destroy);
         }
 
         /// <summary>
