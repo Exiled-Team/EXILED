@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -18,7 +19,6 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.MicroHID;
 
     using NorthwoodLib.Pools;
-#pragma warning disable SA1118
 
     using Exiled.Events.EventArgs;
 
