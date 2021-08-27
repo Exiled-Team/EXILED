@@ -1211,22 +1211,18 @@ namespace Exiled.API.Features
         public int CountItem(ItemType item) => Inventory.UserInventory.Items.Count(tempItem => tempItem.Value.ItemTypeId == item);
 
         /// <summary>
-        /// Removes an <see cref="ItemBase"/> from the player's inventory.
-        /// </summary>
-        /// <param name="id">The <see cref="ItemBase"/> id to be removed.</param>
-        /// <returns>Returns a value indicating whether the <see cref="ItemBase"/> was removed.</returns>
-        public bool RemoveItem(ushort id)
-        {
-            Inventory.ServerRemoveItem(id, null);
-            return true;
-        }
-
-        /// <summary>
         /// Removes an <see cref="Item"/> from the player's inventory.
         /// </summary>
         /// <param name="item">The <see cref="Item"/> to remove.</param>
         /// <returns>A value indicating whether the <see cref="Item"/> was removed.</returns>
-        public bool RemoveItem(Item item) => RemoveItem(item.Serial);
+        public bool RemoveItem(Item item)
+        {
+            if (!ItemsValue.Contains(item))
+                return false;
+            Inventory.ServerRemoveItem(item.Serial, null);
+
+            return true;
+        }
 
         /// <summary>
         /// Removes the held <see cref="ItemBase"/> from the player's inventory.
@@ -1419,7 +1415,22 @@ namespace Exiled.API.Features
         /// Add an item to the player's inventory.
         /// </summary>
         /// <param name="item">The item to be added.</param>
-        public void AddItem(Item item) => AddItem(item.Base, item);
+        public void AddItem(Item item)
+        {
+            try
+            {
+                if (item.Base == null)
+                {
+                    item = new Item(item.Type);
+                }
+
+                AddItem(item.Base, item);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(AddItem)}(Item): {e}");
+            }
+        }
 
         /// <summary>
         /// Adds an item to the player's inventory.
@@ -1436,44 +1447,53 @@ namespace Exiled.API.Features
         /// <returns>The item that was added.</returns>
         public Item AddItem(ItemBase itemBase, Item item = null)
         {
-            if (item == null)
-                item = Item.Get(itemBase);
-
-            int ammo = -1;
-            if (item is Firearm firearm1)
+            try
             {
-                ammo = firearm1.Ammo;
-            }
+                if (item == null)
+                    item = Item.Get(itemBase);
 
-            itemBase.Owner = ReferenceHub;
-            Inventory.UserInventory.Items[item.Serial] = itemBase;
-            itemBase.OnAdded(itemBase.PickupDropModel);
-
-            if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
-            {
-                Dictionary<ItemType, uint> dict;
-                uint code;
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
-                    dict.TryGetValue(item.Type, out code))
+                int ammo = -1;
+                if (item is Firearm firearm1)
                 {
-                    firearm.ApplyAttachmentsCode(code, true);
+                    ammo = firearm1.Ammo;
                 }
 
-                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
-                if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
-                    flags |= FirearmStatusFlags.FlashlightEnabled;
-                firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
-            }
+                itemBase.Owner = ReferenceHub;
+                Inventory.UserInventory.Items[item.Serial] = itemBase;
 
-            if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
+                {
+                    Dictionary<ItemType, uint> dict;
+                    uint code;
+                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
+                        dict.TryGetValue(item.Type, out code))
+                    {
+                        firearm.ApplyAttachmentsCode(code, true);
+                    }
+
+                    FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                    if (firearm.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages
+                        .Flashlight))
+                        flags |= FirearmStatusFlags.FlashlightEnabled;
+                    firearm.Status = new FirearmStatus(ammo > -1 ? (byte)ammo : firearm.AmmoManagerModule.MaxAmmo, flags, firearm.GetCurrentAttachmentsCode());
+                }
+
+                if (itemBase is IAcquisitionConfirmationTrigger acquisitionConfirmationTrigger)
+                {
+                    acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                }
+
+                ItemsValue.Add(item);
+
+                Inventory.SendItemsNextFrame = true;
+                return item;
+            }
+            catch (Exception e)
             {
-                acquisitionConfirmationTrigger.ServerConfirmAcqusition();
+                Log.Error($"{nameof(Player)}.{nameof(AddItem)}(ItemBase, [Item]): {e}");
             }
 
-            ItemsValue.Add(item);
-
-            Inventory.SendItemsNextFrame = true;
-            return item;
+            return null;
         }
 
         /// <summary>
@@ -1511,11 +1531,14 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Count > 0)
+            Timing.CallDelayed(0.5f, () =>
             {
-                foreach (ItemType item in newItems)
-                    AddItem(item);
-            }
+                if (newItems.Count > 0)
+                {
+                    foreach (ItemType item in newItems)
+                        AddItem(item);
+                }
+            });
         }
 
         /// <summary>
@@ -1529,17 +1552,29 @@ namespace Exiled.API.Features
             if (newItems.Count > 0)
             {
                 foreach (Item item in newItems)
-                    AddItem(item);
+                {
+                    AddItem(item.Base == null ? new Item(item.Type) : item);
+                }
             }
         }
 
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        public void ClearInventory()
+        /// <param name="destroy">Whether ot not to fully destroy the old items.</param>
+        public void ClearInventory(bool destroy = true)
         {
-            while (Items.Count > 0)
-                RemoveItem(Items.ElementAt(0));
+            if (destroy)
+            {
+                while (Items.Count > 0)
+                    RemoveItem(Items.ElementAt(0));
+            }
+            else
+            {
+                ItemsValue.Clear();
+                Inventory.UserInventory.Items.Clear();
+                Inventory.SendItemsNextFrame = true;
+            }
         }
 
         /// <summary>
