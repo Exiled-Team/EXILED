@@ -36,12 +36,21 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(0, new[]
             {
+                // Player.Get(GameObject)
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+
+                // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
+
+                // new IntercomSpeakingEventArgs(Player, true)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(IntercomSpeakingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+
+                // Handlers.Player.OnIntercomSpeaking(IntercomSpeakingEventArgs)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnIntercomSpeaking))),
+
+                // if (!IntercomSpeakingEventArgs.IsAllowed) return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(IntercomSpeakingEventArgs), nameof(IntercomSpeakingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
