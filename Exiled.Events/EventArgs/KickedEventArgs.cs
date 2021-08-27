@@ -19,7 +19,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="KickedEventArgs"/> class.
         /// </summary>
-        /// <param name="target"><inheritdoc cref="Player"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public KickedEventArgs(Player target, string reason, bool isAllowed = true)
