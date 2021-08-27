@@ -32,8 +32,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var ev = generator.DeclareLocal(typeof(InteractedEventArgs));
-
             newInstructions.InsertRange(0, new[]
             {
                 // Handlers.Player.OnInteracted(new InteractedEventArgs(API.Features.Player.Get(this.gameObject)));
