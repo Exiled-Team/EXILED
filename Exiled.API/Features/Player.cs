@@ -909,9 +909,9 @@ namespace Exiled.API.Features
             set
             {
                 if (value)
-                    ReferenceHub.characterClassManager.CmdRequestHideTag();
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestHideTag();
                 else
-                    ReferenceHub.characterClassManager.CallCmdRequestShowTag(false);
+                    ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
             }
         }
 
