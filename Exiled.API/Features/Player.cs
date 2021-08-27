@@ -1522,13 +1522,13 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        public void ResetInventory(List<ItemBase> newItems)
+        public void ResetInventory(List<Item> newItems)
         {
             ClearInventory();
 
             if (newItems.Count > 0)
             {
-                foreach (ItemBase item in newItems)
+                foreach (Item item in newItems)
                     AddItem(item);
             }
         }
