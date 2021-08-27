@@ -7,13 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
-#pragma warning disable SA1118
 
     using NorthwoodLib.Pools;
 
