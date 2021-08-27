@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             // Declare an "UsingRadioBatteryEventArgs" local variable.
             var ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
 
-            // var ev = new UsingRadioBattery(this, Player.Get(base.Owner), num);
+            // var ev = new UsingRadioBatteryEventArgs(this, Player.Get(base.Owner), num);
             //
             // Handlers.Player.OnUsingRadioBattery(ev);
             //
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                // var ev = new UsingRadioBattery(...)
+                // var ev = new UsingRadioBatteryEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingRadioBatteryEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
