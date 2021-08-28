@@ -37,8 +37,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
-            Log.Debug(newInstructions[index]);
-
             // Handlers.Player.OnKicked(new KickedEventArgs(Player.Get(player), message))
             newInstructions.InsertRange(index, new[]
             {
