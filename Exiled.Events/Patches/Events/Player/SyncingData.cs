@@ -7,16 +7,15 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+#pragma warning restore SA1313
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
     using NorthwoodLib.Pools;
-    using Security;
 
     using UnityEngine;
 
