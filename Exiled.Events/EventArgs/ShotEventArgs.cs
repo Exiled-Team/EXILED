@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations after a player has fired a weapon.
+    /// Contains all information after a player has fired a weapon.
     /// </summary>
     public class ShotEventArgs : EventArgs
     {
@@ -31,9 +31,9 @@ namespace Exiled.Events.EventArgs
             Damage = damage;
             Distance = hit.distance;
 
-            if (destructible is HitboxIdentity)
+            if (destructible is HitboxIdentity identity)
             {
-                Hitbox = (HitboxIdentity)destructible;
+                Hitbox = identity;
                 Target = Player.Get(Hitbox._hub);
             }
         }

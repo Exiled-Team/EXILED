@@ -10,6 +10,8 @@ namespace Exiled.CustomItems.API
     using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
 
     using Interactables.Interobjects.DoorUtils;
@@ -39,6 +41,35 @@ namespace Exiled.CustomItems.API
             SpawnLocation.Inside914,
             SpawnLocation.InsideHid,
         };
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items and/or customitems names, clearing any items it already possess.
+        /// </summary>
+        /// <param name="player">The player to which items will be given.</param>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
+        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
+        {
+            foreach (Item item in player.Items)
+            {
+                if (CustomItem.TryGet(item, out CustomItem customItem))
+                    customItem.TrackedSerials.Remove(item.Serial);
+            }
+
+            player.ClearInventory();
+
+            foreach (string item in newItems)
+            {
+                if (Enum.TryParse(item, true, out ItemType parsedItem))
+                {
+                    player.AddItem(parsedItem);
+                }
+                else if (!CustomItem.TryGive(player, item, displayMessage))
+                {
+                    Log.Debug($"\"{item}\" is not a valid item name, nor a custom item name.", CustomItems.Instance.Config.Debug);
+                }
+            }
+        }
 
         /// <summary>
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.

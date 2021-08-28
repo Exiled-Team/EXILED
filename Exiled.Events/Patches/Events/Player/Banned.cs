@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
             API.Features.Player issuerPlayer;
             if (ban.Issuer.Contains("("))
             {
-                issuerPlayer = API.Features.Player.Get(ban.Issuer.Substring(ban.Issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+                issuerPlayer = API.Features.Player.Get(ban.Issuer.Substring(ban.Issuer.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
             }
             else
             {
