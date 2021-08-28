@@ -2824,11 +2824,11 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Components.CollisionHandler.Grenade
   nameWithType: CollisionHandler.Grenade
-- uid: Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenades.Grenade)
+- uid: Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenade)
   name: Init(GameObject, Grenade)
-  href: api/Exiled.API.Features.Components.CollisionHandler.html#Exiled_API_Features_Components_CollisionHandler_Init_UnityEngine_GameObject_Grenades_Grenade_
-  commentId: M:Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenades.Grenade)
-  fullName: Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject, Grenades.Grenade)
+  href: api/Exiled.API.Features.Components.CollisionHandler.html#Exiled_API_Features_Components_CollisionHandler_Init_UnityEngine_GameObject_Grenade_
+  commentId: M:Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenade)
+  fullName: Exiled.API.Features.Components.CollisionHandler.Init(UnityEngine.GameObject, Grenade)
   nameWithType: CollisionHandler.Init(GameObject, Grenade)
 - uid: Exiled.API.Features.Components.CollisionHandler.Init*
   name: Init
@@ -7972,11 +7972,11 @@ references:
   isSpec: "True"
   fullName: Exiled.CustomItems.API.Components.CollisionHandler.Grenade
   nameWithType: CollisionHandler.Grenade
-- uid: Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenades.Grenade)
+- uid: Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenade)
   name: Init(GameObject, Grenade)
-  href: api/Exiled.CustomItems.API.Components.CollisionHandler.html#Exiled_CustomItems_API_Components_CollisionHandler_Init_UnityEngine_GameObject_Grenades_Grenade_
-  commentId: M:Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenades.Grenade)
-  fullName: Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject, Grenades.Grenade)
+  href: api/Exiled.CustomItems.API.Components.CollisionHandler.html#Exiled_CustomItems_API_Components_CollisionHandler_Init_UnityEngine_GameObject_Grenade_
+  commentId: M:Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject,Grenade)
+  fullName: Exiled.CustomItems.API.Components.CollisionHandler.Init(UnityEngine.GameObject, Grenade)
   nameWithType: CollisionHandler.Init(GameObject, Grenade)
 - uid: Exiled.CustomItems.API.Components.CollisionHandler.Init*
   name: Init
@@ -8171,13 +8171,13 @@ references:
   commentId: M:Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor(Inventory.SyncItemInfo,Exiled.Events.EventArgs.UpgradingItemsEventArgs)
   fullName: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Exiled.Events.EventArgs.UpgradingItemsEventArgs)
   nameWithType: UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, UpgradingItemsEventArgs)
-- uid: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor(Inventory.SyncItemInfo,Scp914.Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914.Scp914Knob,System.Boolean)
+- uid: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor(Inventory.SyncItemInfo,Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914Knob,System.Boolean)
   name: UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, List<Player>, List<Pickup>, Scp914Knob, Boolean)
-  href: api/Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.html#Exiled_CustomItems_API_EventArgs_UpgradingEventArgs__ctor_Inventory_SyncItemInfo_Scp914_Scp914Machine_System_Collections_Generic_List_Exiled_API_Features_Player__System_Collections_Generic_List_Pickup__Scp914_Scp914Knob_System_Boolean_
-  commentId: M:Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor(Inventory.SyncItemInfo,Scp914.Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914.Scp914Knob,System.Boolean)
+  href: api/Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.html#Exiled_CustomItems_API_EventArgs_UpgradingEventArgs__ctor_Inventory_SyncItemInfo_Scp914Machine_System_Collections_Generic_List_Exiled_API_Features_Player__System_Collections_Generic_List_Pickup__Scp914Knob_System_Boolean_
+  commentId: M:Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor(Inventory.SyncItemInfo,Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914Knob,System.Boolean)
   name.vb: UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, List(Of Player), List(Of Pickup), Scp914Knob, Boolean)
-  fullName: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914.Scp914Machine, System.Collections.Generic.List<Exiled.API.Features.Player>, System.Collections.Generic.List<Pickup>, Scp914.Scp914Knob, System.Boolean)
-  fullName.vb: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914.Scp914Machine, System.Collections.Generic.List(Of Exiled.API.Features.Player), System.Collections.Generic.List(Of Pickup), Scp914.Scp914Knob, System.Boolean)
+  fullName: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, System.Collections.Generic.List<Exiled.API.Features.Player>, System.Collections.Generic.List<Pickup>, Scp914Knob, System.Boolean)
+  fullName.vb: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, System.Collections.Generic.List(Of Exiled.API.Features.Player), System.Collections.Generic.List(Of Pickup), Scp914Knob, System.Boolean)
   nameWithType: UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, List<Player>, List<Pickup>, Scp914Knob, Boolean)
   nameWithType.vb: UpgradingEventArgs.UpgradingEventArgs(Inventory.SyncItemInfo, Scp914Machine, List(Of Player), List(Of Pickup), Scp914Knob, Boolean)
 - uid: Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.#ctor*
@@ -12265,11 +12265,11 @@ references:
   commentId: T:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs
   fullName: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs
   nameWithType: ChangingKnobSettingEventArgs
-- uid: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor(Exiled.API.Features.Player,Scp914.Scp914Knob,System.Boolean)
+- uid: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor(Exiled.API.Features.Player,Scp914Knob,System.Boolean)
   name: ChangingKnobSettingEventArgs(Player, Scp914Knob, Boolean)
-  href: api/Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.html#Exiled_Events_EventArgs_ChangingKnobSettingEventArgs__ctor_Exiled_API_Features_Player_Scp914_Scp914Knob_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor(Exiled.API.Features.Player,Scp914.Scp914Knob,System.Boolean)
-  fullName: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.ChangingKnobSettingEventArgs(Exiled.API.Features.Player, Scp914.Scp914Knob, System.Boolean)
+  href: api/Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.html#Exiled_Events_EventArgs_ChangingKnobSettingEventArgs__ctor_Exiled_API_Features_Player_Scp914Knob_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor(Exiled.API.Features.Player,Scp914Knob,System.Boolean)
+  fullName: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.ChangingKnobSettingEventArgs(Exiled.API.Features.Player, Scp914Knob, System.Boolean)
   nameWithType: ChangingKnobSettingEventArgs.ChangingKnobSettingEventArgs(Player, Scp914Knob, Boolean)
 - uid: Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.#ctor*
   name: ChangingKnobSettingEventArgs
@@ -17600,11 +17600,11 @@ references:
   commentId: T:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs
   fullName: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs
   nameWithType: ThrowingGrenadeEventArgs
-- uid: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,Grenades.GrenadeManager,Exiled.API.Enums.GrenadeType,System.Boolean,System.Double,System.Boolean)
+- uid: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,GrenadeManager,Exiled.API.Enums.GrenadeType,System.Boolean,System.Double,System.Boolean)
   name: ThrowingGrenadeEventArgs(Player, GrenadeManager, GrenadeType, Boolean, Double, Boolean)
-  href: api/Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.html#Exiled_Events_EventArgs_ThrowingGrenadeEventArgs__ctor_Exiled_API_Features_Player_Grenades_GrenadeManager_Exiled_API_Enums_GrenadeType_System_Boolean_System_Double_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,Grenades.GrenadeManager,Exiled.API.Enums.GrenadeType,System.Boolean,System.Double,System.Boolean)
-  fullName: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.ThrowingGrenadeEventArgs(Exiled.API.Features.Player, Grenades.GrenadeManager, Exiled.API.Enums.GrenadeType, System.Boolean, System.Double, System.Boolean)
+  href: api/Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.html#Exiled_Events_EventArgs_ThrowingGrenadeEventArgs__ctor_Exiled_API_Features_Player_GrenadeManager_Exiled_API_Enums_GrenadeType_System_Boolean_System_Double_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,GrenadeManager,Exiled.API.Enums.GrenadeType,System.Boolean,System.Double,System.Boolean)
+  fullName: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.ThrowingGrenadeEventArgs(Exiled.API.Features.Player, GrenadeManager, Exiled.API.Enums.GrenadeType, System.Boolean, System.Double, System.Boolean)
   nameWithType: ThrowingGrenadeEventArgs.ThrowingGrenadeEventArgs(Player, GrenadeManager, GrenadeType, Boolean, Double, Boolean)
 - uid: Exiled.Events.EventArgs.ThrowingGrenadeEventArgs.#ctor*
   name: ThrowingGrenadeEventArgs
@@ -17929,13 +17929,13 @@ references:
   commentId: T:Exiled.Events.EventArgs.UpgradingItemsEventArgs
   fullName: Exiled.Events.EventArgs.UpgradingItemsEventArgs
   nameWithType: UpgradingItemsEventArgs
-- uid: Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor(Scp914.Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914.Scp914Knob,System.Boolean)
+- uid: Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor(Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914Knob,System.Boolean)
   name: UpgradingItemsEventArgs(Scp914Machine, List<Player>, List<Pickup>, Scp914Knob, Boolean)
-  href: api/Exiled.Events.EventArgs.UpgradingItemsEventArgs.html#Exiled_Events_EventArgs_UpgradingItemsEventArgs__ctor_Scp914_Scp914Machine_System_Collections_Generic_List_Exiled_API_Features_Player__System_Collections_Generic_List_Pickup__Scp914_Scp914Knob_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor(Scp914.Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914.Scp914Knob,System.Boolean)
+  href: api/Exiled.Events.EventArgs.UpgradingItemsEventArgs.html#Exiled_Events_EventArgs_UpgradingItemsEventArgs__ctor_Scp914Machine_System_Collections_Generic_List_Exiled_API_Features_Player__System_Collections_Generic_List_Pickup__Scp914Knob_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor(Scp914Machine,System.Collections.Generic.List{Exiled.API.Features.Player},System.Collections.Generic.List{Pickup},Scp914Knob,System.Boolean)
   name.vb: UpgradingItemsEventArgs(Scp914Machine, List(Of Player), List(Of Pickup), Scp914Knob, Boolean)
-  fullName: Exiled.Events.EventArgs.UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914.Scp914Machine, System.Collections.Generic.List<Exiled.API.Features.Player>, System.Collections.Generic.List<Pickup>, Scp914.Scp914Knob, System.Boolean)
-  fullName.vb: Exiled.Events.EventArgs.UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914.Scp914Machine, System.Collections.Generic.List(Of Exiled.API.Features.Player), System.Collections.Generic.List(Of Pickup), Scp914.Scp914Knob, System.Boolean)
+  fullName: Exiled.Events.EventArgs.UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914Machine, System.Collections.Generic.List<Exiled.API.Features.Player>, System.Collections.Generic.List<Pickup>, Scp914Knob, System.Boolean)
+  fullName.vb: Exiled.Events.EventArgs.UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914Machine, System.Collections.Generic.List(Of Exiled.API.Features.Player), System.Collections.Generic.List(Of Pickup), Scp914Knob, System.Boolean)
   nameWithType: UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914Machine, List<Player>, List<Pickup>, Scp914Knob, Boolean)
   nameWithType.vb: UpgradingItemsEventArgs.UpgradingItemsEventArgs(Scp914Machine, List(Of Player), List(Of Pickup), Scp914Knob, Boolean)
 - uid: Exiled.Events.EventArgs.UpgradingItemsEventArgs.#ctor*
