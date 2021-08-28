@@ -43,7 +43,7 @@ namespace Exiled.Events.EventArgs
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the item can be picked up.
+        /// Gets or sets a value indicating whether the item can be picked up.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
