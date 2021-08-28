@@ -13,14 +13,13 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
     using InventorySystem.Items.MicroHID;
 
     using NorthwoodLib.Pools;
-
-    using Exiled.Events.EventArgs;
 
     using UnityEngine;
 
