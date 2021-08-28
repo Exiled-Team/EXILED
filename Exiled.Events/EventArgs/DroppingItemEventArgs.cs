@@ -40,9 +40,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the item to be dropped.
+        /// Gets the item to be dropped.
         /// </summary>
-        public Item Item { get; set; }
+        public Item Item { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be dropped.
