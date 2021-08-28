@@ -128,9 +128,14 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DroppingItemEventArgs> DroppingItem;
 
         /// <summary>
-        /// Invoked before picking up an ammo.
+        /// Invoked before picking up ammo.
         /// </summary>
         public static event CustomEventHandler<PickingUpAmmoEventArgs> PickingUpAmmo;
+
+        /// <summary>
+        /// Invoked before picking up armor.
+        /// </summary>
+        public static event CustomEventHandler<PickingUpArmorEventArgs> PickingUpArmor;
 
         /// <summary>
         /// Invoked before picking up an item.
@@ -420,10 +425,16 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingItem(DroppingItemEventArgs ev) => DroppingItem.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player picks up an ammo.
+        /// Called before a player picks up ammo.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpAmmoEventArgs"/> instance.</param>
         public static void OnPickingUpAmmo(PickingUpAmmoEventArgs ev) => PickingUpAmmo.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player picks up armor.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpArmorEventArgs"/> instance.</param>
+        public static void OnPickingUpArmor(PickingUpArmorEventArgs ev) => PickingUpArmor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a user picks up an item.

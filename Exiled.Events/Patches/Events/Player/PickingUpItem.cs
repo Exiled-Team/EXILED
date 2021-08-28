@@ -28,37 +28,20 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (__instance.TargetPickup is AmmoPickup ammoPickup)
+                PickingUpItemEventArgs ev =
+                    new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+
+                Handlers.Player.OnPickingUpItem(ev);
+                __instance.TargetPickup.Info.Serial = ev.Pickup.Serial;
+
+                // Allow future pick up of this item
+                if (!ev.IsAllowed)
                 {
-                    PickingUpAmmoEventArgs ammoEv = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), ammoPickup);
-
-                    Handlers.Player.OnPickingUpAmmo(ammoEv);
-
-                    if (!ammoEv.IsAllowed)
-                    {
-                        __instance.TargetPickup.Info.InUse = false;
-                        __instance.TargetPickup.NetworkInfo = __instance.TargetPickup.Info;
-                    }
-
-                    __instance.TargetPickup.Info.Serial = ammoEv.Pickup.Serial;
-                    return ammoEv.IsAllowed;
+                    __instance.TargetPickup.Info.InUse = false;
+                    __instance.TargetPickup.NetworkInfo = __instance.TargetPickup.Info;
                 }
-                else
-                {
-                    PickingUpItemEventArgs ev = new PickingUpItemEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
 
-                    Handlers.Player.OnPickingUpItem(ev);
-                    __instance.TargetPickup.Info.Serial = ev.Pickup.Serial;
-
-                    // Allow future pick up of this item
-                    if (!ev.IsAllowed)
-                    {
-                        __instance.TargetPickup.Info.InUse = false;
-                        __instance.TargetPickup.NetworkInfo = __instance.TargetPickup.Info;
-                    }
-
-                    return ev.IsAllowed;
-                }
+                return ev.IsAllowed;
             }
             catch (Exception exception)
             {
