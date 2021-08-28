@@ -23,9 +23,20 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BlinkingEventArgs> Blinking;
 
         /// <summary>
+        /// Invoked before a tantrum is placed.
+        /// </summary>
+        public static event CustomEventHandler<PlacingTantrumEventArgs> PlacingTantrum;
+
+        /// <summary>
         /// Called before players near SCP-173 blink.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs"/> instance.</param>
         public static void OnBlinking(BlinkingEventArgs ev) => Blinking.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a tantrum is placed.
+        /// </summary>
+        /// <param name="ev">The <see cref="PlacingTantrumEventArgs"/> instance.</param>
+        public static void OnPlacingTantrum(PlacingTantrumEventArgs ev) => PlacingTantrum.InvokeSafely(ev);
     }
 }
