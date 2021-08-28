@@ -7,43 +7,52 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="ServerConsole.Disconnect(GameObject, string)"/>.
-    /// Adds the <see cref="Player.Kicked"/> event.
+    /// Adds the <see cref="Handlers.Player.Kicked"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ServerConsole), nameof(ServerConsole.Disconnect), new[] { typeof(GameObject), typeof(string) })]
     internal static class Kicked
     {
-        private static bool Prefix(GameObject player, ref string message)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var offset = 3;
+
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
+
+            Log.Debug(newInstructions[index]);
+
+            // Handlers.Player.OnKicked(new KickedEventArgs(Player.Get(player), message))
+            newInstructions.InsertRange(index, new[]
             {
-                if (player == null)
-                    return false;
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(KickedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnKicked))),
+            });
 
-                KickedEventArgs ev = new KickedEventArgs(API.Features.Player.Get(player), message);
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
 
-                Player.OnKicked(ev);
-
-                message = ev.Reason;
-
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Kicked: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
