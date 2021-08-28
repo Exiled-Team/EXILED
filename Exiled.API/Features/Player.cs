@@ -1478,6 +1478,10 @@ namespace Exiled.API.Features
 
                 itemBase.Owner = ReferenceHub;
                 Inventory.UserInventory.Items[item.Serial] = itemBase;
+                if (itemBase.PickupDropModel != null)
+                {
+                    itemBase.OnAdded(itemBase.PickupDropModel);
+                }
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {

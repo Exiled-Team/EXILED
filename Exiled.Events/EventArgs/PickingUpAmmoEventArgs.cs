@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all informations before a player picks up an ammo.
+    /// Contains all information before a player picks up an ammo.
     /// </summary>
     public class PickingUpAmmoEventArgs : PickingUpItemEventArgs
     {
