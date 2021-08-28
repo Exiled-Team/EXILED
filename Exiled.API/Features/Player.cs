@@ -837,6 +837,11 @@ namespace Exiled.API.Features
         public ZoneType Zone => CurrentRoom.Zone;
 
         /// <summary>
+        /// Gets all currently active <see cref="PlayerEffect">status effects</see>.
+        /// </summary>
+        public IEnumerable<PlayerEffect> ActiveEffects => referenceHub.playerEffectsController.AllEffects.Values.Where(effect => effect.Intensity > 0);
+
+        /// <summary>
         /// Gets or sets the player's group.
         /// </summary>
         public UserGroup Group
