@@ -69,6 +69,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the color of the room's lights.
+        /// </summary>
+        public Color RoomColor
+        {
+            get => (Color)FlickerableLightController.WarheadLightColor;
+            set
+            {
+                FlickerableLightController.WarheadLightColor = value;
+                FlickerableLightController.WarheadLightOverride = true;
+            }
+        }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera079"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Camera079> Cameras { get; private set; }
@@ -85,6 +98,15 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
+
+        /// <summary>
+        /// Resets the room color to defualt.
+        /// </summary>
+        public void ResetRoomColor()
+        {
+            FlickerableLightController.WarheadLightColor = global::FlickerableLightController.DefaultWarheadColor;
+            FlickerableLightController.WarheadLightOverride = false;
+        }
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
