@@ -80,16 +80,16 @@ namespace Exiled.Events.Patches.Fixes
 
                 // if (!Item.Get(this) is FlashGrenade flash)
                 //    goto SKIP_LABEL
-                new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, item.LocalIndex).WithLabels(notExplosiveLabel),
                 new CodeInstruction(OpCodes.Isinst, typeof(FlashGrenade)),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, flash.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse, skipLabel),
 
                 // timeGrenade._fuseTime = flash.FuseTime
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.FuseTime))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
 
