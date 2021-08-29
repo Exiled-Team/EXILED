@@ -99,12 +99,7 @@ namespace Exiled.API.Features.Items
         public float FuseTime
         {
             get => Projectile._fuseTime;
-            set
-            {
-                Log.Debug($"Setting fuse time to {value}");
-                Projectile._fuseTime = value;
-                Log.Debug($"Fuse time now {Projectile._fuseTime}");
-            }
+            set => Projectile._fuseTime = value;
         }
 
         /// <summary>
