@@ -19,7 +19,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
-        public static TimeSpan ElapsedTime => RoundStart.RoundLenght;
+        public static TimeSpan ElapsedTime => RoundStart.RoundLength;
 
         /// <summary>
         /// Gets the start time of the round.
@@ -50,10 +50,34 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Restarts the round.
+        /// Gets the number of players who have escaped as <see cref="RoleType.ClassD"/>.
         /// </summary>
-        [Obsolete("Use Restart(bool, ServerStatic.NextRoundAction) instead")]
-        public static void Restart() => Restart(overrideRestartAction: false);
+        public static int EscapedDClasses => RoundSummary.escaped_ds;
+
+        /// <summary>
+        /// Gets the number of players who have escaped as <see cref="RoleType.Scientist"/>.
+        /// </summary>
+        public static int EscapedScientists => RoundSummary.escaped_scientists;
+
+        /// <summary>
+        /// Gets the number of kills.
+        /// </summary>
+        public static int Kills => RoundSummary.Kills;
+
+        /// <summary>
+        /// Gets the number of kills made by SCPs.
+        /// </summary>
+        public static int KillsByScp => RoundSummary.kills_by_scp;
+
+        /// <summary>
+        /// Gets the number of kills made by frag grenades.
+        /// </summary>
+        public static int KillsByFrag => RoundSummary.kills_by_frag;
+
+        /// <summary>
+        /// Gets the number of players who have been turned into zombies.
+        /// </summary>
+        public static int ChangedIntoZombies => RoundSummary.changed_into_zombies;
 
         /// <summary>
         /// Restarts the round with custom settings.

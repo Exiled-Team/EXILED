@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1313
     using HarmonyLib;
 
     using static Exiled.Events.Events;
@@ -23,7 +22,7 @@ namespace Exiled.Events.Patches.Generic
             if (!Instance.Config.IsNameTrackingEnabled)
                 return;
 
-            ServerConsole._serverName += $"<color=#00000000><size=1>Exiled {Instance.RequiredExiledVersion.ToString(3)}</size></color>";
+            ServerConsole._serverName += $"<color=#00000000><size=1>Exiled {Instance.Version.ToString(3)}</size></color>";
         }
     }
 }

@@ -7,49 +7,53 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using InventorySystem.Items.Firearms.BasicMessages;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="WeaponManager.CallCmdReload(bool)"/>.
+    /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived"/>.
     /// Adds the <see cref="Player.ReloadingWeapon"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(WeaponManager), nameof(WeaponManager.CallCmdReload))]
+    [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class ReloadingWeapon
     {
-        private static bool Prefix(WeaponManager __instance, bool animationOnly)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            const int offset = -7;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_1) + offset;
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._iawRateLimit.CanExecute(false))
-                    return false;
+                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReloadingWeaponEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnReloadingWeapon))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReloadingWeaponEventArgs), nameof(ReloadingWeaponEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+            });
 
-                int itemIndex = __instance._hub.inventory.GetItemIndex();
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                if (itemIndex < 0 || itemIndex >= __instance._hub.inventory.items.Count ||
-                    (__instance.curWeapon < 0 || __instance._hub.inventory.curItem !=
-                        __instance.weapons[__instance.curWeapon].inventoryID) ||
-                    __instance._hub.inventory.items[itemIndex].durability >=
-                    (double)__instance.weapons[__instance.curWeapon].maxAmmo)
-                    return false;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                var ev = new ReloadingWeaponEventArgs(API.Features.Player.Get(__instance.gameObject), animationOnly);
-
-                Player.OnReloadingWeapon(ev);
-
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ReloadingWeapon: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

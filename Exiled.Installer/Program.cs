@@ -23,6 +23,8 @@ namespace Exiled.Installer
 
     using Octokit;
 
+    using Version = SemVer.Version;
+
     internal enum PathResolution
     {
         UNDEFINED,
@@ -43,8 +45,8 @@ namespace Exiled.Installer
         internal const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
-        private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar, TargetSubfolders);
-        private static readonly Version VersionLimit = new Version(2, 0, 0);
+        private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
+        private static readonly Version VersionLimit = new Version("2.0.0");
         private static readonly uint SecondsWaitForDownload = 480;
 
         private static readonly string Header = $"{Assembly.GetExecutingAssembly().GetName().Name}-{Assembly.GetExecutingAssembly().GetName().Version}";
@@ -152,11 +154,14 @@ namespace Exiled.Installer
                 Environment.Exit(0);
         }
 
-        private static async Task<IEnumerable<Release>> GetReleases() =>
-            (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
-                .Where(r => SemVer2Version.TryParse(r.TagName, out var version)
-                && VersionComparer.CustomVersionGreaterOrEquals(version.Backwards, VersionLimit))
-                .OrderByDescending(r => r.CreatedAt.Ticks);
+        private static async Task<IEnumerable<Release>> GetReleases()
+        {
+            var releases = (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+                .Where(r => Version.TryParse(r.TagName, out Version version)
+                    && (version > VersionLimit));
+
+            return releases.OrderByDescending(r => r.CreatedAt.Ticks);
+        }
 
         private static string FormatRelease(Release r)
             => FormatRelease(r, false);
@@ -290,11 +295,14 @@ namespace Exiled.Installer
 
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
+            Console.WriteLine("Trying to find release..");
+            Version targetVersion = args.TargetVersion != null ? new Version(args.TargetVersion) : VersionLimit;
+
             foreach (var r in releases)
             {
                 release = r;
 
-                if (args.TargetVersion != null && r.TagName.Equals(args.TargetVersion, StringComparison.OrdinalIgnoreCase))
+                if ((targetVersion == new Version(r.TagName)))
                     return true;
 
                 if ((r.Prerelease && args.PreReleases) || !r.Prerelease)

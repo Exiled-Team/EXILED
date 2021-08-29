@@ -7,72 +7,52 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
-    using System.Linq;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.CallCmdSwitchAWButton"/>.
-    /// Adds the <see cref="Player.ActivatingWarheadPanel"/> event.
+    /// Patch the <see cref="PlayerInteract.UserCode_CmdSwitchAWButton"/>.
+    /// Adds the <see cref="Handlers.Player.ActivatingWarheadPanel"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdSwitchAWButton))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdSwitchAWButton))]
     internal static class ActivatingWarheadPanel
     {
-        private static bool Prefix(PlayerInteract __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            const int offset = 0;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldloc_0) + offset;
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!__instance._playerInteractRateLimit.CanExecute()
-                    || (__instance._hc.CufferId > 0 && !PlayerInteract.CanDisarmedInteract))
-                {
-                    return false;
-                }
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                GameObject gameObject = GameObject.Find("OutsitePanelScript");
-                if (!__instance.ChckDis(gameObject.transform.position))
-                    return false;
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                var itemById = __instance._inv.GetItemByID(__instance._inv.curItem);
-                if (!__instance._sr.BypassMode && itemById == null)
-                    return false;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                const string PANEL_PERM = "CONT_LVL_3";
-
-                // Deprecated
-                var list = ListPool<string>.Shared.Rent();
-                list.Add(PANEL_PERM);
-
-                var ev = new ActivatingWarheadPanelEventArgs(
-                    API.Features.Player.Get(__instance.gameObject),
-                    list,
-                    __instance._sr.BypassMode || itemById.permissions.Contains(PANEL_PERM));
-
-                Player.OnActivatingWarheadPanel(ev);
-                ListPool<string>.Shared.Return(list);
-
-                if (ev.IsAllowed)
-                {
-                    gameObject.GetComponentInParent<AlphaWarheadOutsitePanel>().NetworkkeycardEntered = true;
-                    __instance.OnInteract();
-                }
-
-                return false;
-            }
-            catch (Exception exception)
-            {
-                API.Features.Log.Error($"{typeof(ActivatingWarheadPanel).FullName}.{nameof(Prefix)}:\n{exception}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

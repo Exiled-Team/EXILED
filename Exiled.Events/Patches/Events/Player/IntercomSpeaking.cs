@@ -7,59 +7,58 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="Intercom.CallCmdSetTransmit(bool)"/>.
+    /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
     /// Adds the <see cref="Player.IntercomSpeaking"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Intercom), nameof(Intercom.CallCmdSetTransmit))]
+    [HarmonyPatch(typeof(Intercom), nameof(Intercom.RequestTransmission))]
     internal static class IntercomSpeaking
     {
-        private static bool Prefix(Intercom __instance, bool player)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+
+            newInstructions.InsertRange(0, new[]
             {
-                if (!__instance._interactRateLimit.CanExecute(true) || Intercom.AdminSpeaking)
-                    return false;
+                // Player.Get(GameObject)
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
 
-                var ev = new IntercomSpeakingEventArgs(player ? API.Features.Player.Get(__instance.gameObject) : null);
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                if (player)
-                {
-                    if (!__instance.ServerAllowToSpeak())
-                        return false;
+                // new IntercomSpeakingEventArgs(Player, true)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(IntercomSpeakingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
 
-                    Player.OnIntercomSpeaking(ev);
+                // Handlers.Player.OnIntercomSpeaking(IntercomSpeakingEventArgs)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnIntercomSpeaking))),
 
-                    if (ev.IsAllowed)
-                        Intercom.host.RequestTransmission(__instance.gameObject);
-                }
-                else
-                {
-                    if (!(Intercom.host.Networkspeaker == __instance.gameObject))
-                        return false;
+                // if (!IntercomSpeakingEventArgs.IsAllowed) return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(IntercomSpeakingEventArgs), nameof(IntercomSpeakingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                    Player.OnIntercomSpeaking(ev);
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
 
-                    if (ev.IsAllowed)
-                        Intercom.host.RequestTransmission(null);
-                }
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.IntercomSpeaking: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

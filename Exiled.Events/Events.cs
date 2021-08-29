@@ -9,10 +9,12 @@ namespace Exiled.Events
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.Events.Patches.Events.Server;
     using Exiled.Loader;
 
     using HarmonyLib;
@@ -24,17 +26,12 @@ namespace Exiled.Events
     /// </summary>
     public sealed class Events : Plugin<Config>
     {
-#pragma warning disable 0618
-        private static readonly Lazy<Events> LazyInstance = new Lazy<Events>(() => new Events());
+        private static Events instance;
 
         /// <summary>
         /// The below variable is used to increment the name of the harmony instance, otherwise harmony will not work upon a plugin reload.
         /// </summary>
         private int patchesCounter;
-
-        private Events()
-        {
-        }
 
         /// <summary>
         /// The custom <see cref="EventHandler"/> delegate.
@@ -52,13 +49,7 @@ namespace Exiled.Events
         /// <summary>
         /// Gets the plugin instance.
         /// </summary>
-        public static Events Instance => LazyInstance.Value;
-
-        /// <summary>
-        /// Gets a list of types and methods for which EXILED patches should not be run.
-        /// </summary>
-        [Obsolete("Use DisabledPatchesHashSet instead.")]
-        public static List<MethodBase> DisabledPatches { get; } = new List<MethodBase>();
+        public static Events Instance => instance;
 
         /// <summary>
         /// Gets a set of types and methods for which EXILED patches should not be run.
@@ -76,17 +67,21 @@ namespace Exiled.Events
         /// <inheritdoc/>
         public override void OnEnabled()
         {
+            instance = this;
             base.OnEnabled();
 
+            Stopwatch watch = Stopwatch.StartNew();
             Patch();
 
-            SceneManager.sceneUnloaded += InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            watch.Stop();
+            Log.Info($"Patching completed in {watch.Elapsed}");
+            SceneManager.sceneUnloaded += Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers += InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound += InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted += InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole += InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated += InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers += Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound += Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted += Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole += Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated += Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
@@ -102,15 +97,14 @@ namespace Exiled.Events
             Unpatch();
 
             DisabledPatchesHashSet.Clear();
-            DisabledPatches.Clear();
 
-            SceneManager.sceneUnloaded -= InternalHandlers.SceneUnloaded.OnSceneUnloaded;
+            SceneManager.sceneUnloaded -= Handlers.Internal.SceneUnloaded.OnSceneUnloaded;
 
-            Handlers.Server.WaitingForPlayers -= InternalHandlers.Round.OnWaitingForPlayers;
-            Handlers.Server.RestartingRound -= InternalHandlers.Round.OnRestartingRound;
-            Handlers.Server.RoundStarted -= InternalHandlers.Round.OnRoundStarted;
-            Handlers.Player.ChangingRole -= InternalHandlers.Round.OnChangingRole;
-            Handlers.Map.Generated -= InternalHandlers.MapGenerated.OnMapGenerated;
+            Handlers.Server.WaitingForPlayers -= Handlers.Internal.Round.OnWaitingForPlayers;
+            Handlers.Server.RestartingRound -= Handlers.Internal.Round.OnRestartingRound;
+            Handlers.Server.RoundStarted -= Handlers.Internal.Round.OnRoundStarted;
+            Handlers.Player.ChangingRole -= Handlers.Internal.Round.OnChangingRole;
+            Handlers.Map.Generated -= Handlers.Internal.MapGenerated.OnMapGenerated;
 
             MapGeneration.SeedSynchronizer.OnMapGenerated -= Handlers.Map.OnGenerated;
         }
@@ -124,34 +118,36 @@ namespace Exiled.Events
             {
                 Harmony = new Harmony($"exiled.events.{++patchesCounter}");
 #if DEBUG
-                var lastDebugStatus = Harmony.DEBUG;
+                bool lastDebugStatus = Harmony.DEBUG;
                 Harmony.DEBUG = true;
 #endif
-                Harmony.PatchAll();
+                if (SafePatchCompilerMess() && PatchByAttributes())
+                {
+                    Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
+                }
+                else
+                {
+                    Log.Error($"Patching failed!");
+                }
 #if DEBUG
                 Harmony.DEBUG = lastDebugStatus;
 #endif
-                Log.Debug("Events patched successfully!", Loader.ShouldDebugBeShown);
             }
             catch (Exception exception)
             {
-                Log.Error($"Patching failed! {exception}");
+                Log.Error($"Patching failed!\n{exception}");
             }
         }
 
         /// <summary>
-        /// Checks the <see cref="DisabledPatches"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
+        /// Checks the <see cref="DisabledPatchesHashSet"/> list and un-patches any methods that have been defined there. Once un-patching has been done, they can be patched by plugins, but will not be re-patchable by Exiled until a server reboot.
         /// </summary>
         public void ReloadDisabledPatches()
         {
-            foreach (MethodBase method in DisabledPatches)
-            {
-                DisabledPatchesHashSet.Add(method);
-            }
-
             foreach (MethodBase method in DisabledPatchesHashSet)
             {
                 Harmony.Unpatch(method, HarmonyPatchType.All, Harmony.Id);
+
                 Log.Info($"Unpatched {method.Name}");
             }
         }
@@ -163,9 +159,46 @@ namespace Exiled.Events
         {
             Log.Debug("Unpatching events...", Loader.ShouldDebugBeShown);
 
+            UnpatchCompilerMess();
             Harmony.UnpatchAll();
 
             Log.Debug("All events have been unpatched complete. Goodbye!", Loader.ShouldDebugBeShown);
         }
+
+        private bool PatchByAttributes()
+        {
+            try
+            {
+                Harmony.PatchAll();
+
+                Log.Debug("Events patched by attributes successfully!", Loader.ShouldDebugBeShown);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Patching by attributes failed!\n{exception}");
+                return false;
+            }
+        }
+
+        private bool SafePatchCompilerMess()
+        {
+            try
+            {
+                PatchCompilerMess();
+
+                Log.Debug("Events in the inner types patched successfully!", Loader.ShouldDebugBeShown);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Patching in the inner types failed!\n{e}");
+                return false;
+            }
+        }
+
+        private void PatchCompilerMess() => WaitingForPlayers.Patch();
+
+        private void UnpatchCompilerMess() => WaitingForPlayers.Unpatch();
     }
 }

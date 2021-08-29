@@ -21,14 +21,16 @@ namespace Exiled.Events.Patches.Events.Player
 
     using UnityEngine;
 
+    using Server = Exiled.API.Features.Server;
+
     /// <summary>
-    /// Patches <see cref="BanPlayer.BanUser(GameObject, int, string, string, bool)"/>.
+    /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
     /// Adds the <see cref="Player.Banning"/> and <see cref="Player.Kicking"/>events.
     /// </summary>
-    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(int), typeof(string), typeof(string), typeof(bool) })]
+    [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool) })]
     internal static class BanningAndKicking
     {
-        private static bool Prefix(GameObject user, int duration, string reason, string issuer, bool isGlobalBan)
+        private static bool Prefix(GameObject user, long duration, string reason, string issuer, bool isGlobalBan)
         {
             try
             {
@@ -41,7 +43,15 @@ namespace Exiled.Events.Patches.Events.Player
                 string address = user.GetComponent<NetworkIdentity>().connectionToClient.address;
 
                 API.Features.Player targetPlayer = API.Features.Player.Get(user);
-                API.Features.Player issuerPlayer = API.Features.Player.Get(issuer) ?? API.Features.Server.Host;
+                API.Features.Player issuerPlayer;
+                if (issuer.Contains("("))
+                {
+                    issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
+                }
+                else
+                {
+                    issuerPlayer = Server.Host;
+                }
 
                 try
                 {
@@ -64,7 +74,7 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     if (duration > 0)
                     {
-                        var ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
+                        BanningEventArgs ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
 
                         Player.OnBanning(ev);
 
@@ -140,7 +150,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
                     else if (duration == 0)
                     {
-                        var ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
+                        KickingEventArgs ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
 
                         Player.OnKicking(ev);
 
@@ -158,7 +168,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.BanningAndKicking: {e}\n{e.StackTrace}");
 
                 return true;
             }

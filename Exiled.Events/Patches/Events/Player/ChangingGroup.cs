@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
+                ChangingGroupEventArgs ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
 
                 Player.OnChangingGroup(ev);
 
@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.StackTrace}");
 
                 return true;
             }

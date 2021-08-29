@@ -2,84 +2,48 @@ name: Exiled Main CI
 
 on: [push, pull_request]
 
+env:
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip
+  EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
+
 jobs:
 
   build:
 
     runs-on: windows-latest
+    # Prevent double running for push & pull_request events from the main repo
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'Exiled-Team/Exiled'
 
     steps:
 
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.5.0
+      uses: actions/setup-dotnet@v1.7.2
 
     - name: Setup Nuget
       uses: iRebbok/setup-nuget@master
 
-    - uses: actions/checkout@v2.3.1
+    - uses: actions/checkout@v2.3.4
 
-    - name: Download 7zip
-      uses: carlosperate/download-file-action@v1.0.3
-      with:
-        file-url: 'https://www.exiled.host/7za.exe'
-        file-name: '7zip.exe'
-
-    - name: Download references
-      uses: carlosperate/download-file-action@v1.0.3
-      with:
-        file-url: 'https://www.exiled.host/build_deps/References.zip'
-        file-name: 'References.zip'
-
-    - name: Extract Refs
-      run: ./7zip.exe e References.zip -oReferences -r -y
-
-    - name: Restore projects
+    - name: Get references
+      shell: pwsh
       run: |
-        dotnet restore Exiled.API
-        dotnet restore Exiled.Bootstrap
-        dotnet restore Exiled.Events
-        dotnet restore Exiled.Example
-        dotnet restore Exiled.Loader
-        dotnet restore Exiled.Permissions
-        dotnet restore Exiled.Updater
+        Invoke-WebRequest -Uri https://exiled.host/build_deps/References.zip -OutFile ${{ github.workspace }}/References.zip
+        Expand-Archive -Path References.zip -DestinationPath ${{ env.EXILED_REFERENCES_PATH }}
 
     - name: Build
       env:
-        EXILED_REFERENCES: ${{ github.workspace }}/References
-        GIT_COMMIT_SHA: ${{ github.sha }}
+        EXILED_REFERENCES: ${{ env.EXILED_REFERENCES_PATH }}
       shell: pwsh
       run: |
-        dotnet build Exiled.API -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Bootstrap -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Events -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Example -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Loader -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Permissions -c release
-        if ($? -eq $false) { Exit 1 }
-        dotnet build Exiled.Updater -c release
-        if ($? -eq $false) { Exit 1 }
+        ./build.ps1 -BuildNuGet
+        $File = (Get-ChildItem -Path . -Include 'EXILED.*.nupkg' -Recurse).Name
+        Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=$File" -Encoding utf-8 -Append
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: Build Results
         path: bin/Release
-
-    - name: Generate nuget package
-      shell: pwsh
-      run: |
-        [XML]$TargetsFile = Get-Content Exiled.props
-        $Version = $TargetsFile.Project.PropertyGroup.Version
-        $Version = $Version[0].Trim()
-        $Year = [System.DateTime]::Now.ToString("yyyy")
-        Write-Host "Generating for version $Version"
-        nuget pack Exiled/Exiled.nuspec -Version $Version -Properties Year=$Year
-        Out-File -FilePath ${{ github.env }} -InputObject "PackageFile=Exiled.$Version.nupkg" -Encoding utf-8 -Append
 
     - name: Upload nuget package
       uses: actions/upload-artifact@v2

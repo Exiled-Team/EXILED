@@ -7,34 +7,74 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using MapGeneration.Distributors;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="Generator079.CheckFinish"/>.
+    /// Patches <see cref="Scp079Generator.Engaged"/>.
     /// Adds the <see cref="Map.GeneratorActivated"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Generator079), nameof(Generator079.CheckFinish))]
+    [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Engaged), MethodType.Setter)]
     internal static class GeneratorActivated
     {
-        private static bool Prefix(Generator079 __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (__instance.prevFinish || __instance._localTime > 0.0)
-                return false;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var ev = new GeneratorActivatedEventArgs(__instance);
+            // Search for the third "ldarg.0".
+            const int index = 0;
+            Label retModLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(GeneratorActivatedEventArgs));
 
-            Map.OnGeneratorActivated(ev);
+            // var ev = new GeneratorActivatedEventArgs(this, true);
+            //
+            // Map.OnGeneratorActivated(ev);
+            //
+            // if (!ev.IsAllowed)
+            //   return;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GeneratorActivatedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnGeneratorActivated))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, retModLabel),
+            });
 
-            __instance.prevFinish = true;
-            __instance.epsenRenderer.sharedMaterial = __instance.matLetGreen;
-            __instance.epsdisRenderer.sharedMaterial = __instance.matLedBlack;
-            __instance._asource.PlayOneShot(__instance.unlockSound);
+            newInstructions.InsertRange(newInstructions.Count - 1, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(retModLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GeneratorActivatedEventArgs), nameof(GeneratorActivatedEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079Generator), nameof(Scp079Generator._leverStopwatch))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Stopwatch), nameof(Stopwatch.Restart))),
+            });
 
-            return false;
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

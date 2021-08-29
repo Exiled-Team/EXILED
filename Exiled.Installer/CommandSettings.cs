@@ -10,7 +10,6 @@ namespace Exiled.Installer
     using System;
     using System.CommandLine;
     using System.CommandLine.Invocation;
-    using System.CommandLine.Parsing;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -81,7 +80,7 @@ namespace Exiled.Installer
             { IsRequired = false },
 
             new Option<string?>(
-                "--github--token",
+                "--github-token",
                 description: "Uses a token for auth in case the rate limit is exceeded (no permissions required)")
             { IsRequired = false },
 

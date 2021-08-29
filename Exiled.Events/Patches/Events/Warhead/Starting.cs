@@ -23,30 +23,24 @@ namespace Exiled.Events.Patches.Events.Warhead
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="PlayerInteract.CallCmdDetonateWarhead"/>.
+    /// Patch the <see cref="PlayerInteract.UserCode_CmdDetonateWarhead"/>.
     /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdDetonateWarhead))]
+    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdDetonateWarhead))]
     internal static class Starting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 0;
 
             // Search for the last "ldsfld".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
-
-            // Get the starting labels and remove all of them from the original instruction.
-            var startingLabels = newInstructions[index].labels;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld) + offset;
 
             // Get the return label.
-            var returnLabel = newInstructions[index - 1].labels[0];
-
-            // Remove "ldsfld AlphaWarheadController::Host" & "AlphawarheadController.Host.StartDetonation()".
-            newInstructions.RemoveRange(index, 2);
+            Label returnLabel = generator.DefineLabel();
 
             // if (!Warhead.CanBeStarted)
             //   return;
@@ -57,16 +51,13 @@ namespace Exiled.Events.Patches.Events.Warhead
             //
             // if (!ev.IsAllowed)
             //   return;
-            //
-            // AlphaWarheadController.Host.doorsOpen = false;
-            // AlphaWarheadController.Host.NetworkinProgress = true;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Warhead), nameof(Warhead.CanBeStarted))).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
@@ -81,8 +72,7 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(AlphaWarheadController), nameof(AlphaWarheadController.NetworkinProgress))),
             });
 
-            // Add the starting labels to the first injected instruction.
-            newInstructions[index].WithLabels(startingLabels);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

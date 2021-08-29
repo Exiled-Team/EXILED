@@ -27,11 +27,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="RespawningTeamEventArgs"/> class.
         /// </summary>
         /// <param name="players"><inheritdoc cref="Players"/></param>
+        /// <param name="maxRespawn"><inheritdoc cref="MaximumRespawnAmount"/></param>
         /// <param name="nextKnownTeam"><inheritdoc cref="NextKnownTeam"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public RespawningTeamEventArgs(List<Player> players, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
+        public RespawningTeamEventArgs(List<Player> players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)
         {
             Players = players;
+            MaximumRespawnAmount = maxRespawn;
             NextKnownTeam = nextKnownTeam;
             IsAllowed = isAllowed;
         }
@@ -67,23 +69,23 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the current spawnable team.
         /// </summary>
-        internal SpawnableTeam? SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out var team) ? (SpawnableTeam?)team : null;
+        internal SpawnableTeamHandlerBase SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
 
         private void ReissueNextKnownTeam()
         {
-            var team = SpawnableTeam;
-            if (team != null)
-            {
-                // Refer to the game code
-                int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
-                if (a == 0)
-                {
-                    a = RespawnTickets.DefaultTeamAmount;
-                    RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
-                }
+            SpawnableTeamHandlerBase @base = SpawnableTeam;
+            if (@base == null)
+                return;
 
-                MaximumRespawnAmount = Mathf.Min(a, team.Value.MaxWaveSize);
+            // Refer to the game code
+            int a = RespawnTickets.Singleton.GetAvailableTickets(NextKnownTeam);
+            if (a == 0)
+            {
+                a = RespawnTickets.DefaultTeamAmount;
+                RespawnTickets.Singleton.GrantTickets(RespawnTickets.DefaultTeam, RespawnTickets.DefaultTeamAmount, true);
             }
+
+            MaximumRespawnAmount = Mathf.Min(a, @base.MaxWaveSize);
         }
     }
 }

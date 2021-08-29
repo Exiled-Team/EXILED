@@ -9,7 +9,6 @@ namespace Exiled.Events.Patches.Events.Map
 {
     using System.Linq;
 
-#pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -29,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Map
             int scpsLeft = API.Features.Player.List.Where(player => player.Team == Team.SCP && player.Role != RoleType.Scp0492).Count();
             string[] unitInformations = regular.Split('-');
 
-            var ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformations[0], int.Parse(unitInformations[1]));
+            AnnouncingNtfEntranceEventArgs ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformations[0], int.Parse(unitInformations[1]));
 
             Map.OnAnnouncingNtfEntrance(ev);
 

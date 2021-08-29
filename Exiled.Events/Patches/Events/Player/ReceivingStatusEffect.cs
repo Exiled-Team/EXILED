@@ -7,55 +7,91 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using CustomPlayerEffects;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using MEC;
+    using NorthwoodLib.Pools;
 
-    using Mirror;
-
-    using Log = Exiled.API.Features.Log;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="PlayerEffect.ServerChangeIntensity"/> method.
+    /// Patches the <see cref="PlayerEffect.Intensity"/> method.
     /// Adds the <see cref="Handlers.Player.ReceivingEffect"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerEffect), nameof(PlayerEffect.ServerChangeIntensity))]
+    [HarmonyPatch(typeof(PlayerEffect), nameof(PlayerEffect.Intensity), MethodType.Setter)]
     internal static class ReceivingStatusEffect
     {
-        private static bool Prefix(PlayerEffect __instance, byte newState)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Beq_S) + offset;
+            LocalBuilder ev = generator.DeclareLocal(typeof(ReceivingEffectEventArgs));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (__instance.Intensity == newState)
-                    return false;
+                // Player.Get(this.Hub)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerEffect), nameof(PlayerEffect.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
 
-                var ev = new ReceivingEffectEventArgs(API.Features.Player.Get(__instance.Hub.gameObject), __instance, newState, __instance.Intensity);
-                Exiled.Events.Handlers.Player.OnReceivingEffect(ev);
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
 
-                if (!ev.IsAllowed)
-                    return false;
+                // value
+                new CodeInstruction(OpCodes.Ldarg_1),
 
-                byte intensity = ev.CurrentState;
-                __instance.Intensity = ev.State;
-                if (NetworkServer.active)
-                    __instance.Hub.playerEffectsController.Resync();
-                __instance.ServerOnIntensityChange(intensity, ev.State);
-                if (ev.Duration > 0.0f)
-                    Timing.CallDelayed(0.5f, () => __instance.Duration = ev.Duration);
-                return false;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"RecievingEffect: {e}");
-                return true;
-            }
+                // this._intensity
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerEffect), nameof(PlayerEffect._intensity))),
+
+                // var ev = new ReceivingEventArgs(player, effect, state, currentState)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReceivingEffectEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnReceivingEffect))),
+
+                // if (!ev.IsAllowed)
+                //    return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+
+                // value = ev.State
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.State))),
+                new CodeInstruction(OpCodes.Starg, 1),
+
+                // this.Duration = ev.Duration
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingEffectEventArgs), nameof(ReceivingEffectEventArgs.Duration))),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(PlayerEffect), nameof(PlayerEffect.Duration))),
+            });
+
+            newInstructions[index + 25].WithLabels(continueLabel);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -7,9 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System;
-    using System.IO;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
@@ -57,16 +54,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
 
         /// <summary>
-        /// Invoked when sending a command through the in-game console.
-        /// </summary>
-        public static event CustomEventHandler<SendingConsoleCommandEventArgs> SendingConsoleCommand;
-
-        /// <summary>
-        /// Invoked when sending a command through the Remote Admin console.
-        /// </summary>
-        public static event CustomEventHandler<SendingRemoteAdminCommandEventArgs> SendingRemoteAdminCommand;
-
-        /// <summary>
         /// Invoked when sending a complaint about a player to the local server administrators.
         /// </summary>
         public static event CustomEventHandler<LocalReportingEventArgs> LocalReporting;
@@ -75,6 +62,11 @@ namespace Exiled.Events.Handlers
         /// Invoked after the "reload configs" command is ran.
         /// </summary>
         public static event CustomEventHandler ReloadedConfigs;
+
+        /// <summary>
+        /// Invoked after the "reload translations" command is ran.
+        /// </summary>
+        public static event CustomEventHandler ReloadedTranslations;
 
         /// <summary>
         /// Invoked after the "reload gameplay" command is ran.
@@ -120,30 +112,10 @@ namespace Exiled.Events.Handlers
         public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before respawning a wave of Chaso Insurgency or NTF.
+        /// Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called when sending a command through in-game console.
-        /// </summary>
-        /// <param name="ev">The <see cref="SendingConsoleCommandEventArgs"/> instance.</param>
-        public static void OnSendingConsoleCommand(SendingConsoleCommandEventArgs ev) => SendingConsoleCommand.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called when sending a command through the Remote Admin console.
-        /// </summary>
-        /// <param name="ev">The <see cref="SendingRemoteAdminCommandEventArgs"/> instance.</param>
-        public static void OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
-        {
-            SendingRemoteAdminCommand.InvokeSafely(ev);
-
-            lock (ServerLogs.LockObject)
-            {
-                File.AppendAllText(Paths.Log, $"[{DateTime.Now}] {ev.Sender?.Nickname ?? "Server Console"} ({ev.Sender?.UserId ?? "Server Console"}) ran command: {ev?.Name ?? "Unknown"} {string.Join(" ", ev?.Arguments)}. Command Permitted: {(ev.IsAllowed ? "[YES]" : "[NO]")}" + Environment.NewLine);
-            }
-        }
 
         /// <summary>
         /// Called when sending a complaint about a player to the local server administrators.
@@ -168,6 +140,11 @@ namespace Exiled.Events.Handlers
         /// Called after the "reload configs" command is ran.
         /// </summary>
         public static void OnReloadedConfigs() => ReloadedConfigs.InvokeSafely();
+
+        /// <summary>
+        /// Called after the "reload translations" command is ran.
+        /// </summary>
+        public static void OnReloadedTranslations() => ReloadedTranslations.InvokeSafely();
 
         /// <summary>
         /// Called after the "reload gameplay" command is ran.

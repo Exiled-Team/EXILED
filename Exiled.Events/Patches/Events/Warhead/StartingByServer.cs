@@ -29,18 +29,18 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int offset = 0;
 
             // Search for the last "ldarg.0".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
-            var returnLabel = newInstructions[index - 1].operand;
+            object returnLabel = newInstructions[index - 1].operand;
 
             // var ev = new StartingEventArgs(Server.Host, true);
             //

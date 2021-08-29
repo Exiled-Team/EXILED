@@ -51,7 +51,13 @@ namespace Exiled.Events
         /// <summary>
         /// Gets or sets a value indicating whether configs has to be reloaded every time a round restarts.
         /// </summary>
-        public bool ShouldReloadConfigsAtRoundRestart { get; set; }
+        [Description("Indicates whether configs have to be reloaded every round restart")]
+        public bool ShouldReloadConfigsAtRoundRestart { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether translations has to be reloaded every time a round restarts.
+        /// </summary>
+        public bool ShouldReloadTranslationsAtRoundRestart { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether bans should be logged or not.
@@ -63,6 +69,12 @@ namespace Exiled.Events
         /// Gets or sets a value indicating the max shield amount for Scp096.
         /// </summary>
         [Description("The maximum shield amount for Scp096")]
-        public int Scp096MaxShieldAmount { get; set; } = 350;
+        public int Scp096MaxShieldAmount { get; set; } = 1000;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to log RA commands.
+        /// </summary>
+        [Description("Whether or not to log RA commands.")]
+        public bool LogRaCommands { get; set; } = true;
     }
 }

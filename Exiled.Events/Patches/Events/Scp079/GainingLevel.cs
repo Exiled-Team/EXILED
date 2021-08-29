@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp079
 {
 #pragma warning disable SA1313
-#pragma warning disable CS0618
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -25,16 +24,14 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static bool Prefix(Scp079PlayerScript __instance, ref int newLvl)
         {
-            var ev = new GainingLevelEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.curLvl - 1, newLvl);
+            GainingLevelEventArgs ev = new GainingLevelEventArgs(API.Features.Player.Get(__instance.gameObject), __instance._curLvl - 1, newLvl);
 
             Scp079.OnGainingLevel(ev);
 
             newLvl = ev.NewLevel;
 
             if (ev.IsAllowed)
-            {
                 __instance.Lvl = (byte)newLvl;
-            }
 
             return ev.IsAllowed;
         }

@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -22,7 +21,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(Role scp, ref PlayerStats.HitInfo hit, ref string groupId)
         {
-            var ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
+            AnnouncingScpTerminationEventArgs ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
 
             Map.OnAnnouncingScpTermination(ev);
 

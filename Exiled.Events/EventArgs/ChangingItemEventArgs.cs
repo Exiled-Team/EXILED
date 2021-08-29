@@ -7,24 +7,29 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items;
 
     /// <summary>
-    /// Contains all informations before a player's held item changes.
+    /// Contains all information before a player's held item changes.
     /// </summary>
     public class ChangingItemEventArgs : System.EventArgs
     {
+        private Item newItem;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="oldItem"><inheritdoc cref="OldItem"/></param>
         /// <param name="newItem"><inheritdoc cref="NewItem"/></param>
-        public ChangingItemEventArgs(Player player, Inventory.SyncItemInfo oldItem, Inventory.SyncItemInfo newItem)
+        public ChangingItemEventArgs(Player player, ItemBase newItem)
         {
             Player = player;
-            OldItem = oldItem;
-            NewItem = newItem;
+            this.newItem = Item.Get(newItem);
         }
 
         /// <summary>
@@ -33,13 +38,23 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the old item.
+        /// Gets or sets the new item.
         /// </summary>
-        public Inventory.SyncItemInfo OldItem { get; set; }
+        public Item NewItem
+        {
+            get => newItem;
+            set
+            {
+                if (!Player.Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    throw new InvalidOperationException("You cannot change ev.NewItem to an item they do not have.");
+
+                newItem = value;
+            }
+        }
 
         /// <summary>
-        /// Gets the new item.
+        /// Gets or sets a value indicating whether the event is allowed to continue.
         /// </summary>
-        public Inventory.SyncItemInfo NewItem { get; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

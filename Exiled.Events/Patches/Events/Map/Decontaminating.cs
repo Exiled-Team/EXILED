@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -24,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix()
         {
-            var ev = new DecontaminatingEventArgs();
+            DecontaminatingEventArgs ev = new DecontaminatingEventArgs();
 
             Map.OnDecontaminating(ev);
 

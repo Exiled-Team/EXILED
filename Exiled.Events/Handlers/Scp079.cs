@@ -40,12 +40,17 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before triggering a door with SCP-079.
         /// </summary>
-        public static event CustomEventHandler<InteractingDoorEventArgs> InteractingDoor;
+        public static event CustomEventHandler<TriggeringDoorEventArgs> TriggeringDoor;
 
         /// <summary>
         /// Invoked before SCP-079 teleports using an elevator.
         /// </summary>
-        public static event CustomEventHandler<ElevatorTeleportEventArgs> ElevatorTeleport;
+        public static event CustomEventHandler<ElevatorTeleportingEventArgs> ElevatorTeleporting;
+
+        /// <summary>
+        /// Invoked before SCP-079 lockdowns a room.
+        /// </summary>
+        public static event CustomEventHandler<LockingDownEventArgs> LockingDown;
 
         /// <summary>
         /// Invoked before SCP-079 uses a speaker.
@@ -89,14 +94,20 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before interacting with a door with SCP-079.
         /// </summary>
-        /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
-        public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="TriggeringDoorEventArgs"/> instance.</param>
+        public static void OnTriggeringDoor(TriggeringDoorEventArgs ev) => TriggeringDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before SCP-079 teleports using an elevator.
         /// </summary>
-        /// <param name="ev">The <see cref="ElevatorTeleportEventArgs"/> instance.</param>
-        public static void OnElevatorTeleport(ElevatorTeleportEventArgs ev) => ElevatorTeleport.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ElevatorTeleportingEventArgs"/> instance.</param>
+        public static void OnElevatorTeleporting(ElevatorTeleportingEventArgs ev) => ElevatorTeleporting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before SCP-079 lockdowns a room.
+        /// </summary>
+        /// <param name="ev">The <see cref="LockingDownEventArgs"/> instance.</param>
+        public static void OnLockingDown(LockingDownEventArgs ev) => LockingDown.InvokeSafely(ev);
 
         /// <summary>
         /// Called before interacting with a speaker with SCP-079.

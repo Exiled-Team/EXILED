@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static void Prefix(DecontaminationController __instance, ref bool hard)
         {
-            var ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
+            AnnouncingDecontaminationEventArgs ev = new AnnouncingDecontaminationEventArgs(__instance._nextPhase, hard);
 
             Map.OnAnnouncingDecontamination(ev);
         }

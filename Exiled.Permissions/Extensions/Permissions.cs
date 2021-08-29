@@ -15,6 +15,7 @@ namespace Exiled.Permissions.Extensions
 
     using CommandSystem;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Permissions.Features;
     using Exiled.Permissions.Properties;
@@ -55,7 +56,7 @@ namespace Exiled.Permissions.Extensions
         {
             get
             {
-                foreach (var group in Groups)
+                foreach (KeyValuePair<string, Group> group in Groups)
                 {
                     if (group.Value.IsDefault)
                         return group.Value;
@@ -88,6 +89,14 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         public static void Reload()
         {
+            if (ServerStatic.PermissionsHandler == null)
+            {
+                Log.Error("Your Remote Admin config is broken. You have to fix it because the game won't even start with a broken config.");
+
+                // If we don't return the context, it'll throw another exception.
+                return;
+            }
+
             try
             {
                 Dictionary<string, object> rawDeserializedPerms = Deserializer.Deserialize<Dictionary<string, object>>(File.ReadAllText(Instance.Config.FullPath)) ?? new Dictionary<string, object>();
@@ -172,7 +181,7 @@ namespace Exiled.Permissions.Extensions
                 if (player == null)
                     return false;
 
-                return player.CheckPermission(permission);
+                return player == Server.Host || player.CheckPermission(permission);
             }
 
             return false;
@@ -189,11 +198,10 @@ namespace Exiled.Permissions.Extensions
             if (string.IsNullOrEmpty(permission))
                 return false;
 
-            if (player == null
-                || player.GameObject == null
-                || Groups == null
-                || Groups.Count == 0
-                || player.ReferenceHub.isDedicatedServer)
+            if (Server.Host == player)
+                return true;
+
+            if (player == null || player.GameObject == null || Groups == null || Groups.Count == 0)
             {
                 return false;
             }
@@ -201,7 +209,7 @@ namespace Exiled.Permissions.Extensions
             Log.Debug($"UserID: {player.UserId} | PlayerId: {player.Id}", Instance.Config.ShouldDebugBeShown);
             Log.Debug($"Permission string: {permission}", Instance.Config.ShouldDebugBeShown);
 
-            var plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value == player.Group).Key : null;
+            string plyGroupKey = player.Group != null ? ServerStatic.GetPermissionsHandler()._groups.FirstOrDefault(g => g.Value.EqualsTo(player.Group)).Key : null;
             Log.Debug($"GroupKey: {plyGroupKey ?? "(null)"}", Instance.Config.ShouldDebugBeShown);
 
             if (plyGroupKey == null || !Groups.TryGetValue(plyGroupKey, out Group group))
@@ -216,30 +224,30 @@ namespace Exiled.Permissions.Extensions
                 return false;
             }
 
-            const char PERM_SEPARATOR = '.';
-            const string ALL_PERMS = ".*";
+            const char permSeparator = '.';
+            const string allPerms = ".*";
 
-            if (group.CombinedPermissions.Contains(ALL_PERMS))
+            if (group.CombinedPermissions.Contains(allPerms))
                 return true;
 
-            if (permission.Contains(PERM_SEPARATOR))
+            if (permission.Contains(permSeparator))
             {
-                var strBuilder = StringBuilderPool.Shared.Rent();
-                var seraratedPermissions = permission.Split(PERM_SEPARATOR);
+                StringBuilder strBuilder = StringBuilderPool.Shared.Rent();
+                string[] seraratedPermissions = permission.Split(permSeparator);
 
                 bool Check(string source) => group.CombinedPermissions.Contains(source, StringComparison.OrdinalIgnoreCase);
 
-                var result = false;
-                for (var z = 0; z < seraratedPermissions.Length; z++)
+                bool result = false;
+                for (int z = 0; z < seraratedPermissions.Length; z++)
                 {
                     if (z != 0)
                     {
                         // We need to clear the last ALL_PERMS line
                         // or it'll be like 'permission.*.subpermission'.
-                        strBuilder.Length -= ALL_PERMS.Length;
+                        strBuilder.Length -= allPerms.Length;
 
                         // Separate permission groups by using its separator.
-                        strBuilder.Append(PERM_SEPARATOR);
+                        strBuilder.Append(permSeparator);
                     }
 
                     strBuilder.Append(seraratedPermissions[z]);
@@ -252,7 +260,7 @@ namespace Exiled.Permissions.Extensions
                         break;
                     }
 
-                    strBuilder.Append(ALL_PERMS);
+                    strBuilder.Append(allPerms);
                     if (Check(strBuilder.ToString()))
                     {
                         result = true;
@@ -267,7 +275,7 @@ namespace Exiled.Permissions.Extensions
             }
 
             // It'll work when there is no dot in the permission.
-            var result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
+            bool result2 = group.CombinedPermissions.Contains(permission, StringComparison.OrdinalIgnoreCase);
             Log.Debug($"Result outside the block: {result2}", Instance.Config.ShouldDebugBeShown);
             return result2;
         }

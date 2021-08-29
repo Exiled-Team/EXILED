@@ -19,9 +19,6 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Stamina), nameof(Stamina.ProcessStamina))]
     internal class StaminaUsagePatch
     {
-        private static bool Prefix(Stamina __instance)
-        {
-            return Player.Get(__instance._hub)?.IsUsingStamina ?? true;
-        }
+        private static bool Prefix(Stamina __instance) => Player.Get(__instance._hub)?.IsUsingStamina ?? true;
     }
 }

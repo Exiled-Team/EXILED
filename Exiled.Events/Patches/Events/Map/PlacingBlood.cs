@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(CharacterClassManager __instance, ref Vector3 pos, ref int type, ref float f)
         {
-            var ev = new PlacingBloodEventArgs(API.Features.Player.Get(__instance.gameObject), pos, type, f);
+            PlacingBloodEventArgs ev = new PlacingBloodEventArgs(API.Features.Player.Get(__instance.gameObject), pos, type, f);
 
             Map.OnPlacingBlood(ev);
 
