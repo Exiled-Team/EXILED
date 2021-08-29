@@ -12,6 +12,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using UnityEngine;
+
     /// <summary>
     /// Contains all informations before a players blink near SCP-173.
     /// </summary>
@@ -22,10 +24,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="targets"><inheritdoc cref="Targets"/></param>
-        public BlinkingEventArgs(Player player, List<Player> targets)
+        /// <param name="blinkPos"><inheritdoc cref="BlinkPosition"/></param>
+        public BlinkingEventArgs(Player player, List<Player> targets, Vector3 blinkPos)
         {
             Player = player;
+            BlinkPosition = blinkPos;
             Targets = targets;
+            BlinkCooldown = Mathf.Max(2.5f, (float)(2.5 + (1.0 * targets.Count)));
         }
 
         /// <summary>
@@ -34,8 +39,23 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
+        /// Gets or sets the location the player is blinking to.
+        /// </summary>
+        public Vector3 BlinkPosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets how long the blink cooldown will last.
+        /// </summary>
+        public float BlinkCooldown { get; set; }
+
+        /// <summary>
         /// Gets a list of players who have triggered SCP-173.
         /// </summary>
         public List<Player> Targets { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the player is allowed to blink.
+        /// </summary>
+        public bool IsAllowed { get; set; } = true;
     }
 }
