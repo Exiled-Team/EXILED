@@ -9,7 +9,11 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
 
+    using Footprinting;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -78,6 +82,16 @@ namespace Exiled.API.Features.Items
         {
             get => Projectile._fuseTime;
             set => Projectile._fuseTime = value;
+        }
+
+        public void SpawnActive(Vector3 position, Player owner = null)
+        {
+            if (owner != null)
+                Projectile.PreviousOwner = new Footprint(owner.ReferenceHub);
+
+            Projectile.transform.position = position;
+            NetworkServer.Spawn(Projectile.gameObject);
+            Projectile.RpcSetTime(FuseTime);
         }
     }
 }
