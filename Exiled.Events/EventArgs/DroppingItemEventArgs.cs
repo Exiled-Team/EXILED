@@ -27,10 +27,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingItemEventArgs(Player player, Item item, bool isAllowed = true)
+        public DroppingItemEventArgs(Player player, ItemBase item, bool isAllowed = true)
         {
             Player = player;
-            Item = item;
+            Item = Item.Get(item);
             IsAllowed = isAllowed;
         }
 
