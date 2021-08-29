@@ -71,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
-        public Color RoomColor
+        public Color Color
         {
             get => (Color)FlickerableLightController.WarheadLightColor;
             set
@@ -100,9 +100,9 @@ namespace Exiled.API.Features
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
-        /// Resets the room color to defualt.
+        /// Resets the room color to default.
         /// </summary>
-        public void ResetRoomColor()
+        public void ResetColor()
         {
             FlickerableLightController.WarheadLightColor = global::FlickerableLightController.DefaultWarheadColor;
             FlickerableLightController.WarheadLightOverride = false;
