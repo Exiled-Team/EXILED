@@ -69,12 +69,6 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static Player GetBanningPlayer(string identifier)
-        {
-            Player player = null;
-            if (identifier.Contains("("))
-                player = Player.Get(identifier.Substring(identifier.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
-            return player ?? Server.Host;
-        }
+        private static Player GetBanningPlayer(string identifier) => identifier.Contains("(") ? Player.Get(identifier.Substring(identifier.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host : Server.Host;
     }
 }
