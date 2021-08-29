@@ -80,8 +80,7 @@ namespace Exiled.Events.Patches.Fixes
 
                 // if (!Item.Get(this) is FlashGrenade flash)
                 //    goto SKIP_LABEL
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notExplosiveLabel),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Item), nameof(Item.Get))),
+                new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
                 new CodeInstruction(OpCodes.Isinst, typeof(FlashGrenade)),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, flash.LocalIndex),
