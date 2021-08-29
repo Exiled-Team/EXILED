@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using UnityEngine;
+
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
     /// </summary>
@@ -23,7 +25,7 @@ namespace Exiled.API.Features.Items
         public ExplosiveGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Projectile = (ExplosionGrenade)Object.Instantiate(itemBase.Projectile);
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ExplosionGrenade"/> for this item.
         /// </summary>
-        public new ExplosionGrenade Projectile => (ExplosionGrenade)Base.Projectile;
+        public new ExplosionGrenade Projectile { get; }
 
         /// <summary>
         /// Gets or sets the maximum radius of the grenade.
@@ -93,7 +95,12 @@ namespace Exiled.API.Features.Items
         public float FuseTime
         {
             get => Projectile._fuseTime;
-            set => Projectile._fuseTime = value;
+            set
+            {
+                Log.Debug($"Setting fuse time to {value}");
+                Projectile._fuseTime = value;
+                Log.Debug($"Fuse time now {Projectile._fuseTime}");
+            }
         }
     }
 }

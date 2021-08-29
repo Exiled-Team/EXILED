@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Items
         public FlashGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Projectile = (FlashbangGrenade)Object.Instantiate(itemBase.Projectile);
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ExplosionGrenade"/> for this item.
         /// </summary>
-        public new FlashbangGrenade Projectile => (FlashbangGrenade)Base.Projectile;
+        public new FlashbangGrenade Projectile { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="AnimationCurve"/> for determining how long the <see cref="EffectType.Blinded"/> effect will last.
