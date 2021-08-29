@@ -11,6 +11,8 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.ThrowableProjectiles;
 
+    using UnityEngine;
+
     /// <summary>
     /// A wrapper class for throwable items.
     /// </summary>
@@ -24,6 +26,7 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
+            Projectile = Object.Instantiate(Base.Projectile, Base.transform);
         }
 
         /// <summary>
@@ -45,7 +48,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ThrownProjectile"/> for this item.
         /// </summary>
-        public ThrownProjectile Projectile => Base.Projectile;
+        public ThrownProjectile Projectile { get; }
 
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
