@@ -69,7 +69,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the color of the room's lights.
+        /// Gets or sets the color of the room's lights by changing the warhead color.
         /// </summary>
         public Color RoomColor
         {
