@@ -59,7 +59,7 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse, skipLabel),
 
-                // if (!Item.Get(this) is ExplosiveGrenade explosive)
+                // if (item is ExplosiveGrenade explosive)
                 //    goto NOT_EXPLOSIVE_LABEL
                 new CodeInstruction(OpCodes.Ldloc, item.LocalIndex),
                 new CodeInstruction(OpCodes.Isinst, typeof(ExplosiveGrenade)),
@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
                 new CodeInstruction(OpCodes.Ret),
 
-                // if (!Item.Get(this) is FlashGrenade flash)
+                // if (item is FlashGrenade flash)
                 //    goto SKIP_LABEL
                 new CodeInstruction(OpCodes.Ldloc, item.LocalIndex).WithLabels(notExplosiveLabel),
                 new CodeInstruction(OpCodes.Isinst, typeof(FlashGrenade)),

@@ -94,6 +94,9 @@ namespace Exiled.API.Features.Items
             if (owner != null)
                 Projectile.PreviousOwner = new Footprint(owner.ReferenceHub);
 
+#if DEBUG
+            Log.Debug($"Spawning active grenade: {FuseTime}");
+#endif
             Projectile.transform.position = position;
             NetworkServer.Spawn(Projectile.gameObject);
             Projectile.RpcSetTime(FuseTime);

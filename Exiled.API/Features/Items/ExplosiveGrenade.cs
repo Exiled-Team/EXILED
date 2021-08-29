@@ -111,6 +111,7 @@ namespace Exiled.API.Features.Items
         {
             if (owner != null)
                 Projectile.PreviousOwner = new Footprint(owner.ReferenceHub);
+
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
