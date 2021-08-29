@@ -107,6 +107,11 @@ namespace Exiled.API.Features.Items
             }
         }
 
+        /// <summary>
+        /// Spawns an active grenade on the map at the specified location.
+        /// </summary>
+        /// <param name="position">The location to spawn the grenade.</param>
+        /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
         public void SpawnActive(Vector3 position, Player owner = null)
         {
             if (owner != null)
