@@ -900,23 +900,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not a player is Northwood staff.
+        /// Gets a value indicating whether or not a player is Northwood staff.
         /// </summary>
-        public bool IsNorthwoodStaff
-        {
-            get => ReferenceHub.serverRoles.Staff;
-            set => ReferenceHub.serverRoles.Staff = value;
-        }
+        public bool IsNorthwoodStaff => ReferenceHub.serverRoles.Staff;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not a player is a global moderator.
+        /// Gets a value indicating whether or not a player is a global moderator.
         /// </summary>
-        public bool IsGlobalModerator
-        {
-            get => ReferenceHub.serverRoles.RaEverywhere;
-            set => ReferenceHub.serverRoles.RaEverywhere = value;
-        }
-        
+        public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
+
         /// <summary>
         /// Gets a value indicating whether the player is in the pocket dimension.
         /// </summary>
