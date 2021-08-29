@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
@@ -17,6 +19,8 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ChangingItemEventArgs : System.EventArgs
     {
+        private Item newItem;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingItemEventArgs"/> class.
         /// </summary>
@@ -25,7 +29,7 @@ namespace Exiled.Events.EventArgs
         public ChangingItemEventArgs(Player player, ItemBase newItem)
         {
             Player = player;
-            NewItem = Item.Get(newItem);
+            this.newItem = Item.Get(newItem);
         }
 
         /// <summary>
@@ -36,7 +40,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new item.
         /// </summary>
-        public Item NewItem { get; set; }
+        public Item NewItem
+        {
+            get => newItem;
+            set
+            {
+                if (!Player.Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    throw new InvalidOperationException("You cannot change ev.NewItem to an item they do not have.");
+
+                newItem = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether the event is allowed to continue.
