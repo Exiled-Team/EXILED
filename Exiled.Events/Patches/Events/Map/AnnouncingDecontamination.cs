@@ -44,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnAnnouncingDecontamination))),
             });
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
