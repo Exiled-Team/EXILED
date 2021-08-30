@@ -16,7 +16,6 @@ namespace Exiled.Events.Patches.Events.Server
 {
     using HarmonyLib;
     using static HarmonyLib.AccessTools;
-    #pragma warning disable
 
     /// <summary>
     /// Patches <see cref="PlayerStats.Roundrestart"/>.
