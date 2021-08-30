@@ -37,6 +37,12 @@ namespace Exiled.Events.Patches.Events.Player
 
             var returnLabel = generator.DefineLabel();
 
+            // var ev = new EnteringFemurBreakerEventArgs(Player, true);
+            //
+            // Player.OnEnteringFemurBreaker(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return;
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_1),
