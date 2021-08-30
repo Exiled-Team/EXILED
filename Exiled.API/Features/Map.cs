@@ -97,14 +97,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                int i = 0;
-                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
-                {
-                    if (gen.Engaged)
-                        i++;
-                }
-
-                return i;
+                return Recontainer079.AllGenerators.Count(gen => gen.Engaged);
             }
         }
 
