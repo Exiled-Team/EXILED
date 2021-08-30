@@ -23,46 +23,75 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-    using Events = Exiled.Events.Events;
-
     /// <summary>
     /// Patches <see cref="DisarmedPlayers.SetDisarmedStatus"/>.
-    /// Adds the <see cref="Handlers.Player.Handcuffing"/> event.
+    /// Adds the <see cref="Handlers.Player.Handcuffing"/> and <see cref="Handlers.Player.RemovingHandcuffs"/> events.
     /// </summary>
     [HarmonyPatch(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus))]
     internal static class Handcuffing
     {
-        private static bool Prefix(Inventory inv, Inventory disarmer)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            bool flag;
-            do
-            {
-                flag = true;
-                for (int index = 0; index < DisarmedPlayers.Entries.Count; ++index)
-                {
-                    if ((int)DisarmedPlayers.Entries[index].DisarmedPlayer == (int)inv.netId)
-                    {
-                        var uncuffing =
-                            new RemovingHandcuffsEventArgs(Player.Get(DisarmedPlayers.Entries[index].Disarmer), Player.Get(inv._hub));
-                        Handlers.Player.OnRemovingHandcuffs(uncuffing);
-                        if (!uncuffing.IsAllowed)
-                            return false;
-                        DisarmedPlayers.Entries.RemoveAt(index);
-                        flag = false;
-                        break;
-                    }
-                }
-            }
-            while (!flag);
-            if (!(disarmer != null))
-                return false;
-            var disarming = new HandcuffingEventArgs(Player.Get(disarmer._hub), Player.Get(inv._hub));
-            Handlers.Player.OnHandcuffing(disarming);
-            if (!disarming.IsAllowed)
-                return false;
-            DisarmedPlayers.Entries.Add(new DisarmedPlayers.DisarmedEntry(inv.netId, disarmer.netId));
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            return false;
+            var offset = 1;
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
+
+            var returnLabel = generator.DefineLabel();
+
+            // var ev = new RemovingHandcuffsEventArgs(Player, Player, true);
+            // Handlers.Player.OnRemovingHandcuffs(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return false;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(DisarmedPlayers), nameof(DisarmedPlayers.Entries))),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<DisarmedPlayers.DisarmedEntry>), "get_Item", new[] { typeof(int) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(DisarmedPlayers.DisarmedEntry), nameof(DisarmedPlayers.DisarmedEntry.Disarmer))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RemovingHandcuffsEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnRemovingHandcuffs))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RemovingHandcuffsEventArgs), nameof(RemovingHandcuffsEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
+
+            // var ev = new HandcuffingEventArgs(Player, Player, true);
+            // Handlers.Player.OnHandcuffing(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return false;
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HandcuffingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHandcuffing))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HandcuffingEventArgs), nameof(HandcuffingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
