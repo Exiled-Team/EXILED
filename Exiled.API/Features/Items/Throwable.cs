@@ -9,7 +9,11 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
 
+    using Footprinting;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -27,6 +31,9 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             Projectile = Object.Instantiate(Base.Projectile, Base.transform);
+            NetworkServer.UnSpawn(Projectile.gameObject);
+            Projectile.PreviousOwner = new Footprint(Base.Owner);
+            Projectile.transform.position = Vector3.negativeInfinity;
         }
 
         /// <summary>
@@ -38,6 +45,14 @@ namespace Exiled.API.Features.Items
         public Throwable(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="Throwable"/> class.
+        /// </summary>
+        ~Throwable()
+        {
+            Object.Destroy(Projectile);
         }
 
         /// <summary>

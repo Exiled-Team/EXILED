@@ -30,6 +30,9 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Projectile = (ExplosionGrenade)Object.Instantiate(itemBase.Projectile);
+            Projectile.PreviousOwner = new Footprint(Base.Owner);
+            NetworkServer.UnSpawn(Projectile.gameObject);
+            Projectile.transform.position = Vector3.negativeInfinity;
         }
 
         /// <summary>
@@ -41,6 +44,14 @@ namespace Exiled.API.Features.Items
         public ExplosiveGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the <see cref="ExplosiveGrenade"/> class.
+        /// </summary>
+        ~ExplosiveGrenade()
+        {
+            Object.Destroy(Projectile);
         }
 
         /// <summary>
