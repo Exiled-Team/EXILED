@@ -9,7 +9,13 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
 
+    using Footprinting;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using Mirror;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
@@ -23,7 +29,7 @@ namespace Exiled.API.Features.Items
         public ExplosiveGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            Projectile = (ExplosionGrenade)Object.Instantiate(itemBase.Projectile);
         }
 
         /// <summary>
@@ -40,7 +46,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="ExplosionGrenade"/> for this item.
         /// </summary>
-        public new ExplosionGrenade Projectile => (ExplosionGrenade)Base.Projectile;
+        public new ExplosionGrenade Projectile { get; }
 
         /// <summary>
         /// Gets or sets the maximum radius of the grenade.
@@ -94,6 +100,24 @@ namespace Exiled.API.Features.Items
         {
             get => Projectile._fuseTime;
             set => Projectile._fuseTime = value;
+        }
+
+        /// <summary>
+        /// Spawns an active grenade on the map at the specified location.
+        /// </summary>
+        /// <param name="position">The location to spawn the grenade.</param>
+        /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
+        public void SpawnActive(Vector3 position, Player owner = null)
+        {
+            if (owner != null)
+                Projectile.PreviousOwner = new Footprint(owner.ReferenceHub);
+
+#if DEBUG
+            Log.Debug($"Spawning active grenade: {FuseTime}");
+#endif
+            Projectile.transform.position = position;
+            NetworkServer.Spawn(Projectile.gameObject);
+            Projectile.RpcSetTime(FuseTime);
         }
     }
 }
