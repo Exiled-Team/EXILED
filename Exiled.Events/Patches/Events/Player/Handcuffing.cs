@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="DisarmedPlayers.SetDisarmedStatus"/>.
-    /// Adds the <see cref="Handlers.Player.Handcuffing"/> and <see cref="Handlers.Player.RemovingHandcuffs"/> event.
+    /// Adds the <see cref="Handlers.Player.Handcuffing"/> and <see cref="Handlers.Player.RemovingHandcuffs"/> events.
     /// </summary>
     [HarmonyPatch(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus))]
     internal static class Handcuffing
