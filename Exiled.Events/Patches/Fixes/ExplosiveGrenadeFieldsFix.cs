@@ -45,11 +45,6 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ExplosionGrenade, ExplosiveGrenade>), nameof(Dictionary<ExplosionGrenade, ExplosiveGrenade>.TryGetValue))),
                 new CodeInstruction(OpCodes.Brfalse, skipLabel),
 
-                // Log.Debug("Doing grenade thing - Explosive!", true)
-                new CodeInstruction(OpCodes.Ldstr, "Doing grenade thing - Explosive!"),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug))),
-
                 // this._burnedDuration = explosive.BurnDuration;
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc, explosive.LocalIndex),

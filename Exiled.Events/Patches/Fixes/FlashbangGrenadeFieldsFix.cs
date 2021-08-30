@@ -45,11 +45,6 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.TryGetValue))),
                 new CodeInstruction(OpCodes.Brfalse, skipLabel),
 
-                // Log.Debug("Doing grenade thing - Flashbang!", true)
-                new CodeInstruction(OpCodes.Ldstr, "Doing grenade thing - Flashbang!"),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug))),
-
                 // this._blindingOverDistance = flash.BlindCurve;
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
