@@ -34,8 +34,8 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine)))
             });
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
 
