@@ -28,7 +28,8 @@ namespace Exiled.Events.Patches.Events.Cassie
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) - 1;
+            var offset = 1
+            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) - offset;
 
             var returnLabel = generator.DefineLabel();
 
