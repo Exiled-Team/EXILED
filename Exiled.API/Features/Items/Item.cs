@@ -124,8 +124,8 @@ namespace Exiled.API.Features.Items
             if (itemBase == null)
                 return null;
 
-            if (BaseToItem.ContainsKey(itemBase))
-                return BaseToItem[itemBase];
+            if (BaseToItem.TryGetValue(itemBase, out Item item))
+                return item;
 
             switch (itemBase)
             {
