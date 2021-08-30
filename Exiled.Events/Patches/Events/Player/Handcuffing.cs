@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             var returnLabel = generator.DefineLabel();
 
-            // var ev = new RemovingHandcuffsEventArgs(Player, Player);
+            // var ev = new RemovingHandcuffsEventArgs(Player, Player, true);
             // Handlers.Player.OnRemovingHandcuffs(ev);
             //
             // if (!ev.IsAllowed)
@@ -65,7 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldsfld);
 
-            // var ev = new HandcuffingEventArgs(Player, Player);
+            // var ev = new HandcuffingEventArgs(Player, Player, true);
             // Handlers.Player.OnHandcuffing(ev);
             //
             // if (!ev.IsAllowed)
