@@ -69,12 +69,20 @@ namespace Exiled.Events.Patches.Fixes
 
                 // timeGrenade._fuseTime = explosive.FuseTime
                 new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldloc, explosive.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.FuseTime))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                new CodeInstruction(OpCodes.Ldstr, "Adding grenade to explosive dict"),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ExplosiveGrenade), nameof(ExplosiveGrenade.GrenadeToItem))),
+                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new CodeInstruction(OpCodes.Isinst, typeof(ExplosionGrenade)),
+                new CodeInstruction(OpCodes.Ldloc, explosive.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ExplosionGrenade, ExplosiveGrenade>), nameof(Dictionary<ExplosiveGrenade, ExplosionGrenade>.Add))),
 
                 // timeGrenade.ServerActivate()
+                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
                 new CodeInstruction(OpCodes.Ret),
 
@@ -88,12 +96,20 @@ namespace Exiled.Events.Patches.Fixes
 
                 // timeGrenade._fuseTime = flash.FuseTime
                 new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
-                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.FuseTime))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(TimeGrenade), nameof(TimeGrenade._fuseTime))),
+                new CodeInstruction(OpCodes.Ldstr, "Adding grenade to flash dict."),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Debug))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
+                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
+                new CodeInstruction(OpCodes.Isinst, typeof(FlashbangGrenade)),
+                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.Add))),
 
                 // timeGrenade.ServerActivate();
+                new CodeInstruction(OpCodes.Ldloc, timeGrenade.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TimeGrenade), nameof(TimeGrenade.ServerActivate))),
                 new CodeInstruction(OpCodes.Ret),
 

@@ -30,10 +30,6 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
-            Projectile = Object.Instantiate(Base.Projectile, Base.transform);
-            NetworkServer.UnSpawn(Projectile.gameObject);
-            Projectile.PreviousOwner = new Footprint(Base.Owner);
-            Projectile.transform.position = Vector3.negativeInfinity;
         }
 
         /// <summary>
@@ -48,22 +44,9 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="Throwable"/> class.
-        /// </summary>
-        ~Throwable()
-        {
-            Object.Destroy(Projectile);
-        }
-
-        /// <summary>
         /// Gets the <see cref="ThrowableItem"/> base for this item.
         /// </summary>
         public new ThrowableItem Base { get; internal set; }
-
-        /// <summary>
-        /// Gets the <see cref="ThrownProjectile"/> for this item.
-        /// </summary>
-        public ThrownProjectile Projectile { get; }
 
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.
