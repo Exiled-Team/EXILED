@@ -5,17 +5,16 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Reflection.Emit;
 
-using Exiled.API.Features;
-
-using NorthwoodLib.Pools;
 
 namespace Exiled.Events.Patches.Events.Server
 {
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using HarmonyLib;
     using static HarmonyLib.AccessTools;
+    using NorthwoodLib.Pools;
     #pragma warning disable
 
     /// <summary>
@@ -34,8 +33,8 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine)))
             });
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
 
