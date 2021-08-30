@@ -32,6 +32,9 @@ namespace Exiled.Events.Patches.Events.Map
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            // var ev = new AnnouncingDecontaminationEventArgs(int, bool);
+            //
+            // Map.OnAnnouncingDecontamination(ev);
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
