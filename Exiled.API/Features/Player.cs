@@ -371,6 +371,11 @@ namespace Exiled.API.Features
         /// Gets the player's <see cref="Team"/>.
         /// </summary>
         public Team Team => Role.GetTeam();
+        
+        /// <summary>
+        /// Gets the player's <see cref="LeadingTeam"/>.
+        /// </summary>
+        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
 
         /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
@@ -1836,6 +1841,7 @@ namespace Exiled.API.Features
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {
+        }";
     }
 }
