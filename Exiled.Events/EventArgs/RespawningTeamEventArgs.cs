@@ -69,7 +69,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the current spawnable team.
         /// </summary>
-        internal SpawnableTeamHandlerBase SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
+        public SpawnableTeamHandlerBase SpawnableTeam => RespawnWaveGenerator.SpawnableTeams.TryGetValue(NextKnownTeam, out SpawnableTeamHandlerBase @base) ? @base : null;
 
         private void ReissueNextKnownTeam()
         {
