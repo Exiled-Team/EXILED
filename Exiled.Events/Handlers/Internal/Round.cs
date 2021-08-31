@@ -14,6 +14,7 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader.Features;
 
     using InventorySystem;
+    using InventorySystem.Items.ThrowableProjectiles;
 
     using Item = Exiled.API.Features.Items.Item;
 
@@ -28,6 +29,8 @@ namespace Exiled.Events.Handlers.Internal
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
             Item.BaseToItem.Clear();
             Pickup.BaseToItem.Clear();
+            ExplosiveGrenade.GrenadeToItem.Clear();
+            FlashGrenade.GrenadeToItem.Clear();
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
             {

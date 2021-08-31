@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Enums;
 
     using Footprinting;
@@ -29,7 +31,11 @@ namespace Exiled.API.Features.Items
         public FlashGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Projectile = (FlashbangGrenade)Object.Instantiate(itemBase.Projectile);
+            FlashbangGrenade grenade = (FlashbangGrenade)Base.Projectile;
+            BlindCurve = grenade._blindingOverDistance;
+            SurfaceDistanceIntensifier = grenade._surfaceZoneDistanceIntensifier;
+            DeafenCurve = grenade._deafenDurationOverDistance;
+            FuseTime = grenade._fuseTime;
         }
 
         /// <summary>
@@ -44,45 +50,29 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the <see cref="ExplosionGrenade"/> for this item.
-        /// </summary>
-        public new FlashbangGrenade Projectile { get; }
-
-        /// <summary>
         /// Gets or sets the <see cref="AnimationCurve"/> for determining how long the <see cref="EffectType.Blinded"/> effect will last.
         /// </summary>
-        public AnimationCurve BlindCurve
-        {
-            get => Projectile._blindingOverDistance;
-            set => Projectile._blindingOverDistance = value;
-        }
+        public AnimationCurve BlindCurve { get; set; }
 
         /// <summary>
         /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
         /// </summary>
-        public float SurfaceDistanceIntensifier
-        {
-            get => Projectile._surfaceZoneDistanceIntensifier;
-            set => Projectile._surfaceZoneDistanceIntensifier = value;
-        }
+        public float SurfaceDistanceIntensifier { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="AnimationCurve"/> for determining how long the <see cref="EffectType.Deafened"/> effect will last.
         /// </summary>
-        public AnimationCurve DeafenCurve
-        {
-            get => Projectile._deafenDurationOverDistance;
-            set => Projectile._deafenDurationOverDistance = value;
-        }
+        public AnimationCurve DeafenCurve { get; set; }
 
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
-        public float FuseTime
-        {
-            get => Projectile._fuseTime;
-            set => Projectile._fuseTime = value;
-        }
+        public float FuseTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
+        /// </summary>
+        internal static Dictionary<FlashbangGrenade, FlashGrenade> GrenadeToItem { get; set; } = new Dictionary<FlashbangGrenade, FlashGrenade>();
 
         /// <summary>
         /// Spawns an active grenade on the map at the specified location.
@@ -91,15 +81,17 @@ namespace Exiled.API.Features.Items
         /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
         public void SpawnActive(Vector3 position, Player owner = null)
         {
-            if (owner != null)
-                Projectile.PreviousOwner = new Footprint(owner.ReferenceHub);
-
 #if DEBUG
             Log.Debug($"Spawning active grenade: {FuseTime}");
 #endif
-            Projectile.transform.position = position;
-            NetworkServer.Spawn(Projectile.gameObject);
-            Projectile.RpcSetTime(FuseTime);
+            FlashbangGrenade grenade = (FlashbangGrenade)Object.Instantiate(Base.Projectile, position, Quaternion.identity);
+            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            grenade._blindingOverDistance = BlindCurve;
+            grenade._surfaceZoneDistanceIntensifier = SurfaceDistanceIntensifier;
+            grenade._deafenDurationOverDistance = DeafenCurve;
+            grenade._fuseTime = FuseTime;
+            NetworkServer.Spawn(grenade.gameObject);
+            grenade.ServerActivate();
         }
     }
 }

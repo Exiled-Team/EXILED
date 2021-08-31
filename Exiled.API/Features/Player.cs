@@ -492,6 +492,12 @@ namespace Exiled.API.Features
         public bool IsNTF => Team == Team.MTF;
 
         /// <summary>
+        /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
+        /// Equivalent to checking the player's <see cref="Team"/>.
+        /// </summary>
+        public bool IsCHI => Team == Team.CHI;
+
+        /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// </summary>
         public bool IsScp => Team == Team.SCP;
@@ -898,6 +904,16 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not a player is Northwood staff.
+        /// </summary>
+        public bool IsNorthwoodStaff => ReferenceHub.serverRoles.Staff;
+
+        /// <summary>
+        /// Gets a value indicating whether or not a player is a global moderator.
+        /// </summary>
+        public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
 
         /// <summary>
         /// Gets a value indicating whether the player is in the pocket dimension.
