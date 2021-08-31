@@ -14,9 +14,6 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class AnnouncingDecontaminationEventArgs : EventArgs
     {
-        private readonly int id;
-        private readonly bool isGlobal;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingDecontaminationEventArgs"/> class.
         /// </summary>
@@ -24,26 +21,18 @@ namespace Exiled.Events.EventArgs
         /// <param name="isGlobal"><inheritdoc cref="IsGlobal"/></param>
         public AnnouncingDecontaminationEventArgs(int announcementId, bool isGlobal)
         {
-            id = announcementId;
-            this.isGlobal = isGlobal;
+            Id = announcementId;
+            IsGlobal = isGlobal;
         }
 
         /// <summary>
-        /// Gets or sets the announcement id, from 0 to 6.
+        /// Gets the announcement id, from 0 to 6.
         /// </summary>
-        public int Id
-        {
-            get => id;
-            set { /* Setter will be removed */ }
-        }
+        public int Id { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the announcement is going to be global or not.
+        /// Gets a value indicating whether the announcement is going to be global or not.
         /// </summary>
-        public bool IsGlobal
-        {
-            get => isGlobal;
-            set { /* Setter will be removed */ }
-        }
+        public bool IsGlobal { get; }
     }
 }

@@ -152,5 +152,25 @@ namespace Exiled.API.Extensions
                     return ItemType.None;
             }
         }
+
+        /// <summary>
+        /// Convert a <see cref="GrenadeType"/> to a <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
+        /// <returns><inheritdoc cref="ItemType"/></returns>
+        public static ItemType GetItemType(this GrenadeType type)
+        {
+            switch (type)
+            {
+                case GrenadeType.Flashbang:
+                    return ItemType.GrenadeFlash;
+                case GrenadeType.Scp018:
+                    return ItemType.SCP018;
+                case GrenadeType.FragGrenade:
+                    return ItemType.GrenadeHE;
+                default:
+                    return ItemType.None;
+            }
+        }
     }
 }

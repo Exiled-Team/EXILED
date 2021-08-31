@@ -25,12 +25,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="DroppingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="serial">The Serial number of the item.</param>
+        /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingItemEventArgs(Player player, ushort serial, bool isAllowed = true)
+        public DroppingItemEventArgs(Player player, ItemBase item, bool isAllowed = true)
         {
             Player = player;
-            Item = player.Inventory.UserInventory.Items.TryGetValue(serial, out ItemBase pickupBase) ? Item.Get(pickupBase) : null;
+            Item = Item.Get(item);
             IsAllowed = isAllowed;
         }
 
@@ -40,9 +40,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the item to be dropped.
+        /// Gets the item to be dropped.
         /// </summary>
-        public Item Item { get; set; }
+        public Item Item { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be dropped.

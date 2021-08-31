@@ -16,17 +16,17 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before MicroHID state is changed.
     /// </summary>
-    public class ChangingMicroHidStateEventArgs : EventArgs
+    public class ChangingMicroHIDStateEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChangingMicroHidStateEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="ChangingMicroHIDStateEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="microHID"><inheritdoc cref="MicroHID"/></param>
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMicroHidStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
+        public ChangingMicroHIDStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
         {
             Player = player;
             MicroHID = microHID;

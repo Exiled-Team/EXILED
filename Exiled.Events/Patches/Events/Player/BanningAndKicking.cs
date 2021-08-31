@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
                 API.Features.Player issuerPlayer;
                 if (issuer.Contains("("))
                 {
-                    issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(')).TrimEnd(')')) ?? Server.Host;
+                    issuerPlayer = API.Features.Player.Get(issuer.Substring(issuer.LastIndexOf('(') + 1).TrimEnd(')')) ?? Server.Host;
                 }
                 else
                 {

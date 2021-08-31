@@ -7,9 +7,17 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Enums;
 
+    using Footprinting;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using Mirror;
+
+    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
@@ -23,7 +31,13 @@ namespace Exiled.API.Features.Items
         public ExplosiveGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
-            Base = itemBase;
+            ExplosionGrenade grenade = (ExplosionGrenade)Base.Projectile;
+            MaxRadius = grenade._maxRadius;
+            ScpMultiplier = grenade._scpDamageMultiplier;
+            BurnDuration = grenade._burnedDuration;
+            DeafenDuration = grenade._deafenedDuration;
+            ConcussDuration = grenade._concussedDuration;
+            FuseTime = grenade._fuseTime;
         }
 
         /// <summary>
@@ -38,62 +52,60 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets the <see cref="ExplosionGrenade"/> for this item.
-        /// </summary>
-        public new ExplosionGrenade Projectile => (ExplosionGrenade)Base.Projectile;
-
-        /// <summary>
         /// Gets or sets the maximum radius of the grenade.
         /// </summary>
-        public float MaxRadius
-        {
-            get => Projectile._maxRadius;
-            set => Projectile._maxRadius = value;
-        }
+        public float MaxRadius { get; set; }
 
         /// <summary>
         /// Gets or sets the multiplier for damage against <see cref="Side.Scp"/> players.
         /// </summary>
-        public float ScpMultiplier
-        {
-            get => Projectile._scpDamageMultiplier;
-            set => Projectile._scpDamageMultiplier = value;
-        }
+        public float ScpMultiplier { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Burned"/> effect will last.
         /// </summary>
-        public float BurnDuration
-        {
-            get => Projectile._burnedDuration;
-            set => Projectile._burnedDuration = value;
-        }
+        public float BurnDuration { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Deafened"/> effect will last.
         /// </summary>
-        public float DeafenDuration
-        {
-            get => Projectile._deafenedDuration;
-            set => Projectile._deafenedDuration = value;
-        }
+        public float DeafenDuration { get; set; }
 
         /// <summary>
         /// Gets or sets how long the <see cref="EffectType.Concussed"/> effect will last.
         /// </summary>
-        public float ConcussDuration
-        {
-            get => Projectile._concussedDuration;
-            set => Projectile._concussedDuration = value;
-        }
+        public float ConcussDuration { get; set; }
 
         /// <summary>
         /// Gets or sets how long the fuse will last.
         /// </summary>
-        public float FuseTime
+        public float FuseTime { get; set; }
+
+        /// <summary>
+        /// Gets or sets all the currently known <see cref="EffectGrenade"/>:<see cref="Throwable"/> items.
+        /// </summary>
+        internal static Dictionary<ExplosionGrenade, ExplosiveGrenade> GrenadeToItem { get; set; } = new Dictionary<ExplosionGrenade, ExplosiveGrenade>();
+
+        /// <summary>
+        /// Spawns an active grenade on the map at the specified location.
+        /// </summary>
+        /// <param name="position">The location to spawn the grenade.</param>
+        /// <param name="owner">Optional: The <see cref="Player"/> owner of the grenade.</param>
+        public void SpawnActive(Vector3 position, Player owner = null)
         {
-            get => Projectile._fuseTime;
-            set => Projectile._fuseTime = value;
+#if DEBUG
+            Log.Debug($"Spawning active grenade: {FuseTime}");
+#endif
+            ExplosionGrenade grenade = (ExplosionGrenade)Object.Instantiate(Base.Projectile, position, Quaternion.identity);
+            grenade._maxRadius = MaxRadius;
+            grenade._scpDamageMultiplier = ScpMultiplier;
+            grenade._burnedDuration = BurnDuration;
+            grenade._deafenedDuration = DeafenDuration;
+            grenade._concussedDuration = ConcussDuration;
+            grenade._fuseTime = FuseTime;
+            grenade.PreviousOwner = new Footprint(owner != null ? owner.ReferenceHub : Server.Host.ReferenceHub);
+            NetworkServer.Spawn(grenade.gameObject);
+            grenade.ServerActivate();
         }
     }
 }

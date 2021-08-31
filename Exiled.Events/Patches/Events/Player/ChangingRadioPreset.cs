@@ -7,11 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using Exiled.API.Features;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Radio.NetworkcurRangeId"/>.
@@ -20,18 +28,57 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(Radio), nameof(Radio.NetworkcurRangeId), MethodType.Setter)]
     internal static class ChangingRadioPreset
     {
-        private static bool Prefix(Radio __instance, ref byte value)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            ChangingRadioPresetEventArgs ev = new ChangingRadioPresetEventArgs(Player.Get(__instance.gameObject), __instance.NetworkcurRangeId, value);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Handlers.Player.OnChangingRadioPreset(ev);
+            var returnLabel = generator.DefineLabel();
 
-            if (!ev.IsAllowed)
-                return false;
+            var ev = generator.DeclareLocal(typeof(ChangingRadioPresetEventArgs));
 
-            value = ev.NewValue;
+            newInstructions.InsertRange(0, new[]
+            {
+                // Player.Get(this.gameObject)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
 
-            return true;
+                // this.NetworkcurRangeId
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Radio), nameof(Radio.NetworkcurRangeId))),
+
+                // newValue
+                new CodeInstruction(OpCodes.Ldarg_1),
+
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+
+                // var ev = ChangingRadioPresetEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingRadioPresetEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+
+                // Handlers.Player.OnChangingRadioPreset(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingRadioPreset))),
+
+                // if (!ev.IsAllowed)
+                //     return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
+                // newValue = ev.NewValue
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRadioPresetEventArgs), nameof(ChangingRadioPresetEventArgs.NewValue))),
+                new CodeInstruction(OpCodes.Stloc_0),
+            });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
