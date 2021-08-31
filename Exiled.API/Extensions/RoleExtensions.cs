@@ -95,6 +95,28 @@ namespace Exiled.API.Extensions
                     return Team.RIP;
             }
         }
+        
+        /// <summary>
+        /// Get the <see cref="LeadingTeam"/>.
+        /// </summary>
+        /// <param name="team">Team</param>
+        /// <returns><see cref="LeadingTeam"/>.</returns>
+        public static LeadingTeam GetLeadingTeam(this Team team)
+        {
+            switch (team)
+            {
+                case Team.CDP:
+                case Team.CHI:
+                    return LeadingTeam.ChaosInsurgency;
+                case Team.MTF:
+                case Team.RSC:
+                    return LeadingTeam.FacilityForces;
+                case Team.SCP:
+                    return LeadingTeam.Anomalies;
+                default:
+                    return LeadingTeam.Draw;
+            }
+        }
 
         /// <summary>
         /// Gets a random spawn point of a <see cref="RoleType"/>.
