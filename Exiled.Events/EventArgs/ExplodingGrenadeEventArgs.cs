@@ -66,7 +66,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
-        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Rent(TargetsToAffect);
+        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(TargetsToAffect);
 
         /// <summary>
         /// Gets the player who thrown the grenade.
