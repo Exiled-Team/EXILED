@@ -10,6 +10,8 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
+
     using HarmonyLib;
 
     using InventorySystem.Items.Firearms;
@@ -28,7 +30,7 @@ namespace Exiled.Events.Patches.Fixes
             const int offset = 1;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt) + offset;
 
-            newInstructions.Insert(index, new CodeInstruction(OpCodes.Ret));
+            newInstructions.RemoveRange(index, 15);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
