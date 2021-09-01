@@ -34,12 +34,11 @@ namespace Exiled.Events.Patches.Events.Player
 
             var returnLabel = generator.DefineLabel();
 
-            var checkLabel = generator.DefineLabel();
+            var continueLabel = generator.DefineLabel();
 
             var ev = generator.DeclareLocal(typeof(ChangingMicroHIDStateEventArgs));
 
-            // if (msgType != HidStatusMessageType.State)
-            //     return;
+            // if (msgType == HidStatusMessageType.State) {...
             //
             // var ev = new ChangingMicroHIDState(Player, this, HidState, HidState, true);
             //
@@ -49,13 +48,15 @@ namespace Exiled.Events.Patches.Events.Player
             //     return;
             //
             // code = ev.NewState;
+            // ...}
+            //
+            // else { Original Code }
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Beq_S, checkLabel),
-                new CodeInstruction(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(checkLabel),
+                new CodeInstruction(OpCodes.Bne_Un_S, continueLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(MicroHIDItem), nameof(MicroHIDItem.Owner))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -74,6 +75,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.NewState))),
                 new CodeInstruction(OpCodes.Starg_S, 2),
             });
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloca_S);
+
+            newInstructions[index].WithLabels(continueLabel);
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
