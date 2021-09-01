@@ -36,6 +36,8 @@ namespace Exiled.Events.Patches.Events.Player
 
             var checkLabel = generator.DefineLabel();
 
+            var ev = generator.DeclareLocal(typeof(ChangingMicroHIDStateEventArgs));
+
             // if (msgType != HidStatusMessageType.State)
             //     return;
             //
@@ -43,10 +45,10 @@ namespace Exiled.Events.Patches.Events.Player
             //
             // Handlers.Player.OnChangingMicroHIDState(ev);
             //
-            // code = ev.NewState;
-            //
             // if (!ev.IsAllowed)
             //     return;
+            //
+            // code = ev.NewState;
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -64,11 +66,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingMicroHIDStateEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMicroHIDState))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.NewState))),
-                new CodeInstruction(OpCodes.Starg_S, 2),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.NewState))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
