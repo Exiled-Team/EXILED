@@ -58,16 +58,6 @@ namespace Exiled.API.Features
             get => Base.IsConsideredOpen();
             set => Base.NetworkTargetState = value;
         }
-        
-        /// <summary>
-        /// Gets or sets a value indicating whether the door is open.
-        /// </summary>
-        [Obsolete("Use IsOpen instead.", true)]
-        public bool Open
-        {
-            get => IsOpen;
-            set => IsOpen = value;
-        }
 
         /// <summary>
         /// Gets or sets a value indicating whether SCP-106 can walk through the door.

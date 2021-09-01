@@ -99,7 +99,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Get the <see cref="LeadingTeam"/>.
         /// </summary>
-        /// <param name="team">Team</param>
+        /// <param name="team">Team.</param>
         /// <returns><see cref="LeadingTeam"/>.</returns>
         public static LeadingTeam GetLeadingTeam(this Team team)
         {
