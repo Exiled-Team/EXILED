@@ -7,13 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="ServerRoles.SetGroup(UserGroup, bool, bool, bool)"/>.
@@ -22,22 +28,40 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.SetGroup))]
     internal static class ChangingGroup
     {
-        private static bool Prefix(ServerRoles __instance, UserGroup group)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var returnLabel = generator.DefineLabel();
+
+            var offset = 1;
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+
+            // var ev = new ChangingGroupEventArgs(Player, UserGroup, true);
+            //
+            // if (!ev.IsAllowed)
+            //     return;
+            newInstructions.InsertRange(index, new[]
             {
-                ChangingGroupEventArgs ev = new ChangingGroupEventArgs(API.Features.Player.Get(__instance.gameObject), group);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ServerRoles), nameof(ServerRoles.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingGroupEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingGroup))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingGroupEventArgs), nameof(ChangingGroupEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                Player.OnChangingGroup(ev);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                return ev.IsAllowed;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ChangingGrounp: {e}\n{e.StackTrace}");
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
