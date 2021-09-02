@@ -36,14 +36,12 @@ namespace Exiled.Events.Patches.Events.Player
         {
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = -19;
+            var offset = -7;
 
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
             (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
 
             var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
-            var ev = generator.DeclareLocal(typeof(UsingMicroHIDEnergyEventArgs));
 
             newInstructions.InsertRange(index, new[]
             {
@@ -69,20 +67,18 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingMicroHIDEnergyEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
 
                 // Handlers.Player.UsingMicroHIDEnergy(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingMicroHIDEnergy))),
+
+                // num = ev.Drain
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.Drain))),
+                new CodeInstruction(OpCodes.Stloc_2),
 
                 // if (!ev.IsAllowed)
                 //   return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-
-                // num = ev.Drain
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.Drain))),
-                new CodeInstruction(OpCodes.Stloc_2),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

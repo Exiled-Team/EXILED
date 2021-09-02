@@ -53,7 +53,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the door is open.
         /// </summary>
-        public bool Open
+        public bool IsOpen
         {
             get => Base.IsConsideredOpen();
             set => Base.NetworkTargetState = value;

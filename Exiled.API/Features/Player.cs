@@ -373,6 +373,11 @@ namespace Exiled.API.Features
         public Team Team => Role.GetTeam();
 
         /// <summary>
+        /// Gets the player's <see cref="LeadingTeam"/>.
+        /// </summary>
+        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
+
+        /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
         /// </summary>
         public RoleType Role
