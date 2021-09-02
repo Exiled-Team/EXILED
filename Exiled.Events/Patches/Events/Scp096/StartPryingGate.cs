@@ -7,34 +7,64 @@
 
 namespace Exiled.Events.Patches.Events.Scp096
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using Interactables.Interobjects;
+    using NorthwoodLib.Pools;
 
-    using PlayableScps;
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches the <see cref="Scp096.PryGate"/> method.
+    /// Patches the <see cref="PlayableScps.Scp096.PryGate"/> method.
     /// Adds the <see cref="Handlers.Scp096.StartPryingGate"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp096), nameof(Scp096.PryGate))]
+    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.PryGate))]
     internal static class StartPryingGate
     {
-        private static bool Prefix(Scp096 __instance, PryableDoor gate)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            if (__instance.Charging && __instance.Enraged && (!gate.TargetState /* && gate.doorType == Door.DoorTypes.HeavyGate */))
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var returnLabel = generator.DefineLabel();
+
+            var offset = -1;
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
+            (FieldInfo)instruction.operand == Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))) + offset;
+
+            // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(this, Player, Gate, true);
+            //
+            // Handlers.Scp096.OnStartPryingGate(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return;
+            newInstructions.InsertRange(0, new[]
             {
-                StartPryingGateEventArgs ev = new StartPryingGateEventArgs(API.Features.Player.Get(__instance.Hub), gate);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartPryingGateEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnStartPryingGate))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartPryingGateEventArgs), nameof(StartPryingGateEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                Handlers.Scp096.OnStartPryingGate(ev);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                return ev.IsAllowed;
-            }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-            return false;
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

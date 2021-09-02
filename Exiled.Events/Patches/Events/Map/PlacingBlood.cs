@@ -34,6 +34,8 @@ namespace Exiled.Events.Patches.Events.Map
 
             var returnLabel = generator.DefineLabel();
 
+            var ev = generator.DeclareLocal(typeof(PlacingBloodEventArgs));
+
             // if (!Exiled.Events.Instance.Config.CanSpawnBlood)
             //     return;
             //
@@ -41,12 +43,12 @@ namespace Exiled.Events.Patches.Events.Map
             //
             // Handlers.Map.OnPlacingBlood(ev);
             //
+            // if (!ev.IsAllowed)
+            //     return;
+            //
             // pos = ev.Position;
             // type = ev.Type;
             // f = ev.Multiplier;
-            //
-            // if (!ev.IsAllowed)
-            //     return;
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
@@ -63,17 +65,19 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingBloodEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnPlacingBlood))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Position))),
-                new CodeInstruction(OpCodes.Starg_S, 1),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Type))),
-                new CodeInstruction(OpCodes.Starg_S, 2),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Multiplier))),
-                new CodeInstruction(OpCodes.Starg_S, 3),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Position))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Type))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Multiplier))),
+                new CodeInstruction(OpCodes.Starg_S, 3),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
