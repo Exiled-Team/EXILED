@@ -100,6 +100,35 @@ namespace Exiled.API.Features
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
+        /// Locks all the doors in the room.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="locktype">DoorLockType of the lockdown.</param>
+        public void LockDown(float duration, DoorLockType locktype = DoorLockType.Regular079)
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.DoorLockType = locktype;
+                door.IsOpen = false;
+            }
+
+            if (duration == -1)
+                return;
+            MEC.Timing.CallDelayed(duration, UnlockAll);
+        }
+
+        /// <summary>
+        /// Unlocks all the doors in the room.
+        /// </summary>
+        public void UnlockAll()
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.DoorLockType = DoorLockType.None;
+            }
+        }
+
+        /// <summary>
         /// Resets the room color to default.
         /// </summary>
         public void ResetColor()
