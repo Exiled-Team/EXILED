@@ -11,8 +11,6 @@ namespace Exiled.API.Features.Items
 
     using InventorySystem.Items.MicroHID;
 
-    using HidState = Exiled.API.Enums.HidState;
-
     /// <summary>
     /// A wrapper class for <see cref="InventorySystem.Items.MicroHID.MicroHIDItem"/>.
     /// </summary>
@@ -56,8 +54,8 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public HidState State
         {
-            get => (HidState)Base.State;
-            set => Base.State = (InventorySystem.Items.MicroHID.HidState)value;
+            get => Base.State;
+            set => Base.State = value;
         }
 
         /// <summary>

@@ -373,6 +373,11 @@ namespace Exiled.API.Features
         public Team Team => Role.GetTeam();
 
         /// <summary>
+        /// Gets the player's <see cref="LeadingTeam"/>.
+        /// </summary>
+        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
+
+        /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
         /// </summary>
         public RoleType Role
@@ -904,6 +909,16 @@ namespace Exiled.API.Features
                     ReferenceHub.characterClassManager.UserCode_CmdRequestShowTag(false);
             }
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not a player is Northwood staff.
+        /// </summary>
+        public bool IsNorthwoodStaff => ReferenceHub.serverRoles.Staff;
+
+        /// <summary>
+        /// Gets a value indicating whether or not a player is a global moderator.
+        /// </summary>
+        public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
 
         /// <summary>
         /// Gets a value indicating whether the player is in the pocket dimension.

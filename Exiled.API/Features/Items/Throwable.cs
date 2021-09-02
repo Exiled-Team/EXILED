@@ -9,7 +9,11 @@ namespace Exiled.API.Features.Items
 {
     using Exiled.API.Enums;
 
+    using Footprinting;
+
     using InventorySystem.Items.ThrowableProjectiles;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -26,7 +30,6 @@ namespace Exiled.API.Features.Items
             : base(itemBase)
         {
             Base = itemBase;
-            Projectile = Object.Instantiate(Base.Projectile, Base.transform);
         }
 
         /// <summary>
@@ -44,11 +47,6 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ThrowableItem"/> base for this item.
         /// </summary>
         public new ThrowableItem Base { get; internal set; }
-
-        /// <summary>
-        /// Gets the <see cref="ThrownProjectile"/> for this item.
-        /// </summary>
-        public ThrownProjectile Projectile { get; }
 
         /// <summary>
         /// Gets or sets the amount of time it takes to pull the pin.

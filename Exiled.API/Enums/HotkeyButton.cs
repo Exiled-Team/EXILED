@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="HidState.cs" company="Exiled Team">
+// <copyright file="HotkeyButton.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,33 +8,33 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Possible <see cref="API.Features.Items.MicroHid"/> states.
+    /// Hotkey button types.
     /// </summary>
-    public enum HidState
+    public enum HotkeyButton
     {
         /// <summary>
-        /// Idling and not using energy.
+        /// The hotkey button for selecting the keycard.
         /// </summary>
-        Idle,
+        Keycard = 0,
 
         /// <summary>
-        /// Powering up and using energy slowly.
+        /// The hotkey button for selecting the primary firearm.
         /// </summary>
-        PoweringUp,
+        PrimaryFirearm = 1,
 
         /// <summary>
-        /// Powering down and not using energy.
+        /// The hotkey button for selecting the secondary firearm.
         /// </summary>
-        PoweringDown,
+        SecondaryFirearm = 2,
 
         /// <summary>
-        /// Fully powered up and ready to fire.
+        /// The hotkey button for selecting the medical item.
         /// </summary>
-        Primed,
+        Medical = 3,
 
         /// <summary>
-        /// Firing and using energy.
+        /// The hotkey button for selecting the grenade.
         /// </summary>
-        Firing,
+        Grenade = 4,
     }
 }
