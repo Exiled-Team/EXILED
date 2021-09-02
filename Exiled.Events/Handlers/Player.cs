@@ -303,6 +303,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
 
         /// <summary>
+        /// Called before processing a hotkey.
+        /// </summary>
+        public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -638,5 +643,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
         public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before processing a hotkey.
+        /// </summary>
+        /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
+        public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
     }
 }
