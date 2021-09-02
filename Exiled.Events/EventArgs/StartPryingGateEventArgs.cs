@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
         {
             Scp096 = scp096;
             Player = player;
-            Gate = gate;
+            Gate = Door.Get(gate);
             IsAllowed = isAllowed;
         }
 
@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the <see cref="PryableDoor"/> to be pried open.
         /// </summary>
-        public PryableDoor Gate { get; }
+        public Door Gate { get; }
 
         /// <summary>
         /// Gets or Sets a value indicating whether or not the gate can be pried open by SCP-096.
