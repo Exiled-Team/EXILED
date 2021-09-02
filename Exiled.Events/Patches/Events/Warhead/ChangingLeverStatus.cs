@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             var offset = 2;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -49,6 +49,14 @@ namespace Exiled.Events.Patches.Events.Warhead
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingLeverStatusEventArgs), nameof(ChangingLeverStatusEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
+
+            offset = 10;
+
+            index += offset;
+
+            var moveIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + 2;
+
+            newInstructions[index].MoveLabelsTo(newInstructions[moveIndex]);
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
