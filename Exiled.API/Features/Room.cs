@@ -104,7 +104,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
         /// <param name="locktype">DoorLockType of the lockdown.</param>
-        public void LockDown(float duration, DoorLockType locktype = DoorLockType.Regular079)
+        public static void LockDown(float duration, DoorLockType locktype = DoorLockType.Regular079)
         {
             foreach (Door door in this.Doors)
             {
@@ -120,7 +120,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
-        public void UnlockAll()
+        public static void UnlockAll()
         {
             foreach (Door door in this.Doors)
             {
