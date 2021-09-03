@@ -134,6 +134,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
         {
+            Log.Debug($"Changing {player.Nickname}'s inventory..");
             Timing.CallDelayed(0.25f, () =>
             {
                 try
