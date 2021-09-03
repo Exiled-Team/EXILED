@@ -1,9 +1,15 @@
 name: Exiled Main CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 env:
-  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:

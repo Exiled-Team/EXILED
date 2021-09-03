@@ -1,15 +1,18 @@
-name: Exiled Alpha CI
+name: Exiled Dev CI
 
 on:
   push:
     branches:
-      - exiled-3.0
+      - dev
+  pull_request:
+    branches:
+      - dev
   workflow_dispatch:
     branches:
-      - exiled3.0
+      - dev
 
 env:
-  EXILED_REFERENCES_URL: ${{ secrets.BETA_REFS }}
+  EXILED_REFERENCES_URL: https://exiled.host/build_deps/Dev.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
