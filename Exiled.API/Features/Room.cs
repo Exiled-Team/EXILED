@@ -87,6 +87,11 @@ namespace Exiled.API.Features
         public IEnumerable<Camera079> Cameras { get; private set; }
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera079"/> in the <see cref="Room"/>.
+        /// </summary>
+        public IEnumerable<Camera079> Cameras { get; private set; }
+
+        /// <summary>
         /// Gets a value indicating whether or not the lights in this room are currently flickered off.
         /// </summary>
         public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
@@ -250,6 +255,20 @@ namespace Exiled.API.Features
             foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
                 doors.Add(Door.Get(doorVariant));
             return doors;
+        }
+
+        private static List<Camera079> FindCameras(GameObject gameObject)
+        {
+            List<Camera079> cameraList = new List<Camera079>();
+            foreach (Camera079 camera in Map.Cameras)
+            {
+                if (camera.Room().gameObject == gameObject)
+                {
+                    cameraList.Add(camera);
+                }
+            }
+
+            return cameraList;
         }
 
         private static List<Camera079> FindCameras(GameObject gameObject)

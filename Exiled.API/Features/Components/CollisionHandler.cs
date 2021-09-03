@@ -18,6 +18,7 @@ namespace Exiled.API.Features.Components
     /// <summary>
     /// Collision Handler for grenades.
     /// </summary>
+    [Obsolete("Use the CollisionHandler from EXILED.API.Features.Components instead.", true)]
     public class CollisionHandler : MonoBehaviour
     {
         private bool initialized;
