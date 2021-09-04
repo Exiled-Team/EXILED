@@ -1,9 +1,15 @@
 name: Exiled Main CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
 
 env:
-  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/References.zip
+  EXILED_REFERENCES_URL: https://www.exiled.host/build_deps/Master.zip
   EXILED_REFERENCES_PATH: ${{ github.workspace }}/References
 
 jobs:
@@ -27,7 +33,7 @@ jobs:
     - name: Get references
       shell: pwsh
       run: |
-        Invoke-WebRequest -Uri https://exiled.host/build_deps/References.zip -OutFile ${{ github.workspace }}/References.zip
+        Invoke-WebRequest -Uri ${{ env.EXILED_REFERENCES_URL }} -OutFile ${{ github.workspace }}/References.zip
         Expand-Archive -Path References.zip -DestinationPath ${{ env.EXILED_REFERENCES_PATH }}
 
     - name: Build

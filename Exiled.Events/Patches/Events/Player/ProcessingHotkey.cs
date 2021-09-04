@@ -22,10 +22,10 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="InventorySystem.Inventory.UserCode_CmdProcessHotkey"/>.
+    /// Patch the <see cref="Inventory.UserCode_CmdProcessHotkey"/>.
     /// Adds the <see cref="Handlers.Player.ProcessingHotkey"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdProcessHotkey))]
+    [HarmonyPatch(typeof(Inventory), nameof(Inventory.UserCode_CmdProcessHotkey))]
     internal static class ProcessingHotkey
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
