@@ -658,6 +658,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a player walks on a sinkhole.
         /// </summary>
+        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
         public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
     }
 }
