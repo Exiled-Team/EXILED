@@ -49,6 +49,7 @@ namespace Exiled.API.Extensions
                 EffectType.Invisible => typeof(Invisible),
                 EffectType.SinkHole => typeof(SinkHole),
                 EffectType.Visuals939 => typeof(Visuals939),
+
                 // This should never happen
                 _ => throw new InvalidOperationException($"Invalid effect enum provided ({nameof(effect)})")
             };

@@ -59,7 +59,9 @@ namespace Exiled.API.Extensions
                 "ElA2" => ElevatorType.LczA,
                 "ElB" => ElevatorType.LczB,
                 "ElB2" => ElevatorType.LczB,
+                #pragma warning disable SA1122
                 "" => ElevatorType.Nuke,
+                #pragma warning restore SA1122
                 _ => ElevatorType.Unknown
             };
         }
