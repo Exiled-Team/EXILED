@@ -12,13 +12,13 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Enums;
     using Exiled.API.Features;
 
-    using InventorySystem.Items.Firearms.Utilities;
-
     /// <summary>
     /// Contains all information before a player interacts with a shooting target.
     /// </summary>
     public class InteractingShootingTargetEventArgs : EventArgs
     {
+        private bool isAllowed;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InteractingShootingTargetEventArgs"/> class.
         /// </summary>
@@ -26,12 +26,12 @@ namespace Exiled.Events.EventArgs
         /// /// <param name="shootingTarget"><inheritdoc cref="ShootingTarget"/></param>
         /// /// <param name="targetButton"><inheritdoc cref="TargetButton"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingShootingTargetEventArgs(Player player, ShootingTarget shootingTarget, ShootingTargetButton targetButton, bool isAllowed = false)
+        public InteractingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, ShootingTargetButton targetButton, bool isAllowed = true)
         {
             Player = player;
-            ShootingTarget = shootingTarget;
+            ShootingTarget = ShootingTarget.Get(shootingTarget);
             TargetButton = targetButton;
-            IsAllowed = isAllowed;
+            this.isAllowed = isAllowed;
         }
 
         /// <summary>
@@ -52,6 +52,15 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the interaction is allowed.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed
+        {
+            get => isAllowed;
+            set
+            {
+                if (!ShootingTarget.IsSynced)
+                    throw new InvalidOperationException("Attempted to set IsAllowed while target is in local mode. Set target's IsSynced to true before setting IsAllowed.");
+                isAllowed = value;
+            }
+        }
     }
 }

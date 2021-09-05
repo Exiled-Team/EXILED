@@ -16,17 +16,15 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using InventorySystem.Items.Firearms.Utilities;
-
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ShootingTarget.ServerInteract(ReferenceHub, byte)"/>.
+    /// Patches <see cref="InventorySystem.Items.Firearms.Utilities.ShootingTarget.ServerInteract(ReferenceHub, byte)"/>.
     /// Adds the <see cref="Handlers.Player.InteractingShootingTarget"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.ServerInteract))]
+    [HarmonyPatch(typeof(InventorySystem.Items.Firearms.Utilities.ShootingTarget), nameof(InventorySystem.Items.Firearms.Utilities.ShootingTarget.ServerInteract))]
     internal static class InteractingShootingTarget
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
