@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
 #pragma warning disable SA1118
+#pragma warning disable SA1600
 
     using System;
 
