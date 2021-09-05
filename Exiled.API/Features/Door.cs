@@ -209,8 +209,22 @@ namespace Exiled.API.Features
         /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
         public void ChangeLock(DoorLockType lockType)
         {
-            bool flag = !IsLocked || lockType == DoorLockType.None;
-            Base.ServerChangeLock((DoorLockReason)lockType, flag);
+            if (lockType == DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = 0;
+            }
+            else
+            {
+                DoorLockType locks = DoorLockType;
+                if (locks.HasFlag(lockType))
+                    locks &= ~lockType;
+                else
+                    locks |= lockType;
+
+                Base.NetworkActiveLocks = (ushort)locks;
+            }
+
+            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
         }
 
         /// <summary>
