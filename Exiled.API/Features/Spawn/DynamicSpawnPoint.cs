@@ -5,11 +5,15 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Spawn
+namespace Exiled.API.Features.Spawn
 {
     using System;
 
+    using Exiled.API.Extensions;
+    using Exiled.CustomItems.API;
+
     using UnityEngine;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -39,6 +43,17 @@ namespace Exiled.CustomItems.API.Spawn
         {
             get => Location.GetPosition();
             set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
+        }
+
+        /// <summary>
+        /// Deconstructs the class into usable variables.
+        /// </summary>
+        /// <param name="chance"><inheritdoc cref="Chance"/></param>
+        /// <param name="position"><inheritdoc cref="Position"/></param>
+        public void Deconstruct(out float chance, out Vector3 position)
+        {
+            chance = Chance;
+            position = Position;
         }
     }
 }

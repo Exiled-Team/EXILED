@@ -17,6 +17,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Spawn;
     using Exiled.CustomItems;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
@@ -86,7 +87,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
-        protected virtual Dictionary<Vector3, float> SpawnLocations { get; set; } = new Dictionary<Vector3, float>();
+        protected virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
@@ -328,21 +329,45 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Gets a random <see cref="SpawnLocations"/>.
+        /// Gets a random <see cref="Vector3"/> from <see cref="SpawnProperties"/>.
         /// </summary>
         /// <returns>The chosen spawn location.</returns>
         protected Vector3 GetSpawnPosition()
         {
-            if (SpawnLocations.Count == 0)
+            if (SpawnProperties == null || SpawnProperties.Count() == 0)
                 return Vector3.zero;
 
-            foreach (KeyValuePair<Vector3, float> kvp in SpawnLocations)
+            if (SpawnProperties.StaticSpawnPoints.Count > 0)
             {
-                if (Loader.Random.Next(100) <= kvp.Value)
-                    return kvp.Key;
+                foreach ((float chance, Vector3 pos) in SpawnProperties.StaticSpawnPoints)
+                {
+                    int r = Loader.Random.Next(100);
+                    if (r <= chance)
+                        return pos;
+                }
             }
 
-            return SpawnLocations.ElementAt(Loader.Random.Next(SpawnLocations.Count)).Key;
+            if (SpawnProperties.DynamicSpawnPoints.Count > 0)
+            {
+                foreach ((float chance, Vector3 pos) in SpawnProperties.DynamicSpawnPoints)
+                {
+                    int r = Loader.Random.Next(100);
+                    if (r <= chance)
+                        return pos;
+                }
+            }
+
+            if (SpawnProperties.RoleSpawnPoints.Count > 0)
+            {
+                foreach ((float chance, Vector3 pos) in SpawnProperties.RoleSpawnPoints)
+                {
+                    int r = Loader.Random.Next(100);
+                    if (r <= chance)
+                        return pos;
+                }
+            }
+
+            return Vector3.zero;
         }
 
         /// <summary>

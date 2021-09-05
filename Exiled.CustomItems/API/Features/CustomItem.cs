@@ -15,8 +15,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
@@ -427,6 +427,11 @@ namespace Exiled.CustomItems.API.Features
                         break;
                     }
                 }
+                else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
+                {
+                    Vector3 position = roleSpawnPoint.Role.GetRandomSpawnProperties().Item1;
+                    Spawn(position);
+                }
                 else
                 {
                     Spawn(spawnPoint.Position);
@@ -446,7 +451,7 @@ namespace Exiled.CustomItems.API.Features
             if (SpawnProperties == null)
                 return;
 
-            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit)));
+            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Math.Min(0, Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit) - Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit))));
         }
 
         /// <summary>
