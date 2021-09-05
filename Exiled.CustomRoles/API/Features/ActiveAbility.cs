@@ -12,6 +12,8 @@ namespace Exiled.CustomRoles.API.Features
 
     using Exiled.API.Features;
 
+    using MEC;
+
     using UnityEngine;
 
     using YamlDotNet.Serialization;
@@ -32,10 +34,52 @@ namespace Exiled.CustomRoles.API.Features
         public abstract float Cooldown { get; set; }
 
         /// <summary>
+        /// Gets or sets an action to override the behavior of <see cref="CanUseAbility"/>.
+        /// </summary>
+        [YamlIgnore]
+        public virtual Func<bool> CanUseOverride { get; set; }
+
+        /// <summary>
         /// Gets the last time this ability was used.
         /// </summary>
         [YamlIgnore]
         public Dictionary<Player, DateTime> LastUsed { get; } = new Dictionary<Player, DateTime>();
+
+        /// <summary>
+        /// Gets all players actively using this ability.
+        /// </summary>
+        [YamlIgnore]
+        public HashSet<Player> ActivePlayers { get; } = new HashSet<Player>();
+
+        /// <summary>
+        /// Uses the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        public void UseAbility(Player player)
+        {
+            ActivePlayers.Add(player);
+            LastUsed[player] = DateTime.Now;
+            ShowMessage(player);
+            AbilityUsed(player);
+            Timing.CallDelayed(Duration, () => EndAbility(player));
+        }
+
+        /// <summary>
+        /// Ends the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> the ability is ended for.</param>
+        public void EndAbility(Player player)
+        {
+            ActivePlayers.Remove(player);
+            AbilityEnded(player);
+        }
+
+        /// <summary>
+        /// Checks if the specified player is using the ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns>True if the player is actively using the ability.</returns>
+        public override bool Check(Player player) => ActivePlayers.Contains(player);
 
         /// <summary>
         /// Checks to see if the ability is usable by the player.
@@ -45,6 +89,12 @@ namespace Exiled.CustomRoles.API.Features
         /// <returns>True if the ability is usable.</returns>
         public virtual bool CanUseAbility(Player player, out string response)
         {
+            if (CanUseOverride != null)
+            {
+                response = string.Empty;
+                return CanUseOverride.Invoke();
+            }
+
             if (!LastUsed.ContainsKey(player))
             {
                 response = string.Empty;
@@ -65,11 +115,27 @@ namespace Exiled.CustomRoles.API.Features
             return false;
         }
 
-        /// <inheritdoc/>
-        protected override void AbilityUsed(Player player)
+        /// <summary>
+        /// Called when the ability is used.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        protected virtual void AbilityUsed(Player player)
         {
-            LastUsed[player] = DateTime.Now;
-            base.AbilityUsed(player);
         }
+
+        /// <summary>
+        /// Called when the abilities duration has ended.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> the ability has ended for.</param>
+        protected virtual void AbilityEnded(Player player)
+        {
+        }
+
+        /// <summary>
+        /// Called when the ability is successfully used.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> using the ability.</param>
+        protected virtual void ShowMessage(Player player) =>
+            player.ShowHint($"Ability {Name} has been activated.\n{Description}", 10f);
     }
 }

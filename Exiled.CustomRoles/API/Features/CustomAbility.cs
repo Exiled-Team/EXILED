@@ -34,16 +34,9 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the abilities unique ID number.
+        /// Gets all players who have this ability.
         /// </summary>
-        public abstract uint Id { get; set; }
-
-        /// <summary>
-        /// Gets a <see cref="CustomRole"/> by ID.
-        /// </summary>
-        /// <param name="id">The ID of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
-        public static CustomAbility Get(int id) => Registered?.FirstOrDefault(r => r.Id == id);
+        public HashSet<Player> Players { get; } = new HashSet<Player>();
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
@@ -51,19 +44,6 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="name">The name of the role to get.</param>
         /// <returns>The role, or null if it doesn't exist.</returns>
         public static CustomAbility Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
-
-        /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> by <inheritdoc cref="Id"/>.
-        /// </summary>
-        /// <param name="id">The ID of the role to get.</param>
-        /// <param name="customAbility">The custom role.</param>
-        /// <returns>True if the role exists.</returns>
-        public static bool TryGet(int id, out CustomAbility customAbility)
-        {
-            customAbility = Get(id);
-
-            return customAbility != null;
-        }
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
@@ -75,12 +55,19 @@ namespace Exiled.CustomRoles.API.Features
         public static bool TryGet(string name, out CustomAbility customAbility)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
-            customAbility = int.TryParse(name, out int id) ? Get(id) : Get(name);
+            customAbility = Get(name);
 
             return customAbility != null;
         }
+
+        /// <summary>
+        /// Checks to see if the specified player has this ability.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns>True if the player has this ability.</returns>
+        public virtual bool Check(Player player) => Players.Contains(player);
 
         /// <summary>
         /// Tries to register this ability.
@@ -90,22 +77,15 @@ namespace Exiled.CustomRoles.API.Features
         {
             if (!Registered.Contains(this))
             {
-                if (Registered.Any(r => r.Id == Id))
-                {
-                    Log.Warn($"{Name} has tried to register with the same ability ID as another ability: {Id}. It will not be registered!");
-
-                    return false;
-                }
-
                 Registered.Add(this);
                 Init();
 
-                Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
+                Log.Debug($"{Name} has been successfully registered.", CustomRoles.Instance.Config.Debug);
 
                 return true;
             }
 
-            Log.Warn($"Couldn't register {Name} ({Id}) as it already exists.");
+            Log.Warn($"Couldn't register {Name} as it already exists.");
 
             return false;
         }
@@ -120,12 +100,32 @@ namespace Exiled.CustomRoles.API.Features
 
             if (!Registered.Remove(this))
             {
-                Log.Warn($"Cannot unregister {Name} ({Id}), it hasn't been registered yet.");
+                Log.Warn($"Cannot unregister {Name}, it hasn't been registered yet.");
 
                 return false;
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Adds this ability to the player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to give the ability to.</param>
+        public void AddAbility(Player player)
+        {
+            Players.Add(player);
+            AbilityAdded(player);
+        }
+
+        /// <summary>
+        /// Removes this ability from the player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to remove this ability from.</param>
+        public void RemoveAbility(Player player)
+        {
+            Players.Remove(player);
+            AbilityRemoved(player);
         }
 
         /// <summary>
@@ -137,15 +137,6 @@ namespace Exiled.CustomRoles.API.Features
         /// Destroys this ability.
         /// </summary>
         public void Destroy() => UnSubscribeEvents();
-
-        /// <summary>
-        /// Uses the ability.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        public void UseAbility(Player player)
-        {
-            AbilityUsed(player);
-        }
 
         /// <summary>
         /// Loads the internal event handlers for the ability.
@@ -176,20 +167,5 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual void AbilityRemoved(Player player)
         {
         }
-
-        /// <summary>
-        /// Called when the ability is used.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        protected virtual void AbilityUsed(Player player)
-        {
-        }
-
-        /// <summary>
-        /// Called when the ability is successfully used.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> using the ability.</param>
-        protected virtual void ShowMessage(Player player) =>
-            player.ShowHint($"Ability {Name} has been activated.\n{Description}", 10f);
     }
 }

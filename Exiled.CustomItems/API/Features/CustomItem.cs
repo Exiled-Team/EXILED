@@ -140,7 +140,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(string name, out CustomItem customItem)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
@@ -156,7 +156,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(Player player, out CustomItem customItem)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -172,7 +172,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(Player player, out IEnumerable<CustomItem> customItems)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             customItems = Registered?.Where(tempCustomItem => player.Items.Any(item => tempCustomItem.Check(item)));
 

@@ -68,12 +68,6 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DateTime"/> they last used their ability.
-        /// </summary>
-        [YamlIgnore]
-        public DateTime UsedAbility { get; set; }
-
-        /// <summary>
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
@@ -82,7 +76,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets a list of the roles custom abilities.
         /// </summary>
-        public List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
+        public virtual List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
@@ -117,6 +111,13 @@ namespace Exiled.CustomRoles.API.Features
         public static CustomRole Get(int id) => Registered?.FirstOrDefault(r => r.Id == id);
 
         /// <summary>
+        /// Gets a <see cref="CustomRole"/> by type.
+        /// </summary>
+        /// <param name="t">The <see cref="Type"/> to get.</param>
+        /// <returns>The role, or null if it doesn't exist.</returns>
+        public static CustomRole Get(Type t) => Registered.FirstOrDefault(r => r.GetType() == t);
+
+        /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
@@ -146,7 +147,7 @@ namespace Exiled.CustomRoles.API.Features
         public static bool TryGet(string name, out CustomRole customRole)
         {
             if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             customRole = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
@@ -163,7 +164,7 @@ namespace Exiled.CustomRoles.API.Features
         public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             List<CustomRole> tempList = ListPool<CustomRole>.Shared.Rent();
             tempList.AddRange(Registered?.Where(customRole => customRole.Check(player)) ?? Array.Empty<CustomRole>());
@@ -235,7 +236,66 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Destroys this role manager.
         /// </summary>
-        public virtual void Destroy() => UnsubscribeEvents();
+        public virtual void Destroy() => UnSubscribeEvents();
+
+        /// <summary>
+        /// Handles setup of the role, including spawn location, inventory and registering event handlers.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
+        public virtual void AddRole(Player player)
+        {
+            Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
+            if (Role != RoleType.None)
+            {
+                player.SetRole(Role, SpawnReason.ForceClass, true);
+            }
+
+            Timing.CallDelayed(1.5f, () =>
+            {
+                Vector3 pos = GetSpawnPosition();
+                if (pos != Vector3.zero)
+                    player.Position = pos + (Vector3.up * 1.5f);
+
+                if (!KeepInventoryOnSpawn)
+                {
+                    Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
+                    player.ClearInventory();
+                }
+
+                foreach (string itemName in Inventory)
+                {
+                    Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
+                    TryAddItem(player, itemName);
+                }
+
+                Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
+                player.Health = MaxHealth;
+                player.MaxHealth = MaxHealth;
+            });
+
+            Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
+            player.CustomInfo = $"{Name} (Custom Role)";
+            ShowMessage(player);
+            RoleAdded(player);
+            TrackedPlayers.Add(player);
+        }
+
+        /// <summary>
+        /// Removes the role from a specific player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
+        public virtual void RemoveRole(Player player)
+        {
+            TrackedPlayers.Remove(player);
+            if (RemovalKillsPlayer)
+                player.Role = RoleType.Spectator;
+            foreach (CustomAbility ability in CustomAbilities)
+            {
+                ability.RemoveAbility(player);
+            }
+
+            RoleRemoved(player);
+        }
 
         /// <summary>
         /// Tries to add an item to the player's inventory by name.
@@ -286,60 +346,7 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Handles setup of the role, including spawn location, inventory and registering event handlers.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to add the role to.</param>
-        protected virtual void AddRole(Player player)
-        {
-            Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
-            if (Role != RoleType.None)
-            {
-                player.SetRole(Role, SpawnReason.ForceClass, true);
-            }
-
-            Timing.CallDelayed(1.5f, () =>
-            {
-                Vector3 pos = GetSpawnPosition();
-                if (pos != Vector3.zero)
-                    player.Position = pos + (Vector3.up * 1.5f);
-
-                if (!KeepInventoryOnSpawn)
-                {
-                    Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
-                    player.ClearInventory();
-                }
-
-                foreach (string itemName in Inventory)
-                {
-                    Log.Debug($"{Name}: Adding {itemName} to inventory.", CustomRoles.Instance.Config.Debug);
-                    TryAddItem(player, itemName);
-                }
-
-                Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
-                player.Health = MaxHealth;
-                player.MaxHealth = MaxHealth;
-            });
-
-            Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
-            player.CustomInfo = $"{Name} (Custom Role)";
-            ShowMessage(player);
-            RoleAdded();
-            TrackedPlayers.Add(player);
-        }
-
-        /// <summary>
-        /// Removes the role from a specific player.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
-        protected virtual void RemoveRole(Player player)
-        {
-            TrackedPlayers.Remove(player);
-            if (RemovalKillsPlayer)
-                player.Role = RoleType.Spectator;
-        }
-
-        /// <summary>
-        /// Called when the role is added to setup internal events.
+        /// Called when the role is initialized to setup internal events.
         /// </summary>
         protected virtual void SubscribeEvents()
         {
@@ -349,9 +356,9 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
-        /// Called when the role is removed to unsubscribe internal event handlers.
+        /// Called when the role is destroyed to unsubscribe internal event handlers.
         /// </summary>
-        protected virtual void UnsubscribeEvents()
+        protected virtual void UnSubscribeEvents()
         {
             Log.Debug($"{Name}: Unloading events.", CustomRoles.Instance.Config.Debug);
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
@@ -367,14 +374,16 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Called after the role has been added to the player.
         /// </summary>
-        protected virtual void RoleAdded()
+        /// <param name="player">The <see cref="Player"/> the role was added to.</param>
+        protected virtual void RoleAdded(Player player)
         {
         }
 
         /// <summary>
         /// Called 1 frame before the role is removed from the player.
         /// </summary>
-        protected virtual void RoleRemoved()
+        /// <param name="player">The <see cref="Player"/> the role was removed from.</param>
+        protected virtual void RoleRemoved(Player player)
         {
         }
 

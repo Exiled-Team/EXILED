@@ -14,7 +14,5 @@ namespace Exiled.CustomRoles.API.Features
     /// </summary>
     public abstract class PassiveAbility : CustomAbility
     {
-        /// <inheritdoc/>
-        protected override void AbilityAdded(Player player) => AbilityUsed(player);
     }
 }
