@@ -8,8 +8,6 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-#pragma warning disable SA1118
-#pragma warning disable SA1600
 
     using System;
 
@@ -22,6 +20,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     using Mirror;
 
+    /// <summary>
+    /// patches <see cref="SinkholeEnvironmentalHazard.DistanceChanged"/> to add the <see cref="Handlers.Player.WalkingOnSinkhole"/> event.
+    /// </summary>
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.DistanceChanged))]
     internal static class WalkingOnSinkhole
     {
