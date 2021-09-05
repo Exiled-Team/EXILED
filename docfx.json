@@ -30,6 +30,7 @@
       }
     ],
     "dest": "_site",
+    "template": ["default", "docs/templates/darkfx"],
     "globalMetadata": {
       "_appTitle": "EXILED Docs",
       "_enableSearch": true,
