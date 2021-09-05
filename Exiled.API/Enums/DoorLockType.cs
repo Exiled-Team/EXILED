@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     /// <summary>
     /// All possible door locks.
     /// </summary>
+    [Flags]
     public enum DoorLockType
     {
         /// <summary>

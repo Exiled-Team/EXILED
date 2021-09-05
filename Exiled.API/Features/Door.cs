@@ -71,16 +71,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType != DoorLockType.None;
+        public bool IsLocked => DoorLockType > 0;
 
         /// <summary>
-        /// Gets or sets the door lock type.
+        /// Gets or the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType
-        {
-            get => (DoorLockType)Base.NetworkActiveLocks;
-            set => Base.ServerChangeLock((DoorLockReason)value, value != DoorLockType.None);
-        }
+        public DoorLockType DoorLockType => (DoorLockType)Base.NetworkActiveLocks;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
@@ -206,6 +202,21 @@ namespace Exiled.API.Features
                     break;
             }
         }
+
+        /// <summary>
+        /// Locks the door with the given lock type.
+        /// </summary>
+        /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
+        public void ChangeLock(DoorLockType lockType)
+        {
+            bool flag = !IsLocked || lockType == DoorLockType.None;
+            Base.ServerChangeLock((DoorLockReason)lockType, flag);
+        }
+
+        /// <summary>
+        /// Unlocks the door.
+        /// </summary>
+        public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
