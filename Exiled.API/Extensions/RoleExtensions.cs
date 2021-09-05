@@ -37,21 +37,14 @@ namespace Exiled.API.Extensions
         /// <returns><see cref="Side"/>.</returns>.
         public static Side GetSide(this Team team)
         {
-            switch (team)
+            return team switch
             {
-                case Team.SCP:
-                    return Side.Scp;
-                case Team.MTF:
-                case Team.RSC:
-                    return Side.Mtf;
-                case Team.CHI:
-                case Team.CDP:
-                    return Side.ChaosInsurgency;
-                case Team.TUT:
-                    return Side.Tutorial;
-                default:
-                    return Side.None;
-            }
+                Team.SCP => Side.Scp,
+                Team.MTF or Team.RSC => Side.Mtf,
+                Team.CHI or Team.CDP => Side.ChaosInsurgency,
+                Team.TUT => Side.Tutorial,
+                _ => Side.None
+            };
         }
 
         /// <summary>
@@ -61,39 +54,32 @@ namespace Exiled.API.Extensions
         /// <returns><see cref="Team"/>.</returns>
         public static Team GetTeam(this RoleType roleType)
         {
-            switch (roleType)
+            return roleType switch
             {
-                case RoleType.ChaosConscript:
-                case RoleType.ChaosMarauder:
-                case RoleType.ChaosRepressor:
-                case RoleType.ChaosRifleman:
-                    return Team.CHI;
-                case RoleType.Scientist:
-                    return Team.RSC;
-                case RoleType.ClassD:
-                    return Team.CDP;
-                case RoleType.Scp049:
-                case RoleType.Scp93953:
-                case RoleType.Scp93989:
-                case RoleType.Scp0492:
-                case RoleType.Scp079:
-                case RoleType.Scp096:
-                case RoleType.Scp106:
-                case RoleType.Scp173:
-                    return Team.SCP;
-                case RoleType.Spectator:
-                    return Team.RIP;
-                case RoleType.FacilityGuard:
-                case RoleType.NtfCaptain:
-                case RoleType.NtfPrivate:
-                case RoleType.NtfSergeant:
-                case RoleType.NtfSpecialist:
-                    return Team.MTF;
-                case RoleType.Tutorial:
-                    return Team.TUT;
-                default:
-                    return Team.RIP;
-            }
+                RoleType.ChaosConscript
+                    or RoleType.ChaosMarauder
+                    or RoleType.ChaosRepressor
+                    or RoleType.ChaosRifleman => Team.CHI,
+                RoleType.Scientist => Team.RSC,
+                RoleType.ClassD => Team.CDP,
+                RoleType.Scp049
+                    or RoleType.Scp079
+                    or RoleType.Scp096
+                    or RoleType.Scp096
+                    or RoleType.Scp106
+                    or RoleType.Scp173
+                    or RoleType.Scp0492
+                    or RoleType.Scp93953
+                    or RoleType.Scp93989 => Team.SCP,
+                RoleType.Spectator => Team.RIP,
+                RoleType.FacilityGuard
+                    or RoleType.NtfCaptain
+                    or RoleType.NtfPrivate
+                    or RoleType.NtfSergeant
+                    or RoleType.NtfSpecialist => Team.MTF,
+                RoleType.Tutorial => Team.TUT,
+                _ => Team.RIP
+            };
         }
 
         /// <summary>
@@ -103,19 +89,13 @@ namespace Exiled.API.Extensions
         /// <returns><see cref="LeadingTeam"/>.</returns>
         public static LeadingTeam GetLeadingTeam(this Team team)
         {
-            switch (team)
+            return team switch
             {
-                case Team.CDP:
-                case Team.CHI:
-                    return LeadingTeam.ChaosInsurgency;
-                case Team.MTF:
-                case Team.RSC:
-                    return LeadingTeam.FacilityForces;
-                case Team.SCP:
-                    return LeadingTeam.Anomalies;
-                default:
-                    return LeadingTeam.Draw;
-            }
+                Team.CDP or Team.CHI => LeadingTeam.ChaosInsurgency,
+                Team.MTF or Team.RSC => LeadingTeam.FacilityForces,
+                Team.SCP => LeadingTeam.Anomalies,
+                _ => LeadingTeam.Draw
+            };
         }
 
         /// <summary>

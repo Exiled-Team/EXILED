@@ -127,38 +127,25 @@ namespace Exiled.API.Features.Items
             if (BaseToItem.TryGetValue(itemBase, out Item item))
                 return item;
 
-            switch (itemBase)
+            return itemBase switch
             {
-                case InventorySystem.Items.Firearms.Firearm firearm:
-                    return new Firearm(firearm);
-                case KeycardItem keycard:
-                    return new Keycard(keycard);
-                case UsableItem usable:
-                    return new Usable(usable);
-                case RadioItem radio:
-                    return new Radio(radio);
-                case MicroHIDItem micro:
-                    return new MicroHid(micro);
-                case BodyArmor armor:
-                    return new Armor(armor);
-                case AmmoItem ammo:
-                    return new Ammo(ammo);
-                case FlashlightItem flashlight:
-                    return new Flashlight(flashlight);
-                case ThrowableItem throwable:
-                    switch (throwable.Projectile)
-                    {
-                        case FlashbangGrenade _:
-                            return new FlashGrenade(throwable);
-                        case ExplosionGrenade _:
-                            return new ExplosiveGrenade(throwable);
-                        default:
-                            return new Throwable(throwable);
-                    }
-
-                default:
-                    return new Item(itemBase);
-            }
+                InventorySystem.Items.Firearms.Firearm firearm
+                    => new Firearm(firearm),
+                KeycardItem keycard => new Keycard(keycard),
+                UsableItem usable => new Usable(usable),
+                RadioItem radio => new Radio(radio),
+                MicroHIDItem micro => new MicroHid(micro),
+                BodyArmor armor => new Armor(armor),
+                AmmoItem ammo => new Ammo(ammo),
+                FlashlightItem flashlight => new Flashlight(flashlight),
+                ThrowableItem throwable => throwable.Projectile switch
+                {
+                    FlashbangGrenade => new FlashGrenade(throwable),
+                    ExplosionGrenade => new ExplosiveGrenade(throwable),
+                    _ => new Throwable(throwable)
+                },
+                _ => new Item(itemBase)
+            };
         }
 
         /// <summary>
@@ -190,22 +177,13 @@ namespace Exiled.API.Features.Items
                 }
                 else
                 {
-                    byte ammo;
-                    switch (Base)
+                    byte ammo = Base switch
                     {
-                        case AutomaticFirearm auto:
-                            ammo = auto._baseMaxAmmo;
-                            break;
-                        case Shotgun shotgun:
-                            ammo = shotgun._ammoCapacity;
-                            break;
-                        case Revolver _:
-                            ammo = 6;
-                            break;
-                        default:
-                            ammo = 0;
-                            break;
-                    }
+                        AutomaticFirearm auto => auto._baseMaxAmmo,
+                        Shotgun shotgun => shotgun._ammoCapacity,
+                        Revolver _ => 6,
+                        _ => 0
+                    };
 
                     firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
                 }
