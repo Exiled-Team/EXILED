@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -7;
+            int offset = -1;
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldarg_2) + offset;
 
             Label returnLabel = generator.DefineLabel();
