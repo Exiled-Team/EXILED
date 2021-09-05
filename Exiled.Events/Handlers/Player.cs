@@ -308,6 +308,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
+        /// Invoked before a player interacts with a shooting target.
+        /// </summary>
+        public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -649,5 +654,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player interacts with a shooting target.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
+        public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
     }
 }
