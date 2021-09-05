@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomRoles.API
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
 
@@ -36,6 +37,32 @@ namespace Exiled.CustomRoles.API
             }
 
             return roles.AsReadOnly();
+        }
+
+        /// <summary>
+        /// Registers an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
+        /// </summary>
+        /// <param name="customRoles"><see cref="CustomRole"/>s to be registered.</param>
+        public static void Register(this IEnumerable<CustomRole> customRoles)
+        {
+            if (customRoles == null)
+                throw new ArgumentNullException(nameof(customRoles));
+
+            foreach (CustomRole customItem in customRoles)
+                customItem.TryRegister();
+        }
+
+        /// <summary>
+        /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
+        /// </summary>
+        /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
+        public static void Unregister(this IEnumerable<CustomRole> customRoles)
+        {
+            if (customRoles == null)
+                throw new ArgumentNullException(nameof(customRoles));
+
+            foreach (CustomRole customItem in customRoles)
+                customItem.TryUnregister();
         }
     }
 }

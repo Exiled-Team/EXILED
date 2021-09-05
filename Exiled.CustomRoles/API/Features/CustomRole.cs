@@ -360,6 +360,9 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         protected virtual void UnSubscribeEvents()
         {
+            foreach (Player player in TrackedPlayers)
+                RemoveRole(player);
+
             Log.Debug($"{Name}: Unloading events.", CustomRoles.Instance.Config.Debug);
             Exiled.Events.Handlers.Player.ChangingRole -= OnInternalChangingRole;
             Exiled.Events.Handlers.Player.Dying -= OnInternalDying;
