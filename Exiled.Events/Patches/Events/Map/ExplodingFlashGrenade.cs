@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 // Player player = Player.Get(this.PreviousOwner.Hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[newInstructions.Count - 1]),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade.PreviousOwner))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
