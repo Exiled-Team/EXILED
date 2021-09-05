@@ -24,12 +24,15 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ThrowingItemEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="request"><inheritdoc cref="RequestType"/></param>
-        public ThrowingItemEventArgs(Player player, ThrowableNetworkHandler.RequestType request)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public ThrowingItemEventArgs(Player player, ThrowableItem item, ThrowableNetworkHandler.RequestType request, bool isAllowed = true)
         {
             Player = player;
-            Item = player.CurrentItem is Throwable throwable ? throwable : null;
+            Item = (Throwable)API.Features.Items.Item.Get(item);
             RequestType = (ThrowRequest)request;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
