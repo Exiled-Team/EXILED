@@ -312,6 +312,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
 
+        /// <summary>
         /// Invoked before a player interacts with a shooting target.
         /// </summary>
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
@@ -665,6 +666,7 @@ namespace Exiled.Events.Handlers
         /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
         public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before a player interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
