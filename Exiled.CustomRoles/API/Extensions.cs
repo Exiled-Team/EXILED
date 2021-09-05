@@ -28,11 +28,11 @@ namespace Exiled.CustomRoles.API
         public static ReadOnlyCollection<CustomRole> GetCustomRoles(this Player player)
         {
             List<CustomRole> roles = new List<CustomRole>();
-            Component[] components = player.GameObject.GetComponents(typeof(CustomRole));
-            foreach (Component component in components)
+
+            foreach (CustomRole customRole in CustomRole.Registered)
             {
-                if (component is CustomRole role)
-                    roles.Add(role);
+                if (customRole.Check(player))
+                    roles.Add(customRole);
             }
 
             return roles.AsReadOnly();

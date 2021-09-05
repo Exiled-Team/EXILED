@@ -1,0 +1,20 @@
+// -----------------------------------------------------------------------
+// <copyright file="PassiveAbility.cs" company="Exiled Team">
+// Copyright (c) Exiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace Exiled.CustomRoles.API.Features
+{
+    using Exiled.API.Features;
+
+    /// <summary>
+    /// The base class for passive (always active) abilities.
+    /// </summary>
+    public abstract class PassiveAbility : CustomAbility
+    {
+        /// <inheritdoc/>
+        protected override void AbilityAdded(Player player) => AbilityUsed(player);
+    }
+}
