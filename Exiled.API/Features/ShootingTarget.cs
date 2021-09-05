@@ -32,6 +32,7 @@ namespace Exiled.API.Features
         public ShootingTarget(BaseTarget target)
         {
             Base = target;
+            BaseToShootingTarget[Base] = this;
         }
 
         /// <summary>
