@@ -103,16 +103,16 @@ namespace Exiled.API.Features
         /// Locks all the doors in the room.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        /// <param name="locktype">DoorLockType of the lockdown.</param>
-        public void LockDown(float duration, DoorLockType locktype = DoorLockType.Regular079)
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in this.Doors)
             {
-                door.DoorLockType = locktype;
+                door.ChangeLock(lockType);
                 door.IsOpen = false;
             }
 
-            if (duration == -1)
+            if (duration < 0)
                 return;
             MEC.Timing.CallDelayed(duration, UnlockAll);
         }
@@ -124,7 +124,7 @@ namespace Exiled.API.Features
         {
             foreach (Door door in this.Doors)
             {
-                door.DoorLockType = DoorLockType.None;
+                door.Unlock();
             }
         }
 
