@@ -118,6 +118,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
             });
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -132,7 +134,7 @@ namespace Exiled.Events.Patches.Events.Player
             (reason != CharacterClassManager.SpawnReason.Escaped ||
              !CharacterClassManager.KeepItemsAfterEscaping) && type != RoleType.Spectator;
 
-        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items)
+        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo)
         {
             Timing.CallDelayed(0.25f, () =>
             {
@@ -145,9 +147,9 @@ namespace Exiled.Events.Patches.Events.Player
                         Item item = player.AddItem(type);
                     }
 
-                    if (InventorySystem.Configs.StartingInventories.DefinedInventories.ContainsKey(player.Role))
+                    if (ammo.Count > 0)
                     {
-                        foreach (KeyValuePair<ItemType, ushort> kvp in InventorySystem.Configs.StartingInventories.DefinedInventories[player.Role].Ammo)
+                        foreach (KeyValuePair<ItemType, ushort> kvp in ammo)
                         {
                             player.Inventory.ServerSetAmmo(kvp.Key, kvp.Value);
                             player.Inventory.SendAmmoNextFrame = true;
