@@ -258,6 +258,11 @@ namespace Exiled.API.Enums
         Surface,
 
         /// <summary>
+        /// Heavy Containment |-Shaped Room.
+        /// </summary>
+        HczStraight,
+
+        /// <summary>
         /// Entrance T-Shaped Room.
         /// </summary>
         EzTCross,
