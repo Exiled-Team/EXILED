@@ -25,6 +25,13 @@ namespace Exiled.API.Features
     /// </summary>
     public class ShootingTarget
     {
+        private static readonly Dictionary<string, ShootingTargetType> TypeLookup = new Dictionary<string, ShootingTargetType>()
+        {
+            { "sportTargetPrefab", ShootingTargetType.Sport },
+            { "dboyTargetPrefab", ShootingTargetType.ClassD },
+            { "bianryTargetPrefab", ShootingTargetType.Binary },
+        };
+
         private static readonly Dictionary<BaseTarget, ShootingTarget> BaseToShootingTarget = new Dictionary<BaseTarget, ShootingTarget>();
 
         /// <summary>
@@ -146,17 +153,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                switch (Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7))
-                {
-                    case "sportTargetPrefab":
-                        return ShootingTargetType.Sport;
-                    case "dboyTargetPrefab":
-                        return ShootingTargetType.ClassD;
-                    case "binaryTargetPrefab":
-                        return ShootingTargetType.Binary;
-                    default:
-                        return ShootingTargetType.Unknown;
-                }
+                return TypeLookup.TryGetValue(Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7), out ShootingTargetType type) ? type : ShootingTargetType.Unknown;
             }
         }
 
@@ -168,6 +165,29 @@ namespace Exiled.API.Features
         public static ShootingTarget Get(BaseTarget shootingTarget) => BaseToShootingTarget.ContainsKey(shootingTarget)
             ? BaseToShootingTarget[shootingTarget]
             : new ShootingTarget(shootingTarget);
+
+        /// <summary>
+        /// Spawns a new shooting target of the given type at the given position and rotation.
+        /// </summary>
+        /// <param name="type">The <see cref="ShootingTargetType"/> of the target.</param>
+        /// <param name="position">The position of the target.</param>
+        /// <param name="rotation">The rotation of the target.</param>
+        /// <returns>The <see cref="ShootingTarget"/> object associated with the <see cref="BaseTarget"/>.</returns>
+        public static ShootingTarget Spawn(ShootingTargetType type, Vector3 position, Quaternion rotation = default)
+        {
+            foreach (GameObject gameObject in NetworkClient.prefabs.Values)
+            {
+                if (TypeLookup.TryGetValue(gameObject.name, out ShootingTargetType targetType) && targetType == type)
+                {
+                    BaseTarget target = gameObject.GetComponent<BaseTarget>();
+                    GameObject targetGo = UnityEngine.Object.Instantiate(target.gameObject, position, rotation);
+                    NetworkServer.Spawn(targetGo, ownerConnection: null);
+                    return Get(target);
+                }
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Clears the target and resets its health.
