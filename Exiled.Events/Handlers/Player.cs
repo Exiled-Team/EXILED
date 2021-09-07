@@ -318,6 +318,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
 
         /// <summary>
+        /// Invoked before a player damages a shooting target.
+        /// </summary>
+        public static event CustomEventHandler<DamagingShootingTargetEventArgs> DamagingShootingTarget;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -671,5 +676,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
         public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player damages a shooting target.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingShootingTargetEventArgs"/> instance.</param>
+        public static void OnDamagingShootingTarget(DamagingShootingTargetEventArgs ev) => DamagingShootingTarget.InvokeSafely(ev);
     }
 }
