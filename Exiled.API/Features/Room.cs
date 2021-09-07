@@ -244,6 +244,8 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
+                case "EZ_ThreeWay":
+                    return RoomType.EzTCross;
                 case "PocketWorld":
                     return RoomType.Pocket;
                 case "Outside":
