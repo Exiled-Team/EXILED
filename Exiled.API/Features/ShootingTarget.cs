@@ -10,6 +10,8 @@ namespace Exiled.API.Features
     using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
+
     using InventorySystem.Items;
 
     using Mirror;
@@ -135,6 +137,27 @@ namespace Exiled.API.Features
         {
             get => Base.Network_syncMode;
             set => Base.Network_syncMode = value;
+        }
+
+        /// <summary>
+        /// Gets the type of the target.
+        /// </summary>
+        public ShootingTargetType Type
+        {
+            get
+            {
+                switch (Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7))
+                {
+                    case "sportTargetPrefab":
+                        return ShootingTargetType.Sport;
+                    case "dboyTargetPrefab":
+                        return ShootingTargetType.ClassD;
+                    case "binaryTargetPrefab":
+                        return ShootingTargetType.Binary;
+                    default:
+                        return ShootingTargetType.Unknown;
+                }
+            }
         }
 
         /// <summary>

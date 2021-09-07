@@ -26,15 +26,15 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="shootingTarget"><inheritdoc cref="ShootingTarget"/></param>
-        /// <param name="damageInfo"><inheritdoc cref="DamageInfo"/></param>
+        /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="attackerFootprint"><inheritdoc cref="AttackerFootprint"/></param>
         /// <param name="hitLocation"><inheritdoc cref="HitLocation"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DamagingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, IDamageDealer damageInfo, Footprinting.Footprint attackerFootprint, Vector3 hitLocation, bool isAllowed = true)
+        public DamagingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, IDamageDealer item, Footprinting.Footprint attackerFootprint, Vector3 hitLocation, bool isAllowed = true)
         {
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);
-            DamageInfo = damageInfo;
+            Item = item;
             AttackerFootprint = attackerFootprint;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
@@ -51,9 +51,9 @@ namespace Exiled.Events.EventArgs
         public ShootingTarget ShootingTarget { get; }
 
         /// <summary>
-        /// Gets the damage info.
+        /// Gets the item info.
         /// </summary>
-        public IDamageDealer DamageInfo { get; }
+        public IDamageDealer Item { get; }
 
         /// <summary>
         /// Gets the attacker's footprint.
