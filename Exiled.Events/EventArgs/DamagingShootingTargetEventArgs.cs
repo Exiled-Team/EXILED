@@ -34,26 +34,26 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);
-            Item = item;
+            Item = API.Features.Items.Item.Get(item as ItemBase);
             AttackerFootprint = attackerFootprint;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the player interacting with the shooting target.
+        /// Gets the player damaging the shooting target.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the shooting target being interacted with.
+        /// Gets the shooting target being damaged.
         /// </summary>
         public ShootingTarget ShootingTarget { get; }
 
         /// <summary>
-        /// Gets the item info.
+        /// Gets the item dealing the damage.
         /// </summary>
-        public IDamageDealer Item { get; }
+        public API.Features.Items.Item Item { get; }
 
         /// <summary>
         /// Gets the attacker's footprint.
