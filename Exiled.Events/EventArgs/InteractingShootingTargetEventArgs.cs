@@ -19,7 +19,6 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class InteractingShootingTargetEventArgs : EventArgs
     {
-        private bool isAllowed;
         private int maxHp;
         private int autoResetTime;
 
@@ -37,9 +36,9 @@ namespace Exiled.Events.EventArgs
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);
             TargetButton = targetButton;
+            IsAllowed = isAllowed;
             this.maxHp = maxHp;
             this.autoResetTime = autoResetTime;
-            this.isAllowed = isAllowed;
         }
 
         /// <summary>
@@ -88,15 +87,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the interaction is allowed.
         /// </summary>
-        public bool IsAllowed
-        {
-            get => isAllowed;
-            set
-            {
-                if (!ShootingTarget.IsSynced)
-                    throw new InvalidOperationException("Attempted to set IsAllowed while target is in local mode. Set target's IsSynced to true before setting IsAllowed.");
-                isAllowed = value;
-            }
-        }
+        public bool IsAllowed { get; set; }
     }
 }
