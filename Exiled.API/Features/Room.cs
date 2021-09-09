@@ -216,6 +216,8 @@ namespace Exiled.API.Features
                     return RoomType.Hcz096;
                 case "HCZ_Curve":
                     return RoomType.HczCurve;
+                case "HCZ_Straight":
+                    return RoomType.HczStraight;
                 case "EZ_Endoof":
                     return RoomType.EzVent;
                 case "EZ_Intercom":
@@ -244,6 +246,8 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
+                case "EZ_ThreeWay":
+                    return RoomType.EzTCross;
                 case "PocketWorld":
                     return RoomType.Pocket;
                 case "Outside":
