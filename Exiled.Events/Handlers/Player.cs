@@ -72,6 +72,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel;
 
         /// <summary>
+        /// Invoked before activating a workstation.
+        /// </summary>
+        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
+
+        /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
@@ -376,6 +381,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWarheadPanelEventArgs"/> instance.</param>
         public static void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev) => ActivatingWarheadPanel.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before activating a workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingWorkstation"/> instance.</param>
+        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
         /// Called before using a medical item.
