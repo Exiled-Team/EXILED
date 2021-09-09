@@ -60,6 +60,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the door's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Base.gameObject.transform.position;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.position = value;
+                NetworkServer.Spawn(gameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether SCP-106 can walk through the door.
         /// </summary>
         public bool AllowsScp106
