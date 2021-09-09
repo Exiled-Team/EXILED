@@ -312,6 +312,15 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
+        /// Called before a player walks on a sinkhole.
+        /// </summary>
+        public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
+
+        /// <summary>
+        /// Invoked before a player interacts with a shooting target.
+        /// </summary>
+        public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
+
         /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
@@ -660,5 +669,16 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance.</param>
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
+
+        /// Called before a player walks on a sinkhole.
+        /// </summary>
+        /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
+        public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player interacts with a shooting target.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
+        public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
     }
 }
