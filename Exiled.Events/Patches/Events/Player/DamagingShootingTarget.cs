@@ -42,19 +42,28 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
+                // Player.Get(ReferenceHub)
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
+                // this
                 new CodeInstruction(OpCodes.Ldarg_0),
 
+                // item
                 new CodeInstruction(OpCodes.Ldarg_2),
 
+                // attackerFootprint
                 new CodeInstruction(OpCodes.Ldarg_3),
 
+                // hitLocation
                 new CodeInstruction(OpCodes.Ldarg, 4),
 
+                // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
+                // OnDamagingShootingTarget(DamagingShootingTargetEventArgs)
+                // if (!IsAllowed)
+                //   return
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
 
