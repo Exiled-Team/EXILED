@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(InteractingShootingTarget), nameof(InteractingShootingTarget.GetNextValue))),
 
-                // GetNextValue(buttonPressed, ShootingTargetButton.DecreaseResetTime, BaseTarget._maxHp)
+                // GetNextValue(buttonPressed, ShootingTargetButton.DecreaseResetTime, BaseTarget._autoDestroyTime)
                 new CodeInstruction(OpCodes.Ldarg_2),
                 new CodeInstruction(OpCodes.Ldc_I4_3),
                 new CodeInstruction(OpCodes.Ldarg_0),
