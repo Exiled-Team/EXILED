@@ -109,16 +109,16 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
-                // BaseTarget.MaxHp = ev.MaxHp
+                // BaseTarget.MaxHp = ev.NewMaxHp
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(setMaxHpLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.MaxHp))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewMaxHp))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._maxHp))),
 
-                // BaseTarget._autoDestroyTime = ev.AutoResetTime
+                // BaseTarget._autoDestroyTime = ev.NewAutoResetTime
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.AutoResetTime))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(InteractingShootingTargetEventArgs), nameof(InteractingShootingTargetEventArgs.NewAutoResetTime))),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(BaseTarget), nameof(BaseTarget._autoDestroyTime))),
             });
 
@@ -130,7 +130,7 @@ namespace Exiled.Events.Patches.Events.Player
 
         private static int GetNextValue(byte buttonPressed, int targetButton, int curValue)
         {
-            if (Mathf.Abs(targetButton - buttonPressed) >= 2)
+            if (targetButton != buttonPressed && (targetButton - 1) != buttonPressed)
                 return curValue;
 
             switch ((BaseTarget.TargetButton)buttonPressed)

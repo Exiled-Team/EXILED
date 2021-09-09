@@ -28,8 +28,8 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="shootingTarget"><inheritdoc cref="ShootingTarget"/></param>
         /// <param name="targetButton"><inheritdoc cref="TargetButton"/></param>
-        /// <param name="maxHp"><inheritdoc cref="MaxHp"/></param>
-        /// <param name="autoResetTime"><inheritdoc cref="AutoResetTime"/></param>
+        /// <param name="maxHp"><inheritdoc cref="NewMaxHp"/></param>
+        /// <param name="autoResetTime"><inheritdoc cref="NewAutoResetTime"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public InteractingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
         {
@@ -57,9 +57,9 @@ namespace Exiled.Events.EventArgs
         public ShootingTargetButton TargetButton { get; }
 
         /// <summary>
-        /// Gets or sets the max hp of the target.
+        /// Gets or sets the new max hp of the target.
         /// </summary>
-        public int MaxHp
+        public int NewMaxHp
         {
             get => maxHp;
             set
@@ -71,9 +71,9 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the auto reset time of the target.
+        /// Gets or sets the new auto reset time of the target.
         /// </summary>
-        public int AutoResetTime
+        public int NewAutoResetTime
         {
             get => autoResetTime;
             set
