@@ -7,60 +7,66 @@
 
 namespace Exiled.Events.Patches.Events.Cassie
 {
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="Respawning.RespawnEffectsController.PlayCassieAnnouncement(string, bool, bool)"/>.
-    /// Adds the <see cref="Cassie.SendingCassieMessage"/> event.
+    /// Adds the <see cref="Handlers.Cassie.SendingCassieMessage"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Respawning.RespawnEffectsController), nameof(Respawning.RespawnEffectsController.PlayCassieAnnouncement))]
     internal static class SendingCassieMessage
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            var offset = 1
-            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) - offset;
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             var returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
+            // SendingCassieMessageEventArgs ev = new SendingCassieMessageEventArgs(words, makeHold, makeNoise, true);
+            // Cassie.OnSendingCassieMessage(ev);
+            //
+            // words = ev.Words;
+            // makeHold = ev.MakeHold;
+            // makeNoise = ev.MakeNoise;
+            //
+            // if (!ev.IsAllowed)
+            //     return;
+            newInstructions.InsertRange(0, new[]
             {
-                // string words
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-
-                // bool makeHold
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_1),
-
-                // bool makeNoise
                 new CodeInstruction(OpCodes.Ldarg_2),
-
-                // var ev = SendingCassieMessageEventArgs(...)
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(SendingCassieMessageEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-
-                // Cassie.SendingCassieMessageEventArgs(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Cassie), nameof(Cassie.OnSendingCassieMessage))),
-
-                // if (!ev.IsAllowed) return;
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Cassie), nameof(Handlers.Cassie.OnSendingCassieMessage))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.Words))),
+                new CodeInstruction(OpCodes.Starg_S, 0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeHold))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.MakeNoise))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SendingCassieMessageEventArgs), nameof(SendingCassieMessageEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (var z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
