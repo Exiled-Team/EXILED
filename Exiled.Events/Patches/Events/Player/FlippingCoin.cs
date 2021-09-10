@@ -29,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CoinNetworkHandler.ServerProcessMessage(Mirror.NetworkConnection, InventorySystem.Items.Coin.CoinNetworkHandler.CoinFlipMessage)"/>.
-    /// Adds the <see cref="Handlers.Player.EscapingPocketDimension"/> and <see cref="Handlers.Player.FailingEscapePocketDimension"/> event.
+    /// Patches <see cref="CoinNetworkHandler.ServerProcessMessage(NetworkConnection, CoinNetworkHandler.CoinFlipMessage)"/>.
+    /// Adds the <see cref="Handlers.Player.FlippingCoin"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CoinNetworkHandler), nameof(CoinNetworkHandler.ServerProcessMessage))]
     internal static class FlippingCoin
