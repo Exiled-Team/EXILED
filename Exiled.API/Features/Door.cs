@@ -60,6 +60,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the door's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Base.gameObject.transform.position;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.position = value;
+                NetworkServer.Spawn(gameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether SCP-106 can walk through the door.
         /// </summary>
         public bool AllowsScp106
@@ -130,6 +145,21 @@ namespace Exiled.API.Features
             {
                 if (Base is BreakableDoor breakable)
                     breakable._ignoredDamageSources = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the door's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Base.gameObject.transform.rotation;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.rotation = value;
+                NetworkServer.Spawn(gameObject);
             }
         }
 
@@ -209,8 +239,22 @@ namespace Exiled.API.Features
         /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
         public void ChangeLock(DoorLockType lockType)
         {
-            bool flag = !IsLocked || lockType == DoorLockType.None;
-            Base.ServerChangeLock((DoorLockReason)lockType, flag);
+            if (lockType == DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = 0;
+            }
+            else
+            {
+                DoorLockType locks = DoorLockType;
+                if (locks.HasFlag(lockType))
+                    locks &= ~lockType;
+                else
+                    locks |= lockType;
+
+                Base.NetworkActiveLocks = (ushort)locks;
+            }
+
+            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
         }
 
         /// <summary>

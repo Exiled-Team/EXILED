@@ -72,6 +72,15 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel;
 
         /// <summary>
+        /// Invoked before activating a workstation.
+        /// </summary>
+        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
+
+        /// Invoked before deactivating a workstation.
+        /// </summary>
+        public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
+
+        /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
@@ -322,6 +331,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<DamagingShootingTargetEventArgs> DamagingShootingTarget;
 
+        /// Invoked before a player flips a coin.
+        /// </summary>
+        public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
+
         /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
@@ -381,6 +394,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWarheadPanelEventArgs"/> instance.</param>
         public static void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev) => ActivatingWarheadPanel.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before activating a workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingWorkstation"/> instance.</param>
+        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
+
+        /// Called before deactivating a workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
+        public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
         /// Called before using a medical item.
@@ -682,5 +706,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DamagingShootingTargetEventArgs"/> instance.</param>
         public static void OnDamagingShootingTarget(DamagingShootingTargetEventArgs ev) => DamagingShootingTarget.InvokeSafely(ev);
+
+        /// Called before a player flips a coin.
+        /// </summary>
+        /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
+        public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
     }
 }

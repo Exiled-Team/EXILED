@@ -66,6 +66,13 @@ namespace Exiled.CustomItems.API.Features
         protected HashSet<ThrownProjectile> Tracked { get; } = new HashSet<ThrownProjectile>();
 
         /// <summary>
+        /// Gives the <see cref="CustomItem"/> to a player.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
+        /// <param name="displayMessage">Indicates whether or not <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the item.</param>
+        public override void Give(Player player, bool displayMessage = true) => Give(player, new Throwable((ThrowableItem)player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+
+        /// <summary>
         /// Spawns a live grenade object on the map.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>

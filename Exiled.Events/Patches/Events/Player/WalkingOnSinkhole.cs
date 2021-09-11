@@ -7,18 +7,17 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
-    using System;
-
-    using CustomPlayerEffects;
-
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using Mirror;
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// patches <see cref="SinkholeEnvironmentalHazard.DistanceChanged"/> to add the <see cref="Handlers.Player.WalkingOnSinkhole"/> event.
@@ -26,45 +25,35 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(SinkholeEnvironmentalHazard), nameof(SinkholeEnvironmentalHazard.DistanceChanged))]
     internal static class WalkingOnSinkhole
     {
-        private static bool Prefix(SinkholeEnvironmentalHazard __instance, ReferenceHub player)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var offset = 1;
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bgt_Un_S) + offset;
+
+            var returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!NetworkServer.active)
-                    return false;
-                if (player.playerEffectsController == null)
-                    return false;
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnSinkholeEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnSinkhole))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnSinkholeEventArgs), nameof(WalkingOnSinkholeEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                var effectsController = player.playerEffectsController;
-                if ((player.playerMovementSync.RealModelPosition - __instance.transform.position).sqrMagnitude <= __instance.DistanceToBeAffected * __instance.DistanceToBeAffected)
-                {
-                    var ev = new WalkingOnSinkholeEventArgs(Player.Get(player), __instance);
-                    Handlers.Player.OnWalkingOnSinkhole(ev);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                    if (!ev.IsAllowed)
-                        return false;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    if (__instance.SCPImmune)
-                    {
-                        var characterClassManager = player.characterClassManager;
-                        if (characterClassManager == null || characterClassManager.IsAnyScp())
-                        {
-                            return false;
-                        }
-                    }
-
-                    effectsController.EnableEffect<SinkHole>();
-                    return false;
-                }
-
-                effectsController.DisableEffect<SinkHole>();
-                return false;
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{typeof(WalkingOnSinkhole).FullName}.{nameof(Prefix)}:\n{e}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

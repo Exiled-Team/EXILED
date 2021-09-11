@@ -256,5 +256,15 @@ namespace Exiled.API.Enums
         /// The Surface.
         /// </summary>
         Surface,
+
+        /// <summary>
+        /// Heavy Containment |-Shaped Room.
+        /// </summary>
+        HczStraight,
+
+        /// <summary>
+        /// Entrance T-Shaped Room.
+        /// </summary>
+        EzTCross,
     }
 }
