@@ -50,6 +50,9 @@ namespace Exiled.Events.Patches.Events.Scp096
             Label targetDamageLabel = generator.DefineLabel();
             Label nonTargetDamageLabel = generator.DefineLabel();
 
+            // Declare a local variable of type ChargingPlayerEventArgs.
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChargingPlayerEventArgs));
+
             // if (!ChargedPlayers.Add(ReferenceHub)
             //   return;
             //
@@ -73,16 +76,31 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Brtrue_S, targetDamageLabel),
-                new CodeInstruction(OpCodes.Ldc_R4, 35f),
+                new CodeInstruction(OpCodes.Ldc_R4, 40f),
                 new CodeInstruction(OpCodes.Br_S, nonTargetDamageLabel),
                 new CodeInstruction(OpCodes.Ldc_R4, 9696f).WithLabels(targetDamageLabel),
                 new CodeInstruction(OpCodes.Ldloc_0).WithLabels(nonTargetDamageLabel),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChargingPlayerEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnChargingPlayer))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            // Search for the code instruction that gets the playerStats field.
+            index = newInstructions.FindIndex(instruction => instruction.OperandIs(Field(typeof(ReferenceHub), nameof(ReferenceHub.playerStats)))) + offset;
+
+            // Remove the ternary operator for damage values.
+            newInstructions.RemoveRange(index, 5);
+
+            // Insert the ChargingPlayerEventArgs.Damage getter.
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.Damage))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
