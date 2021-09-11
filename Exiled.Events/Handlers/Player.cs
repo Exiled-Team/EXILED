@@ -76,6 +76,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
 
+        /// <summary>
         /// Invoked before deactivating a workstation.
         /// </summary>
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
@@ -331,6 +332,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<DamagingShootingTargetEventArgs> DamagingShootingTarget;
 
+        /// <summary>
         /// Invoked before a player flips a coin.
         /// </summary>
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
@@ -401,6 +403,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="ActivatingWorkstation"/> instance.</param>
         public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before deactivating a workstation.
         /// </summary>
         /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
@@ -707,6 +710,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="DamagingShootingTargetEventArgs"/> instance.</param>
         public static void OnDamagingShootingTarget(DamagingShootingTargetEventArgs ev) => DamagingShootingTarget.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before a player flips a coin.
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
