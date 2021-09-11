@@ -641,13 +641,13 @@ namespace Exiled.API.Features
         /// </summary>
         public ushort ArtificialHealth
         {
-            get => ReferenceHub.playerStats.NetworkArtificialHealth;
+            get => (ushort)ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
             set
             {
-                ReferenceHub.playerStats.NetworkArtificialHealth = value;
-
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = value;
+
+                ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
             }
         }
 
