@@ -134,6 +134,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the door's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Base.gameObject.transform.rotation;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.rotation = value;
+                NetworkServer.Spawn(gameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the size scale of the door.
         /// </summary>
         public Vector3 Scale
