@@ -327,6 +327,10 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
 
         /// <summary>
+        /// Invoked before a player damages a shooting target.
+        /// </summary>
+        public static event CustomEventHandler<DamagingShootingTargetEventArgs> DamagingShootingTarget;
+
         /// Invoked before a player flips a coin.
         /// </summary>
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
@@ -698,6 +702,11 @@ namespace Exiled.Events.Handlers
         public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a player damages a shooting target.
+        /// </summary>
+        /// <param name="ev">The <see cref="DamagingShootingTargetEventArgs"/> instance.</param>
+        public static void OnDamagingShootingTarget(DamagingShootingTargetEventArgs ev) => DamagingShootingTarget.InvokeSafely(ev);
+
         /// Called before a player flips a coin.
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
