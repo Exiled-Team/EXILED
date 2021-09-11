@@ -639,13 +639,13 @@ namespace Exiled.API.Features
         /// Gets or sets the player's artificial health.
         /// If the health is greater than the <see cref="MaxArtificialHealth"/>, it will also be changed to match the artificial health.
         /// </summary>
-        public ushort ArtificialHealth
+        public float ArtificialHealth
         {
-            get => (ushort)ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
+            get => ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
             set
             {
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = value;
+                    MaxArtificialHealth = Mathf.CeilToInt(value);
 
                 ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
             }
