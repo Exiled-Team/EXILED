@@ -72,6 +72,10 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ActivatingWarheadPanelEventArgs> ActivatingWarheadPanel;
 
         /// <summary>
+        /// Invoked before activating a workstation.
+        /// </summary>
+        public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
+
         /// Invoked before deactivating a workstation.
         /// </summary>
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
@@ -388,6 +392,11 @@ namespace Exiled.Events.Handlers
         public static void OnActivatingWarheadPanel(ActivatingWarheadPanelEventArgs ev) => ActivatingWarheadPanel.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before activating a workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="ActivatingWorkstation"/> instance.</param>
+        public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
+
         /// Called before deactivating a workstation.
         /// </summary>
         /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
