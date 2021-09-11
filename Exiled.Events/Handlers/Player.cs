@@ -76,6 +76,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<ActivatingWorkstationEventArgs> ActivatingWorkstation;
 
+        /// Invoked before deactivating a workstation.
+        /// </summary>
+        public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
+
         /// <summary>
         /// Invoked before using a medical item.
         /// </summary>
@@ -323,6 +327,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingShootingTargetEventArgs> InteractingShootingTarget;
 
         /// <summary>
+        /// Invoked before a player flips a coin.
+        /// </summary>
+        public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -387,6 +396,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingWorkstation"/> instance.</param>
         public static void OnActivatingWorkstation(ActivatingWorkstationEventArgs ev) => ActivatingWorkstation.InvokeSafely(ev);
+
+        /// Called before deactivating a workstation.
+        /// </summary>
+        /// <param name="ev">The <see cref="DeactivatingWorkstationEventArgs"/> instance.</param>
+        public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
         /// Called before using a medical item.
@@ -682,5 +696,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
         public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player flips a coin.
+        /// </summary>
+        /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
+        public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
     }
 }
