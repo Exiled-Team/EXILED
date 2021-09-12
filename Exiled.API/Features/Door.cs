@@ -295,6 +295,8 @@ namespace Exiled.API.Features
                         return DoorType.HeavyContainmentDoor;
                     case "EZ":
                         return DoorType.EntranceDoor;
+                    case "Prison":
+                        return DoorType.PrisonDoor;
                     default:
                         return DoorType.UnknownDoor;
                 }
@@ -302,9 +304,6 @@ namespace Exiled.API.Features
 
             switch (Nametag.RemoveBracketsOnEndOfName())
             {
-                case "Prison BreakableDoor":
-                    return DoorType.PrisonDoor;
-
                 // Doors contains the DoorNameTagExtension component
                 case "CHECKPOINT_LCZ_A":
                     return DoorType.CheckpointLczA;
