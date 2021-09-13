@@ -29,7 +29,7 @@ namespace Exiled.API.Features
         {
             { "sportTargetPrefab", ShootingTargetType.Sport },
             { "dboyTargetPrefab", ShootingTargetType.ClassD },
-            { "bianryTargetPrefab", ShootingTargetType.Binary },
+            { "binaryTargetPrefab", ShootingTargetType.Binary },
         };
 
         private static readonly Dictionary<BaseTarget, ShootingTarget> BaseToShootingTarget = new Dictionary<BaseTarget, ShootingTarget>();
