@@ -285,13 +285,25 @@ namespace Exiled.API.Features
         private DoorType GetDoorType()
         {
             if (Nametag == null)
-                return DoorType.UnknownDoor;
+            {
+                string doorName = Base.gameObject.name.GetBefore(' ');
+                switch (doorName)
+                {
+                    case "LCZ":
+                        return DoorType.LightContainmentDoor;
+                    case "HCZ":
+                        return DoorType.HeavyContainmentDoor;
+                    case "EZ":
+                        return DoorType.EntranceDoor;
+                    case "Prison":
+                        return DoorType.PrisonDoor;
+                    default:
+                        return DoorType.UnknownDoor;
+                }
+            }
 
             switch (Nametag.RemoveBracketsOnEndOfName())
             {
-                case "Prison BreakableDoor":
-                    return DoorType.PrisonDoor;
-
                 // Doors contains the DoorNameTagExtension component
                 case "CHECKPOINT_LCZ_A":
                     return DoorType.CheckpointLczA;
@@ -373,19 +385,7 @@ namespace Exiled.API.Features
                 case "EntrDoor":
                     return DoorType.EntranceDoor;
                 default:
-                    // All door gameobject names are separated by a whitespace
-                    string doorName = Nametag.GetBefore(' ');
-                    switch (doorName)
-                    {
-                        case "LCZ":
-                            return DoorType.LightContainmentDoor;
-                        case "HCZ":
-                            return DoorType.HeavyContainmentDoor;
-                        case "EZ":
-                            return DoorType.EntranceDoor;
-                        default:
-                            return DoorType.UnknownDoor;
-                    }
+                    return DoorType.UnknownDoor;
             }
         }
     }
