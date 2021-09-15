@@ -569,8 +569,14 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsMuted
         {
-            get => ReferenceHub.characterClassManager.NetworkMuted;
-            set => ReferenceHub.characterClassManager.NetworkMuted = value;
+            get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
+            set
+            {
+                if (value)
+                    MuteHandler.IssuePersistentMute(UserId);
+                else
+                    MuteHandler.RevokePersistentMute(UserId);
+            }
         }
 
         /// <summary>

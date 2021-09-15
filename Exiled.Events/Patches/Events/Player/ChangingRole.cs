@@ -131,8 +131,7 @@ namespace Exiled.Events.Patches.Events.Player
         }
 
         private static bool ShouldUpdateInv(RoleType type, CharacterClassManager.SpawnReason reason) =>
-            (reason != CharacterClassManager.SpawnReason.Escaped ||
-             !CharacterClassManager.KeepItemsAfterEscaping) && type != RoleType.Spectator;
+            reason != CharacterClassManager.SpawnReason.Escaped && type != RoleType.Spectator;
 
         private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo)
         {
