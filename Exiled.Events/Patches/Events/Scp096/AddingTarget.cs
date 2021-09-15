@@ -118,7 +118,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, timeToAdd.LocalIndex),
-                new CodeInstruction(OpCodes.Ldc_R4, 18f),
+                new CodeInstruction(OpCodes.Ldc_R4, Scp096.MaximumAddedEnrageTime),
                 new CodeInstruction(OpCodes.Bgt_Un_S, exitLabel),
 
                 // this.EnrageTimeLeft += ev.EnrageTimeToAdd;
