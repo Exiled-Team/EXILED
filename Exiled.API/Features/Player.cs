@@ -687,12 +687,19 @@ namespace Exiled.API.Features
 
             set
             {
-                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                if (value == null || value.Type == ItemType.None)
                 {
-                    AddItem(value.Base);
+                    Inventory.ServerSelectItem(0);
                 }
+                else
+                {
+                    if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    {
+                        AddItem(value.Base);
+                    }
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                    Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                }
             }
         }
 
