@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
@@ -25,12 +26,14 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="DroppingAmmoEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="ammo"><inheritdoc cref="Ammo"/></param>
+        /// <param name="ammoType"><inheritdoc cref="AmmoType"/></param>
+        /// <param name="amount"><inheritdoc cref="ushort"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingAmmoEventArgs(Player player, Ammo ammo, bool isAllowed = true)
+        public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true)
         {
             Player = player;
-            Ammo = ammo;
+            AmmoType = ammoType;
+            Amount = amount;
             IsAllowed = isAllowed;
         }
 
@@ -40,9 +43,14 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the ammo to be dropped.
+        /// Gets the type of ammo being dropped.
         /// </summary>
-        public Ammo Ammo { get; }
+        public AmmoType AmmoType { get; }
+
+        /// <summary>
+        /// Gets or sets the amount of ammo being dropped.
+        /// </summary>
+        public ushort Amount { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ammo can be dropped.
