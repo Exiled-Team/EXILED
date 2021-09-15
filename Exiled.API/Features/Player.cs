@@ -689,7 +689,7 @@ namespace Exiled.API.Features
             {
                 if (value == null || value.Type == ItemType.None)
                 {
-                    Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(0));
+                    Inventory.ServerSelectItem(0);
                 }
                 else
                 {
