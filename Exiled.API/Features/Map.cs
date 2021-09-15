@@ -365,42 +365,6 @@ namespace Exiled.API.Features
             }
         }
 
-        /*
-        /// <summary>
-        /// Spawns a live grenade object on the map.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
-        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
-        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
-        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
-        /// <param name="explodeOnCollision">Should the grenade explode on collision with wall/floor.</param>
-        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public static Grenade SpawnGrenade(Vector3 position, GrenadeType grenadeType = GrenadeType.FragGrenade, float fuseTime = 3f, Vector3? velocity = null, bool explodeOnCollision = false, Player player = null)
-        {
-            if (!Enum.IsDefined(typeof(GrenadeType), grenadeType))
-                return null;
-
-            if (player == null)
-                player = Server.Host;
-
-            GrenadeManager grenadeManager = player.GrenadeManager;
-            GrenadeSettings settings = grenadeManager.availableGrenades[(int)grenadeType];
-
-            Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
-
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity ?? Vector3.zero, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
-
-            if (explodeOnCollision)
-                grenade.gameObject.AddComponent<Components.CollisionHandler>().Init(player.GameObject, grenade);
-
-            NetworkServer.Spawn(grenade.gameObject);
-
-            return grenade;
-        }
-        */
-
         /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>

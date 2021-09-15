@@ -119,8 +119,7 @@ namespace Exiled.CustomItems.Commands
         /// </summary>
         private bool CheckEligible(Player player)
         {
-            // TODO: Re-add cuffing
-            return player.IsAlive && !player.IsCuffed && !player.IsScp && player.Items.Count < 8;
+            return player.IsAlive && !player.IsCuffed && player.Items.Count < 8;
         }
     }
 }
