@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="ammoType"><inheritdoc cref="AmmoType"/></param>
-        /// <param name="amount"><inheritdoc cref="ushort"/></param>
+        /// <param name="amount"><inheritdoc cref="int"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public DroppingAmmoEventArgs(Player player, AmmoType ammoType, ushort amount, bool isAllowed = true)
         {
@@ -50,7 +50,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the amount of ammo being dropped.
         /// </summary>
-        public ushort Amount { get; set; }
+        public int Amount { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ammo can be dropped.

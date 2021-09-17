@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = -1;
+            var offset = -6;
             var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
 
             var ev = generator.DeclareLocal(typeof(DroppingAmmoEventArgs));
@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ReferenceHub);
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[0]),
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
