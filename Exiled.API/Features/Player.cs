@@ -1205,14 +1205,14 @@ namespace Exiled.API.Features
         /// Drops the held item.
         /// </summary>
         public void DropHeldItem() => DropItem(CurrentItem);
-		
+
         /// <summary>
         /// Indicates whether the player has an item.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
         public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
-		
+
         /// <summary>
         /// Indicates whether the player has an item type.
         /// </summary>
