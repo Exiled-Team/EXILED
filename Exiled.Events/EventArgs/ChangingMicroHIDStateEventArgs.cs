@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     using InventorySystem.Items.MicroHID;
 
@@ -29,7 +30,7 @@ namespace Exiled.Events.EventArgs
         public ChangingMicroHIDStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
         {
             Player = player;
-            MicroHID = microHID;
+            MicroHID = (MicroHid)Item.Get(microHID);
             OldState = oldState;
             NewState = newState;
             IsAllowed = isAllowed;
@@ -43,7 +44,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the MicroHID instance.
         /// </summary>
-        public MicroHIDItem MicroHID { get; }
+        public MicroHid MicroHID { get; }
 
         /// <summary>
         /// Gets the old MicroHID state.

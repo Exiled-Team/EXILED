@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="HidState.cs" company="Exiled Team">
+// <copyright file="ShootingTargetType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,33 +8,28 @@
 namespace Exiled.API.Enums
 {
     /// <summary>
-    /// Possible <see cref="API.Features.Items.MicroHid"/> states.
+    /// Shooting target types present in the game.
     /// </summary>
-    public enum HidState
+    public enum ShootingTargetType
     {
         /// <summary>
-        /// Idling and not using energy.
+        /// Unknown target.
         /// </summary>
-        Idle,
+        Unknown,
 
         /// <summary>
-        /// Powering up and using energy slowly.
+        /// Radial sport target.
         /// </summary>
-        PoweringUp,
+        Sport,
 
         /// <summary>
-        /// Powering down and not using energy.
+        /// D-Class target.
         /// </summary>
-        PoweringDown,
+        ClassD,
 
         /// <summary>
-        /// Fully powered up and ready to fire.
+        /// Binary target.
         /// </summary>
-        Primed,
-
-        /// <summary>
-        /// Firing and using energy.
-        /// </summary>
-        Firing,
+        Binary,
     }
 }

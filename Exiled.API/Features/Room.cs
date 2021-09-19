@@ -100,6 +100,35 @@ namespace Exiled.API.Features
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
+        /// Locks all the doors in the room.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.ChangeLock(lockType);
+                door.IsOpen = false;
+            }
+
+            if (duration < 0)
+                return;
+            MEC.Timing.CallDelayed(duration, UnlockAll);
+        }
+
+        /// <summary>
+        /// Unlocks all the doors in the room.
+        /// </summary>
+        public void UnlockAll()
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.Unlock();
+            }
+        }
+
+        /// <summary>
         /// Resets the room color to default.
         /// </summary>
         public void ResetColor()
@@ -187,6 +216,8 @@ namespace Exiled.API.Features
                     return RoomType.Hcz096;
                 case "HCZ_Curve":
                     return RoomType.HczCurve;
+                case "HCZ_Straight":
+                    return RoomType.HczStraight;
                 case "EZ_Endoof":
                     return RoomType.EzVent;
                 case "EZ_Intercom":
@@ -215,6 +246,8 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
+                case "EZ_ThreeWay":
+                    return RoomType.EzTCross;
                 case "PocketWorld":
                     return RoomType.Pocket;
                 case "Outside":

@@ -373,6 +373,11 @@ namespace Exiled.API.Features
         public Team Team => Role.GetTeam();
 
         /// <summary>
+        /// Gets the player's <see cref="LeadingTeam"/>.
+        /// </summary>
+        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
+
+        /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
         /// </summary>
         public RoleType Role
@@ -634,15 +639,15 @@ namespace Exiled.API.Features
         /// Gets or sets the player's artificial health.
         /// If the health is greater than the <see cref="MaxArtificialHealth"/>, it will also be changed to match the artificial health.
         /// </summary>
-        public ushort ArtificialHealth
+        public float ArtificialHealth
         {
-            get => ReferenceHub.playerStats.NetworkArtificialHealth;
+            get => ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
             set
             {
-                ReferenceHub.playerStats.NetworkArtificialHealth = value;
-
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = value;
+                    MaxArtificialHealth = Mathf.CeilToInt(value);
+
+                ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
             }
         }
 
@@ -682,12 +687,19 @@ namespace Exiled.API.Features
 
             set
             {
-                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                if (value == null || value.Type == ItemType.None)
                 {
-                    AddItem(value.Base);
+                    Inventory.ServerSelectItem(0);
                 }
+                else
+                {
+                    if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    {
+                        AddItem(value.Base);
+                    }
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                    Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                }
             }
         }
 

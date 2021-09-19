@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="GainingLevelEventArgs.cs" company="Exiled Team">
+// <copyright file="WalkingOnSinkholeEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,35 +12,35 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all informations before SCP-079 gains a level.
+    /// Contains all information before a player walks over a sinkhole.
     /// </summary>
-    public class GainingLevelEventArgs : EventArgs
+    public class WalkingOnSinkholeEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="GainingLevelEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="WalkingOnSinkholeEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="newLevel"><inheritdoc cref="NewLevel"/></param>
+        /// <param name="sinkhole"><inheritdoc cref="SinkholeEnvironmentalHazard"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public GainingLevelEventArgs(Player player, int newLevel, bool isAllowed = true)
+        public WalkingOnSinkholeEventArgs(Player player, SinkholeEnvironmentalHazard sinkhole, bool isAllowed = true)
         {
             Player = player;
-            NewLevel = newLevel;
+            Sinkhole = sinkhole;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the player who's controlling SCP-079.
+        /// Gets the player walking on the sinkhole.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the new level of SCP-079.
+        /// Gets the sinkhole that the player is walking on.
         /// </summary>
-        public int NewLevel { get; set; }
+        public SinkholeEnvironmentalHazard Sinkhole { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the level is successfully granted.
+        /// Gets or sets a value indicating whether or not the player's data can be synced with the server.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
