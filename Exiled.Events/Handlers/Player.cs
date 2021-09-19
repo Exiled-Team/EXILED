@@ -43,7 +43,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
-        /// Invoked after a player uses a medical item.
+        /// Invoked after a player uses an item.
         /// </summary>
         /// <remarks>
         /// Invoked after <see cref="ItemUsed"/>, if a player's class has
@@ -82,7 +82,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
-        /// Invoked before using a medical item.
+        /// Invoked before using an item.
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
