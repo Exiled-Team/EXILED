@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Exiled.API\Exiled.API.csproj" />
     <ProjectReference Include="..\Exiled.Events\Exiled.Events.csproj" />
+    <ProjectReference Include="..\Exiled.Network.API\Exiled.Network.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,11 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Network.API.Models
+namespace Exiled.Network
 {
     using System;
     using Exiled.API.Features;
     using Exiled.Network.API.Interfaces;
+    using Exiled.Network.API.Models;
+
     using Mirror;
 
     /// <summary>

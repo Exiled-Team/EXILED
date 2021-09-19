@@ -7,7 +7,7 @@
 
 namespace Exiled.Network.API.Packets
 {
-    using CommandSystem;
+    using Exiled.Network.API.Interfaces;
 
     using LiteNetLib.Utils;
 
@@ -44,7 +44,7 @@ namespace Exiled.Network.API.Packets
         /// <summary>
         /// Gets generated command.
         /// </summary>
-        public ICommand Command;
+        public object Command;
 
         /// <summary>
         /// Deserialize.
@@ -58,16 +58,7 @@ namespace Exiled.Network.API.Packets
             Permission = reader.GetString();
             IsRaCommand = reader.GetBool();
 
-            var cmd = new TemplateCommand();
-            cmd.AssignedAddonID = AddonID;
-            cmd.DummyCommand = CommandName;
-            cmd.DummyDescription = Description;
-            cmd.Permission = Permission;
-
-            if (IsRaCommand)
-                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Add(cmd.GetType(), cmd);
-            else
-                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Add(cmd.GetType(), cmd);
+            NPManager.Singleton.OnRegisterCommand(this);
         }
 
         /// <summary>
@@ -75,10 +66,7 @@ namespace Exiled.Network.API.Packets
         /// </summary>
         public void UnregisterCommand()
         {
-            if (IsRaCommand)
-                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Remove(Command.GetType());
-            else
-                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Remove(Command.GetType());
+            NPManager.Singleton.OnUnregisterCommand(this);
         }
 
         /// <summary>

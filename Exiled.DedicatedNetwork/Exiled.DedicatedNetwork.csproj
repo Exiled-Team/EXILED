@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,19 +6,19 @@
     <RootNamespace>Exiled.DedicatedNetwork</RootNamespace>
   </PropertyGroup>
   
-  <Import Project="../EXILED.props" />
-
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="$(StyleCopVersion)" IncludeAssets="All" PrivateAssets="All" />
-    <PackageReference Include="YamlDotNet" Version="$(YamlDotNetVersion)" />
+    <ProjectReference Include="..\Exiled.Network.API\Exiled.Network.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Exiled.Network\Exiled.Network.csproj" />
+    <Reference Include="Mirror">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <HintPath>$(EXILED_REFERENCES)\Mirror.dll</HintPath>
+    </Reference>
   </ItemGroup>
-
+  
   <ItemGroup>
-    <Reference Include="Mirror" HintPath="$(EXILED_REFERENCES)\Mirror.dll" Private="false" />
+    <PackageReference Include="YamlDotNet" Version="9.1.4" />
   </ItemGroup>
 
 </Project>

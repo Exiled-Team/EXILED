@@ -9,12 +9,14 @@ namespace Exiled.Network.API
 {
     using System.Collections.Generic;
     using System.IO;
-    using Exiled.API.Extensions;
     using Exiled.Network.API.Interfaces;
     using Exiled.Network.API.Models;
     using Exiled.Network.API.Packets;
     using LiteNetLib;
     using LiteNetLib.Utils;
+
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
 
     /// <summary>
     /// Network Manager.
@@ -25,6 +27,23 @@ namespace Exiled.Network.API
         /// Gets or Sets singleton of npmanager.
         /// </summary>
         public static NPManager Singleton { get; set; }
+
+        /// <summary>
+        /// Gets the serializer for configs.
+        /// </summary>
+        public static ISerializer Serializer { get; } = new SerializerBuilder()
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .Build();
+
+        /// <summary>
+        /// Gets the deserializer for configs.
+        /// </summary>
+        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
 
         /// <summary>
         /// Gets or sets Packet Processor.
@@ -70,6 +89,22 @@ namespace Exiled.Network.API
         }
 
         /// <summary>
+        /// Register command.
+        /// </summary>
+        /// <param name="cmd">Command.</param>
+        public virtual void OnRegisterCommand(CommandInfoPacket cmd)
+        {
+        }
+
+        /// <summary>
+        /// Unregister command.
+        /// </summary>
+        /// <param name="cmd">Command.</param>
+        public virtual void OnUnregisterCommand(CommandInfoPacket cmd)
+        {
+        }
+
+        /// <summary>
         /// Execute addon command.
         /// </summary>
         /// <param name="plr">Executing player.</param>
@@ -96,10 +131,10 @@ namespace Exiled.Network.API
                     Directory.CreateDirectory(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName));
 
                 if (!File.Exists(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")))
-                    File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), YamlDS.Serializer.Serialize(npdi.Addon.Config));
+                    File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Serializer.Serialize(npdi.Addon.Config));
 
-                var cfg = (IConfig)Loader.Loader.Deserializer.Deserialize(File.ReadAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")), npdi.Addon.Config.GetType());
-                File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), YamlDS.Serializer.Serialize(cfg));
+                var cfg = (IConfig)Deserializer.Deserialize(File.ReadAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")), npdi.Addon.Config.GetType());
+                File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Serializer.Serialize(cfg));
                 npdi.Addon.Config.CopyProperties(cfg);
             }
         }

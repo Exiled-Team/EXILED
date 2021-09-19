@@ -16,7 +16,6 @@ namespace Exiled.DedicatedNetwork
     using System.Reflection;
     using System.Threading.Tasks;
 
-    using Exiled.Network;
     using Exiled.Network.API;
     using Exiled.Network.API.Attributes;
     using Exiled.Network.API.Interfaces;
@@ -40,10 +39,13 @@ namespace Exiled.DedicatedNetwork
         {
             Logger = new ConsoleLogger();
 
-            if (!File.Exists("config.yml"))
-                File.WriteAllText("config.yml", YamlDS.Serializer.Serialize(new DedicatedConfig()));
+            NetDebug.Logger = new NetworkLogger();
 
-            config = YamlDS.Deserializer.Deserialize<DedicatedConfig>(File.ReadAllText("config.yml"));
+            if (!File.Exists("config.yml"))
+                File.WriteAllText("config.yml", Serializer.Serialize(new DedicatedConfig()));
+
+            config = Deserializer.Deserialize<DedicatedConfig>(File.ReadAllText("config.yml"));
+
             if (!Directory.Exists("addons"))
                 Directory.CreateDirectory("addons");
 

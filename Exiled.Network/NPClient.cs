@@ -14,6 +14,9 @@ namespace Exiled.Network
     using System.Net;
     using System.Net.Sockets;
     using System.Reflection;
+
+    using CommandSystem;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Network.API;
@@ -126,6 +129,32 @@ namespace Exiled.Network
             Exiled.Events.Handlers.Player.Verified += Player_Verified;
             Exiled.Events.Handlers.Server.WaitingForPlayers += Server_WaitingForPlayers;
             StartNetworkClient();
+        }
+
+        /// <inheritdoc/>
+        public override void OnRegisterCommand(CommandInfoPacket cmd)
+        {
+            var command = new TemplateCommand();
+            command.AssignedAddonID = cmd.AddonID;
+            command.DummyCommand = cmd.CommandName;
+            command.DummyDescription = cmd.Description;
+            command.Permission = cmd.Permission;
+
+            cmd.Command = command;
+
+            if (cmd.IsRaCommand)
+                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Add(cmd.GetType(), command);
+            else
+                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Add(cmd.GetType(), command);
+        }
+
+        /// <inheritdoc/>
+        public override void OnUnregisterCommand(CommandInfoPacket cmd)
+        {
+            if (cmd.IsRaCommand)
+                MainClass.Singleton.Commands[typeof(RemoteAdminCommandHandler)].Remove(cmd.Command.GetType());
+            else
+                MainClass.Singleton.Commands[typeof(ClientCommandHandler)].Remove(cmd.Command.GetType());
         }
 
         /// <summary>

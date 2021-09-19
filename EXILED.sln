@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.DedicatedNetwork", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.NetworkExample", "Exiled.NetworkExample\Exiled.NetworkExample.csproj", "{672A2266-77F8-49E7-847E-A7F2D154AEBB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Exiled.Network.API", "Exiled.Network.API\Exiled.Network.API.csproj", "{F513B4E0-2E91-4DAC-9A7B-F8A302E4B5B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{672A2266-77F8-49E7-847E-A7F2D154AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672A2266-77F8-49E7-847E-A7F2D154AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672A2266-77F8-49E7-847E-A7F2D154AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F513B4E0-2E91-4DAC-9A7B-F8A302E4B5B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F513B4E0-2E91-4DAC-9A7B-F8A302E4B5B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F513B4E0-2E91-4DAC-9A7B-F8A302E4B5B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F513B4E0-2E91-4DAC-9A7B-F8A302E4B5B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
