@@ -318,6 +318,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
+        /// Invoked before dropping ammo.
+        /// </summary>
+        public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
+
+        /// <summary>
         /// Called before a player walks on a sinkhole.
         /// </summary>
         public static event CustomEventHandler<WalkingOnSinkholeEventArgs> WalkingOnSinkhole;
@@ -691,6 +696,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before dropping ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance.</param>
+        public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player walks on a sinkhole.
