@@ -11,19 +11,17 @@ namespace Exiled.Events.Patches.Events.Player
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
     using InventorySystem;
-    using InventorySystem.Items.Firearms.Attachments;
-
-    using MEC;
+    using InventorySystem.Items.Armor;
+    using InventorySystem.Items.Pickups;
 
     using NorthwoodLib.Pools;
 
@@ -47,6 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
             Label returnLabel = generator.DefineLabel();
+            Label liteLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
@@ -103,23 +102,39 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Starg, 3),
             });
 
-            offset = 1;
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Call) + offset;
-            newInstructions.InsertRange(index, new[]
+            offset = 0;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) + offset;
+            newInstructions[index + 1].WithLabels(liteLabel);
+            newInstructions.InsertRange(index + 1, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldarg_3),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ShouldUpdateInv))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                // if (ev.Lite)
+                //    break;
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Lite))),
-                new CodeInstruction(OpCodes.Brtrue, returnLabel),
+                new CodeInstruction(OpCodes.Brtrue, liteLabel),
+
+                // player
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+
+                // items
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Items))),
+
+                // ammo
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Ammo))),
+
+                // prevRole
+                new CodeInstruction(OpCodes.Ldloc_0),
+
+                // newRole
+                new CodeInstruction(OpCodes.Ldarg_1),
+
+                // reason
+                new CodeInstruction(OpCodes.Ldarg_3),
+
+                // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, curClass, id, reason);
                 new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
             });
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
@@ -130,36 +145,37 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static bool ShouldUpdateInv(RoleType type, CharacterClassManager.SpawnReason reason) =>
-            reason != CharacterClassManager.SpawnReason.Escaped && type != RoleType.Spectator;
-
-        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo)
+        private static void ChangeInventory(Exiled.API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {
-            Timing.CallDelayed(0.25f, () =>
+            try
             {
-                try
+                Inventory inventory = player.Inventory;
+                if (reason == CharacterClassManager.SpawnReason.Escaped && prevRole != newRole)
                 {
-                    player.ClearInventory();
-                    items.Reverse();
-                    foreach (ItemType type in items)
-                    {
-                        Item item = player.AddItem(type);
-                    }
+                    List<ItemPickupBase> list = new List<ItemPickupBase>();
+                    if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
+                        bodyArmor.DontRemoveExcessOnDrop = true;
+                    while (inventory.UserInventory.Items.Count > 0)
+                        list.Add(inventory.ServerDropItem(inventory.UserInventory.Items.ElementAt(0).Key));
+                    InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
+                }
+                else
+                {
+                    while (inventory.UserInventory.Items.Count > 0)
+                        inventory.ServerRemoveItem(inventory.UserInventory.Items.ElementAt(0).Key, null);
+                    inventory.UserInventory.ReserveAmmo.Clear();
+                    inventory.SendAmmoNextFrame = true;
+                }
 
-                    if (ammo.Count > 0)
-                    {
-                        foreach (KeyValuePair<ItemType, ushort> kvp in ammo)
-                        {
-                            player.Inventory.ServerSetAmmo(kvp.Key, kvp.Value);
-                            player.Inventory.SendAmmoNextFrame = true;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {e}");
-                }
-            });
+                foreach (var keyValuePair in ammo)
+                    inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
+                foreach (var item in items)
+                    InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(ChangingRole)}.{nameof(ChangeInventory)}: {e}");
+            }
         }
     }
 }
