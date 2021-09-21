@@ -38,12 +38,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who used the medical item.
+        /// Gets the player who used the item.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the medical item that the player consumed.
+        /// Gets the item that the player used.
         /// </summary>
         public Usable Item { get; }
     }

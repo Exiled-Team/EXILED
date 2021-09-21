@@ -693,12 +693,19 @@ namespace Exiled.API.Features
 
             set
             {
-                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                if (value == null || value.Type == ItemType.None)
                 {
-                    AddItem(value.Base);
+                    Inventory.ServerSelectItem(0);
                 }
+                else
+                {
+                    if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    {
+                        AddItem(value.Base);
+                    }
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                    Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                }
             }
         }
 
@@ -1229,11 +1236,23 @@ namespace Exiled.API.Features
         public void DropItem(Item item) => Inventory.ServerDropItem(item.Serial);
 
         /// <summary>
+        /// Drops the held item.
+        /// </summary>
+        public void DropHeldItem() => DropItem(CurrentItem);
+
+        /// <summary>
         /// Indicates whether the player has an item.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
-        public bool HasItem(ItemType item) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == item);
+        public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
+
+        /// <summary>
+        /// Indicates whether the player has an item type.
+        /// </summary>
+        /// <param name="type">The type to search for.</param>
+        /// <returns>true, if the player has it; otherwise, false.</returns>
+        public bool HasItem(ItemType type) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == type);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
