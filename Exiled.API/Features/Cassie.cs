@@ -67,5 +67,10 @@ namespace Exiled.API.Features
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false)
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
+
+        /// <summary>
+        /// Clears the C.A.S.S.I.E queue.
+        /// </summary>
+        public static void Clear() => RespawnEffectsController.ClearQueue();
     }
 }
