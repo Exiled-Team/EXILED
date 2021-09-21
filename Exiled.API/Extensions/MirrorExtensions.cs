@@ -200,14 +200,14 @@ namespace Exiled.API.Extensions
         {
             Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
             {
-                targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
+                targetWriter.WriteULong(SyncVarDirtyBits[$"{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
             };
 
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, customSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new RpcMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -270,7 +270,7 @@ namespace Exiled.API.Extensions
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new RpcMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -323,7 +323,7 @@ namespace Exiled.API.Extensions
 
             // Write init position
             int position = owner.Position;
-            owner.WriteInt32(0);
+            owner.WriteInt(0);
             int position2 = owner.Position;
 
             // Write custom sync data
@@ -338,7 +338,7 @@ namespace Exiled.API.Extensions
             // Write syncdata position data
             int position3 = owner.Position;
             owner.Position = position;
-            owner.WriteInt32(position3 - position2);
+            owner.WriteInt(position3 - position2);
             owner.Position = position3;
 
             // Copy owner to observer

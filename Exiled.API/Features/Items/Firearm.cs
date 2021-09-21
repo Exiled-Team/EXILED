@@ -68,12 +68,7 @@ namespace Exiled.API.Features.Items
         public byte Ammo
         {
             get => Base.Status.Ammo;
-            set
-            {
-                FirearmStatus status = Base.Status;
-                Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
-                Base.OnStatusChanged(status, Base.Status);
-            }
+            set => Base.Status = new FirearmStatus(value, Base.Status.Flags, Base.Status.Attachments);
         }
 
         /// <summary>
@@ -136,7 +131,7 @@ namespace Exiled.API.Features.Items
             set
             {
                 if (Base is AutomaticFirearm auto)
-                    auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern);
+                    auto.ActionModule = new AutomaticAction(Base, auto._semiAutomatic, auto._boltTravelTime, 1f / auto._fireRate, auto._dryfireClipId, auto._triggerClipId, auto._gunshotPitchRandomization, value, auto._recoilPattern, false);
                 else
                     throw new InvalidOperationException("You cannot change the recoil pattern of non-automatic weapons.");
             }
