@@ -207,7 +207,7 @@ namespace Exiled.API.Extensions
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, null, customSyncVarGenerator, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new RpcMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new EntityStateMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
@@ -257,10 +257,10 @@ namespace Exiled.API.Extensions
         /// EffectOnlySCP207.
         /// <code>
         ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
-        ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
-        ///   writer.WriteUInt32(1);                                             // DirtyIndexCount
+        ///   writer.WriteULong(1ul);                                            // DirtyObjectsBit
+        ///   writer.WriteUInt(1);                                               // DirtyIndexCount
         ///   writer.WriteByte((byte)SyncList&lt;byte&gt;.Operation.OP_SET);     // Operations
-        ///   writer.WriteUInt32(17);                                            // EditIndex
+        ///   writer.WriteUInt(17);                                              // EditIndex
         ///   writer.WriteByte(1);                                               // Value
         ///  });
         /// </code>
@@ -270,7 +270,7 @@ namespace Exiled.API.Extensions
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
             MakeCustomSyncWriter(behaviorOwner, targetType, customAction, null, writer, writer2);
-            target.ReferenceHub.networkIdentity.connectionToClient.Send(new RpcMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
+            target.ReferenceHub.networkIdentity.connectionToClient.Send(new EntityStateMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
         }
