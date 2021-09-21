@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived"/>.
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
+    // [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
     internal static class Shooting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
