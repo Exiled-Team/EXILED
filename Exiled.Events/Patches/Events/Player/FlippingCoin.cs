@@ -42,9 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label returnLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(FlippingCoinEventArgs));
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
-
-            const int instructionsToRemove = 13;
+            const int instructionsToRemove = 12;
             const int offset = 0;
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
 
@@ -98,6 +96,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(NetworkServer), nameof(NetworkServer.SendToAll), null, new[] { typeof(CoinNetworkHandler.CoinFlipMessage) })),
             });
 
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 

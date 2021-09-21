@@ -417,7 +417,7 @@ namespace Exiled.API.Features
         public PlayerMovementState MoveState
         {
             get => ReferenceHub.animationController.MoveState;
-            set => ReferenceHub.animationController.Network_curMoveState = (byte)value;
+            set => ReferenceHub.animationController.MoveState = value;
         }
 
         /// <summary>

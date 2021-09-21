@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -4;
+            int offset = -5;
             int index = newInstructions.Count + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShootingEventArgs));
