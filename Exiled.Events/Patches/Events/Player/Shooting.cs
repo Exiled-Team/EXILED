@@ -32,14 +32,14 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="FirearmBasicMessagesHandler.ServerShotReceived"/>.
     /// Adds the <see cref="Handlers.Player.Shooting"/> and <see cref="Handlers.Player.Shot"/> events.
     /// </summary>
-    // [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
+    [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerShotReceived))]
     internal static class Shooting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = -5;
+            int offset = -6;
             int index = newInstructions.Count + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ShootingEventArgs));
