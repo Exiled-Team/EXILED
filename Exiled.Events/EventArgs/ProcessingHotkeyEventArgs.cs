@@ -11,6 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     /// <summary>
     /// Contains all informations before pressing a hotkey.
@@ -22,11 +23,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="hotkey"><inheritdoc cref="Hotkey"/></param>
+        /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ProcessingHotkeyEventArgs(Player player, HotkeyButton hotkey, bool isAllowed = true)
+        public ProcessingHotkeyEventArgs(Player player, HotkeyButton hotkey, ushort item, bool isAllowed = true)
         {
             Player = player;
             Hotkey = hotkey;
+            Item = Item.Get(player.Inventory.UserInventory.Items[item]);
             IsAllowed = isAllowed;
         }
 
@@ -39,6 +42,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the pressed hotkey.
         /// </summary>
         public HotkeyButton Hotkey { get; }
+
+        /// <summary>
+        /// Gets or sets the item change to.
+        /// </summary>
+        public Item Item { get; set;  }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the hotkey is allowed to be pressed.

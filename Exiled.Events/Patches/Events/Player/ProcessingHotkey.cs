@@ -16,6 +16,7 @@ namespace Exiled.Events.Patches.Events.Player
     using HarmonyLib;
 
     using InventorySystem;
+    using InventorySystem.Items;
 
     using NorthwoodLib.Pools;
 
@@ -31,6 +32,8 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(ProcessingHotkeyEventArgs));
 
             Label returnLabel = generator.DefineLabel();
             Label defaultLabel = generator.DefineLabel();
@@ -90,12 +93,19 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_S, hotkeyButton.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_2),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ProcessingHotkeyEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnProcessingHotkey))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ProcessingHotkeyEventArgs), nameof(ProcessingHotkeyEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ProcessingHotkeyEventArgs), nameof(ProcessingHotkeyEventArgs.Item))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Serial))),
+                new CodeInstruction(OpCodes.Starg, 2),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
