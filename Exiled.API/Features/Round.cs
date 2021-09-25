@@ -80,7 +80,7 @@ namespace Exiled.API.Features
         public static int ChangedIntoZombies => RoundSummary.changed_into_zombies;
 
         /// <summary>
-        /// Gets the number of rounds since server startups.
+        /// Gets the number of rounds since the server started.
         /// </summary>
         public static uint UptimeRounds => PlayerStats.UptimeRounds;
 
