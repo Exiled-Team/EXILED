@@ -55,7 +55,8 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
@@ -63,6 +64,9 @@ namespace Exiled.Loader
 
             if (!Directory.Exists(Paths.Configs))
                 Directory.CreateDirectory(Paths.Configs);
+
+            if (Config.ConfigType == ConfigType.Separated && !Directory.Exists(Paths.IndividualConfigs))
+                Directory.CreateDirectory(Paths.IndividualConfigs);
 
             if (!Directory.Exists(Paths.Plugins))
                 Directory.CreateDirectory(Paths.Plugins);
