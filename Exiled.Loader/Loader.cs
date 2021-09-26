@@ -9,12 +9,11 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
 
-    using CommandSystem.Commands;
+    using CommandSystem.Commands.Shared;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -22,6 +21,8 @@ namespace Exiled.Loader
     using Exiled.Loader.Features;
     using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
+
+    using NorthwoodLib;
 
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
@@ -51,12 +52,18 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
+            if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
+                Paths.Reload($"EXILED-Testing");
 
             if (!Directory.Exists(Paths.Configs))
                 Directory.CreateDirectory(Paths.Configs);
+
+            if (Config.ConfigType == ConfigType.Separated && !Directory.Exists(Paths.IndividualConfigs))
+                Directory.CreateDirectory(Paths.IndividualConfigs);
 
             if (!Directory.Exists(Paths.Plugins))
                 Directory.CreateDirectory(Paths.Plugins);
