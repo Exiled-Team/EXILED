@@ -48,9 +48,19 @@ namespace Exiled.API.Features
         public static string Configs { get; set; }
 
         /// <summary>
-        /// Gets or sets configs path.
+        /// Gets or sets config file path.
         /// </summary>
         public static string Config { get; set; }
+
+        /// <summary>
+        /// Gets or sets the loader config file path.
+        /// </summary>
+        public static string LoaderConfig { get; set; }
+
+        /// <summary>
+        /// Gets or sets individual configs directory path.
+        /// </summary>
+        public static string IndividualConfigs { get; set; }
 
         /// <summary>
         /// Gets or sets translations path.
@@ -72,9 +82,26 @@ namespace Exiled.API.Features
             Plugins = Path.Combine(Exiled, "Plugins");
             Dependencies = Path.Combine(Plugins, "dependencies");
             Configs = Path.Combine(Exiled, "Configs");
-            Config = Path.Combine(Configs, $"{Server.Port}-config.yml");
+            Config = Path.Combine(Configs,  $"{Server.Port}-config.yml");
+            LoaderConfig = Path.Combine(Configs, "Loader-Configuration.yml");
+            IndividualConfigs = Path.Combine(Configs, "Plugins");
             Translations = Path.Combine(Configs, $"{Server.Port}-translations.yml");
             Log = Path.Combine(Exiled, $"{Server.Port}-RemoteAdminLog.txt");
+        }
+
+        /// <summary>
+        /// Gets the config path of a plugin.
+        /// </summary>
+        /// <param name="pluginPrefix">The prefix of the plugin.</param>
+        /// <returns>The config path of the plugin.</returns>
+        public static string GetConfigPath(string pluginPrefix = null)
+        {
+            if (pluginPrefix != null)
+            {
+                return Path.Combine(IndividualConfigs, pluginPrefix, $"{Server.Port}.yml");
+            }
+
+            return Config;
         }
     }
 }
