@@ -38,6 +38,7 @@ namespace Exiled.API.Features
             Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
             Version = Assembly.GetName().Version;
             ConfigPath = Paths.GetConfigPath(Prefix);
+            TranslationPath = Paths.GetTranslationPath(Prefix);
         }
 
         /// <inheritdoc/>
@@ -77,6 +78,9 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public string ConfigPath { get; }
+
+        /// <inheritdoc/>
+        public string TranslationPath { get; }
 
         /// <inheritdoc/>
         public virtual void OnEnabled()
