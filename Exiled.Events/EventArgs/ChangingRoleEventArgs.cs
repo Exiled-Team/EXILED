@@ -34,7 +34,8 @@ namespace Exiled.Events.EventArgs
             {
                 foreach (ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
                     Items.Add(itemType);
-                Ammo = InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Ammo;
+                foreach (KeyValuePair<ItemType, ushort> ammoPair in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Ammo)
+                    Ammo.Add(ammoPair.Key, ammoPair.Value);
             }
 
             Lite = shouldPreservePosition;
