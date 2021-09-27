@@ -78,6 +78,11 @@ namespace Exiled.API.Interfaces
         string ConfigPath { get; }
 
         /// <summary>
+        /// Gets the plugin translation path.
+        /// </summary>
+        string TranslationPath { get; }
+
+        /// <summary>
         /// Fired after enabling the plugin.
         /// </summary>
         void OnEnabled();
