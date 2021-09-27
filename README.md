@@ -41,7 +41,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
     - Any other Windows version:
       Press Win + R and type `%appdata%`
 
-### Installing plugins
+### Installing pluginss
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
