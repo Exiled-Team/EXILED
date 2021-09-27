@@ -96,12 +96,7 @@ namespace Exiled.API.Features
         /// <returns>The config path of the plugin.</returns>
         public static string GetConfigPath(string pluginPrefix = null)
         {
-            if (pluginPrefix != null)
-            {
-                return Path.Combine(IndividualConfigs, pluginPrefix, $"{Server.Port}.yml");
-            }
-
-            return Config;
+            return pluginPrefix == null ? Config : Path.Combine(IndividualConfigs, pluginPrefix, $"{Server.Port}.yml");
         }
     }
 }
