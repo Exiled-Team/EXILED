@@ -125,8 +125,14 @@ namespace Exiled.Loader
         {
             try
             {
-                if (pluginPrefix != null && Loader.Config.ConfigType == ConfigType.Separated && !Directory.Exists(Path.Combine(Paths.IndividualConfigs, pluginPrefix)))
-                    Directory.CreateDirectory(Path.Combine(Paths.IndividualConfigs, pluginPrefix));
+                if (pluginPrefix != null && Loader.Config.ConfigType == ConfigType.Separated)
+                {
+                    if (!Directory.Exists(Paths.IndividualTranslations))
+                        Directory.CreateDirectory(Paths.IndividualTranslations);
+
+                    if (!Directory.Exists(Path.Combine(Paths.IndividualTranslations, pluginPrefix)))
+                        Directory.CreateDirectory(Path.Combine(Paths.IndividualTranslations, pluginPrefix));
+                }
 
                 File.WriteAllText(Paths.GetTranslationPath(pluginPrefix), translations ?? string.Empty);
 
