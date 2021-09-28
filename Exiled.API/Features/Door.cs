@@ -60,6 +60,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the door's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Base.gameObject.transform.position;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.position = value;
+                NetworkServer.Spawn(gameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether SCP-106 can walk through the door.
         /// </summary>
         public bool AllowsScp106
@@ -71,16 +86,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the door is locked.
         /// </summary>
-        public bool IsLocked => DoorLockType != DoorLockType.None;
+        public bool IsLocked => DoorLockType > 0;
 
         /// <summary>
-        /// Gets or sets the door lock type.
+        /// Gets or the door lock type.
         /// </summary>
-        public DoorLockType DoorLockType
-        {
-            get => (DoorLockType)Base.NetworkActiveLocks;
-            set => Base.ServerChangeLock((DoorLockReason)value, value != DoorLockType.None);
-        }
+        public DoorLockType DoorLockType => (DoorLockType)Base.NetworkActiveLocks;
 
         /// <summary>
         /// Gets a value indicating whether or not this door is breakable.
@@ -134,6 +145,21 @@ namespace Exiled.API.Features
             {
                 if (Base is BreakableDoor breakable)
                     breakable._ignoredDamageSources = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the door's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => Base.gameObject.transform.rotation;
+            set
+            {
+                GameObject gameObject = Base.gameObject;
+                NetworkServer.UnSpawn(gameObject);
+                gameObject.transform.rotation = value;
+                NetworkServer.Spawn(gameObject);
             }
         }
 
@@ -208,6 +234,35 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks the door with the given lock type.
+        /// </summary>
+        /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
+        public void ChangeLock(DoorLockType lockType)
+        {
+            if (lockType == DoorLockType.None)
+            {
+                Base.NetworkActiveLocks = 0;
+            }
+            else
+            {
+                DoorLockType locks = DoorLockType;
+                if (locks.HasFlag(lockType))
+                    locks &= ~lockType;
+                else
+                    locks |= lockType;
+
+                Base.NetworkActiveLocks = (ushort)locks;
+            }
+
+            DoorEvents.TriggerAction(Base, IsLocked ? DoorAction.Locked : DoorAction.Unlocked, null);
+        }
+
+        /// <summary>
+        /// Unlocks the door.
+        /// </summary>
+        public void Unlock() => ChangeLock(DoorLockType.None);
+
+        /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()
@@ -230,13 +285,25 @@ namespace Exiled.API.Features
         private DoorType GetDoorType()
         {
             if (Nametag == null)
-                return DoorType.UnknownDoor;
+            {
+                string doorName = Base.gameObject.name.GetBefore(' ');
+                switch (doorName)
+                {
+                    case "LCZ":
+                        return DoorType.LightContainmentDoor;
+                    case "HCZ":
+                        return DoorType.HeavyContainmentDoor;
+                    case "EZ":
+                        return DoorType.EntranceDoor;
+                    case "Prison":
+                        return DoorType.PrisonDoor;
+                    default:
+                        return DoorType.UnknownDoor;
+                }
+            }
 
             switch (Nametag.RemoveBracketsOnEndOfName())
             {
-                case "Prison BreakableDoor":
-                    return DoorType.PrisonDoor;
-
                 // Doors contains the DoorNameTagExtension component
                 case "CHECKPOINT_LCZ_A":
                     return DoorType.CheckpointLczA;
@@ -318,19 +385,7 @@ namespace Exiled.API.Features
                 case "EntrDoor":
                     return DoorType.EntranceDoor;
                 default:
-                    // All door gameobject names are separated by a whitespace
-                    string doorName = Nametag.GetBefore(' ');
-                    switch (doorName)
-                    {
-                        case "LCZ":
-                            return DoorType.LightContainmentDoor;
-                        case "HCZ":
-                            return DoorType.HeavyContainmentDoor;
-                        case "EZ":
-                            return DoorType.EntranceDoor;
-                        default:
-                            return DoorType.UnknownDoor;
-                    }
+                    return DoorType.UnknownDoor;
             }
         }
     }

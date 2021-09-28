@@ -417,13 +417,8 @@ namespace Exiled.API.Features
         public PlayerMovementState MoveState
         {
             get => ReferenceHub.animationController.MoveState;
-            set => ReferenceHub.animationController.Network_curMoveState = (byte)value;
+            set => ReferenceHub.animationController.MoveState = value;
         }
-
-        /// <summary>
-        /// Gets the player's current animation.
-        /// </summary>
-        public int CurrentAnimation => ReferenceHub.animationController.curAnim;
 
         /// <summary>
         /// Gets a value indicating whether the player is sprinting.
@@ -439,11 +434,6 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is sneaking.
         /// </summary>
         public bool IsSneaking => MoveState == PlayerMovementState.Sneaking;
-
-        /// <summary>
-        /// Gets a value indicating whether the player is jumping.
-        /// </summary>
-        public bool IsJumping => CurrentAnimation == 2;
 
         /// <summary>
         /// Gets the player's IP address.
@@ -569,8 +559,14 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsMuted
         {
-            get => ReferenceHub.characterClassManager.NetworkMuted;
-            set => ReferenceHub.characterClassManager.NetworkMuted = value;
+            get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
+            set
+            {
+                if (value)
+                    MuteHandler.IssuePersistentMute(UserId);
+                else
+                    MuteHandler.RevokePersistentMute(UserId);
+            }
         }
 
         /// <summary>
@@ -639,15 +635,15 @@ namespace Exiled.API.Features
         /// Gets or sets the player's artificial health.
         /// If the health is greater than the <see cref="MaxArtificialHealth"/>, it will also be changed to match the artificial health.
         /// </summary>
-        public ushort ArtificialHealth
+        public float ArtificialHealth
         {
-            get => ReferenceHub.playerStats.NetworkArtificialHealth;
+            get => ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
             set
             {
-                ReferenceHub.playerStats.NetworkArtificialHealth = value;
-
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = value;
+                    MaxArtificialHealth = Mathf.CeilToInt(value);
+
+                ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
             }
         }
 
@@ -687,12 +683,19 @@ namespace Exiled.API.Features
 
             set
             {
-                if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                if (value == null || value.Type == ItemType.None)
                 {
-                    AddItem(value.Base);
+                    Inventory.ServerSelectItem(0);
                 }
+                else
+                {
+                    if (!Inventory.UserInventory.Items.TryGetValue(value.Serial, out _))
+                    {
+                        AddItem(value.Base);
+                    }
 
-                Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                    Timing.CallDelayed(0.5f, () => Inventory.ServerSelectItem(value.Serial));
+                }
             }
         }
 
@@ -1223,11 +1226,23 @@ namespace Exiled.API.Features
         public void DropItem(Item item) => Inventory.ServerDropItem(item.Serial);
 
         /// <summary>
+        /// Drops the held item.
+        /// </summary>
+        public void DropHeldItem() => DropItem(CurrentItem);
+
+        /// <summary>
         /// Indicates whether the player has an item.
         /// </summary>
         /// <param name="item">The item to search for.</param>
         /// <returns>true, if the player has it; otherwise, false.</returns>
-        public bool HasItem(ItemType item) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == item);
+        public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
+
+        /// <summary>
+        /// Indicates whether the player has an item type.
+        /// </summary>
+        /// <param name="type">The type to search for.</param>
+        /// <returns>true, if the player has it; otherwise, false.</returns>
+        public bool HasItem(ItemType type) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == type);
 
         /// <summary>
         /// Counts how many items of a certain <see cref="ItemType"/> a player has.
