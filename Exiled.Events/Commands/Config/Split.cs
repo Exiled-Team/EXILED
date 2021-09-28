@@ -37,9 +37,9 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("el.split"))
+            if (!sender.CheckPermission("ee.split"))
             {
-                response = "You can't use the command, you don't have the \"el.split\" permission.";
+                response = "You can't use the command, you don't have the \"ee.split\" permission.";
                 return false;
             }
 
