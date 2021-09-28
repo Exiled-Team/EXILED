@@ -980,6 +980,13 @@ namespace Exiled.API.Features
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the ICommandSender, if any.
+        /// </summary>
+        /// <param name="sender">The command sender.</param>
+        /// <returns>Returns a player or null if not found.</returns>
+        public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
