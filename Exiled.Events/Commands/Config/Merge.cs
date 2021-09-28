@@ -37,9 +37,9 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("el.merge"))
+            if (!sender.CheckPermission("ee.merge"))
             {
-                response = "You can't use the command, you don't have the \"el.merge\" permission.";
+                response = "You can't use the command, you don't have the \"ee.merge\" permission.";
                 return false;
             }
 
