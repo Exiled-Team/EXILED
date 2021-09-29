@@ -42,5 +42,11 @@ namespace Exiled.NetworkExample
             writer.Put("Response");
             SendData(server.ServerAddress, server.ServerPort, writer);
         }
+
+        /// <inheritdoc/>
+        public override void OnConsoleResponse(NPServer server, string command, string response, bool isRa)
+        {
+            Logger.Info($"Received command response from server {server.FullAddress}, command name: {command}, response: {response}.");
+        }
     }
 }

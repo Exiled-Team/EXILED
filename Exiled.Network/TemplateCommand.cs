@@ -65,12 +65,16 @@ namespace Exiled.Network
                 return false;
             }
 
+            if (string.IsNullOrEmpty(Permission))
+                goto skipPermCheck;
+
             if (!p.CheckPermission(Permission))
             {
                 response = $"Missing required permission \"{Permission}\".";
                 return false;
             }
 
+            skipPermCheck:
             NPManager.Singleton.PacketProcessor.Send<ExecuteCommandPacket>(NPManager.Singleton.NetworkListener, new ExecuteCommandPacket() { UserID = p.UserId, AddonID = AssignedAddonID, CommandName = this.Command, Arguments = arguments.Array }, DeliveryMethod.ReliableOrdered);
             response = string.Empty;
             return false;

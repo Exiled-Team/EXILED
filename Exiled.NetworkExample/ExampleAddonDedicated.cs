@@ -7,6 +7,8 @@
 
 namespace Exiled.NetworkExample
 {
+    using System.Collections.Generic;
+
     using Exiled.Network.API;
     using Exiled.Network.API.Attributes;
     using Exiled.Network.API.Models;
@@ -47,6 +49,23 @@ namespace Exiled.NetworkExample
             NetDataWriter writer = new NetDataWriter();
             writer.Put("Response");
             SendData(server.ServerAddress, server.ServerPort, writer);
+        }
+
+        /// <inheritdoc/>
+        public override void OnConsoleCommand(string cmd, List<string> arguments)
+        {
+            switch (cmd.ToUpper())
+            {
+                case "TEST":
+                    Logger.Info("Test response");
+                    break;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override void OnConsoleResponse(NPServer server, string command, string response, bool isRa)
+        {
+            Logger.Info($"Received command response from server {server.FullAddress}, command name: {command}, response: {response}.");
         }
     }
 }
