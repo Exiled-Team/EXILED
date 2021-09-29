@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
@@ -90,7 +91,8 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             const int instructionsToRemove = 6;
-            int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Ldloc_3);
+            int offset = -1;
+            int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Ldfld && (FieldInfo)code.operand == Field(typeof(Role), nameof(Role.roleId))) + offset;
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 

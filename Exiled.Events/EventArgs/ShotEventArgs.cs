@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
             if (destructible is HitboxIdentity identity)
             {
                 Hitbox = identity;
-                Target = Player.Get(Hitbox._hub);
+                Target = Player.Get(Hitbox.TargetHub);
             }
         }
 

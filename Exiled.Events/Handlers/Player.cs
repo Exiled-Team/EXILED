@@ -43,7 +43,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
-        /// Invoked after a player uses a medical item.
+        /// Invoked after a player uses an item.
         /// </summary>
         /// <remarks>
         /// Invoked after <see cref="ItemUsed"/>, if a player's class has
@@ -82,7 +82,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
-        /// Invoked before using a medical item.
+        /// Invoked before using an item.
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
@@ -316,6 +316,11 @@ namespace Exiled.Events.Handlers
         /// Called before processing a hotkey.
         /// </summary>
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
+
+        /// <summary>
+        /// Invoked before dropping ammo.
+        /// </summary>
+        public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
         /// <summary>
         /// Called before a player walks on a sinkhole.
@@ -691,6 +696,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ProcessingHotkeyEventArgs"/> instance.</param>
         public static void OnProcessingHotkey(ProcessingHotkeyEventArgs ev) => ProcessingHotkey.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before dropping ammo.
+        /// </summary>
+        /// <param name="ev">The <see cref="DroppingAmmoEventArgs"/> instance.</param>
+        public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player walks on a sinkhole.
