@@ -39,7 +39,7 @@ namespace Exiled.DedicatedNetwork
                 var proc = line.Split(' ');
                 foreach (var h in host.Addons)
                 {
-                    h.Value.Addon.OnConsoleCommand(proc[0], proc.Skip(1).ToList());
+                    h.Value.OnConsoleCommand(proc[0], proc.Skip(1).ToList());
                 }
             }
         }

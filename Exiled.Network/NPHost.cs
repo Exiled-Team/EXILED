@@ -76,19 +76,23 @@ namespace Exiled.Network
                         }
 
                         if (addon == null)
-                        {
                             continue;
-                        }
 
-                        NPAddonInfo addonInfo = (NPAddonInfo)Attribute.GetCustomAttribute(t, typeof(NPAddonInfo));
-                        addon.Manager = this;
-                        addon.Logger = Logger;
-                        addon.AddonId = addonInfo.AddonID;
-                        addon.DefaultPath = Path.Combine(pluginDir, $"addons-{Server.Port}");
-                        addon.AddonPath = Path.Combine(addon.DefaultPath, addonInfo.AddonName);
-                        if (Addons.ContainsKey(addonInfo.AddonID))
+                        var field = addon.GetType().GetField("DefaultPath");
+                        field.SetValue(addon.DefaultPath, Path.Combine(pluginDir, $"addons-{Server.Port}"));
+
+                        field = addon.GetType().GetField("AddonPath");
+                        field.SetValue(addon.DefaultPath, Path.Combine(addon.DefaultPath, addon.AddonName));
+
+                        field = addon.GetType().GetField("Manager");
+                        field.SetValue(addon.Manager, this);
+
+                        field = addon.GetType().GetField("Logger");
+                        field.SetValue(addon.Logger, Logger);
+
+                        if (Addons.ContainsKey(addon.AddonId))
                         {
-                            Logger.Error($"Addon {Addons[addonInfo.AddonID].Info.AddonName} already have id {addonInfo.AddonName}.");
+                            Logger.Error($"Addon {addon.AddonName} already already registered with id {addon.AddonId}.");
                             break;
                         }
 
@@ -96,8 +100,8 @@ namespace Exiled.Network
                         if (!addon.Config.IsEnabled)
                             return;
 
-                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
-                        Logger.Info($"Loading addon {addonInfo.AddonName}.");
+                        Addons.Add(addon.AddonId, addon);
+                        Logger.Info($"Loading addon {addon.AddonVersion}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");
                         foreach (var type in a.GetTypes())
@@ -105,7 +109,7 @@ namespace Exiled.Network
                             if (typeof(ICommand).IsAssignableFrom(type))
                             {
                                 ICommand cmd = (ICommand)Activator.CreateInstance(type);
-                                RegisterCommand(addon.AddonId, cmd);
+                                RegisterCommand(addon, cmd);
                             }
                         }
                     }
@@ -215,7 +219,7 @@ namespace Exiled.Network
 
             foreach (var addon in Addons)
             {
-                addon.Value.Addon.OnConsoleResponse(server, packet.Command, packet.Response, packet.IsRemoteAdmin);
+                addon.Value.OnConsoleResponse(server, packet.Command, packet.Response, packet.IsRemoteAdmin);
             }
         }
 
@@ -328,7 +332,7 @@ namespace Exiled.Network
             NetDataReader reader = new NetDataReader(packet.Data);
             foreach (var addon in Addons.Where(pp => pp.Key == packet.AddonID))
             {
-                addon.Value.Addon.OnMessageReceived(server, reader);
+                addon.Value.OnMessageReceived(server, reader);
             }
         }
 
@@ -342,10 +346,10 @@ namespace Exiled.Network
             foreach (var i in packet.AddonIds.Where(p => Addons.ContainsKey(p)).Select(s => Addons[s]))
             {
                 Servers[peer].Addons.Add(i);
-                adds += $"{i.Info.AddonName} - {i.Info.AddonVersion}v made by {i.Info.AddonAuthor}" + Environment.NewLine;
-                i.Addon.OnReady(Servers[peer]);
-                cmds.AddRange(GetCommands(i.Info.AddonID));
-                addonsId.Add(i.Info.AddonID);
+                adds += $"{i.AddonName} - {i.AddonVersion}v made by {i.AddonAuthor}" + Environment.NewLine;
+                i.OnReady(Servers[peer]);
+                cmds.AddRange(GetCommands(i.AddonId));
+                addonsId.Add(i.AddonId);
             }
 
             Logger.Info($"Received addons from server {server.FullAddress}, {adds}");

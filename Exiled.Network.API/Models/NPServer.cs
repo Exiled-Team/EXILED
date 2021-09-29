@@ -8,6 +8,8 @@
 namespace Exiled.Network.API.Models
 {
     using System.Collections.Generic;
+
+    using Exiled.Network.API.Interfaces;
     using Exiled.Network.API.Packets;
     using LiteNetLib;
     using LiteNetLib.Utils;
@@ -67,7 +69,7 @@ namespace Exiled.Network.API.Models
         /// <summary>
         /// Gets addons running on that server.
         /// </summary>
-        public List<NPAddonItem> Addons { get; internal set; } = new List<NPAddonItem>();
+        public List<IAddon<IConfig>> Addons { get; internal set; } = new List<IAddon<IConfig>>();
 
         /// <summary>
         /// Gets server full address.

@@ -7,6 +7,8 @@
 
 namespace Exiled.NetworkExample
 {
+    using System;
+
     using Exiled.Network.API;
     using Exiled.Network.API.Attributes;
     using Exiled.Network.API.Models;
@@ -15,13 +17,20 @@ namespace Exiled.NetworkExample
     /// <summary>
     /// Example host addon.
     /// </summary>
-    [NPAddonInfo(
-        addonId: "0dewadopsdap32",
-        addonName: "ExampleAddon",
-        addonAuthor: "Exiled Team",
-        addonVersion: "1.0.0")]
     public class ExampleAddonHost : NPAddonHost<AddonConfig>
     {
+        /// <inheritdoc/>
+        public override string AddonAuthor { get; } = "Exiled Team";
+
+        /// <inheritdoc/>
+        public override string AddonName { get; } = "ExampleAddon";
+
+        /// <inheritdoc/>
+        public override Version AddonVersion { get; } = new Version(1, 0, 0);
+
+        /// <inheritdoc/>
+        public override string AddonId { get; } = "0dewadopsdap32";
+
         /// <inheritdoc/>
         public override void OnEnable()
         {

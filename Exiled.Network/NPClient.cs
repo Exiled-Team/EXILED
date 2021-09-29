@@ -96,24 +96,30 @@ namespace Exiled.Network
                         if (addon == null)
                             continue;
 
-                        NPAddonInfo addonInfo = (NPAddonInfo)Attribute.GetCustomAttribute(t, typeof(NPAddonInfo));
-                        addon.Manager = this;
-                        addon.Logger = Logger;
-                        addon.AddonId = addonInfo.AddonID;
-                        addon.DefaultPath = Path.Combine(pluginDir, $"addons-{Server.Port}");
-                        addon.AddonPath = Path.Combine(addon.DefaultPath, addonInfo.AddonName);
-                        if (Addons.ContainsKey(addonInfo.AddonID))
+                        var field = addon.GetType().GetField("DefaultPath");
+                        field.SetValue(addon.DefaultPath, Path.Combine(pluginDir, $"addons-{Server.Port}"));
+
+                        field = addon.GetType().GetField("AddonPath");
+                        field.SetValue(addon.DefaultPath, Path.Combine(addon.DefaultPath, addon.AddonName));
+
+                        field = addon.GetType().GetField("Manager");
+                        field.SetValue(addon.Manager, this);
+
+                        field = addon.GetType().GetField("Logger");
+                        field.SetValue(addon.Logger, Logger);
+
+                        if (Addons.ContainsKey(addon.AddonId))
                         {
-                            Logger.Error($"Addon {Addons[addonInfo.AddonID].Info.AddonName} already have id {addonInfo.AddonName}.");
+                            Logger.Error($"Addon {addon.AddonName} already already registered with id {addon.AddonId}.");
                             break;
                         }
 
-                        Addons.Add(addonInfo.AddonID, new NPAddonItem() { Addon = addon, Info = addonInfo });
                         LoadAddonConfig(addon.AddonId);
                         if (!addon.Config.IsEnabled)
                             return;
 
-                        Logger.Info($"Loading addon {addonInfo.AddonName}.");
+                        Addons.Add(addon.AddonId, addon);
+                        Logger.Info($"Loading addon {addon.AddonVersion}.");
                         addon.OnEnable();
                         Logger.Info($"Waiting to client connections..");
                     }
@@ -497,11 +503,11 @@ namespace Exiled.Network
             {
                 try
                 {
-                    addon.Value.Addon.OnMessageReceived(null, reader);
+                    addon.Value.OnMessageReceived(null, reader);
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Error while invoking OnMessageReceived in addon {addon.Value.Info.AddonName} {ex.ToString()}");
+                    Logger.Error($"Error while invoking OnMessageReceived in addon {addon.Value.AddonName} {ex.ToString()}");
                 }
             }
         }
@@ -617,11 +623,11 @@ namespace Exiled.Network
             {
                 try
                 {
-                    addon.Value.Addon.OnReady(null);
+                    addon.Value.OnReady(null);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Error while invoking OnReady in addon {addon.Value.Info.AddonName} {ex.ToString()}");
+                    Log.Error($"Error while invoking OnReady in addon {addon.Value.AddonName} {ex.ToString()}");
                 }
             }
 

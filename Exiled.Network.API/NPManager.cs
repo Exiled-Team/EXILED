@@ -63,7 +63,7 @@ namespace Exiled.Network.API
         /// <summary>
         /// Gets or sets dictionary of all loaded addons.
         /// </summary>
-        public Dictionary<string, NPAddonItem> Addons { get; set; } = new Dictionary<string, NPAddonItem>();
+        public Dictionary<string, IAddon<IConfig>> Addons { get; set; } = new Dictionary<string, IAddon<IConfig>>();
 
         /// <summary>
         /// Gets or sets dictionary of all online servers.
@@ -75,17 +75,15 @@ namespace Exiled.Network.API
         /// <summary>
         /// Register command from addon.
         /// </summary>
-        /// <param name="addonId">Addon ID.</param>
+        /// <param name="addon">Addon.</param>
         /// <param name="command">Command interface.</param>
-        public void RegisterCommand(string addonId, ICommand command)
+        public void RegisterCommand(IAddon<IConfig> addon, ICommand command)
         {
-            if (!Commands.ContainsKey(addonId))
-                Commands.Add(addonId, new Dictionary<string, ICommand>());
-            if (!Commands[addonId].ContainsKey(command.CommandName.ToUpper()))
-            {
-                Commands[addonId].Add(command.CommandName.ToUpper(), command);
-                Logger.Info($"Command {command.CommandName.ToUpper()} registered in addon {addonId}");
-            }
+            if (!Commands.ContainsKey(addon.AddonId))
+                Commands.Add(addon.AddonId, new Dictionary<string, ICommand>());
+
+            Commands[addon.AddonId].Add(command.CommandName.ToUpper(), command);
+            Logger.Info($"Command {command.CommandName.ToUpper()} registered in addon {addon.AddonName}");
         }
 
         /// <summary>
@@ -125,17 +123,17 @@ namespace Exiled.Network.API
         /// <param name="addonId">Addon ID.</param>
         public void LoadAddonConfig(string addonId)
         {
-            if (Addons.TryGetValue(addonId, out NPAddonItem npdi))
+            if (Addons.TryGetValue(addonId, out IAddon<IConfig> npdi))
             {
-                if (!Directory.Exists(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName)))
-                    Directory.CreateDirectory(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName));
+                if (!Directory.Exists(Path.Combine(npdi.DefaultPath, npdi.AddonName)))
+                    Directory.CreateDirectory(Path.Combine(npdi.DefaultPath, npdi.AddonName));
 
-                if (!File.Exists(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")))
-                    File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Serializer.Serialize(npdi.Addon.Config));
+                if (!File.Exists(Path.Combine(npdi.DefaultPath, npdi.AddonName, "config.yml")))
+                    File.WriteAllText(Path.Combine(npdi.DefaultPath, npdi.AddonName, "config.yml"), Serializer.Serialize(npdi.Config));
 
-                var cfg = (IConfig)Deserializer.Deserialize(File.ReadAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml")), npdi.Addon.Config.GetType());
-                File.WriteAllText(Path.Combine(npdi.Addon.DefaultPath, npdi.Info.AddonName, "config.yml"), Serializer.Serialize(cfg));
-                npdi.Addon.Config.CopyProperties(cfg);
+                var cfg = (IConfig)Deserializer.Deserialize(File.ReadAllText(Path.Combine(npdi.DefaultPath, npdi.AddonName, "config.yml")), npdi.Config.GetType());
+                File.WriteAllText(Path.Combine(npdi.DefaultPath, npdi.AddonName, "config.yml"), Serializer.Serialize(cfg));
+                npdi.Config.CopyProperties(cfg);
             }
         }
 

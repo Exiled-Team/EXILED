@@ -7,6 +7,7 @@
 
 namespace Exiled.Network.API
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -25,19 +26,28 @@ namespace Exiled.Network.API
         where TConfig : IConfig, new()
     {
         /// <inheritdoc/>
-        public NPManager Manager { get; set; }
+        public NPManager Manager { get; }
 
         /// <inheritdoc/>
-        public NPLogger Logger { get; set; }
+        public NPLogger Logger { get; }
 
         /// <inheritdoc/>
-        public string AddonId { get; set; }
+        public virtual string AddonName { get; }
 
         /// <inheritdoc/>
-        public string DefaultPath { get; set; }
+        public virtual Version AddonVersion { get; }
 
         /// <inheritdoc/>
-        public string AddonPath { get; set; }
+        public virtual string AddonAuthor { get; }
+
+        /// <inheritdoc/>
+        public virtual string AddonId { get; }
+
+        /// <inheritdoc/>
+        public string DefaultPath { get; }
+
+        /// <inheritdoc/>
+        public string AddonPath { get; }
 
         /// <inheritdoc/>
         public TConfig Config { get; } = new TConfig();

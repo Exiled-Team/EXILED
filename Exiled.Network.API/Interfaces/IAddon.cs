@@ -20,29 +20,44 @@ namespace Exiled.Network.API.Interfaces
         where TConfig : IConfig
     {
         /// <summary>
-        /// Gets or sets network manager.
+        /// Gets network manager.
         /// </summary>
-        NPManager Manager { get; set; }
+        NPManager Manager { get; }
 
         /// <summary>
-        /// Gets or sets logger.
+        /// Gets logger.
         /// </summary>
-        NPLogger Logger { get; set; }
+        NPLogger Logger { get; }
 
         /// <summary>
-        /// Gets or sets addon id.
+        /// Gets the AddonName.
         /// </summary>
-        string AddonId { get; set; }
+        string AddonName { get; }
 
         /// <summary>
-        /// Gets or sets default path.
+        /// Gets the AddonVersion.
         /// </summary>
-        string DefaultPath { get; set; }
+        Version AddonVersion { get; }
 
         /// <summary>
-        /// Gets or sets addon path.
+        /// Gets AddonAuthor.
         /// </summary>
-        string AddonPath { get; set; }
+        string AddonAuthor { get; }
+
+        /// <summary>
+        /// Gets addon id.
+        /// </summary>
+        string AddonId { get; }
+
+        /// <summary>
+        /// Gets default path.
+        /// </summary>
+        string DefaultPath { get; }
+
+        /// <summary>
+        /// Gets addon path.
+        /// </summary>
+        string AddonPath { get; }
 
         /// <summary>
         /// Gets addon config.
