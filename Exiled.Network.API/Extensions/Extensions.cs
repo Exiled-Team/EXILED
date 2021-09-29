@@ -7,6 +7,8 @@
 namespace Exiled.Network.API
 {
     using System;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
 
     using LiteNetLib.Utils;
 
@@ -15,6 +17,23 @@ namespace Exiled.Network.API
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Get backing field.
+        /// </summary>
+        /// <param name="property">The target object.</param>
+        /// <returns>Field.</returns>
+        public static FieldInfo GetBackingField(this PropertyInfo property)
+        {
+            if (!property.CanRead || !property.GetGetMethod(nonPublic: true).IsDefined(typeof(CompilerGeneratedAttribute), inherit: true))
+                return null;
+            var backingField = property.DeclaringType.GetField($"<{property.Name}>k__BackingField", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (backingField == null)
+                return null;
+            if (!backingField.IsDefined(typeof(CompilerGeneratedAttribute), inherit: true))
+                return null;
+            return backingField;
+        }
+
         /// <summary>
         /// Copy all properties from the source class to the target one.
         /// </summary>

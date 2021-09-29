@@ -78,17 +78,22 @@ namespace Exiled.Network
                         if (addon == null)
                             continue;
 
-                        var field = addon.GetType().GetField("DefaultPath");
-                        field.SetValue(addon.DefaultPath, Path.Combine(pluginDir, $"addons-{Server.Port}"));
+                        var addonType = addon.GetType();
+                        var prop = addonType.GetProperty("DefaultPath", BindingFlags.Public | BindingFlags.Instance);
+                        var field = prop.GetBackingField();
+                        field.SetValue(addon, Path.Combine(pluginDir, $"addons-{Server.Port}"));
 
-                        field = addon.GetType().GetField("AddonPath");
-                        field.SetValue(addon.DefaultPath, Path.Combine(addon.DefaultPath, addon.AddonName));
+                        prop = addonType.GetProperty("AddonPath", BindingFlags.Public | BindingFlags.Instance);
+                        field = prop.GetBackingField();
+                        field.SetValue(addon, Path.Combine(addon.DefaultPath, addon.AddonName));
 
-                        field = addon.GetType().GetField("Manager");
-                        field.SetValue(addon.Manager, this);
+                        prop = addonType.GetProperty("Manager", BindingFlags.Public | BindingFlags.Instance);
+                        field = prop.GetBackingField();
+                        field.SetValue(addon, this);
 
-                        field = addon.GetType().GetField("Logger");
-                        field.SetValue(addon.Logger, Logger);
+                        prop = addonType.GetProperty("Logger", BindingFlags.Public | BindingFlags.Instance);
+                        field = prop.GetBackingField();
+                        field.SetValue(addon, Logger);
 
                         if (Addons.ContainsKey(addon.AddonId))
                         {
