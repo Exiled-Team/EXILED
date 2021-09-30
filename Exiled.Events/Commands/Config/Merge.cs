@@ -37,9 +37,9 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!sender.CheckPermission("ee.merge"))
+            if (Player.Get(sender) != Server.Host)
             {
-                response = "You can't use the command, you don't have the \"ee.merge\" permission.";
+                response = "This command can't be used inside the game.";
                 return false;
             }
 
