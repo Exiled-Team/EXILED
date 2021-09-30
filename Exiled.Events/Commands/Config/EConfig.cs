@@ -14,7 +14,6 @@ namespace Exiled.Events.Commands.Config
     /// <summary>
     /// The config command.
     /// </summary>
-    [CommandHandler(typeof(RemoteAdminCommandHandler))]
     [CommandHandler(typeof(GameConsoleCommandHandler))]
     public class EConfig : ParentCommand
     {
