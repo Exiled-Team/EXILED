@@ -451,6 +451,16 @@ namespace Exiled.CustomItems.API.Features
             if (SpawnProperties == null)
                 return;
 
+            // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
+            // It will attempt to spawn in role-based locations, and then dynamic ones, and finally static.
+            // Math.Min is used here to ensure that our recursive Spawn() calls do not result in exceeding the spawn limit config.
+            // This is the same as:
+            // int spawned = 0;
+            // spawned += Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit);
+            // if (spawned < SpawnProperties.Limit)
+            //    spawned += Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit - spawned);
+            // if (spawned < SpawnProperties.Limit)
+            //    Spawn(SpawnProperties.StaticSpawnPoints, SpawnProperties.Limit - spawned);
             Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Math.Min(0, Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit) - Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit))));
         }
 

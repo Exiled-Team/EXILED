@@ -44,16 +44,5 @@ namespace Exiled.API.Features.Spawn
             get => Location.GetPosition();
             set => throw new InvalidOperationException("You cannot change the spawn vector of a dynamic spawn location.");
         }
-
-        /// <summary>
-        /// Deconstructs the class into usable variables.
-        /// </summary>
-        /// <param name="chance"><inheritdoc cref="Chance"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        public void Deconstruct(out float chance, out Vector3 position)
-        {
-            chance = Chance;
-            position = Position;
-        }
     }
 }

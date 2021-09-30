@@ -43,16 +43,5 @@ namespace Exiled.API.Features.Spawn
             get => Role.GetRandomSpawnProperties().Item1;
             set => throw new InvalidOperationException("You cannot change the position of this type of SpawnPoint.");
         }
-
-        /// <summary>
-        /// Deconstructs the class into usable variables.
-        /// </summary>
-        /// <param name="chance"><inheritdoc cref="Chance"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        public void Deconstruct(out float chance, out Vector3 position)
-        {
-            chance = Chance;
-            position = Position;
-        }
     }
 }

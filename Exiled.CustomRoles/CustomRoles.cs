@@ -38,5 +38,14 @@ namespace Exiled.CustomRoles
             Exiled.Events.Handlers.Player.SpawningRagdoll += playerHandlers.OnSpawningRagdoll;
             base.OnEnabled();
         }
+
+        /// <inheritdoc/>
+        public override void OnDisabled()
+        {
+            Exiled.Events.Handlers.Player.SpawningRagdoll -= playerHandlers.OnSpawningRagdoll;
+            playerHandlers = null;
+            Instance = null;
+            base.OnDisabled();
+        }
     }
 }

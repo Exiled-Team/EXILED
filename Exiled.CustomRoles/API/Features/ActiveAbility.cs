@@ -70,6 +70,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> the ability is ended for.</param>
         public void EndAbility(Player player)
         {
+            if (!ActivePlayers.Contains(player))
+                return;
+
             ActivePlayers.Remove(player);
             AbilityEnded(player);
         }

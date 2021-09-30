@@ -254,6 +254,8 @@ namespace Exiled.CustomRoles.API.Features
             Timing.CallDelayed(1.5f, () =>
             {
                 Vector3 pos = GetSpawnPosition();
+
+                // If the spawn pos isn't 0,0,0, We add vector3.up * 1.5 here to ensure they do not spawn inside the ground and get stuck.
                 if (pos != Vector3.zero)
                     player.Position = pos + (Vector3.up * 1.5f);
 
