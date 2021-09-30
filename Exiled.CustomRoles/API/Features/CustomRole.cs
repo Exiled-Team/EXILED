@@ -276,6 +276,8 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
             player.CustomInfo = $"{Name} (Custom Role)";
+            foreach (CustomAbility ability in CustomAbilities)
+                ability.AddAbility(player);
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
