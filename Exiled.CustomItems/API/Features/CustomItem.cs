@@ -15,8 +15,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
@@ -140,7 +140,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(string name, out CustomItem customItem)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
@@ -156,7 +156,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(Player player, out CustomItem customItem)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -172,7 +172,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(Player player, out IEnumerable<CustomItem> customItems)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             customItems = Registered?.Where(tempCustomItem => player.Items.Any(item => tempCustomItem.Check(item)));
 
@@ -427,6 +427,11 @@ namespace Exiled.CustomItems.API.Features
                         break;
                     }
                 }
+                else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
+                {
+                    Vector3 position = roleSpawnPoint.Role.GetRandomSpawnProperties().Item1;
+                    Spawn(position);
+                }
                 else
                 {
                     Spawn(spawnPoint.Position);
@@ -446,7 +451,17 @@ namespace Exiled.CustomItems.API.Features
             if (SpawnProperties == null)
                 return;
 
-            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit)));
+            // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
+            // It will attempt to spawn in role-based locations, and then dynamic ones, and finally static.
+            // Math.Min is used here to ensure that our recursive Spawn() calls do not result in exceeding the spawn limit config.
+            // This is the same as:
+            // int spawned = 0;
+            // spawned += Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit);
+            // if (spawned < SpawnProperties.Limit)
+            //    spawned += Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit - spawned);
+            // if (spawned < SpawnProperties.Limit)
+            //    Spawn(SpawnProperties.StaticSpawnPoints, SpawnProperties.Limit - spawned);
+            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Math.Min(0, Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit) - Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit))));
         }
 
         /// <summary>

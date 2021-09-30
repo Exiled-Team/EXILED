@@ -5,9 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Spawn
+namespace Exiled.API.Features.Spawn
 {
     using System.Collections.Generic;
+
+    using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     /// <summary>
     /// Handles special properties of spawning an item.
@@ -28,5 +32,16 @@ namespace Exiled.CustomItems.API.Spawn
         /// Gets or sets a <see cref="List{T}"/> of possible static spawn points.
         /// </summary>
         public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new List<StaticSpawnPoint>();
+
+        /// <summary>
+        /// Gets or sets a <see cref="List{T}"/> of possible role-based spawn points.
+        /// </summary>
+        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new List<RoleSpawnPoint>();
+
+        /// <summary>
+        /// Counts how many spawn points are in this instance.
+        /// </summary>
+        /// <returns>How many spawn points there are.</returns>
+        public int Count() => DynamicSpawnPoints.Count + StaticSpawnPoints.Count + RoleSpawnPoints.Count;
     }
 }

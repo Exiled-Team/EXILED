@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomItems.API.Spawn
+namespace Exiled.API.Features.Spawn
 {
     using UnityEngine;
 
