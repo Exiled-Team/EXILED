@@ -295,9 +295,8 @@ namespace Exiled.Loader
                     {
                         plugin.OnEnabled();
                         plugin.OnRegisteringCommands();
+                        toLoad.Remove(plugin);
                     }
-
-                    toLoad.Remove(plugin);
                 }
                 catch (Exception e)
                 {
