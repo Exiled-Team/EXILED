@@ -40,7 +40,7 @@ namespace Exiled.Example.Commands
             foreach (Pickup pickup in Map.Pickups)
                 Log.Warn($"{pickup.Type} ({pickup.Serial}) -- {pickup.Position}");
             foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
-                Log.Warn($"{teleport.type}");
+                Log.Warn($"{teleport._type}");
             player.ClearInventory();
             response = player != null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 
