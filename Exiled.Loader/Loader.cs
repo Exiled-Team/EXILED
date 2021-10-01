@@ -285,7 +285,27 @@ namespace Exiled.Loader
         /// </summary>
         public static void EnablePlugins()
         {
-            foreach (IPlugin<IConfig> plugin in Plugins)
+            List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+
+            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            {
+                try
+                {
+                    if (plugin.Name.StartsWith("Exiled") && plugin.Config.IsEnabled)
+                    {
+                        plugin.OnEnabled();
+                        plugin.OnRegisteringCommands();
+                    }
+
+                    toLoad.Remove(plugin);
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Plugin \"{plugin.Name}\" thew an exeption while enabling: {e}");
+                }
+            }
+
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
