@@ -38,14 +38,15 @@ namespace Exiled.Events.Patches.Fixes
 
             Label continueLabel = (Label)newInstructions[baseIndex + continueOffset].operand;
 
-            // if(referenceHub.GetComponent<NetworkConnection>() == null)
+            // if(referenceHub.networkIdentity.connectrionToClient == null)
             // {
             //   continue;
             // }
             newInstructions.InsertRange(baseIndex + offset, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, 5),
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(ReferenceHub), nameof(ReferenceHub.GetComponent), null, new System.Type[] { typeof(NetworkConnection) })),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.networkIdentity))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.connectionToClient))),
                 new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
             });
 

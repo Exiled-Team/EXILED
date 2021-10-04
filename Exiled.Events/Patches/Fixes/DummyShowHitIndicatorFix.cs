@@ -35,13 +35,14 @@ namespace Exiled.Events.Patches.Fixes
 
             Label okLabel = generator.DefineLabel();
 
-            // if(referenceHub.GetComponent<NetworkConnection>() == null)
+            // if(referenceHub.networkIdentity.connectionToClient == null)
             // {
             //   return;
             // }
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(ReferenceHub), nameof(ReferenceHub.GetComponent), null, new System.Type[] { typeof(NetworkConnection) })),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ReferenceHub), nameof(ReferenceHub.networkIdentity))),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.connectionToClient))),
                 new CodeInstruction(OpCodes.Brtrue_S, okLabel),
                 new CodeInstruction(OpCodes.Ret),
                 new CodeInstruction(OpCodes.Ldloc_0).WithLabels(okLabel),
