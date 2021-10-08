@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Generic
                 foreach (GameObject gameObject in players)
                 {
                     Player player = GetPlayerOrServer(gameObject);
-                    if (player == null)
+                    if (player == null || player.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
                         continue;
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
@@ -195,7 +195,7 @@ namespace Exiled.Events.Patches.Generic
                             continue;
 
                         Player target = GetPlayerOrServer(targetHub.gameObject);
-                        if (target == null)
+                        if (target == null || target.ReferenceHub.queryProcessor._ipAddress == "127.0.0.WAN")
                             continue;
 
                         // If for some reason the player/their ref hub is null
@@ -218,21 +218,27 @@ namespace Exiled.Events.Patches.Generic
                         }
                     }
 
-                    NetworkConnection networkConnection = player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer
-                        ? NetworkServer.localConnection
-                        : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
-                    if (__instance._usedData <= 20)
+                    if (player.ReferenceHub.characterClassManager.netIdentity != null)
                     {
-                        networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
-                    }
-                    else
-                    {
-                        byte part;
-                        for (part = 0; part < __instance._usedData / 20; ++part)
-                            networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
-                        byte count = (byte)(__instance._usedData % (part * 20));
-                        if (count > 0)
-                            networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
+                        NetworkConnection networkConnection =
+                            player.ReferenceHub.characterClassManager.netIdentity.isLocalPlayer
+                                ? NetworkServer.localConnection
+                                : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
+
+                        if (__instance._usedData <= 20)
+                        {
+                            networkConnection.Send<PositionPPMMessage>(
+                                new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
+                        }
+                        else
+                        {
+                            byte part;
+                            for (part = 0; part < __instance._usedData / 20; ++part)
+                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
+                            byte count = (byte)(__instance._usedData % (part * 20));
+                            if (count > 0)
+                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
+                        }
                     }
                 }
 
