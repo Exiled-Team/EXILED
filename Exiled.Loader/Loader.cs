@@ -391,9 +391,8 @@ namespace Exiled.Loader
 
                     return true;
                 }
-                else if (requiredVersion.Major < actualVersion.Major)
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    // TODO: Re-add outdated plugin loading.
                     Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
                               $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
