@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class BanningEventArgs : KickingEventArgs
     {
-        private int duration;
+        private long duration;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BanningEventArgs"/> class.
@@ -25,7 +25,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="reason">The ban reason.</param>
         /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
-        public BanningEventArgs(Player target, Player issuer, int duration, string reason, string fullMessage, bool isAllowed = true)
+        public BanningEventArgs(Player target, Player issuer, long duration, string reason, string fullMessage, bool isAllowed = true)
             : base(target, issuer, reason, fullMessage, isAllowed)
         {
             Duration = duration;
@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the ban duration.
         /// </summary>
-        public int Duration
+        public long Duration
         {
             get => duration;
             set

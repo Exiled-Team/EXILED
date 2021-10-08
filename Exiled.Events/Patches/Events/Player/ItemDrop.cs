@@ -7,60 +7,80 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using InventorySystem.Items;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="Inventory.CallCmdDropItem(int)"/>.
-    /// Adds the <see cref="Player.ItemDropped"/> and <see cref="Player.DroppingItem"/> events.
+    /// Patches <see cref="InventorySystem.Inventory.UserCode_CmdDropItem"/>.
+    /// Adds the <see cref="Player.DroppingItem"/> and <see cref="Player.DroppingNull"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory), nameof(Inventory.CallCmdDropItem))]
+    [HarmonyPatch(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory.UserCode_CmdDropItem))]
     internal static class ItemDrop
     {
-        private static bool Prefix(Inventory __instance, int itemInventoryIndex)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            LocalBuilder item = generator.DeclareLocal(typeof(Item));
+            Label returnLabel = generator.DefineLabel();
+            Label notNullLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(0, new[]
             {
-                if (!__instance._iawRateLimit.CanExecute(true) || itemInventoryIndex < 0 ||
-                    itemInventoryIndex >= __instance.items.Count)
-                    return false;
+                // Item item = GetItem(player, itemSerial)
+                // if (item is null)
+                //    Handlers.Player.OnDroppingNull(new DroppingNullEventArgs(Player));
+                //    return;
+                //
+                // Handlers.Player.OnDroppingNull(new DroppingItemEventArgs(Player, Item, true));
+                // if (!ev.IsAllowed)
+                //     return;
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ItemDrop), nameof(ItemDrop.GetItem))),
+                new CodeInstruction(OpCodes.Stloc_S, item.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, item.LocalIndex),
+                new CodeInstruction(OpCodes.Brtrue_S, notNullLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingNullEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingNull))),
+                new CodeInstruction(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(notNullLabel),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(InventorySystem.Inventory), nameof(InventorySystem.Inventory._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldloc_S, item.LocalIndex),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DroppingItemEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnDroppingItem))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DroppingItemEventArgs), nameof(DroppingItemEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+            });
 
-                Inventory.SyncItemInfo syncItemInfo = __instance.items[itemInventoryIndex];
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                if (__instance.items[itemInventoryIndex].id != syncItemInfo.id)
-                    return false;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                var droppingItemEventArgs =
-                    new DroppingItemEventArgs(API.Features.Player.Get(__instance.gameObject), syncItemInfo);
-
-                Player.OnDroppingItem(droppingItemEventArgs);
-
-                syncItemInfo = droppingItemEventArgs.Item;
-
-                if (!droppingItemEventArgs.IsAllowed)
-                    return false;
-
-                Pickup droppedPickup = __instance.SetPickup(syncItemInfo.id, syncItemInfo.durability, __instance.transform.position, __instance.camera.transform.rotation, syncItemInfo.modSight, syncItemInfo.modBarrel, syncItemInfo.modOther);
-
-                __instance.items.RemoveAt(itemInventoryIndex);
-
-                var itemDroppedEventArgs = new ItemDroppedEventArgs(API.Features.Player.Get(__instance.gameObject), droppedPickup);
-
-                Player.OnItemDropped(itemDroppedEventArgs);
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.ItemDrop: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static ItemBase GetItem(API.Features.Player player, ushort serial) => player.TryGetItem(serial, out ItemBase item) ? item : null;
     }
 }

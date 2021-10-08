@@ -23,27 +23,27 @@ namespace Exiled.Events.Patches.Events.Scp079
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079PlayerScript.CallCmdSwitchCamera(ushort, bool)"/>.
+    /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
     /// Adds the <see cref="Scp079.ChangingCamera"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.CallCmdSwitchCamera))]
+    [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
     internal static class ChangingCamera
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = 0;
 
             // Search for the first "ldloc.1".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
             // Define the first label of the last "ret" and retrieve it.
-            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
 
             // Declare a local variable of the type "ChangingCameraEventArgs"
-            var changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
+            LocalBuilder changingCameraEv = generator.DeclareLocal(typeof(ChangingCameraEventArgs));
 
             // var ev = new ChangingCameraEventArgs(Player.Get(this.gameObject), camera, num,  num <= this.curMana)
             //
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 // !(num > this.curMana) --> num <= this.curMana
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.curMana))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript._curMana))),
                 new CodeInstruction(OpCodes.Cgt),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Ceq),
@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Stloc_1),
             });
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

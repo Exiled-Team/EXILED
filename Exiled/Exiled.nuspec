@@ -46,6 +46,9 @@
 
     <file src="..\bin\Release\Exiled.CustomItems.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.CustomItems.xml" target="lib\net472" />
+
+	<file src="..\bin\Release\Exiled.CustomRoles.dll" target="lib\net472" />
+	<file src="..\bin\Release\Exiled.CustomRoles.xml" target="lib\net472" />
     <!-- Project files -->
 
     <!-- Icon -->

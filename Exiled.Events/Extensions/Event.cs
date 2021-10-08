@@ -29,7 +29,7 @@ namespace Exiled.Events.Extensions
             if (ev == null)
                 return;
 
-            var eventName = ev.GetType().FullName;
+            string eventName = ev.GetType().FullName;
             foreach (Events.CustomEventHandler<T> handler in ev.GetInvocationList())
             {
                 try

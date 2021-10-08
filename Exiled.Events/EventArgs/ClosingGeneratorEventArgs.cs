@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
 
+    using MapGeneration.Distributors;
+
     /// <summary>
     /// Contains all informations before a player closes a generator.
     /// </summary>
@@ -18,9 +20,9 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ClosingGeneratorEventArgs"/> class.
         /// </summary>
         /// <param name="player">The player who's closing the generator.</param>
-        /// <param name="generator">The <see cref="Generator079"/> instance.</param>
+        /// <param name="generator">The <see cref="Scp079Generator"/> instance.</param>
         /// <param name="isAllowed">Indicates whether or not the generator can be closed.</param>
-        public ClosingGeneratorEventArgs(Player player, Generator079 generator, bool isAllowed = true)
+        public ClosingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
             : base(player, generator, isAllowed)
         {
         }

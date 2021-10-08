@@ -19,7 +19,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time elapsed from the start of the round.
         /// </summary>
-        public static TimeSpan ElapsedTime => RoundStart.RoundLenght;
+        public static TimeSpan ElapsedTime => RoundStart.RoundLength;
 
         /// <summary>
         /// Gets the start time of the round.
@@ -80,10 +80,9 @@ namespace Exiled.API.Features
         public static int ChangedIntoZombies => RoundSummary.changed_into_zombies;
 
         /// <summary>
-        /// Restarts the round.
+        /// Gets the number of rounds since the server started.
         /// </summary>
-        [Obsolete("Use Restart(bool, ServerStatic.NextRoundAction) instead")]
-        public static void Restart() => Restart(overrideRestartAction: false);
+        public static uint UptimeRounds => PlayerStats.UptimeRounds;
 
         /// <summary>
         /// Restarts the round with custom settings.

@@ -8,73 +8,63 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using InventorySystem.Items.Firearms.Attachments;
 
-    using UnityEngine;
+    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patch the <see cref="WorkStation.UnconnectTablet(GameObject)"/>.
-    /// Adds the <see cref="Handlers.Player.ActivatingWorkstation"/> event.
+    /// Patch the <see cref="WorkstationController.NetworkStatus"/>.
+    /// Adds the <see cref="Handlers.Player.DeactivatingWorkstation"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(WorkStation), nameof(WorkStation.UnconnectTablet))]
+    [HarmonyPatch(typeof(WorkstationController), nameof(WorkstationController.NetworkStatus), MethodType.Setter)]
     internal static class DeactivatingWorkstation
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // The index offset.
-            const int offset = 0;
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
+            Label returnLabel = generator.DefineLabel();
+            Label valueLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(DeactivatingWorkstationEventArgs));
 
-            // Search for the last "ldarg.1".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_1) + offset;
-
-            // Define the return label and add it to the last "ret" instruction.
-            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
-
-            // var ev = new DeactivatingWorkstationEventArgs(Player.Get(taker), this, true);
-            //
-            // Handlers.Player.OnDeactivatingWorkstation(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
             newInstructions.InsertRange(index, new[]
             {
-                // Player.Get(taker)
-                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-
-                // this
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_2),
+                new CodeInstruction(OpCodes.Bne_Un_S, valueLabel),
                 new CodeInstruction(OpCodes.Ldarg_0),
-
-                // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-
-                // var ev = new DeactivatingWorkstationEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DeactivatingWorkstationEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-
-                // Handlers.Player.OnDeactivatingWorkstation(ev);
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDeactivatingWorkstation))),
-
-                // if (!ev.IsAllowed)
-                //   return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DeactivatingWorkstationEventArgs), nameof(DeactivatingWorkstationEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DeactivatingWorkstationEventArgs), nameof(DeactivatingWorkstationEventArgs.NewStatus))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
             });
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            offset = -1;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
+
+            newInstructions[index].WithLabels(valueLabel);
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

@@ -9,15 +9,23 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+    using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
-    using Exiled.CustomItems.API.Spawn;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Handlers;
     using Exiled.Loader;
+
+    using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Pickups;
+
+    using MapGeneration.Distributors;
 
     using MEC;
 
@@ -26,6 +34,11 @@ namespace Exiled.CustomItems.API.Features
     using YamlDotNet.Serialization;
 
     using static CustomItems;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
+    using Item = Exiled.API.Features.Items.Item;
+    using Map = Exiled.API.Features.Map;
+    using Player = Exiled.API.Features.Player;
 
     /// <summary>
     /// The Custom Item base class.
@@ -55,15 +68,14 @@ namespace Exiled.CustomItems.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the weight of the item.
+        /// </summary>
+        public abstract float Weight { get; set; }
+
+        /// <summary>
         /// Gets or sets the list of spawn locations and chances for each one.
         /// </summary>
         public abstract SpawnProperties SpawnProperties { get; set; }
-
-        /// <summary>
-        /// Gets or sets the item durability.
-        /// </summary>
-        [YamlIgnore]
-        public virtual float Durability { get; set; }
 
         /// <summary>
         /// Gets or sets the ItemType to use for this item.
@@ -84,13 +96,7 @@ namespace Exiled.CustomItems.API.Features
         /// Gets the list of custom items inside players' inventory being tracked as the current item.
         /// </summary>
         [YamlIgnore]
-        public HashSet<int> InsideInventories { get; } = new HashSet<int>();
-
-        /// <summary>
-        /// Gets the list of spawned custom items being tracked as the current item.
-        /// </summary>
-        [YamlIgnore]
-        public HashSet<Pickup> Spawned { get; } = new HashSet<Pickup>();
+        public HashSet<int> TrackedSerials { get; } = new HashSet<int>();
 
         /// <summary>
         /// Gets a value indicating whether whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
@@ -134,7 +140,7 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(string name, out CustomItem customItem)
         {
             if (name == null)
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException(nameof(name));
 
             customItem = int.TryParse(name, out int id) ? Get(id) : Get(name);
 
@@ -144,13 +150,13 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Tries to get the player's current <see cref="CustomItem"/> in their hand.
         /// </summary>
-        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <param name="player">The <see cref="Exiled.API.Features.Player"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> in their hand.</param>
-        /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="Exiled.API.Features.Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem customItem)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
             customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Check(player.CurrentItem));
 
@@ -166,9 +172,9 @@ namespace Exiled.CustomItems.API.Features
         public static bool TryGet(Player player, out IEnumerable<CustomItem> customItems)
         {
             if (player == null)
-                throw new ArgumentNullException("player");
+                throw new ArgumentNullException(nameof(player));
 
-            customItems = Registered?.Where(tempCustomItem => player.Inventory.items.Any(item => tempCustomItem.Check(item)));
+            customItems = Registered?.Where(tempCustomItem => player.Items.Any(item => tempCustomItem.Check(item)));
 
             return customItems?.Any() ?? false;
         }
@@ -176,12 +182,12 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Checks to see if this item is a custom item.
         /// </summary>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to check.</param>
+        /// <param name="item">The <see cref="Events.Handlers.Item"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> this item is.</param>
         /// <returns>True if the item is a custom item.</returns>
-        public static bool TryGet(Inventory.SyncItemInfo item, out CustomItem customItem)
+        public static bool TryGet(Item item, out CustomItem customItem)
         {
-            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.InsideInventories.Contains(item.uniq));
+            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(item.Serial));
 
             return customItem != null;
         }
@@ -189,12 +195,12 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Checks if this pickup is a custom item.
         /// </summary>
-        /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
+        /// <param name="pickup">The <see cref="ItemPickupBase"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> this pickup is.</param>
         /// <returns>True if the pickup is a custom item.</returns>
         public static bool TryGet(Pickup pickup, out CustomItem customItem)
         {
-            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Spawned.Contains(pickup));
+            customItem = Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.TrackedSerials.Contains(pickup.Serial));
 
             return customItem != null;
         }
@@ -204,7 +210,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="id">The ID of the <see cref="CustomItem"/> to spawn.</param>
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> instance of the <see cref="CustomItem"/>.</param>
+        /// <param name="pickup">The <see cref="ItemPickupBase"/> instance of the <see cref="CustomItem"/>.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
         public static bool TrySpawn(int id, Vector3 position, out Pickup pickup)
         {
@@ -213,7 +219,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(id, out CustomItem item))
                 return false;
 
-            item.Spawn(position, out pickup);
+            pickup = item.Spawn(position);
 
             return true;
         }
@@ -223,7 +229,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="name">The name of the <see cref="CustomItem"/> to spawn.</param>
         /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> instance of the <see cref="CustomItem"/>.</param>
+        /// <param name="pickup">The <see cref="ItemPickupBase"/> instance of the <see cref="CustomItem"/>.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
         public static bool TrySpawn(string name, Vector3 position, out Pickup pickup)
         {
@@ -232,41 +238,7 @@ namespace Exiled.CustomItems.API.Features
             if (!TryGet(name, out CustomItem item))
                 return false;
 
-            item.Spawn(position, out pickup);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to spawn a specific <see cref="CustomItem"/> at a specific <see cref="Vector3"/> position.
-        /// </summary>
-        /// <param name="id">The ID of the <see cref="CustomItem"/> to spawn.</param>
-        /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
-        [Obsolete("Use TrySpawn method with an out parameter modifier instead.")]
-        public static bool TrySpawn(int id, Vector3 position)
-        {
-            if (!TryGet(id, out CustomItem item))
-                return false;
-
-            item.Spawn(position);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Tries to spawn a specific <see cref="CustomItem"/> at a specific <see cref="Vector3"/> position.
-        /// </summary>
-        /// <param name="name">The name of the <see cref="CustomItem"/> to spawn.</param>
-        /// <param name="position">The <see cref="Vector3"/> location to spawn the item.</param>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was spawned or not.</returns>
-        [Obsolete("Use TrySpawn method with an out parameter modifier instead.")]
-        public static bool TrySpawn(string name, Vector3 position)
-        {
-            if (!TryGet(name, out CustomItem item))
-                return false;
-
-            item.Spawn(position);
+            pickup = item.Spawn(position);
 
             return true;
         }
@@ -358,97 +330,61 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(float x, float y, float z, out Pickup pickup) => Spawn(new Vector3(x, y, z), out pickup);
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
 
         /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific location.
+        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific location.
         /// </summary>
         /// <param name="x">The x coordinate.</param>
         /// <param name="y">The y coordinate.</param>
         /// <param name="z">The z coordinate.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(float x, float y, float z, Inventory.SyncItemInfo item, out Pickup pickup) => Spawn(new Vector3(x, y, z), item, out pickup);
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(float x, float y, float z, Item item) => Spawn(new Vector3(x, y, z), item);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Player player, out Pickup pickup) => Spawn(player.Position, out pickup);
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Player player) => Spawn(player.Position);
 
         /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
+        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Player player, Inventory.SyncItemInfo item, out Pickup pickup) => Spawn(player.Position, item, out pickup);
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Player player, Item item) => Spawn(player.Position, item);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Vector3 position, out Pickup pickup) => Spawned.Add(pickup = Item.Spawn(Type, Durability, position));
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Vector3 position)
+        {
+            var pickup = new Item(Type).Spawn(position);
+            pickup.Weight = Weight;
+            TrackedSerials.Add(pickup.Serial);
+
+            return pickup;
+        }
 
         /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific position.
+        /// Spawns a <see cref="Item"/> as a <see cref="CustomItem"/> in a specific position.
         /// </summary>
         /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> component of the spawned <see cref="CustomItem"/>.</param>
-        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item, out Pickup pickup) => Spawned.Add(pickup = Item.Spawn(item, position));
+        /// <param name="item">The <see cref="Item"/> to be spawned as a <see cref="CustomItem"/>.</param>
+        /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
+        public virtual Pickup Spawn(Vector3 position, Item item)
+        {
+            Pickup pickup = item.Spawn(position);
+            TrackedSerials.Add(pickup.Serial);
 
-        /// <summary>
-        /// Spawns the <see cref="CustomItem"/> in a specific location.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <param name="z">The z coordinate.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(float x, float y, float z) => Spawn(new Vector3(x, y, z));
-
-        /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific location.
-        /// </summary>
-        /// <param name="x">The x coordinate.</param>
-        /// <param name="y">The y coordinate.</param>
-        /// <param name="z">The z coordinate.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(float x, float y, float z, Inventory.SyncItemInfo item) => Spawn(new Vector3(x, y, z), item);
-
-        /// <summary>
-        /// Spawns the <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(Player player) => Spawn(player.Position);
-
-        /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> where a specific <see cref="Player"/> is.
-        /// </summary>
-        /// <param name="player">The <see cref="Player"/> position where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(Player player, Inventory.SyncItemInfo item) => Spawn(player.Position, item);
-
-        /// <summary>
-        /// Spawns the <see cref="CustomItem"/> in a specific position.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(Vector3 position) => Spawn(position, out _);
-
-        /// <summary>
-        /// Spawns a <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> in a specific position.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> where the <see cref="CustomItem"/> will be spawned.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be spawned as a <see cref="CustomItem"/>.</param>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public virtual void Spawn(Vector3 position, Inventory.SyncItemInfo item) => Spawn(position, item, out _);
+            return pickup;
+        }
 
         /// <summary>
         /// Spawns <see cref="CustomItem"/>s inside <paramref name="spawnPoints"/>.
@@ -474,32 +410,31 @@ namespace Exiled.CustomItems.API.Features
                     for (int i = 0; i < 50; i++)
                     {
                         Locker locker =
-                            LockerManager.singleton.lockers[
-                                Loader.Random.Next(LockerManager.singleton.lockers.Length)];
-                        if (locker._itemsToSpawn == null)
+                            Map.Lockers[
+                                Loader.Random.Next(Map.Lockers.Count)];
+                        if (locker.Loot == null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
-                        LockerChamber chamber = locker.chambers[Loader.Random.Next(Mathf.Max(0, locker.chambers.Length - 1))];
+                        LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
 
-                        foreach (Locker.ItemToSpawn item in locker._itemsToSpawn.ToList())
-                        {
-                            if (item._pos == chamber.spawnpoint.position)
-                                locker._itemsToSpawn.Remove(item);
-                        }
-
-                        Vector3 position = chamber.spawnpoint.transform.position;
-                        Spawn(position, out _);
+                        Vector3 position = chamber._spawnpoint.transform.position;
+                        Spawn(position);
                         Log.Debug($"Spawned {Name} at {position} ({spawnPoint.Name})", Instance.Config.Debug);
 
                         break;
                     }
                 }
+                else if (spawnPoint is RoleSpawnPoint roleSpawnPoint)
+                {
+                    Vector3 position = roleSpawnPoint.Role.GetRandomSpawnProperties().Item1;
+                    Spawn(position);
+                }
                 else
                 {
-                    Spawn(spawnPoint.Position.ToVector3, out _);
+                    Spawn(spawnPoint.Position);
 
                     Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
                 }
@@ -516,54 +451,52 @@ namespace Exiled.CustomItems.API.Features
             if (SpawnProperties == null)
                 return;
 
-            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit)));
+            // This will go over each spawn property type (static, dynamic and role) to try and spawn the item.
+            // It will attempt to spawn in role-based locations, and then dynamic ones, and finally static.
+            // Math.Min is used here to ensure that our recursive Spawn() calls do not result in exceeding the spawn limit config.
+            // This is the same as:
+            // int spawned = 0;
+            // spawned += Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit);
+            // if (spawned < SpawnProperties.Limit)
+            //    spawned += Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit - spawned);
+            // if (spawned < SpawnProperties.Limit)
+            //    Spawn(SpawnProperties.StaticSpawnPoints, SpawnProperties.Limit - spawned);
+            Spawn(SpawnProperties.StaticSpawnPoints, Math.Min(0, SpawnProperties.Limit - Math.Min(0, Spawn(SpawnProperties.DynamicSpawnPoints, SpawnProperties.Limit) - Spawn(SpawnProperties.RoleSpawnPoints, SpawnProperties.Limit))));
         }
 
         /// <summary>
-        /// Gives an <see cref="Inventory.SyncItemInfo"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
+        /// Gives an <see cref="Item"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to be given.</param>
+        /// <param name="item">The <see cref="Item"/> to be given.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, Inventory.SyncItemInfo item, bool displayMessage = true)
+        public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
-            player.Inventory.items.Add(item);
+            Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
 
-            InsideInventories.Add(item.uniq);
+            player.AddItem(item);
+
+            if (!TrackedSerials.Contains(item.Serial))
+                TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);
         }
 
         /// <summary>
-        /// Gives a <see cref="Pickup"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
+        /// Gives a <see cref="ItemPickupBase"/> as a <see cref="CustomItem"/> to a <see cref="Player"/>.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
-        /// <param name="pickup">The <see cref="Pickup"/> to be given.</param>
+        /// <param name="pickup">The <see cref="ItemPickupBase"/> to be given.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Mind your own business.")]
-        public virtual void Give(Player player, Pickup pickup, bool displayMessage = true) => Give(player, new Inventory.SyncItemInfo()
-        {
-            durability = pickup.durability,
-            id = pickup.itemId,
-            modBarrel = pickup.weaponMods.Barrel,
-            modSight = pickup.weaponMods.Sight,
-            modOther = pickup.weaponMods.Other,
-            uniq = ++Inventory._uniqId,
-        }, displayMessage);
+        public virtual void Give(Player player, Pickup pickup, bool displayMessage = true) => Give(player, player.AddItem(pickup), displayMessage);
 
         /// <summary>
         /// Gives the <see cref="CustomItem"/> to a player.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        [SuppressMessage("StyleCop.CSharp.ReadabilityRules", "SA1117:Parameters should be on same line or separate lines", Justification = "Mind your own business.")]
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Inventory.SyncItemInfo()
-        {
-            durability = Durability,
-            id = Type,
-            uniq = ++Inventory._uniqId,
-        }, displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -580,14 +513,14 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Pickup pickup) => Spawned.Contains(pickup);
+        public virtual bool Check(Pickup pickup) => TrackedSerials.Contains(pickup.Serial);
 
         /// <summary>
         /// Checks the specified inventory item to see if it is a custom item.
         /// </summary>
-        /// <param name="item">The <see cref="Inventory.SyncItemInfo"/> to check.</param>
+        /// <param name="item">The <see cref="Item"/> to check.</param>
         /// <returns>True if it is a custom item.</returns>
-        public virtual bool Check(Inventory.SyncItemInfo item) => InsideInventories.Contains(item.uniq);
+        public virtual bool Check(Item item) => item != null && TrackedSerials.Contains(item.Serial);
 
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
@@ -597,15 +530,16 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void SubscribeEvents()
         {
-            Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
             Events.Handlers.Player.Dying += OnInternalOwnerDying;
-            Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
-            Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
             Events.Handlers.Player.DroppingItem += OnInternalDropping;
-            Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
             Events.Handlers.Player.ChangingItem += OnInternalChanging;
-            Events.Handlers.Scp914.UpgradingItems += OnInternalUpgrading;
+            Events.Handlers.Player.Escaping += OnInternalOwnerEscaping;
+            Events.Handlers.Player.PickingUpItem += OnInternalPickingUp;
+            Events.Handlers.Scp914.UpgradingItem += OnInternalUpgradingItem;
             Events.Handlers.Server.WaitingForPlayers += OnWaitingForPlayers;
+            Events.Handlers.Player.Handcuffing += OnInternalOwnerHandcuffing;
+            Events.Handlers.Player.ChangingRole += OnInternalOwnerChangingRole;
+            Events.Handlers.Scp914.UpgradingInventoryItem += OnInternalUpgradingInventoryItem;
         }
 
         /// <summary>
@@ -613,15 +547,16 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         protected virtual void UnsubscribeEvents()
         {
-            Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
             Events.Handlers.Player.Dying -= OnInternalOwnerDying;
-            Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
-            Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
             Events.Handlers.Player.DroppingItem -= OnInternalDropping;
-            Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
             Events.Handlers.Player.ChangingItem -= OnInternalChanging;
-            Events.Handlers.Scp914.UpgradingItems -= OnInternalUpgrading;
+            Events.Handlers.Player.Escaping -= OnInternalOwnerEscaping;
+            Events.Handlers.Player.PickingUpItem -= OnInternalPickingUp;
+            Events.Handlers.Scp914.UpgradingItem -= OnInternalUpgradingItem;
             Events.Handlers.Server.WaitingForPlayers -= OnWaitingForPlayers;
+            Events.Handlers.Player.Handcuffing -= OnInternalOwnerHandcuffing;
+            Events.Handlers.Player.ChangingRole -= OnInternalOwnerChangingRole;
+            Events.Handlers.Scp914.UpgradingInventoryItem -= OnInternalUpgradingInventoryItem;
         }
 
         /// <summary>
@@ -686,13 +621,17 @@ namespace Exiled.CustomItems.API.Features
         {
         }
 
+        /// <inheritdoc cref="OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingEventArgs)"/>
+        protected virtual void OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs ev)
+        {
+        }
+
         /// <summary>
         /// Clears the lists of item uniqIDs and Pickups since any still in the list will be invalid.
         /// </summary>
         protected virtual void OnWaitingForPlayers()
         {
-            InsideInventories.Clear();
-            Spawned.Clear();
+            TrackedSerials.Clear();
         }
 
         /// <summary>
@@ -715,21 +654,21 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
-            if (ev.IsEscaped)
+            if (ev.Reason == SpawnReason.Escaped)
                 return;
 
-            foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
+            foreach (Item item in ev.Player.Items.ToList())
             {
                 if (!Check(item))
                     continue;
 
-                OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item, ev));
+                OnOwnerChangingRole(new OwnerChangingRoleEventArgs(item.Base, ev));
 
-                InsideInventories.Remove(item.uniq);
+                TrackedSerials.Remove(item.Serial);
 
                 ev.Player.RemoveItem(item);
 
-                Spawn(ev.Player, item, out _);
+                Spawn(ev.Player, item);
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -737,7 +676,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerDying(DyingEventArgs ev)
         {
-            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
+            foreach (Item item in ev.Target.Items.ToList())
             {
                 if (!Check(item))
                     continue;
@@ -749,9 +688,9 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Target.RemoveItem(item);
 
-                InsideInventories.Remove(item.uniq);
+                TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item, out _);
+                Spawn(ev.Target, item);
 
                 MirrorExtensions.ResyncSyncVar(ev.Target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -759,7 +698,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerEscaping(EscapingEventArgs ev)
         {
-            foreach (Inventory.SyncItemInfo item in ev.Player.Inventory.items.ToList())
+            foreach (Item item in ev.Player.Items.ToList())
             {
                 if (!Check(item))
                     continue;
@@ -771,9 +710,9 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Player.RemoveItem(item);
 
-                InsideInventories.Remove(item.uniq);
+                TrackedSerials.Remove(item.Serial);
 
-                Timing.CallDelayed(1.5f, () => Spawn(ev.Player, item, out _));
+                Timing.CallDelayed(1.5f, () => Spawn(ev.NewRole.GetRandomSpawnProperties().Item1, item));
 
                 MirrorExtensions.ResyncSyncVar(ev.Player.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_myNickSync));
             }
@@ -781,7 +720,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalOwnerHandcuffing(HandcuffingEventArgs ev)
         {
-            foreach (Inventory.SyncItemInfo item in ev.Target.Inventory.items.ToList())
+            foreach (Item item in ev.Target.Items.ToList())
             {
                 if (!Check(item))
                     continue;
@@ -793,9 +732,9 @@ namespace Exiled.CustomItems.API.Features
 
                 ev.Target.RemoveItem(item);
 
-                InsideInventories.Remove(item.uniq);
+                TrackedSerials.Remove(item.Serial);
 
-                Spawn(ev.Target, item, out _);
+                Spawn(ev.Target, item);
             }
         }
 
@@ -811,16 +750,16 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
-            InsideInventories.Remove(ev.Item.uniq);
+            TrackedSerials.Remove(ev.Item.Serial);
 
             ev.Player.RemoveItem(ev.Item);
 
-            Spawn(ev.Player, ev.Item, out _);
+            Spawn(ev.Player, ev.Item);
         }
 
         private void OnInternalPickingUp(PickingUpItemEventArgs ev)
         {
-            if (!Check(ev.Pickup) || ev.Player.Inventory.items.Count >= 8)
+            if (!Check(ev.Pickup) || ev.Player.Items.Count >= 8)
                 return;
 
             OnPickingUp(ev);
@@ -832,9 +771,7 @@ namespace Exiled.CustomItems.API.Features
 
             Give(ev.Player, ev.Pickup);
 
-            Spawned.Remove(ev.Pickup);
-
-            ev.Pickup.Delete();
+            ev.Pickup.Destroy();
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
@@ -856,55 +793,26 @@ namespace Exiled.CustomItems.API.Features
             OnChanging(ev);
         }
 
-        private void OnInternalUpgrading(UpgradingItemsEventArgs ev)
+        private void OnInternalUpgradingInventoryItem(UpgradingInventoryItemEventArgs ev)
         {
-            foreach (Pickup pickup in ev.Items.ToList())
-            {
-                if (!Check(pickup))
-                    continue;
+            if (!Check(ev.Item))
+                return;
 
-                pickup.transform.position = ev.Scp914.output.position;
+            ev.IsAllowed = false;
+            OnUpgrading(new Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
+        }
 
-                ev.Items.Remove(pickup);
-            }
+        private void OnInternalUpgradingItem(Exiled.Events.EventArgs.UpgradingItemEventArgs ev)
+        {
+            if (!Check(ev.Item))
+                return;
 
-            Dictionary<Player, List<Inventory.SyncItemInfo>> playerToItems = new Dictionary<Player, List<Inventory.SyncItemInfo>>();
-
-            foreach (Player player in ev.Players)
-            {
-                playerToItems.Add(player, new List<Inventory.SyncItemInfo>());
-
-                foreach (Inventory.SyncItemInfo item in player.Inventory.items.ToList())
-                {
-                    if (!Check(item))
-                        continue;
-
-                    OnUpgrading(new UpgradingEventArgs(item, ev));
-
-                    playerToItems[player].Add(item);
-
-                    player.Inventory.items.Remove(item);
-                }
-            }
+            ev.IsAllowed = false;
 
             Timing.CallDelayed(3.5f, () =>
             {
-                foreach (KeyValuePair<Player, List<Inventory.SyncItemInfo>> playerToItemsPair in playerToItems)
-                {
-                    foreach (Inventory.SyncItemInfo item in playerToItemsPair.Value)
-                    {
-                        if (playerToItemsPair.Key.Inventory.items.Count >= 8)
-                        {
-                            InsideInventories.Remove(item.uniq);
-
-                            Spawn(playerToItemsPair.Key, item, out _);
-
-                            continue;
-                        }
-
-                        playerToItemsPair.Key.Inventory.items.Add(item);
-                    }
-                }
+                ev.Item.Position = ev.OutputPosition;
+                OnUpgrading(new UpgradingEventArgs(ev.Item.Base, ev.OutputPosition, ev.KnobSetting));
             });
         }
     }

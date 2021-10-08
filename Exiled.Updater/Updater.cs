@@ -13,7 +13,6 @@ namespace Exiled.Updater
     using System.IO;
     using System.Linq;
     using System.Net.Http;
-    using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Text;
     using System.Threading;

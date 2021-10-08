@@ -10,23 +10,26 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
     using System;
 
+    using Assets._Scripts.Dissonance;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
     /// <summary>
-    /// Patch the <see cref="CharacterClassManager.NetworkMuted"/>.
+    /// Patch the <see cref="DissonanceUserSetup.AdministrativelyMuted"/>.
     /// Adds the <see cref="Player.ChangingMuteStatus"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkMuted), MethodType.Setter)]
+    [HarmonyPatch(typeof(DissonanceUserSetup), nameof(DissonanceUserSetup.AdministrativelyMuted), MethodType.Setter)]
     internal static class ChangingMuteStatus
     {
-        private static bool Prefix(CharacterClassManager __instance, bool value)
+        private static bool Prefix(DissonanceUserSetup __instance, bool value)
         {
             try
             {
-                ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+                API.Features.Player player = API.Features.Player.Get(__instance.netId);
+                ChangingMuteStatusEventArgs ev = new ChangingMuteStatusEventArgs(player, value, true);
 
                 Player.OnChangingMuteStatus(ev);
 
@@ -34,11 +37,11 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     if (value == true)
                     {
-                        MuteHandler.RevokePersistentMute(__instance.UserId);
+                        MuteHandler.RevokePersistentMute(player.UserId);
                     }
                     else
                     {
-                        MuteHandler.IssuePersistentMute(__instance.UserId);
+                        MuteHandler.IssuePersistentMute(player.UserId);
                     }
 
                     return false;
@@ -48,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"{typeof(ChangingMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
+                API.Features.Log.Error($"{typeof(ChangingMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
                 return true;
             }
         }

@@ -18,13 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
     using UnityEngine;
 
     /// <summary>
-    /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int)"/>.
+    /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int, bool)"/>.
     /// Adds the <see cref="Player.SpawningRagdoll"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
     internal static class SpawningRagdoll
     {
-        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref Vector3 velocity, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId)
+        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref Vector3 velocity, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId, ref bool _096Death)
         {
             try
             {
@@ -56,13 +56,13 @@ namespace Exiled.Events.Patches.Events.Player
                 component.NetworkPlayerVelo = velocity;
                 Exiled.API.Features.Ragdoll ragdoll = new Exiled.API.Features.Ragdoll(component);
                 Mirror.NetworkServer.Spawn(ragdoll.GameObject);
-                Exiled.API.Features.Map.RagdollsValue.Add(ragdoll);
+                API.Features.Map.RagdollsValue.Add(ragdoll);
 
                 return false;
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
 
                 return true;
             }

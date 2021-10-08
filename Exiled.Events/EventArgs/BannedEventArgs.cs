@@ -34,12 +34,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the banned player.
         /// </summary>
-        [Obsolete("Use Target instead")]
-        public Player Player => Target;
-
-        /// <summary>
-        /// Gets the banned player.
-        /// </summary>
         public Player Target { get; }
 
         /// <summary>

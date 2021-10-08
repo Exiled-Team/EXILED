@@ -7,56 +7,47 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
-
     using Exiled.Events.EventArgs;
 
-    using HarmonyLib;
-
-    using UnityEngine;
-
+#pragma warning disable SA1313
     /// <summary>
-    /// Patches <see cref="PlayerInteract.CallCmdUseElevator(GameObject)"/>.
+    /// Patches <see cref="PlayerInteract.UserCode_CmdUseElevator(UnityEngine.GameObject)"/>.
     /// Adds the <see cref="Handlers.Player.InteractingElevator"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.CallCmdUseElevator), typeof(GameObject))]
+    [HarmonyLib.HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.UserCode_CmdUseElevator), typeof(UnityEngine.GameObject))]
     internal static class InteractingElevator
     {
-        private static bool Prefix(PlayerInteract __instance, GameObject elevator)
+        private static bool Prefix(PlayerInteract __instance, UnityEngine.GameObject elevator)
         {
             try
             {
-                if (!__instance._playerInteractRateLimit.CanExecute(true) ||
-                    ((__instance._hc.CufferId > 0 || __instance._hc.ForceCuff) && !PlayerInteract.CanDisarmedInteract) || elevator == null)
+                if (!__instance.CanInteract || elevator == null)
                     return false;
 
                 Lift component = elevator.GetComponent<Lift>();
                 if (component == null)
                     return false;
 
-                foreach (Lift.Elevator elevator2 in component.elevators)
+                foreach (Lift.Elevator elevator1 in component.elevators)
                 {
-                    if (__instance.ChckDis(elevator2.door.transform.position))
+                    if (!__instance.ChckDis(elevator1.door.transform.position))
+                        continue;
+
+                    InteractingElevatorEventArgs interactingEventArgs = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance._hub), elevator1, component);
+                    Handlers.Player.OnInteractingElevator(interactingEventArgs);
+
+                    if (interactingEventArgs.IsAllowed)
                     {
-                        var ev = new InteractingElevatorEventArgs(API.Features.Player.Get(__instance.gameObject), elevator2, component);
-
-                        Handlers.Player.OnInteractingElevator(ev);
-
-                        if (!ev.IsAllowed)
-                            return false;
-
-                        component.UseLift();
+                        elevator.GetComponent<Lift>().UseLift();
                         __instance.OnInteract();
-                        return false;
                     }
                 }
 
                 return false;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.InteractingElevator:\n{e}");
 
                 return true;
             }

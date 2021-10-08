@@ -32,9 +32,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                var ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
-                var bypassDenied = false;
-                var allowInteracting = false;
+                InteractingDoorEventArgs ev = new InteractingDoorEventArgs(Player.Get(ply), __instance, false);
+                bool bypassDenied = false;
+                bool allowInteracting = false;
 
                 if (__instance.ActiveLocks != 0)
                 {
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 if (!bypassDenied && (allowInteracting = __instance.AllowInteracting(ply, colliderId)))
                 {
-                    if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.curItem, ply))
+                    if (ply.characterClassManager.CurClass == RoleType.Scp079 || __instance.RequiredPermissions.CheckPermissions(ply.inventory.CurInstance, ply))
                     {
                         /*
                         __instance.NetworkTargetState = !__instance.TargetState;

@@ -7,17 +7,20 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using Mirror;
+    using NorthwoodLib.Pools;
 
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.AllowContain"/>.
@@ -26,45 +29,39 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.AllowContain))]
     internal static class EnteringFemurBreaker
     {
-        private static bool Prefix(CharacterClassManager __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_3);
+
+            var returnLabel = generator.DefineLabel();
+
+            // var ev = new EnteringFemurBreakerEventArgs(Player, true);
+            //
+            // Player.OnEnteringFemurBreaker(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return;
+            newInstructions.InsertRange(index, new[]
             {
-                if (!NetworkServer.active || !NonFacilityCompatibility.currentSceneSettings.enableStandardGamplayItems)
-                    return false;
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringFemurBreakerEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringFemurBreaker))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringFemurBreakerEventArgs), nameof(EnteringFemurBreakerEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
 
-                foreach (GameObject player in PlayerManager.players)
-                {
-                    if (Vector3.Distance(player.transform.position, __instance._lureSpj.transform.position) <
-                        1.97000002861023)
-                    {
-                        CharacterClassManager component1 = player.GetComponent<CharacterClassManager>();
-                        PlayerStats component2 = player.GetComponent<PlayerStats>();
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                        if (component1.Classes.SafeGet(component1.CurClass).team != Team.SCP &&
-                            component1.CurClass != RoleType.Spectator && !component1.GodMode)
-                        {
-                            var ev = new EnteringFemurBreakerEventArgs(API.Features.Player.Get(component2.gameObject));
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                            Player.OnEnteringFemurBreaker(ev);
-
-                            if (ev.IsAllowed)
-                            {
-                                component2.HurtPlayer(new PlayerStats.HitInfo(10000f, "WORLD", DamageTypes.Lure, 0), player);
-                                __instance._lureSpj.SetState(true);
-                            }
-                        }
-                    }
-                }
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.EnteringFemurBreaker: {e}\n{e.StackTrace}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

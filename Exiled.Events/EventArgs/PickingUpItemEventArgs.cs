@@ -7,27 +7,43 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System;
+
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Pickups;
 
     /// <summary>
-    /// Contains all informations before a player picks up an item.
+    /// Contains all information before a player picks up an item.
     /// </summary>
-    public class PickingUpItemEventArgs : ItemDroppedEventArgs
+    public class PickingUpItemEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PickingUpItemEventArgs"/> class.
         /// </summary>
-        /// <param name="player">The player who's picking up the item.</param>
-        /// <param name="pickup">The pickup to be picked up.</param>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PickingUpItemEventArgs(Player player, Pickup pickup, bool isAllowed = true)
-            : base(player, pickup)
+        public PickingUpItemEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)
         {
             IsAllowed = isAllowed;
+            Player = player;
+            Pickup = Pickup.Get(pickup);
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the item can be picked up.
+        /// Gets the player who dropped the item.
+        /// </summary>
+        public Player Player { get; }
+
+        /// <summary>
+        /// Gets the dropped pickup.
+        /// </summary>
+        public Pickup Pickup { get; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the item can be picked up.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

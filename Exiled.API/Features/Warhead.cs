@@ -105,16 +105,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the warhead can be disabled or not.
         /// </summary>
-        [Obsolete("Use Warhead.IsLocked instead", true)]
-        public static bool IsWarheadLocked
-        {
-            get => IsLocked;
-            set => IsLocked = value;
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the warhead can be disabled or not.
-        /// </summary>
         public static bool IsLocked
         {
             get => Controller._isLocked;
@@ -124,11 +114,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the warhead can be started or not.
         /// </summary>
-        public static bool CanBeStarted => !Recontainer079.isLocked &&
-            ((AlphaWarheadController._resumeScenario == -1 &&
-            Math.Abs(Controller.scenarios_start[AlphaWarheadController._startScenario].SumTime() - Controller.timeToDetonation) < 0.0001f) ||
-            (AlphaWarheadController._resumeScenario != -1 &&
-            Math.Abs(Controller.scenarios_resume[AlphaWarheadController._resumeScenario].SumTime() - Controller.timeToDetonation) < 0.0001f));
+        public static bool CanBeStarted => AlphaWarheadController.Host.CanDetonate;
 
         /// <summary>
         /// Starts the warhead countdown.

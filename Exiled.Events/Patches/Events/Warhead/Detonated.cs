@@ -7,10 +7,16 @@
 
 namespace Exiled.Events.Patches.Events.Warhead
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="AlphaWarheadController.Detonate"/>.
@@ -19,6 +25,20 @@ namespace Exiled.Events.Patches.Events.Warhead
     [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Detonate))]
     internal static class Detonated
     {
-        private static void Prefix() => Warhead.OnDetonated();
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        {
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Warhead.OnDetonated();
+            newInstructions.InsertRange(0, new[]
+            {
+                new CodeInstruction(OpCodes.Call, Method(typeof(Warhead), nameof(Warhead.OnDetonated))),
+            });
+
+            for (int i = 0; i < newInstructions.Count; i++)
+                yield return newInstructions[i];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
     }
 }

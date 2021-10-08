@@ -35,5 +35,8 @@
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
   </ItemGroup>
-
+  
+  <PropertyGroup Condition="'$(OS)' == 'Unix'">
+    <PostBuildEvent>cleandir</PostBuildEvent>
+  </PropertyGroup>
 </Project>

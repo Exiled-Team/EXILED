@@ -7,7 +7,6 @@
 
 namespace Exiled.Example.Events
 {
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -16,10 +15,10 @@ namespace Exiled.Example.Events
     /// </summary>
     internal sealed class Scp914Handler
     {
-        /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnUpgradingItems(UpgradingItemsEventArgs)"/>
-        public void OnUpgradingItems(UpgradingItemsEventArgs ev)
+        /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnUpgradingItem(UpgradingItemEventArgs)"/>
+        public void OnUpgradingItem(UpgradingItemEventArgs ev)
         {
-            Log.Info($"Items ({ev.Items.Count}):\n{ev.Items.ToString(false)}\nand players ({ev.Players.Count}):\n{ev.Players.ToString(false)}\nare being processed inside SCP-914, which is set on {ev.KnobSetting}.");
+            Log.Info($"Item being upgraded\n[Type]: {ev.Item.Type}\n[Weight]: {ev.Item.Weight}\n[Output Position]: {ev.OutputPosition}\n[Knob Setting]: {ev.KnobSetting}");
         }
     }
 }

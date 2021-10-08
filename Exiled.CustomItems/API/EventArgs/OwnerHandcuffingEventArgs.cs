@@ -8,11 +8,14 @@
 namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
+    using InventorySystem.Items;
+
     /// <summary>
-    /// Contains all informations of a <see cref="CustomItem"/> before handcuffing a <see cref="Player"/>.
+    /// Contains all information of a <see cref="CustomItem"/> before handcuffing a <see cref="Player"/>.
     /// </summary>
     public class OwnerHandcuffingEventArgs : HandcuffingEventArgs
     {
@@ -21,7 +24,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
-        public OwnerHandcuffingEventArgs(Inventory.SyncItemInfo item, HandcuffingEventArgs ev)
+        public OwnerHandcuffingEventArgs(Item item, HandcuffingEventArgs ev)
             : this(item, ev.Cuffer, ev.Target, ev.IsAllowed)
         {
         }
@@ -33,7 +36,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="cuffer"><inheritdoc cref="HandcuffingEventArgs.Cuffer"/></param>
         /// <param name="target"><inheritdoc cref="HandcuffingEventArgs.Target"/></param>
         /// <param name="isAllowed"><inheritdoc cref="HandcuffingEventArgs.IsAllowed"/></param>
-        public OwnerHandcuffingEventArgs(Inventory.SyncItemInfo item, Player cuffer, Player target, bool isAllowed = true)
+        public OwnerHandcuffingEventArgs(Item item, Player cuffer, Player target, bool isAllowed = true)
             : base(cuffer, target, isAllowed)
         {
             Item = item;
@@ -42,6 +45,6 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <summary>
         /// Gets the item in the player's inventory.
         /// </summary>
-        public Inventory.SyncItemInfo Item { get; }
+        public Item Item { get; }
     }
 }

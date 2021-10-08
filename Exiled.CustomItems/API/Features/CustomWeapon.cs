@@ -9,15 +9,27 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
+
+    using InventorySystem.Items;
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Pickups;
+
+    using MEC;
 
     using UnityEngine;
 
     using YamlDotNet.Serialization;
 
     using static CustomItems;
+
+    using Firearm = Exiled.API.Features.Items.Firearm;
+    using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
     public abstract class CustomWeapon : CustomItem
@@ -34,7 +46,7 @@ namespace Exiled.CustomItems.API.Features
             set
             {
                 if (!value.IsWeapon())
-                    throw new ArgumentOutOfRangeException("Type", value, "Invalid weapon type.");
+                    throw new ArgumentOutOfRangeException($"{nameof(Type)}", value, "Invalid weapon type.");
 
                 base.Type = value;
             }
@@ -48,49 +60,58 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets a value indicating how big of a clip the weapon will have.
         /// </summary>
-        public virtual uint ClipSize
+        public virtual byte ClipSize { get; set; }
+
+        /// <inheritdoc/>
+        public override Pickup Spawn(Vector3 position)
         {
-            get => (uint)Durability;
-            set => Durability = value;
+            var pickup = new Item(Type).Spawn(position);
+            pickup.Weight = Weight;
+
+            TrackedSerials.Add(pickup.Serial);
+            return pickup;
         }
 
         /// <inheritdoc/>
-        [YamlIgnore]
-        public override float Durability { get; set; }
-
-        /// <inheritdoc/>
-        public override void Spawn(Vector3 position, out Pickup pickup)
+        public override Pickup Spawn(Vector3 position, Item item)
         {
-            pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+            if (item is Firearm firearm)
+            {
+                byte ammo = firearm.Ammo;
+                Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
+                var pickup = firearm.Spawn(position);
 
-            Spawned.Add(pickup);
-        }
+                TrackedSerials.Add(pickup.Serial);
 
-        /// <inheritdoc/>
-        [Obsolete("Use Spawn method with an out parameter modifier instead.")]
-        public override void Spawn(Vector3 position)
-        {
-            Pickup pickup = Item.Spawn(Type, ClipSize, position, default, Modifiers.SightType, Modifiers.BarrelType, Modifiers.OtherType);
+                Timing.CallDelayed(1f, () =>
+                {
+                    if (pickup.Base is FirearmPickup firearmPickup)
+                    {
+                        firearmPickup.Status = new FirearmStatus(ammo, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.NetworkStatus = firearmPickup.Status;
+                        Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawned item has: {firearmPickup.Status.Ammo}", Instance.Config.Debug);
+                    }
+                });
 
-            Spawned.Add(pickup);
+                return pickup;
+            }
+            else
+            {
+                return base.Spawn(position, item);
+            }
         }
 
         /// <inheritdoc/>
         public override void Give(Player player, bool displayMessage)
         {
-            Inventory.SyncItemInfo syncItemInfo = new Inventory.SyncItemInfo()
+            Item item = player.AddItem(Type);
+
+            if (item is Firearm firearm)
             {
-                durability = ClipSize,
-                id = Type,
-                uniq = ++Inventory._uniqId,
-                modBarrel = Modifiers.BarrelType,
-                modSight = Modifiers.SightType,
-                modOther = Modifiers.OtherType,
-            };
+                firearm.Ammo = ClipSize;
+            }
 
-            player.Inventory.items.Add(syncItemInfo);
-
-            InsideInventories.Add(syncItemInfo.uniq);
+            TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
                 ShowPickedUpMessage(player);
@@ -157,39 +178,47 @@ namespace Exiled.CustomItems.API.Features
             if (!Check(ev.Player.CurrentItem))
                 return;
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..", Instance.Config.Debug);
             OnReloading(ev);
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event ended. {ev.IsAllowed}", Instance.Config.Debug);
             if (!ev.IsAllowed)
+            {
+                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: External event turned is allowed to false, returning.", Instance.Config.Debug);
                 return;
+            }
 
+            Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Continuing with internal reload..", Instance.Config.Debug);
             ev.IsAllowed = false;
 
-            uint remainingClip = (uint)ev.Player.CurrentItem.durability;
+            byte remainingClip = ((Firearm)ev.Player.CurrentItem).Ammo;
 
             if (remainingClip >= ClipSize)
                 return;
 
             Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] is reloading a {Name} ({Id}) [{Type} ({remainingClip}/{ClipSize})]!", Instance.Config.Debug);
 
-            if (ev.IsAnimationOnly)
+            AmmoType ammoType = ((Firearm)ev.Player.CurrentItem).AmmoType;
+
+            if (!ev.Player.Ammo.ContainsKey(ammoType.GetItemType()))
             {
-                ev.Player.ReloadWeapon();
+                Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: {ev.Player.Nickname} does not have ammo to reload this weapon.", Instance.Config.Debug);
+                return;
             }
-            else
-            {
-                int ammoType = ev.Player.ReferenceHub.weaponManager.weapons[ev.Player.ReferenceHub.weaponManager.curWeapon].ammoType;
-                uint amountToReload = Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType]);
 
-                if (amountToReload <= 0)
-                    return;
+            ev.Player.Connection.Send(new RequestMessage(ev.Firearm.Serial, RequestType.Reload));
 
-                ev.Player.ReferenceHub.weaponManager.scp268.ServerDisable();
+            byte amountToReload = (byte)Math.Min(ClipSize - remainingClip, ev.Player.Ammo[ammoType.GetItemType()]);
 
-                ev.Player.Ammo[ammoType] -= amountToReload;
-                ev.Player.Inventory.items.ModifyDuration(ev.Player.Inventory.GetItemIndex(), ev.Player.CurrentItem.durability + amountToReload);
+            if (amountToReload <= 0)
+                return;
 
-                Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({ev.Player.CurrentItem.durability}/{ClipSize})]!", Instance.Config.Debug);
-            }
+            ev.Player.ReferenceHub.playerEffectsController.GetEffect<CustomPlayerEffects.Invisible>().Intensity = 0;
+
+            ev.Player.Ammo[ammoType.GetItemType()] -= amountToReload;
+            ((Firearm)ev.Player.CurrentItem).Ammo = (byte)(((Firearm)ev.Player.CurrentItem).Ammo + amountToReload);
+
+            Log.Debug($"{ev.Player.Nickname} ({ev.Player.UserId}) [{ev.Player.Role}] reloaded a {Name} ({Id}) [{Type} ({((Firearm)ev.Player.CurrentItem).Ammo}/{ClipSize})]!", Instance.Config.Debug);
         }
 
         private void OnInternalShooting(ShootingEventArgs ev)
@@ -210,7 +239,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.DamageType != DamageTypes.FromWeaponId(ev.Attacker.ReferenceHub.weaponManager.curWeapon))
+            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || !ev.DamageType.Equals(((Firearm)ev.Attacker.CurrentItem).DamageType))
                 return;
 
             OnHurting(ev);

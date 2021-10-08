@@ -34,19 +34,19 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = 1;
+            int offset = 1;
 
             // Search for the third "ldarg.0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // Get the return label from the "ret" instruction.
-            var returnLabel = newInstructions[index - offset].labels[0];
+            Label returnLabel = newInstructions[index - offset].labels[0];
 
             // Declare AddingTargetEventArgs, to be able to store its instance with "stloc.s".
-            var ev = generator.DeclareLocal(typeof(AddingTargetEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(AddingTargetEventArgs));
 
             // var ev = new AddingTargetEventArgs(Player.Get(this.Hub), Player.Get(target), 70, this.EnrageTimePerReset);
             //
@@ -64,9 +64,6 @@ namespace Exiled.Events.Patches.Events.Scp096
                 // Player.Get(target)
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-
-                // 70
-                new CodeInstruction(OpCodes.Ldc_I4_S, 70),
 
                 // this.EnrageTimePerReset;
                 new CodeInstruction(OpCodes.Ldarg_0),
@@ -91,22 +88,41 @@ namespace Exiled.Events.Patches.Events.Scp096
             });
 
             offset = -1;
-            var instructionsToRemove = 2;
+            int instructionsToRemove = 2;
 
             // Search for the sixth "ldarg.0".
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
             (MethodInfo)instruction.operand == Method(typeof(Scp096), nameof(Scp096.AddReset))) + offset;
 
             // Extract all labels from it.
-            var addResetLabels = newInstructions[index].ExtractLabels();
+            List<Label> addResetLabels = newInstructions[index].ExtractLabels();
+
+            // Get the return label to next instruction in "this.AddReset()".
+            Label exitLabel = newInstructions[index + 2].labels[0];
+
+            // Declare timeToAdd, to be able to temp its float with "stloc".
+            LocalBuilder timeToAdd = generator.DeclareLocal(typeof(float));
 
             // Remove "this.AddReset()"
             newInstructions.RemoveRange(index, instructionsToRemove);
 
             newInstructions.InsertRange(index, new[]
             {
-                // this.EnrageTimeLeft += ev.EnrageTimeToAdd
+                // timeToAdd = this.AddedTimeThisRage + ev.EnrageTimeToAdd
+                // if (timeToadd > this.MaximumAddedEnrageTime)
+                //     return;
                 new CodeInstruction(OpCodes.Ldarg_0).WithLabels(addResetLabels),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
+                new CodeInstruction(OpCodes.Add),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, timeToAdd.LocalIndex),
+                new CodeInstruction(OpCodes.Ldc_R4, Scp096.MaximumAddedEnrageTime),
+                new CodeInstruction(OpCodes.Bgt_Un_S, exitLabel),
+
+                // this.EnrageTimeLeft += ev.EnrageTimeToAdd;
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -114,7 +130,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.EnrageTimeLeft))),
 
-                // this.AddedTimeThisRage += ev.EnrageTimeToAdd
+                // this.AddedTimeThisRage += ev.EnrageTimeToAdd;
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
@@ -122,19 +138,6 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.EnrageTimeToAdd))),
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Scp096), nameof(Scp096.AddedTimeThisRage))),
-            });
-
-            // Get the index of the last "ldc.i4.s".
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_S);
-
-            // Remove "ldc.i4.s" instruction.
-            newInstructions.RemoveAt(index);
-
-            // Load "ev.AhpToAdd" instead of 70.
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AddingTargetEventArgs), nameof(AddingTargetEventArgs.AhpToAdd))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

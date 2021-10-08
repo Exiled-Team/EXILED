@@ -7,8 +7,6 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using System;
-
     using Exiled.API.Features;
 
     /// <summary>
@@ -26,16 +24,6 @@ namespace Exiled.Events.EventArgs
         public ElevatorTeleportEventArgs(Player player, Camera079 camera, float auxiliaryPowerCost, bool isAllowed = true)
             : base(player, camera, auxiliaryPowerCost, isAllowed)
         {
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of auxiliary power that will be removed for the first time when using speakers through SCP-079.
-        /// </summary>
-        [Obsolete("Use AuxiliaryPowerCost instead.", true)]
-        public float APCost
-        {
-            get => AuxiliaryPowerCost;
-            set => AuxiliaryPowerCost = value;
         }
     }
 }

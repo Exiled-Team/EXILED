@@ -55,14 +55,14 @@ namespace Exiled.Events.Patches.Generic
                 List<GameObject> players = PlayerManager.players;
                 __instance._usedData = players.Count;
 
-                if (__instance._receivedData == null
-                    || __instance._receivedData.Length < __instance._usedData)
+                if (__instance.ReceivedData == null
+                    || __instance.ReceivedData.Length < __instance._usedData)
                 {
-                    __instance._receivedData = new PlayerPositionData[__instance._usedData * 2];
+                    __instance.ReceivedData = new PlayerPositionData[__instance._usedData * 2];
                 }
 
                 for (int index = 0; index < __instance._usedData; ++index)
-                    __instance._receivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
+                    __instance.ReceivedData[index] = new PlayerPositionData(ReferenceHub.GetHub(players[index]));
 
                 if (__instance._transmitBuffer == null
                     || __instance._transmitBuffer.Length < __instance._usedData)
@@ -76,7 +76,7 @@ namespace Exiled.Events.Patches.Generic
                     if (player == null)
                         continue;
 
-                    Array.Copy(__instance._receivedData, __instance._transmitBuffer, __instance._usedData);
+                    Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
                     if (player.Role.Is939())
                     {
@@ -90,7 +90,7 @@ namespace Exiled.Events.Patches.Generic
                                     && hub2.characterClassManager.CurRole.team != Team.RIP
                                     && !hub2
                                         .GetComponent<Scp939_VisionController>()
-                                        .CanSee(player.ReferenceHub.characterClassManager.Scp939))
+                                        .CanSee(player.ReferenceHub.playerEffectsController.GetEffect<Visuals939>()))
                                 {
                                     MakeGhost(index, __instance._transmitBuffer);
                                 }
@@ -102,7 +102,7 @@ namespace Exiled.Events.Patches.Generic
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
                             PlayerPositionData ppd = __instance._transmitBuffer[index];
-                            if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
+                            if (!ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub targetHub))
                                 continue;
 
                             Player currentTarget = GetPlayerOrServer(targetHub.gameObject);
@@ -154,13 +154,13 @@ namespace Exiled.Events.Patches.Generic
 #endif
                                     MakeGhost(index, __instance._transmitBuffer);
                                 }
-                                else if (currentTarget.ReferenceHub.playerEffectsController.GetEffect<Scp268>().Enabled)
+                                else if (currentTarget.ReferenceHub.playerEffectsController.GetEffect<Invisible>().IsEnabled)
                                 {
                                     bool flag2 = false;
                                     if (scp096 != null)
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                    if (player.Role != RoleType.Scp079
+                                    if (currentTarget != player && player.Role != RoleType.Scp079
                                         && player.Role != RoleType.Spectator
                                         && !flag2)
                                     {
@@ -174,9 +174,9 @@ namespace Exiled.Events.Patches.Generic
                     // We do another FOR for the ghost things
                     // because it's hard to do it without
                     // whole code changes in the game code
-                    for (var z = 0; z < __instance._usedData; z++)
+                    for (int z = 0; z < __instance._usedData; z++)
                     {
-                        var ppd = __instance._transmitBuffer[z];
+                        PlayerPositionData ppd = __instance._transmitBuffer[z];
 
                         // Do you remember the bug
                         // when you can't pick up any item?
@@ -191,7 +191,7 @@ namespace Exiled.Events.Patches.Generic
                         if (ppd.position == GhostPos)
                             continue;
 
-                        if (!ReferenceHub.TryGetHub(ppd.playerID, out var targetHub))
+                        if (!ReferenceHub.TryGetHub(ppd.playerID, out ReferenceHub targetHub))
                             continue;
 
                         Player target = GetPlayerOrServer(targetHub.gameObject);
@@ -223,17 +223,16 @@ namespace Exiled.Events.Patches.Generic
                         : player.ReferenceHub.characterClassManager.netIdentity.connectionToClient;
                     if (__instance._usedData <= 20)
                     {
-                        networkConnection.Send(
-                            new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
+                        networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
                     }
                     else
                     {
                         byte part;
                         for (part = 0; part < __instance._usedData / 20; ++part)
-                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, 20, part), 1);
+                            networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
                         byte count = (byte)(__instance._usedData % (part * 20));
                         if (count > 0)
-                            networkConnection.Send(new PlayerPositionManager.PositionMessage(__instance._transmitBuffer, count, part), 1);
+                            networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
                     }
                 }
 
@@ -253,7 +252,7 @@ namespace Exiled.Events.Patches.Generic
         // so an execution result will be:
         // true -> the player can't see another player
         // false -> the player can see another player
-        private static bool PlayerCannotSee(Player source, int playerId) => source.TargetGhostsHashSet.Contains(playerId) || source.TargetGhosts.Contains(playerId);
+        private static bool PlayerCannotSee(Player source, int playerId) => source.TargetGhostsHashSet.Contains(playerId);
 
         private static void MakeGhost(int index, PlayerPositionData[] buff) => buff[index] = new PlayerPositionData(GhostPos, buff[index].rotation, buff[index].playerID);
 
@@ -262,7 +261,7 @@ namespace Exiled.Events.Patches.Generic
 
         private static Player GetPlayerOrServer(GameObject gameObject)
         {
-            var refHub = ReferenceHub.GetHub(gameObject);
+            ReferenceHub refHub = ReferenceHub.GetHub(gameObject);
 
             // The only reason is that the server is also a player,
             // and we've seen a lot of NullRef exceptions at the place

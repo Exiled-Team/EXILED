@@ -8,162 +8,72 @@
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
-    using Mirror;
-
-    using Respawning;
-    using Respawning.NamingRules;
-
-    using UnityEngine;
+    using NorthwoodLib.Pools;
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.ApplyProperties(bool, bool)"/>.
-    /// Adds the <see cref="Player.Spawning"/> event.
+    /// Adds the <see cref="Spawning"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.ApplyProperties))]
     internal static class Spawning
     {
-        private static bool Prefix(CharacterClassManager __instance, bool lite = false, bool escape = false)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            // Player RoleType Vector3 float
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            // Find the index of the ldarg.0 before the only ldfld CharacterClassManager::SpawnProtected
+            const int offset = -1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand == AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.SpawnProtected))) + offset;
+
+            // Remove all existing this._pms.OnPlayerClassChange calls (we will want to call this ourselves after our even fires, to allow their spawn position to change.)
+            foreach (CodeInstruction instruction in newInstructions.FindAll(i =>
+                i.opcode == OpCodes.Call && (MethodInfo)i.operand == AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))))
+                newInstructions.Remove(instruction);
+            LocalBuilder ev = generator.DeclareLocal(typeof(SpawningEventArgs));
+
+            newInstructions.InsertRange(index, new[]
             {
-                Role role = __instance.CurRole;
-                if (!__instance._wasAnytimeAlive
-                    && __instance.CurClass != RoleType.Spectator
-                    && __instance.CurClass != RoleType.None)
-                {
-                    __instance._wasAnytimeAlive = true;
-                }
+                // Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                __instance.InitSCPs();
-                __instance.AliveTime = 0f;
-                switch (role.team)
-                {
-                    case Team.RSC:
-                    case Team.CDP:
-                        __instance.EscapeStartTime = (int)Time.realtimeSinceStartup;
-                        break;
-                }
+                // this.CurClass
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager.CurClass))),
 
-                try
-                {
-                    __instance._hub.footstepSync.SetLoudness(role.team, role.roleId.Is939());
-                }
-                catch
-                {
-                }
+                // var ev = new SpawningEventArg(Player, RoleType)
+                // Exiled.Events.Handlers.Player.OnSpawning(ev);
+                new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(SpawningEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Exiled.Events.Handlers.Player), nameof(Handlers.Player.OnSpawning))),
 
-                if (NetworkServer.active)
-                {
-                    Handcuffs component = __instance._hub.handcuffs;
-                    component.ClearTarget();
-                    component.NetworkCufferId = -1;
-                    component.NetworkForceCuff = false;
+                // this._pms.OnPlayerClassChange(ev.Position, ev.RotationY)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CharacterClassManager), nameof(CharacterClassManager._pms))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.Position))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(SpawningEventArgs), nameof(SpawningEventArgs.RotationY))),
+                new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OnPlayerClassChange))),
+            });
 
-                    if (role.roleId != RoleType.Spectator
-                        && RespawnManager.CurrentSequence() != RespawnManager.RespawnSequencePhase.SpawningSelectedTeam
-                        && UnitNamingManager.RolesWithEnforcedDefaultName.TryGetValue(role.roleId, out SpawnableTeamType value)
-                        && RespawnManager.Singleton.NamingManager.TryGetAllNamesFromGroup((byte)value, out string[] names)
-                        && names.Length != 0)
-                    {
-                        __instance.NetworkCurSpawnableTeamType = (byte)value;
-                        __instance.NetworkCurUnitName = names[0];
-                    }
-                    else if (__instance.CurSpawnableTeamType != 0)
-                    {
-                        __instance.NetworkCurSpawnableTeamType = 0;
-                        __instance.NetworkCurUnitName = string.Empty;
-                    }
-                }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                if (role.team != Team.RIP)
-                {
-                    if (NetworkServer.active && !lite)
-                    {
-                        Vector3 constantRespawnPoint =
-                            NonFacilityCompatibility.currentSceneSettings.constantRespawnPoint;
-                        if (constantRespawnPoint != Vector3.zero)
-                        {
-                            __instance._pms.OnPlayerClassChange(constantRespawnPoint, 0f);
-                            __instance._pms.IsAFK = true;
-                        }
-                        else
-                        {
-                            GameObject randomPosition =
-                                CharacterClassManager._spawnpointManager.GetRandomPosition(__instance.CurClass);
-
-                            Vector3 spawnPoint;
-                            float rotY;
-                            if (randomPosition != null)
-                            {
-                                __instance._pms.IsAFK = true;
-                                spawnPoint = randomPosition.transform.position;
-                                rotY = randomPosition.transform.rotation.eulerAngles.y;
-
-                                AmmoBox component1 = __instance._hub.ammoBox;
-                                if (escape && CharacterClassManager.KeepItemsAfterEscaping)
-                                {
-                                    Inventory component2 = ReferenceHub.HostHub.inventory;
-                                    for (ushort index = 0; index < 3; ++index)
-                                    {
-                                        if (component1[index] >= 15U)
-                                        {
-                                            component2.SetPickup(component1.types[index].inventoryID, component1[index], randomPosition.transform.position, randomPosition.transform.rotation, 0, 0, 0);
-                                        }
-                                    }
-                                }
-
-                                component1.ResetAmmo();
-                            }
-                            else
-                            {
-                                spawnPoint = __instance.DeathPosition;
-                                rotY = 0f;
-                            }
-
-                            var ev = new SpawningEventArgs(API.Features.Player.Get(__instance.gameObject), __instance.CurClass, spawnPoint, rotY);
-
-                            Player.OnSpawning(ev);
-
-                            __instance._pms.OnPlayerClassChange(ev.Position, ev.RotationY);
-                        }
-
-                        if (!__instance.SpawnProtected
-                            && CharacterClassManager.EnableSP
-                            && CharacterClassManager.SProtectedTeam.Contains((int)role.team))
-                        {
-                            __instance.GodMode = true;
-                            __instance.SpawnProtected = true;
-                            __instance.ProtectedTime = Time.time;
-                        }
-                    }
-
-                    if (!__instance.isLocalPlayer)
-                    {
-                        __instance._hub.playerStats.maxHP = role.maxHP;
-                    }
-                }
-
-                __instance.Scp0492.iAm049_2 = __instance.CurClass == RoleType.Scp0492;
-                __instance.Scp106.iAm106 = __instance.CurClass == RoleType.Scp106;
-                __instance.Scp173.iAm173 = __instance.CurClass == RoleType.Scp173;
-                __instance.Scp939.iAm939 = __instance.CurClass.Is939();
-                __instance.RefreshPlyModel();
-
-                return false;
-            }
-            catch (Exception e)
-            {
-                Exiled.API.Features.Log.Error($"({typeof(Spawning).FullName}.{nameof(Prefix)}):\n{e}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp049
 {
 #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -17,8 +16,6 @@ namespace Exiled.Events.Patches.Events.Scp049
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
 
@@ -37,17 +34,17 @@ namespace Exiled.Events.Patches.Events.Scp049
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -7;
+            int offset = -7;
 
             // Search for the first "referenceHub2.gameObject", then subtract the offset to get "ldstr".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == PropertyGetter(typeof(Component), nameof(Component.gameObject))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
+                                                                 (MethodInfo)instruction.operand == PropertyGetter(typeof(Component), nameof(Component.gameObject))) + offset;
 
             // Get the first label of the last "ret".
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // var ev = new StartingRecallEventArgs(Player.Get(referenceHub2), Player.Get(this.Hub), true);
             //

@@ -32,19 +32,19 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var exiledPlayerLocal = generator.DeclareLocal(typeof(Player));
+            LocalBuilder exiledPlayerLocal = generator.DeclareLocal(typeof(Player));
 
             // --------- Player check ---------
             // The check is a check that this is a player, if it isn't a player, then we simply call return
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
             // Find the first null check of the NetworkIdentity component
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
 
             // Get the return label from the instruction at the index.
-            var returnLabel = newInstructions[index].operand;
+            object returnLabel = newInstructions[index].operand;
 
             newInstructions.InsertRange(index + 1, new[]
             {
@@ -58,54 +58,35 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brtrue, returnLabel),
             });
 
-            // --------- FailingEscapePocketDimension ---------
+            // ----------- FailingEscapePocketDimension-------------
+            int offset = 2;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo)i.operand ==
+                Field(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.DebugBool))) + offset;
 
-            // The index offset.
-            var offset = 2;
-
-            // Find the starting index by searching for "ldfld" of "BlastDoor.isClosed".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            instruction.operand is FieldInfo finfo && finfo == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
-
-            // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
-
-            // Get the return label from the last instruction.
-            returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
-            // var ev = new FailingEscapePocketDimensionEventArgs(Player.Get(other.gameObject), this);
-            //
-            // Handlers.Player.OnFailingEscapePocketDimension(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(FailingEscapePocketDimensionEventArgs), new[] { typeof(Player), typeof(PocketDimensionTeleport), typeof(bool) })),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(FailingEscapePocketDimensionEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFailingEscapePocketDimension))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FailingEscapePocketDimensionEventArgs), nameof(FailingEscapePocketDimensionEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
-            // Add the starting labels to the first injected instruction.
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
-
-            // --------- EscapingPocketDimension ---------
+                        // --------- EscapingPocketDimension ---------
 
             // The index offset.
             offset = -1;
 
             // Find the starting index by searching for "callvirt" of "Component.GetComponent<PlayerMovementSync>()".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(Component), nameof(Component.GetComponent), generics: new[] { typeof(PlayerMovementSync) })) + offset;
+            index = newInstructions.FindLastIndex(i =>
+                i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand ==
+                Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
 
             // Declare EscapingPocketDimensionEventArgs local variable.
-            var ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
 
             // var ev = new EscapingPocketDimensionEventArgs(API.Features.Player.Get(other.gameObject), tpPosition);
             //
@@ -118,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new CodeInstruction(OpCodes.Ldloc_S, 9),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, Constructor(typeof(EscapingPocketDimensionEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(bool) })),
                 new CodeInstruction(OpCodes.Dup),

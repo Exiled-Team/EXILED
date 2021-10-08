@@ -15,6 +15,8 @@ namespace Exiled.API.Features
 
     using Interactables.Interobjects.DoorUtils;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
 
     /// <summary>
@@ -55,7 +57,29 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<DoorVariant> Doors { get; private set; }
+        public IEnumerable<Door> Doors { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the intensity of the lights in the room.
+        /// </summary>
+        public float LightIntensity
+        {
+            get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
+            set => FlickerableLightController.Network_lightIntensityMultiplier = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the color of the room's lights by changing the warhead color.
+        /// </summary>
+        public Color Color
+        {
+            get => (Color)FlickerableLightController.WarheadLightColor;
+            set
+            {
+                FlickerableLightController.WarheadLightColor = value;
+                FlickerableLightController.WarheadLightOverride = true;
+            }
+        }
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera079"/> in the <see cref="Room"/>.
@@ -76,10 +100,42 @@ namespace Exiled.API.Features
         public void TurnOffLights(float duration) => FlickerableLightController?.ServerFlickerLights(duration);
 
         /// <summary>
-        /// Sets the intensity of the lights in the room.
+        /// Locks all the doors in the room.
         /// </summary>
-        /// <param name="intensity">The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</param>
-        public void SetLightIntensity(float intensity) => FlickerableLightController?.ServerSetLightIntensity(intensity);
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.ChangeLock(lockType);
+                door.IsOpen = false;
+            }
+
+            if (duration < 0)
+                return;
+            MEC.Timing.CallDelayed(duration, UnlockAll);
+        }
+
+        /// <summary>
+        /// Unlocks all the doors in the room.
+        /// </summary>
+        public void UnlockAll()
+        {
+            foreach (Door door in this.Doors)
+            {
+                door.Unlock();
+            }
+        }
+
+        /// <summary>
+        /// Resets the room color to default.
+        /// </summary>
+        public void ResetColor()
+        {
+            FlickerableLightController.WarheadLightColor = global::FlickerableLightController.DefaultWarheadColor;
+            FlickerableLightController.WarheadLightOverride = false;
+        }
 
         /// <summary>
         /// Factory method to create and add a <see cref="Room"/> component to a Transform.
@@ -160,6 +216,8 @@ namespace Exiled.API.Features
                     return RoomType.Hcz096;
                 case "HCZ_Curve":
                     return RoomType.HczCurve;
+                case "HCZ_Straight":
+                    return RoomType.HczStraight;
                 case "EZ_Endoof":
                     return RoomType.EzVent;
                 case "EZ_Intercom":
@@ -188,6 +246,8 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
+                case "EZ_ThreeWay":
+                    return RoomType.EzTCross;
                 case "PocketWorld":
                     return RoomType.Pocket;
                 case "Outside":
@@ -217,28 +277,12 @@ namespace Exiled.API.Features
             }
         }
 
-        private static List<DoorVariant> FindDoors(GameObject gameObject)
+        private static IEnumerable<Door> FindDoors(GameObject gameObject)
         {
-            List<DoorVariant> doorList = new List<DoorVariant>();
-            foreach (Scp079Interactable scp079Interactable in Interface079.singleton.allInteractables)
-            {
-                foreach (Scp079Interactable.ZoneAndRoom zoneAndRoom in scp079Interactable.currentZonesAndRooms)
-                {
-                    if (zoneAndRoom.currentRoom == gameObject.name && zoneAndRoom.currentZone == gameObject.transform.parent.name)
-                    {
-                        if (scp079Interactable.type == Scp079Interactable.InteractableType.Door)
-                        {
-                            DoorVariant door = scp079Interactable.GetComponent<DoorVariant>();
-                            if (!doorList.Contains(door))
-                            {
-                                doorList.Add(door);
-                            }
-                        }
-                    }
-                }
-            }
-
-            return doorList;
+            List<Door> doors = new List<Door>();
+            foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
+                doors.Add(Door.Get(doorVariant));
+            return doors;
         }
 
         private static List<Camera079> FindCameras(GameObject gameObject)

@@ -14,7 +14,7 @@ namespace Exiled.API.Enums
     {
         /// <summary>
         /// Frag grenade.
-        /// Used by <see cref="ItemType.GrenadeFrag"/>.
+        /// Used by <see cref="ItemType.GrenadeHE"/>.
         /// </summary>
         FragGrenade,
 

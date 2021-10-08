@@ -9,12 +9,14 @@ namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.InteropServices;
+    using System.Security.Principal;
+    using System.Threading;
 
-    using CommandSystem.Commands;
+    using CommandSystem.Commands.Shared;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -22,6 +24,8 @@ namespace Exiled.Loader
     using Exiled.Loader.Features;
     using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
+
+    using NorthwoodLib;
 
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
@@ -54,6 +58,8 @@ namespace Exiled.Loader
             // "Useless" check for now, since configs will be loaded after loading all plugins.
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
+            if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
+                Paths.Reload($"EXILED-Testing");
 
             if (!Directory.Exists(Paths.Configs))
                 Directory.CreateDirectory(Paths.Configs);
@@ -128,6 +134,12 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator) : geteuid() == 0)
+            {
+                ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.Red);
+                Thread.Sleep(5000);
+            }
+
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
@@ -273,7 +285,26 @@ namespace Exiled.Loader
         /// </summary>
         public static void EnablePlugins()
         {
-            foreach (IPlugin<IConfig> plugin in Plugins)
+            List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+
+            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            {
+                try
+                {
+                    if (plugin.Name.StartsWith("Exiled") && plugin.Config.IsEnabled)
+                    {
+                        plugin.OnEnabled();
+                        plugin.OnRegisteringCommands();
+                        toLoad.Remove(plugin);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Plugin \"{plugin.Name}\" thew an exeption while enabling: {e}");
+                }
+            }
+
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
@@ -363,7 +394,7 @@ namespace Exiled.Loader
                 else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
                     Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
-                              $"Its Required Major version is {requiredVersion.Major}, but excepted {actualVersion.Major}. ");
+                              $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
                     return true;
                 }
@@ -372,6 +403,10 @@ namespace Exiled.Loader
             return false;
         }
 
+#pragma warning disable SA1300
+        [DllImport("libc")]
+        private static extern uint geteuid();
+#pragma warning restore
         /// <summary>
         /// Loads all dependencies.
         /// </summary>

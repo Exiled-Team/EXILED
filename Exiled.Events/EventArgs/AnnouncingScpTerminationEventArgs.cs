@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         public Player Killer { get; }
 
         /// <summary>
-        /// Gets the killed <see cref="API.Extensions.Role"/>.
+        /// Gets the killed <see cref="Role"/>.
         /// </summary>
         public Role Role { get; }
 
