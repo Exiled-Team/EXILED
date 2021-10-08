@@ -434,7 +434,12 @@ namespace Exiled.CustomItems.API.Features
                 }
                 else
                 {
-                    Spawn(spawnPoint.Position);
+                    Pickup pickup = Spawn(spawnPoint.Position);
+                    if (pickup.Base is FirearmPickup firearmPickup && this is CustomWeapon customWeapon)
+                    {
+                        firearmPickup.Status = new FirearmStatus(customWeapon.ClipSize, firearmPickup.Status.Flags, firearmPickup.Status.Attachments);
+                        firearmPickup.NetworkStatus = firearmPickup.Status;
+                    }
 
                     Log.Debug($"Spawned {Name} at {spawnPoint.Position} ({spawnPoint.Name})", Instance.Config.Debug);
                 }
