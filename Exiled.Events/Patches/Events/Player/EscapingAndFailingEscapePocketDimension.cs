@@ -41,12 +41,12 @@ namespace Exiled.Events.Patches.Events.Player
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
             // Find the first null check of the NetworkIdentity component
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call);
 
             // Get the return label from the instruction at the index.
-            object returnLabel = newInstructions[index].operand;
+            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index + 1, new[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
@@ -75,7 +75,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
-                        // --------- EscapingPocketDimension ---------
+            // --------- EscapingPocketDimension ---------
 
             // The index offset.
             offset = -1;
@@ -112,6 +112,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
                 new CodeInstruction(OpCodes.Stloc_S, 4),
             });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
