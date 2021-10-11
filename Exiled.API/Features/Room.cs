@@ -73,7 +73,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Color Color
         {
-            get => (Color)FlickerableLightController.WarheadLightColor;
+            get => lickerableLightController.WarheadLightColor;
             set
             {
                 FlickerableLightController.WarheadLightColor = value;
