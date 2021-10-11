@@ -15,8 +15,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
 
     using UnityEngine;
