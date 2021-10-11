@@ -45,8 +45,6 @@ namespace Exiled.CustomItems.API.Features
     /// </summary>
     public abstract class CustomItem
     {
-        private ItemType type;
-
         /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
@@ -82,13 +80,13 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual ItemType Type
         {
-            get => type;
+            get => Type;
             set
             {
                 if (!Enum.IsDefined(typeof(ItemType), value))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid Item type.");
 
-                type = value;
+                Type = value;
             }
         }
 
@@ -501,7 +499,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
