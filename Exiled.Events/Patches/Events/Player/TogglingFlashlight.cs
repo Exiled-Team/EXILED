@@ -58,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -6;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-            
+
             newInstructions.RemoveRange(index, 2);
 
             offset = -4;
@@ -72,7 +72,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-            
+
             newInstructions.RemoveRange(index, 2);
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj);
