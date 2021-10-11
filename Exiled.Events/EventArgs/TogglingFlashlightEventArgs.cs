@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Flashlight;
 
     /// <summary>
-    /// Contains all information before a player walks over a sinkhole.
+    /// Contains all information before a player toggles the flashlight.
     /// </summary>
     public class TogglingFlashlightEventArgs : EventArgs
     {
