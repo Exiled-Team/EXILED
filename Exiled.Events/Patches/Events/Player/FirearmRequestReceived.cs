@@ -27,7 +27,9 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived"/>.
-    /// Adds the <see cref="Player.ReloadingWeapon"/> event.
+    /// Adds <see cref="Player.ReloadingWeapon"/>, <see cref="Player.UnloadingWeapon"/>,
+    /// <see cref="Player.DryfiringWeapon"/>, <see cref="Player.AimingDownSight"/> and
+    /// <see cref="Player.TogglingWeaponFlashlight"/> events.
     /// </summary>
     [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
     internal static class FirearmRequestReceived
