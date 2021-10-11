@@ -13,7 +13,11 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
+
+    using InventorySystem.Disarming;
 
     using UnityEngine;
 
