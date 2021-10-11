@@ -67,6 +67,9 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (!dyingEventArgs.IsAllowed)
                         return false;
+
+                    dyingEventArgs.Target.Inventory.SetDisarmedStatus(null);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
                 }
 
                 return true;
