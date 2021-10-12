@@ -147,7 +147,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Converts a <see cref="GrenadeType"/> to a <see cref="ItemType"/>.
+        /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
         /// <returns><inheritdoc cref="ItemType"/></returns>
