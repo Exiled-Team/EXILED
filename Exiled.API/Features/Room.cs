@@ -96,7 +96,10 @@ namespace Exiled.API.Features
         /// </summary>
         public NetworkIdentity FlickerableLightControllerNetIdentity => FlickerableLightController.netIdentity;
 
-        private FlickerableLightController FlickerableLightController { get; set; }
+        /// <summary>
+        /// Gets the room's FlickerableLightController.
+        /// </summary>
+        public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
