@@ -16,6 +16,8 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.Firearms;
+
     using Mirror;
 
     using Respawning;
@@ -131,12 +133,55 @@ namespace Exiled.API.Extensions
         public static void PlayBeepSound(this Player player) => SendFakeTargetRpc(player, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
 
         /// <summary>
-        /// Set <see cref="NicknameSync.Network_customPlayerInfoString"/> that only <see cref="Player"/> can see.
+        /// Play gun sound to <see cref="Player"/>.
         /// </summary>
-        /// <param name="player">Only this player can see info.</param>
-        /// <param name="target">Target to set info.</param>
-        /// <param name="info">Setting info.</param>
-        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+        /// <param name="player">Target to play.</param>
+        /// <param name="position">Position to play on.</param>
+        /// <param name="itemType">Weapon' sound to play.</param>
+        /// <param name="volume">Sound's volume to set.</param>
+        /// <param name="audioClipId">GunAudioMessage's audioClipId to set (default = 0).</param>
+        public static void PlayGunSound(this Player player, Vector3 position, ItemType itemType, byte volume, byte audioClipId = 0)
+        {
+            GunAudioMessage message = new GunAudioMessage
+            {
+                Weapon = itemType,
+                AudioClipId = audioClipId,
+                MaxDistance = volume,
+                ShooterNetId = 0U,
+            };
+
+            Vector3 to = position - player.Position;
+            float angle = Vector3.Angle(Vector3.forward, to);
+            if (Vector3.Dot(to.normalized, Vector3.left) > 0f)
+                angle = 360f - angle;
+            message.ShooterDirection = (byte)Mathf.RoundToInt(angle / 1.44f);
+            message.ShooterRealDistance = (byte)Mathf.RoundToInt(Mathf.Min(to.magnitude, 255f));
+
+            player.Connection.Send(message);
+        }
+
+        /// <summary>
+        /// Set <see cref="FlickerableLightController.Network_warheadLightColor"/> that only <see cref="Player"/> can see.
+        /// </summary>
+        /// <param name="room">Room to modify.</param>
+        /// <param name="target">Only this player can see room color.</param>
+        /// <param name="color">Color to set.</param>
+        public static void SetRoomColorForTargetOnly(this Room room, Player target, Color color)
+        {
+            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightColor), color);
+            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_warheadLightOverride), true);
+        }
+
+        /// <summary>
+        /// Set <see cref="FlickerableLightController.Network_lightIntensityMultiplier"/> that only <see cref="Player"/> can see.
+        /// </summary>
+        /// <param name="room">Room to modify.</param>
+        /// <param name="target">Only this player can see room color.</param>
+        /// <param name="multiplier">Light intensity multiplier to set.</param>
+        public static void SetRoomLightIntensityForTargetOnly(this Room room, Player target, float multiplier)
+        {
+            target.SendFakeSyncVar(room.FlickerableLightControllerNetIdentity, typeof(FlickerableLightController), nameof(FlickerableLightController.Network_lightIntensityMultiplier), multiplier);
+        }
 
         /// <summary>
         /// Change <see cref="Player"/> character model for appearance.
@@ -198,15 +243,15 @@ namespace Exiled.API.Extensions
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
         {
-            Action<NetworkWriter> customSyncVarGenerator = (targetWriter) =>
+            void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
                 WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
-            };
+            }
 
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
             PooledNetworkWriter writer2 = NetworkWriterPool.GetWriter();
-            MakeCustomSyncWriter(behaviorOwner, targetType, null, customSyncVarGenerator, writer, writer2);
+            MakeCustomSyncWriter(behaviorOwner, targetType, null, CustomSyncVarGenerator, writer, writer2);
             target.ReferenceHub.networkIdentity.connectionToClient.Send(new UpdateVarsMessage() { netId = behaviorOwner.netId, payload = writer.ToArraySegment() });
             NetworkWriterPool.Recycle(writer);
             NetworkWriterPool.Recycle(writer2);
