@@ -24,15 +24,15 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump"/>.
+    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(Mirror.NetworkConnection, PositionMessage2DJump)"/> and
+    /// <see cref="PlayerMovementSync.ReceivePositionJump(NetworkConnection, PositionMessageJump)"/>.
     /// Adds the <see cref="Player.Jumping"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePosition2DJump))]
-#pragma warning disable SA1402 // File may only contain a single type
-#pragma warning disable SA1649 // File name should match first type name
-    internal static class Jumping2D
+    [HarmonyPatch(typeof(PlayerMovementSync))]
+    internal static class Jumping
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        [HarmonyPatch("ReceivePosition2DJump")]
+        private static IEnumerable<CodeInstruction> Transpiler2D(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
@@ -70,24 +70,15 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePosition2D), new[] { typeof(Vector2), typeof(bool) })),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-    }
-#pragma warning restore SA1402 // File may only contain a single type
-#pragma warning restore SA1649 // File name should match first type name
 
-    /// <summary>
-    /// Patches <see cref="PlayerMovementSync.ReceivePositionJump"/>.
-    /// Adds the <see cref="Player.Jumping"/> event.
-    /// </summary>
-    [HarmonyPatch(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePositionJump))]
-    internal static class Jumping
-    {
+        [HarmonyPatch("ReceivePositionJump")]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
@@ -126,7 +117,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ReceivePosition), new[] { typeof(Vector3), typeof(bool) })),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
