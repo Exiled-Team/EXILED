@@ -1862,6 +1862,29 @@ namespace Exiled.API.Features
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
+        /// <summary>
+        /// Teleports the player to a random room.
+        /// </summary>
+        public void RandomTeleport() => Position = Map.Rooms[UnityEngine.Random.Range(0, Map.Rooms.Count)].Position + (Vector3.up * 1.5f);
+
+        /// <summary>
+        /// Teleports the player to a random room.
+        /// </summary>
+        /// <param name="zoneType">The name of the <see cref="ZoneType"/> to iterate through.</param>
+        public void RandomTeleport(ZoneType zoneType) => Position = Map.Rooms.Where(r => r.Zone == zoneType).ElementAt(UnityEngine.Random.Range(0, Map.Rooms.Count)).Position + (Vector3.up * 1.5f);
+
+        /// <summary>
+        /// Teleports the player to a random room.
+        /// </summary>
+        /// <param name="zoneTypes">The list of <see cref="ZoneType"/>s to iterate through.</param>
+        public void RandomTeleport(List<ZoneType> zoneTypes) => Position = Map.Rooms.Where(r => zoneTypes.Contains(r.Zone)).ElementAt(UnityEngine.Random.Range(0, Map.Rooms.Count)).Position + (Vector3.up * 1.5f);
+
+        /// <summary>
+        /// Opens the report window.
+        /// </summary>
+        /// <param name="text">The text to send.</param>
+        public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
