@@ -47,7 +47,7 @@ namespace Exiled.Events.EventArgs
         public Item Item { get; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the item had been thrown.
+        /// Gets a value indicating whether or not the item was thrown.
         /// </summary>
         public bool TryThrow { get; }
 
