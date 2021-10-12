@@ -7,20 +7,13 @@
 
 namespace Exiled.API.Extensions
 {
-    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
     using InventorySystem;
-    using InventorySystem.Items;
-    using InventorySystem.Items.Pickups;
-
-    using MapGeneration.Distributors;
-
-    using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -154,7 +147,7 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Convert a <see cref="GrenadeType"/> to a <see cref="ItemType"/>.
+        /// Converts a <see cref="GrenadeType"/> to a <see cref="ItemType"/>.
         /// </summary>
         /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
         /// <returns><inheritdoc cref="ItemType"/></returns>
@@ -171,6 +164,30 @@ namespace Exiled.API.Extensions
                 default:
                     return ItemType.None;
             }
+        }
+
+        /// <summary>
+        /// Converts a <see cref="List{T}"/> of <see cref="Item"/>s into the corresponding <see cref="List{T}"/> of <see cref="ItemType"/>s.
+        /// </summary>
+        /// <param name="items">The items to convert.</param>
+        /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
+        public static List<ItemType> GetItemTypes(this List<Item> items)
+        {
+            List<ItemType> itemTypes = new List<ItemType>();
+            itemTypes.AddRange(items.Select(item => item.Type));
+            return itemTypes;
+        }
+
+        /// <summary>
+        /// Converts a <see cref="IReadOnlyCollection{T}"/> of <see cref="Item"/>s into the corresponding <see cref="List{T}"/> of <see cref="ItemType"/>s.
+        /// </summary>
+        /// <param name="items">The items to convert.</param>
+        /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
+        public static List<ItemType> GetItemTypes(this IReadOnlyCollection<Item> items)
+        {
+            List<ItemType> itemTypes = new List<ItemType>();
+            itemTypes.AddRange(items.Select(item => item.Type));
+            return itemTypes;
         }
     }
 }
