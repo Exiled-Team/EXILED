@@ -760,7 +760,7 @@ namespace Exiled.CustomItems.API.Features
             ev.Player.RemoveItem(ev.Item);
 
             var pickup = Spawn(ev.Player, ev.Item);
-            if (pickup.Base.Rb != null && ev.TryTrow)
+            if (pickup.Base.Rb != null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));
                 vector.x = Mathf.Max(Mathf.Abs(ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity.x), Mathf.Abs(vector.x)) * (float)((vector.x < 0f) ? -1 : 1);
