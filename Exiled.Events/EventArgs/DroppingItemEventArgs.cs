@@ -26,14 +26,14 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="tryThrow"><inheritdoc cref="TryThrow"/></param>
+        /// <param name="isThrown"><inheritdoc cref="IsThrown"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DroppingItemEventArgs(Player player, ItemBase item, bool tryThrow, bool isAllowed = true)
+        public DroppingItemEventArgs(Player player, ItemBase item, bool isThrown, bool isAllowed = true)
         {
             Player = player;
             Item = Item.Get(item);
             IsAllowed = isAllowed;
-            TryThrow = tryThrow;
+            IsThrown = isThrown;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating whether or not the item was thrown.
         /// </summary>
-        public bool TryThrow { get; }
+        public bool IsThrown { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the item can be dropped.
