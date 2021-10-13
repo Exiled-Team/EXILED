@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class UsingMicroHIDEnergyEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs__ctor_Exiled_API_Features_Player_MicroHID_MicroHID_MicroHidState_System_Single_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.%23ctor(Exiled.API.Features.Player%2CMicroHID%2CMicroHID.MicroHidState%2CSystem.Single%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_MicroHID_MicroHIDItem_InventorySystem_Items_MicroHID_HidState_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.MicroHID.MicroHIDItem%2CInventorySystem.Items.MicroHID.HidState%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L28">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L30">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs__ctor_Exiled_API_Features_Player_MicroHID_MicroHID_MicroHidState_System_Single_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.#ctor(Exiled.API.Features.Player,MicroHID,MicroHID.MicroHidState,System.Single,System.Single,System.Boolean)">UsingMicroHIDEnergyEventArgs(Player, MicroHID, MicroHID.MicroHidState, Single, Single, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_MicroHID_MicroHIDItem_InventorySystem_Items_MicroHID_HidState_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.MicroHID.MicroHIDItem,InventorySystem.Items.MicroHID.HidState,System.Single,System.Boolean)">UsingMicroHIDEnergyEventArgs(Player, MicroHIDItem, HidState, Single, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.html">UsingMicroHIDEnergyEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public UsingMicroHIDEnergyEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState currentState, float oldValue, float newValue, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public UsingMicroHIDEnergyEventArgs(Player player, MicroHIDItem microHIDitem, HidState currentState, float drain, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,24 +159,19 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Player"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">MicroHID</span></td>
-        <td><span class="parametername">microHID</span></td>
+        <td><span class="xref">InventorySystem.Items.MicroHID.MicroHIDItem</span></td>
+        <td><span class="parametername">microHIDitem</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.MicroHID"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">MicroHID.MicroHidState</span></td>
+        <td><span class="xref">InventorySystem.Items.MicroHID.HidState</span></td>
         <td><span class="parametername">currentState</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.CurrentState"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Single</span></td>
-        <td><span class="parametername">oldValue</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.OldValue"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td><span class="parametername">newValue</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.NewValue"></inheritdoc></td>
+        <td><span class="parametername">drain</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Drain"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
@@ -192,7 +187,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_CurrentState.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.CurrentState%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L52">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_CurrentState_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.CurrentState*"></a>
   <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_CurrentState" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.CurrentState">CurrentState</h4>
@@ -201,7 +196,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MicroHID.MicroHidState CurrentState { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HidState CurrentState { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -213,7 +208,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MicroHID.MicroHidState</span></td>
+        <td><span class="xref">InventorySystem.Items.MicroHID.HidState</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Drain.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Drain%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L57">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Drain_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Drain*"></a>
+  <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Drain" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Drain">Drain</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the MicroHID energy drain.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float Drain { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -223,7 +249,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L66">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L62">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.IsAllowed">IsAllowed</h4>
@@ -254,7 +280,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_MicroHID.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.MicroHID%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L47">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_MicroHID_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.MicroHID*"></a>
   <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_MicroHID" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.MicroHID">MicroHID</h4>
@@ -263,7 +289,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public MicroHID MicroHID { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public MicroHid MicroHID { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -275,69 +301,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">MicroHID</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_NewValue.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.NewValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L61">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_NewValue_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.NewValue*"></a>
-  <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_NewValue" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.NewValue">NewValue</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the new MicroHID energy value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float NewValue { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_OldValue.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.OldValue%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L56">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_OldValue_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.OldValue*"></a>
-  <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_OldValue" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.OldValue">OldValue</h4>
-  <div class="markdown level1 summary"><p>Gets the old MicroHID energy value.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public float OldValue { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Items.MicroHid.html">MicroHid</a></td>
         <td></td>
       </tr>
     </tbody>
@@ -347,7 +311,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L42">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Player_" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs_Player" data-uid="Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.Player">Player</h4>
@@ -375,7 +339,7 @@
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -388,7 +352,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_UsingMicroHIDEnergyEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/UsingMicroHIDEnergyEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

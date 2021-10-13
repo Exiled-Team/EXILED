@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ShotEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_ShotEventArgs" data-uid="Exiled.Events.EventArgs.ShotEventArgs" class="text-break">Class ShotEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations after a player has fired a weapon.</p>
+  <div class="markdown level0 summary"><p>Contains all information after a player has fired a weapon.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_GameObject_HitBoxType_System_Single_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.%23ctor(Exiled.API.Features.Player%2CUnityEngine.GameObject%2CHitBoxType%2CSystem.Single%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_RaycastHit_IDestructible_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.%23ctor(Exiled.API.Features.Player%2CUnityEngine.RaycastHit%2CIDestructible%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L30">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L28">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_ShotEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_GameObject_HitBoxType_System_Single_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,HitBoxType,System.Single,System.Single,System.Boolean)">ShotEventArgs(Player, GameObject, HitBoxType, Single, Single, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_ShotEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_RaycastHit_IDestructible_System_Single_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.RaycastHit,IDestructible,System.Single)">ShotEventArgs(Player, RaycastHit, IDestructible, Single)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.ShotEventArgs.html">ShotEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ShotEventArgs(Player shooter, GameObject target, HitBoxType hitboxType, float distance, float damage, bool canHurt = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,29 +159,20 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.Shooter"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
-        <td><span class="parametername">target</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.Target"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">HitBoxType</span></td>
-        <td><span class="parametername">hitboxType</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.HitboxType"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Single</span></td>
-        <td><span class="parametername">distance</span></td>
+        <td><span class="xref">UnityEngine.RaycastHit</span></td>
+        <td><span class="parametername">hit</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.Distance"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">IDestructible</span></td>
+        <td><span class="parametername">destructible</span></td>
+        <td><p>The <span class="xref">IDestructible</span> hit.</p>
+</td>
       </tr>
       <tr>
         <td><span class="xref">System.Single</span></td>
         <td><span class="parametername">damage</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.Damage"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">canHurt</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ShotEventArgs.CanHurt"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -192,7 +183,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_CanHurt.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.CanHurt%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L77">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L69">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs_CanHurt_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.CanHurt*"></a>
   <h4 id="Exiled_Events_EventArgs_ShotEventArgs_CanHurt" data-uid="Exiled.Events.EventArgs.ShotEventArgs.CanHurt">CanHurt</h4>
@@ -223,7 +214,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_Damage.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.Damage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L72">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L64">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs_Damage_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Damage*"></a>
   <h4 id="Exiled_Events_EventArgs_ShotEventArgs_Damage" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Damage">Damage</h4>
@@ -254,7 +245,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_Distance.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.Distance%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L67">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L59">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs_Distance_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Distance*"></a>
   <h4 id="Exiled_Events_EventArgs_ShotEventArgs_Distance" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Distance">Distance</h4>
@@ -282,20 +273,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_HitboxType.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.HitboxType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_Hitbox.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.Hitbox%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L54">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_ShotEventArgs_HitboxType_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.HitboxType*"></a>
-  <h4 id="Exiled_Events_EventArgs_ShotEventArgs_HitboxType" data-uid="Exiled.Events.EventArgs.ShotEventArgs.HitboxType">HitboxType</h4>
-  <div class="markdown level1 summary"><p>Gets the hitbox type of the shot.</p>
+  <a id="Exiled_Events_EventArgs_ShotEventArgs_Hitbox_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Hitbox*"></a>
+  <h4 id="Exiled_Events_EventArgs_ShotEventArgs_Hitbox" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Hitbox">Hitbox</h4>
+  <div class="markdown level1 summary"><p>Gets the hitbox type of the shot. Can be null!.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use HitboxTypeEnum instead&quot;)]
-public string HitboxType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public HitboxIdentity Hitbox { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -307,38 +297,7 @@ public string HitboxType { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_HitboxTypeEnum.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.HitboxTypeEnum%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L62">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_ShotEventArgs_HitboxTypeEnum_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.HitboxTypeEnum*"></a>
-  <h4 id="Exiled_Events_EventArgs_ShotEventArgs_HitboxTypeEnum" data-uid="Exiled.Events.EventArgs.ShotEventArgs.HitboxTypeEnum">HitboxTypeEnum</h4>
-  <div class="markdown level1 summary"><p>Gets the hitbox type of the shot.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public HitBoxType HitboxTypeEnum { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">HitBoxType</span></td>
+        <td><span class="xref">HitboxIdentity</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -348,7 +307,7 @@ public string HitboxType { get; }</code></pre>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_Shooter.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.Shooter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs_Shooter_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Shooter*"></a>
   <h4 id="Exiled_Events_EventArgs_ShotEventArgs_Shooter" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Shooter">Shooter</h4>
@@ -379,16 +338,16 @@ public string HitboxType { get; }</code></pre>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ShotEventArgs_Target.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ShotEventArgs.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ShotEventArgs.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ShotEventArgs_Target_" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Target*"></a>
   <h4 id="Exiled_Events_EventArgs_ShotEventArgs_Target" data-uid="Exiled.Events.EventArgs.ShotEventArgs.Target">Target</h4>
-  <div class="markdown level1 summary"><p>Gets the target of the shot.</p>
+  <div class="markdown level1 summary"><p>Gets the target of the shot. Can be null!.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameObject Target { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Player Target { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -400,14 +359,14 @@ public string HitboxType { get; }</code></pre>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>

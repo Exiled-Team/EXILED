@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class OwnerChangingRoleEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs" class="text-break">Class OwnerChangingRoleEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations of a <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html">CustomItem</a> before a <a class="xref" href="Exiled.API.Features.Player.html">Player</a> escapes.</p>
+  <div class="markdown level0 summary"><p>Contains all informations of a <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html">CustomItem</a> before a <a class="xref" href="Exiled.API.Features.Player.html">Player</a> changes roles.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -105,10 +105,16 @@
       <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_Items">ChangingRoleEventArgs.Items</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_IsEscaped">ChangingRoleEventArgs.IsEscaped</a>
+      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_Ammo">ChangingRoleEventArgs.Ammo</a>
     </div>
     <div>
-      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_ShouldPreservePosition">ChangingRoleEventArgs.ShouldPreservePosition</a>
+      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_Reason">ChangingRoleEventArgs.Reason</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_Lite">ChangingRoleEventArgs.Lite</a>
+    </div>
+    <div>
+      <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html#Exiled_Events_EventArgs_ChangingRoleEventArgs_IsAllowed">ChangingRoleEventArgs.IsAllowed</a>
     </div>
     <div>
       <span class="xref">System.EventArgs.Empty</span>
@@ -145,19 +151,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_Inventory_SyncItemInfo_Exiled_API_Features_Player_RoleType_System_Collections_Generic_List_ItemType__System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.%23ctor(Inventory.SyncItemInfo%2CExiled.API.Features.Player%2CRoleType%2CSystem.Collections.Generic.List%7BItemType%7D%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_InventorySystem_Items_ItemBase_Exiled_API_Features_Player_RoleType_System_Boolean_CharacterClassManager_SpawnReason_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.%23ctor(InventorySystem.Items.ItemBase%2CExiled.API.Features.Player%2CRoleType%2CSystem.Boolean%2CCharacterClassManager.SpawnReason)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerChangingRoleEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor*"></a>
-  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_Inventory_SyncItemInfo_Exiled_API_Features_Player_RoleType_System_Collections_Generic_List_ItemType__System_Boolean_System_Boolean_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor(Inventory.SyncItemInfo,Exiled.API.Features.Player,RoleType,System.Collections.Generic.List{ItemType},System.Boolean,System.Boolean)">OwnerChangingRoleEventArgs(Inventory.SyncItemInfo, Player, RoleType, List&lt;ItemType&gt;, Boolean, Boolean)</h4>
+  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_InventorySystem_Items_ItemBase_Exiled_API_Features_Player_RoleType_System_Boolean_CharacterClassManager_SpawnReason_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor(InventorySystem.Items.ItemBase,Exiled.API.Features.Player,RoleType,System.Boolean,CharacterClassManager.SpawnReason)">OwnerChangingRoleEventArgs(ItemBase, Player, RoleType, Boolean, CharacterClassManager.SpawnReason)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.html">OwnerChangingRoleEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OwnerChangingRoleEventArgs(Inventory.SyncItemInfo item, Player player, RoleType newRole, List&lt;ItemType&gt; items, bool shouldPreservePosition, bool isEscaped)</code></pre>
+    <pre><code class="lang-csharp hljs">public OwnerChangingRoleEventArgs(ItemBase item, Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -170,7 +176,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Inventory.SyncItemInfo</span></td>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
         <td><span class="parametername">item</span></td>
         <td><inheritdoc cref="P:Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.Item"></inheritdoc></td>
       </tr>
@@ -185,37 +191,32 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">ItemType</span>&gt;</td>
-        <td><span class="parametername">items</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Items"></inheritdoc></td>
-      </tr>
-      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">shouldPreservePosition</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition"></inheritdoc></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Lite"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isEscaped</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped"></inheritdoc></td>
+        <td><span class="xref">CharacterClassManager.SpawnReason</span></td>
+        <td><span class="parametername">reason</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Reason"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_Inventory_SyncItemInfo_Exiled_Events_EventArgs_ChangingRoleEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.%23ctor(Inventory.SyncItemInfo%2CExiled.Events.EventArgs.ChangingRoleEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_InventorySystem_Items_ItemBase_Exiled_Events_EventArgs_ChangingRoleEventArgs_.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.%23ctor(InventorySystem.Items.ItemBase%2CExiled.Events.EventArgs.ChangingRoleEventArgs)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerChangingRoleEventArgs.cs/#L26">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerChangingRoleEventArgs.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor*"></a>
-  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_Inventory_SyncItemInfo_Exiled_Events_EventArgs_ChangingRoleEventArgs_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor(Inventory.SyncItemInfo,Exiled.Events.EventArgs.ChangingRoleEventArgs)">OwnerChangingRoleEventArgs(Inventory.SyncItemInfo, ChangingRoleEventArgs)</h4>
+  <h4 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs__ctor_InventorySystem_Items_ItemBase_Exiled_Events_EventArgs_ChangingRoleEventArgs_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.#ctor(InventorySystem.Items.ItemBase,Exiled.Events.EventArgs.ChangingRoleEventArgs)">OwnerChangingRoleEventArgs(ItemBase, ChangingRoleEventArgs)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.html">OwnerChangingRoleEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public OwnerChangingRoleEventArgs(Inventory.SyncItemInfo item, ChangingRoleEventArgs ev)</code></pre>
+    <pre><code class="lang-csharp hljs">public OwnerChangingRoleEventArgs(ItemBase item, ChangingRoleEventArgs ev)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -228,7 +229,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Inventory.SyncItemInfo</span></td>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
         <td><span class="parametername">item</span></td>
         <td><inheritdoc cref="P:Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.Item"></inheritdoc></td>
       </tr>
@@ -251,12 +252,12 @@
   </span>
   <a id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs_Item_" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.Item*"></a>
   <h4 id="Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs_Item" data-uid="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.Item">Item</h4>
-  <div class="markdown level1 summary"><p>Gets the <see cref="!:Inventory.SyncItemInfo"></see> as a <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html">CustomItem</a> in the player&apos;s inventory.</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.html#Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs_Item">Item</a> as a <a class="xref" href="Exiled.CustomItems.API.Features.CustomItem.html">CustomItem</a> in the player&apos;s inventory.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Inventory.SyncItemInfo Item { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ItemBase Item { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -268,14 +269,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Inventory.SyncItemInfo</span></td>
+        <td><span class="xref">InventorySystem.Items.ItemBase</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -288,7 +289,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_CustomItems_API_EventArgs_OwnerChangingRoleEventArgs.md&amp;value=---%0Auid%3A%20Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerChangingRoleEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.CustomItems/API/EventArgs/OwnerChangingRoleEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

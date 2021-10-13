@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DeactivatingWorkstationEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,27 +83,17 @@
   
   <h1 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs" class="text-break">Class DeactivatingWorkstationEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations before a player deactivates a workstation.</p>
+  <div class="markdown level0 summary"><p>Contains all informations before deactivating a workstation.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.EventArgs</span></div>
-    <div class="level2"><a class="xref" href="Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html">ActivatingWorkstationEventArgs</a></div>
-    <div class="level3"><span class="xref">DeactivatingWorkstationEventArgs</span></div>
+    <div class="level2"><span class="xref">DeactivatingWorkstationEventArgs</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html#Exiled_Events_EventArgs_ActivatingWorkstationEventArgs_Player">ActivatingWorkstationEventArgs.Player</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html#Exiled_Events_EventArgs_ActivatingWorkstationEventArgs_Workstation">ActivatingWorkstationEventArgs.Workstation</a>
-    </div>
-    <div>
-      <a class="xref" href="Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html#Exiled_Events_EventArgs_ActivatingWorkstationEventArgs_IsAllowed">ActivatingWorkstationEventArgs.IsAllowed</a>
-    </div>
     <div>
       <span class="xref">System.EventArgs.Empty</span>
     </div>
@@ -133,25 +123,25 @@
   <h6><strong>Assembly</strong>: Exiled.Events.dll</h6>
   <h5 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DeactivatingWorkstationEventArgs : ActivatingWorkstationEventArgs</code></pre>
+    <pre><code class="lang-csharp hljs">public class DeactivatingWorkstationEventArgs : EventArgs</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs__ctor_Exiled_API_Features_Player_WorkStation_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.%23ctor(Exiled.API.Features.Player%2CWorkStation%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs__ctor_InventorySystem_Items_Firearms_Attachments_WorkstationController_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.%23ctor(InventorySystem.Items.Firearms.Attachments.WorkstationController%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L23">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L26">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs__ctor_Exiled_API_Features_Player_WorkStation_System_Boolean_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.#ctor(Exiled.API.Features.Player,WorkStation,System.Boolean)">DeactivatingWorkstationEventArgs(Player, WorkStation, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs__ctor_InventorySystem_Items_Firearms_Attachments_WorkstationController_System_Boolean_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.#ctor(InventorySystem.Items.Firearms.Attachments.WorkstationController,System.Boolean)">DeactivatingWorkstationEventArgs(WorkstationController, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.html">DeactivatingWorkstationEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DeactivatingWorkstationEventArgs(Player player, WorkStation station, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public DeactivatingWorkstationEventArgs(WorkstationController controller, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -164,26 +154,115 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">player</span></td>
-        <td><inheritdoc cref="T:Exiled.API.Features.Player"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">WorkStation</span></td>
-        <td><span class="parametername">station</span></td>
-        <td><inheritdoc cref="N:Exiled.Permissions"></inheritdoc></td>
+        <td><span class="xref">InventorySystem.Items.Firearms.Attachments.WorkstationController</span></td>
+        <td><span class="parametername">controller</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.WorkstationController"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">isAllowed</span></td>
-        <td><p>Gets or sets a value indicating whether or not the workstation can be deactivated.</p>
-</td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.IsAllowed"></inheritdoc></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L45">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the workstation can be deactivated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_NewStatus.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.NewStatus%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L40">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_NewStatus_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.NewStatus*"></a>
+  <h4 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_NewStatus" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.NewStatus">NewStatus</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the workstation status.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WorkstationController.WorkstationStatus NewStatus { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.Firearms.Attachments.WorkstationController.WorkstationStatus</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_WorkstationController.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.WorkstationController%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L35">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_WorkstationController_" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.WorkstationController*"></a>
+  <h4 id="Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs_WorkstationController" data-uid="Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.WorkstationController">WorkstationController</h4>
+  <div class="markdown level1 summary"><p>Gets the workstation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public WorkstationController WorkstationController { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.Firearms.Attachments.WorkstationController</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -196,7 +275,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DeactivatingWorkstationEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L15" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DeactivatingWorkstationEventArgs.cs/#L19" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

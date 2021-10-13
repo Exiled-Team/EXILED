@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Room
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -393,7 +393,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Cameras.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Cameras%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L63">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L87">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Cameras_" data-uid="Exiled.API.Features.Room.Cameras*"></a>
   <h4 id="Exiled_API_Features_Room_Cameras" data-uid="Exiled.API.Features.Room.Cameras">Cameras</h4>
@@ -421,19 +421,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Doors.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Doors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Color.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Color%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L58">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L74">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Room_Doors_" data-uid="Exiled.API.Features.Room.Doors*"></a>
-  <h4 id="Exiled_API_Features_Room_Doors" data-uid="Exiled.API.Features.Room.Doors">Doors</h4>
-  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <see cref="!:Door"></see> in the <a class="xref" href="Exiled.API.Features.Room.html">Room</a>.</p>
+  <a id="Exiled_API_Features_Room_Color_" data-uid="Exiled.API.Features.Room.Color*"></a>
+  <h4 id="Exiled_API_Features_Room_Color" data-uid="Exiled.API.Features.Room.Color">Color</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the color of the room&apos;s lights by changing the warhead color.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;DoorVariant&gt; Doors { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Color Color { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -445,7 +445,69 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">Interactables.Interobjects.DoorUtils.DoorVariant</span>&gt;</td>
+        <td><span class="xref">UnityEngine.Color</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Doors.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Doors%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L60">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Room_Doors_" data-uid="Exiled.API.Features.Room.Doors*"></a>
+  <h4 id="Exiled_API_Features_Room_Doors" data-uid="Exiled.API.Features.Room.Doors">Doors</h4>
+  <div class="markdown level1 summary"><p>Gets a <span class="xref">System.Collections.Generic.IEnumerable&lt;T&gt;</span> of <a class="xref" href="Exiled.API.Features.Door.html">Door</a> in the <a class="xref" href="Exiled.API.Features.Room.html">Room</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;Door&gt; Doors { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="Exiled.API.Features.Door.html">Door</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_LightIntensity.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.LightIntensity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L65">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Room_LightIntensity_" data-uid="Exiled.API.Features.Room.LightIntensity*"></a>
+  <h4 id="Exiled_API_Features_Room_LightIntensity" data-uid="Exiled.API.Features.Room.LightIntensity">LightIntensity</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the intensity of the lights in the room.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public float LightIntensity { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Single</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -455,7 +517,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_LightsOff.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.LightsOff%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L68">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L92">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_LightsOff_" data-uid="Exiled.API.Features.Room.LightsOff*"></a>
   <h4 id="Exiled_API_Features_Room_LightsOff" data-uid="Exiled.API.Features.Room.LightsOff">LightsOff</h4>
@@ -486,7 +548,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L28">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L30">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Name_" data-uid="Exiled.API.Features.Room.Name*"></a>
   <h4 id="Exiled_API_Features_Room_Name" data-uid="Exiled.API.Features.Room.Name">Name</h4>
@@ -517,7 +579,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Players.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Players%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L53">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Players_" data-uid="Exiled.API.Features.Room.Players*"></a>
   <h4 id="Exiled_API_Features_Room_Players" data-uid="Exiled.API.Features.Room.Players">Players</h4>
@@ -548,7 +610,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L38">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Position_" data-uid="Exiled.API.Features.Room.Position*"></a>
   <h4 id="Exiled_API_Features_Room_Position" data-uid="Exiled.API.Features.Room.Position">Position</h4>
@@ -579,7 +641,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Transform.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Transform%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L33">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L35">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Transform_" data-uid="Exiled.API.Features.Room.Transform*"></a>
   <h4 id="Exiled_API_Features_Room_Transform" data-uid="Exiled.API.Features.Room.Transform">Transform</h4>
@@ -610,7 +672,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Type.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Type%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L48">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Type_" data-uid="Exiled.API.Features.Room.Type*"></a>
   <h4 id="Exiled_API_Features_Room_Type" data-uid="Exiled.API.Features.Room.Type">Type</h4>
@@ -641,7 +703,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_Zone.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.Zone%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L43">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_Zone_" data-uid="Exiled.API.Features.Room.Zone*"></a>
   <h4 id="Exiled_API_Features_Room_Zone" data-uid="Exiled.API.Features.Room.Zone">Zone</h4>
@@ -671,19 +733,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_SetLightIntensity_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.SetLightIntensity(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_LockDown_System_Single_Exiled_API_Enums_DoorLockType_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.LockDown(System.Single%2CExiled.API.Enums.DoorLockType)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L82">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L107">View Source</a>
   </span>
-  <a id="Exiled_API_Features_Room_SetLightIntensity_" data-uid="Exiled.API.Features.Room.SetLightIntensity*"></a>
-  <h4 id="Exiled_API_Features_Room_SetLightIntensity_System_Single_" data-uid="Exiled.API.Features.Room.SetLightIntensity(System.Single)">SetLightIntensity(Single)</h4>
-  <div class="markdown level1 summary"><p>Sets the intensity of the lights in the room.</p>
+  <a id="Exiled_API_Features_Room_LockDown_" data-uid="Exiled.API.Features.Room.LockDown*"></a>
+  <h4 id="Exiled_API_Features_Room_LockDown_System_Single_Exiled_API_Enums_DoorLockType_" data-uid="Exiled.API.Features.Room.LockDown(System.Single,Exiled.API.Enums.DoorLockType)">LockDown(Single, DoorLockType)</h4>
+  <div class="markdown level1 summary"><p>Locks all the doors in the room.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public void SetLightIntensity(float intensity)</code></pre>
+    <pre><code class="lang-csharp hljs">public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -697,18 +759,40 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Single</span></td>
-        <td><span class="parametername">intensity</span></td>
-        <td><p>The light intensity multiplier. Cannot be brighter than 2 or darker than 0.</p>
+        <td><span class="parametername">duration</span></td>
+        <td><p>Duration in seconds.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Enums.DoorLockType.html">DoorLockType</a></td>
+        <td><span class="parametername">lockType</span></td>
+        <td><p>DoorLockType of the lockdown.</p>
 </td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_ResetColor.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.ResetColor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L134">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Room_ResetColor_" data-uid="Exiled.API.Features.Room.ResetColor*"></a>
+  <h4 id="Exiled_API_Features_Room_ResetColor" data-uid="Exiled.API.Features.Room.ResetColor">ResetColor()</h4>
+  <div class="markdown level1 summary"><p>Resets the room color to default.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetColor()</code></pre>
+  </div>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_TurnOffLights_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.TurnOffLights(System.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L76">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L100">View Source</a>
   </span>
   <a id="Exiled_API_Features_Room_TurnOffLights_" data-uid="Exiled.API.Features.Room.TurnOffLights*"></a>
   <h4 id="Exiled_API_Features_Room_TurnOffLights_System_Single_" data-uid="Exiled.API.Features.Room.TurnOffLights(System.Single)">TurnOffLights(Single)</h4>
@@ -737,9 +821,25 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room_UnlockAll.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room.UnlockAll%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L123">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Room_UnlockAll_" data-uid="Exiled.API.Features.Room.UnlockAll*"></a>
+  <h4 id="Exiled_API_Features_Room_UnlockAll" data-uid="Exiled.API.Features.Room.UnlockAll">UnlockAll()</h4>
+  <div class="markdown level1 summary"><p>Unlocks all the doors in the room.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void UnlockAll()</code></pre>
+  </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -752,7 +852,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Room.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Room%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L23" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Room.cs/#L25" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class LockingDownEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_LockingDownEventArgs" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs" class="text-break">Class LockingDownEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations before SCP-079 lockdowns a room.</p>
+  <div class="markdown level0 summary"><p>Contains all information before SCP-079 lockdowns a room.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_LockingDownEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_GameObject_System_Single_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.LockingDownEventArgs.%23ctor(Exiled.API.Features.Player%2CUnityEngine.GameObject%2CSystem.Single%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_LockingDownEventArgs__ctor_Exiled_API_Features_Player_MapGeneration_RoomIdentifier_System_Single_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.LockingDownEventArgs.%23ctor(Exiled.API.Features.Player%2CMapGeneration.RoomIdentifier%2CSystem.Single)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/LockingDownEventArgs.cs/#L26">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_LockingDownEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_LockingDownEventArgs__ctor_Exiled_API_Features_Player_UnityEngine_GameObject_System_Single_System_Boolean_" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs.#ctor(Exiled.API.Features.Player,UnityEngine.GameObject,System.Single,System.Boolean)">LockingDownEventArgs(Player, GameObject, Single, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_LockingDownEventArgs__ctor_Exiled_API_Features_Player_MapGeneration_RoomIdentifier_System_Single_" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs.#ctor(Exiled.API.Features.Player,MapGeneration.RoomIdentifier,System.Single)">LockingDownEventArgs(Player, RoomIdentifier, Single)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.LockingDownEventArgs.html">LockingDownEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public LockingDownEventArgs(Player player, GameObject roomGameObject, float auxiliaryPowerCost, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public LockingDownEventArgs(Player player, RoomIdentifier roomIdentifier, float auxiliaryPowerCost)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,19 +159,14 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.LockingDownEventArgs.Player"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
-        <td><span class="parametername">roomGameObject</span></td>
+        <td><span class="xref">MapGeneration.RoomIdentifier</span></td>
+        <td><span class="parametername">roomIdentifier</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.LockingDownEventArgs.RoomGameObject"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Single</span></td>
         <td><span class="parametername">auxiliaryPowerCost</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.LockingDownEventArgs.AuxiliaryPowerCost"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.LockingDownEventArgs.IsAllowed"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -279,12 +274,12 @@
   </span>
   <a id="Exiled_Events_EventArgs_LockingDownEventArgs_RoomGameObject_" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs.RoomGameObject*"></a>
   <h4 id="Exiled_Events_EventArgs_LockingDownEventArgs_RoomGameObject" data-uid="Exiled.Events.EventArgs.LockingDownEventArgs.RoomGameObject">RoomGameObject</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the gameobject of the room that will be lockdowned.</p>
+  <div class="markdown level1 summary"><p>Gets the <span class="xref">MapGeneration.RoomIdentifier</span> of the room that will be locked down.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameObject RoomGameObject { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public RoomIdentifier RoomGameObject { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -296,14 +291,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="xref">MapGeneration.RoomIdentifier</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -316,7 +311,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_LockingDownEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.LockingDownEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/LockingDownEventArgs.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/LockingDownEventArgs.cs/#L18" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

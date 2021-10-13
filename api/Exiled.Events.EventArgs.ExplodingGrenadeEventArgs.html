@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ExplodingGrenadeEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs" class="text-break">Class ExplodingGrenadeEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations before a grenade explodes.</p>
+  <div class="markdown level0 summary"><p>Contains all information before a grenade explodes.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_System_Collections_Generic_Dictionary_Exiled_API_Features_Player_System_Single__System_Boolean_UnityEngine_GameObject_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.%23ctor(Exiled.API.Features.Player%2CSystem.Collections.Generic.Dictionary%7BExiled.API.Features.Player%2CSystem.Single%7D%2CSystem.Boolean%2CUnityEngine.GameObject%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_EffectGrenade_System_Collections_Generic_List_Exiled_API_Features_Player__.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.ThrowableProjectiles.EffectGrenade%2CSystem.Collections.Generic.List%7BExiled.API.Features.Player%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L31">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L57">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_System_Collections_Generic_Dictionary_Exiled_API_Features_Player_System_Single__System_Boolean_UnityEngine_GameObject_System_Boolean_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,System.Collections.Generic.Dictionary{Exiled.API.Features.Player,System.Single},System.Boolean,UnityEngine.GameObject,System.Boolean)">ExplodingGrenadeEventArgs(Player, Dictionary&lt;Player, Single&gt;, Boolean, GameObject, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_EffectGrenade_System_Collections_Generic_List_Exiled_API_Features_Player__" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ThrowableProjectiles.EffectGrenade,System.Collections.Generic.List{Exiled.API.Features.Player})">ExplodingGrenadeEventArgs(Player, EffectGrenade, List&lt;Player&gt;)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.html">ExplodingGrenadeEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ExplodingGrenadeEventArgs(Player thrower, Dictionary&lt;Player, float&gt; targetToDamages, bool isFrag, GameObject grenade, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List&lt;Player&gt; players)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -159,24 +159,57 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<a class="xref" href="Exiled.API.Features.Player.html">Player</a>, <span class="xref">System.Single</span>&gt;</td>
-        <td><span class="parametername">targetToDamages</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetToDamages"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isFrag</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsFrag"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="xref">InventorySystem.Items.ThrowableProjectiles.EffectGrenade</span></td>
         <td><span class="parametername">grenade</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed"></inheritdoc></td>
+        <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Exiled.API.Features.Player.html">Player</a>&gt;</td>
+        <td><span class="parametername">players</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetsToAffect"></inheritdoc></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_EffectGrenade_UnityEngine_Collider___.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.%23ctor(Exiled.API.Features.Player%2CInventorySystem.Items.ThrowableProjectiles.EffectGrenade%2CUnityEngine.Collider%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L31">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.#ctor*"></a>
+  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_ThrowableProjectiles_EffectGrenade_UnityEngine_Collider___" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.ThrowableProjectiles.EffectGrenade,UnityEngine.Collider[])">ExplodingGrenadeEventArgs(Player, EffectGrenade, Collider[])</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.html">ExplodingGrenadeEventArgs</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">thrower</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">InventorySystem.Items.ThrowableProjectiles.EffectGrenade</span></td>
+        <td><span class="parametername">grenade</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Collider</span>[]</td>
+        <td><span class="parametername">targets</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetsToAffect"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -187,7 +220,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Grenade.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L73">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L89">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Grenade_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade*"></a>
   <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Grenade" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Grenade">Grenade</h4>
@@ -196,7 +229,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public GameObject Grenade { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public EffectGrenade Grenade { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -208,7 +241,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">UnityEngine.GameObject</span></td>
+        <td><span class="xref">InventorySystem.Items.ThrowableProjectiles.EffectGrenade</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -218,7 +251,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L78">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L94">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsAllowed">IsAllowed</h4>
@@ -249,7 +282,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsFrag.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsFrag%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L68">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L84">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsFrag_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsFrag*"></a>
   <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_IsFrag" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.IsFrag">IsFrag</h4>
@@ -277,20 +310,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Targets.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Targets%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetsToAffect.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetsToAffect%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L62">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L79">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Targets_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Targets*"></a>
-  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Targets" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Targets">Targets</h4>
-  <div class="markdown level1 summary"><p>Gets the players who could be affected by the grenade, if any.</p>
+  <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetsToAffect_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetsToAffect*"></a>
+  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetsToAffect" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetsToAffect">TargetsToAffect</h4>
+  <div class="markdown level1 summary"><p>Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">[Obsolete(&quot;It will be changed to IEnumerable&lt;Player&gt;&quot;)]
-public List&lt;Player&gt; Targets { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public List&lt;Player&gt; TargetsToAffect { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -309,41 +341,10 @@ public List&lt;Player&gt; Targets { get; }</code></pre>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetToDamages.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetToDamages%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L57">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetToDamages_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetToDamages*"></a>
-  <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_TargetToDamages" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.TargetToDamages">TargetToDamages</h4>
-  <div class="markdown level1 summary"><p>Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Dictionary&lt;Player, float&gt; TargetToDamages { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<a class="xref" href="Exiled.API.Features.Player.html">Player</a>, <span class="xref">System.Single</span>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Thrower.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L52">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L74">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Thrower_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower*"></a>
   <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Thrower" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Thrower">Thrower</h4>
@@ -376,7 +377,7 @@ public List&lt;Player&gt; Targets { get; }</code></pre>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Finalize.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Finalize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L69">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Finalize_" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Finalize*"></a>
   <h4 id="Exiled_Events_EventArgs_ExplodingGrenadeEventArgs_Finalize" data-uid="Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.Finalize">Finalize()</h4>
@@ -389,7 +390,7 @@ public List&lt;Player&gt; Targets { get; }</code></pre>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -402,7 +403,7 @@ public List&lt;Player&gt; Targets { get; }</code></pre>
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ExplodingGrenadeEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ExplodingGrenadeEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ExplodingGrenadeEventArgs.cs/#L23" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

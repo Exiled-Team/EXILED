@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RespawningTeamEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs__ctor_System_Collections_Generic_List_Exiled_API_Features_Player__Respawning_SpawnableTeamType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.%23ctor(System.Collections.Generic.List%7BExiled.API.Features.Player%7D%2CRespawning.SpawnableTeamType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs__ctor_System_Collections_Generic_List_Exiled_API_Features_Player__System_Int32_Respawning_SpawnableTeamType_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.%23ctor(System.Collections.Generic.List%7BExiled.API.Features.Player%7D%2CSystem.Int32%2CRespawning.SpawnableTeamType%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L33">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs__ctor_System_Collections_Generic_List_Exiled_API_Features_Player__Respawning_SpawnableTeamType_System_Boolean_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.#ctor(System.Collections.Generic.List{Exiled.API.Features.Player},Respawning.SpawnableTeamType,System.Boolean)">RespawningTeamEventArgs(List&lt;Player&gt;, SpawnableTeamType, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs__ctor_System_Collections_Generic_List_Exiled_API_Features_Player__System_Int32_Respawning_SpawnableTeamType_System_Boolean_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.#ctor(System.Collections.Generic.List{Exiled.API.Features.Player},System.Int32,Respawning.SpawnableTeamType,System.Boolean)">RespawningTeamEventArgs(List&lt;Player&gt;, Int32, SpawnableTeamType, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.RespawningTeamEventArgs.html">RespawningTeamEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RespawningTeamEventArgs(List&lt;Player&gt; players, SpawnableTeamType nextKnownTeam, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public RespawningTeamEventArgs(List&lt;Player&gt; players, int maxRespawn, SpawnableTeamType nextKnownTeam, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -157,6 +157,11 @@
         <td><span class="xref">System.Collections.Generic.List</span>&lt;<a class="xref" href="Exiled.API.Features.Player.html">Player</a>&gt;</td>
         <td><span class="parametername">players</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.RespawningTeamEventArgs.Players"></inheritdoc></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">maxRespawn</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.RespawningTeamEventArgs.MaximumRespawnAmount"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">Respawning.SpawnableTeamType</span></td>
@@ -177,7 +182,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L67">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.IsAllowed">IsAllowed</h4>
@@ -208,7 +213,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs_MaximumRespawnAmount.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.MaximumRespawnAmount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L47">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L49">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs_MaximumRespawnAmount_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.MaximumRespawnAmount*"></a>
   <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs_MaximumRespawnAmount" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.MaximumRespawnAmount">MaximumRespawnAmount</h4>
@@ -239,7 +244,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs_NextKnownTeam.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.NextKnownTeam%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L52">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L54">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs_NextKnownTeam_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.NextKnownTeam*"></a>
   <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs_NextKnownTeam" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.NextKnownTeam">NextKnownTeam</h4>
@@ -270,7 +275,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs_Players.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.Players%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L42">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L44">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs_Players_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.Players*"></a>
   <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs_Players" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.Players">Players</h4>
@@ -296,9 +301,40 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_RespawningTeamEventArgs_SpawnableTeam.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.RespawningTeamEventArgs.SpawnableTeam%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/RespawningTeamEventArgs.cs/#L72">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_RespawningTeamEventArgs_SpawnableTeam_" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.SpawnableTeam*"></a>
+  <h4 id="Exiled_Events_EventArgs_RespawningTeamEventArgs_SpawnableTeam" data-uid="Exiled.Events.EventArgs.RespawningTeamEventArgs.SpawnableTeam">SpawnableTeam</h4>
+  <div class="markdown level1 summary"><p>Gets the current spawnable team.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SpawnableTeamHandlerBase SpawnableTeam { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Respawning.SpawnableTeamHandlerBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>

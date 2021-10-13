@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class ChangingRoleEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_ChangingRoleEventArgs" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs" class="text-break">Class ChangingRoleEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations before a player&apos;s <span class="xref">RoleType</span> changes.</p>
+  <div class="markdown level0 summary"><p>Contains all information before a player&apos;s <span class="xref">RoleType</span> changes.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -130,19 +130,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs__ctor_Exiled_API_Features_Player_RoleType_System_Collections_Generic_List_ItemType__System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.%23ctor(Exiled.API.Features.Player%2CRoleType%2CSystem.Collections.Generic.List%7BItemType%7D%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs__ctor_Exiled_API_Features_Player_RoleType_System_Boolean_CharacterClassManager_SpawnReason_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.%23ctor(Exiled.API.Features.Player%2CRoleType%2CSystem.Boolean%2CCharacterClassManager.SpawnReason)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L28">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs__ctor_Exiled_API_Features_Player_RoleType_System_Collections_Generic_List_ItemType__System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.#ctor(Exiled.API.Features.Player,RoleType,System.Collections.Generic.List{ItemType},System.Boolean,System.Boolean)">ChangingRoleEventArgs(Player, RoleType, List&lt;ItemType&gt;, Boolean, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs__ctor_Exiled_API_Features_Player_RoleType_System_Boolean_CharacterClassManager_SpawnReason_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.#ctor(Exiled.API.Features.Player,RoleType,System.Boolean,CharacterClassManager.SpawnReason)">ChangingRoleEventArgs(Player, RoleType, Boolean, CharacterClassManager.SpawnReason)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.ChangingRoleEventArgs.html">ChangingRoleEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ChangingRoleEventArgs(Player player, RoleType newRole, List&lt;ItemType&gt; items, bool shouldPreservePosition, bool isEscaped)</code></pre>
+    <pre><code class="lang-csharp hljs">public ChangingRoleEventArgs(Player player, RoleType newRole, bool shouldPreservePosition, CharacterClassManager.SpawnReason reason)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -165,19 +165,14 @@
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.List</span>&lt;<span class="xref">ItemType</span>&gt;</td>
-        <td><span class="parametername">items</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Items"></inheritdoc></td>
-      </tr>
-      <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td><span class="parametername">shouldPreservePosition</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition"></inheritdoc></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Lite"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isEscaped</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped"></inheritdoc></td>
+        <td><span class="xref">CharacterClassManager.SpawnReason</span></td>
+        <td><span class="parametername">reason</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ChangingRoleEventArgs.Reason"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -185,19 +180,50 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_IsEscaped.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_Ammo.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.Ammo%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L63">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_IsEscaped_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped*"></a>
-  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_IsEscaped" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.IsEscaped">IsEscaped</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the player escaped or not.</p>
+  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Ammo_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Ammo*"></a>
+  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Ammo" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Ammo">Ammo</h4>
+  <div class="markdown level1 summary"><p>Gets the base ammo values for the new role. (Changing this will overwrite their current inventory if Lite is true!).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsEscaped { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Dictionary&lt;ItemType, ushort&gt; Ammo { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.Dictionary</span>&lt;<span class="xref">ItemType</span>, <span class="xref">System.UInt16</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L78">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.IsAllowed*"></a>
+  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.IsAllowed">IsAllowed</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the event can continue.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsAllowed { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -219,11 +245,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_Items.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.Items%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L50">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L58">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Items_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Items*"></a>
   <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Items" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Items">Items</h4>
-  <div class="markdown level1 summary"><p>Gets base items that the player will receive.</p>
+  <div class="markdown level1 summary"><p>Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -247,10 +273,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_Lite.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.Lite%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L73">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Lite_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Lite*"></a>
+  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Lite" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Lite">Lite</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the position and items has to be preserved after changing the role.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Lite { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_NewRole.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L53">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_NewRole_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole*"></a>
   <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_NewRole" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.NewRole">NewRole</h4>
@@ -281,7 +338,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L40">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L48">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Player_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Player" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Player">Player</h4>
@@ -309,19 +366,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_ShouldPreservePosition.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs_Reason.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs.Reason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L60">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L68">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_ShouldPreservePosition_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition*"></a>
-  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_ShouldPreservePosition" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.ShouldPreservePosition">ShouldPreservePosition</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether the position has to be preserved after changing the role.</p>
+  <a id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Reason_" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Reason*"></a>
+  <h4 id="Exiled_Events_EventArgs_ChangingRoleEventArgs_Reason" data-uid="Exiled.Events.EventArgs.ChangingRoleEventArgs.Reason">Reason</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the reason for their class change.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool ShouldPreservePosition { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public SpawnReason Reason { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -333,14 +390,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
+        <td><a class="xref" href="Exiled.API.Enums.SpawnReason.html">SpawnReason</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -353,7 +410,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ChangingRoleEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ChangingRoleEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L18" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ChangingRoleEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

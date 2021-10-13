@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class SpawningItemEventArgs
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.2.0">
+    <meta name="generator" content="docfx 2.58.4.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -83,7 +83,7 @@
   
   <h1 id="Exiled_Events_EventArgs_SpawningItemEventArgs" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs" class="text-break">Class SpawningItemEventArgs
   </h1>
-  <div class="markdown level0 summary"><p>Contains all informations before the server spawns an item.</p>
+  <div class="markdown level0 summary"><p>Contains all information before the server spawns an item.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs__ctor_ItemType_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.%23ctor(ItemType%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs__ctor_InventorySystem_Items_Pickups_ItemPickupBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.%23ctor(InventorySystem.Items.Pickups.ItemPickupBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L27">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningItemEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs__ctor_ItemType_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.#ctor(ItemType,UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean,System.Boolean)">SpawningItemEventArgs(ItemType, Vector3, Quaternion, Boolean, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs__ctor_InventorySystem_Items_Pickups_ItemPickupBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.#ctor(InventorySystem.Items.Pickups.ItemPickupBase,System.Boolean)">SpawningItemEventArgs(ItemPickupBase, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.SpawningItemEventArgs.html">SpawningItemEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpawningItemEventArgs(ItemType id, Vector3 pos, Quaternion rot, bool locked, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public SpawningItemEventArgs(ItemPickupBase pickupBase, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,24 +154,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">ItemType</span></td>
-        <td><span class="parametername">id</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Id"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">pos</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Position"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td><span class="parametername">rot</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">locked</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Locked"></inheritdoc></td>
+        <td><span class="xref">InventorySystem.Items.Pickups.ItemPickupBase</span></td>
+        <td><span class="parametername">pickupBase</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningItemEventArgs.Pickup"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
@@ -184,41 +169,10 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_Id.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.Id%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L39">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_Id_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Id*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_Id" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Id">Id</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the item to be dropped.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ItemType Id { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">ItemType</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L59">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L47">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.IsAllowed">IsAllowed</h4>
@@ -246,19 +200,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_Locked.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.Locked%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_Pickup.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.Pickup%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L54">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L42">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_Locked_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Locked*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_Locked" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Locked">Locked</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the pickup will be locked.</p>
+  <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_Pickup_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Pickup*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_Pickup" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Pickup">Pickup</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating the pickup being spawned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Locked { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public Pickup Pickup { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -270,76 +224,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_Position.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L44">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_Position_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Position*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_Position" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Position">Position</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the position to spawn the item.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Position { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs_Rotation.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L49">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningItemEventArgs_Rotation_" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningItemEventArgs_Rotation" data-uid="Exiled.Events.EventArgs.SpawningItemEventArgs.Rotation">Rotation</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the rotation to spawn the item.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Quaternion Rotation { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><a class="xref" href="Exiled.API.Features.Items.Pickup.html">Pickup</a></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
-      <a class="xref" href="Exiled.API.Extensions.Reflection.html#Exiled_API_Extensions_Reflection_CopyProperties_System_Object_System_Object_">Reflection.CopyProperties(Object, Object)</a>
+      <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
   </div>
 </article>
           </div>
@@ -352,7 +244,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningItemEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningItemEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L17" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningItemEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
