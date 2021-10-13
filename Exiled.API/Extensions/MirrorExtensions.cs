@@ -133,6 +133,14 @@ namespace Exiled.API.Extensions
         public static void PlayBeepSound(this Player player) => SendFakeTargetRpc(player, ReferenceHub.HostHub.networkIdentity, typeof(AmbientSoundPlayer), nameof(AmbientSoundPlayer.RpcPlaySound), 7);
 
         /// <summary>
+        /// Set <see cref="NicknameSync.Network_customPlayerInfoString"/> that only <see cref="Player"/> can see.
+        /// </summary>
+        /// <param name="player">Only this player can see info.</param>
+        /// <param name="target">Target to set info.</param>
+        /// <param name="info">Setting info.</param>
+        public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
+
+        /// <summary>
         /// Play gun sound to <see cref="Player"/>.
         /// </summary>
         /// <param name="player">Target to play.</param>
