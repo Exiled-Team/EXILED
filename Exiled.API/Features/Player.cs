@@ -1792,12 +1792,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Enables a <see cref="List{T}"/> of <see cref="EffectType">status effect</see> on the player.
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType">status effect</see> on the player.
         /// </summary>
-        /// <param name="effects">The <see cref="List{T}"/> of <see cref="EffectType"/> to enable.</param>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effects will be active for.</param>
         /// <param name="addDurationIfActive">If an effect is already active, setting to true will add this duration onto the effect.</param>
-        public void EnableEffects(List<EffectType> effects, float duration = 0f, bool addDurationIfActive = false)
+        public void EnableEffects(IEnumerable<EffectType> effects, float duration = 0f, bool addDurationIfActive = false)
         {
             foreach (EffectType effect in effects)
             {
