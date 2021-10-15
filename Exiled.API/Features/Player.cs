@@ -1802,7 +1802,7 @@ namespace Exiled.API.Features
             foreach (EffectType effect in effects)
             {
                 if (TryGetEffect(effect, out var pEffect))
-                    ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
+                    EnableEffect(pEffect, duration, addDurationIfActive);
             }
         }
 
