@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1118
 #pragma warning disable SA1313
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -18,35 +19,33 @@ namespace Exiled.Events.Patches.Generic
 
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static Exiled.Events.Events;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp173PlayerScript.FixedUpdate"/>.
+    /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Scp173PlayerScript), nameof(Scp173PlayerScript.FixedUpdate))]
+    [HarmonyPatch(typeof(PlayableScps.Scp173), nameof(PlayableScps.Scp173.UpdateObservers))]
     internal static class Scp173BeingLooked
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Search for the last "br.s".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Br_S) + 1;
+            const int offset = -3;
+
+            // Search for the only "HashSet<ReferenceHub>.Add()".
+            int index = newInstructions.FindLastIndex(instruction =>
+                instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand ==
+                Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Add))) + offset;
 
             // Declare Player, to be able to store its instance with "stloc.2".
-            generator.DeclareLocal(typeof(Player));
-
-            // Get the start label and remove it.
-            var startLabel = newInstructions[index].labels[0];
-            newInstructions[index].labels.Clear();
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
             // Define the continue label and add it.
-            var continueLabel = generator.DefineLabel();
-            newInstructions[index].labels.Add(continueLabel);
+            Label continueLabel = generator.DefineLabel();
+            newInstructions[index + 5].labels.Add(continueLabel);
 
             // Player player = Player.Get(gameObject);
             //
@@ -54,24 +53,20 @@ namespace Exiled.Events.Patches.Generic
             //   continue;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloca_S, 0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(List<GameObject>.Enumerator), nameof(List<GameObject>.Enumerator.Current))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldloc_3),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_2),
-                new CodeInstruction(OpCodes.Brfalse_S, newInstructions[index - 1].operand),
-                new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
                 new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue, continueLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
-                new CodeInstruction(OpCodes.Brtrue_S, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brfalse, continueLabel),
             });
-
-            // Add the start label.
-            newInstructions[index].WithLabels(startLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

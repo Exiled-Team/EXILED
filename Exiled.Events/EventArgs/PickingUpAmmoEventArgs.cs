@@ -7,10 +7,14 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
+    using InventorySystem.Items.Pickups;
+
     /// <summary>
-    /// Contains all informations before a player picks up an ammo.
+    /// Contains all information before a player picks up an ammo.
     /// </summary>
     public class PickingUpAmmoEventArgs : PickingUpItemEventArgs
     {
@@ -20,9 +24,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="player">The player who's picking up the ammo.</param>
         /// <param name="pickup">The pickup to be picked up.</param>
         /// <param name="isAllowed">Gets or sets a value indicating whether or not the ammo can be picked up.</param>
-        public PickingUpAmmoEventArgs(Player player, Pickup pickup, bool isAllowed = true)
+        public PickingUpAmmoEventArgs(Player player, ItemPickupBase pickup, bool isAllowed = true)
             : base(player, pickup, isAllowed)
         {
         }
+
+        /// <summary>
+        /// Gets the <see cref="Exiled.API.Enums.AmmoType"/> of the item.
+        /// </summary>
+        public AmmoType AmmoType => Pickup.Type.GetAmmoType();
     }
 }

@@ -7,12 +7,16 @@
 
 namespace Exiled.Events.Handlers.Internal
 {
+    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
     using Exiled.Loader;
     using Exiled.Loader.Features;
 
-    using MEC;
+    using InventorySystem;
+    using InventorySystem.Items.ThrowableProjectiles;
+
+    using Item = Exiled.API.Features.Items.Item;
 
     /// <summary>
     /// Handles some round clean-up events and some others related to players.
@@ -23,6 +27,10 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnWaitingForPlayers()
         {
             MultiAdminFeatures.CallEvent(MultiAdminFeatures.EventType.WAITING_FOR_PLAYERS);
+            Item.BaseToItem.Clear();
+            Pickup.BaseToItem.Clear();
+            ExplosiveGrenade.GrenadeToItem.Clear();
+            FlashGrenade.GrenadeToItem.Clear();
 
             if (Events.Instance.Config.ShouldReloadConfigsAtRoundRestart)
             {
@@ -59,7 +67,7 @@ namespace Exiled.Events.Handlers.Internal
                 return;
 
             if (ev.NewRole == RoleType.Spectator && Events.Instance.Config.ShouldDropInventory)
-                ev.Player.Inventory.ServerDropAll();
+                ev.Player.Inventory.ServerDropEverything();
         }
     }
 }

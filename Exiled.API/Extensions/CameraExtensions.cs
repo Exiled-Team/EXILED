@@ -60,6 +60,11 @@ namespace Exiled.API.Extensions
                 var cameraType = (CameraType)cameraID;
                 var room = Map.FindParentRoom(camera.gameObject);
 
+                if (OrderedCameraTypes.ContainsKey(cameraID))
+                    OrderedCameraTypes.Remove(cameraID);
+                if (OrderedCameraRooms.ContainsKey(cameraID))
+                    OrderedCameraRooms.Remove(cameraID);
+
                 OrderedCameraTypes.Add(cameraID, cameraType);
                 OrderedCameraRooms.Add(cameraID, room);
             }

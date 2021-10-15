@@ -7,19 +7,21 @@
 
 namespace Exiled.API.Features
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
-
-    using Grenades;
+    using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
 
+    using InventorySystem.Items.Pickups;
+
     using LightContainmentZoneDecontamination;
+
+    using MapGeneration.Distributors;
 
     using Mirror;
 
@@ -38,9 +40,9 @@ namespace Exiled.API.Features
         internal static readonly List<Room> RoomsValue = new List<Room>(250);
 
         /// <summary>
-        /// A list of <see cref="DoorVariant"/>s on the map.
+        /// A list of <see cref="Door"/>s on the map.
         /// </summary>
-        internal static readonly List<DoorVariant> DoorsValue = new List<DoorVariant>(250);
+        internal static readonly List<Door> DoorsValue = new List<Door>(250);
 
         /// <summary>
         /// A list of <see cref="Camera079"/>s on the map.
@@ -53,6 +55,16 @@ namespace Exiled.API.Features
         internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
 
         /// <summary>
+        /// A list of <see cref="Locker"/>s on the map.
+        /// </summary>
+        internal static readonly List<Locker> LockersValue = new List<Locker>(250);
+
+        /// <summary>
+        /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
+        /// </summary>
+        internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
+
+        /// <summary>
         /// A list of <see cref="TeslaGate"/>s on the map.
         /// </summary>
         internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
@@ -63,10 +75,12 @@ namespace Exiled.API.Features
         internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
 
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<DoorVariant> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
@@ -74,12 +88,25 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLCZDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
 
         /// <summary>
         /// Gets the number of activated generators.
         /// </summary>
-        public static int ActivatedGenerators => Generator079.mainGenerator.totalVoltage;
+        public static int ActivatedGenerators
+        {
+            get
+            {
+                int i = 0;
+                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
+                {
+                    if (gen.Engaged)
+                        i++;
+                }
+
+                return i;
+            }
+        }
 
         /// <summary>
         /// Gets all <see cref="Room"/> objects.
@@ -87,9 +114,9 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<Room> Rooms => ReadOnlyRoomsValue;
 
         /// <summary>
-        /// Gets all <see cref="DoorVariant"/> objects.
+        /// Gets all <see cref="Door"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<DoorVariant> Doors => ReadOnlyDoorsValue;
+        public static ReadOnlyCollection<Door> Doors => ReadOnlyDoorsValue;
 
         /// <summary>
         /// Gets all <see cref="Camera079"/> objects.
@@ -107,27 +134,37 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<TeslaGate> TeslaGates => ReadOnlyTeslasValue;
 
         /// <summary>
+        /// Gets all <see cref="PocketDimensionTeleport"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<PocketDimensionTeleport> PocketDimensionTeleports => ReadOnlyTeleportsValue;
+
+        /// <summary>
+        /// Gets all <see cref="Locker"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<Locker> Lockers => ReadOnlyLockersValue;
+
+        /// <summary>
+        /// gets all <see cref="Pickup"/>s on the map.
+        /// </summary>
+        public static ReadOnlyCollection<Pickup> Pickups
+        {
+            get
+            {
+                List<Pickup> pickups = new List<Pickup>();
+                foreach (ItemPickupBase itemPickupBase in Object.FindObjectsOfType<ItemPickupBase>())
+                {
+                    if (Pickup.Get(itemPickupBase) is Pickup pickup)
+                        pickups.Add(pickup);
+                }
+
+                return pickups.AsReadOnly();
+            }
+        }
+
+        /// <summary>
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
-
-        /// <summary>
-        /// Gets the Default <see cref="global::Ragdoll.Info"/>,
-        /// used in <see cref="SpawnRagdoll(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>
-        /// and <see cref="SpawnRagdoll(Role, global::Ragdoll.Info, Vector3, Quaternion, Vector3, bool)"/>.
-        /// </summary>
-        /// <remarks>
-        /// This value can be modified to change the default Ragdoll's info.
-        /// </remarks>
-        public static global::Ragdoll.Info DefaultRagdollOwner { get; } = new global::Ragdoll.Info()
-        {
-            ownerHLAPI_id = null,
-            PlayerId = -1,
-            DeathCause = new PlayerStats.HitInfo(-1f, "[REDACTED]", DamageTypes.Com15, -1),
-            ClassColor = new Color(1f, 0.556f, 0f),
-            FullName = "Class-D",
-            Nick = "[REDACTED]",
-        };
 
         /// <summary>
         /// Gets the current state of the intercom.
@@ -206,166 +243,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Spawns a ragdoll for a player on a certain position.
-        /// </summary>
-        /// <param name="victim">Victim, represented as a player.</param>
-        /// <param name="deathCause">The message to be displayed as his death.</param>
-        /// <param name="position">Where the ragdoll will be spawned.</param>
-        /// <param name="rotation">The rotation for the ragdoll.</param>
-        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
-        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
-        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
-        public static Ragdoll SpawnRagdoll(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true) =>
-            Ragdoll.Spawn(
-                        victim.Role,
-                        deathCause,
-                        victim.DisplayNickname,
-                        position,
-                        rotation,
-                        velocity,
-                        allowRecall,
-                        victim.Id,
-                        victim.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId);
-
-        /// <summary>
-        /// Spawns a ragdoll on the map based on the different arguments.
-        /// </summary>
-        /// <remarks>
-        /// Tip: You can do '<paramref name="allowRecall"/>: true, <paramref name="playerId"/>: MyPlayer.Id' to skip parameters.
-        /// </remarks>
-        /// <example>
-        /// <code>
-        /// // Code to spawn a fake ragdoll
-        /// if (ev.Player == MyPlugin.TheInmortalPlayer)
-        /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(RoleType.ClassD, DamageTypes.Fall, "The Falling Guy", new Vector3(1234f, -1f, 4321f));
-        /// }
-        /// </code>
-        /// </example>
-        /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
-        /// <param name="deathCause">The death cause, expressed as a <see cref="DamageTypes.DamageType"/>.</param>
-        /// <param name="victimNick">The name from the victim, who the corpse belongs to.</param>
-        /// <param name="position">Where the ragdoll will be spawned.</param>
-        /// <param name="rotation">The rotation for the ragdoll.</param>
-        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
-        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049. Must have a valid <paramref name="playerId"/>.</param>
-        /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
-        /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
-        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
-        public static Ragdoll SpawnRagdoll(
-                RoleType roleType,
-                DamageTypes.DamageType deathCause,
-                string victimNick,
-                Vector3 position,
-                Quaternion rotation = default,
-                Vector3 velocity = default,
-                bool allowRecall = false,
-                int playerId = -1,
-                string mirrorOwnerId = null) =>
-            Ragdoll.Spawn(roleType, deathCause, victimNick, position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
-
-        /// <summary>
-        /// Spawns a ragdoll on the map based on the different arguments.
-        /// </summary>
-        /// <remarks>
-        /// Tip: You can do, for example, '<paramref name="velocity"/>: "Vector3.up * 3"' to skip parameters.
-        /// </remarks>
-        /// <example>
-        /// <code>
-        /// // Code to spawn a fake ragdoll
-        /// if (ev.Player == MyPlugin.TheInmortalPlayer)
-        /// {
-        ///     var fakeRagdoll = Map.SpawnRagdoll(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
-        /// }
-        /// </code>
-        /// </example>
-        /// <param name="roleType">The <see cref="RoleType"/> to use as ragdoll.</param>
-        /// <param name="victimNick">The name from the victim, who the corpse belongs to.</param>
-        /// <param name="hitInfo">The <see cref="PlayerStats.HitInfo"/> that displays who killed this ragdoll, and using which tool.</param>
-        /// <param name="position">Where the ragdoll will be spawned.</param>
-        /// <param name="rotation">The rotation for the ragdoll.</param>
-        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
-        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
-        /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
-        /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
-        /// <returns>The Ragdoll component (requires Assembly-CSharp to be referenced).</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
-        public static Ragdoll SpawnRagdoll(
-                RoleType roleType,
-                string victimNick,
-                PlayerStats.HitInfo hitInfo,
-                Vector3 position,
-                Quaternion rotation = default,
-                Vector3 velocity = default,
-                bool allowRecall = false,
-                int playerId = -1,
-                string mirrorOwnerId = null) =>
-            Ragdoll.Spawn(roleType, victimNick, hitInfo, position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
-
-        /// <summary>
-        /// Optimized method to Spawn a ragdoll on the map.
-        /// Will only allocate the newly created GameObject, requires extra work and pre-loaded base game roles.
-        /// </summary>
-        /// <remarks>
-        /// <list type="number">
-        /// <item>
-        /// <para>
-        /// EXILED already has an internal, default Ragdoll.Info: the use of this
-        /// method to try to optimize a plugin is absolutely optional.
-        /// </para>
-        /// We recommend using: Map.SpawnRagdoll(RoleType roleType, string victimNick, Vector3 position)
-        /// </item>
-        /// <item>
-        /// This method should only ever be used if you're dealing with massive
-        /// server-sided lag.
-        /// </item>
-        /// <item>
-        /// Ragdoll.Info's "ownerID" isn't the SteamID, but the
-        /// <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.
-        /// </item>
-        /// </list>
-        /// </remarks>
-        /// <param name="role">Main game's <see cref="Role"/> thad defines the role to spawn a ragdoll.</param>
-        /// <param name="ragdollInfo"><see cref="global::Ragdoll.Info"/> object containing the ragdoll's info.</param>
-        /// <param name="position">Where the ragdoll will be spawned.</param>
-        /// <param name="rotation">The rotation for the ragdoll.</param>
-        /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
-        /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
-        /// <returns>The <see cref="Ragdoll"/> component created.</returns>
-        [Obsolete("Use Ragdoll.SpawnRagdoll() instead")]
-        public static Ragdoll SpawnRagdoll(
-                Role role,
-                global::Ragdoll.Info ragdollInfo,
-                Vector3 position,
-                Quaternion rotation = default,
-                Vector3 velocity = default,
-                bool allowRecall = false) =>
-            Ragdoll.Spawn(role, ragdollInfo, position, rotation, velocity, allowRecall);
-
-        /// <summary>
-        /// Spawns hands at the specified position with specified rotation.
-        /// </summary>
-        /// <param name="position">Hands position.</param>
-        /// <param name="rotation">Hands rotation.</param>
-        [Obsolete("Removed from the base-game.", true)]
-        public static void SpawnHands(Vector3 position, Quaternion rotation)
-        {
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
-        [Obsolete("Use Broadcast(Broadcast, shouldClearPrevious)", true)]
-        public static void Broadcast(Broadcast broadcast)
-        {
-            if (broadcast.Show)
-                Server.Broadcast.RpcAddElement(broadcast.Content, broadcast.Duration, broadcast.Type);
-        }
-
-        /// <summary>
         /// Broadcasts a message to all players.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
@@ -374,18 +251,6 @@ namespace Exiled.API.Features
         {
             if (broadcast.Show)
                 Broadcast(broadcast.Duration, broadcast.Content, broadcast.Type, shouldClearPrevious);
-        }
-
-        /// <summary>
-        /// Broadcasts a message to all players.
-        /// </summary>
-        /// <param name="duration">The duration in seconds.</param>
-        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
-        /// <param name="type">The broadcast type.</param>
-        [Obsolete("Use Broadcast(ushort duration, string message, Broadcast.BroadcastFlags type, bool shouldClearPrevious)", true)]
-        public static void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
-        {
-            Server.Broadcast.RpcAddElement(message, duration, type);
         }
 
         /// <summary>
@@ -420,17 +285,6 @@ namespace Exiled.API.Features
         public static void ClearBroadcasts() => Server.Broadcast.RpcClearElements();
 
         /// <summary>
-        /// Gets a random spawn point of a <see cref="RoleType"/>.
-        /// </summary>
-        /// <param name="roleType">The <see cref="RoleType"/> to get the spawn point from.</param>
-        /// <returns>Returns the spawn point <see cref="Vector3"/>.</returns>
-        [Obsolete("Moved to Exiled.API.Extensions.Role.GetRandomSpawnPoint(RoleType).", true)]
-        public static Vector3 GetRandomSpawnPoint(this RoleType roleType)
-        {
-            return Extensions.Role.GetRandomSpawnPoint(roleType);
-        }
-
-        /// <summary>
         /// Starts the light containment zone decontamination process.
         /// </summary>
         public static void StartDecontamination()
@@ -443,8 +297,16 @@ namespace Exiled.API.Features
         /// Turns off all lights of the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        /// <param name="isHeavyContainmentZoneOnly">Indicates whether or not only lights in the heavy containment zone will be turned off.</param>
-        public static void TurnOffAllLights(float duration, bool isHeavyContainmentZoneOnly = false) => Generator079.Generators[0].ServerOvercharge(duration, isHeavyContainmentZoneOnly);
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
+        {
+            foreach (FlickerableLightController controller in FlickerableLightController.Instances)
+            {
+                Room room = controller.GetComponentInParent<Room>();
+                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
+                    controller.ServerFlickerLights(duration);
+            }
+        }
 
         /// <summary>
         /// Gets the camera with the given ID.
@@ -474,11 +336,11 @@ namespace Exiled.API.Features
         /// Gets the door with the given door name.
         /// </summary>
         /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="DoorVariant"/> or null if a door with this name doesn't exist.</returns>
-        public static DoorVariant GetDoorByName(string doorName)
+        /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
+        public static Door GetDoorByName(string doorName)
         {
-            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nameExtension);
-            return nameExtension == null ? null : nameExtension.TargetDoor;
+            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
+            return nameExtension == null ? null : Door.Get(nameExtension.TargetDoor);
         }
 
         /// <summary>
@@ -504,40 +366,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Spawns a live grenade object on the map.
-        /// </summary>
-        /// <param name="position">The <see cref="Vector3"/> to spawn the grenade at.</param>
-        /// <param name="grenadeType">The <see cref="GrenadeType"/> of the grenade to spawn.</param>
-        /// <param name="fuseTime">The <see cref="float"/> fuse time of the grenade.</param>
-        /// <param name="velocity">The <see cref="Vector3"/> directional velocity the grenade should move at.</param>
-        /// <param name="explodeOnCollision">Should the grenade explode on collision with wall/floor.</param>
-        /// <param name="player">The <see cref="Player"/> to count as the thrower of the grenade.</param>
-        /// <returns>The <see cref="Grenade"/> being spawned.</returns>
-        public static Grenade SpawnGrenade(Vector3 position, GrenadeType grenadeType = GrenadeType.FragGrenade, float fuseTime = 3f, Vector3? velocity = null, bool explodeOnCollision = false, Player player = null)
-        {
-            if (!Enum.IsDefined(typeof(GrenadeType), grenadeType))
-                return null;
-
-            if (player == null)
-                player = Server.Host;
-
-            GrenadeManager grenadeManager = player.GrenadeManager;
-            GrenadeSettings settings = grenadeManager.availableGrenades[(int)grenadeType];
-
-            Grenade grenade = Object.Instantiate(settings.grenadeInstance).GetComponent<Grenade>();
-
-            grenade.FullInitData(grenadeManager, position, Quaternion.Euler(grenade.throwStartAngle), velocity ?? Vector3.zero, grenade.throwAngularVelocity, player == Server.Host ? Team.RIP : player.Team);
-            grenade.NetworkfuseTime = NetworkTime.time + fuseTime;
-
-            if (explodeOnCollision)
-                grenade.gameObject.AddComponent<Components.CollisionHandler>().Init(player.GameObject, grenade);
-
-            NetworkServer.Spawn(grenade.gameObject);
-
-            return grenade;
-        }
-
-        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
@@ -547,6 +375,8 @@ namespace Exiled.API.Features
             LiftsValue.Clear();
             TeslasValue.Clear();
             CamerasValue.Clear();
+            TeleportsValue.Clear();
+            LockersValue.Clear();
         }
     }
 }

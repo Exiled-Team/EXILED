@@ -7,14 +7,19 @@
 
 namespace Exiled.Events.Patches.Events.Map
 {
-#pragma warning disable SA1313
-    using Exiled.Events;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
+
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)"/>.
@@ -23,17 +28,64 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))]
     internal static class PlacingBlood
     {
-        private static bool Prefix(CharacterClassManager __instance, ref Vector3 pos, ref int type, ref float f)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var ev = new PlacingBloodEventArgs(API.Features.Player.Get(__instance.gameObject), pos, type, f);
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            Map.OnPlacingBlood(ev);
+            var returnLabel = generator.DefineLabel();
 
-            pos = ev.Position;
-            type = ev.Type;
-            f = ev.Multiplier;
+            var ev = generator.DeclareLocal(typeof(PlacingBloodEventArgs));
 
-            return ev.IsAllowed && Events.Instance.Config.CanSpawnBlood;
+            // if (!Exiled.Events.Instance.Config.CanSpawnBlood)
+            //     return;
+            //
+            // var ev = new PlacingBloodEventArgs(Player, Vector3, int, float, bool);
+            //
+            // Handlers.Map.OnPlacingBlood(ev);
+            //
+            // if (!ev.IsAllowed)
+            //     return;
+            //
+            // pos = ev.Position;
+            // type = ev.Type;
+            // f = ev.Multiplier;
+            newInstructions.InsertRange(0, new[]
+            {
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Instance))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Exiled.Events.Events.Config))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Config), nameof(Config.CanSpawnBlood))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PlacingBloodEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Map), nameof(Handlers.Map.OnPlacingBlood))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Position))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Type))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlacingBloodEventArgs), nameof(PlacingBloodEventArgs.Multiplier))),
+                new CodeInstruction(OpCodes.Starg_S, 3),
+            });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

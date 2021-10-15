@@ -7,9 +7,6 @@
 
 namespace Exiled.Events.Handlers
 {
-    using System;
-    using System.IO;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
@@ -55,16 +52,6 @@ namespace Exiled.Events.Handlers
         /// Invoked before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         public static event CustomEventHandler<RespawningTeamEventArgs> RespawningTeam;
-
-        /// <summary>
-        /// Invoked when sending a command through the in-game console.
-        /// </summary>
-        public static event CustomEventHandler<SendingConsoleCommandEventArgs> SendingConsoleCommand;
-
-        /// <summary>
-        /// Invoked when sending a command through the Remote Admin console.
-        /// </summary>
-        public static event CustomEventHandler<SendingRemoteAdminCommandEventArgs> SendingRemoteAdminCommand;
 
         /// <summary>
         /// Invoked when sending a complaint about a player to the local server administrators.
@@ -129,26 +116,6 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
         public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called when sending a command through in-game console.
-        /// </summary>
-        /// <param name="ev">The <see cref="SendingConsoleCommandEventArgs"/> instance.</param>
-        public static void OnSendingConsoleCommand(SendingConsoleCommandEventArgs ev) => SendingConsoleCommand.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called when sending a command through the Remote Admin console.
-        /// </summary>
-        /// <param name="ev">The <see cref="SendingRemoteAdminCommandEventArgs"/> instance.</param>
-        public static void OnSendingRemoteAdminCommand(SendingRemoteAdminCommandEventArgs ev)
-        {
-            SendingRemoteAdminCommand.InvokeSafely(ev);
-
-            lock (ServerLogs.LockObject)
-            {
-                File.AppendAllText(Paths.Log, $"[{DateTime.Now}] {ev.Sender?.Nickname ?? "Server Console"} ({ev.Sender?.UserId ?? "Server Console"}) ran command: {ev?.Name ?? "Unknown"} {string.Join(" ", ev?.Arguments)}. Command Permitted: {(ev.IsAllowed ? "[YES]" : "[NO]")}" + Environment.NewLine);
-            }
-        }
 
         /// <summary>
         /// Called when sending a complaint about a player to the local server administrators.

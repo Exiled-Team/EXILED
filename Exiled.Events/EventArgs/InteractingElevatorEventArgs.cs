@@ -9,8 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Enums;
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     /// <summary>
@@ -32,9 +30,6 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Elevator = elevator;
             IsAllowed = isAllowed;
-#pragma warning disable CS0618 // Type or member is obsolete
-            Type = lift.Type();
-#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         /// <summary>
@@ -43,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Lift.Elevator"/> instance.
+        /// Gets the <see cref="Elevator"/> instance.
         /// </summary>
         public Lift.Elevator Elevator { get; }
 
@@ -53,15 +48,9 @@ namespace Exiled.Events.EventArgs
         public Lift Lift { get; }
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> current <see cref="Lift.Status"/>.
+        /// Gets the <see cref="Lift"/> current <see cref="Status"/>.
         /// </summary>
         public Lift.Status Status { get; }
-
-        /// <summary>
-        /// Gets the <see cref="ElevatorType"/>.
-        /// </summary>
-        [Obsolete("Use Lift.Type() extension method instead.")]
-        public ElevatorType Type { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with the elevator.

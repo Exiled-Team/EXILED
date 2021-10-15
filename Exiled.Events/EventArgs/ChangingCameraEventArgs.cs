@@ -47,16 +47,6 @@ namespace Exiled.Events.EventArgs
         public float AuxiliaryPowerCost { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount of auxiliary power that will be required to switch cameras.
-        /// </summary>
-        [Obsolete("Use AuxiliaryPowerCost instead.")]
-        public float APCost
-        {
-            get => AuxiliaryPowerCost;
-            set => AuxiliaryPowerCost = value;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not SCP-079 can switch cameras.
         /// Defaults to a value describing whether or not SCP-079 has enough auxiliary power to switch.
         /// Can be set to true to allow a switch regardless of SCP-079's auxiliary power amount.

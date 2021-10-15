@@ -11,6 +11,7 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
     using Exiled.CustomItems.API.Features;
@@ -94,7 +95,7 @@ namespace Exiled.CustomItems.Commands
                 return false;
             }
 
-            item.Spawn(position, out _);
+            item.Spawn(position);
 
             response = $"{item.Name} ({item.Type}) has been spawned at {position}.";
             return true;

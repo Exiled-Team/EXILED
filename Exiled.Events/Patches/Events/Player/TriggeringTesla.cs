@@ -29,28 +29,43 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
+                foreach (TeslaGate teslaGate in __instance.TeslaGates)
                 {
-                    if (allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
+                    if (!teslaGate.isActiveAndEnabled || teslaGate.InProgress)
                         continue;
-                    foreach (TeslaGate teslaGate in __instance.TeslaGates)
+
+                    bool inIdleRange = false;
+                    bool isTriggerable = false;
+                    foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
                     {
-                        if (!teslaGate.PlayerInRange(allHub.Value) || teslaGate.InProgress)
+                        if (allHub.Value.isDedicatedServer || allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
                             continue;
 
-                        var ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
-                        Player.OnTriggeringTesla(ev);
+                        if (!inIdleRange)
+                            inIdleRange = teslaGate.PlayerInIdleRange(allHub.Value);
 
-                        if (ev.IsTriggerable)
-                            teslaGate.ServerSideCode();
+                        if (teslaGate.PlayerInRange(allHub.Value))
+                        {
+                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
+                            Player.OnTriggeringTesla(ev);
+
+                            if (ev.IsTriggerable && !isTriggerable)
+                                isTriggerable = ev.IsTriggerable;
+                        }
                     }
+
+                    if (isTriggerable)
+                        teslaGate.ServerSideCode();
+
+                    if (inIdleRange != teslaGate.isIdling)
+                        teslaGate.ServerSideIdle(inIdleRange);
                 }
 
                 return false;
             }
             catch (Exception e)
             {
-                Exiled.API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
+                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
 
                 return true;
             }

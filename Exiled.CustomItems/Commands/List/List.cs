@@ -36,14 +36,13 @@ namespace Exiled.CustomItems.Commands.List
         public override void LoadGeneratedCommands()
         {
             RegisterCommand(Registered.Instance);
-            RegisterCommand(Spawned.Instance);
-            RegisterCommand(InsideInventories.Instance);
+            RegisterCommand(Tracked.Instance);
         }
 
         /// <inheritdoc/>
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            response = $"Invalid subcommand! Available: registered, spawned, insideinventories";
+            response = $"Invalid subcommand! Available: registered, insideinventories";
             return false;
         }
     }

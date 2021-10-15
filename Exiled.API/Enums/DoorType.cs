@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Enums
 {
-    using System;
-
 #pragma warning disable SA1124 // Do not use regions
 
     /// <summary>
@@ -215,45 +213,5 @@ namespace Exiled.API.Enums
         /// Represents the SURFACE_GATE door.
         /// </summary>
         SurfaceGate,
-
-        #region Deprecated
-
-        /// <summary>
-        /// Represents the 372 door.
-        /// </summary>
-        [Obsolete("Replaced with GR18.")]
-        Scp372 = GR18,
-
-        /// <summary>
-        /// Represents the Airlocks door.
-        /// </summary>
-        [Obsolete("Unused.")]
-        Airlocks = -1,
-
-        /// <summary>
-        /// Represents the ContDoor door.
-        /// </summary>
-        [Obsolete("Unused.")]
-        ContDoor = -1,
-
-        /// <summary>
-        /// Represents the ESCAPE door.
-        /// </summary>
-        [Obsolete("Replaced with EscapePrimary.")]
-        Escape = EscapePrimary,
-
-        /// <summary>
-        /// Represents the ESCAPE_INNER door.
-        /// </summary>
-        [Obsolete("Replaced with EscapeSecondary.")]
-        EscapeInner = EscapeSecondary,
-
-        /// <summary>
-        /// Represents the 173 door.
-        /// </summary>
-        [Obsolete("Replaced with Scp173Conenctor")]
-        Scp173 = Scp173Connector,
-
-        #endregion
     }
 }

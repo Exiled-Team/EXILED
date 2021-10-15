@@ -8,9 +8,8 @@
 namespace Exiled.Events.Patches.Events.Map
 {
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
-    using Mirror;
+
     using NorthwoodLib.Pools;
     using static HarmonyLib.AccessTools;
 
@@ -30,8 +29,8 @@ namespace Exiled.Events.Patches.Events.Map
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = 1;
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             newInstructions.InsertRange(index, new[]
             {

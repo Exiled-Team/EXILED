@@ -11,7 +11,7 @@ namespace Exiled.API.Features.Components
 
     using Exiled.API.Features;
 
-    using Grenades;
+    using InventorySystem.Items.ThrowableProjectiles;
 
     using UnityEngine;
 
@@ -20,6 +20,8 @@ namespace Exiled.API.Features.Components
     /// </summary>
     public class CollisionHandler : MonoBehaviour
     {
+        private bool initialized;
+
         /// <summary>
         /// Gets the thrower of the grenade.
         /// </summary>
@@ -28,31 +30,43 @@ namespace Exiled.API.Features.Components
         /// <summary>
         /// Gets the grenade itself.
         /// </summary>
-        public Grenade Grenade { get; private set; }
+        public EffectGrenade Grenade { get; private set; }
 
         /// <summary>
         /// Inits the <see cref="CollisionHandler"/> object.
         /// </summary>
         /// <param name="owner">The grenade owner.</param>
         /// <param name="grenade">The grenade component.</param>
-        public void Init(GameObject owner, Grenade grenade)
+        public void Init(GameObject owner, ThrownProjectile grenade)
         {
             Owner = owner;
-            Grenade = grenade;
+            Grenade = (EffectGrenade)grenade;
+            initialized = true;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             try
             {
-                if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<Grenade>(out _))
+                if (!initialized)
+                    return;
+                if (Owner == null)
+                    Log.Error($"Owner is null!");
+                if (Grenade == null)
+                    Log.Error("Grenade is null!");
+                if (collision == null)
+                    Log.Error("wat");
+                if (collision.gameObject == null)
+                    Log.Error("pepehm");
+                if (collision.gameObject == Owner || collision.gameObject.TryGetComponent<EffectGrenade>(out _))
                     return;
 
-                Grenade.NetworkfuseTime = 0.1f;
+                Grenade.TargetTime = 0.1f;
             }
             catch (Exception exception)
             {
                 Log.Error($"{nameof(OnCollisionEnter)} error:\n{exception}");
+                Destroy(this);
             }
         }
     }

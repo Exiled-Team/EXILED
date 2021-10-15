@@ -7,36 +7,84 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
+    using InventorySystem.Items.MicroHID;
+
+    using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="MicroHID.NetworkEnergy"/>.
+    /// Patches <see cref="MicroHIDItem.ExecuteServerside"/>.
     /// Adds the <see cref="Handlers.Player.OnUsingMicroHIDEnergy"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(MicroHID), nameof(MicroHID.NetworkEnergy), MethodType.Setter)]
+    [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class UsingMicroHIDEnergy
     {
-        private static bool Prefix(MicroHID __instance, ref float value)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            // NetworkEnergy is set each frame, so this is to prevent calling the method each frame.
-            if (__instance.NetworkEnergy == value)
-                return true;
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var ev = new UsingMicroHIDEnergyEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, __instance.Energy, value);
+            var offset = -7;
 
-            Handlers.Player.OnUsingMicroHIDEnergy(ev);
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
 
-            if (!ev.IsAllowed)
-                return false;
+            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-            value = ev.NewValue;
+            newInstructions.InsertRange(index, new[]
+            {
+                // Player.Get(base.Owner)
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(MicroHIDItem), nameof(MicroHIDItem.Owner))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-            return true;
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
+
+                // currentState
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))),
+
+                // num
+                new CodeInstruction(OpCodes.Ldloc_2),
+
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+
+                // var ev = new UsingMicroHIDEnergyEventArgs(...)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingMicroHIDEnergyEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+
+                // Handlers.Player.UsingMicroHIDEnergy(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsingMicroHIDEnergy))),
+
+                // num = ev.Drain
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.Drain))),
+                new CodeInstruction(OpCodes.Stloc_2),
+
+                // if (!ev.IsAllowed)
+                //   return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingMicroHIDEnergyEventArgs), nameof(UsingMicroHIDEnergyEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

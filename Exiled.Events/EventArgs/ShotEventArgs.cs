@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations after a player has fired a weapon.
+    /// Contains all information after a player has fired a weapon.
     /// </summary>
     public class ShotEventArgs : EventArgs
     {
@@ -22,22 +22,20 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ShotEventArgs"/> class.
         /// </summary>
         /// <param name="shooter"><inheritdoc cref="Shooter"/></param>
-        /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="hitboxType"><inheritdoc cref="HitboxType"/></param>
-        /// <param name="distance"><inheritdoc cref="Distance"/></param>
+        /// <param name="destructible">The <see cref="IDestructible"/> hit.</param>
+        /// <param name="hit"><inheritdoc cref="Distance"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        /// <param name="canHurt"><inheritdoc cref="CanHurt"/></param>
-        public ShotEventArgs(Player shooter, GameObject target, HitBoxType hitboxType, float distance, float damage, bool canHurt = true)
+        public ShotEventArgs(Player shooter, RaycastHit hit, IDestructible destructible, float damage)
         {
             Shooter = shooter;
-            Target = target;
-#pragma warning disable CS0618 // Type or member is obsolete
-            HitboxType = hitboxType.ToString().ToLowerInvariant();
-#pragma warning restore CS0618 // Type or member is obsolete
-            HitboxTypeEnum = hitboxType;
-            Distance = distance;
             Damage = damage;
-            CanHurt = canHurt;
+            Distance = hit.distance;
+
+            if (destructible is HitboxIdentity identity)
+            {
+                Hitbox = identity;
+                Target = Player.Get(Hitbox.TargetHub);
+            }
         }
 
         /// <summary>
@@ -46,20 +44,14 @@ namespace Exiled.Events.EventArgs
         public Player Shooter { get; }
 
         /// <summary>
-        /// Gets the target of the shot.
+        /// Gets the target of the shot. Can be null!.
         /// </summary>
-        public GameObject Target { get; }
+        public Player Target { get; }
 
         /// <summary>
-        /// Gets the hitbox type of the shot.
+        /// Gets the hitbox type of the shot. Can be null!.
         /// </summary>
-        [Obsolete("Use HitboxTypeEnum instead")]
-        public string HitboxType { get; }
-
-        /// <summary>
-        /// Gets the hitbox type of the shot.
-        /// </summary>
-        public HitBoxType HitboxTypeEnum { get; }
+        public HitboxIdentity Hitbox { get; }
 
         /// <summary>
         /// Gets the shot distance.
@@ -74,6 +66,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the shot can hurt the target.
         /// </summary>
-        public bool CanHurt { get; set; }
+        public bool CanHurt { get; set; } = true;
     }
 }

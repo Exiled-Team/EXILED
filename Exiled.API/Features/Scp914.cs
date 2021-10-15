@@ -7,11 +7,7 @@
 
 namespace Exiled.API.Features
 {
-    using System.Collections.Generic;
-
     using global::Scp914;
-
-    using Mirror;
 
     using UnityEngine;
 
@@ -22,22 +18,29 @@ namespace Exiled.API.Features
     /// </summary>
     public static class Scp914
     {
+        private static Scp914Controller scp914Controller;
+
         /// <summary>
-        /// Gets or sets SCP-914 <see cref="Scp914Knob"/>.
+        /// Gets the cached <see cref="Scp914Controller"/>.
         /// </summary>
-        public static Scp914Knob KnobStatus
+        public static Scp914Controller Scp914Controller
         {
-            get => Scp914Machine.singleton.NetworkknobState;
-            set => Scp914Machine.singleton.NetworkknobState = value;
+            get
+            {
+                if (scp914Controller == null)
+                    scp914Controller = Object.FindObjectOfType<Scp914Controller>();
+
+                return scp914Controller;
+            }
         }
 
         /// <summary>
-        /// Gets or sets SCP-914 recipes.
+        /// Gets or sets SCP-914 <see cref="Scp914KnobSetting"/>.
         /// </summary>
-        public static Dictionary<ItemType, Dictionary<Scp914Knob, ItemType[]>> Recipes
+        public static Scp914KnobSetting KnobStatus
         {
-            get => Scp914Machine.singleton.recipesDict;
-            set => Scp914Machine.singleton.recipesDict = value;
+            get => Scp914Controller.Network_knobSetting;
+            set => Scp914Controller.Network_knobSetting = value;
         }
 
         /// <summary>
@@ -45,28 +48,28 @@ namespace Exiled.API.Features
         /// </summary>
         public static ConfigEntry<Scp914Mode> ConfigMode
         {
-            get => Scp914Machine.singleton.configMode;
-            set => Scp914Machine.singleton.configMode = value;
+            get => Scp914Controller._configMode;
+            set => Scp914Controller._configMode = value;
         }
 
         /// <summary>
         /// Gets a value indicating whether the SCP-914 was activated and is currently processing items.
         /// </summary>
-        public static bool IsWorking => Scp914Machine.singleton.working;
+        public static bool IsWorking => Scp914Controller._isUpgrading;
 
         /// <summary>
         /// Gets the intake booth <see cref="Transform"/>.
         /// </summary>
-        public static Transform IntakeBooth => Scp914Machine.singleton.intake;
+        public static Transform IntakeBooth => Scp914Controller._intakeChamber;
 
         /// <summary>
         ///  Gets the output booth <see cref="Transform"/>.
         /// </summary>
-        public static Transform OutputBooth => Scp914Machine.singleton.output;
+        public static Transform OutputBooth => Scp914Controller._outputChamber;
 
         /// <summary>
         /// Starts the SCP-914.
         /// </summary>
-        public static void Start() => Scp914Machine.singleton.RpcActivate(NetworkTime.time);
+        public static void Start() => Scp914Controller.ServerInteract(Server.Host.ReferenceHub, (byte)Scp914InteractCode.Activate);
     }
 }

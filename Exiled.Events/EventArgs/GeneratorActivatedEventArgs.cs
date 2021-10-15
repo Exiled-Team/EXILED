@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
+    using MapGeneration.Distributors;
+
     /// <summary>
     /// Contains all informations after activating a generator.
     /// </summary>
@@ -19,7 +21,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="generator"><inheritdoc cref="Generator"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public GeneratorActivatedEventArgs(Generator079 generator, bool isAllowed = true)
+        public GeneratorActivatedEventArgs(Scp079Generator generator, bool isAllowed = true)
         {
             Generator = generator;
             IsAllowed = isAllowed;
@@ -28,7 +30,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the activated generator.
         /// </summary>
-        public Generator079 Generator { get; }
+        public Scp079Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the generator can be activated or not.

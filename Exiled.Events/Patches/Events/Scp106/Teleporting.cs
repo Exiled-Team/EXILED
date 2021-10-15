@@ -24,15 +24,15 @@ namespace Exiled.Events.Patches.Events.Scp106
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.CallCmdUsePortal"/>.
+    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
     /// Adds the <see cref="Scp106.Teleporting"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdUsePortal))]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
     internal static class Teleporting
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
             const int offset = -1;
@@ -42,13 +42,13 @@ namespace Exiled.Events.Patches.Events.Scp106
                 (FieldInfo)instruction.operand == Field(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.iAm106))) + offset;
 
             // Declare TeleportingEventArgs, to be able to store its instance with "stloc.0".
-            var ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(TeleportingEventArgs));
 
             // Get the count to find the previous index
-            var oldCount = newInstructions.Count;
+            int oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // TeleportingEventArgs ev = new TeleportingEventArgs(Player.Get(this.gameObject), this.portalPosition, true);
             //

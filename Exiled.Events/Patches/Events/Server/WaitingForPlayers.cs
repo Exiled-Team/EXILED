@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Server
 
         internal static void Patch()
         {
-            const string innerName = "<Init>d__112";
+            const string innerName = "<Init>d__116";
             const string methodName = "MoveNext";
 
             type = AccessTools.Inner(typeof(CharacterClassManager), innerName);
@@ -58,8 +58,8 @@ namespace Exiled.Events.Patches.Events.Server
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
-            var did = false;
-            foreach (var inst in instructions)
+            bool did = false;
+            foreach (CodeInstruction inst in instructions)
             {
                 if (!did && inst.opcode == OpCodes.Ldstr && ((string)inst.operand) == "Waiting for players...")
                 {

@@ -11,12 +11,14 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.ThrowableProjectiles;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before a grenade explodes.
+    /// Contains all information before a grenade explodes.
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
@@ -24,27 +26,47 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
         /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
-        /// <param name="targetToDamages"><inheritdoc cref="TargetToDamages"/></param>
-        /// <param name="isFrag"><inheritdoc cref="IsFrag"/></param>
         /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ExplodingGrenadeEventArgs(Player thrower, Dictionary<Player, float> targetToDamages, bool isFrag, GameObject grenade, bool isAllowed = true)
+        /// <param name="targets"><inheritdoc cref="TargetsToAffect"/></param>
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Thrower = thrower ?? Server.Host;
-            TargetToDamages = targetToDamages;
-            IsFrag = isFrag;
+            IsFrag = grenade is ExplosionGrenade;
             Grenade = grenade;
-            IsAllowed = isAllowed;
+            TargetsToAffect = ListPool<Player>.Shared.Rent();
+            foreach (Collider collider in targets)
+            {
+                if (!(Grenade is ExplosionGrenade) || !collider.TryGetComponent(out IDestructible destructible) || !ReferenceHub.TryGetHubNetID(destructible.NetworkId, out ReferenceHub hub))
+                    continue;
 
-#pragma warning disable CS0618 // Type or member is obsolete
-            Targets = ListPool<Player>.Shared.Rent(TargetToDamages.Keys);
+                Player player = Player.Get(hub);
+                if (player == null)
+                    continue;
+
+                if (!TargetsToAffect.Contains(player))
+                    TargetsToAffect.Add(player);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
+        /// </summary>
+        /// <param name="thrower"><inheritdoc cref="Thrower"/></param>
+        /// <param name="grenade"><inheritdoc cref="Grenade"/></param>
+        /// <param name="players"><inheritdoc cref="TargetsToAffect"/></param>
+        public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
+        {
+            Thrower = thrower ?? Server.Host;
+            IsFrag = grenade is ExplosionGrenade;
+            Grenade = grenade;
+            TargetsToAffect = ListPool<Player>.Shared.Rent();
+            TargetsToAffect.AddRange(players);
         }
 
         /// <summary>
         /// Finalizes an instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
-        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(Targets);
-#pragma warning restore CS0618 // Type or member is obsolete
+        ~ExplodingGrenadeEventArgs() => ListPool<Player>.Shared.Return(TargetsToAffect);
 
         /// <summary>
         /// Gets the player who thrown the grenade.
@@ -54,13 +76,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the players who could be affected by the grenade, if any, and the damage that would hurt them.
         /// </summary>
-        public Dictionary<Player, float> TargetToDamages { get; }
-
-        /// <summary>
-        /// Gets the players who could be affected by the grenade, if any.
-        /// </summary>
-        [Obsolete("It will be changed to IEnumerable<Player>")]
-        public List<Player> Targets { get; }
+        public List<Player> TargetsToAffect { get; }
 
         /// <summary>
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
@@ -70,11 +86,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the grenade that is exploding.
         /// </summary>
-        public GameObject Grenade { get; }
+        public EffectGrenade Grenade { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the grenade can be thrown.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

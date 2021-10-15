@@ -16,17 +16,17 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
+    using InventorySystem.Items.Radio;
 
-    using UnityEngine;
+    using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Radio.UseBattery"/>.
+    /// Patches <see cref="RadioItem.Update"/>.
     /// Adds the <see cref="Handlers.Player.UsingRadioBattery"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Radio), nameof(Radio.UseBattery))]
+    [HarmonyPatch(typeof(RadioItem), nameof(RadioItem.Update))]
     internal static class UsingRadioBattery
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
             var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = 0;
+            var offset = -4;
 
             // Search for the first "ldloc.0".
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
@@ -45,35 +45,31 @@ namespace Exiled.Events.Patches.Events.Player
             // Declare an "UsingRadioBatteryEventArgs" local variable.
             var ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
 
-            // var ev = new UsingRadioBattery(this, Player.Get(base.GameObject), num);
+            // var ev = new UsingRadioBatteryEventArgs(this, Player.Get(base.Owner), num);
             //
             // Handlers.Player.OnUsingRadioBattery(ev);
             //
             // if (!ev.IsAllowed)
             //   return;
             //
-            // num = ev.Charge;
-            //
-            // this.inv.items.ModifyDuration(this.myRadio, num);
-            //
-            // return;
+            // num = ev.Drain;
             newInstructions.InsertRange(index, new[]
             {
                 // this
                 new CodeInstruction(OpCodes.Ldarg_0),
 
-                // Player.Get(base.GameObject)
+                // Player.Get(base.Owner)
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(RadioItem), nameof(RadioItem.Owner))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // num (battery charge)
+                // num
                 new CodeInstruction(OpCodes.Ldloc_0),
 
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                // var ev = new UsingRadioBattery(...)
+                // var ev = new UsingRadioBatteryEventArgs(...)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsingRadioBatteryEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
@@ -87,22 +83,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
 
-                // num = ev.Charge
+                // num = ev.Drain
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Charge))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(UsingRadioBatteryEventArgs), nameof(UsingRadioBatteryEventArgs.Drain))),
                 new CodeInstruction(OpCodes.Stloc_0),
-
-                // this.inv.items.ModifyDuration(this.myRadio, num)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio.inv))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Inventory), nameof(Inventory.items))),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Radio), nameof(Radio.myRadio))),
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Inventory.SyncListItemInfo), nameof(Inventory.SyncListItemInfo.ModifyDuration))),
-
-                // return
-                new CodeInstruction(OpCodes.Ret),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

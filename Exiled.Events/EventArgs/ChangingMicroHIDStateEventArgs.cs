@@ -10,6 +10,9 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.MicroHID;
 
     /// <summary>
     /// Contains all information before MicroHID state is changed.
@@ -24,10 +27,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="oldState"><inheritdoc cref="OldState"/></param>
         /// <param name="newState"><inheritdoc cref="NewState"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingMicroHIDStateEventArgs(Player player, MicroHID microHID, MicroHID.MicroHidState oldState, MicroHID.MicroHidState newState, bool isAllowed = true)
+        public ChangingMicroHIDStateEventArgs(Player player, MicroHIDItem microHID, HidState oldState, HidState newState, bool isAllowed = true)
         {
             Player = player;
-            MicroHID = microHID;
+            MicroHID = (MicroHid)Item.Get(microHID);
             OldState = oldState;
             NewState = newState;
             IsAllowed = isAllowed;
@@ -41,17 +44,17 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the MicroHID instance.
         /// </summary>
-        public MicroHID MicroHID { get; }
+        public MicroHid MicroHID { get; }
 
         /// <summary>
         /// Gets the old MicroHID state.
         /// </summary>
-        public MicroHID.MicroHidState OldState { get; }
+        public HidState OldState { get; }
 
         /// <summary>
         /// Gets or sets the new MicroHID state.
         /// </summary>
-        public MicroHID.MicroHidState NewState { get; set; }
+        public HidState NewState { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the MicroHID state can be changed or not.

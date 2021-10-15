@@ -17,20 +17,19 @@ namespace Exiled.Events.EventArgs
     public class HurtingEventArgs : EventArgs
     {
         private PlayerStats.HitInfo hitInformations;
-        private DamageTypes.DamageType damageType = DamageTypes.None;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HurtingEventArgs"/> class.
         /// </summary>
         /// <param name="attacker"><inheritdoc cref="Attacker"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="hitInformations"><inheritdoc cref="HitInformations"/></param>
+        /// <param name="hitInformations"><inheritdoc cref="HitInformation"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public HurtingEventArgs(Player attacker, Player target, PlayerStats.HitInfo hitInformations, bool isAllowed = true)
         {
             Attacker = attacker;
             Target = target;
-            HitInformations = hitInformations;
+            HitInformation = hitInformations;
             IsAllowed = isAllowed;
         }
 
@@ -47,7 +46,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the hit informations.
         /// </summary>
-        public PlayerStats.HitInfo HitInformations
+        public PlayerStats.HitInfo HitInformation
         {
             get => hitInformations;
             private set => hitInformations = value;
@@ -61,21 +60,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the damage type.
         /// </summary>
-        public DamageTypes.DamageType DamageType
-        {
-            get
-            {
-                if (damageType == DamageTypes.None)
-                    damageType = DamageTypes.FromIndex(hitInformations.Tool);
-
-                return damageType;
-            }
-        }
-
-        /// <summary>
-        /// Gets the tool that damaged the player.
-        /// </summary>
-        public int Tool => hitInformations.Tool;
+        public DamageTypes.DamageType DamageType => hitInformations.Tool;
 
         /// <summary>
         /// Gets or sets the amount of inflicted damage.

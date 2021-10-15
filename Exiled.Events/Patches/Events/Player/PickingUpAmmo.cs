@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="PickingUpAmmo.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,43 +7,55 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
-    using Searching;
+    using InventorySystem.Searching;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="AmmoSearchCompletor.Complete"/>.
-    /// Adds the <see cref="Handlers.Player.PickingUpAmmo"/> event.
+    /// Patches <see cref="InventorySystem.Searching.AmmoSearchCompletor.Complete"/> for the <see cref="Handlers.Player.PickingUpAmmo"/> event.
     /// </summary>
     [HarmonyPatch(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Complete))]
     internal static class PickingUpAmmo
     {
-        private static bool Prefix(AmmoSearchCompletor __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + offset;
+            Label returnLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                var ev = new PickingUpAmmoEventArgs(Player.Get(__instance.Hub), __instance.TargetPickup);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AmmoSearchCompletor), nameof(AmmoSearchCompletor.TargetPickup))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(PickingUpAmmoEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnPickingUpAmmo))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpAmmoEventArgs), nameof(PickingUpAmmoEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+            });
 
-                Handlers.Player.OnPickingUpAmmo(ev);
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-                // Allow future pick up of this ammo
-                if (!ev.IsAllowed)
-                    __instance.TargetPickup.InUse = false;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                return ev.IsAllowed;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(PickingUpAmmo).FullName}\n{exception}");
-
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

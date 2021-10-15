@@ -24,27 +24,27 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp106PlayerScript.CallCmdMovePlayer(GameObject, int)"/>.
+    /// Patches <see cref="Scp106PlayerScript.UserCode_CmdMovePlayer(GameObject, int)"/>.
     /// Adds the <see cref="Handlers.Player.EnteringPocketDimension"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.CallCmdMovePlayer))]
+    [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdMovePlayer))]
     internal static class EnteringPocketDimension
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -11;
+            int offset = 0;
 
             // Search for the last "newobj".
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj) + offset;
+            int index = 0 + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
-            var ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
 
             // Define the return label and add it to the last "ret" instruction.
-            var returnLabel = newInstructions[newInstructions.Count - 1].WithLabels(generator.DefineLabel()).labels[0];
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new EnteringPocketDimensionEventArgs(Player.Get(taker), Vector3.down * 1998.5f, Player.Get(this.gameObject), true);
             //
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ply)
-                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // Vector3.down * 1998.5f
@@ -94,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             // Search for the first "OverridePosition" method.
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
+                                                                 (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
 
             // Remove "Vector3.down * 1998.5f" instructions.
             newInstructions.RemoveRange(index, instructionsToRemove);
@@ -106,7 +106,9 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
             });
 
-            for (var z = 0; z < newInstructions.Count; z++)
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+
+            for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);

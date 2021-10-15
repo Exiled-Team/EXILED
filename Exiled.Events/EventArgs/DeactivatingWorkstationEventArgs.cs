@@ -7,22 +7,41 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Features;
+    using System;
+
+    using InventorySystem.Items.Firearms.Attachments;
+
+    using static InventorySystem.Items.Firearms.Attachments.WorkstationController;
 
     /// <summary>
-    /// Contains all informations before a player deactivates a workstation.
+    /// Contains all informations before deactivating a workstation.
     /// </summary>
-    public class DeactivatingWorkstationEventArgs : ActivatingWorkstationEventArgs
+    public class DeactivatingWorkstationEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DeactivatingWorkstationEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="station"><inheritdoc cref="Permissions"/></param>
-        /// <param name="isAllowed">Gets or sets a value indicating whether or not the workstation can be deactivated.</param>
-        public DeactivatingWorkstationEventArgs(Player player, WorkStation station, bool isAllowed = true)
-            : base(player, station, isAllowed)
+        /// <param name="controller"><inheritdoc cref="WorkstationController"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public DeactivatingWorkstationEventArgs(WorkstationController controller, bool isAllowed = true)
         {
+            WorkstationController = controller;
+            IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the workstation.
+        /// </summary>
+        public WorkstationController WorkstationController { get; }
+
+        /// <summary>
+        /// Gets or sets the workstation status.
+        /// </summary>
+        public WorkstationStatus NewStatus { get; set; } = WorkstationStatus.PoweringDown;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the workstation can be deactivated.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }

@@ -105,7 +105,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Makes the player invisibility.
         /// </summary>
-        Scp268,
+        Invisible,
 
         /// <summary>
         /// Slows down the player's movement with SCP-106 effect.

@@ -11,11 +11,15 @@ namespace Exiled.Events.EventArgs
     using LiteNetLib;
     using LiteNetLib.Utils;
 
+    using Mirror.LiteNetLib4Mirror;
+
     /// <summary>
     /// Contains all informations before pre-autenticating a player.
     /// </summary>
     public class PreAuthenticatingEventArgs : EventArgs
     {
+        private bool isAllowed;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PreAuthenticatingEventArgs"/> class.
         /// </summary>
@@ -24,15 +28,16 @@ namespace Exiled.Events.EventArgs
         /// <param name="readerStartPosition"><inheritdoc cref="ReaderStartPosition"/></param>
         /// <param name="flags"><inheritdoc cref="Flags"/></param>
         /// <param name="country"><inheritdoc cref="Country"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PreAuthenticatingEventArgs(string userId, ConnectionRequest request, int readerStartPosition, byte flags, string country, bool isAllowed = true)
+        /// <param name="num"><inheritdoc cref="IsAllowed"/></param>
+        public PreAuthenticatingEventArgs(string userId, ConnectionRequest request, int readerStartPosition, byte flags, string country, int num)
         {
             UserId = userId;
             Request = request;
             ReaderStartPosition = readerStartPosition;
             Flags = flags;
             Country = country;
-            IsAllowed = isAllowed;
+            isAllowed = LiteNetLib4MirrorCore.Host.ConnectedPeersCount < num;
+            ServerFull = !IsAllowed;
         }
 
         /// <summary>
@@ -61,9 +66,23 @@ namespace Exiled.Events.EventArgs
         public ConnectionRequest Request { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the player can be authenticated or not.
+        /// Gets or sets a value indicating whether the player can be authenticated or not.
         /// </summary>
-        public bool IsAllowed { get; private set; }
+        public bool IsAllowed
+        {
+            get => isAllowed;
+            set
+            {
+                if (!value)
+                    throw new InvalidOperationException("You cannot set IsAllowed to false. Use ev.Reject instead.");
+                isAllowed = true;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the server is full.
+        /// </summary>
+        public bool ServerFull { get; }
 
         /// <summary>
         /// Delays the connection.
@@ -117,7 +136,7 @@ namespace Exiled.Events.EventArgs
             if (!IsAllowed)
                 return;
 
-            IsAllowed = false;
+            isAllowed = false;
 
             if (isForced)
                 Request.RejectForce(writer);
@@ -149,7 +168,7 @@ namespace Exiled.Events.EventArgs
             if (!IsAllowed)
                 return;
 
-            IsAllowed = false;
+            isAllowed = false;
 
             NetDataWriter rejectData = new NetDataWriter();
 
@@ -187,6 +206,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Disallows the connection without sending any reason. Should only be used when the connection has already been terminated by the plugin itself.
         /// </summary>
-        public void Disallow() => IsAllowed = false;
+        public void Disallow() => isAllowed = false;
     }
 }

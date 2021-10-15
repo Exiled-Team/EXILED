@@ -7,36 +7,93 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
+    using InventorySystem.Items.MicroHID;
+
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="MicroHID.NetworkCurrentHidState"/>.
+    /// Patches <see cref="MicroHIDItem.ServerSendStatus(HidStatusMessageType, byte)"/>.
     /// Adds the <see cref="Handlers.Player.OnChangingMicroHIDState"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(MicroHID), nameof(MicroHID.NetworkCurrentHidState), MethodType.Setter)]
+    [HarmonyPatch(typeof(MicroHIDItem), nameof(MicroHIDItem.ExecuteServerside))]
     internal static class ChangingMicroHIDState
     {
-        private static bool Prefix(MicroHID __instance, ref MicroHID.MicroHidState value)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            // NetworkCurrentHid state is set each frame, so this  is to prevent calling the method each frame.
-            if (__instance.CurrentHidState == value)
-                return true;
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            Label skipLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingMicroHIDStateEventArgs));
+            List<CodeInstruction> instructionsToAdd = new List<CodeInstruction>
+            {
+                // Player.Get(this.Owner);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(MicroHIDItem), nameof(MicroHIDItem.Owner))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
-            var ev = new ChangingMicroHIDStateEventArgs(Player.Get(__instance.gameObject), __instance, __instance.CurrentHidState, value);
+                // this
+                new CodeInstruction(OpCodes.Ldarg_0),
 
-            Handlers.Player.OnChangingMicroHIDState(ev);
+                // state
+                new CodeInstruction(OpCodes.Ldloc_0),
 
-            if (!ev.IsAllowed)
-                return false;
+                // this.State
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))),
 
-            value = ev.NewState;
+                // true
+                new CodeInstruction(OpCodes.Ldc_I4_1),
 
-            return true;
+                // var ev = new ChangingMicroHIDStateEventArgs(Player, MicroHIDItem, HidState, HidState, bool)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingMicroHIDStateEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+
+                // Handlers.Player.OnChangingMicroHIDState(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMicroHIDState))),
+
+                // if (!ev.IsAllowed)
+                // goto RETURN_LABEL
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, skipLabel),
+
+                // this.State = ev.NewState
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMicroHIDStateEventArgs), nameof(ChangingMicroHIDStateEventArgs.NewState))),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))),
+                new CodeInstruction(OpCodes.Br, continueLabel),
+
+                // this.State = state;
+                new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))),
+
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
+            };
+            int offset = 1;
+
+            foreach (CodeInstruction instruction in newInstructions.FindAll(i => i.opcode == OpCodes.Stfld && (FieldInfo)i.operand == Field(typeof(MicroHIDItem), nameof(MicroHIDItem.State))))
+                newInstructions.InsertRange(newInstructions.IndexOf(instruction) + offset, instructionsToAdd);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }
