@@ -9,12 +9,14 @@ namespace Exiled.Events.Handlers.Internal
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
 
     using Interactables.Interobjects.DoorUtils;
 
+    using MapGeneration;
     using MapGeneration.Distributors;
 
     using NorthwoodLib.Pools;
@@ -65,7 +67,7 @@ namespace Exiled.Events.Handlers.Internal
             List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent();
 
             // Get bulk of rooms.
-            roomObjects.AddRange(GameObject.FindGameObjectsWithTag("Room"));
+            roomObjects.AddRange(Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject));
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
             if (roomObjects.Count == 0)
@@ -73,26 +75,6 @@ namespace Exiled.Events.Handlers.Internal
                 ListPool<GameObject>.Shared.Return(roomObjects);
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
             }
-
-            // Add the pocket dimension since it is not tagged Room.
-            const string PocketPath = "HeavyRooms/PocketWorld";
-
-            GameObject pocket = GameObject.Find(PocketPath);
-
-            if (pocket == null)
-                Log.Send($"[{typeof(Map).FullName}]: Pocket Dimension not found. The name or location in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
-            else
-                roomObjects.Add(pocket);
-
-            // Add the surface since it is not tagged Room. Add it last so we can use it as a default room since it never changes.
-            const string surfaceRoomName = "Outside";
-
-            GameObject surface = GameObject.Find(surfaceRoomName);
-
-            if (surface == null)
-                Log.Send($"[{typeof(Map).FullName}]: Surface not found. The name in the game's hierarchy might have changed.", Discord.LogLevel.Error, ConsoleColor.DarkRed);
-            else
-                roomObjects.Add(surface);
 
             foreach (GameObject roomObject in roomObjects)
                 Map.RoomsValue.Add(Room.CreateComponent(roomObject));
