@@ -64,22 +64,15 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateRooms()
         {
-            List<GameObject> roomObjects = ListPool<GameObject>.Shared.Rent();
-
             // Get bulk of rooms.
-            roomObjects.AddRange(Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject));
+            IEnumerable<GameObject> roomObjects = Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject);
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
-            if (roomObjects.Count == 0)
-            {
-                ListPool<GameObject>.Shared.Return(roomObjects);
+            if (!roomObjects.Any())
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
-            }
 
             foreach (GameObject roomObject in roomObjects)
                 Map.RoomsValue.Add(Room.CreateComponent(roomObject));
-
-            ListPool<GameObject>.Shared.Return(roomObjects);
         }
 
         private static void GenerateDoors()
