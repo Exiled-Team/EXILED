@@ -343,6 +343,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Called before a player walks on a tantrum.
+        /// </summary>
+        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
+
+        /// <summary>
         /// Invoked after a player presses the voicechat key.
         /// </summary>
         public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
@@ -751,6 +756,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player walks on a tantrum.
+        /// </summary>
+        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
+        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
         /// Invoked after a player presses the voicechat key.
