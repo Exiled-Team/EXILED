@@ -1792,18 +1792,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Enables a random <see cref="PlayerEffect"/> on the player.
+        /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="duration">The amount of time the effect will be active for.</param>
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
-        /// <param name="intensity">The intensity of the effect.</param>
-        /// <returns>A <see cref="PlayerEffect"/> that was given to the player.</returns>
-        public PlayerEffect ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false, byte intensity = 1)
+        /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
+        public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
         {
-            PlayerEffect peffect = ReferenceHub.playerEffectsController.AllEffects.ElementAt(UnityEngine.Random.Range(0, ReferenceHub.playerEffectsController.AllEffects.Count)).Value;
-            peffect._intensity = intensity;
-            EnableEffect(peffect, duration, addDurationIfActive);
-            return peffect;
+            EffectType effectType = (EffectType)EffectType.GetValues(typeof(EffectType)).GetValue(UnityEngine.Random.Range(0, EffectType.GetValues(typeof(EffectType)).Length));
+            EnableEffect(effectType, duration, addDurationIfActive);
+            return effectType;
         }
 
         /// <summary>
