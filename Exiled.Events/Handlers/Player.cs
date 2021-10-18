@@ -362,6 +362,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
 
+        /// Invoked before a player makes noise.
+        /// </summary>
+        public static event CustomEventHandler<MakingNoiseEventArgs> MakingNoise;
+
         /// Invoked before a player jumps.
         /// </summary>
         public static event CustomEventHandler<JumpingEventArgs> Jumping;
@@ -782,6 +786,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
+
+        /// Called before a player makes noise.
+        /// </summary>
+        /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
+        public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
 
         /// Called before a player jumps.
         /// </summary>

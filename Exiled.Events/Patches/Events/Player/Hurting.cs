@@ -13,7 +13,11 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
+
+    using InventorySystem.Disarming;
 
     using UnityEngine;
 
@@ -67,6 +71,15 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (!dyingEventArgs.IsAllowed)
                         return false;
+
+                    dyingEventArgs.Target.Inventory.SetDisarmedStatus(null);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+
+                    if (dyingEventArgs.ItemsToDrop != null)
+                    {
+                        dyingEventArgs.Target.ResetInventory(dyingEventArgs.ItemsToDrop);
+                        dyingEventArgs.Target.DropItems();
+                    }
                 }
 
                 return true;
