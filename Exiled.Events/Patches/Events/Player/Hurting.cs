@@ -74,6 +74,12 @@ namespace Exiled.Events.Patches.Events.Player
 
                     dyingEventArgs.Target.Inventory.SetDisarmedStatus(null);
                     new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+
+                    if (dyingEventArgs.ItemsToDrop != null)
+                    {
+                        dyingEventArgs.Target.ResetInventory(dyingEventArgs.ItemsToDrop);
+                        dyingEventArgs.Target.DropItems();
+                    }
                 }
 
                 return true;

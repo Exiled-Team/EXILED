@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new CodeInstruction(OpCodes.Stloc_S, 4),
+                new CodeInstruction(OpCodes.Stloc_S, 9),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
