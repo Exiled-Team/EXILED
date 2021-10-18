@@ -347,6 +347,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
 
+        /// Invoked before a player changes move state.
+        /// </summary>
+        public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
+
         /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
@@ -737,5 +741,10 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
         public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
+
+        /// Called before a player changes move state.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
+        public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
     }
 }
