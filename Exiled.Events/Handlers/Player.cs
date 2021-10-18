@@ -343,6 +343,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked after a player presses the voicechat key.
+        /// </summary>
+        public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
+
+        /// <summary>
         /// Invoked before a player makes noise.
         /// </summary>
         public static event CustomEventHandler<MakingNoiseEventArgs> MakingNoise;
@@ -746,6 +751,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after a player presses the voicechat key.
+        /// </summary>
+        /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
+        public static void OnVoiceChatting(VoiceChattingEventArgs ev) => VoiceChatting.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player makes noise.
