@@ -1862,6 +1862,12 @@ namespace Exiled.API.Features
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
 
+        /// <summary>
+        /// Opens the report window.
+        /// </summary>
+        /// <param name="text">The text to send.</param>
+        public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
