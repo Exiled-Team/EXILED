@@ -961,6 +961,48 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> of spectators that are currently spectating this <see cref="Player"/>.
+        /// </summary>
+        public IEnumerable<Player> CurrentSpectatingPlayers
+        {
+            get
+            {
+                foreach (ReferenceHub referenceHub in ReferenceHub.spectatorManager.ServerCurrentSpectatingPlayers)
+                {
+                    Player spectator = Get(referenceHub);
+
+                    if (spectator == this || spectator.IsDead)
+                        yield return spectator;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be null.
+        /// </summary>
+        public Player SpectatedPlayer
+        {
+            get
+            {
+                Player spectatedPlayer = Get(ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
+
+                if (spectatedPlayer == this)
+                    return null;
+
+                return spectatedPlayer;
+            }
+
+            set
+            {
+                if (IsAlive)
+                    throw new InvalidOperationException("You cannot set Spectated Player when you are alive!");
+
+                ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
+                ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
+            }
+        }
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
