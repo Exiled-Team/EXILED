@@ -67,6 +67,12 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (!dyingEventArgs.IsAllowed)
                         return false;
+
+                    if (dyingEventArgs.ItemsToDrop != null)
+                    {
+                        dyingEventArgs.Target.ResetInventory(dyingEventArgs.ItemsToDrop);
+                        dyingEventArgs.Target.DropItems();
+                    }
                 }
 
                 return true;

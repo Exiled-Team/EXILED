@@ -8,8 +8,11 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     /// <summary>
     /// Contains all information before a player dies.
@@ -25,6 +28,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public DyingEventArgs(Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
         {
+            ItemsToDrop = new List<Item>(target.Items.ToList());
             Killer = killer;
             Target = target;
             HitInformation = hitInformation;
@@ -40,6 +44,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the dying player.
         /// </summary>
         public Player Target { get; }
+
+        /// <summary>
+        /// Gets or sets the list of items to be dropped.
+        /// </summary>
+        public List<Item> ItemsToDrop { get; set; }
 
         /// <summary>
         /// Gets or sets the hit information.
