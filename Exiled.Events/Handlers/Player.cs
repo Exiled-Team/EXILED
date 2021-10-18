@@ -343,6 +343,26 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked before a player unloads a weapon.
+        /// </summary>
+        public static event CustomEventHandler<UnloadingWeaponEventArgs> UnloadingWeapon;
+
+        /// <summary>
+        /// Invoked before a player triggers an aim action.
+        /// </summary>
+        public static event CustomEventHandler<AimingDownSightEventArgs> AimingDownSight;
+
+        /// <summary>
+        /// Invoked before a player toggles the weapon's flashlight.
+        /// </summary>
+        public static event CustomEventHandler<TogglingWeaponFlashlightEventArgs> TogglingWeaponFlashlight;
+
+        /// <summary>
+        /// Invoked before a player dryfires a weapon.
+        /// </summary>
+        public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
+
+        /// <summary>
         /// Called before a player walks on a tantrum.
         /// </summary>
         public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
@@ -756,6 +776,30 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player unloads a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> instance.</param>
+        public static void OnUnloadingWeapon(UnloadingWeaponEventArgs ev) => UnloadingWeapon.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player triggers an aim action.
+        /// </summary>
+        /// <param name="ev">The <see cref="AimingDownSightEventArgs"/> instance.</param>
+        public static void OnAimingDownSight(AimingDownSightEventArgs ev) => AimingDownSight.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player toggles the weapon's flashlight.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingWeaponFlashlightEventArgs"/> instance.</param>
+        public static void OnTogglingWeaponFlashlight(TogglingWeaponFlashlightEventArgs ev) => TogglingWeaponFlashlight.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player dryfires a weapon.
+        /// </summary>
+        /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
+        public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player walks on a tantrum.
