@@ -343,6 +343,10 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked after a player presses the transmission key.
+        /// </summary>
+        public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
+
         /// Invoked before a player changes move state.
         /// </summary>
         public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
@@ -733,6 +737,11 @@ namespace Exiled.Events.Handlers
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
 
         /// <summary>
+        /// Invoked after a player presses the transmission key.
+        /// </summary>
+        /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
+        public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
+
         /// Called before a player changes move state.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
