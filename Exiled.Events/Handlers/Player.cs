@@ -362,18 +362,32 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<DryfiringWeaponEventArgs> DryfiringWeapon;
 
+        /// <summary>
+        /// Called before a player walks on a tantrum.
+        /// </summary>
+        public static event CustomEventHandler<WalkingOnTantrumEventArgs> WalkingOnTantrum;
+
+        /// <summary>
+        /// Invoked after a player presses the voicechat key.
+        /// </summary>
+        public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
+
+        /// <summary>
         /// Invoked before a player makes noise.
         /// </summary>
         public static event CustomEventHandler<MakingNoiseEventArgs> MakingNoise;
 
+        /// <summary>
         /// Invoked before a player jumps.
         /// </summary>
         public static event CustomEventHandler<JumpingEventArgs> Jumping;
 
+        /// <summary>
         /// Invoked after a player presses the transmission key.
         /// </summary>
         public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
 
+        /// <summary>
         /// Invoked before a player changes move state.
         /// </summary>
         public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
@@ -787,21 +801,37 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
 
+        /// <summary>
+        /// Called before a player walks on a tantrum.
+        /// </summary>
+        /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
+        public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after a player presses the voicechat key.
+        /// </summary>
+        /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
+        public static void OnVoiceChatting(VoiceChattingEventArgs ev) => VoiceChatting.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a player makes noise.
         /// </summary>
         /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
         public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before a player jumps.
         /// </summary>
         /// <param name="ev">The <see cref="JumpingEventArgs"/> instance.</param>
         public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
 
+        /// <summary>
         /// Invoked after a player presses the transmission key.
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
         public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before a player changes move state.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
