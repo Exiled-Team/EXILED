@@ -43,6 +43,8 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
+    using Utils.Networking;
+
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
@@ -1202,6 +1204,15 @@ namespace Exiled.API.Features
             {
                 Cuffer = cuffer;
             }
+        }
+
+        /// <summary>
+        /// Removes handcuffs.
+        /// </summary>
+        public void RemoveHandcuffs()
+        {
+            Inventory.SetDisarmedStatus(null);
+            new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
         }
 
         /// <summary>
