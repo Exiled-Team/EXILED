@@ -423,6 +423,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether the player is jumping.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.fpc.isJumping;
+
+        /// <summary>
         /// Gets a value indicating whether the player is sprinting.
         /// </summary>
         public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
