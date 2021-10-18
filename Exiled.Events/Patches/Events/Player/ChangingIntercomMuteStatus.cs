@@ -7,50 +7,68 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
     /// Patch the <see cref="CharacterClassManager.NetworkIntercomMuted"/>.
-    /// Adds the <see cref="Player.ChangingIntercomMuteStatus"/> event.
+    /// Adds the <see cref="ChangingIntercomMuteStatus"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkIntercomMuted), MethodType.Setter)]
     internal static class ChangingIntercomMuteStatus
     {
-        private static bool Prefix(CharacterClassManager __instance, bool value)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            Label retLabel = generator.DefineLabel();
+            Label jccLabel = generator.DefineLabel();
+            Label cdcLabel = generator.DefineLabel();
+
+            newInstructions[0].labels.Add(cdcLabel);
+
+            newInstructions.InsertRange(0, new[]
             {
-                ChangingIntercomMuteStatusEventArgs ev = new ChangingIntercomMuteStatusEventArgs(API.Features.Player.Get(__instance._hub), value, true);
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntercomMuteStatusEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingIntercomMuteStatus))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntercomMuteStatusEventArgs), nameof(ChangingIntercomMuteStatusEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, cdcLabel),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Brtrue_S, jccLabel),
+                new CodeInstruction(OpCodes.Ldstr, "ICOM-"),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.IssuePersistentMute))),
+                new CodeInstruction(OpCodes.Ldstr, "ICOM-").WithLabels(jccLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(CharacterClassManager), nameof(CharacterClassManager.UserId))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(string), nameof(string.Concat), new[] { typeof(string), typeof(string) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(MuteHandler), nameof(MuteHandler.RevokePersistentMute))),
+                new CodeInstruction(OpCodes.Br_S, retLabel),
+            });
 
-                Player.OnChangingIntercomMuteStatus(ev);
+            newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
 
-                if (!ev.IsAllowed)
-                {
-                    if (value == true)
-                    {
-                        MuteHandler.RevokePersistentMute("ICOM-" + __instance.UserId);
-                    }
-                    else
-                    {
-                        MuteHandler.IssuePersistentMute("ICOM-" + __instance.UserId);
-                    }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                    return false;
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"{typeof(ChangingIntercomMuteStatus).FullName}.{nameof(Prefix)}:\n{e}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

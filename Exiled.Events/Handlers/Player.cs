@@ -348,6 +348,26 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<VoiceChattingEventArgs> VoiceChatting;
 
         /// <summary>
+        /// Invoked before a player makes noise.
+        /// </summary>
+        public static event CustomEventHandler<MakingNoiseEventArgs> MakingNoise;
+
+        /// <summary>
+        /// Invoked before a player jumps.
+        /// </summary>
+        public static event CustomEventHandler<JumpingEventArgs> Jumping;
+
+        /// <summary>
+        /// Invoked after a player presses the transmission key.
+        /// </summary>
+        public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
+
+        /// <summary>
+        /// Invoked before a player changes move state.
+        /// </summary>
+        public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -737,5 +757,29 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
         public static void OnVoiceChatting(VoiceChattingEventArgs ev) => VoiceChatting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player makes noise.
+        /// </summary>
+        /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
+        public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player jumps.
+        /// </summary>
+        /// <param name="ev">The <see cref="JumpingEventArgs"/> instance.</param>
+        public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after a player presses the transmission key.
+        /// </summary>
+        /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
+        public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player changes move state.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
+        public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
     }
 }
