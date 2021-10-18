@@ -343,6 +343,10 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked before a player jumps.
+        /// </summary>
+        public static event CustomEventHandler<JumpingEventArgs> Jumping;
+
         /// Invoked after a player presses the transmission key.
         /// </summary>
         public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
@@ -737,6 +741,11 @@ namespace Exiled.Events.Handlers
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a player jumps.
+        /// </summary>
+        /// <param name="ev">The <see cref="JumpingEventArgs"/> instance.</param>
+        public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
+
         /// Invoked after a player presses the transmission key.
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
