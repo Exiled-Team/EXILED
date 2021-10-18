@@ -15,7 +15,7 @@ namespace Exiled.API.Features
 
     using Interactables.Interobjects.DoorUtils;
 
-    using NorthwoodLib.Pools;
+    using Mirror;
 
     using UnityEngine;
 
@@ -73,7 +73,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Color Color
         {
-            get => (Color)FlickerableLightController.WarheadLightColor;
+            get => FlickerableLightController.WarheadLightColor;
             set
             {
                 FlickerableLightController.WarheadLightColor = value;
@@ -91,7 +91,15 @@ namespace Exiled.API.Features
         /// </summary>
         public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
 
-        private FlickerableLightController FlickerableLightController { get; set; }
+        /// <summary>
+        /// Gets the FlickerableLightController's NetworkIdentity.
+        /// </summary>
+        public NetworkIdentity FlickerableLightControllerNetIdentity => FlickerableLightController.netIdentity;
+
+        /// <summary>
+        /// Gets the room's FlickerableLightController.
+        /// </summary>
+        public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
