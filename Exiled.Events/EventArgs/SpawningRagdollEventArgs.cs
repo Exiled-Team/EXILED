@@ -34,6 +34,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="dissonanceId"><inheritdoc cref="DissonanceId"/></param>
         /// <param name="playerName"><inheritdoc cref="PlayerNickname"/></param>
         /// <param name="playerId"><inheritdoc cref="PlayerId"/></param>
+        /// <param name="scp096Death"><inheritdoc cref="Scp096Death"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningRagdollEventArgs(
             Player killer,
@@ -47,6 +48,7 @@ namespace Exiled.Events.EventArgs
             string dissonanceId,
             string playerName,
             int playerId,
+            bool scp096Death = false,
             bool isAllowed = true)
         {
             Killer = killer;
@@ -60,6 +62,7 @@ namespace Exiled.Events.EventArgs
             DissonanceId = dissonanceId;
             PlayerNickname = playerName;
             PlayerId = playerId;
+            Scp096Death = scp096Death;
             IsAllowed = isAllowed;
         }
 
@@ -127,6 +130,11 @@ namespace Exiled.Events.EventArgs
                 playerId = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the 096Death should be set as ragdoll's property.
+        /// </summary>
+        public bool Scp096Death { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the ragdoll will be spawned.
