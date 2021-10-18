@@ -1428,10 +1428,8 @@ namespace Exiled.API.Features
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             if (item is Firearm firearm)
             {
-                Dictionary<ItemType, uint> dict;
-                uint code;
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
-                    dict.TryGetValue(itemType, out code))
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
+                    dict.TryGetValue(itemType, out uint code))
                 {
                     firearm.Base.ApplyAttachmentsCode(code, true);
                 }
@@ -1528,10 +1526,8 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    Dictionary<ItemType, uint> dict;
-                    uint code;
-                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
-                        dict.TryGetValue(item.Type, out code))
+                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
+                        dict.TryGetValue(item.Type, out uint code))
                     {
                         firearm.ApplyAttachmentsCode(code, true);
                     }
