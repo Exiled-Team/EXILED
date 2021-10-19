@@ -1742,9 +1742,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Shows a HitMarker.
+        /// Sends a HitMarker to the player.
         /// </summary>
-        public void ShowHitMarker() => GameObject.GetComponent<SingleBulletHitreg>().ShowHitIndicator(ReferenceHub.playerStats.netId, 0.01f, Position);
+        public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
+
+        /// <summary>
+        /// Sends a HitMarker to the player.
+        /// </summary>
+        /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
+        public void ShowHitMarker(float size) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
