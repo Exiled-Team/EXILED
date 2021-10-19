@@ -1744,6 +1744,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sends a HitMarker to the player.
         /// </summary>
+        [Obsolete]
+        public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
+
+        /// <summary>
+        /// Sends a HitMarker to the player.
+        /// </summary>
         /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
         public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
