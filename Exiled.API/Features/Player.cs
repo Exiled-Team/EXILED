@@ -1744,7 +1744,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sends a HitMarker to the player.
         /// </summary>
-        [Obsolete]
+        [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
         public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
 
         /// <summary>
