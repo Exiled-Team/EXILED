@@ -17,6 +17,8 @@ namespace Exiled.Events.Patches.Events.Player
 
     using global::Utils.Networking;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
 
     using InventorySystem.Disarming;
