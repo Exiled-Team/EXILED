@@ -366,6 +366,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Plays an random ambient sound.
+        /// </summary>
+        public static void PlayAmbientSound() => PlayAmbientSound(Random.Range(0, 32));
+
+        /// <summary>
+        /// Plays an ambient sound.
+        /// </summary>
+        /// <param name="id">The id of the sound to play.</param>
+        public static void PlayAmbientSound(int id) => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>().RpcPlaySound(id);
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
