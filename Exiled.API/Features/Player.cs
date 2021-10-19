@@ -1942,15 +1942,7 @@ namespace Exiled.API.Features
         /// Places a Trantrum under the player.
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject PlaceTantrum()
-        {
-            GameObject gameObject =
-                UnityEngine.Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
-            gameObject.transform.position = Position;
-            NetworkServer.Spawn(gameObject);
-
-            return gameObject;
-        }
+        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";

@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using PlayableScps.ScriptableObjects;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -363,6 +365,21 @@ namespace Exiled.API.Features
 
                 ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
+        }
+
+        /// <summary>
+        /// Places a Trantrum in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public static GameObject PlaceTantrum(Vector3 position)
+        {
+            GameObject gameObject =
+                Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
         }
 
         /// <summary>
