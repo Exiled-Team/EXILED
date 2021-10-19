@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ReloadingWeapon.cs" company="Exiled Team">
+// <copyright file="WalkingOnTantrum.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -12,40 +12,39 @@ namespace Exiled.Events.Patches.Events.Player
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
-
-    using InventorySystem.Items.Firearms.BasicMessages;
 
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="FirearmBasicMessagesHandler.ServerRequestReceived"/>.
-    /// Adds the <see cref="Player.ReloadingWeapon"/> event.
+    /// Patches <see cref="TantrumEnvironmentalHazard.DistanceChanged"/>.
+    /// Adds the <see cref="Handlers.Player.WalkingOnTantrum"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FirearmBasicMessagesHandler), nameof(FirearmBasicMessagesHandler.ServerRequestReceived))]
-    internal static class ReloadingWeapon
+    [HarmonyPatch(typeof(TantrumEnvironmentalHazard), nameof(TantrumEnvironmentalHazard.DistanceChanged))]
+    internal static class WalkingOnTantrum
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = -7;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldc_I4_1) + offset;
-            Label returnLabel = generator.DefineLabel();
+            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
+
+            var returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReloadingWeaponEventArgs))[0]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(WalkingOnTantrumEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnReloadingWeapon))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReloadingWeaponEventArgs), nameof(ReloadingWeaponEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnWalkingOnTantrum))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(WalkingOnTantrumEventArgs), nameof(WalkingOnTantrumEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
