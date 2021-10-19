@@ -347,6 +347,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         public static event CustomEventHandler<TogglingFlashlightEventArgs> TogglingFlashlight;
 
+        /// <summary>
         /// Invoked before a player unloads a weapon.
         /// </summary>
         public static event CustomEventHandler<UnloadingWeaponEventArgs> UnloadingWeapon;
@@ -787,6 +788,7 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="TogglingFlashlightEventArgs"/> instance.</param>
         public static void OnTogglingFlashlight(TogglingFlashlightEventArgs ev) => TogglingFlashlight.InvokeSafely(ev);
 
+        /// <summary>
         /// Called before a player unloads a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> instance.</param>
