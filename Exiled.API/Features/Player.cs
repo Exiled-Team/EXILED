@@ -38,6 +38,7 @@ namespace Exiled.API.Features
     using NorthwoodLib.Pools;
 
     using PlayableScps;
+    using PlayableScps.ScriptableObjects;
 
     using RemoteAdmin;
 
@@ -1936,6 +1937,20 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="text">The text to send.</param>
         public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
+        /// <summary>
+        /// Places a Trantrum under the player.
+        /// </summary>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public GameObject PlaceTantrum()
+        {
+            GameObject gameObject =
+                UnityEngine.Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = Position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
