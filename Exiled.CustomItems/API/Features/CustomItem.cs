@@ -18,10 +18,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
     using Exiled.Loader;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
@@ -45,6 +43,8 @@ namespace Exiled.CustomItems.API.Features
     /// </summary>
     public abstract class CustomItem
     {
+        private ItemType type;
+
         /// <summary>
         /// Gets the list of current Item Managers.
         /// </summary>
@@ -80,13 +80,13 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         public virtual ItemType Type
         {
-            get => Type;
+            get => type;
             set
             {
                 if (!Enum.IsDefined(typeof(ItemType), value))
                     throw new ArgumentOutOfRangeException("Type", value, "Invalid Item type.");
 
-                Type = value;
+                type = value;
             }
         }
 
