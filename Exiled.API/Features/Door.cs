@@ -131,7 +131,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the doors remaining health, if it is breakable.
+        /// Gets or sets the door's remaining health, if it is breakable.
         /// </summary>
         public float Health
         {
