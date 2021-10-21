@@ -1857,7 +1857,8 @@ namespace Exiled.API.Features
             EnableEffect(effectType, duration, addDurationIfActive);
             return effectType;
         }
-      
+
+        /// <summary>
         /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType">status effect</see> on the player.
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
