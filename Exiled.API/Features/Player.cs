@@ -1853,7 +1853,7 @@ namespace Exiled.API.Features
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
         {
-            EffectType effectType = (EffectType)EffectType.GetValues(typeof(EffectType)).GetValue(UnityEngine.Random.Range(0, EffectType.GetValues(typeof(EffectType)).Length));
+            EffectType effectType = (EffectType)Enum.GetValues(typeof(EffectType)).GetValue(UnityEngine.Random.Range(0, Enum.GetValues(typeof(EffectType)).Length));
             EnableEffect(effectType, duration, addDurationIfActive);
             return effectType;
         }
