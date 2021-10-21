@@ -368,7 +368,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Places a Trantrum in the indicated position.
+        /// Places a Tantrum (Scp173's ability) in the indicated position.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
