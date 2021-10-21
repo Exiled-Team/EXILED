@@ -90,8 +90,8 @@ namespace Exiled.Events.Patches.Events.Server
                 int num3 = newList.scps_except_zombies + newList.zombies;
                 int num4 = newList.class_ds + RoundSummary.escaped_ds;
                 int num5 = newList.scientists + RoundSummary.escaped_scientists;
-                float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0 : (num4 / roundSummary.classlistStart.class_ds);
-                float num7 = (roundSummary.classlistStart.scientists == 0) ? 1 : (num5 / roundSummary.classlistStart.scientists);
+                float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
+                float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
