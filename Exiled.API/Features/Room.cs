@@ -132,17 +132,8 @@ namespace Exiled.API.Features
         /// <param name="lockType">DoorLockType of the blackout.</param>
         public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Doors)
-            {
-                door.ChangeLock(lockType);
-                door.IsOpen = false;
-            }
-
-            FlickerableLightController?.ServerFlickerLights(duration);
-
-            if (duration < 0)
-                return;
-            MEC.Timing.CallDelayed(duration, UnlockAll);
+            LockDown(duration, lockType);
+            TurnOffLights(duration);
         }
 
         /// <summary>
