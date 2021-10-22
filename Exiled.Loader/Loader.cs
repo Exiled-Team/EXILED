@@ -219,7 +219,7 @@ namespace Exiled.Loader
         {
             try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => type == typeof(Plugin<>) && type == typeof(Plugin<,>)))
+                foreach (Type type in assembly.GetTypes().Where(type => type == typeof(Plugin<>) || type == typeof(Plugin<,>)))
                 {
 
                     Log.Debug($"Loading type {type.FullName}", ShouldDebugBeShown);
