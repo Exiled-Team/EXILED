@@ -126,19 +126,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all the doors and turns of all lights in the room.
+        /// Locks all the doors and turns off all lights in the room.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
-        /// <param name="lockType">DoorLockType of the Blackout.</param>
+        /// <param name="lockType">DoorLockType of the blackout.</param>
         public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in this.Doors)
+            foreach (Door door in Doors)
             {
                 door.ChangeLock(lockType);
                 door.IsOpen = false;
             }
 
-            this.FlickerableLightController?.ServerFlickerLights(duration);
+            FlickerableLightController?.ServerFlickerLights(duration);
 
             if (duration < 0)
                 return;
