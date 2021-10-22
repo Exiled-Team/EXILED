@@ -217,11 +217,10 @@ namespace Exiled.Loader
         /// <returns>Returns the created plugin instance or null.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
-            try
+           try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => type == typeof(Plugin<>) || type == typeof(Plugin<,>)))
+                foreach (Type type in assembly.GetTypes().Where(type => type.BaseType != null && type.BaseType.IsGenericType && (type.BaseType.GetGenericTypeDefinition() == typeof(Plugin<>) || type.BaseType.GetGenericTypeDefinition() == typeof(Plugin<,>))))
                 {
-
                     Log.Debug($"Loading type {type.FullName}", ShouldDebugBeShown);
 
                     IPlugin<IConfig> plugin = null;
