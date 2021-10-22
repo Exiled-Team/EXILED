@@ -366,7 +366,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Plays an random ambient sound.
+        /// Plays a random ambient sound.
         /// </summary>
         public static void PlayAmbientSound() => PlayAmbientSound(Random.Range(0, 32));
 
