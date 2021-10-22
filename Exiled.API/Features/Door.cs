@@ -51,6 +51,11 @@ namespace Exiled.API.Features
             : DoorType.UnknownDoor;
 
         /// <summary>
+        /// Gets the <see cref="Room"/>.
+        /// </summary>
+        public Room Room => Base.GetComponentInParent<Room>();
+
+        /// <summary>
         /// Gets or sets a value indicating whether the door is open.
         /// </summary>
         public bool IsOpen
