@@ -312,7 +312,7 @@ namespace Exiled.API.Features
         /// Turns off all lights of the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        /// <param name="zones">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
         public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
         {
             foreach (ZoneType zone in zoneTypes)
