@@ -219,7 +219,7 @@ namespace Exiled.Loader
         {
             try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => type.BaseType.GetGenericTypeDefinition() == typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() == typeof(Plugin<,>)))
+                foreach (Type type in assembly.GetTypes().Where(type => type == typeof(Plugin<>) && type == typeof(Plugin<,>)))
                 {
 
                     Log.Debug($"Loading type {type.FullName}", ShouldDebugBeShown);
@@ -265,6 +265,7 @@ namespace Exiled.Loader
 
             return null;
         }
+
 
         /// <summary>
         /// Enables all plugins.
