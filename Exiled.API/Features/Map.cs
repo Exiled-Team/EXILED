@@ -313,9 +313,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="zones">The <see cref="ZoneType"/>s to affect.</param>
-        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zones)
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
         {
-            foreach (ZoneType zone in zones)
+            foreach (ZoneType zone in zoneTypes)
                 TurnOffAllLights(duration, zone);
         }
 
