@@ -350,31 +350,39 @@ namespace Exiled.API.Features
         /// <param name="color">The new color of the Unit.</param>
         public static void ChangeUnitColor(int index, string color)
         {
-            var unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
+            string unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
 
             Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
             Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
 
-            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
+            foreach (Player ply in Player.List.Where(x => x.UnitName == unit))
             {
-                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
+                string modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
                 if (!string.IsNullOrEmpty(color))
                     modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
 
-                ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
+                ply.UnitName = modifiedUnit;
             }
         }
 
         /// <summary>
         /// Plays a random ambient sound.
         /// </summary>
-        public static void PlayAmbientSound() => PlayAmbientSound(Random.Range(0, 32));
+        public static void PlayAmbientSound() => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>().GenerateRandom();
 
         /// <summary>
         /// Plays an ambient sound.
         /// </summary>
         /// <param name="id">The id of the sound to play.</param>
-        public static void PlayAmbientSound(int id) => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>().RpcPlaySound(id);
+        public static void PlayAmbientSound(int id)
+        {
+            AmbientSoundPlayer ambientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+
+            if (id >= ambientSoundPlayer.clips.Length)
+                throw new System.IndexOutOfRangeException($"There are only {ambientSoundPlayer.clips.Length} sounds available.");
+
+            ambientSoundPlayer.RpcPlaySound(ambientSoundPlayer.clips[id].index);
+        }
 
         /// <summary>
         /// Clears the lazy loading game object cache.
