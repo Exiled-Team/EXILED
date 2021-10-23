@@ -36,6 +36,7 @@ namespace Exiled.API.Features
         {
             DoorVariantToDoor.Add(door, this);
             Base = door;
+            Room = door.GetComponentInParent<Room>();
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Room"/>.
         /// </summary>
-        public Room Room => Base.GetComponentInParent<Room>();
+        public Room Room { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the door is open.
