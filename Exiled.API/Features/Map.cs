@@ -323,14 +323,14 @@ namespace Exiled.API.Features
         /// Locks all doors of the facility.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
-        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        public static void LockAllDoors(float duration, DoorLockType lockType = DoorLockType.Regular079, ZoneType zoneTypes = ZoneType.Unspecified)
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
             {
                 Room room = door.Base.GetComponentInParent<Room>();
-                if (zoneTypes.HasFlag(ZoneType.Unspecified) || (room != null && zoneTypes.HasFlag(room.Zone)))
+                if (room != null && room.Zone == zoneType)
                 {
                     door.IsOpen = false;
                     door.ChangeLock(lockType);
@@ -348,7 +348,7 @@ namespace Exiled.API.Features
         public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (ZoneType zone in zoneTypes)
-                LockAllDoors(duration, lockType, zone);
+                LockAllDoors(duration, zone, lockType);
         }
 
         /// <summary>
