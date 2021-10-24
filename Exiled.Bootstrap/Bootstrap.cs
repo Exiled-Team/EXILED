@@ -19,8 +19,6 @@ namespace Exiled.Bootstrap
     /// </summary>
     public sealed class Bootstrap
     {
-        private static readonly Version ExpectedGameVersion = new Version(11, 0, 0);
-
         /// <summary>
         /// Gets a value indicating whether exiled has already been loaded or not.
         /// </summary>
@@ -31,13 +29,6 @@ namespace Exiled.Bootstrap
         /// </summary>
         public static void Load()
         {
-            if (!GameCore.Version.CompatibilityCheck(GameCore.Version.Major, GameCore.Version.Minor, GameCore.Version.Revision, (byte)ExpectedGameVersion.Major, (byte)ExpectedGameVersion.Minor, (byte)ExpectedGameVersion.Build, GameCore.Version.BackwardCompatibility, GameCore.Version.BackwardRevision))
-            {
-                ServerConsole.AddLog($"{GameCore.Version.Major}.{GameCore.Version.Minor}.{GameCore.Version.Revision} -- {ExpectedGameVersion.Major}.{ExpectedGameVersion.Minor}.{ExpectedGameVersion.Build}");
-                ServerConsole.AddLog("[Exiled.Bootstrap] The version of EXILED you are trying to load is not compatible with the version of the game being used. EXILED will not be loaded.", ConsoleColor.DarkRed);
-                return;
-            }
-
             if (IsLoaded)
             {
                 ServerConsole.AddLog("[Exiled.Bootstrap] Exiled has already been loaded!", ConsoleColor.DarkRed);
