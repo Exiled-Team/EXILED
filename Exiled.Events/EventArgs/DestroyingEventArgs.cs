@@ -20,7 +20,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="DestroyingEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        public DestroyingEventArgs(Player player) => Player = player;
+        public DestroyingEventArgs(Player player)
+        {
+            Player = player;
+#if DEBUG
+            Log.Debug($"Destroying obj for {player.Nickname}");
+#endif
+        }
 
         /// <summary>
         /// Gets the destoying player.

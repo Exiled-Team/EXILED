@@ -34,7 +34,9 @@ namespace Exiled.Events.Patches.Events.Player
             try
             {
                 player = new PlayerAPI(hub);
-
+#if DEBUG
+                Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
+#endif
                 Player.UnverifiedPlayers.Add(hub, player);
                 Player p = player;
                 Timing.CallDelayed(0.25f, () =>

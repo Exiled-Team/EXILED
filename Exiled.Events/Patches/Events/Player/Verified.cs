@@ -66,6 +66,9 @@ namespace Exiled.Events.Patches.Events.Player
                 if (player == null)
                     Joined.CallEvent(instance._hub, out player);
 
+#if DEBUG
+                Log.Debug($"{player.Nickname} has verified!", true);
+#endif
                 PlayerAPI.Dictionary.Add(instance._hub.gameObject, player);
                 player.IsVerified = true;
                 player.RawUserId = player.UserId.GetRawUserId();
