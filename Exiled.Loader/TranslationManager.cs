@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Exiled.Loader
 {
     using System;
@@ -62,6 +64,13 @@ namespace Exiled.Loader
                             deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
                         }
                     }
+                }
+
+                // Make sure that no keys in the config file were discarded.
+                if (!rawDeserializedTranslations.Keys.All(deserializedTranslations.ContainsKey))
+                {
+                    Log.Warn("Missing plugins have been detected in the translations. A backup translations file will be created at \"" + Paths.BackupTranslations + "\".");
+                    File.WriteAllText(Paths.BackupTranslations, rawTranslations);
                 }
 
                 Log.Info("Plugin translations loaded successfully!");

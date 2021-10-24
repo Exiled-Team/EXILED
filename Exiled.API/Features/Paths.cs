@@ -63,6 +63,11 @@ namespace Exiled.API.Features
         public static string Translations { get; set; }
 
         /// <summary>
+        /// Gets or sets backup translations path.
+        /// </summary>
+        public static string BackupTranslations { get; set; }
+
+        /// <summary>
         /// Gets or sets logs path.
         /// </summary>
         public static string Log { get; set; }
@@ -80,6 +85,7 @@ namespace Exiled.API.Features
             Config = Path.Combine(Configs, $"{Server.Port}-config.yml");
             BackupConfig = Path.Combine(Configs, $"{Server.Port}-config.yml.old");
             Translations = Path.Combine(Configs, $"{Server.Port}-translations.yml");
+            BackupTranslations = Path.Combine(Configs, $"{Server.Port}-translations.yml.old");
             Log = Path.Combine(Exiled, $"{Server.Port}-RemoteAdminLog.txt");
         }
     }
