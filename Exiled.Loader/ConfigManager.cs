@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Linq;
+
 namespace Exiled.Loader
 {
     using System;
@@ -70,6 +72,13 @@ namespace Exiled.Loader
                             deserializedConfigs.Add(plugin.Prefix, plugin.Config);
                         }
                     }
+                }
+
+                // Make sure that no keys in the config file were discarded.
+                if (!rawDeserializedConfigs.Keys.All(deserializedConfigs.ContainsKey))
+                {
+                    Log.Warn("Missing plugins have been detected in the config. A backup config file will be created at \"" + Paths.BackupConfig + "\".");
+                    File.WriteAllText(Paths.BackupConfig, rawConfigs);
                 }
 
                 Log.Info("Plugin configs loaded successfully!");
