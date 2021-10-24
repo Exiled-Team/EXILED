@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using Respawning;
 
+    using static PlayerStats;
+
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E more easily.
     /// </summary>
@@ -84,6 +86,38 @@ namespace Exiled.API.Features
         /// <returns>A string with readable string for cassie.</returns>
         public static string ConvertNumber(int num)
             => NineTailedFoxAnnouncer.ConvertNumber(num);
+
+        /// <summary>
+        /// Annouce a SCP Termination.
+        /// </summary>
+        /// <param name="scp">SCP Role.</param>
+        /// <param name="info">HitInformation.</param>
+        /// <param name="groupId">Group ID.</param>
+        public static void SCPTermination(Role scp, HitInfo info, string groupId)
+            => NineTailedFoxAnnouncer.AnnounceScpTermination(scp, info, groupId);
+
+        /// <summary>
+        /// Annouce a Custom SCP Termination.
+        /// </summary>
+        /// <param name="scpname">SCP Name.</param>
+        /// <param name="info">Hit Information.</param>
+        public static void CustomSCPTermination(string scpname, HitInfo info)
+        {
+            string result = scpname;
+            if (info.Tool == DamageTypes.Tesla)
+                result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
+            else if (info.Tool == DamageTypes.Nuke)
+                result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
+            else if (info.Tool == DamageTypes.Decont)
+                result += " LOST IN DECONTAMINATION SEQUENCE";
+            else if (ReferenceHub.TryGetHub(info.PlayerId, out ReferenceHub referenceHub))
+                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(referenceHub.characterClassManager.CurRole.team, referenceHub.characterClassManager.CurUnitName);
+            else
+                result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
+
+            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
+        }
 
         /// <summary>
         /// Clears the C.A.S.S.I.E queue.
