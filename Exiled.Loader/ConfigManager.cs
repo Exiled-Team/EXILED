@@ -5,13 +5,12 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System.Linq;
-
 namespace Exiled.Loader
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
