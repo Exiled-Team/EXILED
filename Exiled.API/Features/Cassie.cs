@@ -69,6 +69,23 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
 
         /// <summary>
+        /// Converts Team into CONTAINMENTUNIT.
+        /// </summary>
+        /// <param name="team"><see cref="Team"/>.</param>
+        /// <param name="unitName">Team Unit Name.</param>
+        /// <returns>String Containment Unit.</returns>
+        public static string ConvertTeam(Team team, string unitName)
+            => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
+
+        /// <summary>
+        /// Converts Number into Readable String.
+        /// </summary>
+        /// <param name="num">Number to convert.</param>
+        /// <returns>A string with readable string for cassie.</returns>
+        public static string ConvertNumber(int num)
+            => NineTailedFoxAnnouncer.ConvertNumber(num);
+
+        /// <summary>
         /// Clears the C.A.S.S.I.E queue.
         /// </summary>
         public static void Clear() => RespawnEffectsController.ClearQueue();
