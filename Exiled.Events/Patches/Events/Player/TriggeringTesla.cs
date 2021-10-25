@@ -34,6 +34,12 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!teslaGate.isActiveAndEnabled || teslaGate.InProgress)
                         continue;
 
+                    if (teslaGate.NetworkInactiveTime > 0f)
+                    {
+                        teslaGate.NetworkInactiveTime = Mathf.Max(0f, teslaGate.InactiveTime - Time.fixedDeltaTime);
+                        continue;
+                    }
+
                     bool inIdleRange = false;
                     bool isTriggerable = false;
                     foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
