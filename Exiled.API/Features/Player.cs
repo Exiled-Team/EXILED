@@ -570,7 +570,7 @@ namespace Exiled.API.Features
             set
             {
                 ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
-                
+
                 if (value)
                     MuteHandler.IssuePersistentMute(UserId);
                 else
