@@ -38,6 +38,7 @@ namespace Exiled.API.Features
     using NorthwoodLib.Pools;
 
     using PlayableScps;
+    using PlayableScps.ScriptableObjects;
 
     using RemoteAdmin;
 
@@ -1943,6 +1944,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="text">The text to send.</param>
         public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
+        /// <summary>
+        /// Places a Tantrum (Scp173's ability) under the player.
+        /// </summary>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
