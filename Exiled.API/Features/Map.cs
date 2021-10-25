@@ -195,6 +195,11 @@ namespace Exiled.API.Features
         public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
 
         /// <summary>
+        /// Gets the <see cref="global::AmbientSoundPlayer"/>.
+        /// </summary>
+        public static AmbientSoundPlayer AmbientSoundPlayer => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+
+        /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
         /// </summary>
         /// <param name="objectInRoom">The <see cref="GameObject"/> inside the room.</param>
@@ -368,7 +373,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Plays a random ambient sound.
         /// </summary>
-        public static void PlayAmbientSound() => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>().GenerateRandom();
+        public static void PlayAmbientSound() => AmbientSoundPlayer.GenerateRandom();
 
         /// <summary>
         /// Plays an ambient sound.
@@ -376,12 +381,10 @@ namespace Exiled.API.Features
         /// <param name="id">The id of the sound to play.</param>
         public static void PlayAmbientSound(int id)
         {
-            AmbientSoundPlayer ambientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+            if (id >= AmbientSoundPlayer.clips.Length)
+                throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
 
-            if (id >= ambientSoundPlayer.clips.Length)
-                throw new System.IndexOutOfRangeException($"There are only {ambientSoundPlayer.clips.Length} sounds available.");
-
-            ambientSoundPlayer.RpcPlaySound(ambientSoundPlayer.clips[id].index);
+            AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
         }
 
         /// <summary>
