@@ -71,24 +71,24 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts Team into CONTAINMENTUNIT.
+        /// Converts a Team into a Cassie-Readable CONTAINMENTUNIT.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
-        /// <param name="unitName">Team Unit Name.</param>
+        /// <param name="unitName"><see cref="string"/> Containment Unit text.</param>
         /// <returns>String Containment Unit.</returns>
         public static string ConvertTeam(Team team, string unitName)
             => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
 
         /// <summary>
-        /// Converts Number into Readable String.
+        /// Converts Number into Cassie-Readable String.
         /// </summary>
         /// <param name="num">Number to convert.</param>
-        /// <returns>A string with readable string for cassie.</returns>
+        /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>
         public static string ConvertNumber(int num)
             => NineTailedFoxAnnouncer.ConvertNumber(num);
 
         /// <summary>
-        /// Annouce a SCP Termination.
+        /// Announce a SCP Termination.
         /// </summary>
         /// <param name="scp">SCP Role.</param>
         /// <param name="info">HitInformation.</param>
@@ -97,7 +97,7 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.AnnounceScpTermination(scp, info, groupId);
 
         /// <summary>
-        /// Annouce a Custom SCP Termination.
+        /// Announce the termination of a custom SCP name.
         /// </summary>
         /// <param name="scpname">SCP Name.</param>
         /// <param name="info">Hit Information.</param>
