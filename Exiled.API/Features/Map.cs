@@ -199,7 +199,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
         /// </summary>
-        public static AmbientSoundPlayer AmbientSoundPlayer => PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
+        public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
         /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
