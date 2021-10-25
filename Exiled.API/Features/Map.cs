@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using PlayableScps.ScriptableObjects;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -88,7 +90,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -385,6 +387,20 @@ namespace Exiled.API.Features
                 throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
 
             AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
+        }
+
+        /// Places a Tantrum (Scp173's ability) in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public static GameObject PlaceTantrum(Vector3 position)
+        {
+            GameObject gameObject =
+                Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
         }
 
         /// <summary>
