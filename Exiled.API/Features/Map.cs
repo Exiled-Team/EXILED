@@ -327,14 +327,16 @@ namespace Exiled.API.Features
         /// <param name="lockType">DoorLockType of the lockdown.</param>
         public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in Doors)
+            foreach (Room room in Rooms)
             {
-                Room room = door.Base.GetComponentInParent<Room>();
                 if (room != null && room.Zone == zoneType)
                 {
-                    door.IsOpen = false;
-                    door.ChangeLock(lockType);
-                    MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    foreach (Door door in room.Doors)
+                    {
+                        door.IsOpen = false;
+                        door.ChangeLock(lockType);
+                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    }
                 }
             }
         }
