@@ -74,8 +74,8 @@ namespace Exiled.API.Features
         /// Converts a Team into a Cassie-Readable CONTAINMENTUNIT.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
-        /// <param name="unitName"><see cref="string"/> Containment Unit text.</param>
-        /// <returns>String Containment Unit.</returns>
+        /// <param name="unitName">Unit Name.</param>
+        /// <returns><see cref="string"/> Containment Unit text.</returns>
         public static string ConvertTeam(Team team, string unitName)
             => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
 
