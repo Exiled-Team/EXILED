@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int labelOffset = 8;
+            const int labelOffset = 8;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Dup);
             LocalBuilder pickupBaseLocal = generator.DeclareLocal(typeof(ItemPickupBase));
             Label continueLabel = generator.DefineLabel();
