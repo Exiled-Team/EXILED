@@ -18,7 +18,7 @@ namespace Exiled.API.Features
     /// </summary>
     public class Ragdoll
     {
-        private global::Ragdoll ragdoll;
+        private readonly RagDoll ragdoll;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
@@ -29,7 +29,8 @@ namespace Exiled.API.Features
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
-        public Ragdoll(RoleType roleType, global::Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = false)
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
+        public Ragdoll(RoleType roleType, RagDoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = false, bool scp096Death = false)
         {
             Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
@@ -37,13 +38,14 @@ namespace Exiled.API.Features
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkPlayerVelo = velocity;
             ragdoll.NetworkallowRecall = allowRecall;
+            ragdoll.NetworkSCP096Death = scp096Death;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="RagDoll"/>.</param>
-        internal Ragdoll(global::Ragdoll ragdoll) => this.ragdoll = ragdoll;
+        internal Ragdoll(RagDoll ragdoll) => this.ragdoll = ragdoll;
 
         /// <summary>
         /// Gets the Default <see cref="RagDoll.Info"/>,
@@ -52,7 +54,7 @@ namespace Exiled.API.Features
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
         /// </remarks>
-        public static global::Ragdoll.Info DefaultRagdollOwner => new global::Ragdoll.Info()
+        public static RagDoll.Info DefaultRagdollOwner => new RagDoll.Info()
         {
             ownerHLAPI_id = null,
             PlayerId = -1,
@@ -65,7 +67,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="RagDoll"/>.
         /// </summary>
-        public global::Ragdoll Base => ragdoll;
+        public RagDoll Base => ragdoll;
 
         /// <summary>
         /// Gets the ragdoll's name.
@@ -93,13 +95,18 @@ namespace Exiled.API.Features
         public RoleType Role => CharacterClassManager._staticClasses.FirstOrDefault(role => role.fullName == ragdoll.owner.FullName).roleId;
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the ragdoll is respawnable by SCP-049 .
+        /// Gets or sets a value indicating whether or not the ragdoll is respawnable by SCP-049.
         /// </summary>
         public bool AllowRecall
         {
             get => ragdoll.allowRecall;
             set => ragdoll.allowRecall = value;
         }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the ragdoll death is caused by Scp096.
+        /// </summary>
+        public bool Scp096Death => ragdoll.SCP096Death;
 
         /// <summary>
         /// Gets the <see cref="Room"/> the ragdoll is located in.
@@ -182,7 +189,7 @@ namespace Exiled.API.Features
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
                 RoleType roleType,
-                global::Ragdoll.Info ragdollInfo,
+                RagDoll.Info ragdollInfo,
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
@@ -194,7 +201,7 @@ namespace Exiled.API.Features
             if (role.model_ragdoll == null)
                 return null;
 
-            global::Ragdoll ragdoll = gameObject.GetComponent<global::Ragdoll>();
+            RagDoll ragdoll = gameObject.GetComponent<global::Ragdoll>();
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkallowRecall = allowRecall;
             ragdoll.NetworkPlayerVelo = velocity;
@@ -228,7 +235,7 @@ namespace Exiled.API.Features
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
                 Role role,
-                global::Ragdoll.Info ragdollInfo,
+                RagDoll.Info ragdollInfo,
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
@@ -239,7 +246,7 @@ namespace Exiled.API.Features
             if (role.model_ragdoll == null)
                 return null;
 
-            global::Ragdoll ragdoll = gameObject.GetComponent<global::Ragdoll>();
+            RagDoll ragdoll = gameObject.GetComponent<global::Ragdoll>();
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkallowRecall = allowRecall;
             ragdoll.NetworkPlayerVelo = velocity;
@@ -291,7 +298,7 @@ namespace Exiled.API.Features
                 return null;
             var @default = DefaultRagdollOwner;
 
-            var ragdollInfo = new global::Ragdoll.Info()
+            var ragdollInfo = new RagDoll.Info()
             {
                 ownerHLAPI_id = mirrorOwnerId ?? @default.ownerHLAPI_id,
                 PlayerId = playerId,
