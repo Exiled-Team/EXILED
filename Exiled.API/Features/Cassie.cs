@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using Respawning;
 
+    using static PlayerStats;
+
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E more easily.
     /// </summary>
@@ -67,6 +69,55 @@ namespace Exiled.API.Features
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false)
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
+
+        /// <summary>
+        /// Converts a Team into a Cassie-Readable CONTAINMENTUNIT.
+        /// </summary>
+        /// <param name="team"><see cref="Team"/>.</param>
+        /// <param name="unitName">Unit Name.</param>
+        /// <returns><see cref="string"/> Containment Unit text.</returns>
+        public static string ConvertTeam(Team team, string unitName)
+            => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
+
+        /// <summary>
+        /// Converts Number into Cassie-Readable String.
+        /// </summary>
+        /// <param name="num">Number to convert.</param>
+        /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>
+        public static string ConvertNumber(int num)
+            => NineTailedFoxAnnouncer.ConvertNumber(num);
+
+        /// <summary>
+        /// Announce a SCP Termination.
+        /// </summary>
+        /// <param name="scp">SCP Role.</param>
+        /// <param name="info">HitInformation.</param>
+        /// <param name="groupId">Group ID.</param>
+        public static void SCPTermination(Role scp, HitInfo info, string groupId)
+            => NineTailedFoxAnnouncer.AnnounceScpTermination(scp, info, groupId);
+
+        /// <summary>
+        /// Announce the termination of a custom SCP name.
+        /// </summary>
+        /// <param name="scpname">SCP Name.</param>
+        /// <param name="info">Hit Information.</param>
+        public static void CustomSCPTermination(string scpname, HitInfo info)
+        {
+            string result = scpname;
+            if (info.Tool == DamageTypes.Tesla)
+                result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
+            else if (info.Tool == DamageTypes.Nuke)
+                result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
+            else if (info.Tool == DamageTypes.Decont)
+                result += " LOST IN DECONTAMINATION SEQUENCE";
+            else if (ReferenceHub.TryGetHub(info.PlayerId, out ReferenceHub referenceHub))
+                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(referenceHub.characterClassManager.CurRole.team, referenceHub.characterClassManager.CurUnitName);
+            else
+                result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
+
+            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
+        }
 
         /// <summary>
         /// Clears the C.A.S.S.I.E queue.
