@@ -134,7 +134,7 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator) : geteuid() == 0)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
                 ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.Red);
                 Thread.Sleep(5000);
@@ -403,10 +403,85 @@ namespace Exiled.Loader
             return false;
         }
 
+#pragma warning disable SA1201
 #pragma warning disable SA1300
+#pragma warning disable SA1313
+#pragma warning disable SA1600
+#pragma warning disable SA1602
+#pragma warning disable CS1591
         [DllImport("libc")]
         private static extern uint geteuid();
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool GetTokenInformation(
+            IntPtr TokenHandle,
+            TOKEN_INFORMATION_CLASS TokenInformationClass,
+            IntPtr TokenInformation,
+            uint TokenInformationLength,
+            out uint ReturnLength);
+
+        public enum TOKEN_INFORMATION_CLASS
+        {
+            TokenUser = 1,
+            TokenGroups,
+            TokenPrivileges,
+            TokenOwner,
+            TokenPrimaryGroup,
+            TokenDefaultDacl,
+            TokenSource,
+            TokenType,
+            TokenImpersonationLevel,
+            TokenStatistics,
+            TokenRestrictedSids,
+            TokenSessionId,
+            TokenGroupsAndPrivileges,
+            TokenSessionReference,
+            TokenSandBoxInert,
+            TokenAuditPolicy,
+            TokenOrigin,
+            TokenElevationType,
+            TokenLinkedToken,
+            TokenElevation,
+            TokenHasRestrictions,
+            TokenAccessInformation,
+            TokenVirtualizationAllowed,
+            TokenVirtualizationEnabled,
+            TokenIntegrityLevel,
+            TokenUIAccess,
+            TokenMandatoryPolicy,
+            TokenLogonSid,
+            MaxTokenInfoClass,
+        }
+
+        public enum TOKEN_ELEVATION_TYPE
+        {
+            TokenElevationTypeDefault = 1,
+            TokenElevationTypeFull,
+            TokenElevationTypeLimited,
+        }
 #pragma warning restore
+
+        /// <summary>
+        /// Check UAC elevated (for Windows).
+        /// </summary>
+        private static bool CheckUAC()
+        {
+            TOKEN_ELEVATION_TYPE tet = TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
+            uint tetSize = (uint)Marshal.SizeOf((int)tet);
+            IntPtr tetPtr = Marshal.AllocHGlobal((int)tetSize);
+            try
+            {
+                if (GetTokenInformation(WindowsIdentity.GetCurrent().Token, TOKEN_INFORMATION_CLASS.TokenElevationType, tetPtr, tetSize, out _))
+                    tet = (TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tetPtr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(tetPtr);
+            }
+
+            return tet == TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+        }
+
         /// <summary>
         /// Loads all dependencies.
         /// </summary>

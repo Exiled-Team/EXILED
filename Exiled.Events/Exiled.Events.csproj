@@ -35,4 +35,14 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Patches\Events\Player\WalkingOnTantrum.cs" />
+    <Compile Remove="Patches\Events\Player\VoiceChatting.cs" />
+    <Compile Remove="Patches\Events\Player\Transmitting.cs" />
+    <Compile Remove="Patches\Events\Player\MakingNoise.cs" />
+    <Compile Remove="Patches\Events\Player\Jumping.cs" />
+    <Compile Remove="Patches\Events\Player\FirearmRequestReceived.cs" />
+    <Compile Remove="Patches\Events\Player\ChangingMoveState.cs" />
+  </ItemGroup>
+
 </Project>
