@@ -49,7 +49,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the Default <see cref="RagDoll.Info"/>,
-        /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, string)"/>.
+        /// used in <see cref="Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, bool, string)"/>.
         /// </summary>
         /// <remarks>
         /// This value can be modified to change the default Ragdoll's info.
@@ -150,8 +150,9 @@ namespace Exiled.API.Features
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
         /// <returns>The spawned Ragdoll.</returns>
-        public static Ragdoll Spawn(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true)
+        public static Ragdoll Spawn(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default, Vector3 velocity = default, bool allowRecall = true, bool scp096Death = false)
         {
             return Spawn(
                         victim.Role,
@@ -162,6 +163,7 @@ namespace Exiled.API.Features
                         velocity,
                         allowRecall,
                         victim.Id,
+                        scp096Death,
                         victim.GameObject.GetComponent<Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer>().PlayerId);
         }
 
@@ -186,6 +188,7 @@ namespace Exiled.API.Features
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
                 RoleType roleType,
@@ -193,7 +196,8 @@ namespace Exiled.API.Features
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
-                bool allowRecall = false)
+                bool allowRecall = false,
+                bool scp096Death = false)
         {
             Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
@@ -205,6 +209,7 @@ namespace Exiled.API.Features
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkallowRecall = allowRecall;
             ragdoll.NetworkPlayerVelo = velocity;
+            ragdoll.NetworkSCP096Death = scp096Death;
 
             Mirror.NetworkServer.Spawn(gameObject);
 
@@ -232,6 +237,7 @@ namespace Exiled.API.Features
         /// <param name="rotation">The rotation for the ragdoll.</param>
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
                 Role role,
@@ -239,7 +245,8 @@ namespace Exiled.API.Features
                 Vector3 position,
                 Quaternion rotation = default,
                 Vector3 velocity = default,
-                bool allowRecall = false)
+                bool allowRecall = false,
+                bool scp096Death = false)
         {
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
 
@@ -250,6 +257,7 @@ namespace Exiled.API.Features
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkallowRecall = allowRecall;
             ragdoll.NetworkPlayerVelo = velocity;
+            ragdoll.NetworkSCP096Death = scp096Death;
 
             Mirror.NetworkServer.Spawn(gameObject);
 
@@ -279,6 +287,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049.</param>
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field, likely used in the client.</param>
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
@@ -290,6 +299,7 @@ namespace Exiled.API.Features
                 Vector3 velocity = default,
                 bool allowRecall = false,
                 int playerId = -1,
+                bool scp096Death = false,
                 string mirrorOwnerId = null)
         {
             Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
@@ -308,7 +318,7 @@ namespace Exiled.API.Features
                 Nick = victimNick,
             };
 
-            return Spawn(role, ragdollInfo, position, rotation, velocity, allowRecall);
+            return Spawn(role, ragdollInfo, position, rotation, velocity, allowRecall, scp096Death);
         }
 
         /// <summary>
@@ -334,6 +344,7 @@ namespace Exiled.API.Features
         /// <param name="velocity">The initial velocity the ragdoll will have, as if it was exploded.</param>
         /// <param name="allowRecall">Sets this ragdoll as respawnable by SCP-049. Must have a valid <paramref name="playerId"/>.</param>
         /// <param name="playerId">Used for recall. The <see cref="Player.Id"/> to be recalled.</param>
+        /// <param name="scp096Death">Sets this ragdoll as Scp096's victim.</param>
         /// <param name="mirrorOwnerId">Can be ignored. The <see cref="Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer"/>'s PlayerId field.</param>
         /// <returns>The spawned Ragdoll.</returns>
         public static Ragdoll Spawn(
@@ -345,10 +356,11 @@ namespace Exiled.API.Features
                 Vector3 velocity = default,
                 bool allowRecall = false,
                 int playerId = -1,
+                bool scp096Death = false,
                 string mirrorOwnerId = null)
         {
             var @default = DefaultRagdollOwner;
-            return Spawn(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1, false), position, rotation, velocity, allowRecall, playerId, mirrorOwnerId);
+            return Spawn(roleType, victimNick, new PlayerStats.HitInfo(@default.DeathCause.Amount, @default.DeathCause.Attacker, deathCause, -1, false), position, rotation, velocity, allowRecall, playerId, scp096Death, mirrorOwnerId);
         }
 
         /// <summary>
