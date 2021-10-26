@@ -32,9 +32,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (go == null)
-                    return true;
-
                 API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
@@ -52,10 +49,6 @@ namespace Exiled.Events.Patches.Events.Player
                     return true;
 
                 HurtingEventArgs ev = new HurtingEventArgs(attacker, target, info);
-
-                if (ev.Target.IsHost)
-                    return true;
-
                 Player.OnHurting(ev);
 
                 info = ev.HitInformation;
