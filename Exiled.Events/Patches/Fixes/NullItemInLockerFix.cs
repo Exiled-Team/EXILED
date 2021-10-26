@@ -54,8 +54,6 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Ldnull),
                 new CodeInstruction(OpCodes.Call, Method(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Equals))),
                 new CodeInstruction(OpCodes.Brtrue, continueLabel),
-                new CodeInstruction(OpCodes.Ldstr, "pickup is not null"),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info))),
                 new CodeInstruction(OpCodes.Ldloc, pickupBaseLocal.LocalIndex),
             });
 
