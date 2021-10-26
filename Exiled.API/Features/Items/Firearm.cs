@@ -8,11 +8,14 @@
 namespace Exiled.API.Features.Items
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using CameraShaking;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Structs;
 
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
@@ -24,6 +27,19 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Firearm : Item
     {
+        private static readonly Dictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
+        {
+            { ItemType.GunCOM15, BaseCode.GunCOM15 },
+            { ItemType.GunCOM18, BaseCode.GunCOM18 },
+            { ItemType.GunRevolver, BaseCode.GunRevolver },
+            { ItemType.GunE11SR, BaseCode.GunE11SR },
+            { ItemType.GunCrossvec, BaseCode.GunCrossvec },
+            { ItemType.GunFSP9, BaseCode.GunFSP9 },
+            { ItemType.GunLogicer, BaseCode.GunLogicer },
+            { ItemType.GunAK, BaseCode.GunAK },
+            { ItemType.GunShotgun, BaseCode.GunShotgun },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
@@ -58,6 +74,187 @@ namespace Exiled.API.Features.Items
             : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
+
+        /// <summary>
+        /// Gets all available attachments for all firearms.
+        /// </summary>
+        public static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => new Dictionary<ItemType, AttachmentIdentifier[]>()
+        {
+            {
+                ItemType.GunCOM15,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardMagFMJ, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.ExtendedMagFMJ, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.Flashlight, AttachmentSlot.BottomRail),
+                }
+            },
+            {
+                ItemType.GunCOM18,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.ExtendedBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.Laser, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(96, AttachmentNameTranslation.Flashlight, AttachmentSlot.BottomRail),
+                }
+            },
+            {
+                ItemType.GunRevolver,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.CylinderMag6, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.ExtendedBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.ShortBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.HeavyStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.CylinderMag4, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.CylinderMag8, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(256, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(512, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
+                }
+            },
+            {
+                ItemType.GunE11SR,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardMagFMJ, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.CarbineBody, AttachmentSlot.Body),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.NightVisionSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2048, AttachmentNameTranslation.LightweightStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(4096, AttachmentNameTranslation.RecoilReducingStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.ExtendedMagFMJ, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.LowcapMagJHP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(128, AttachmentNameTranslation.LowcapMagAP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(512, AttachmentNameTranslation.RifleBody, AttachmentSlot.Body),
+                    new AttachmentIdentifier(16384, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(32768, AttachmentNameTranslation.FlashHider, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(65536, AttachmentNameTranslation.MuzzleBooster, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(131072, AttachmentNameTranslation.MuzzleBrake, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(524288, AttachmentNameTranslation.Foregrip, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(1048576, AttachmentNameTranslation.Laser, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(4194304, AttachmentNameTranslation.Flashlight, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(8388608, AttachmentNameTranslation.AmmoCounter, AttachmentSlot.SideRail),
+                }
+            },
+            {
+                ItemType.GunCrossvec,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.ExtendedStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.NightVisionSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(16, AttachmentNameTranslation.RetractedStock, AttachmentSlot.Stability),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.Foregrip, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(128, AttachmentNameTranslation.Laser, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(256, AttachmentNameTranslation.Flashlight, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(1024, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(2048, AttachmentNameTranslation.ExtendedBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(4096, AttachmentNameTranslation.FlashHider, AttachmentSlot.Barrel),
+                }
+            },
+            {
+                ItemType.GunFSP9,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.RetractedStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.Stability),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.FlashHider, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(24, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(16, AttachmentNameTranslation.AmmoCounter, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(128, AttachmentNameTranslation.Laser, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(256, AttachmentNameTranslation.Flashlight, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(1024, AttachmentNameTranslation.Foregrip, AttachmentSlot.Stability),
+                    new AttachmentIdentifier(4096, AttachmentNameTranslation.ExtendedStock, AttachmentSlot.Stock),
+                }
+            },
+            {
+                ItemType.GunAK,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardMagAP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.AmmoSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(16, AttachmentNameTranslation.ExtendedBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.SoundSuppressor, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.MuzzleBrake, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(128, AttachmentNameTranslation.MuzzleBooster, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(512, AttachmentNameTranslation.HeavyStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(1536, AttachmentNameTranslation.NoRifleStock, AttachmentSlot.Stock),
+                    new AttachmentIdentifier(4096, AttachmentNameTranslation.StandardMagJHP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(8192, AttachmentNameTranslation.DrumMagAP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(16384, AttachmentNameTranslation.DrumMagJHP, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(65536, AttachmentNameTranslation.Foregrip, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(131072, AttachmentNameTranslation.Laser, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(262144, AttachmentNameTranslation.Flashlight, AttachmentSlot.SideRail),
+                }
+            },
+            {
+                ItemType.GunLogicer,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(2, AttachmentNameTranslation.AmmoSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.NightVisionSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(16, AttachmentNameTranslation.FlashHider, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.MuzzleBrake, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.ShortBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(256, AttachmentNameTranslation.Foregrip, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(512, AttachmentNameTranslation.Flashlight, AttachmentSlot.BottomRail),
+                    new AttachmentIdentifier(1024, AttachmentNameTranslation.Laser, AttachmentSlot.BottomRail),
+                }
+            },
+            {
+                ItemType.GunShotgun,
+                new AttachmentIdentifier[]
+                {
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(0, AttachmentNameTranslation.None, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(1, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(4, AttachmentNameTranslation.ShotgunChoke, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(8, AttachmentNameTranslation.ShotgunExtendedBarrel, AttachmentSlot.Barrel),
+                    new AttachmentIdentifier(32, AttachmentNameTranslation.AmmoCounter, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.Laser, AttachmentSlot.SideRail),
+                    new AttachmentIdentifier(128, AttachmentNameTranslation.Flashlight, AttachmentSlot.SideRail),
+                }
+            },
+        };
 
         /// <inheritdoc cref="Item.Base"/>
         public new InventorySystem.Items.Firearms.Firearm Base { get; }
@@ -106,6 +303,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets the <see cref="Enums.BaseCode"/> of the firearm.
+        /// </summary>
+        public BaseCode BaseCode => FirearmPairs[Type];
+
+        /// <summary>
         /// Gets or sets the fire rate of the firearm, if it is an automatic weapon.
         /// </summary>
         /// <exception cref="InvalidOperationException">When trying to set this value for a weapon that is semi-automatic.</exception>
@@ -135,6 +337,70 @@ namespace Exiled.API.Features.Items
                 else
                     throw new InvalidOperationException("You cannot change the recoil pattern of non-automatic weapons.");
             }
+        }
+
+        /// <summary>
+        /// Adds an <see cref="AttachmentIdentifier"/> to the firearm.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to add.</param>
+        public void AddAttachment(AttachmentIdentifier identifier)
+        {
+            foreach (FirearmAttachment attachment in Attachments)
+            {
+                if (identifier.Slot != attachment.Slot)
+                    continue;
+
+                Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() + identifier.Code, true);
+            }
+        }
+
+        /// <summary>
+        /// Removes an <see cref="AttachmentIdentifier"/> from the firearm.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to remove.</param>
+        public void RemoveAttachment(AttachmentIdentifier identifier)
+        {
+            foreach (FirearmAttachment attachment in Attachments)
+            {
+                if (identifier.Slot != attachment.Slot || !attachment.IsEnabled)
+                    continue;
+
+                Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() - identifier.Code, true);
+            }
+        }
+
+        /// <summary>
+        /// Removes all attachments from the firearm.
+        /// </summary>
+        public void ClearAttachments()
+        {
+            foreach ((FirearmAttachment attachment, AttachmentIdentifier identifier) in Attachments
+                .Where(attachment => attachment.IsEnabled)
+                .SelectMany(attachment => AvailableAttachments.FirstOrDefault(id => id.Key == Type).Value
+                .Select(identifier => (attachment, identifier))))
+            {
+                if (identifier.Name != attachment.Name && identifier.Slot != attachment.Slot)
+                    continue;
+
+                Base.ApplyAttachmentsCode(0, true);
+            }
+        }
+
+        /// <summary>
+        /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
+        /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
+        /// <returns>A value indicating whether or not the firearm has the specified <see cref="AttachmentIdentifier"/>.</returns>
+        public bool TryGetAttachment(AttachmentIdentifier identifier, out FirearmAttachment firearmAttachment)
+        {
+            firearmAttachment = default;
+
+            if (!Attachments.Any(x => x.Name == identifier.Name && x.Slot == identifier.Slot && x.IsEnabled))
+                return false;
+
+            firearmAttachment = Attachments.FirstOrDefault(x => x.Name == identifier.Name && x.Slot == identifier.Slot && x.IsEnabled);
+            return true;
         }
     }
 }
