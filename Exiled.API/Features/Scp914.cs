@@ -68,6 +68,15 @@ namespace Exiled.API.Features
         public static Transform OutputBooth => Scp914Controller._outputChamber;
 
         /// <summary>
+        /// Plays the Scp914's sound.
+        /// </summary>
+        /// <param name="soundId">The soundId to play.</param>
+        /// <remarks>There are two sounds only.
+        /// The values to identify them are 0, which stands for the soundId played when the Scp914 is being activated,
+        /// and 1, which stands for the soundId played when the Scp914's knob state is being changed.</remarks>
+        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+
+        /// <summary>
         /// Starts the SCP-914.
         /// </summary>
         public static void Start() => Scp914Controller.ServerInteract(Server.Host.ReferenceHub, (byte)Scp914InteractCode.Activate);
