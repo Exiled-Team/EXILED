@@ -34,7 +34,7 @@ namespace Exiled.API.Features
         {
             Role role = CharacterClassManager._staticClasses.SafeGet(roleType);
             GameObject gameObject = Object.Instantiate(role.model_ragdoll, position + role.ragdoll_offset.position, Quaternion.Euler(rotation.eulerAngles + role.ragdoll_offset.rotation));
-            ragdoll = gameObject.GetComponent<global::Ragdoll>();
+            ragdoll = gameObject.GetComponent<RagDoll>();
             ragdoll.Networkowner = ragdollInfo != null ? ragdollInfo : DefaultRagdollOwner;
             ragdoll.NetworkPlayerVelo = velocity;
             ragdoll.NetworkallowRecall = allowRecall;
