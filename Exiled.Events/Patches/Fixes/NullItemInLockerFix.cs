@@ -7,9 +7,11 @@
 
 namespace Exiled.Events.Patches.Fixes
 {
-#pragma warning disable SA1118
+#pragma warning disable
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using Exiled.API.Features;
 
     using HarmonyLib;
 
@@ -17,7 +19,13 @@ namespace Exiled.Events.Patches.Fixes
 
     using MapGeneration.Distributors;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Fixes opening lockers when their item is null.
@@ -29,7 +37,7 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int labelOffset = 7;
+            int labelOffset = 8;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Dup);
             LocalBuilder pickupBaseLocal = generator.DeclareLocal(typeof(ItemPickupBase));
             Label continueLabel = generator.DefineLabel();
@@ -44,8 +52,10 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc, pickupBaseLocal.LocalIndex),
                 new CodeInstruction(OpCodes.Ldnull),
-                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Call, Method(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Equals))),
                 new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new CodeInstruction(OpCodes.Ldstr, "pickup is not null"),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Log), nameof(Log.Info))),
                 new CodeInstruction(OpCodes.Ldloc, pickupBaseLocal.LocalIndex),
             });
 
