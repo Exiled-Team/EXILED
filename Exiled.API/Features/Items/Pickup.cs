@@ -131,9 +131,6 @@ namespace Exiled.API.Features.Items
                 PickupSyncInfo info = Base.Info;
                 info.Locked = value;
                 Base.NetworkInfo = info;
-
-                // Base.Info.Locked = value;
-                // Base.NetworkInfo = Base.Info;
             }
         }
 
@@ -148,9 +145,6 @@ namespace Exiled.API.Features.Items
                 PickupSyncInfo info = Base.Info;
                 info.InUse = value;
                 Base.NetworkInfo = info;
-
-                // Base.Info.InUse = value;
-                // Base.NetworkInfo = Base.Info;
             }
         }
 
