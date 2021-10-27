@@ -372,19 +372,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Removes all attachments from the firearm.
         /// </summary>
-        public void ClearAttachments()
-        {
-            foreach ((FirearmAttachment attachment, AttachmentIdentifier identifier) in Attachments
-                .Where(attachment => attachment.IsEnabled)
-                .SelectMany(attachment => AvailableAttachments.FirstOrDefault(id => id.Key == Type).Value
-                .Select(identifier => (attachment, identifier))))
-            {
-                if (identifier.Name != attachment.Name && identifier.Slot != attachment.Slot)
-                    continue;
-
-                Base.ApplyAttachmentsCode(0, true);
-            }
-        }
+        public void ClearAttachments() => Base.ApplyAttachmentsCode((uint)BaseCode, true);
 
         /// <summary>
         /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentIdentifier"/>.
