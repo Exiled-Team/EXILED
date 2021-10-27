@@ -49,30 +49,30 @@ namespace Exiled.Events.Patches.Events.Player
                      */
 
                     // var spectator = Player.Get(__instance._hub);
-                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]), // [this]
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._hub))), // [ReferenceHub]
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })), // [Player]
-                    new CodeInstruction(OpCodes.Dup), // [Player, Player]
+                    new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._hub))),
+                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
+                    new CodeInstruction(OpCodes.Dup),
 
                     // if (spectator != null)
-                    new CodeInstruction(OpCodes.Stloc, player), // [Player]
-                    new CodeInstruction(OpCodes.Brfalse_S, continueLabel), // []
-                    new CodeInstruction(OpCodes.Ldloc, player), // [Player]
+                    new CodeInstruction(OpCodes.Stloc, player),
+                    new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
+                    new CodeInstruction(OpCodes.Ldloc, player),
 
                     // Player.Get(__instance.CurrentSpectatedPlayer)
-                    new CodeInstruction(OpCodes.Ldarg_0), // [this, Player]
-                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))), // [ReferenceHub(OldTarget), Player(Spectator)]
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })), // [Player(OldTarget), Player(Spectator)]
+                    new CodeInstruction(OpCodes.Ldarg_0),
+                    new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._currentSpectatedPlayer))),
+                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
 
                     // Player.Get(value)
-                    new CodeInstruction(OpCodes.Ldarg_1), // [ReferenceHub, Player(OldTarget), Player(Spectator)]
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })), // [Player(NewTarget), Player(OldTarget), Player(Spectator)]
+                    new CodeInstruction(OpCodes.Ldarg_1),
+                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
 
                     // var ev = new ChangingSpectatedPlayerEventArgs(spectator, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
-                    new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangedSpectatedPlayerEventArgs))[0]),  // [EventArgs]
+                    new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangedSpectatedPlayerEventArgs))[0]),
 
                     // Handlers.CustomEvents.InvokeChangingSpectatedPlayer(ev);
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangedSpectatedPlayer))),  // []
+                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangedSpectatedPlayer))),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
