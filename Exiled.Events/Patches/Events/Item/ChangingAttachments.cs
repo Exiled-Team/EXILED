@@ -6,81 +6,93 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Item
-{/*
-#pragma warning disable SA1118
+{
+#pragma warning disable SA1600
+    using System.Linq;
 
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
-
+    using Exiled.API.Structs;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
 
+    using InventorySystem;
+    using InventorySystem.Items.Firearms;
+    using InventorySystem.Items.Firearms.Attachments;
+
     using Mirror;
 
-    using NorthwoodLib.Pools;
+    using UnityEngine;
 
-    using static HarmonyLib.AccessTools;
+    using Firearm = InventorySystem.Items.Firearms.Firearm;
 
     /// <summary>
-    /// Patches <see cref="Inventory.SyncListItemInfo.ModifyAttachments(int, int, int, int)"/>.
+    /// Patches <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)"/>.
     /// Adds the <see cref="Handlers.Item.ChangingAttachments"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(Inventory.SyncListItemInfo), nameof(Inventory.SyncListItemInfo.ModifyAttachments))]
+    [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceiveChangeRequest))]
     internal static class ChangingAttachments
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        internal static bool Prefix(NetworkConnection conn, AttachmentsChangeRequest msg)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            // The index offset.
-            const int offset = 0;
-
-            // Search for the first "ldloca.s".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloca_S) + offset;
-
-            // Set the return label to the last instruction.
-            var returnLabel = generator.DefineLabel();
-
-            // Declare ChangingDurabilityEventArgs, to be able to store its instance with "stloc.1".
-            var ev = generator.DeclareLocal(typeof(ChangingAttachmentsEventArgs));
-
-            // var ev = new ChangingAttachmentsEventArgs(item, sight, barrel, other, true);
-            //
-            // Handlers.Player.OnChangingAttachments(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
-            //
-            // base[index] = ev.Item;
-            //
-            // return;
-            newInstructions.InsertRange(index, new[]
+            if (!NetworkServer.active || !ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub referenceHub))
             {
-                 new CodeInstruction(OpCodes.Ldloc_S, 0),
-                 new CodeInstruction(OpCodes.Ldarg_2),
-                 new CodeInstruction(OpCodes.Ldarg_3),
-                 new CodeInstruction(OpCodes.Ldarg_S, 4),
-                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingAttachmentsEventArgs))[0]),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Dup),
-                 new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Item), nameof(Handlers.Item.OnChangingAttachments))),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.IsAllowed))),
-                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                 new CodeInstruction(OpCodes.Ldarg_0),
-                 new CodeInstruction(OpCodes.Ldarg_1),
-                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewItem))),
-                 new CodeInstruction(OpCodes.Call, Method(typeof(SyncList<Inventory.SyncItemInfo>), "set_Item")),
-                 new CodeInstruction(OpCodes.Ret).WithLabels(returnLabel),
-            });
+                return false;
+            }
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+            Firearm firearm;
+            if ((firearm = referenceHub.inventory.CurInstance as Firearm) == null)
+            {
+                return false;
+            }
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            if (referenceHub.inventory.CurItem.SerialNumber != msg.WeaponSerial)
+            {
+                return false;
+            }
+
+            bool flag = referenceHub.characterClassManager.CurClass == RoleType.Spectator;
+            if (!flag)
+            {
+                foreach (WorkstationController workstationController in WorkstationController.AllWorkstations)
+                {
+                    if (!(workstationController == null) && workstationController.Status == 3 && workstationController.IsInRange(referenceHub))
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+
+            if (flag)
+            {
+                AttachmentIdentifier newIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
+                x.Code == msg.AttachmentsCode - firearm.GetCurrentAttachmentsCode());
+
+                AttachmentIdentifier oldIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
+                x.Name == firearm.Attachments.FirstOrDefault(j => j.IsEnabled && j.Slot == newIdentifier.Slot).Name);
+
+                ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(
+                    API.Features.Player.Get(conn.identity.netId),
+                    (API.Features.Items.Firearm)API.Features.Items.Item.Get(firearm),
+                    oldIdentifier,
+                    newIdentifier,
+                    true);
+
+                if (!ev.IsAllowed)
+                    return false;
+
+                msg.AttachmentsCode = ev.NewAttachmentIdentifier.Code;
+
+                firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
+                if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
+                {
+                    referenceHub.inventory.ServerAddAmmo(firearm.AmmoType, firearm.Status.Ammo - firearm.AmmoManagerModule.MaxAmmo);
+                }
+
+                firearm.Status = new FirearmStatus((byte)Mathf.Min(firearm.Status.Ammo, firearm.AmmoManagerModule.MaxAmmo), firearm.Status.Flags, msg.AttachmentsCode);
+            }
+
+            return false;
         }
-    }*/
+    }
 }
