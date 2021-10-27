@@ -393,6 +393,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
 
         /// <summary>
+        /// Invoked after a player changed spectated player.
+        /// </summary>
+        public static event CustomEventHandler<ChangedSpectatedPlayerEventArgs> ChangedSpectatedPlayer;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -836,5 +841,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
         public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after a player changes spectated player.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangedSpectatedPlayerEventArgs"/> instance.</param>
+        public static void OnChangedSpectatedPlayer(ChangedSpectatedPlayerEventArgs ev) => ChangedSpectatedPlayer.InvokeSafely(ev);
     }
 }
