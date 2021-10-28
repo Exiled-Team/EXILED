@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Events.Item
 
                 newIdentifier = ev.NewAttachmentIdentifier;
 
-                msg.AttachmentsCode = (newIdentifier.Code + firearm.GetCurrentAttachmentsCode()) - ev.OldAttachmentIdentifier.Code;
+                msg.AttachmentsCode = newIdentifier.Code + firearm.GetCurrentAttachmentsCode() - ev.OldAttachmentIdentifier.Code;
 
                 firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
                 if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
