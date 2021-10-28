@@ -57,36 +57,34 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
         /// </summary>
-        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
-        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="left">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="right">The <see cref="FirearmAttachment"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
-            identifier.Name == firearmAttachment.Name && identifier.Slot == firearmAttachment.Slot;
+        public static bool operator ==(AttachmentIdentifier left, FirearmAttachment right) => left.Name == right.Name && left.Slot == right.Slot;
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
         /// </summary>
-        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
-        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="left">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="right">The <see cref="FirearmAttachment"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
-            identifier.Name != firearmAttachment.Name || identifier.Slot != firearmAttachment.Slot;
+        public static bool operator !=(AttachmentIdentifier left, FirearmAttachment right) => left.Name != right.Name || left.Slot != right.Slot;
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
         /// </summary>
-        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
-        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="left">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
-        public static bool operator ==(FirearmAttachment firearmAttachment, AttachmentIdentifier identifier) => identifier == firearmAttachment;
+        public static bool operator ==(FirearmAttachment left, AttachmentIdentifier right) => right == left;
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
         /// </summary>
-        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
-        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="left">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
-        public static bool operator !=(FirearmAttachment firearmAttachment, AttachmentIdentifier identifier) => identifier != firearmAttachment;
+        public static bool operator !=(FirearmAttachment left, AttachmentIdentifier right) => right != left;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
