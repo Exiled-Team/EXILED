@@ -7,7 +7,7 @@
 
 namespace Exiled.CustomItems.API.Features
 {
-    using Exiled.API.Structs;
+    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// Weapon modifiers.
@@ -17,15 +17,15 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Modifiers"/> struct.
         /// </summary>
-        /// <param name="attachmentIdentifiers"><inheritdoc cref="Attachments"/></param>
-        public Modifiers(AttachmentIdentifier[] attachmentIdentifiers)
+        /// <param name="attachmentNames"><inheritdoc cref="Attachments"/></param>
+        public Modifiers(AttachmentNameTranslation[] attachmentNames)
         {
-            Attachments = attachmentIdentifiers;
+            Attachments = attachmentNames;
         }
 
         /// <summary>
-        /// Gets a value indicating what <see cref="AttachmentIdentifier"/>s the weapon will have.
+        /// Gets a value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
         /// </summary>
-        public AttachmentIdentifier[] Attachments { get; private set; }
+        public AttachmentNameTranslation[] Attachments { get; private set; }
     }
 }
