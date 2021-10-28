@@ -93,10 +93,14 @@ namespace Exiled.Events.Patches.Events.Item
                 uint msgCode = msg.AttachmentsCode;
                 API.Features.Log.Debug("curCode: " + curCode);
                 API.Features.Log.Debug("Orignal Code: " + msg.AttachmentsCode);
-                msg.AttachmentsCode = msgCode > firearm.GetCurrentAttachmentsCode() ?
+                uint newCode = msgCode > firearm.GetCurrentAttachmentsCode() ?
                     firearm.GetCurrentAttachmentsCode() + ev.NewAttachmentIdentifier.Code :
                     (firearm.GetCurrentAttachmentsCode() - ev.OldAttachmentIdentifier.Code) + ev.NewAttachmentIdentifier.Code;
-                API.Features.Log.Debug("Exiled Code: " + msg.AttachmentsCode);
+                msg.AttachmentsCode = newCode;
+                API.Features.Log.Debug("Exiled Code: " + newCode);
+
+                if (msgCode != msg.AttachmentsCode)
+                    msg.AttachmentsCode += curCode;
 
                 firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
                 if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
