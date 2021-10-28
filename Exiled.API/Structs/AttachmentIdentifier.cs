@@ -17,10 +17,22 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
+        /// <param name="name"><inheritdoc cref="Name"/></param>
+        /// <param name="slot"><inheritdoc cref="Slot"/></param>
+        public AttachmentIdentifier(AttachmentNameTranslation name, AttachmentSlot slot)
+        {
+            Code = 0;
+            Name = name;
+            Slot = slot;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
+        /// </summary>
         /// <param name="code"><inheritdoc cref="Code"/></param>
         /// <param name="name"><inheritdoc cref="Name"/></param>
         /// <param name="slot"><inheritdoc cref="Slot"/></param>
-        public AttachmentIdentifier(uint code, AttachmentNameTranslation name, AttachmentSlot slot)
+        internal AttachmentIdentifier(uint code, AttachmentNameTranslation name, AttachmentSlot slot)
         {
             Code = code;
             Name = name;
