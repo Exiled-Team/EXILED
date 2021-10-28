@@ -65,12 +65,27 @@ namespace Exiled.Events.Patches.Events.Item
 
             if (flag)
             {
+                /*
+                 * 100 <---- Firearm code + new att + old att
+                 * 90  <---- Firearm code + new att
+                 * 80  <---- Firearm code + old att (2nd) (2nd = x)
+                 * 20 <-- new att (3rd) (3rd > 2nd)
+                 * (80 - x) + 20 = 100 - x = 90 (x = 100 - 90)
+                */
                 if (msg.AttachmentsCode == firearm.GetCurrentAttachmentsCode())
                     return false;
 
                 uint curCode = msg.AttachmentsCode > firearm.GetCurrentAttachmentsCode() ?
                     msg.AttachmentsCode - firearm.GetCurrentAttachmentsCode() :
                     firearm.GetCurrentAttachmentsCode() - msg.AttachmentsCode;
+
+                // firearm.GetCurrentAttachmentsCode() + curCode <---- Firearm code + new att + old att
+                // firearm.GetCurrentAttachmentsCode() <---- Firearm code + old att (2nd) (2nd = x)
+                // msg.AttachmentsCode
+                // curCode
+                // (firearm.GetCurrentAttachmentsCode() - x) + curCode = (firearm.GetCurrentAttachmentsCode() + curCode) - x = msg.AttachmentsCode
+                // (x = (firearm.GetCurrentAttachmentsCode() + curCode) - msg.AttachmentsCode)
+                uint oldCode = (firearm.GetCurrentAttachmentsCode() + curCode) - msg.AttachmentsCode;
 
                 AttachmentIdentifier newIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
                 x.Code == curCode);
@@ -93,14 +108,15 @@ namespace Exiled.Events.Patches.Events.Item
                 uint msgCode = msg.AttachmentsCode;
                 API.Features.Log.Debug("curCode: " + curCode);
                 API.Features.Log.Debug("Orignal Code: " + msg.AttachmentsCode);
-                uint newCode = msgCode > firearm.GetCurrentAttachmentsCode() ?
-                    firearm.GetCurrentAttachmentsCode() + ev.NewAttachmentIdentifier.Code :
-                    (firearm.GetCurrentAttachmentsCode() - ev.OldAttachmentIdentifier.Code) + ev.NewAttachmentIdentifier.Code;
+                uint newCode = (firearm.GetCurrentAttachmentsCode() - (msg.AttachmentsCode )) + ev.NewAttachmentIdentifier.Code;
                 msg.AttachmentsCode = newCode;
                 API.Features.Log.Debug("Exiled Code: " + newCode);
 
                 if (msgCode != msg.AttachmentsCode)
+                {
                     msg.AttachmentsCode += curCode;
+                    API.Features.Log.Debug("Exiled Code Fixed: " + newCode);
+                }
 
                 firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
                 if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
