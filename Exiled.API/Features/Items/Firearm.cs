@@ -345,13 +345,34 @@ namespace Exiled.API.Features.Items
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to add.</param>
         public void AddAttachment(AttachmentIdentifier identifier)
         {
-            foreach (FirearmAttachment attachment in Attachments)
+            uint toRemove = 0;
+            uint code = 1;
+            foreach (FirearmAttachment attachment in Base.Attachments)
             {
-                if (identifier != attachment || attachment.IsEnabled)
-                    continue;
+                if (attachment.Name == identifier.Name && attachment.IsEnabled)
+                {
+                    toRemove = code;
+                    break;
+                }
 
-                Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() + identifier.Code, true);
+                code *= 2;
             }
+
+            uint newCode = identifier.Code == 0 ?
+                AvailableAttachments[Type].FirstOrDefault(attId =>
+                attId.Name == identifier.Name).Code :
+                identifier.Code;
+
+            Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~toRemove | newCode, true);
+        }
+
+        /// <summary>
+        /// Adds a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/> to the firearm.
+        /// </summary>
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to add.</param>
+        public void AddAttachment(AttachmentNameTranslation attachmentName)
+        {
+            AddAttachment(new AttachmentIdentifier(attachmentName));
         }
 
         /// <summary>
@@ -360,15 +381,21 @@ namespace Exiled.API.Features.Items
         /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to add.</param>
         public void AddAttachment(IEnumerable<AttachmentIdentifier> identifiers)
         {
-            foreach (FirearmAttachment attachment in Attachments)
+            foreach (AttachmentIdentifier identifier in identifiers)
             {
-                foreach (AttachmentIdentifier identifier in identifiers)
-                {
-                    if (identifier != attachment || attachment.IsEnabled)
-                        continue;
+                AddAttachment(identifier);
+            }
+        }
 
-                    Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() + identifier.Code, true);
-                }
+        /// <summary>
+        /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to the firearm.
+        /// </summary>
+        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to add.</param>
+        public void AddAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
+        {
+            foreach (AttachmentNameTranslation attachmentName in attachmentNames)
+            {
+                AddAttachment(new AttachmentIdentifier(attachmentName));
             }
         }
 
@@ -378,13 +405,47 @@ namespace Exiled.API.Features.Items
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to remove.</param>
         public void RemoveAttachment(AttachmentIdentifier identifier)
         {
-            foreach (FirearmAttachment attachment in Attachments)
-            {
-                if (identifier != attachment || !attachment.IsEnabled)
-                    continue;
+            if (!Attachments.Any(attachment => attachment.Name == identifier.Name && attachment.IsEnabled))
+                return;
 
-                Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() - identifier.Code, true);
-            }
+            uint code = identifier.Code == 0 ?
+                AvailableAttachments[Type].FirstOrDefault(attId =>
+                attId.Name == identifier.Name).Code :
+                identifier.Code;
+
+            Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/> from the firearm.
+        /// </summary>
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to remove.</param>
+        public void RemoveAttachment(AttachmentNameTranslation attachmentName)
+        {
+            FirearmAttachment firearmAttachment = Attachments.FirstOrDefault(att => att.Name == attachmentName && att.IsEnabled);
+
+            if (firearmAttachment is null)
+                return;
+
+            uint code = AvailableAttachments[Type].FirstOrDefault(attId => attId == firearmAttachment).Code;
+
+            Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentSlot"/> from the firearm.
+        /// </summary>
+        /// <param name="attachmentSlot">The <see cref="AttachmentSlot"/> to remove.</param>
+        public void RemoveAttachment(AttachmentSlot attachmentSlot)
+        {
+            FirearmAttachment firearmAttachment = Attachments.FirstOrDefault(att => att.Slot == attachmentSlot && att.IsEnabled);
+
+            if (firearmAttachment is null)
+                return;
+
+            uint code = AvailableAttachments[Type].FirstOrDefault(attId => attId == firearmAttachment).Code;
+
+            Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() & ~code, true);
         }
 
         /// <summary>
@@ -393,15 +454,33 @@ namespace Exiled.API.Features.Items
         /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to remove.</param>
         public void RemoveAttachment(IEnumerable<AttachmentIdentifier> identifiers)
         {
-            foreach (FirearmAttachment attachment in Attachments)
+            foreach (AttachmentIdentifier identifier in identifiers)
             {
-                foreach (AttachmentIdentifier identifier in identifiers)
-                {
-                    if (identifier != attachment || !attachment.IsEnabled)
-                        continue;
+                RemoveAttachment(identifier);
+            }
+        }
 
-                    Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() - identifier.Code, true);
-                }
+        /// <summary>
+        /// Removes a list of <see cref="FirearmAttachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> from the firearm.
+        /// </summary>
+        /// <param name="attachmentNames">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentNameTranslation"/> to remove.</param>
+        public void RemoveAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
+        {
+            foreach (AttachmentNameTranslation attachmentName in attachmentNames)
+            {
+                RemoveAttachment(attachmentName);
+            }
+        }
+
+        /// <summary>
+        /// Removes a list of <see cref="FirearmAttachment"/> of the specified <see cref="IEnumerable{T}"/> of <see cref="AttachmentSlot"/> from the firearm.
+        /// </summary>
+        /// <param name="attachmentSlots">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentSlot"/> to remove.</param>
+        public void RemoveAttachment(IEnumerable<AttachmentSlot> attachmentSlots)
+        {
+            foreach (AttachmentSlot attachmentSlot in attachmentSlots)
+            {
+                RemoveAttachment(attachmentSlot);
             }
         }
 
