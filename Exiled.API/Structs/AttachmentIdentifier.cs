@@ -59,7 +59,7 @@ namespace Exiled.API.Structs
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
-        /// <returns>True if the values are equal.</returns>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
             identifier.Name == firearmAttachment.Name && identifier.Slot == firearmAttachment.Slot;
 
@@ -68,8 +68,24 @@ namespace Exiled.API.Structs
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
         /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
-        /// <returns>True if the values are not equal.</returns>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
             identifier.Name != firearmAttachment.Name || identifier.Slot != firearmAttachment.Slot;
+
+        /// <inheritdoc/>
+        public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
+
+        /// <inheritdoc/>
+        public override string ToString() => $"Code: {Code}\nName: {Name}\nSlot: {Slot}";
+
+        /// <inheritdoc/>
+        public override int GetHashCode() => base.GetHashCode();
+
+        /// <summary>
+        /// Indicates whether this instance and a <see cref="FirearmAttachment"/> are equal.
+        /// </summary>
+        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare with the current instance.</param>
+        /// <returns><see langword="true"/> if <see cref="FirearmAttachment"/> and this instance represent the same value; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(FirearmAttachment firearmAttachment) => this == firearmAttachment;
     }
 }
