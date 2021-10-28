@@ -7,6 +7,8 @@
 
 namespace Exiled.CustomItems.API.Features
 {
+    using Exiled.API.Structs;
+
     /// <summary>
     /// Weapon modifiers.
     /// </summary>
@@ -15,29 +17,15 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Modifiers"/> struct.
         /// </summary>
-        /// <param name="barrelType"><inheritdoc cref="BarrelType"/></param>
-        /// <param name="sightType"><inheritdoc cref="SightType"/></param>
-        /// <param name="otherType"><inheritdoc cref="OtherType"/></param>
-        public Modifiers(int barrelType, int sightType, int otherType)
+        /// <param name="attachmentIdentifiers"><inheritdoc cref="Attachments"/></param>
+        public Modifiers(AttachmentIdentifier[] attachmentIdentifiers)
         {
-            BarrelType = barrelType;
-            SightType = sightType;
-            OtherType = otherType;
+            Attachments = attachmentIdentifiers;
         }
 
         /// <summary>
-        /// Gets a value indicating what <see cref="BarrelType"/> the weapon will have.
+        /// Gets a value indicating what <see cref="AttachmentIdentifier"/>s the weapon will have.
         /// </summary>
-        public int BarrelType { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating what <see cref="SightType"/> the weapon will have.
-        /// </summary>
-        public int SightType { get; private set; }
-
-        /// <summary>
-        /// Gets a value indicating what <see cref="OtherType"/> the weapon will have.
-        /// </summary>
-        public int OtherType { get; private set; }
+        public AttachmentIdentifier[] Attachments { get; private set; }
     }
 }
