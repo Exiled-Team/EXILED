@@ -395,7 +395,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a player changed spectated player.
         /// </summary>
-        public static event CustomEventHandler<ChangedSpectatedPlayerEventArgs> ChangedSpectatedPlayer;
+        public static event CustomEventHandler<ChangingSpectatedPlayerEventArgs> ChangingSpectatedPlayer;
 
         /// <summary>
         /// Called before pre-authenticating a player.
@@ -845,7 +845,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked after a player changes spectated player.
         /// </summary>
-        /// <param name="ev">The <see cref="ChangedSpectatedPlayerEventArgs"/> instance.</param>
-        public static void OnChangedSpectatedPlayer(ChangedSpectatedPlayerEventArgs ev) => ChangedSpectatedPlayer.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
+        public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);
     }
 }

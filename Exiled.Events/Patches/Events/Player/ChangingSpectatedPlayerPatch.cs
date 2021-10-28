@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="ChangedSpectatedPlayerPatch.cs" company="Exiled Team">
+// <copyright file="ChangingSpectatedPlayerPatch.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -21,10 +21,10 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="SpectatorManager.CurrentSpectatedPlayer"/> setter.
-    /// Adds the <see cref="Handlers.Player.ChangedSpectatedPlayer"/>.
+    /// Adds the <see cref="Handlers.Player.ChangingSpectatedPlayer"/>.
     /// </summary>
     [HarmonyPatch(typeof(SpectatorManager), nameof(SpectatorManager.CurrentSpectatedPlayer), MethodType.Setter)]
-    internal static class ChangedSpectatedPlayerPatch
+    internal static class ChangingSpectatedPlayerPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -39,22 +39,22 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction[]
                 {
                     /*
-                     *  var spectator = Player.Get(__instance._hub);
-                     *  if (spectator != null)
+                     *  var player = Player.Get(__instance._hub);
+                     *  if (player != null)
                      *  {
-                     *      var ev = new ChangingSpectatedPlayerEventArgs(spectator, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value));
+                     *      var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value));
                      *
-                     *      Handlers.CustomEvents.InvokeChangingSpectatedPlayer(ev);
+                     *      Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
                      *  }
                      */
 
-                    // var spectator = Player.Get(__instance._hub);
+                    // var player = Player.Get(__instance._hub);
                     new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                     new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(SpectatorManager), nameof(SpectatorManager._hub))),
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
                     new CodeInstruction(OpCodes.Dup),
 
-                    // if (spectator != null)
+                    // if (player != null)
                     new CodeInstruction(OpCodes.Stloc, player),
                     new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                     new CodeInstruction(OpCodes.Ldloc, player),
@@ -68,11 +68,11 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
 
-                    // var ev = new ChangingSpectatedPlayerEventArgs(spectator, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
-                    new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangedSpectatedPlayerEventArgs))[0]),
+                    // var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value))
+                    new CodeInstruction(OpCodes.Newobj, AccessTools.GetDeclaredConstructors(typeof(ChangingSpectatedPlayerEventArgs))[0]),
 
-                    // Handlers.CustomEvents.InvokeChangingSpectatedPlayer(ev);
-                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangedSpectatedPlayer))),
+                    // Exiled.Events.Handlers.Player.OnChangingSpectatedPlayer(ev);
+                    new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Player), nameof(Player.OnChangingSpectatedPlayer))),
 
                     new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
                 });
