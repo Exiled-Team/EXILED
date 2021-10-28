@@ -379,15 +379,16 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
         /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
-        /// <returns>A value indicating whether or not the firearm has the specified <see cref="AttachmentIdentifier"/>.</returns>
+        /// <returns>A value indicating whether or not the firearm has the specified <see cref="FirearmAttachment"/>.</returns>
         public bool TryGetAttachment(AttachmentIdentifier identifier, out FirearmAttachment firearmAttachment)
         {
             firearmAttachment = default;
 
-            if (!Attachments.Any(x => x.Name == identifier.Name && x.Slot == identifier.Slot && x.IsEnabled))
+            if (!Attachments.Any(attachment => attachment.Name == identifier.Name && attachment.Slot == identifier.Slot))
                 return false;
 
-            firearmAttachment = Attachments.FirstOrDefault(x => x.Name == identifier.Name && x.Slot == identifier.Slot && x.IsEnabled);
+            firearmAttachment = Attachments.FirstOrDefault(attachment => attachment.Name == identifier.Name && attachment.Slot == identifier.Slot);
+
             return true;
         }
     }
