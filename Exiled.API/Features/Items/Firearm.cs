@@ -347,7 +347,7 @@ namespace Exiled.API.Features.Items
         {
             foreach (FirearmAttachment attachment in Attachments)
             {
-                if (identifier.Slot != attachment.Slot)
+                if (identifier != attachment || attachment.IsEnabled)
                     continue;
 
                 Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() + identifier.Code, true);
@@ -362,7 +362,7 @@ namespace Exiled.API.Features.Items
         {
             foreach (FirearmAttachment attachment in Attachments)
             {
-                if (identifier.Slot != attachment.Slot || !attachment.IsEnabled)
+                if (identifier != attachment || !attachment.IsEnabled)
                     continue;
 
                 Base.ApplyAttachmentsCode(Base.GetCurrentAttachmentsCode() - identifier.Code, true);
@@ -384,10 +384,10 @@ namespace Exiled.API.Features.Items
         {
             firearmAttachment = default;
 
-            if (!Attachments.Any(attachment => attachment.Name == identifier.Name && attachment.Slot == identifier.Slot))
+            if (!Attachments.Any(attachment => attachment == identifier))
                 return false;
 
-            firearmAttachment = Attachments.FirstOrDefault(attachment => attachment.Name == identifier.Name && attachment.Slot == identifier.Slot);
+            firearmAttachment = Attachments.FirstOrDefault(attachment => attachment == identifier);
 
             return true;
         }
