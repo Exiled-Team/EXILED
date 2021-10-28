@@ -18,6 +18,17 @@ namespace Exiled.API.Structs
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
         /// <param name="name"><inheritdoc cref="Name"/></param>
+        public AttachmentIdentifier(AttachmentNameTranslation name)
+        {
+            Code = 0;
+            Name = name;
+            Slot = default;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
+        /// </summary>
+        /// <param name="name"><inheritdoc cref="Name"/></param>
         /// <param name="slot"><inheritdoc cref="Slot"/></param>
         public AttachmentIdentifier(AttachmentNameTranslation name, AttachmentSlot slot)
         {
@@ -90,7 +101,7 @@ namespace Exiled.API.Structs
         public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
 
         /// <inheritdoc/>
-        public override string ToString() => $"Code: {Code}\nName: {Name}\nSlot: {Slot}";
+        public override string ToString() => $"Code: {Code} - Name: {Name} - Slot: {Slot}";
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();
