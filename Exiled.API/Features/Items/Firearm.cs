@@ -497,7 +497,7 @@ namespace Exiled.API.Features.Items
         public FirearmAttachment GetAttachment(AttachmentIdentifier identifier) => Attachments.FirstOrDefault(attachment => attachment == identifier);
 
         /// <summary>
-        /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentIdentifier"/>.
+        /// Tries to get a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
         /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
@@ -515,7 +515,7 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentNameTranslation"/>.
+        /// Tries to get a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/>.
         /// </summary>
         /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to check.</param>
         /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
