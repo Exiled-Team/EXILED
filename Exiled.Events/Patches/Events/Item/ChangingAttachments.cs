@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Item
 #pragma warning disable SA1600
     using System.Linq;
 
+    using Exiled.API.Features;
     using Exiled.API.Structs;
     using Exiled.Events.EventArgs;
 
@@ -65,33 +66,29 @@ namespace Exiled.Events.Patches.Events.Item
 
             if (flag)
             {
-                /*
-                 * 100 <---- Firearm code + new att + old att
-                 * 90  <---- Firearm code + new att
-                 * 80  <---- Firearm code + old att (2nd) (2nd = x)
-                 * 20 <-- new att (3rd) (3rd > 2nd)
-                 * (80 - x) + 20 = 100 - x = 90 (x = 100 - 90)
-                */
                 if (msg.AttachmentsCode == firearm.GetCurrentAttachmentsCode())
                     return false;
 
-                uint curCode = msg.AttachmentsCode > firearm.GetCurrentAttachmentsCode() ?
-                    msg.AttachmentsCode - firearm.GetCurrentAttachmentsCode() :
-                    firearm.GetCurrentAttachmentsCode() - msg.AttachmentsCode;
+                uint newAttachments = msg.AttachmentsCode;
+                uint oldAttachments = firearm.Status.Attachments;
+                FirearmAttachment addedAttachment = default;
+                FirearmAttachment removedAttachment = default;
+                uint num = 1;
+                foreach (FirearmAttachment att in firearm.Attachments)
+                {
+                    if (att.IsEnabled && (newAttachments & num) != num)
+                        removedAttachment = att;
+                    else if (!att.IsEnabled && (newAttachments & num) == num)
+                        addedAttachment = att;
 
-                // firearm.GetCurrentAttachmentsCode() + curCode <---- Firearm code + new att + old att
-                // firearm.GetCurrentAttachmentsCode() <---- Firearm code + old att (2nd) (2nd = x)
-                // msg.AttachmentsCode
-                // curCode
-                // (firearm.GetCurrentAttachmentsCode() - x) + curCode = (firearm.GetCurrentAttachmentsCode() + curCode) - x = msg.AttachmentsCode
-                // (x = (firearm.GetCurrentAttachmentsCode() + curCode) - msg.AttachmentsCode)
-                uint oldCode = (firearm.GetCurrentAttachmentsCode() + curCode) - msg.AttachmentsCode;
+                    num *= 2U;
+                }
 
                 AttachmentIdentifier newIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
-                x.Code == curCode);
+                x.Name == addedAttachment.Name);
 
                 AttachmentIdentifier oldIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
-                x.Name == firearm.Attachments.FirstOrDefault(j => j.IsEnabled && j.Slot == newIdentifier.Slot).Name);
+                x.Name == removedAttachment.Name);
 
                 ChangingAttachmentsEventArgs ev = new ChangingAttachmentsEventArgs(
                     API.Features.Player.Get(conn.identity.netId),
@@ -105,18 +102,9 @@ namespace Exiled.Events.Patches.Events.Item
                 if (!ev.IsAllowed)
                     return false;
 
-                uint msgCode = msg.AttachmentsCode;
-                API.Features.Log.Debug("curCode: " + curCode);
-                API.Features.Log.Debug("Orignal Code: " + msg.AttachmentsCode);
-                uint newCode = (firearm.GetCurrentAttachmentsCode() - (msg.AttachmentsCode )) + ev.NewAttachmentIdentifier.Code;
-                msg.AttachmentsCode = newCode;
-                API.Features.Log.Debug("Exiled Code: " + newCode);
+                newIdentifier = ev.NewAttachmentIdentifier;
 
-                if (msgCode != msg.AttachmentsCode)
-                {
-                    msg.AttachmentsCode += curCode;
-                    API.Features.Log.Debug("Exiled Code Fixed: " + newCode);
-                }
+                msg.AttachmentsCode = (newIdentifier.Code + firearm.GetCurrentAttachmentsCode()) - ev.OldAttachmentIdentifier.Code;
 
                 firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
                 if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
