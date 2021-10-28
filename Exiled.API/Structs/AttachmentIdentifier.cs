@@ -72,6 +72,22 @@ namespace Exiled.API.Structs
         public static bool operator !=(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
             identifier.Name != firearmAttachment.Name || identifier.Slot != firearmAttachment.Slot;
 
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
+        /// </summary>
+        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(FirearmAttachment firearmAttachment, AttachmentIdentifier identifier) => identifier == firearmAttachment;
+
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
+        /// </summary>
+        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(FirearmAttachment firearmAttachment, AttachmentIdentifier identifier) => identifier != firearmAttachment;
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
 
