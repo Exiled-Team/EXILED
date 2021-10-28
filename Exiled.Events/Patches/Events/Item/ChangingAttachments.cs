@@ -65,8 +65,15 @@ namespace Exiled.Events.Patches.Events.Item
 
             if (flag)
             {
+                if (msg.AttachmentsCode == firearm.GetCurrentAttachmentsCode())
+                    return false;
+
+                uint curCode = msg.AttachmentsCode > firearm.GetCurrentAttachmentsCode() ?
+                    msg.AttachmentsCode - firearm.GetCurrentAttachmentsCode() :
+                    firearm.GetCurrentAttachmentsCode() - msg.AttachmentsCode;
+
                 AttachmentIdentifier newIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
-                x.Code == msg.AttachmentsCode - firearm.GetCurrentAttachmentsCode());
+                x.Code == curCode);
 
                 AttachmentIdentifier oldIdentifier = API.Features.Items.Firearm.AvailableAttachments[firearm.ItemTypeId].FirstOrDefault(x =>
                 x.Name == firearm.Attachments.FirstOrDefault(j => j.IsEnabled && j.Slot == newIdentifier.Slot).Name);
@@ -78,10 +85,18 @@ namespace Exiled.Events.Patches.Events.Item
                     newIdentifier,
                     true);
 
+                Handlers.Item.OnChangingAttachments(ev);
+
                 if (!ev.IsAllowed)
                     return false;
 
-                msg.AttachmentsCode = ev.NewAttachmentIdentifier.Code;
+                uint msgCode = msg.AttachmentsCode;
+                API.Features.Log.Debug("curCode: " + curCode);
+                API.Features.Log.Debug("Orignal Code: " + msg.AttachmentsCode);
+                msg.AttachmentsCode = msgCode > firearm.GetCurrentAttachmentsCode() ?
+                    firearm.GetCurrentAttachmentsCode() + ev.NewAttachmentIdentifier.Code :
+                    (firearm.GetCurrentAttachmentsCode() - ev.OldAttachmentIdentifier.Code) + ev.NewAttachmentIdentifier.Code;
+                API.Features.Log.Debug("Exiled Code: " + msg.AttachmentsCode);
 
                 firearm.ApplyAttachmentsCode(msg.AttachmentsCode, true);
                 if (firearm.Status.Ammo > firearm.AmmoManagerModule.MaxAmmo)
