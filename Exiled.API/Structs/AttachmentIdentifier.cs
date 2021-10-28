@@ -53,5 +53,23 @@ namespace Exiled.API.Structs
         /// Gets the attachment slot.
         /// </summary>
         public AttachmentSlot Slot { get; }
+
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <returns>True if the values are equal.</returns>
+        public static bool operator ==(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
+            identifier.Name == firearmAttachment.Name && identifier.Slot == firearmAttachment.Slot;
+
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare.</param>
+        /// <returns>True if the values are not equal.</returns>
+        public static bool operator !=(AttachmentIdentifier identifier, FirearmAttachment firearmAttachment) =>
+            identifier.Name != firearmAttachment.Name || identifier.Slot != firearmAttachment.Slot;
     }
 }
