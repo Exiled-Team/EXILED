@@ -18,6 +18,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using Hints;
 
@@ -116,10 +117,7 @@ namespace Exiled.API.Features
             get => referenceHub;
             private set
             {
-                if (value == null)
-                    throw new NullReferenceException("Player's ReferenceHub cannot be null!");
-
-                referenceHub = value;
+                referenceHub = value ?? throw new NullReferenceException("Player's ReferenceHub cannot be null!");
                 GameObject = value.gameObject;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
@@ -1483,13 +1481,18 @@ namespace Exiled.API.Features
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
-        /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
-        public Item AddItem(ItemType itemType)
+        /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
         {
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             if (item is Firearm firearm)
             {
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
+                if (identifiers != null)
+                {
+                    firearm.AddAttachment(identifiers);
+                }
+                else if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
                     dict.TryGetValue(itemType, out uint code))
                 {
                     firearm.Base.ApplyAttachmentsCode(code, true);
