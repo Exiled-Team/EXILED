@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
     /// <summary>
@@ -17,15 +18,24 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingDurabilityEventArgs"/> class.
         /// </summary>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
+        /// <param name="oldDurability"><inheritdoc cref="OldDurability"/></param>
         /// <param name="newDurability"><inheritdoc cref="NewDurability"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingDurabilityEventArgs(Firearm firearm, float newDurability, bool isAllowed = true)
+        public ChangingDurabilityEventArgs(Player player, InventorySystem.Items.Firearms.Firearm firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
         {
-            Firearm = firearm;
+            Player = player;
+            Firearm = (Firearm)Item.Get(firearm);
+            OldDurability = oldDurability;
             NewDurability = newDurability;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the <see cref="API.Features.Player"/> who's changing the <see cref="Firearm"/>'s durability.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the <see cref="API.Features.Items.Firearm"/> the durability is being changed to.
@@ -33,9 +43,14 @@ namespace Exiled.Events.EventArgs
         public Firearm Firearm { get; }
 
         /// <summary>
+        /// Gets the old durability.
+        /// </summary>
+        public byte OldDurability { get; }
+
+        /// <summary>
         /// Gets or sets the new durability to be used by the firearm.
         /// </summary>
-        public float NewDurability { get; set; }
+        public byte NewDurability { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the durability can be changed.
