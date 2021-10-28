@@ -490,6 +490,13 @@ namespace Exiled.API.Features.Items
         public void ClearAttachments() => Base.ApplyAttachmentsCode((uint)BaseCode, true);
 
         /// <summary>
+        /// Gets a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
+        /// <returns>The corresponding <see cref="FirearmAttachment"/>.</returns>
+        public FirearmAttachment GetAttachment(AttachmentIdentifier identifier) => Attachments.FirstOrDefault(attachment => attachment == identifier);
+
+        /// <summary>
         /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentIdentifier"/>.
         /// </summary>
         /// <param name="identifier">The <see cref="AttachmentIdentifier"/> to check.</param>
@@ -499,10 +506,28 @@ namespace Exiled.API.Features.Items
         {
             firearmAttachment = default;
 
-            if (!Attachments.Any(attachment => attachment == identifier))
+            if (!Attachments.Any(attachment => attachment.Name == identifier.Name))
                 return false;
 
-            firearmAttachment = Attachments.FirstOrDefault(attachment => attachment == identifier);
+            firearmAttachment = GetAttachment(identifier);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to get a <see cref="FirearmAttachment"/> from the specified <see cref="Firearm"/>'s <see cref="AttachmentNameTranslation"/>.
+        /// </summary>
+        /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to check.</param>
+        /// <param name="firearmAttachment">The corresponding <see cref="FirearmAttachment"/>.</param>
+        /// <returns>A value indicating whether or not the firearm has the specified <see cref="FirearmAttachment"/>.</returns>
+        public bool TryGetAttachment(AttachmentNameTranslation attachmentName, out FirearmAttachment firearmAttachment)
+        {
+            firearmAttachment = default;
+
+            if (!Attachments.Any(attachment => attachment.Name == attachmentName))
+                return false;
+
+            firearmAttachment = GetAttachment(new AttachmentIdentifier(attachmentName));
 
             return true;
         }
