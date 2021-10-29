@@ -24,9 +24,9 @@ namespace Exiled.Events.Patches.Events.Item
 
     /// <summary>
     /// Patches <see cref="AttachmentsServerHandler.ServerReceiveChangeRequest(NetworkConnection, AttachmentsChangeRequest)"/>.
-    /// Adds the <see cref="Handlers.Item.ChangingAttachments"/> event.
+    /// Adds the <see cref="Handlers.Item.ReceivingPreference"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceiveChangeRequest))]
+    [HarmonyPatch(typeof(AttachmentsServerHandler), nameof(AttachmentsServerHandler.ServerReceivePreference))]
     internal static class ReceivingPreference
     {
         internal static bool Prefix(NetworkConnection conn, AttachmentsSetupPreference msg)
@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Item
                 return false;
             }
 
-            Dictionary<ReferenceHub, Dictionary<global::ItemType, uint>> playerPreferences = AttachmentsServerHandler.PlayerPreferences;
+            Dictionary<ReferenceHub, Dictionary<ItemType, uint>> playerPreferences = AttachmentsServerHandler.PlayerPreferences;
             ReferenceHub referenceHub2 = referenceHub;
             Dictionary<ItemType, uint> dictionary2 = new Dictionary<ItemType, uint>();
 
