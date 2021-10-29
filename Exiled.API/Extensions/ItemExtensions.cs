@@ -12,6 +12,7 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using InventorySystem;
 
@@ -176,6 +177,51 @@ namespace Exiled.API.Extensions
             List<ItemType> itemTypes = new List<ItemType>();
             itemTypes.AddRange(items.Select(item => item.Type));
             return itemTypes;
+        }
+
+        /// <summary>
+        /// Gets all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
+        /// <param name="target">The <see cref="uint"/> value which represents the attachments code to check.</param>
+        /// <returns>A <see cref="AttachmentIdentifier"/>[] value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
+        public static AttachmentIdentifier[] GetAttachments(this ItemType type, uint target) =>
+            GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
+            identifier.Code).ToArray()).Where(items => items.Sum() == target).FirstOrDefault().Select(code =>
+            Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == code)).ToArray();
+
+        /// <summary>
+        /// Tries to get all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
+        /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
+        /// <param name="identifiers">The attachments present on the specified <see cref="ItemType"/>.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="ItemType"/> is a weapon.</returns>
+        public static bool TryGetAttachments(this ItemType type, uint code, out AttachmentIdentifier[] identifiers)
+        {
+            identifiers = default;
+
+            if (!type.IsWeapon())
+                return false;
+
+            identifiers = GetAttachments(type, code);
+
+            return true;
+        }
+
+        private static uint Sum(this IEnumerable<uint> source)
+        {
+            uint sum = 0;
+            checked
+            {
+                return source.Aggregate(sum, (current, v) => current + v);
+            }
+        }
+
+        private static IEnumerable<T[]> GetCombinations<T>(T[] source)
+        {
+            for (int i = 0; i < (1 << source.Length); i++)
+                yield return source.Where((t, j) => (i & (1 << j)) != 0).ToArray();
         }
     }
 }
