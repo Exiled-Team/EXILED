@@ -27,7 +27,10 @@ namespace Exiled.API.Features.Items
     /// </summary>
     public class Firearm : Item
     {
-        private static readonly Dictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
+        /// </summary>
+        internal static readonly Dictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
         {
             { ItemType.GunCOM15, BaseCode.GunCOM15 },
             { ItemType.GunCOM18, BaseCode.GunCOM18 },
@@ -265,7 +268,7 @@ namespace Exiled.API.Features.Items
             {
                 IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences = AttachmentsServerHandler.PlayerPreferences.Select((KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
                 {
-                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachments(kvp.Value)));
+                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachments(kvp.Value).ToArray()));
                 });
 
                 return playerPreferences.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
