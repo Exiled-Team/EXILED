@@ -97,6 +97,38 @@ namespace Exiled.API.Structs
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(FirearmAttachment left, AttachmentIdentifier right) => right != left;
 
+        /// <summary>
+        /// Computes the sum of its right-hand <see cref="AttachmentIdentifier"/> operand and its left-hand <see cref="uint"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="AttachmentIdentifier"/> to be added up.</param>
+        /// <param name="right">The <see cref="uint"/> to be added up.</param>
+        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
+        public static uint operator +(AttachmentIdentifier left, uint right) => left.Code + right;
+
+        /// <summary>
+        /// Subtracts its right-hand <see cref="AttachmentIdentifier"/> operand from its left-hand <see cref="uint"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
+        /// <param name="right">The <see cref="uint"/> to be subtracted.</param>
+        /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
+        public static uint operator -(AttachmentIdentifier left, uint right) => left.Code - right;
+
+        /// <summary>
+        /// Computes the sum of its right-hand <see cref="uint"/> operand and its left-hand <see cref="AttachmentIdentifier"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="uint"/> to be added up.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be added up.</param>
+        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
+        public static uint operator +(uint left, AttachmentIdentifier right) => right + left;
+
+        /// <summary>
+        /// Subtracts its right-hand <see cref="uint"/> operand from its left-hand <see cref="AttachmentIdentifier"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="uint"/> to be subtracted.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
+        /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
+        public static uint operator -(uint left, AttachmentIdentifier right) => right - left;
+
         /// <inheritdoc/>
         public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
 
