@@ -10,9 +10,9 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
+    using Exiled.API.Extensions;
+    using Exiled.API.Structs;
 
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms;
@@ -172,8 +172,9 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="identifiers">The attachments to be added.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null)
         {
             Base.PickupDropModel.Info.ItemId = Type;
             Base.PickupDropModel.Info.Position = position;
@@ -186,6 +187,9 @@ namespace Exiled.API.Features.Items
             {
                 if (this is Firearm firearm)
                 {
+                    if (identifiers != null)
+                        firearm.AddAttachment(identifiers);
+
                     firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
                 }
                 else
@@ -207,7 +211,8 @@ namespace Exiled.API.Features.Items
                             break;
                     }
 
-                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                    uint code = identifiers != null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
+                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
                 }
 
                 firearmPickup.NetworkStatus = firearmPickup.Status;
