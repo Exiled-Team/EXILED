@@ -185,7 +185,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
         /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
         /// <returns>A <see cref="AttachmentIdentifier"/>[] value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
-        public static AttachmentIdentifier[] GetAttachments(this ItemType type, uint code)
+        public static IEnumerable<AttachmentIdentifier> GetAttachments(this ItemType type, uint code)
         {
             code -= (uint)type.GetBaseCode();
             return GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
@@ -200,7 +200,7 @@ namespace Exiled.API.Extensions
         /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
         /// <param name="identifiers">The attachments present on the specified <see cref="ItemType"/>.</param>
         /// <returns><see langword="true"/> if the specified <see cref="ItemType"/> is a weapon.</returns>
-        public static bool TryGetAttachments(this ItemType type, uint code, out AttachmentIdentifier[] identifiers)
+        public static bool TryGetAttachments(this ItemType type, uint code, out IEnumerable<AttachmentIdentifier> identifiers)
         {
             identifiers = default;
 
