@@ -1486,7 +1486,31 @@ namespace Exiled.API.Features
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
-        /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType)
+        {
+            Item item = Item.Get(Inventory.ServerAddItem(itemType));
+            if (item is Firearm firearm)
+            {
+                if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
+                {
+                    firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
+                }
+
+                FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
+                if (firearm.Base.CombinedAttachments.AdditionalPros.HasFlagFast(AttachmentDescriptiveAdvantages.Flashlight))
+                    flags |= FirearmStatusFlags.FlashlightEnabled;
+                firearm.Base.Status = new FirearmStatus(firearm.MaxAmmo, flags, firearm.Base.GetCurrentAttachmentsCode());
+            }
+
+            return item;
+        }
+
+        /// <summary>
+        /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
         /// <returns>The <see cref="Item"/> given to the player.</returns>
         public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
         {
@@ -1497,10 +1521,9 @@ namespace Exiled.API.Features
                 {
                     firearm.AddAttachment(identifiers);
                 }
-                else if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
-                    dict.TryGetValue(itemType, out uint code))
+                else if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
                 {
-                    firearm.Base.ApplyAttachmentsCode(code, true);
+                    firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                 }
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -1561,6 +1584,33 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Add an item to the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        public void AddItem(Item item, IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            try
+            {
+                if (item.Base == null)
+                {
+                    item = new Item(item.Type);
+                }
+
+                if (item is Firearm firearm && identifiers != null)
+                {
+                    firearm.AddAttachment(identifiers);
+                }
+
+                AddItem(item.Base, item);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(AddItem)}(Item): {e}");
+            }
+        }
+
+        /// <summary>
         /// Adds an item to the player's inventory.
         /// </summary>
         /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
@@ -1595,10 +1645,9 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
-                        dict.TryGetValue(item.Type, out uint code))
+                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
                     {
-                        firearm.ApplyAttachmentsCode(code, true);
+                        firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -1686,6 +1735,24 @@ namespace Exiled.API.Features
                     AddItem(item.Base == null ? new Item(item.Type) : item);
                 }
             }
+        }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items with the specified attachments, clearing any items it already possess.
+        /// </summary>
+        /// <param name="newItems">The new items with the specified attachments that have to be added to the inventory.</param>
+        public void ResetInventory(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> newItems)
+        {
+            ClearInventory();
+
+            Timing.CallDelayed(0.5f, () =>
+            {
+                if (newItems.Count > 0)
+                {
+                    foreach (ItemType item in newItems.Keys)
+                        AddItem(item, newItems[item]);
+                }
+            });
         }
 
         /// <summary>
