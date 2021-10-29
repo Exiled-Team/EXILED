@@ -218,7 +218,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to compute.</param>
         /// <returns>A <see cref="uint"/> value that represents the attachments code.</returns>
-        public static uint GetAttachmentsCode(IEnumerable<AttachmentIdentifier> identifiers)
+        public static uint GetAttachmentsCode(this IEnumerable<AttachmentIdentifier> identifiers)
         {
             uint code = 0;
 
