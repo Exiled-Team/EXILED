@@ -311,6 +311,60 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Turns off all lights of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                TurnOffAllLights(duration, zone);
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.IsOpen = false;
+                        door.ChangeLock(lockType);
+                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAllDoors(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all doors in the facility.
+        /// </summary>
+        public static void UnlockAllDoors()
+        {
+            foreach (Door door in Doors)
+                door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
         /// Gets the camera with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
