@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Structs
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
@@ -127,7 +129,39 @@ namespace Exiled.API.Structs
         /// <param name="left">The <see cref="uint"/> to be subtracted.</param>
         /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
         /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
-        public static uint operator -(uint left, AttachmentIdentifier right) => right - left;
+        public static uint operator -(uint left, AttachmentIdentifier right) => left - right.Code;
+
+        /// <summary>
+        /// Computes the sum of its right-hand <see cref="BaseCode"/> operand and its left-hand <see cref="AttachmentIdentifier"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="AttachmentIdentifier"/> to be added up.</param>
+        /// <param name="right">The <see cref="BaseCode"/> to be added up.</param>
+        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
+        public static uint operator +(AttachmentIdentifier left, BaseCode right) => left.Code + (uint)right;
+
+        /// <summary>
+        /// Subtracts its right-hand <see cref="BaseCode"/> operand from its left-hand <see cref="AttachmentIdentifier"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="BaseCode"/> to be subtracted.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
+        /// <returns>A <see cref="BaseCode"/> value representing the subtraction between the two operands.</returns>
+        public static uint operator -(AttachmentIdentifier left, BaseCode right) => left.Code - (uint)right;
+
+        /// <summary>
+        /// Computes the sum of its right-hand <see cref="AttachmentIdentifier"/> operand and its left-hand <see cref="BaseCode"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="BaseCode"/> to be added up.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be added up.</param>
+        /// <returns>A <see cref="uint"/> value that represents the sum of the two operands.</returns>
+        public static uint operator +(BaseCode left, AttachmentIdentifier right) => right + left;
+
+        /// <summary>
+        /// Subtracts its right-hand <see cref="AttachmentIdentifier"/> operand from its left-hand <see cref="BaseCode"/> operand.
+        /// </summary>
+        /// <param name="left">The <see cref="BaseCode"/> to be subtracted.</param>
+        /// <param name="right">The <see cref="AttachmentIdentifier"/> to be subtracted.</param>
+        /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
+        public static uint operator -(BaseCode left, AttachmentIdentifier right) => (uint)left - right.Code;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
