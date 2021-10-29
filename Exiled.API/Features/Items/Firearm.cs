@@ -256,6 +256,22 @@ namespace Exiled.API.Features.Items
             },
         };
 
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> which represents all the preferences for each <see cref="Player"/>.
+        /// </summary>
+        public static Dictionary<Player, Dictionary<ItemType, AttachmentIdentifier[]>> PlayerPreferences
+        {
+            get
+            {
+                IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences = AttachmentsServerHandler.PlayerPreferences.Select((KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
+                {
+                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachments(kvp.Value)));
+                });
+
+                return playerPreferences.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            }
+        }
+
         /// <inheritdoc cref="Item.Base"/>
         public new InventorySystem.Items.Firearms.Firearm Base { get; }
 
