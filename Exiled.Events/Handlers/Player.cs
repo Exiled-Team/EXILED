@@ -396,7 +396,7 @@ namespace Exiled.Events.Handlers
         /// Invoked after a player changed spectated player.
         /// </summary>
         public static event CustomEventHandler<ChangingSpectatedPlayerEventArgs> ChangingSpectatedPlayer;
-      
+
         /// <summary>
         /// Invoked before a player toggles the NoClip mode.
         /// </summary>
@@ -852,7 +852,7 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
         public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);
-      
+
         /// <summary>
         /// Called before a player toggles the NoClip mode.
         /// </summary>
