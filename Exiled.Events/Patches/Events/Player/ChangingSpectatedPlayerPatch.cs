@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
                      *
                      *      if(!ev.IsAllowed) return;
                      *
-                     *      value = ev.NewTarget.ReferenceHub;
+                     *      value = ev.NewTarget?.ReferenceHub ?? ev.Player.ReferenceHub;
                      *  }
                      */
 
