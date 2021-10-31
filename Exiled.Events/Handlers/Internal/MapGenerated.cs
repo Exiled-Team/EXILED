@@ -64,8 +64,8 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateRooms()
         {
-            // Get bulk of rooms.
-            IEnumerable<GameObject> roomObjects = Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject);
+            // Get bulk of rooms with sorted.
+            IEnumerable<GameObject> roomObjects = Object.FindObjectsOfType<RoomIdentifier>().Select(x => x.gameObject).OrderByDescending(x => x.name == "OutSide");
 
             // If no rooms were found, it means a plugin is trying to access this before the map is created.
             if (!roomObjects.Any())
