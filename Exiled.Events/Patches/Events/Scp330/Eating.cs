@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
     #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -18,10 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using HarmonyLib;
 
-    using Interactables.Interobjects;
-
-    using InventorySystem.Items;
-    using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
 
     using NorthwoodLib.Pools;
