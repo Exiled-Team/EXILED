@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="EatenSCP330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/>.</param>
-        /// <param name="candy"><inheritdoc cref="CandyKindID"/>.</param>
+        /// <param name="candy"><inheritdoc cref="ICandy"/>.</param>
         public EatenSCP330EventArgs(Player player, ICandy candy)
         {
             Player = player;

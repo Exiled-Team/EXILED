@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     /// <summary>
     /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.Eating"/> event.
+    /// Adds the <see cref="Handlers.Scp330.OnEating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class Eating
