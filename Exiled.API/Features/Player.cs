@@ -1955,5 +1955,11 @@ namespace Exiled.API.Features
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
+
+        /// <summary>
+        /// Sets noclip status to a specific player.
+        /// </summary>
+        /// <param name="status">The value to be set.</param>
+        public void SetNoclip(bool status) => referenceHub.characterClassManager.SetNoclip(status);      
     }
 }
