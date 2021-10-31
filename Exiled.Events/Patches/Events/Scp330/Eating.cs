@@ -43,8 +43,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ApplyEffects))) + offset;
 
-            Log.SendRaw(newInstructions[index], ConsoleColor.Yellow);
-
             var returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
