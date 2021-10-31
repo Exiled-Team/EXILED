@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="Eating.cs" company="Exiled Team">
+// <copyright file="Eaten.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,7 +8,6 @@
 namespace Exiled.Events.Patches.Events.Scp330
 {
     #pragma warning disable SA1118
-    using System;
     using System.Collections.Generic;
     using System.Reflection;
     using System.Reflection.Emit;
@@ -18,10 +17,6 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using HarmonyLib;
 
-    using Interactables.Interobjects;
-
-    using InventorySystem.Items;
-    using InventorySystem.Items.Usables;
     using InventorySystem.Items.Usables.Scp330;
 
     using NorthwoodLib.Pools;
@@ -30,50 +25,35 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     /// <summary>
     /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.Eating"/> event.
+    /// Adds the <see cref="Handlers.Scp330.OnEaten"/> event.
     /// </summary>
+    [HarmonyDebug]
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
-    internal static class Eating
+    internal static class Eaten
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = -3;
-
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ApplyEffects))) + offset;
-
-            Log.SendRaw(newInstructions[index], ConsoleColor.Yellow);
-
-            var returnLabel = generator.DefineLabel();
+            const int offset = -1;
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(Scp330Bag), nameof(Scp330Bag.ServerRefreshBag))) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get
-                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // ICandy
                 new CodeInstruction(OpCodes.Ldloc_0),
 
-                // True
-                new CodeInstruction(OpCodes.Ldc_I4_1),
+                // var ev = new EatenSCP330EventArgs(player, candy)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenSCP330EventArgs))[0]),
 
-                // var ev = new EatingSCP330EventArgs(player, candy, true)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingSCP330EventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-
-                // Handlers.SCP330.OnEating(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEating))),
-
-                // if(!ev.IsAllowed)
-                //  return
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EatingSCP330EventArgs), nameof(EatingSCP330EventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                // Handlers.SCP330.OnEaten(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEaten))),
             });
-
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int i = 0; i < newInstructions.Count; i++)
                 yield return newInstructions[i];
