@@ -24,7 +24,7 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
-        private static Dictionary<Type, GrenadeType> _grenadeDictionary = new Dictionary<Type, GrenadeType>()
+        private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
         {
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             IsFrag = grenade is ExplosionGrenade;
-            GrenadeType = _grenadeDictionary[grenade.GetType()];
+            GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -68,7 +68,7 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             IsFrag = grenade is ExplosionGrenade;
-            GrenadeType = _grenadeDictionary[grenade.GetType()];
+            GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
