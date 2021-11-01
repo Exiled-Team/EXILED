@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.ThrowableProjectiles;
 
     using NorthwoodLib.Pools;
@@ -22,6 +24,14 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
+        private static Dictionary<Type, GrenadeType> _grenadeDictionary = new Dictionary<Type, GrenadeType>()
+        {
+            { typeof(FlashbangGrenade), GrenadeType.Flashbang },
+            { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
+            { typeof(Scp018Projectile), GrenadeType.Scp018 },
+
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
@@ -32,6 +42,7 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             IsFrag = grenade is ExplosionGrenade;
+            GrenadeType = _grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -58,6 +69,7 @@ namespace Exiled.Events.EventArgs
         {
             Thrower = thrower ?? Server.Host;
             IsFrag = grenade is ExplosionGrenade;
+            GrenadeType = _grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
@@ -82,6 +94,11 @@ namespace Exiled.Events.EventArgs
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
         /// </summary>
         public bool IsFrag { get; }
+
+        /// <summary>
+        /// Gets the GrenadeType of the grenade.
+        /// </summary>
+        public GrenadeType GrenadeType { get; }
 
         /// <summary>
         /// Gets the grenade that is exploding.
