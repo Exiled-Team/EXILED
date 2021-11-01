@@ -41,8 +41,6 @@ namespace Exiled.Events.Patches.Events.Player
                 if (info.Tool.Equals(DamageTypes.Recontainment) && target.Role == RoleType.Scp079)
                 {
                     Scp079.OnRecontained(new RecontainedEventArgs(target));
-                    DiedEventArgs eventArgs = new DiedEventArgs(null, target, info);
-                    Player.OnDied(eventArgs);
                 }
 
                 if (attacker == null || attacker.IsHost)
