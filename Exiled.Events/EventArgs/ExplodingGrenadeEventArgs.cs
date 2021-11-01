@@ -9,9 +9,9 @@ namespace Exiled.Events.EventArgs
     using System;
     using System.Collections.Generic;
 
-    using Exiled.API.Features;
-
     using Exiled.API.Enums;
+
+    using Exiled.API.Features;
 
     using InventorySystem.Items.ThrowableProjectiles;
 
@@ -29,7 +29,6 @@ namespace Exiled.Events.EventArgs
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
             { typeof(Scp018Projectile), GrenadeType.Scp018 },
-
         };
 
         /// <summary>
