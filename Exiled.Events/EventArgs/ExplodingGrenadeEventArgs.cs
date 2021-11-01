@@ -95,7 +95,7 @@ namespace Exiled.Events.EventArgs
         public bool IsFrag { get; }
 
         /// <summary>
-        /// Gets the GrenadeType of the grenade.
+        /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
         public GrenadeType GrenadeType { get; }
 
