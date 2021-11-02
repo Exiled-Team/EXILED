@@ -1388,6 +1388,9 @@ namespace Exiled.API.Features
         /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
         public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
         {
+            if (Role == RoleType.Scp0492 && !ReferenceHub.TryGetHub(attackerId, out _))
+                attackerId = Id;
+
             ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
         }
 
