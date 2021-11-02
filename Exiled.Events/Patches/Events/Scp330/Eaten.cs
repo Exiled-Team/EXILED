@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ldloc_0),
 
                 // var ev = new EatenSCP330EventArgs(player, candy)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenSCP330EventArgs))[0]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenScp330EventArgs))[0]),
 
                 // Handlers.SCP330.OnEaten(ev)
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEaten))),

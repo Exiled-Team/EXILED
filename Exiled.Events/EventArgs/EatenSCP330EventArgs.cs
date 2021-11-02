@@ -16,14 +16,14 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all informations after a player eaten SCP330.
     /// </summary>
-    public class EatenSCP330EventArgs : EventArgs
+    public class EatenScp330EventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="EatenSCP330EventArgs"/> class.
+        /// Initializes a new instance of the <see cref="EatenScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/>.</param>
         /// <param name="candy"><inheritdoc cref="ICandy"/>.</param>
-        public EatenSCP330EventArgs(Player player, ICandy candy)
+        public EatenScp330EventArgs(Player player, ICandy candy)
         {
             Player = player;
             Candy = candy;

@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Scp330
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
                 // var ev = new EatingSCP330EventArgs(player, candy, true)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingSCP330EventArgs))[0]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
 
                 // Handlers.SCP330.OnEating(ev)
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
                 // if(!ev.IsAllowed)
                 //  return
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EatingSCP330EventArgs), nameof(EatingSCP330EventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
 
