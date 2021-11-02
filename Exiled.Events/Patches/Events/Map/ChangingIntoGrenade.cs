@@ -76,7 +76,7 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(index, new[]
             {
                 // itemPickupBase
-                new CodeInstruction(OpCodes.Ldloc_0).WithLabels(enterLabel),
+                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(enterLabel),
 
                 // var ev = new ChangingIntoGrenadeEventArgs(ItemPickupBase);
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingIntoGrenadeEventArgs))[0]),
@@ -94,8 +94,8 @@ namespace Exiled.Events.Patches.Events.Map
 
                 // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
                 //    return;
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
                 new CodeInstruction(OpCodes.Ldloca_S, 0),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, ItemBase>), nameof(Dictionary<ItemType, ItemBase>.TryGetValue))),
