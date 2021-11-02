@@ -184,7 +184,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
         /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
-        /// <returns>A <see cref="AttachmentIdentifier"/>[] value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachments(this ItemType type, uint code)
         {
             code -= (uint)type.GetBaseCode();
