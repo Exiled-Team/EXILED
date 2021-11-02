@@ -26,7 +26,7 @@ namespace Exiled.Events.EventArgs
         public ChangingIntoGrenadeEventArgs(ItemPickupBase pickup)
         {
             Pickup = Pickup.Get(pickup);
-            Type = pickup.NetworkInfo.ItemId;
+            Type = Pickup.Type;
         }
 
         /// <summary>
