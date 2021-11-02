@@ -92,7 +92,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
         /// </summary>
-        [Obsolete("Use GrenadeType instead.")]
+        [Obsolete("Use GrenadeType instead.", true)]
         public bool IsFrag { get; }
 
         /// <summary>
