@@ -190,7 +190,7 @@ namespace Exiled.API.Extensions
             code -= (uint)type.GetBaseCode();
             return GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
             identifier.Code).ToArray()).Where(items => items.Sum() == code).FirstOrDefault().Select(target =>
-            Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == target)).ToArray();
+            Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == target));
         }
 
         /// <summary>
