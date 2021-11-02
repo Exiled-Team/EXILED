@@ -40,7 +40,6 @@ namespace Exiled.Events.EventArgs
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Thrower = thrower ?? Server.Host;
-            IsFrag = grenade is ExplosionGrenade;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
@@ -67,7 +66,6 @@ namespace Exiled.Events.EventArgs
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
             Thrower = thrower ?? Server.Host;
-            IsFrag = grenade is ExplosionGrenade;
             GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
@@ -93,7 +91,10 @@ namespace Exiled.Events.EventArgs
         /// Gets a value indicating whether the grenade is a frag or flash grenade.
         /// </summary>
         [Obsolete("Use GrenadeType instead.", true)]
-        public bool IsFrag { get; }
+        public bool IsFrag
+        {
+            get => GrenadeType == GrenadeType.FragGrenade;
+        }
 
         /// <summary>
         /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
