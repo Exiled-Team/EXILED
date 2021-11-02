@@ -389,6 +389,7 @@ namespace Exiled.API.Features
             AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
         }
 
+        /// <summary>
         /// Places a Tantrum (Scp173's ability) in the indicated position.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
