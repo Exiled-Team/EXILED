@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations before a player eats a SCP330.
+    /// Contains all informations before a player eats SCP330.
     /// </summary>
     public class EatingSCP330EventArgs : EventArgs
     {
@@ -32,12 +32,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's eated SCP330.
+        /// Gets the player who's eating SCP330.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the candy that player eated.
+        /// Gets the <see cref="ICandy"/> that the player is eating.
         /// </summary>
         public ICandy Candy { get; }
 
