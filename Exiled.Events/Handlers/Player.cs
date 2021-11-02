@@ -398,6 +398,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
+        /// Invoked before a player punches with the blue candy effect.
+        /// </summary>
+        public static event CustomEventHandler<PunchingEventArgs> Punching;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -847,5 +852,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player toggles the NoClip mode.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
+        public static void OnPunching(PunchingEventArgs ev) => Punching.InvokeSafely(ev);
     }
 }
