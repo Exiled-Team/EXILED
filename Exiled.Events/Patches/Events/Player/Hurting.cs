@@ -13,7 +13,11 @@ namespace Exiled.Events.Patches.Events.Player
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
+
+    using InventorySystem.Disarming;
 
     using UnityEngine;
 
@@ -28,9 +32,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (go == null)
-                    return true;
-
                 API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
                 API.Features.Player target = API.Features.Player.Get(go);
 
@@ -48,10 +49,6 @@ namespace Exiled.Events.Patches.Events.Player
                     return true;
 
                 HurtingEventArgs ev = new HurtingEventArgs(attacker, target, info);
-
-                if (ev.Target.IsHost)
-                    return true;
-
                 Player.OnHurting(ev);
 
                 info = ev.HitInformation;
@@ -67,6 +64,15 @@ namespace Exiled.Events.Patches.Events.Player
 
                     if (!dyingEventArgs.IsAllowed)
                         return false;
+
+                    dyingEventArgs.Target.Inventory.SetDisarmedStatus(null);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+
+                    if (dyingEventArgs.ItemsToDrop != null)
+                    {
+                        dyingEventArgs.Target.ResetInventory(dyingEventArgs.ItemsToDrop);
+                        dyingEventArgs.Target.DropItems();
+                    }
                 }
 
                 return true;

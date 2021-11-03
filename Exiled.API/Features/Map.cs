@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using PlayableScps.ScriptableObjects;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -88,7 +90,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -309,6 +311,60 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Turns off all lights of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                TurnOffAllLights(duration, zone);
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.IsOpen = false;
+                        door.ChangeLock(lockType);
+                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAllDoors(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all doors in the facility.
+        /// </summary>
+        public static void UnlockAllDoors()
+        {
+            foreach (Door door in Doors)
+                door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
         /// Gets the camera with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
@@ -364,6 +420,28 @@ namespace Exiled.API.Features
                 ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
             }
         }
+
+        /// <summary>
+        /// Places a Tantrum (Scp173's ability) in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public static GameObject PlaceTantrum(Vector3 position)
+        {
+            GameObject gameObject =
+                Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
+        }
+
+        /// <summary>
+        /// Plays the intercom's sound.
+        /// </summary>
+        /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
+        /// <param name="transmitterId">Sets the transmitterId.</param>
+        public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
         /// Clears the lazy loading game object cache.
