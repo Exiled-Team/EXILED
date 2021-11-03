@@ -26,5 +26,11 @@ namespace Exiled.Example.Events
         {
             Log.Info($"Item {ev.Firearm.Type} attachments are changing. Old attachment: {ev.OldAttachmentIdentifier.Name} - New Attachment: {ev.NewAttachmentIdentifier.Name}");
         }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnReceivingPreference(ReceivingPreferenceEventArgs)"/>
+        public void OnReceivingPreference(ReceivingPreferenceEventArgs ev)
+        {
+            Log.Info($"Receiving a preference from {ev.Player.Nickname} - Item: {ev.Item}");
+        }
     }
 }
