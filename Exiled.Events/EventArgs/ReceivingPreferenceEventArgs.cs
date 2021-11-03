@@ -9,7 +9,6 @@ namespace Exiled.Events.EventArgs
 {
     using System.Collections.Generic;
 
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Structs;
 
@@ -22,7 +21,7 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="ReceivingPreferenceEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="itemType"><inheritdoc cref="ItemType"/></param>
+        /// <param name="itemType"><inheritdoc cref="Item"/></param>
         /// <param name="oldIdentifiers"><inheritdoc cref="OldAttachmentIdentifiers"/></param>
         /// <param name="newIdentifiers"><inheritdoc cref="NewAttachmentIdentifiers"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
@@ -48,18 +47,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="ItemType"/> which is being modified.
         /// </summary>
-        public ItemType Item
-        {
-            get => Item;
-            set
-            {
-                if (!value.IsWeapon())
-                    return;
-
-                Item = value;
-                NewAttachmentIdentifiers.Clear();
-            }
-        }
+        public ItemType Item { get; set; }
 
         /// <summary>
         /// Gets the old <see cref="AttachmentIdentifier"/>[].
