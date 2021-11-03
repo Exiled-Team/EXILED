@@ -73,6 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
                 new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
+                new CodeInstruction(OpCodes.Br, retLabel),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(retLabel);
