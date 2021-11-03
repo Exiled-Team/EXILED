@@ -223,9 +223,7 @@ namespace Exiled.API.Extensions
             uint code = 0;
 
             foreach (AttachmentIdentifier identifier in identifiers)
-            {
                 code += identifier;
-            }
 
             return code;
         }
