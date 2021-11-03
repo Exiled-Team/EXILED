@@ -1011,12 +1011,6 @@ namespace Exiled.API.Features
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
-        /// Teleports the player to a specific room.
-        /// </summary>
-        /// <param name="room">The <see cref="Room"/> the player should teleport to.</param>
-        public void SetRoom(Room room) => Position = room.Position + (Vector3.up * 1.5f);
-
-        /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
         /// </summary>
         /// <param name="side">The players' side.</param>
@@ -1192,6 +1186,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
         public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
+
+        /// <summary>
+        /// Teleports the player to a specific room.
+        /// </summary>
+        /// <param name="room">The <see cref="Room"/> the player should teleport to.</param>
+        public void SetRoom(Room room) => Position = room.Position + (Vector3.up * 1.5f);
 
         /// <summary>
         /// Forces the player to reload their current weapon.
