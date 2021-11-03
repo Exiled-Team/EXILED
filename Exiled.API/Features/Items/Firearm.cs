@@ -313,12 +313,12 @@ namespace Exiled.API.Features.Items
         public bool FlashlightEnabled => Base.Status.Flags.HasFlagFast(FirearmStatusFlags.FlashlightEnabled);
 
         /// <summary>
-        /// Gets or sets the <see cref="FirearmAttachment"/>s of the firearm.
+        /// Gets the <see cref="FirearmAttachment"/>s of the firearm.
         /// </summary>
         public FirearmAttachment[] Attachments
         {
             get => Base.Attachments;
-            set => Base.Attachments = value;
+            private set => Base.Attachments = value;
         }
 
         /// <summary>
