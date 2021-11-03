@@ -17,7 +17,6 @@ namespace Exiled.API.Structs
     /// <summary>
     /// A tool to identify attachments.
     /// </summary>
-    [Serializable]
     public struct AttachmentIdentifier
     {
         /// <summary>
@@ -197,6 +196,26 @@ namespace Exiled.API.Structs
             foreach (AttachmentIdentifier attId in Features.Items.Firearm.AvailableAttachments.Values.SelectMany(kvp => kvp.Where(kvp2 => kvp2.Name.ToString() == s)))
             {
                 identifier = attId;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a <see cref="AttachmentNameTranslation"/> to its <see cref="AttachmentNameTranslation"/> equivalent.
+        /// A return value indicates whether the conversion is succeeded or failed.
+        /// </summary>
+        /// <param name="s">The <see cref="string"/> to convert.</param>
+        /// <param name="name">The converted <see cref="string"/>.</param>
+        /// <returns><see langword="true"/> if <see cref="string"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool TryParse(string s, out AttachmentNameTranslation name)
+        {
+            name = default;
+
+            foreach (AttachmentIdentifier attId in Features.Items.Firearm.AvailableAttachments.Values.SelectMany(kvp => kvp.Where(kvp2 => kvp2.Name.ToString() == s)))
+            {
+                name = attId.Name;
                 return true;
             }
 
