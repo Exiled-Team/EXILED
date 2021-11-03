@@ -343,6 +343,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked before a player toggles the flashlight.
+        /// </summary>
+        public static event CustomEventHandler<TogglingFlashlightEventArgs> TogglingFlashlight;
+
+        /// <summary>
         /// Invoked before a player unloads a weapon.
         /// </summary>
         public static event CustomEventHandler<UnloadingWeaponEventArgs> UnloadingWeapon;
@@ -786,6 +791,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player toggles the flashlight.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingFlashlightEventArgs"/> instance.</param>
+        public static void OnTogglingFlashlight(TogglingFlashlightEventArgs ev) => TogglingFlashlight.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player unloads a weapon.
