@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     /// <summary>
     /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.OnEating"/> event.
+    /// Adds the <see cref="Handlers.Scp330.EatingScp330"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class Eating
@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions.InsertRange(index, new[]
             {
-                // Player.Get
+                // Player.Get(args)
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -53,14 +53,14 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // True
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
-                // var ev = new EatingSCP330EventArgs(player, candy, true)
+                // var ev = new EatingScp330EventArgs(player, candy, True)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatingScp330EventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
 
-                // Handlers.SCP330.OnEating(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEating))),
+                // Handlers.Scp330.OnEating(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatingScp330))),
 
-                // if(!ev.IsAllowed)
+                // if (!ev.IsAllowed)
                 //  return
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EatingScp330EventArgs), nameof(EatingScp330EventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
@@ -68,8 +68,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

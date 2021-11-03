@@ -25,9 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     /// <summary>
     /// Patches <see cref="Scp330Bag.ServerOnUsingCompleted"/>.
-    /// Adds the <see cref="Handlers.Scp330.OnEaten"/> event.
+    /// Adds the <see cref="Handlers.Scp330.EatenScp330"/> event.
     /// </summary>
-    [HarmonyDebug]
     [HarmonyPatch(typeof(Scp330Bag), nameof(Scp330Bag.ServerOnUsingCompleted))]
     internal static class Eaten
     {
@@ -40,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             newInstructions.InsertRange(index, new[]
             {
-                // Player.Get
+                // Player.Get(args)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Scp330Bag), nameof(Scp330Bag.Owner))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
@@ -48,15 +47,15 @@ namespace Exiled.Events.Patches.Events.Scp330
                 // ICandy
                 new CodeInstruction(OpCodes.Ldloc_0),
 
-                // var ev = new EatenSCP330EventArgs(player, candy)
+                // var ev = new EatenScp330EventArgs(player, candy)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EatenScp330EventArgs))[0]),
 
-                // Handlers.SCP330.OnEaten(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEaten))),
+                // Handlers.Scp330.OnEaten(ev)
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp330), nameof(Handlers.Scp330.OnEatenScp330))),
             });
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

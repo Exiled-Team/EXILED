@@ -13,30 +13,30 @@ namespace Exiled.Events.Handlers
     using static Exiled.Events.Events;
 
     /// <summary>
-    /// SCP330 related events.
+    /// Scp330 related events.
     /// </summary>
     public static class Scp330
     {
         /// <summary>
-        /// Invoked before player ate SCP330.
+        /// Invoked before a player eats Scp330.
         /// </summary>
-        public static event CustomEventHandler<EatingScp330EventArgs> Eating;
+        public static event CustomEventHandler<EatingScp330EventArgs> EatingScp330;
 
         /// <summary>
-        /// Invoked after player ate SCP330.
+        /// Invoked after the player has eaten Scp330.
         /// </summary>
-        public static event CustomEventHandler<EatenScp330EventArgs> Eaten;
+        public static event CustomEventHandler<EatenScp330EventArgs> EatenScp330;
 
         /// <summary>
-        /// Called before player ate SCP330.
+        /// Called before a player eats Scp330.
         /// </summary>
         /// <param name="ev">The <see cref="EatingScp330EventArgs"/> instance.</param>
-        public static void OnEating(EatingScp330EventArgs ev) => Eating.InvokeSafely(ev);
+        public static void OnEatingScp330(EatingScp330EventArgs ev) => EatingScp330.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after player ate SCP330.
+        /// Called after the player has eaten Scp330.
         /// </summary>
         /// <param name="ev">The <see cref="EatenScp330EventArgs"/> instance.</param>
-        public static void OnEaten(EatenScp330EventArgs ev) => Eaten.InvokeSafely(ev);
+        public static void OnEatenScp330(EatenScp330EventArgs ev) => EatenScp330.InvokeSafely(ev);
     }
 }

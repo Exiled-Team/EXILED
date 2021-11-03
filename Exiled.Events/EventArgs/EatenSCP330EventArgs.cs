@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations after a player eaten SCP330.
+    /// Contains all informations after a player has eaten Scp330.
     /// </summary>
     public class EatenScp330EventArgs : EventArgs
     {
@@ -22,7 +22,7 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="EatenScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/>.</param>
-        /// <param name="candy"><inheritdoc cref="ICandy"/>.</param>
+        /// <param name="candy"><inheritdoc cref="Candy"/>.</param>
         public EatenScp330EventArgs(Player player, ICandy candy)
         {
             Player = player;
@@ -30,12 +30,12 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's eaten SCP330.
+        /// Gets the player who's eaten Scp330.
         /// </summary>
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="ICandy"/> that the player has eaten.
+        /// Gets the <see cref="ICandy"/> that was eaten by the player.
         /// </summary>
         public ICandy Candy { get; }
     }
