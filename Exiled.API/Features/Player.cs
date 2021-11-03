@@ -853,6 +853,12 @@ namespace Exiled.API.Features
         public Room CurrentRoom => Map.FindParentRoom(GameObject);
 
         /// <summary>
+        /// Teleports the player to a specific room.
+        /// </summary>
+        /// <param name="room">The <see cref="Room"/> the player should teleport to.</param>
+        public void SetRoom(Room room) => Position = room.Position + Vector3.up * 1.5f;
+
+        /// <summary>
         /// Gets the current zone the player is in.
         /// </summary>
         public ZoneType Zone => CurrentRoom.Zone;
