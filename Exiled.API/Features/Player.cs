@@ -38,10 +38,13 @@ namespace Exiled.API.Features
     using NorthwoodLib.Pools;
 
     using PlayableScps;
+    using PlayableScps.ScriptableObjects;
 
     using RemoteAdmin;
 
     using UnityEngine;
+
+    using Utils.Networking;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
 
@@ -421,6 +424,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a value indicating whether the player is jumping.
+        /// </summary>
+        public bool IsJumping => ReferenceHub.fpc.isJumping;
+
+        /// <summary>
         /// Gets a value indicating whether the player is sprinting.
         /// </summary>
         public bool IsSprinting => MoveState == PlayerMovementState.Sprinting;
@@ -562,6 +570,8 @@ namespace Exiled.API.Features
             get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
             set
             {
+                ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
+
                 if (value)
                     MuteHandler.IssuePersistentMute(UserId);
                 else
@@ -954,6 +964,48 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> of spectators that are currently spectating this <see cref="Player"/>.
+        /// </summary>
+        public IEnumerable<Player> CurrentSpectatingPlayers
+        {
+            get
+            {
+                foreach (ReferenceHub referenceHub in ReferenceHub.spectatorManager.ServerCurrentSpectatingPlayers)
+                {
+                    Player spectator = Get(referenceHub);
+
+                    if (spectator == this || spectator.IsDead)
+                        yield return spectator;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be null.
+        /// </summary>
+        public Player SpectatedPlayer
+        {
+            get
+            {
+                Player spectatedPlayer = Get(ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
+
+                if (spectatedPlayer == this)
+                    return null;
+
+                return spectatedPlayer;
+            }
+
+            set
+            {
+                if (IsAlive)
+                    throw new InvalidOperationException("You cannot set Spectated Player when you are alive!");
+
+                ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
+                ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
+            }
+        }
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
@@ -1205,6 +1257,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Removes handcuffs.
+        /// </summary>
+        public void RemoveHandcuffs()
+        {
+            Inventory.SetDisarmedStatus(null);
+            new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+        }
+
+        /// <summary>
         /// Sets the player's <see cref="RoleType"/>.
         /// </summary>
         /// <param name="newRole">The new <see cref="RoleType"/> to be set.</param>
@@ -1428,10 +1489,8 @@ namespace Exiled.API.Features
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             if (item is Firearm firearm)
             {
-                Dictionary<ItemType, uint> dict;
-                uint code;
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
-                    dict.TryGetValue(itemType, out code))
+                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
+                    dict.TryGetValue(itemType, out uint code))
                 {
                     firearm.Base.ApplyAttachmentsCode(code, true);
                 }
@@ -1528,10 +1587,8 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    Dictionary<ItemType, uint> dict;
-                    uint code;
-                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out dict) &&
-                        dict.TryGetValue(item.Type, out code))
+                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
+                        dict.TryGetValue(item.Type, out uint code))
                     {
                         firearm.ApplyAttachmentsCode(code, true);
                     }
@@ -1688,9 +1745,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Shows a HitMarker.
+        /// Sends a HitMarker to the player.
         /// </summary>
-        public void ShowHitMarker() => GameObject.GetComponent<SingleBulletHitreg>().ShowHitIndicator(ReferenceHub.playerStats.netId, 0.01f, Position);
+        [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
+        public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
+
+        /// <summary>
+        /// Sends a HitMarker to the player.
+        /// </summary>
+        /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
+        public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
@@ -1792,6 +1856,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType">status effect</see> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
+        /// <param name="duration">The amount of time the effects will be active for.</param>
+        /// <param name="addDurationIfActive">If an effect is already active, setting to true will add this duration onto the effect.</param>
+        public void EnableEffects(IEnumerable<EffectType> effects, float duration = 0f, bool addDurationIfActive = false)
+        {
+            foreach (EffectType effect in effects)
+            {
+                if (TryGetEffect(effect, out var pEffect))
+                    EnableEffect(pEffect, duration, addDurationIfActive);
+            }
+        }
+
+        /// <summary>
         /// Gets an instance of <see cref="PlayerEffect"/> by <see cref="EffectType"/>.
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/>.</param>
@@ -1861,6 +1940,18 @@ namespace Exiled.API.Features
         /// <param name="intensity">The intensity of the effect.</param>
         /// <param name="duration">The new length of the effect. Defaults to infinite length.</param>
         public void ChangeEffectIntensity(string effect, byte intensity, float duration = 0) => ReferenceHub.playerEffectsController.ChangeByString(effect, intensity, duration);
+
+        /// <summary>
+        /// Opens the report window.
+        /// </summary>
+        /// <param name="text">The text to send.</param>
+        public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
+        /// <summary>
+        /// Places a Tantrum (Scp173's ability) under the player.
+        /// </summary>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";

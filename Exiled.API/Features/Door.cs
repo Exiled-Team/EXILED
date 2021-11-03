@@ -36,6 +36,7 @@ namespace Exiled.API.Features
         {
             DoorVariantToDoor.Add(door, this);
             Base = door;
+            Room = door.GetComponentInParent<Room>();
         }
 
         /// <summary>
@@ -49,6 +50,11 @@ namespace Exiled.API.Features
         public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
             ? doorType
             : DoorType.UnknownDoor;
+
+        /// <summary>
+        /// Gets the <see cref="Room"/>.
+        /// </summary>
+        public Room Room { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the door is open.
@@ -131,9 +137,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the doors remaining health, if it is breakable.
+        /// Gets or sets the door's remaining health, if it is breakable.
         /// </summary>
-        public float Health => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
+        public float Health
+        {
+            get => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
+            set
+            {
+                if (Base is BreakableDoor breakable)
+                    breakable._remainingHealth = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the damage types this door ignores, if it is breakable.
