@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using PlayableScps.ScriptableObjects;
+
     using UnityEngine;
 
     using Object = UnityEngine.Object;
@@ -88,7 +90,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -193,6 +195,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Player"/> that is using the intercom. Will be null if <see cref="IntercomInUse"/> is false.
         /// </summary>
         public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
+
+        /// <summary>
+        /// Gets the <see cref="global::AmbientSoundPlayer"/>.
+        /// </summary>
+        public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
         /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
@@ -309,6 +316,60 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Turns off all lights of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                TurnOffAllLights(duration, zone);
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.IsOpen = false;
+                        door.ChangeLock(lockType);
+                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Locks all doors of the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAllDoors(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all doors in the facility.
+        /// </summary>
+        public static void UnlockAllDoors()
+        {
+            foreach (Door door in Doors)
+                door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
         /// Gets the camera with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
@@ -350,20 +411,59 @@ namespace Exiled.API.Features
         /// <param name="color">The new color of the Unit.</param>
         public static void ChangeUnitColor(int index, string color)
         {
-            var unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
+            string unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
 
             Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
             Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
 
-            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
+            foreach (Player ply in Player.List.Where(x => x.UnitName == unit))
             {
-                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
+                string modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
                 if (!string.IsNullOrEmpty(color))
                     modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
 
-                ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
+                ply.UnitName = modifiedUnit;
             }
         }
+
+        /// <summary>
+        /// Plays a random ambient sound.
+        /// </summary>
+        public static void PlayAmbientSound() => AmbientSoundPlayer.GenerateRandom();
+
+        /// <summary>
+        /// Plays an ambient sound.
+        /// </summary>
+        /// <param name="id">The id of the sound to play.</param>
+        public static void PlayAmbientSound(int id)
+        {
+            if (id >= AmbientSoundPlayer.clips.Length)
+                throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
+
+            AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
+        }
+
+        /// <summary>
+        /// Places a Tantrum (Scp173's ability) in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public static GameObject PlaceTantrum(Vector3 position)
+        {
+            GameObject gameObject =
+                Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
+        }
+
+        /// <summary>
+        /// Plays the intercom's sound.
+        /// </summary>
+        /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
+        /// <param name="transmitterId">Sets the transmitterId.</param>
+        public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
         /// Clears the lazy loading game object cache.

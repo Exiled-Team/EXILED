@@ -139,6 +139,6 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> using the ability.</param>
         protected virtual void ShowMessage(Player player) =>
-            player.ShowHint($"Ability {Name} has been activated.\n{Description}", 10f);
+            player.ShowHint(string.Format(CustomRoles.Instance.Config.UsedAbilityHint.Content, Name, Description), CustomRoles.Instance.Config.UsedAbilityHint.Duration);
     }
 }

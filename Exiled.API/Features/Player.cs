@@ -38,6 +38,7 @@ namespace Exiled.API.Features
     using NorthwoodLib.Pools;
 
     using PlayableScps;
+    using PlayableScps.ScriptableObjects;
 
     using RemoteAdmin;
 
@@ -569,6 +570,8 @@ namespace Exiled.API.Features
             get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
             set
             {
+                ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
+
                 if (value)
                     MuteHandler.IssuePersistentMute(UserId);
                 else
@@ -1391,6 +1394,9 @@ namespace Exiled.API.Features
         /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
         public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
         {
+            if (Role == RoleType.Scp0492 && !ReferenceHub.TryGetHub(attackerId, out _))
+                attackerId = Id;
+
             ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
         }
 
@@ -1748,9 +1754,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Shows a HitMarker.
+        /// Sends a HitMarker to the player.
         /// </summary>
-        public void ShowHitMarker() => GameObject.GetComponent<SingleBulletHitreg>().ShowHitIndicator(ReferenceHub.playerStats.netId, 0.01f, Position);
+        [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
+        public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
+
+        /// <summary>
+        /// Sends a HitMarker to the player.
+        /// </summary>
+        /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
+        public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
         /// <summary>
         /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
@@ -1942,6 +1955,12 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="text">The text to send.</param>
         public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+
+        /// <summary>
+        /// Places a Tantrum (Scp173's ability) under the player.
+        /// </summary>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
