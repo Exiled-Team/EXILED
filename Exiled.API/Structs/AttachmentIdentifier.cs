@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Structs
 {
+    using System;
+    using System.Linq;
+
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Firearms.Attachments;
@@ -14,6 +17,7 @@ namespace Exiled.API.Structs
     /// <summary>
     /// A tool to identify attachments.
     /// </summary>
+    [Serializable]
     public struct AttachmentIdentifier
     {
         /// <summary>
@@ -66,6 +70,22 @@ namespace Exiled.API.Structs
         /// Gets the attachment slot.
         /// </summary>
         public AttachmentSlot Slot { get; }
+
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
+        /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(AttachmentIdentifier left, AttachmentIdentifier right) => left == right;
+
+        /// <summary>
+        /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <param name="left">The left-hand <see cref="AttachmentIdentifier"/> operand to compare.</param>
+        /// <param name="right">The right-hand <see cref="AttachmentIdentifier"/> to compare.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator !=(AttachmentIdentifier left, AttachmentIdentifier right) => left != right;
 
         /// <summary>
         /// Compares two operands: <see cref="AttachmentIdentifier"/> and <see cref="FirearmAttachment"/>.
@@ -163,11 +183,31 @@ namespace Exiled.API.Structs
         /// <returns>A <see cref="uint"/> value representing the subtraction between the two operands.</returns>
         public static uint operator -(BaseCode left, AttachmentIdentifier right) => (uint)left - right.Code;
 
-        /// <inheritdoc/>
-        public override bool Equals(object obj) => Equals(obj as FirearmAttachment);
+        /// <summary>
+        /// Converts the string representation of a <see cref="AttachmentIdentifier"/> to its <see cref="AttachmentIdentifier"/> equivalent.
+        /// A return value indicates whether the conversion is succeeded or failed.
+        /// </summary>
+        /// <param name="s">The <see cref="string"/> to convert.</param>
+        /// <param name="identifier">The converted <see cref="string"/>.</param>
+        /// <returns><see langword="true"/> if <see cref="string"/> was converted successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool TryParse(string s, out AttachmentIdentifier identifier)
+        {
+            identifier = default;
+
+            foreach (AttachmentIdentifier attId in Features.Items.Firearm.AvailableAttachments.Values.SelectMany(kvp => kvp.Where(kvp2 => kvp2.Name.ToString() == s)))
+            {
+                identifier = attId;
+                return true;
+            }
+
+            return false;
+        }
 
         /// <inheritdoc/>
-        public override string ToString() => $"Code: {Code} - Name: {Name} - Slot: {Slot}";
+        public override bool Equals(object obj) => base.Equals(obj);
+
+        /// <inheritdoc/>
+        public override string ToString() => Name.ToString();
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();
@@ -178,5 +218,12 @@ namespace Exiled.API.Structs
         /// <param name="firearmAttachment">The <see cref="FirearmAttachment"/> to compare with the current instance.</param>
         /// <returns><see langword="true"/> if <see cref="FirearmAttachment"/> and this instance represent the same value; otherwise, <see langword="false"/>.</returns>
         public bool Equals(FirearmAttachment firearmAttachment) => this == firearmAttachment;
+
+        /// <summary>
+        /// Indicates whether this instance and a <see cref="AttachmentIdentifier"/> are equal.
+        /// </summary>
+        /// <param name="attachmentIdentifier">The <see cref="AttachmentIdentifier"/> to compare with the current instance.</param>
+        /// <returns><see langword="true"/> if <see cref="AttachmentIdentifier"/> and this instance represent the same value; otherwise, <see langword="false"/>.</returns>
+        public bool Equals(AttachmentIdentifier attachmentIdentifier) => this == attachmentIdentifier;
     }
 }
