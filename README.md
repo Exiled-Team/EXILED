@@ -7,7 +7,8 @@
   <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
 </a>
 
-EXILED is a low-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions.
+
+EXILED is a high-level plugin framework for SCP: Secret Laboratory servers. It offers an event system for developers to hook in order to manipulate or change game code, or implement their own functions. It also offers a high level API for developers to implement certain base game functionality.
 All EXILED events are coded with Harmony, meaning they require no direct editing of server Assemblies to function, which allows for two unique benefits.
 
  - Firstly, the entirety of the frameworks code can be freely published and shared, allowing developers to better understand *how* it works, as well as offer suggestions for adding to or changing it's features.
@@ -40,7 +41,7 @@ If you choose to use the installer it will, if run correctly, take care of insta
     - Any other Windows version:
       Press Win + R and type `%appdata%`
 
-### Installing plugins
+### Installing pluginss
 That's it, EXILED should now be installed and active the next time you boot up your server. Note that EXILED by themselves will do almost nothing, so make sure to get new plugins from **[our Discord server](https://discord.gg/PyUkWTg)**
 - To install a plugin, simply:
   - Download a plugin from [*their* releases page](https://i.imgur.com/u34wgPD.jpg) (**it MUST be a `.dll`!**)
@@ -146,4 +147,3 @@ This is a very very bad idea to let happen.
 As such, plugins that support Dynamic Updates ***MUST*** follow these guidelines or they will be removed from the Discord server due to potential risk to server hosts.
 
 But not every plugin must support Dynamic Updates. If you do not intend to support Dynamic Updates, that's perfectly fine, simply don't change the Assembly Name of your plugin when you build a new version, and you will not need to worry about any of this, just make sure server hosts know they will need to completely reboot their servers to update your plugin.
-
