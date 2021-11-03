@@ -406,6 +406,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a player toggles the NoClip mode.
         /// </summary>
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
+        
+        /// <summary>
+        ///Invoked before a player pick-up scp 330
+        /// </summary>
+        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
 
         /// <summary>
         /// Called before pre-authenticating a player.
@@ -869,5 +874,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before picking up scp 330.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        public static void OnPreAuthenticating(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
     }
 }
