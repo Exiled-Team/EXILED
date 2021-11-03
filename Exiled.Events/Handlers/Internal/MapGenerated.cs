@@ -60,6 +60,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateLockers();
+            Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
         private static void GenerateRooms()
