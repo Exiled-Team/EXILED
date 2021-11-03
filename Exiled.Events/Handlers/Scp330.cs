@@ -20,23 +20,23 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before player ate SCP330.
         /// </summary>
-        public static event CustomEventHandler<EatingSCP330EventArgs> Eating;
+        public static event CustomEventHandler<EatingScp330EventArgs> Eating;
 
         /// <summary>
         /// Invoked after player ate SCP330.
         /// </summary>
-        public static event CustomEventHandler<EatenSCP330EventArgs> Eaten;
+        public static event CustomEventHandler<EatenScp330EventArgs> Eaten;
 
         /// <summary>
         /// Called before player ate SCP330.
         /// </summary>
-        /// <param name="ev">The <see cref="EatingSCP330EventArgs"/> instance.</param>
-        public static void OnEating(EatingSCP330EventArgs ev) => Eating.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="EatingScp330EventArgs"/> instance.</param>
+        public static void OnEating(EatingScp330EventArgs ev) => Eating.InvokeSafely(ev);
 
         /// <summary>
         /// Called after player ate SCP330.
         /// </summary>
-        /// <param name="ev">The <see cref="EatenSCP330EventArgs"/> instance.</param>
-        public static void OnEaten(EatenSCP330EventArgs ev) => Eaten.InvokeSafely(ev);
+        /// <param name="ev">The <see cref="EatenScp330EventArgs"/> instance.</param>
+        public static void OnEaten(EatenScp330EventArgs ev) => Eaten.InvokeSafely(ev);
     }
 }
