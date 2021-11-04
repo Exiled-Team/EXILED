@@ -280,5 +280,57 @@ namespace Exiled.API.Features.Items
             pickup.Scale = Scale;
             return pickup;
         }
+
+        /// <summary>
+        /// Spawns the item on the map.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
+        public virtual Pickup Spawn(Vector3 position)
+        {
+            Base.PickupDropModel.Info.ItemId = Type;
+            Base.PickupDropModel.Info.Position = position;
+            Base.PickupDropModel.Info.Weight = Weight;
+            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(default);
+            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
+
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, default);
+            if (ipb is FirearmPickup firearmPickup)
+            {
+                if (this is Firearm firearm)
+                {
+                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                }
+                else
+                {
+                    byte ammo;
+                    switch (Base)
+                    {
+                        case AutomaticFirearm auto:
+                            ammo = auto._baseMaxAmmo;
+                            break;
+                        case Shotgun shotgun:
+                            ammo = shotgun._ammoCapacity;
+                            break;
+                        case Revolver _:
+                            ammo = 6;
+                            break;
+                        default:
+                            ammo = 0;
+                            break;
+                    }
+
+                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                }
+
+                firearmPickup.NetworkStatus = firearmPickup.Status;
+            }
+
+            NetworkServer.Spawn(ipb.gameObject);
+            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            Pickup pickup = Pickup.Get(ipb);
+            pickup.Scale = Scale;
+            return pickup;
+        }
     }
 }
