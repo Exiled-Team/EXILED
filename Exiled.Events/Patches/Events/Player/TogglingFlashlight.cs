@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage"/>.
-    /// Adds the <see cref="Player.TogglingFlashlight"/> event.
+    /// Adds the <see cref="Handlers.Player.TogglingFlashlight"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashlightNetworkHandler), nameof(FlashlightNetworkHandler.ServerProcessMessage))]
     internal static class TogglingFlashlight
@@ -31,7 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            List<CodeInstruction> safeInstructions = new List<CodeInstruction>();
+            List<CodeInstruction> safeInstructions = ListPool<CodeInstruction>.Shared.Rent(newInstructions);
 
             int offset = 0;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
@@ -41,9 +41,9 @@ namespace Exiled.Events.Patches.Events.Player
             Label retLabel = generator.DefineLabel();
             Label jmpLabel = generator.DefineLabel();
 
-            safeInstructions.AddRange(newInstructions);
-
             newInstructions.InsertRange(0, safeInstructions);
+
+            ListPool<CodeInstruction>.Shared.Return(safeInstructions);
 
             newInstructions.InsertRange(index, new[]
             {
@@ -52,7 +52,6 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
-
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).WithLabels(jmpLabel),
@@ -72,12 +71,10 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -6;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-
             newInstructions.RemoveRange(index, 2);
 
             offset = -4;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -86,7 +83,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
-
             newInstructions.RemoveRange(index, 2);
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Newobj);
