@@ -31,17 +31,31 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> safeInstructions = new List<CodeInstruction>();
 
             int offset = 0;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
 
             LocalBuilder ev = generator.DeclareLocal(typeof(TogglingFlashlightEventArgs));
 
             Label retLabel = generator.DefineLabel();
+            Label jmpLabel = generator.DefineLabel();
+
+            safeInstructions.AddRange(newInstructions);
+
+            newInstructions.InsertRange(0, safeInstructions);
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(API.Features.Round), nameof(API.Features.Round.IsStarted))),
+                new CodeInstruction(OpCodes.Brtrue_S, jmpLabel),
+            });
+
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
+
+            newInstructions.InsertRange(index, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_0).WithLabels(jmpLabel),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldarg_1),
