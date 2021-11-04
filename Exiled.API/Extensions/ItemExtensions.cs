@@ -207,7 +207,6 @@ namespace Exiled.API.Extensions
             if (!type.IsWeapon())
                 return false;
 
-            code -= (uint)type.GetBaseCode();
             identifiers = GetAttachments(type, code);
 
             return true;
