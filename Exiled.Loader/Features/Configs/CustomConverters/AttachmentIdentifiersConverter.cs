@@ -33,10 +33,9 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentNameTranslation attId))
                 throw new InvalidDataException($"Invalid AttachmentNameTranslation value.");
 
-            object identifier = attId;
-            object dAttId = Activator.CreateInstance(type, identifier);
+            object identifier = Activator.CreateInstance(type, attId);
 
-            return dAttId;
+            return identifier;
         }
 
         /// <inheritdoc/>
