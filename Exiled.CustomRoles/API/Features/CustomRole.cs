@@ -440,7 +440,7 @@ namespace Exiled.CustomRoles.API.Features
                     ownerHLAPI_id = ev.Target.GameObject.GetComponent<MirrorIgnorancePlayer>().PlayerId,
                     PlayerId = ev.Target.Id,
                 };
-                Exiled.API.Features.Ragdoll.Spawn(role, info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation));
+                Exiled.API.Features.Ragdoll.Spawn(role, info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), default, false, false);
             }
         }
     }
