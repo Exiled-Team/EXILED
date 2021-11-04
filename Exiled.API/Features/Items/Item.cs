@@ -234,7 +234,6 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
-        [Obsolete("Use Spawn(Vector3, Quaternion, IEnumerable)", true)]
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
         {
             Base.PickupDropModel.Info.ItemId = Type;
