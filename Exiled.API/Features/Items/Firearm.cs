@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
 
     using CameraShaking;
@@ -28,9 +29,9 @@ namespace Exiled.API.Features.Items
     public class Firearm : Item
     {
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
+        /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
+        internal static readonly IReadOnlyDictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()
         {
             { ItemType.GunCOM15, BaseCode.GunCOM15 },
             { ItemType.GunCOM18, BaseCode.GunCOM18 },
@@ -79,9 +80,9 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Gets all available attachments for all firearms.
+        /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
-        public static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => new Dictionary<ItemType, AttachmentIdentifier[]>()
+        public static IReadOnlyDictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => new Dictionary<ItemType, AttachmentIdentifier[]>()
         {
             {
                 ItemType.GunCOM15,
