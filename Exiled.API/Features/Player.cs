@@ -1859,6 +1859,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Enables a random <see cref="EffectType"/> on the player.
+        /// </summary>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
+        public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
+        {
+            EffectType effectType = (EffectType)Enum.GetValues(typeof(EffectType)).GetValue(UnityEngine.Random.Range(0, Enum.GetValues(typeof(EffectType)).Length));
+            EnableEffect(effectType, duration, addDurationIfActive);
+            return effectType;
+        }
+
+        /// <summary>
         /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType">status effect</see> on the player.
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
