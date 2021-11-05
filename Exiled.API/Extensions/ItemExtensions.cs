@@ -187,6 +187,11 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachments(this ItemType type, uint code)
         {
+            if ((uint)type.GetBaseCode() > code)
+            {
+                throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
+            }
+
             code -= (uint)type.GetBaseCode();
             return GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
             identifier.Code).ToArray()).Where(items => items.Sum() == code).FirstOrDefault().Select(target =>
@@ -254,5 +259,5 @@ namespace Exiled.API.Extensions
             for (int i = 0; i < (1 << source.Length); i++)
                 yield return source.Where((t, j) => (i & (1 << j)) != 0).ToArray();
         }
-    }
+   }
 }
