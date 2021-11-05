@@ -245,6 +245,8 @@ namespace Exiled.API.Extensions
             return Firearm.FirearmPairs[type];
         }
 
+        // This is an extension for IEnumerable to sum uint values.
+        // Credit: "TheGeneral" on StackOverflow
         private static uint Sum(this IEnumerable<uint> source)
         {
             uint sum = 0;
@@ -254,10 +256,14 @@ namespace Exiled.API.Extensions
             }
         }
 
+        // This determines what attachment codes can be added together
+        // to give us the combined code we have, so that we can determine
+        // which attachments are present for any given value.
+        // Credit: "TheGeneral" on StackOverflow
         private static IEnumerable<T[]> GetCombinations<T>(T[] source)
         {
             for (int i = 0; i < (1 << source.Length); i++)
                 yield return source.Where((t, j) => (i & (1 << j)) != 0).ToArray();
         }
-   }
+    }
 }
