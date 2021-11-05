@@ -1580,6 +1580,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        [Obsolete("Use Player::AddItem(IEnumerable) instead", true)]
+        public void AddItem(List<ItemType> items) => AddItem(items);
+
+        /// <summary>
+        /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         public void AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
@@ -1758,6 +1765,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items to the player's inventory.
         /// </summary>
+        /// <param name="items">The list of items to be added.</param>
+        [Obsolete("Use Player::AddItem(IEnumerable) instead.", true)]
+        public void AddItem(List<Item> items) => AddItem(items);
+
+        /// <summary>
+        /// Add the list of items to the player's inventory.
+        /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Item"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         public void AddItem(Dictionary<Item, IEnumerable<AttachmentIdentifier>> items)
         {
@@ -1790,6 +1804,13 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        [Obsolete("Use Player::ResetInventory(IEnumerable) instead.", true)]
+        public void ResetInventory(List<ItemType> newItems) => ResetInventory(newItems);
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
+        /// </summary>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<Item> newItems)
         {
             ClearInventory();
@@ -1802,6 +1823,13 @@ namespace Exiled.API.Features
                 }
             }
         }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
+        /// </summary>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        [Obsolete("Use Player::ResetInventory(IEnumerable) instead.", true)]
+        public void ResetInventory(List<Item> newItems) => ResetInventory(newItems);
 
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
