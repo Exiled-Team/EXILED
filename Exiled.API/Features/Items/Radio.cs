@@ -84,5 +84,11 @@ namespace Exiled.API.Features.Items
         /// Turns off the radio.
         /// </summary>
         public void Disable() => Base._radio.ForceDisableRadio();
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
+        }
     }
 }

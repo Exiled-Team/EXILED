@@ -219,5 +219,11 @@ namespace Exiled.API.Features.Items
             pickup.Scale = Scale;
             return pickup;
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+        }
     }
 }

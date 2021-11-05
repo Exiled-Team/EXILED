@@ -201,5 +201,11 @@ namespace Exiled.API.Features.Items
         /// Destroys the pickup.
         /// </summary>
         public void Destroy() => Base.DestroySelf();
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        }
     }
 }
