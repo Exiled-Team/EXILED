@@ -30,6 +30,14 @@ namespace Exiled.Events.Patches.Events.Map
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
     internal static class AnnouncingScpTermination
     {
+        // AnnouncingScpTerminationEventArgs ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
+        //
+        // Map.OnAnnouncingScpTermination(ev);
+        //
+        // hit = ev.HitInfo;
+        // groupId = ev.TerminationCause;
+        //
+        // return ev.IsAllowed;
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
@@ -58,27 +66,9 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
-            {
-                API.Features.Log.Debug("SCP LOGS");
-                API.Features.Log.Debug(z);
-                API.Features.Log.Debug(newInstructions[z]);
-                API.Features.Log.Debug(newInstructions[z].operand);
                 yield return newInstructions[z];
-            }
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        /*private static bool Prefix(Role scp, ref PlayerStats.HitInfo hit, ref string groupId)
-        {
-            AnnouncingScpTerminationEventArgs ev = new AnnouncingScpTerminationEventArgs(string.IsNullOrEmpty(hit.Attacker) ? null : API.Features.Player.Get(hit.Attacker), scp, hit, groupId);
-
-            Map.OnAnnouncingScpTermination(ev);
-
-            hit = ev.HitInfo;
-            groupId = ev.TerminationCause;
-
-            return ev.IsAllowed;
-        }*/
     }
 }
