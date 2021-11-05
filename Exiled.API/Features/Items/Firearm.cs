@@ -263,7 +263,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which represents all the preferences for each <see cref="Player"/>.
         /// </summary>
-        public static Dictionary<Player, Dictionary<ItemType, AttachmentIdentifier[]>> PlayerPreferences
+        public static IReadOnlyDictionary<Player, Dictionary<ItemType, AttachmentIdentifier[]>> PlayerPreferences
         {
             get
             {
