@@ -26,7 +26,6 @@ namespace Exiled.Events.Patches.Events.Cassie
     [HarmonyPatch(typeof(PlayerManager), nameof(PlayerManager.AddPlayer))]
     internal static class AddPlayerPatch
     {
-        [HarmonyTranspiler]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
