@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Dummies
 
             Label ret = generator.DefineLabel();
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -44,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Dummies
 
             newInstructions[newInstructions.Count - 1].WithLabels(ret);
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
