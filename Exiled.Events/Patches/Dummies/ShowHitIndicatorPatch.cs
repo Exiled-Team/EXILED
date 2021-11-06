@@ -42,6 +42,8 @@ namespace Exiled.Events.Patches.Events.Cassie
                 new CodeInstruction(OpCodes.Brtrue_S, ret),
             });
 
+            newInstructions[index].labels.Add(ret);
+
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
