@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Cassie
+namespace Exiled.Events.Patches.Events.Dummies
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
