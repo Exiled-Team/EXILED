@@ -28,6 +28,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<EatenScp330EventArgs> EatenScp330;
 
         /// <summary>
+        /// Invoked before a player drops Scp330 Candy.
+        /// </summary>
+        public static event CustomEventHandler<DroppingItemEventArgs> DroppingScp330Candy;
+
+        /// <summary>
+        /// Invoked after a player drops Scp330 Candy.
+        /// </summary>
+       // public static event CustomEventHandler<> DroppedScp330Candy;
+
+        /// <summary>
         /// Called before a player eats Scp330.
         /// </summary>
         /// <param name="ev">The <see cref="EatingScp330EventArgs"/> instance.</param>
