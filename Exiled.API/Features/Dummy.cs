@@ -26,7 +26,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of all the spawned <see cref="Dummy"/>.
         /// </summary>
-        public static List<Dummy> List => Dictionary.Values.ToList();
+        public static IEnumerable<Dummy> List => Dictionary.Values;
 
         /// <summary>
         /// Gets the <see cref="Player"/> wrapper to easily interact with the <see cref="Dummy"/>.

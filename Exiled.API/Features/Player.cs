@@ -479,6 +479,11 @@ namespace Exiled.API.Features
         public bool IsHost => ReferenceHub.isDedicatedServer;
 
         /// <summary>
+        /// Gets a value indicating whether the player is a dummy.
+        /// </summary>
+        public bool IsDummy => Dummy.Dictionary.ContainsKey(GameObject);
+
+        /// <summary>
         /// Gets a value indicating whether the player is alive.
         /// </summary>
         public bool IsAlive => !IsDead;
