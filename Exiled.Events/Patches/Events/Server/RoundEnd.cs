@@ -112,12 +112,19 @@ namespace Exiled.Events.Patches.Events.Server
 
                 EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
-                if (num1 > 0 && num5 > 0)
-                    endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
+                if (num1 > 0)
+                {
+                    if (num5 > 0)
+                        endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
+                }
                 else if (num4 > 0)
+                {
                     endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
+                }
                 else if (num3 > 0)
+                {
                     endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
+                }
 
                 Server.OnEndingRound(endingRoundEventArgs);
 

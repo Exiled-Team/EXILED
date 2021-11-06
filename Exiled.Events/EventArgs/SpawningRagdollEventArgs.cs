@@ -132,7 +132,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the 096Death should be set as ragdoll's property.
+        /// Gets or sets a value indicating whether or not the ragdoll's death is caused by Scp096.
         /// </summary>
         public bool Scp096Death { get; set; }
 

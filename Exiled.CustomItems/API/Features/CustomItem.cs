@@ -18,10 +18,8 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
     using Exiled.Loader;
 
-    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
@@ -501,7 +499,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -755,9 +753,17 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
+#if DEBUG
+            Log.Debug($"{ev.Player.Nickname} is dropping a {Name} ({ev.Item.Serial})");
+#endif
             TrackedSerials.Remove(ev.Item.Serial);
 
             ev.Player.RemoveItem(ev.Item);
+            if (ev.Player.Inventory.UserInventory.Items.ContainsKey(ev.Item.Serial))
+            {
+                ev.Player.Inventory.UserInventory.Items.Remove(ev.Item.Serial);
+                ev.Player.Inventory.SendItemsNextFrame = true;
+            }
 
             var pickup = Spawn(ev.Player, ev.Item);
             if (pickup.Base.Rb != null && ev.IsThrown)

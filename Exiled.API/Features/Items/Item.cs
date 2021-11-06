@@ -25,6 +25,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
 
@@ -137,7 +138,12 @@ namespace Exiled.API.Features.Items
                 case KeycardItem keycard:
                     return new Keycard(keycard);
                 case UsableItem usable:
+                {
+                    if (usable is Scp330Bag scp330Bag)
+                        return new Scp330(scp330Bag);
                     return new Usable(usable);
+                }
+
                 case RadioItem radio:
                     return new Radio(radio);
                 case MicroHIDItem micro:
@@ -287,5 +293,11 @@ namespace Exiled.API.Features.Items
         /// <param name="position">The location to spawn the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
+        }
     }
 }

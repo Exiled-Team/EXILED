@@ -48,5 +48,11 @@ namespace Exiled.API.Features.Items
             get => Base.IsEmittingLight;
             set => Base.IsEmittingLight = value;
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
+        }
     }
 }

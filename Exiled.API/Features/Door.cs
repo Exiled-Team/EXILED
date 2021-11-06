@@ -36,6 +36,7 @@ namespace Exiled.API.Features
         {
             DoorVariantToDoor.Add(door, this);
             Base = door;
+            Room = door.GetComponentInParent<Room>();
         }
 
         /// <summary>
@@ -49,6 +50,11 @@ namespace Exiled.API.Features
         public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
             ? doorType
             : DoorType.UnknownDoor;
+
+        /// <summary>
+        /// Gets the <see cref="Room"/>.
+        /// </summary>
+        public Room Room { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the door is open.

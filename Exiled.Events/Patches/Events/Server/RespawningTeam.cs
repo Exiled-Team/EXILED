@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Server
             const int offset = 1;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
-            Label returnLabel = generator.DefineLabel();
+            Label continueLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
@@ -64,10 +64,18 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Call, Method(typeof(Server), nameof(Server.OnRespawningTeam))),
 
                 // if (!ev.IsAllowed)
+                // {
+                //    this.NextKnownTeam = SpawnableTeam.None;
                 //    return;
+                // }
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(RespawningTeamEventArgs), nameof(RespawningTeamEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(RespawnManager), nameof(RespawnManager.NextKnownTeam))),
+                new CodeInstruction(OpCodes.Ret),
+
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex).WithLabels(continueLabel),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
@@ -86,7 +94,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Stloc_1),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].WithLabels(continueLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

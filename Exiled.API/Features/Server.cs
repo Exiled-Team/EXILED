@@ -137,8 +137,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Restart()
         {
-            // Used here fastRestart: true, don't know if it makes sense other than no delays in the call to change the scene
-            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
+            Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
         }
 
         /// <summary>
