@@ -58,6 +58,8 @@ namespace Exiled.Events.Patches.Events.Map
             // Generate a label for when we cannot set the fuse time.
             Label skipFuse = generator.DefineLabel();
 
+            Label dontResetLabel = generator.DefineLabel();
+
             // Declare ChangingIntoGrenadeEventArgs, to be able to store it's instance with "stloc.s".
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingIntoGrenadeEventArgs));
 
@@ -88,13 +90,20 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Call, Method(typeof(Map), nameof(Map.OnChangingIntoGrenade))),
 
                 // if (!ev.IsAllowed)
-                //    return;
+                // {
+                //     this._replaceNextFrame = false;
+                //     return;
+                // }
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Brtrue, dontResetLabel),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Stfld, Field(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup._replaceNextFrame))),
+                new CodeInstruction(OpCodes.Ret),
 
                 // if (!InventoryItemLoader.AvailableItems.TryGetValue(ev.Type, out itemBase) || !(itemBase is ThrowableItem throwableItem))
                 //    return;
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(InventoryItemLoader), nameof(InventoryItemLoader.AvailableItems))).WithLabels(dontResetLabel),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingIntoGrenadeEventArgs), nameof(ChangingIntoGrenadeEventArgs.Type))),
                 new CodeInstruction(OpCodes.Ldloca_S, 0),
