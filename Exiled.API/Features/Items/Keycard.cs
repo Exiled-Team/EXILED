@@ -50,5 +50,11 @@ namespace Exiled.API.Features.Items
             get => (Enums.KeycardPermissions)Base.Permissions;
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
+        }
     }
 }

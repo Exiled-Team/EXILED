@@ -66,5 +66,11 @@ namespace Exiled.API.Features.Items
             Base.UserInput = HidUserInput.Fire;
             State = HidState.Firing;
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
+        }
     }
 }

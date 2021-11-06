@@ -62,5 +62,11 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="fullForce">Whether to use full or half force.</param>
         public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce);
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";
+        }
     }
 }

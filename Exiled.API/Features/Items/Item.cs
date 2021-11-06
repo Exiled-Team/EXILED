@@ -24,6 +24,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
 
@@ -134,7 +135,12 @@ namespace Exiled.API.Features.Items
                 case KeycardItem keycard:
                     return new Keycard(keycard);
                 case UsableItem usable:
+                {
+                    if (usable is Scp330Bag scp330Bag)
+                        return new Scp330(scp330Bag);
                     return new Usable(usable);
+                }
+
                 case RadioItem radio:
                     return new Radio(radio);
                 case MicroHIDItem micro:
@@ -218,6 +224,12 @@ namespace Exiled.API.Features.Items
             Pickup pickup = Pickup.Get(ipb);
             pickup.Scale = Scale;
             return pickup;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
         }
     }
 }
