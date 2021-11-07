@@ -4,7 +4,8 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
+// TODO: Re-implement
+/*
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
@@ -39,4 +40,4 @@ namespace Exiled.Events.Handlers
         /// <param name="ev">The <see cref="EatenScp330EventArgs"/> instance.</param>
         public static void OnEatenScp330(EatenScp330EventArgs ev) => EatenScp330.InvokeSafely(ev);
     }
-}
+}*/
