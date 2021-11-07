@@ -51,7 +51,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/contributing.html",
-          "hash": "mR51241T2ZzM7UhIEv0nXRC7OYBAhDxSZKhCYBZlZyk="
+          "hash": "BY+bz21y/+Utn4lCdIaghUPuhBPEg11JsP8dL03Ta2w="
         }
       },
       "is_incremental": false,
@@ -63,7 +63,7 @@
       "output": {
         ".html": {
           "relative_path": "articles/install.html",
-          "hash": "vjzfl5zLPYQY5uRq+NNF3Db4La+6B6LEhlt3HnddiOU="
+          "hash": "2fqq0Exouuxc9bPRjcJr6u7so0Jkz9p9sd9M0pi+koI="
         }
       },
       "is_incremental": false,
@@ -90,7 +90,7 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "Spirxf/+5HzmLFHOib09wYYq4rX1+qTa1Cxfkcb9dD0="
+          "hash": "UwanX0wzkoeS3WPM0oQuKUO9jGGd16141tUIJ9o5ckQ="
         }
       },
       "is_incremental": false,
@@ -102,7 +102,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.AmmoType.html",
-          "hash": "lUZ8vgEPL4kGJwG3x0fIElvSeH4mwGT8XyZQstm3HsE="
+          "hash": "S39BkrlWntuhYqbRMA4ErKipJ03pI0Vn+OlS1diPqLg="
         }
       },
       "is_incremental": false,
@@ -114,7 +114,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.AuthenticationType.html",
-          "hash": "eAu0lKQf7E3V/PC1WyT2wKCvo0xxAl+9Xj0la+TYBsE="
+          "hash": "2peZP9OItpaAMXJxC17huCVPi67lo06WdAx8rAgcDWE="
         }
       },
       "is_incremental": false,
@@ -126,7 +126,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.BarrelType.html",
-          "hash": "lhM3UJRzVdICjI1mDtOcnnI0iagKEEDWyjw+m1ujdO0="
+          "hash": "hF7TcLEmwLndkhvvwcl7JIi5ZUGO0DIMP4JLj5Z8+TA="
         }
       },
       "is_incremental": false,
@@ -138,7 +138,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.CameraType.html",
-          "hash": "ivWGKYF90u+WLIPph94RygyiCzST3wxT7bKpIVDM/bk="
+          "hash": "Pj61TfyW8inrM0OmtUTEMGC+xAxrvLX2+ui4j963NxE="
         }
       },
       "is_incremental": false,
@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.DoorBeepType.html",
-          "hash": "gqauiMeC4gTU1bgRz21rp8jQtzXjaCT0YuKB6GoI8Yw="
+          "hash": "7kDcfkTX0hUufs/xSQ51purghfkjcdA914Rxy1ZLcEs="
         }
       },
       "is_incremental": false,
@@ -162,7 +162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.DoorLockType.html",
-          "hash": "4DqBDHYxlnzLAoZZVjyZYiaiG2/jty//M/RCOk0USjg="
+          "hash": "xlt8ozyUMaPl2GPXt/ga3BnQfv4ZWqRhHi1byNOA1Ks="
         }
       },
       "is_incremental": false,
@@ -174,7 +174,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.DoorType.html",
-          "hash": "Q2yH1lTRcQgqXgLKIC/71KegwM0qI6UZDMGT+6G2iVk="
+          "hash": "aMnvNon0kVDrtmAK1JN3VdVi5SrijxxIC+ORBsqVbM0="
         }
       },
       "is_incremental": false,
@@ -186,7 +186,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.EffectType.html",
-          "hash": "41mKtshzgzyJexP/2uza9RQrgMZJzlu54MOgNu2Z7Dc="
+          "hash": "f+8T5HLwL4lVmRrPinU27QHd/mFsIkCYhRMcMEZouQA="
         }
       },
       "is_incremental": false,
@@ -198,7 +198,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.ElevatorType.html",
-          "hash": "iWSyTVowyPRvNlEemcqG3n0SH7szAuvrS56a/cW7V6Y="
+          "hash": "k/vndvZeth/C3XuMIKIQK8lKGeKJFjZ+qB0UJSp2WPg="
         }
       },
       "is_incremental": false,
@@ -210,7 +210,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.EnvironmentType.html",
-          "hash": "sGZEv/2uLy0dICt9H27vouQ0+Z4Mdqq7JP6BlA/DoM8="
+          "hash": "Y+Rq+QicN59hbarVw1/xiikv3Y9crMk7VmvvBJFCF2Q="
         }
       },
       "is_incremental": false,
@@ -222,7 +222,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.GrenadeType.html",
-          "hash": "UMv9LkCuovj9Tx1zTsV/AskUlyQ/yqSavfLlwHbi78M="
+          "hash": "4hRPFuYUfqSb9o4bWV/eVd+jlrlVSmSYlneK2tC2M0I="
         }
       },
       "is_incremental": false,
@@ -234,7 +234,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.HotkeyButton.html",
-          "hash": "viI9IGrTL8OQFp8mcAAV2YpfO2f/+o3zTUST7RJPUys="
+          "hash": "/+q4DBfW6wzW2pWa8WErt+nXamZO076kNYtvdQmztMI="
         }
       },
       "is_incremental": false,
@@ -246,7 +246,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.KeycardPermissions.html",
-          "hash": "xusD1tFTvUKIClVlEIQOeAAOHKUsZh+Ah35Uycherx0="
+          "hash": "APMK91ZEpgWKVR68QatvNDAQ2z/HsOzoOCa1lH3SXKc="
         }
       },
       "is_incremental": false,
@@ -258,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.LeadingTeam.html",
-          "hash": "06jVX/5nN+dCtZphJ+zOr3pkKrVWuBiPTCz1JfXDz1E="
+          "hash": "UV604W8Q93flQg8X1OByfsWDzvVgMNEaeUitIos2M1o="
         }
       },
       "is_incremental": false,
@@ -270,7 +270,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.OtherType.html",
-          "hash": "PgK8yPv4OGnzJrlsyjEh9GJR5p6/x8garhPZnI6WUfY="
+          "hash": "LSzEDoCzGExNVDGIF0Ckon20+GylHpbO6XYJ2sajydc="
         }
       },
       "is_incremental": false,
@@ -282,7 +282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.PluginPriority.html",
-          "hash": "/kyxfj4bod7HeG8XNvOaC6ezwtoK85UAMZykII/3QHc="
+          "hash": "Au2SMKZ/GCXNoWQr5MjDIHyO6xw9EfEF7PuJjnBgNhs="
         }
       },
       "is_incremental": false,
@@ -294,7 +294,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.RadioRange.html",
-          "hash": "fAE3ueXqjjR8BWenZeIoOQO4bkhSaUfHgyYmWeoI+ns="
+          "hash": "hiH68hV5/vs4f4e0UzlX8nKD02Amz2GvKjv42trWOA8="
         }
       },
       "is_incremental": false,
@@ -306,7 +306,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.RespawnEffectType.html",
-          "hash": "l7zreftiU9JjV28mBdSe2N9/SOBtTvJdWNq4LkY1Rh0="
+          "hash": "hPVSetNLbX5C4rChRvVk3RSLVuFfbiH5A+ofEUMVQyk="
         }
       },
       "is_incremental": false,
@@ -318,7 +318,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.RoomType.html",
-          "hash": "nKcw2TzOr+O+/2/0YFMF+8QXzq9QwhRSV5d23HKUTM4="
+          "hash": "Lyf8FISxwoM7f1giC13CIdLaovYyZ4OwQhPI8buiUTI="
         }
       },
       "is_incremental": false,
@@ -330,7 +330,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.ShootingTargetButton.html",
-          "hash": "jhhAs2fOaqPFVsBYoWE6ZJYXq5DeWWMp9oiB0+5Ob+M="
+          "hash": "g4byYam73sGOOpqfvH9TSnBErv5qG6Oq+XfqtnmHnyc="
         }
       },
       "is_incremental": false,
@@ -342,7 +342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.ShootingTargetType.html",
-          "hash": "qzwxgBY13+ZUN4T2qX2WbJ/+HqhwcYNpKr1qTI4G9qY="
+          "hash": "vTCAaNVhd3GkzEnAdGu+o991JC7OtFhD85Mqid3B9M4="
         }
       },
       "is_incremental": false,
@@ -354,7 +354,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.Side.html",
-          "hash": "2UV/QJ+Dmg67btt5Bg8RzVMpEasqrOxndScw0jFZHEE="
+          "hash": "ncGuVE3Wckp9niuVS0GZWE0JJYYZHRo2GKSXgwghqPw="
         }
       },
       "is_incremental": false,
@@ -366,7 +366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.SightType.html",
-          "hash": "u9azOxSpdN1tESvMAz8yvQJ19rrRMk3urt18j+RDPHg="
+          "hash": "epecgapI2Ulb3jMIrBMD1xIFfiv1KcYN/eP3iCY9J7U="
         }
       },
       "is_incremental": false,
@@ -378,7 +378,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.SpawnReason.html",
-          "hash": "CPSIXkOGD+/73M7KChmxB0NA5N6OKZNpTJ2sCNMJd3g="
+          "hash": "5R7mzddoDUeqBu3fmgXlRvaxDb599efgPCEFWfct7gI="
         }
       },
       "is_incremental": false,
@@ -390,7 +390,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.ThrowRequest.html",
-          "hash": "Hf85b9XVnKWOD/L/CGUUoKIEL7O3Y8o0m8I8FjD40vg="
+          "hash": "/2QQbHk1gBkRhwlNiqasecKWspBSobRCmCOGAvjV2Fg="
         }
       },
       "is_incremental": false,
@@ -402,7 +402,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.ZoneType.html",
-          "hash": "TqLWHcs5AkQpSBuv8vfPSUmcXFDb8Cz+HBEcWmBzUYM="
+          "hash": "6x2dwCCBIrcoFmo7R/iLYtfaJCijqN/AS7c48p/sLVg="
         }
       },
       "is_incremental": false,
@@ -414,7 +414,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.html",
-          "hash": "9UL36Mjt/0/pxyq1LVZioaIbIs2tVPKJvNmdL//eEnk="
+          "hash": "jeHcUM99fRzRqH4JhlR9g7DCe6zbNPiGL4l+wd3ABXk="
         }
       },
       "is_incremental": false,
@@ -426,7 +426,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.CameraExtensions.html",
-          "hash": "7aLxvNhWUnTpmoRwdssOefA+UN+8Z0PkrNeoGjjDs+k="
+          "hash": "33ScVgQvwmbIPh2NAAYoOO8uPcKEs9zfUMOcxLSmAKc="
         }
       },
       "is_incremental": false,
@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.EffectTypeExtension.html",
-          "hash": "mjISIU80nrzGaShHAAJqgbhSPt36VOtn0wZY7vMdPts="
+          "hash": "6kTqFzMsIpmR9G8WA27YQluKWbm4adUwv61tMGeJKxY="
         }
       },
       "is_incremental": false,
@@ -450,7 +450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.ItemExtensions.html",
-          "hash": "XXNVYJhJbJjwPLUAwEoqkgT6zR/DyeTbqA7oQ05L20Q="
+          "hash": "64dAJTRJRJLhR8uW1aE5/gJhudXDI04x3oK0xkyG+Dw="
         }
       },
       "is_incremental": false,
@@ -462,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.LiftTypeExtension.html",
-          "hash": "RqeCQVw245OBVgtj4C0pY5HXHW8iMR5qYwle+mKRito="
+          "hash": "sFa7FGWzz04+CwMIHAEJwKYKlVxWBTJJxmnrUgh2wSo="
         }
       },
       "is_incremental": false,
@@ -474,7 +474,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.MirrorExtensions.html",
-          "hash": "dY3syY2xmWwenhh4ipi2Ba8bxJpLX+832irOMH/NnTY="
+          "hash": "/3RdOjeGHldxPXTlVfbub5ND6itwPp3T4QR9bxR8+RU="
         }
       },
       "is_incremental": false,
@@ -486,7 +486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.RagdollExtensions.html",
-          "hash": "fZUlOTYd3geijdbWEE0YD4V9/gPSP3r3GZCwRUCPN9g="
+          "hash": "CEbuSxSbAU7fc3BejZKtlt9hjZUpT1xhEb6/jN+GNjM="
         }
       },
       "is_incremental": false,
@@ -498,7 +498,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.ReflectionExtensions.html",
-          "hash": "DzjBIq70W+WMR4LiEYvQzf//qJuY+TJzlKP83eRF/e4="
+          "hash": "LSi2V0RkfUBUuIi1LtS+Aimj/ycW0pCX0zbAnWCwmVg="
         }
       },
       "is_incremental": false,
@@ -510,7 +510,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.RoleExtensions.html",
-          "hash": "5SoTeJ00R8rVGPG8bA23NJ5Nl4SL3TjFOSqjpoPYa90="
+          "hash": "l/94fkc59jFNksrRr28Ahs5oIxfKx6YiGpROdErSjcc="
         }
       },
       "is_incremental": false,
@@ -522,7 +522,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.SpawnExtensions.html",
-          "hash": "n6UkmbbKCnLsCfmTQFCefrQSZSahNyQQxq2OHECgRdE="
+          "hash": "7Du2E0jz5efB8nf7W5Xwv8BUVTKu/8k/am+cjCaC954="
         }
       },
       "is_incremental": false,
@@ -534,7 +534,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.StringExtensions.html",
-          "hash": "RpEN88hcCWimZXLj6a3OX80fdWGs9FQ2t16DRi5Zgy0="
+          "hash": "lmZTSW9nTiquuw6jvZfGD+Wdljlnwe+KzYJLmSsdYbM="
         }
       },
       "is_incremental": false,
@@ -546,7 +546,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.UserGroupExtensions.html",
-          "hash": "wNUHCDUMgNhNRr8UZHPPZfbcHmhLFpBTrqhqEeuZyIU="
+          "hash": "EZw8Jh4Q2klO7pUl1Z1cHZ9Xv5T3dufyTFxdMflcK2o="
         }
       },
       "is_incremental": false,
@@ -558,7 +558,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.html",
-          "hash": "HDmaTTvGMy1UueRGwxsReKn+P/eUcP3RcC5kYGhBOz8="
+          "hash": "6jUXcwm5OeMdHrDvQrjDYdMplKFPCS/sUGYPV/jtpX8="
         }
       },
       "is_incremental": false,
@@ -570,7 +570,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Badge.html",
-          "hash": "ebgUbcI3Wb2S3IfLA2LLE0cEzxAS72G7f+lVOlg2iTU="
+          "hash": "p+85UO0vtPAmiuNycsaUnw1chmlP/eeSJX4IJGi5X/8="
         }
       },
       "is_incremental": false,
@@ -582,7 +582,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Broadcast.html",
-          "hash": "leJjjfyNc0IR4cCj/jUrs/6ig8vPecLiDwL4i1PQBVg="
+          "hash": "AWsRYFvpy1UQgys1G4xN3qUixelBVpmAkSrmOa3e4mY="
         }
       },
       "is_incremental": false,
@@ -594,7 +594,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Cassie.html",
-          "hash": "lsEScMtvVtKsP2augRYpt8gPJowRJtLIVPTzD+xUE48="
+          "hash": "vcqIs978kU0EjiGJ7AuN4sZ99p8SjqhfAJlSzrAsZLo="
         }
       },
       "is_incremental": false,
@@ -606,7 +606,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Components.CollisionHandler.html",
-          "hash": "XQKE5Pl1QyrLgooOKir/g/LKoCleZsrsHyWspxoB8dk="
+          "hash": "/fKmMdWwyl8CYzuKUooosR2ZLr4LXA2oayny3/kFYgM="
         }
       },
       "is_incremental": false,
@@ -618,7 +618,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Components.html",
-          "hash": "F9H1a+0ZxqW+mjOD7cp6ifGzdrjuiy1hmJV1PoW7HEY="
+          "hash": "nvw3fCKpvXBWRmbr0+gd6mcmwkTnfHIMnqe1MRXMVhM="
         }
       },
       "is_incremental": false,
@@ -630,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Door.html",
-          "hash": "Ddb388j4K5MHVDMMKSHXi6/gei8Z54IR9Z2C7wwaa1A="
+          "hash": "q4e1Vc68dkcdUGRIWRFJe2tjniWi3XPP6HyB0vfqb9k="
         }
       },
       "is_incremental": false,
@@ -642,7 +642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Ammo.html",
-          "hash": "0MMGyYxX+3BFCimQ7P80brHCr4Dxp6ZPBDwCBUvsG/M="
+          "hash": "ZWTEGrWpVmd5Qsgyye4uTDdlLfqpIrwfDXreb2JtH0c="
         }
       },
       "is_incremental": false,
@@ -654,7 +654,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Armor.html",
-          "hash": "C7XMvUJC1qk7ZlKonlAsxcSz3yldopkhXNyPuOQ2wuU="
+          "hash": "igFW9FyqCkwsnQ0ocicN9fM1bjU3Tp4kjzZoM9HmBSo="
         }
       },
       "is_incremental": false,
@@ -666,7 +666,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.ExplosiveGrenade.html",
-          "hash": "BoQMzsej/D31wG3t8HfQ8YbB+PeZbbbhTT4/6fETQo8="
+          "hash": "yxbK/lmPdcf0ROOebIZslIYhBSnVlDQIGbiiW/AbIl4="
         }
       },
       "is_incremental": false,
@@ -678,7 +678,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Firearm.html",
-          "hash": "aCNZEVbBMgwRLDzFUaf6WRLxyZ/65E30FTxMfg3Hbv4="
+          "hash": "yAmRyoZr0CV/opSHrpRvZZFkEcvrkOWO0q2JFhBWZmU="
         }
       },
       "is_incremental": false,
@@ -690,7 +690,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.FlashGrenade.html",
-          "hash": "mKbMdrhDYtcpMux3YpbUTgqQwaHRjPXT+IZzrhJll/c="
+          "hash": "b5zH1St4Wug56QUzMU9Zo2MePICCVCDqXmUuiMI5hXw="
         }
       },
       "is_incremental": false,
@@ -702,7 +702,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Flashlight.html",
-          "hash": "jIGbs1PObqfCYs572+wHCmuc23vfNsEGPB+ad7mbyqs="
+          "hash": "5VNiMoPg1p04v5H7UERcW6vvzK6Wbon496lHRgQVdMQ="
         }
       },
       "is_incremental": false,
@@ -714,7 +714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Item.html",
-          "hash": "x2y7WScv2jKo71qOn3zjtvTiQ3oOV2pH8TGJbpKtYIU="
+          "hash": "Ggr0OBWVCKWppNOhM0loAhT1kr9S2WCm8dS/oF4l35w="
         }
       },
       "is_incremental": false,
@@ -726,7 +726,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Keycard.html",
-          "hash": "HtW3RRqaV8ZHnAgObmAgYxmXUi4/RAndtTgeUnW/dF0="
+          "hash": "FIcNKoOHsdiZ52jCCxnB/XwV3GYqvbBJArEZwcbCjok="
         }
       },
       "is_incremental": false,
@@ -738,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.MicroHid.html",
-          "hash": "Q7zepDjKnEWpzKUm01fpY71aKe2WLcgFsqckSWMBA8o="
+          "hash": "M3IjGTNF6CDvcE+h0KwgSIiXl+QGuGr1999r2F6jFuw="
         }
       },
       "is_incremental": false,
@@ -750,7 +750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Pickup.html",
-          "hash": "vzaQGHYO7F88gcyMlTDVEbuOa9TzAMMxYl6OTBKO5QA="
+          "hash": "RG4uE+FtMi77asfd9SUKLuLT7AbhO0tfBxzv4YGUJYw="
         }
       },
       "is_incremental": false,
@@ -762,7 +762,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Radio.html",
-          "hash": "CpwF8HH3vEcq9DYhejxYqxGoAruO0gee7mFRx9Obg3Q="
+          "hash": "xoVxwMRxl5qtX5EiwKFq+Qi5IipMtXmEcRv4htOYIpc="
         }
       },
       "is_incremental": false,
@@ -774,7 +774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Throwable.html",
-          "hash": "XvGABPblkNTfdw6WADZWD/p+qG4MkUXTQMYmreORd9w="
+          "hash": "DRzl9SZpzYKQTrhrKmmwpAv75c7zbHf8QiRg/7wRgSs="
         }
       },
       "is_incremental": false,
@@ -786,7 +786,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Usable.html",
-          "hash": "rh79fcbiVKta8MoK+ykuP6ANLGjY41oMuqytz1iGnII="
+          "hash": "OIrBjl396qjx3JS4oLToZVxqKSoQgG/5Az25bvLslCc="
         }
       },
       "is_incremental": false,
@@ -798,7 +798,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.html",
-          "hash": "ugLh/sY3FQMvWiHzJfYMu+Bfakp79ARHFt9kCfdrHlg="
+          "hash": "PqWPXON5r+ymhaj7Vfl+SbELOt0VP58qjIeV+dSrKog="
         }
       },
       "is_incremental": false,
@@ -810,7 +810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Log.html",
-          "hash": "chjFBHh7qeyqZGgdTTLowErXXgvX98IlORBekQXgYIo="
+          "hash": "wwkl22OuRQLSdkJAWecOAKWG5aNX6IZsp/aS++R6SlM="
         }
       },
       "is_incremental": false,
@@ -822,7 +822,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Map.html",
-          "hash": "GNcqbFaEy7onYC3yQ2QfXRJHJszaXbPmhvqSHAgsQLg="
+          "hash": "Ec2ZaKsyZ7EGfSQDhgMwZ+0z85RxyDeECym7gehy+N4="
         }
       },
       "is_incremental": false,
@@ -834,7 +834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Paths.html",
-          "hash": "uS581nEwn0kSt3zKdjs19TTOofgUgiC3vvysK4XHw4A="
+          "hash": "nchBKDc9ENud/jqsDh+zz6k5O4pqqQ70gnICeZspq4k="
         }
       },
       "is_incremental": false,
@@ -846,7 +846,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Player.html",
-          "hash": "fRK3iz2iaWVVpO5nPBg7FiR8LECjm6N/n6JSBpKx0EY="
+          "hash": "x66VmhRBx+V5mDLTtbLeWiunhdDqntgjCnCVVPnThu4="
         }
       },
       "is_incremental": false,
@@ -858,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Plugin-1.html",
-          "hash": "D2Se6o+45frfdnIEoGgy4ZFMPsg34TQjN5F1OHTWFJA="
+          "hash": "w9ROjOGW20ro9Cc0Q5+RyGNiBDjth6+Sc4PHNK2MSvo="
         }
       },
       "is_incremental": false,
@@ -870,7 +870,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Plugin-2.html",
-          "hash": "u+SyxrIhtAqVqI15yLiqsMi5nb+Azvv/T92O60uxNAc="
+          "hash": "NRBxb6X/c+IteeHF52jo3+pJq7XHCkud2TVrYdlCh2w="
         }
       },
       "is_incremental": false,
@@ -882,7 +882,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Ragdoll.html",
-          "hash": "Ajw7FfI3KqsRNeZtj2GHndc49USg1+Fmu3YGsVcjE14="
+          "hash": "FLB5UTfCbyXyDFSo30+Mm+0FHP3/ZVzsGHywk2C0ZpU="
         }
       },
       "is_incremental": false,
@@ -894,7 +894,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Respawn.html",
-          "hash": "LEkkeGIfOL9uZvxXpff+5XMYwm3Vu+HQ3rbw3uKB3ak="
+          "hash": "bGhKljV912e0iq0CRlrBVSa4PCDFJqV8pMWlBYfmtf8="
         }
       },
       "is_incremental": false,
@@ -906,7 +906,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Room.html",
-          "hash": "6dBLku1ii23g4gXiuQNFHUH/gtiqiKIkgXoUFc+8XZo="
+          "hash": "RV4rUHkC1kPrzc6Vfb+fYo5Zr1YWb8nH6Q+fp8XQD38="
         }
       },
       "is_incremental": false,
@@ -918,7 +918,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Round.html",
-          "hash": "Jky4QPsDblWEJcYEC9PqRWD0O6lJbYGv5TQrVxhD+Gg="
+          "hash": "n1q1LlocMFsGwmDKDcI0BGfRvcAnZNSEJFW+qFTeP0E="
         }
       },
       "is_incremental": false,
@@ -930,7 +930,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Scp096.html",
-          "hash": "ZM6drDYABF8CeHfcKLJdA0C1jXKVPR/w5BmpleVwaw0="
+          "hash": "q1Ym+oLIJeqL+hbKvPXx6UcLfvs3ZOyfCCteYgPZQpI="
         }
       },
       "is_incremental": false,
@@ -942,7 +942,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Scp173.html",
-          "hash": "IBk/89N27LKOu2+ROgCD4rqXvSQVo8Y8uKaASQYUygU="
+          "hash": "wpkeCuLkbqW6WH9Mp6k1Xikm67xSUfilD9wJn+iBU6U="
         }
       },
       "is_incremental": false,
@@ -954,7 +954,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Scp914.html",
-          "hash": "yUN+TV71EiRS/sU2IZyM/ZKKJ23BiaFcshJi7fepPwE="
+          "hash": "vhoMjA9KMsG7ewa+DiUfJtLjn07CrzChJCI/JY+9bJM="
         }
       },
       "is_incremental": false,
@@ -966,7 +966,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Server.html",
-          "hash": "add+2uV+YqxIDYoeoJaDWzIi4y8sLjfy8d9lzXFnEA0="
+          "hash": "yBpijoIduZUp7QoBBCOyIUf6XEf8orMX3iF1dUy4RhM="
         }
       },
       "is_incremental": false,
@@ -978,7 +978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.ShootingTarget.html",
-          "hash": "YFrfLM5i8MShEI3PQgQUdRVPVS13JBwtkXgj2u1eodE="
+          "hash": "uQ+T0+yvQerTpxvQwCSu70Q4TRoARWwuPA1joQ6NfHQ="
         }
       },
       "is_incremental": false,
@@ -990,7 +990,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.DynamicSpawnPoint.html",
-          "hash": "1TgxFbEty43cwy6HNwj+30r0NIuXubhNnX4qiKRyNU0="
+          "hash": "TOH7p7axi7W29rOJ1QlTpzRZj1XbnCw4lM2CURvQw7o="
         }
       },
       "is_incremental": false,
@@ -1002,7 +1002,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.RoleSpawnPoint.html",
-          "hash": "9VXDGFURB284KUqZsrxUzo8C2z7NRH+mOZ0MY67PAXc="
+          "hash": "elN2R0zlXo8L+zpWcqB93I2v56bRxL7gT9KII2POaqM="
         }
       },
       "is_incremental": false,
@@ -1014,7 +1014,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.SpawnPoint.html",
-          "hash": "SKRCGOSlTv5Ade9sAixHH7OPivC6vwmYibcHDNk2GTE="
+          "hash": "ib8GQUzYV9lZz76ntk+SfItv7fANGbBqnBtiLbrFVh4="
         }
       },
       "is_incremental": false,
@@ -1026,7 +1026,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.SpawnProperties.html",
-          "hash": "utJir6DKX1G8Hy3q4hnH38y+RPlhCnDT7ZYTLtjZ6B0="
+          "hash": "eZ21gtCd4ZwotX3VRa2tcMQMK4QhSQkcdvA/z321nGY="
         }
       },
       "is_incremental": false,
@@ -1038,7 +1038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.StaticSpawnPoint.html",
-          "hash": "Nft553Urmh1qMrLpkwJMegtln8k/VMpu0k5DZx2YVic="
+          "hash": "Zog5Hk3Qtsn48Xz+K3Rp/O4DdasMD6w4am0H4tPdFZs="
         }
       },
       "is_incremental": false,
@@ -1050,7 +1050,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Spawn.html",
-          "hash": "UuGNYn5KUtBw7dkZ/+i8PWJgGFhG3InDSQXe2dQlJm0="
+          "hash": "Yh/Zr/8FJktHJDMVX7ZWF9VjE2M+9WeuVmz/MInYqMc="
         }
       },
       "is_incremental": false,
@@ -1062,7 +1062,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Warhead.html",
-          "hash": "104NwX9Vg0h5b6gP4tlrINNnTgW4+R7+oZ52SvQbFWo="
+          "hash": "n/55RfWIeSjbTotuf09WWgUIOCyqE1qArLggQadxYbI="
         }
       },
       "is_incremental": false,
@@ -1074,7 +1074,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.html",
-          "hash": "+CR5CRQQY6H4kp1zarQzTT6A0+YMiqMDNjPRqp5Eu24="
+          "hash": "5k1GlGjS6ymtyolM6PkJrLIZwF3iso38xhaWaihxF0U="
         }
       },
       "is_incremental": false,
@@ -1086,7 +1086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Interfaces.IConfig.html",
-          "hash": "pueEad+4RlK+CpD5gI7OmYl+M+ZUlTRF+/IdnHpdBz8="
+          "hash": "uf6tVAf8v1gXb8Saqz9JZOLXuQa3ybssed0qcKXKSJo="
         }
       },
       "is_incremental": false,
@@ -1098,7 +1098,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Interfaces.IPlugin-1.html",
-          "hash": "o1S5cf0T0Yq5O49ujlohFU9NLSEXrebKfrlQ3q284wU="
+          "hash": "kM2v6K/QoxZvx5muUy0ngglisl3UHjaNXky8TWLgfDs="
         }
       },
       "is_incremental": false,
@@ -1110,7 +1110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Interfaces.ITranslation.html",
-          "hash": "/w5mgbinW8OnJ6iwRPjoDc9NJy1oA2iUcFAn7HkYg4k="
+          "hash": "ugib4w7ix+fiYYxyxMrhLkRCnoIh42K3aLj1xP2QA4E="
         }
       },
       "is_incremental": false,
@@ -1122,7 +1122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Interfaces.html",
-          "hash": "h5OwOgZveE3m98f1VYauSYQWONRqPoG6exA1rI+hgVY="
+          "hash": "E+lRe/2nWaE70oCDD1X+wsr7Tko1edo7AhVqhRdLIwU="
         }
       },
       "is_incremental": false,
@@ -1134,7 +1134,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Structs.ArmorAmmoLimit.html",
-          "hash": "YqYM5J/a2+VoXfyKOdYPd5OvBrljm4eO+WSvHeriiUM="
+          "hash": "bmmli2gGQKp0NXwQ1eHm9yWUb2ORjG6tbviaq9cP/MU="
         }
       },
       "is_incremental": false,
@@ -1146,7 +1146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Structs.RadioRangeSettings.html",
-          "hash": "42+0MKf150a04lijlLSPkyxuZftbPf19hMbBdppe9VY="
+          "hash": "WkzIIYrvIpN8vxemeA2d/IOhRXA4wicaU3mZbhFGpjY="
         }
       },
       "is_incremental": false,
@@ -1158,7 +1158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Structs.html",
-          "hash": "XJDRXQd6xoxjY9PwaZtqmtwq8dAAbH70b+7a4kSGUcM="
+          "hash": "f8G9n38DrFBIdg3oHstL4M9ztoyB1Hg+AR60S9I42hI="
         }
       },
       "is_incremental": false,
@@ -1170,7 +1170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Bootstrap.Bootstrap.html",
-          "hash": "TjGhgrmaTyaZjcZDGSJm3TcpMqWXF3hYfIhU/wtEKRQ="
+          "hash": "MWKo+GCaekcXoCjt4YIOtV2L1R8MaO8zyAFykKQuXWo="
         }
       },
       "is_incremental": false,
@@ -1182,7 +1182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Bootstrap.html",
-          "hash": "KDXBphBVCjeGqZyKDSK1Bpw31eiUGgfQfSrM7bdQF4M="
+          "hash": "gdAoWcT/sUONVbWmK19yB8OOxaLBsirr0PQcCDz+eZE="
         }
       },
       "is_incremental": false,
@@ -1194,7 +1194,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Commands.ShowCreditTag.html",
-          "hash": "20rcBT7F8xUP3TZ+bgavoodXa8J8soz1bfPzVJT3+hU="
+          "hash": "qP8v0/SlOjTBIa12hxPrDf2amP46TV2M1Uz4mPYGK6U="
         }
       },
       "is_incremental": false,
@@ -1206,7 +1206,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Commands.html",
-          "hash": "gpmllNTfCorDp3PoVSqfOsuzJNk0FQTqMoRdKwQygoU="
+          "hash": "pwXH8nri/Aee6G3ALb/YVHkUi1ejTFo1XN3bttmeieU="
         }
       },
       "is_incremental": false,
@@ -1218,7 +1218,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Config.html",
-          "hash": "BWd24Q1ujtq8puGbQ2PVQXAjUNeOZm2bDi5EyWM41Oc="
+          "hash": "K5Y+dRWjexxqpOAtehxt4E+k6ZR0OydndbwNUtSaC4A="
         }
       },
       "is_incremental": false,
@@ -1230,7 +1230,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.CreditTags.html",
-          "hash": "993JaKVMlWCtm4ccPn1N8JEb/2cwqmzJz9L0+2D35SQ="
+          "hash": "mB1tzJuisTBPAARsUJxvdwJw/BKmIO0JL1l4/hi51Qs="
         }
       },
       "is_incremental": false,
@@ -1242,7 +1242,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Enums.InfoSide.html",
-          "hash": "+nYaj2gIjaozoklNX9iYlBZeQluiMg2IIM60J4AnLkY="
+          "hash": "4cckH6bmfNWce5GLgnzsMvFofCo6MWO9SUjo3mVTL60="
         }
       },
       "is_incremental": false,
@@ -1254,7 +1254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Enums.RankType.html",
-          "hash": "+z7Bh1lcXYFdp57eEnEjVcswNqzBxo8AOooHcwJr9fk="
+          "hash": "SQeQsI0hiM22Q1uDBFiVs1dl4lVZGnPp70bslsF+dbE="
         }
       },
       "is_incremental": false,
@@ -1266,7 +1266,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Enums.html",
-          "hash": "+IRTG1OXZRvkzESqUPItKyrF6JybgXN67rJc+T20Ya8="
+          "hash": "tzY1Rz3LZbOjoYfWYVwHLTdszu7sKDED3eBuSx4xEUI="
         }
       },
       "is_incremental": false,
@@ -1278,7 +1278,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Features.Rank.html",
-          "hash": "pQyHLh04c5N2QicUMOfzcx3M+ZuaXVuYr8N0K4uoEPU="
+          "hash": "P8NuZFiDQNBLChwsl2wTzTfizpNWH0IhbQs2BanFXfI="
         }
       },
       "is_incremental": false,
@@ -1290,7 +1290,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.Features.html",
-          "hash": "bPjv92PxQVznZqMl8hNBfL1tYbZPEzSLqZ5FYawPWH0="
+          "hash": "6QF6eUbHBpJSKP3f88GxaeSdJIJX3lmGNERNfiunCI0="
         }
       },
       "is_incremental": false,
@@ -1302,7 +1302,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CreditTags.html",
-          "hash": "4Z65kbMOmwWL+DaAHUh/GlTsrVHjwUJxJEKWn9qxZyk="
+          "hash": "TRVWAmqxg5yvsyZnRmYxOKSaHR4pSokTIOa028rEo80="
         }
       },
       "is_incremental": false,
@@ -1314,7 +1314,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerChangingRoleEventArgs.html",
-          "hash": "wO6sHPXKGPRnKS8Fwcq/rTdnO9olR+tmmq+6HSHi2Nw="
+          "hash": "8VJrwROwMTY4Jo9SOVU+SWpNHCCZPijgDTAmo6MhHIA="
         }
       },
       "is_incremental": false,
@@ -1326,7 +1326,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html",
-          "hash": "XEtel1FW8vpTCCq4rYuXrB1Z8MXYoznCe0sOl26KWos="
+          "hash": "YUiYOkePj3+C7jEhGPqCXnHKjgJUaqdQE/EjID5pLwY="
         }
       },
       "is_incremental": false,
@@ -1338,7 +1338,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerEscapingEventArgs.html",
-          "hash": "JyRMThjnrj+COP33vieEQiiP2m0UI7uawhmqk7NMvZ8="
+          "hash": "YwNyhrA8B1fhTcsmOpIGfpob4J7Dpka4k1cNXVt49rY="
         }
       },
       "is_incremental": false,
@@ -1350,7 +1350,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerHandcuffingEventArgs.html",
-          "hash": "DuZ066tOs5waqLAgy4JQ3N8AjVyttv/0DlJFaZQw1fA="
+          "hash": "N82tRBmTe2CICVQt1OozqDxPsffWzK+QXPGhpsfuk40="
         }
       },
       "is_incremental": false,
@@ -1362,7 +1362,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.UpgradingEventArgs.html",
-          "hash": "h/lqoTNH2rlRjbFdikiVUHNsd1KZy2rhHhiWjQu2ZEY="
+          "hash": "cv+pzDGcvh9oFcd4GkHcw+a73xMnTIjexHz++qHbPr8="
         }
       },
       "is_incremental": false,
@@ -1374,7 +1374,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs.html",
-          "hash": "1I9hdHKeOF1IE9XH87jGeLGoassvOSACdJZfDsp47Tg="
+          "hash": "bNuBaSWhvmnV+RIRWH6/3Rz3Ms78xiY1Jy/Amv1j6O0="
         }
       },
       "is_incremental": false,
@@ -1386,7 +1386,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.html",
-          "hash": "RzoemhTxI/4L8y1ZUnyKIfOqyMNjVJPYGH+FyimA0rI="
+          "hash": "nEAMkmGE2ilWhjnB5Bihbq0sb6EmqueNo2h0JMhOryI="
         }
       },
       "is_incremental": false,
@@ -1398,7 +1398,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Extensions.html",
-          "hash": "NqbPn33o2ZzKjIr09vjamO5P/9g9PSbcxxMn/ZVMzr0="
+          "hash": "+AARr3/Urk03G17A7p3A7axizc7E7I/Si0Y0NLVl4Uc="
         }
       },
       "is_incremental": false,
@@ -1410,7 +1410,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomGrenade.html",
-          "hash": "qczjTl2S7+247kLbBDQZLV2oGUCpkCCxe0ZOlRItA+A="
+          "hash": "SlPZoJu0Ci7UTP3ebsa1Vbwg74NJuMuEijmYq0++aMk="
         }
       },
       "is_incremental": false,
@@ -1422,7 +1422,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomItem.html",
-          "hash": "6meSOWs4UokmdC2/4PPjZtd9u39s/f+ymcwIwK2BQ6Y="
+          "hash": "oIFUNFWz6yfQnSIBxIW8V2J4STd89LEfdKLe4x9CH6Y="
         }
       },
       "is_incremental": false,
@@ -1434,7 +1434,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.CustomWeapon.html",
-          "hash": "3qflmrLii0U8PLJbRAU51GMHt6UgWAad7ms0NIDTyCs="
+          "hash": "BY4jsSjtYs/WeUYGeHEVKMUEwx9GP9lqy6BR7naRwR8="
         }
       },
       "is_incremental": false,
@@ -1446,7 +1446,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.Modifiers.html",
-          "hash": "7oui9j/4sDoac454PR/3qLHbGlOEs2mzU8IWr3fgTBI="
+          "hash": "+wQ03gc094pM6hZWZ6LIRy8WhIpW2dIsGn9j1Ive4cM="
         }
       },
       "is_incremental": false,
@@ -1458,7 +1458,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.Features.html",
-          "hash": "6E6grKk15St76Ut4JJaA1JSnkhRuYXEcO217Pz6KBAM="
+          "hash": "t7jXCnHc/M5CVuYXLpHjwXu8MgewmKzsUIlgESFzq5s="
         }
       },
       "is_incremental": false,
@@ -1470,7 +1470,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.SpawnLocation.html",
-          "hash": "Zr3UKJnB+xfCkw9/XLRUjqMKieHaT/sv0DVhYOCDKaI="
+          "hash": "y5KRejBqz+Q0bFl0Ui9KmNSuvu1YDbNRcfA2l+nkSHE="
         }
       },
       "is_incremental": false,
@@ -1482,7 +1482,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.html",
-          "hash": "nPfiZjDBAOWnY4R5NdiIg9xPq2/jCwmPJZdsRCAAj3M="
+          "hash": "hBqxSF1XugJFjX94fMa6phM1ijoGjy8JojrIPWjTlCY="
         }
       },
       "is_incremental": false,
@@ -1494,7 +1494,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.Config.html",
-          "hash": "gTQV6TRS11jBeYx+rtWtucHCx0SAmNE7YVIXyZDP0ws="
+          "hash": "eOqaqXoksbMu3I7d2+n+Oc6EKbp/Vq0AtmMX5Z71QZQ="
         }
       },
       "is_incremental": false,
@@ -1506,7 +1506,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.CustomItems.html",
-          "hash": "zzICuxyGh2dSbT4Y7kwo9YGM6s8o2Bdo1zUZJ+Aknhk="
+          "hash": "EQfvDAoaFj5iZl8wNIve6n/o7GG+bOa+Q6s1k3beSA8="
         }
       },
       "is_incremental": false,
@@ -1518,7 +1518,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.html",
-          "hash": "QJUhwvffFUQvwGKdsSNVUJEG75JGaBXemLJlN+d7cc4="
+          "hash": "r8Ny4iUybUyChV5HhEhsSUhxUocUO3qWV+z+oqVjQkc="
         }
       },
       "is_incremental": false,
@@ -1530,7 +1530,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Extensions.html",
-          "hash": "HScPQlKOjDhg3xT1hsFnmOb6WqbhhTvObdzniSgOrHQ="
+          "hash": "ObVFtLq90TdaDnsnw+azrJQiiWJ1lnRCcpgn1yYoLkE="
         }
       },
       "is_incremental": false,
@@ -1542,7 +1542,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.ActiveAbility.html",
-          "hash": "HF2RfnosOPaqBM7K8Rc9/ysdW7gdGaMjKNV73wE9zYs="
+          "hash": "6lot5irnd95uzi2t77B8ZDmdommYcQrDFRdJkquWZO0="
         }
       },
       "is_incremental": false,
@@ -1554,7 +1554,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.CustomAbility.html",
-          "hash": "3Vj+fGQZVYEvHmeAb2vvpD3pMKebRUq/9Mrv45PDBXw="
+          "hash": "dMCCo/ELj+Wq4B88kiyfOnC14Ry6O9SKfq9PfyCEro0="
         }
       },
       "is_incremental": false,
@@ -1566,7 +1566,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.CustomRole.html",
-          "hash": "8Su7U8vJUnX2vAcA+snUt0rNfCbrug2EDMRnAPQJkMs="
+          "hash": "3Q/+siJ/G9Y1r9xASHgJ+PwejKWosO3QZ+f5LBoZtMA="
         }
       },
       "is_incremental": false,
@@ -1578,7 +1578,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.PassiveAbility.html",
-          "hash": "n3+HGr6vG7Pl7ptEylMZQhJxe8QJ6jdAPGJDIoqtJHM="
+          "hash": "XoS84WcPfhTq0u2+NdTov/noBDyU/6otrQx05Ju+/hE="
         }
       },
       "is_incremental": false,
@@ -1590,7 +1590,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.Features.html",
-          "hash": "2onFQn5jttbnhS1TY8vYTVwJx7leeQME06zN0Jl6GMk="
+          "hash": "KnWzT53rp5rJWX23jfvEMPk08jQVDXl+HWNMQCHgPig="
         }
       },
       "is_incremental": false,
@@ -1602,7 +1602,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.API.html",
-          "hash": "xnn/w8RwoYxHl8daegEnxaVXv2KDKb1mFvm98D5bVwQ="
+          "hash": "Pn8FH4tN873QTGUQ4Rq/YKsnfhEvTWZJFf8MmNc8LbA="
         }
       },
       "is_incremental": false,
@@ -1614,7 +1614,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.Commands.UseAbility.html",
-          "hash": "wXUgI13LZC+jtJOXNeQweSP3+afwNP6LX8Co7BGLPkw="
+          "hash": "0Ycpv34JcXHr/+S+U8imSqqIeiuzYLwhZ6F00yJMo5k="
         }
       },
       "is_incremental": false,
@@ -1626,7 +1626,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.Commands.html",
-          "hash": "sJjOUibjc6Jfp5/BG+Hm6r/CEwqZSNJDOyA8BbzSQ7I="
+          "hash": "1LU9q6+7dU1iGj3DK/XkdMU9RFCZDkomUbDeB47v/Ao="
         }
       },
       "is_incremental": false,
@@ -1638,7 +1638,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.Config.html",
-          "hash": "5gqfsZOGLtf0GgNd/DJvHBOXnm2nayseTlJItfGBFtk="
+          "hash": "pxH8G18nUyII+/FYskXUJxkSkquvjqoDcmzj1YzrAnw="
         }
       },
       "is_incremental": false,
@@ -1650,7 +1650,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.CustomRoles.html",
-          "hash": "jcTi6og6POpxm+DkICJOAhcOzxWmr6Lptr/HeJOEXSA="
+          "hash": "HWeZ70v0+CXXXjxTd6iMJl8tEpHW2UysPNH9ZV7mcZc="
         }
       },
       "is_incremental": false,
@@ -1662,7 +1662,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.Events.PlayerHandlers.html",
-          "hash": "w9s9SX1L9NwyNYjlWBSAzeO1uRHiaDflj5Y8Mw9To7w="
+          "hash": "25uouuNN8AzNHgToKjsmW+RAQG3fDfRKnmA0lvz4snc="
         }
       },
       "is_incremental": false,
@@ -1674,7 +1674,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.Events.html",
-          "hash": "/EkFrB/5ylkfB17eR1EOa3El75HAHNBnk6B7n8zvEYU="
+          "hash": "GSE48wMdrKS0vFYr6+9WO25ieC1FSkNU4xzCUgDM2AQ="
         }
       },
       "is_incremental": false,
@@ -1686,7 +1686,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomRoles.html",
-          "hash": "oXIxVe4UydypALYH5UOdh6G6uTdPKfURIouq1eqeqjA="
+          "hash": "eLLkO3skU5dURqyA4bt6pmDm4HrR7D7eUOMC5gPm8cg="
         }
       },
       "is_incremental": false,
@@ -1698,7 +1698,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.All.html",
-          "hash": "ztIQ8UrxpVHeoUBHSGG24nxmT4EcjfsgKo8Xr5tebbA="
+          "hash": "VjM8kivSj8cVQ/JiT1iZw8LmgVnvbNU8LmHV1PH5+yA="
         }
       },
       "is_incremental": false,
@@ -1710,7 +1710,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Configs.html",
-          "hash": "K84dmTSLjdCzeAQUt/hHKNI/BjnzfoS8OCIGkNl8Gao="
+          "hash": "blyIhDGyLQQectQ/MruKZ8R9GUa80edYONzJNnbAGfk="
         }
       },
       "is_incremental": false,
@@ -1722,7 +1722,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.GamePlay.html",
-          "hash": "t6z1uiD3zx4R9H3PEW8MO760BSWINJWG/F/yCdxl3Kw="
+          "hash": "RFP4mSOhyB10XWVtwReC/LzuAPTo4V92xTLyYrJ9yR4="
         }
       },
       "is_incremental": false,
@@ -1734,7 +1734,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Plugins.html",
-          "hash": "szhjfG99+d/1JZ7n9TpahCwgWP7WpG4p5pVQDXztCEY="
+          "hash": "df36hrD2tmmOt5p6WTWZH0dZL9IiAxSa1Lw0jCS4ZEY="
         }
       },
       "is_incremental": false,
@@ -1746,7 +1746,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Reload.html",
-          "hash": "2TwQyGb1nRtceVpriU/nueJz5UJh6gL+4Uxz/15yFt4="
+          "hash": "oFWi8+uXOUsOJBE3RedskfvwdGCmbee0daWqpxHbc88="
         }
       },
       "is_incremental": false,
@@ -1758,7 +1758,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.RemoteAdmin.html",
-          "hash": "wufutuZ4tfdgA/1z70zvP9oKet/ndjLA+keCLAKTgLM="
+          "hash": "+wnLMKPgnckjzJfa3OQLKjjCI9h0WejYpoFOZ2fCvos="
         }
       },
       "is_incremental": false,
@@ -1770,7 +1770,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Translations.html",
-          "hash": "l0FiNwmcuZYqmFn3etRn9cneBMH0EnOezswVkapvBN8="
+          "hash": "EeUDpQt8lw0ZW1ChZr2zdVnLssRrWhQKrNrhu/v425w="
         }
       },
       "is_incremental": false,
@@ -1782,7 +1782,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.html",
-          "hash": "g3WMQmxlJ+BI8BMc008dpNUqDw6fWKO8P0npa0irzxQ="
+          "hash": "oiYKmxFK9+7VVzUonLVDnFCx8djI0Frf6HQ9P3W/nfQ="
         }
       },
       "is_incremental": false,
@@ -1794,7 +1794,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Show.Plugins.html",
-          "hash": "Fz0QLHv63926+/CQFhVF5T+tkAtLUO48AGPbVNar3LI="
+          "hash": "9SMDSmyhxdTXGEZiou84bSAMTc2LMIZd3gs+danrxjY="
         }
       },
       "is_incremental": false,
@@ -1806,7 +1806,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Show.Show.html",
-          "hash": "Ln4xEDcnEA/2MZWFX7G4uIdoPpjWNpIovPCYkBL9om4="
+          "hash": "DX6hphQGc6nQhzi55Tna1cN6o59vMlIOD9TqBXlqGI4="
         }
       },
       "is_incremental": false,
@@ -1818,7 +1818,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Show.html",
-          "hash": "5Cj0RT7iM4TjwQaNGX/pRCDNdMujEmsbgMlseOFN7us="
+          "hash": "JLJzP6lGTBvWgLiwLVYeS3aycKX+mP2R6M4Z16gBoD4="
         }
       },
       "is_incremental": false,
@@ -1830,7 +1830,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Config.html",
-          "hash": "O7+U0E5/FIJ7ayNKAg5saJTrHsXdrSd8dhiEoB0cfF0="
+          "hash": "6sKV9Hgkgq8EbBrCWWJzUZTe+4+DPGz6RguzzXGMN5s="
         }
       },
       "is_incremental": false,
@@ -1842,7 +1842,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ActivatingEventArgs.html",
-          "hash": "fzzn3aYQOj8dOlKHG3eXd6+gsBc0hsbvmHaJU3+rpZU="
+          "hash": "R4/pR2gI+FZg07fADZAWAdI+JFkKdhFncf9sG3IKMVA="
         }
       },
       "is_incremental": false,
@@ -1854,7 +1854,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ActivatingGeneratorEventArgs.html",
-          "hash": "PRDl7yXMjx5xPX1qGwUGlK5ImqYtJ+ioItJzwElMk24="
+          "hash": "unOlX0qMK7XCiTpgvpjgptlgkSya2DkmD7Z1UdCvE1k="
         }
       },
       "is_incremental": false,
@@ -1866,7 +1866,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ActivatingWarheadPanelEventArgs.html",
-          "hash": "LDiGE9S//vPFpy581ArYW3C92RU8RzpekKO37HbZ6IE="
+          "hash": "wCDjPMFbBPC4FiGFHP5L4ErBaBDSv269NFDc6PJtheQ="
         }
       },
       "is_incremental": false,
@@ -1878,7 +1878,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ActivatingWorkstationEventArgs.html",
-          "hash": "pVLK4lHZoJ6SlkdMcCtea4jsqW19jvrEBJ/bSRx3uuI="
+          "hash": "FjdMh4eKTuQ992t+aodBTjFnmLCz6JEOqcqKzePQIKc="
         }
       },
       "is_incremental": false,
@@ -1890,7 +1890,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.AddingTargetEventArgs.html",
-          "hash": "T8Q9LkoKKqsoZ3wCQj7xpETVFRwp7QHzomSy1v86eww="
+          "hash": "ipfUxgsscbWZGcRWkqJRrRhyjW//ELX0ktfigOoUwBg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.AimingDownSightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.AimingDownSightEventArgs.html",
+          "hash": "QDDEkU9wybEmeLYTK52Xbcs/bukkxaikG88YHIWlYxM="
         }
       },
       "is_incremental": false,
@@ -1902,7 +1914,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.AnnouncingDecontaminationEventArgs.html",
-          "hash": "hH5Ywk+Zb/9zG1ICDhwq8XyTJ/UENSfyAGhmezb2I70="
+          "hash": "hk5MbWab9tko40ZrgebP9+9Old0gCs0gNexVzFmyDW4="
         }
       },
       "is_incremental": false,
@@ -1914,7 +1926,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.AnnouncingNtfEntranceEventArgs.html",
-          "hash": "TfjGIbzmXcADLboxVjTxpeJ31t0e/NW0VkDd0euyLQE="
+          "hash": "fvw4wxnGgqIjwmP/tKwEpGRidcmJKKz9305VqwXBVKY="
         }
       },
       "is_incremental": false,
@@ -1926,7 +1938,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html",
-          "hash": "jWnHgzf2bbHKjcEmlQ5Ox0RBQqNDHWZLpcjZgaeaPO8="
+          "hash": "SejFDdNk8OdaKZD4DcdNzOAf/JHg9stDuITCzVO9C7g="
         }
       },
       "is_incremental": false,
@@ -1938,7 +1950,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.BannedEventArgs.html",
-          "hash": "M/mJgpaKb7oeavTq61DnwhqAIsmo3HpIqwPF0JGlO34="
+          "hash": "LED9FiPt/P417GTdq+DEMnpDQ/tCRjpmkBmH/vOJ7xI="
         }
       },
       "is_incremental": false,
@@ -1950,7 +1962,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.BanningEventArgs.html",
-          "hash": "AAbZAmC/8ekqGNtDuPMYET9MGNvN47WvksW2M5se1lk="
+          "hash": "F83rOnWq7FQFlPbWO0ZFiiCIiP3t2IZCqnozhXYFn4g="
         }
       },
       "is_incremental": false,
@@ -1962,7 +1974,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.BlinkingEventArgs.html",
-          "hash": "RSWl1Rzr8ph9QwBj0TUSNZTbkKy6+Cs3teowA+1rB34="
+          "hash": "778oB+++Tge8u4SoURyKdVakPw9HfKKCdHAUxCDKrok="
         }
       },
       "is_incremental": false,
@@ -1974,7 +1986,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.CalmingDownEventArgs.html",
-          "hash": "P7VpEEuWFP5zpuY3o/zdviXws8q6m26c5gUVsRDWVQY="
+          "hash": "b5BLptelSbMy0SqNIzMyR5Rkmwa6WZOoQwGuPDvef90="
         }
       },
       "is_incremental": false,
@@ -1986,7 +1998,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.CancellingItemUseEventArgs.html",
-          "hash": "ArQC+fCkhEGgA5YfqN0nuVi1F+o4Ma4owW+AYk5vuUU="
+          "hash": "rGSGdzs7nFTT7scHjTRtvbGVVEm/sBFZiw3aUhIZ5uY="
         }
       },
       "is_incremental": false,
@@ -1998,7 +2010,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingAttachmentsEventArgs.html",
-          "hash": "EKP2wngO3dLzgotehGD7BVPdnfXBcbmYsPtxHxBng1E="
+          "hash": "NqUXPuj2qVw5L9y3B97eqOThlrpYjhv6NTwPKLmd9+o="
         }
       },
       "is_incremental": false,
@@ -2010,7 +2022,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingAttributesEventArgs.html",
-          "hash": "AcnKJqWxY5WRypyFBDxgynX+hMzvR3bgG9M4KkXkHDk="
+          "hash": "eyBv0hsQ6aR2HKOWWPzbVdhhN714Sf0gaG8CMJNeY38="
         }
       },
       "is_incremental": false,
@@ -2022,7 +2034,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingCameraEventArgs.html",
-          "hash": "lJH0eNtY99T0nkKtjZlHVeCTsrMiTyy5FF8EpLeAudY="
+          "hash": "cDIzz0ZDCpoZ2tUQ3TdAPz6YGdiZ/byJlXFw4JmZQJw="
         }
       },
       "is_incremental": false,
@@ -2034,7 +2046,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingDurabilityEventArgs.html",
-          "hash": "wPp9zN2uIdislYoIGT0hc4h4wV/5JUM+iW55ErQ5qhQ="
+          "hash": "laBmrJNZMyToyzYnyLQ75WeObKbtn4zexG+8Sq+yJtI="
         }
       },
       "is_incremental": false,
@@ -2046,7 +2058,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingGroupEventArgs.html",
-          "hash": "XgktONDgAE2Sh99GCvreNeag09Pr4Lz9O4nFwjP6ry8="
+          "hash": "z6/CXSEFGPsXpITjiIYtpDDM8YPmAz/Ude3gBxAomNQ="
         }
       },
       "is_incremental": false,
@@ -2058,7 +2070,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingIntercomMuteStatusEventArgs.html",
-          "hash": "+GmPClR8fFh3EZ+yigGNkSrMGTVgrErTNxbsDYNUwi0="
+          "hash": "2zVWAdVBBiD7OBL7G2xkCpSm3EmJHhmQpPox3Hk0fDA="
         }
       },
       "is_incremental": false,
@@ -2070,7 +2082,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingIntoGrenadeEventArgs.html",
-          "hash": "qA6Ur0XgZ//q3kCDTzAI3K7+Ul6ikJ76Y0t+BEF7PRQ="
+          "hash": "4Po6apx4smE54QJU9j6+AIr0VwzbRwOPMM46KSVEUbA="
         }
       },
       "is_incremental": false,
@@ -2082,7 +2094,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingItemEventArgs.html",
-          "hash": "VM4k98yMtdi32dE6kPjs3QVTE+3YIZXASlHkqA4WPN8="
+          "hash": "vQ2hV3qAWctD+M3ONNTNKgdLRP6Z0ZVP5ZBOUPfPK+w="
         }
       },
       "is_incremental": false,
@@ -2094,7 +2106,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingKnobSettingEventArgs.html",
-          "hash": "KdWtbvf8rHgauDMhQnsho1vipeQ/5LBVdo8zKmP+TOI="
+          "hash": "ZpOzgv57BYYd0emvTtvMsFbqvff11xRsgVgfRTpK2xE="
         }
       },
       "is_incremental": false,
@@ -2106,7 +2118,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingLeverStatusEventArgs.html",
-          "hash": "9LMqpsFe5oBeD5iWYuC7nsAQ/LpHxB89eL9zLORcn7g="
+          "hash": "uglWg5j3D2CmxbmHD1k29yodo7fPcufJhWakROCxOdA="
         }
       },
       "is_incremental": false,
@@ -2118,7 +2130,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingMicroHIDStateEventArgs.html",
-          "hash": "5ZBPPdU/K0n5SpmS6UUH5ufn3swb3Ag3+j3iAkLMoEo="
+          "hash": "9CrVGwD7G9RQKsYutt/rLtTZCJ0JOrCj5SEVAOv4ruw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingMoveStateEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingMoveStateEventArgs.html",
+          "hash": "u8Id50U+k+mqJFKdLIiUWva1L3yWGayEdHrzP0PbAtQ="
         }
       },
       "is_incremental": false,
@@ -2130,7 +2154,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingMuteStatusEventArgs.html",
-          "hash": "+uy+YpUMMZGwvOMecMGo8bws6giVfNrJEoOytRkAmmU="
+          "hash": "b1Q0spvPPBI3NlaOI7ntsdgvL5IMK7tohQPUMwIFsjQ="
         }
       },
       "is_incremental": false,
@@ -2142,7 +2166,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingRadioPresetEventArgs.html",
-          "hash": "sZ/bjvcoUgdBCvxxx1S5vJIYLl8E5qxw14SW/0qbSmw="
+          "hash": "rgrUPZy3eAEjdPrz/lS3fCrN0jB10cWC5AYL7plLbVE="
         }
       },
       "is_incremental": false,
@@ -2154,7 +2178,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChangingRoleEventArgs.html",
-          "hash": "7Gi8txncZ+TgOdoxNEbD2N0zsZUiGjH1BvM7WiwXmHM="
+          "hash": "ewl9qCeFIPHLQo20fvfC+4qppSp/Ftt6juHx3xC/hA4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.ChangingSpectatedPlayerEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.ChangingSpectatedPlayerEventArgs.html",
+          "hash": "bPeeP3aOn9Setg6XH6SHBJIgNP6c2YIH6cttZyZk5Kg="
         }
       },
       "is_incremental": false,
@@ -2166,7 +2202,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChargingEventArgs.html",
-          "hash": "DE8UyOVmiNBOTAFrn8+9nxJ9buv7jtIyZylsXUyisPU="
+          "hash": "FDn1jvRDUBF89ZnpYxyrxNE4Wr4xT6b4cjr4WroADxQ="
         }
       },
       "is_incremental": false,
@@ -2178,7 +2214,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.html",
-          "hash": "gtw7+5UBbf/AKG49tmd8y3coQH+qedrcKP3IOV4prvY="
+          "hash": "PZY45fGv7PGuzymJh0RJLE4bQ8rCV9OEFl9ZbzEggWQ="
         }
       },
       "is_incremental": false,
@@ -2190,7 +2226,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ClosingGeneratorEventArgs.html",
-          "hash": "wWJVHMeibfKkqGrEW0Bnp71cYPHtcVZs9zacCUnjpdE="
+          "hash": "jEBsaPvhz2KgDEZ7lSpn2mYn/UvXpxN7RZHOtRXOHpc="
         }
       },
       "is_incremental": false,
@@ -2202,7 +2238,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ContainingEventArgs.html",
-          "hash": "vH4rAVR9USwpbn0RxJJBlFXt4Xircfo5UGGV/Uykt20="
+          "hash": "rOoUVYa3jbZhpabjnWijolsXNqLWyDSmDxYU1+GwdgQ="
         }
       },
       "is_incremental": false,
@@ -2214,7 +2250,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.CreatingPortalEventArgs.html",
-          "hash": "2W4dPXmfIbIaVkdfIDI/1YD5AvWM99hZlRb4amHiL24="
+          "hash": "RgSECkncEQtLKQs4EcINYXTuInShRY6mdwEKvqgpOp8="
         }
       },
       "is_incremental": false,
@@ -2226,7 +2262,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html",
-          "hash": "LVb8vSvE51N7SE/9LGQGCTutwxjhkIMC4YAJcaDSvhQ="
+          "hash": "Sv6KSFJy0RYrQAFSB/kMF9J249CtPPZovvuQ6Huq8CI="
         }
       },
       "is_incremental": false,
@@ -2238,7 +2274,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DamagingWindowEventArgs.html",
-          "hash": "9TPxAWRaIsyB80cm+mB+8MSoxDedT0hl+Cebb246Qkg="
+          "hash": "N2fkdIfqH4gtHU42O74ykzANJORdmZGDG4v7K3eUENQ="
         }
       },
       "is_incremental": false,
@@ -2250,7 +2286,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DeactivatingWorkstationEventArgs.html",
-          "hash": "5cqbPtd2DAuC05dTnq20qnruh8m5F2C9WE6cIV1KkEM="
+          "hash": "IIgRSZlMR/Q1Tz82voDygu1Q0VaJP5B+/sQnwOBxtqA="
         }
       },
       "is_incremental": false,
@@ -2262,7 +2298,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DecontaminatingEventArgs.html",
-          "hash": "WcOr4f3InD+zeAO+DN8P76+wWXiECdFRWhmO442ia8I="
+          "hash": "hnpUejmFHhzIgmC3UH0Nko9EB9axNCqN2GnNyes7Ouo="
         }
       },
       "is_incremental": false,
@@ -2274,7 +2310,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DequippedMedicalItemEventArgs.html",
-          "hash": "LVBSEGpvClxFp56Fbcz14a+qUpM7vhwbTpw5OzNQi80="
+          "hash": "p+1X9vitcRFEpLC6e/hK1G+AWPKJtbvK2MKeCVbPVe8="
         }
       },
       "is_incremental": false,
@@ -2286,7 +2322,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DestroyingEventArgs.html",
-          "hash": "f/MMMqI28jEqCvU7eXkubGkCl4ulpIWo2lWas4av09w="
+          "hash": "n7E6hT6wxXLQmgeeOL9r/9OD8FjTrGCXBWW6ZT5x+qc="
         }
       },
       "is_incremental": false,
@@ -2298,7 +2334,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DiedEventArgs.html",
-          "hash": "5g9g1qTsVVbULi7eV/mh+Ppems93LC5TDtxBNFDM4Hg="
+          "hash": "nAJvzJ6Q5dEk9liDukXCyPBvJiIFKIZ+2dSGPA4wi0U="
         }
       },
       "is_incremental": false,
@@ -2310,7 +2346,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DroppingAmmoEventArgs.html",
-          "hash": "A3RSk8YwrKwPRwdkqyrQ/ge/X2bXkeOxpv91S/HauNY="
+          "hash": "gTlYREfLd9zbtvhY+utnp0YHT4J9I4Z1bHVvjpCql74="
         }
       },
       "is_incremental": false,
@@ -2322,7 +2358,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DroppingItemEventArgs.html",
-          "hash": "06JrQB5OReJVk2VMMtNHQYPTi4k9dIOWC+fCLG8ogRw="
+          "hash": "UhkO85tvaQ3HUXlcvuwpEoVZ9tjQHG+4+8935SgPUc4="
         }
       },
       "is_incremental": false,
@@ -2334,7 +2370,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DroppingNullEventArgs.html",
-          "hash": "Jk9JExGA+G8amEaAR4QmHNrKqG1VGiLTyqjoM30ksxU="
+          "hash": "LbSA1hQrPUoRz7aTJhhufBxs0AKr56HC8JFtPMf+ODc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.DryfiringWeaponEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.DryfiringWeaponEventArgs.html",
+          "hash": "x35/YaMfADOG9/CYr8H9JGeo1OOY0C1vfF/27EDT5qg="
         }
       },
       "is_incremental": false,
@@ -2346,7 +2394,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DyingEventArgs.html",
-          "hash": "oGttUjG89D4rVQwvF9NrF6OYzkWBg5nqt/7LdHftVoU="
+          "hash": "EY/b4dPqDfti5dfZqixufAqs8gjPSqdgvIWwwXeAY1I="
         }
       },
       "is_incremental": false,
@@ -2358,7 +2406,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ElevatorTeleportEventArgs.html",
-          "hash": "IrWL7AZn711a8Mink/sqPsOpBHo0C+3qw2kyZOK7IqM="
+          "hash": "tTtP7ktKkHRKYZkcW+9jiFlMThLGF4zUOHbkZi2x4OA="
         }
       },
       "is_incremental": false,
@@ -2370,7 +2418,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ElevatorTeleportingEventArgs.html",
-          "hash": "IhK95zNdtCbdeK6roLr75mZYSnJH2P0euBFJEIK6sZA="
+          "hash": "1s8NCqymIqamPftfj/EExN4NJ90Vg9fXPYVx9xjcxYk="
         }
       },
       "is_incremental": false,
@@ -2382,7 +2430,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EndingRoundEventArgs.html",
-          "hash": "FK946hxOYjkESGwx2LiF3qvcBcPFS1SF7dp0lXNKyB4="
+          "hash": "rMYfnBL9sZDd1QgPAUSG8GLA2SddeejVvA09z304hq4="
         }
       },
       "is_incremental": false,
@@ -2394,7 +2442,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EnragingEventArgs.html",
-          "hash": "djfnA3yrrjBEckvoaaEV0/ZLVfgIKRCwibcNS5BRhIU="
+          "hash": "TGNyWvwL466/QRVsGz823s5PpPGRnVunlIc0C3UnEbQ="
         }
       },
       "is_incremental": false,
@@ -2406,7 +2454,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EnteringFemurBreakerEventArgs.html",
-          "hash": "7TmoZVBTaJJcy3wVHJ2Hp/QcOE3ZvVEEkARj3INHZVE="
+          "hash": "8EFw22PebVlpYZRhV5t7Jy9M5jXcizIzdrgDH3MXOPU="
         }
       },
       "is_incremental": false,
@@ -2418,7 +2466,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EnteringPocketDimensionEventArgs.html",
-          "hash": "hQvipRLkiK6holIAYzpJSMGnZyAzIBJ9iyyfTISFuUM="
+          "hash": "DR8LwmHU2YShpPYOEgljHi85RX3QzMvHbXUAQfxJfng="
         }
       },
       "is_incremental": false,
@@ -2430,7 +2478,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EscapingEventArgs.html",
-          "hash": "f5WkTm09tonsG063pxtJuzAV9bSO1baOHwroAUP8Ozc="
+          "hash": "mOmBIUHeXYfwhD687KRLbhZAiOqbgyk9wTC9m5vnGAI="
         }
       },
       "is_incremental": false,
@@ -2442,7 +2490,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.EscapingPocketDimensionEventArgs.html",
-          "hash": "j5e19HqcXylD9krpZXWkEwDCcNGapApfS/c5OjqOF/k="
+          "hash": "OsSTYWvMCZBbU/fex4+8QoRtFGpNdhwnIKxczU6nktY="
         }
       },
       "is_incremental": false,
@@ -2454,7 +2502,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ExplodingGrenadeEventArgs.html",
-          "hash": "6lz5b4LRtF+SSXAWy66pi5nQpHeDqfIj4KvQYtpA40s="
+          "hash": "RfV2qqk+t+ZovRaFDL6nWp5f3L0mGjE5zuryhK5YMpw="
         }
       },
       "is_incremental": false,
@@ -2466,7 +2514,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.FailingEscapePocketDimensionEventArgs.html",
-          "hash": "g2nIzEBOpngD9uRjGy4qof0C3itS6i/rzwKiXenqFQU="
+          "hash": "cK5w+EPDXnXd9tPezkXtH/Pwa9wyfsDGcOJHfmtdO6Y="
         }
       },
       "is_incremental": false,
@@ -2478,7 +2526,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.FinishingRecallEventArgs.html",
-          "hash": "1pdpsYgYNGoa8TB0ffrNXuWvz1uheAYZDxuPQ2su0Io="
+          "hash": "uBnE2aruRuCJ3l8z645bKxjX1saxN5aQ/CsWjEcY6YY="
         }
       },
       "is_incremental": false,
@@ -2490,7 +2538,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.FlippingCoinEventArgs.html",
-          "hash": "mZMjMDqc/pjDfaXw3PCd9lH/WIo3fMP0SgcMtEq/9DM="
+          "hash": "9z2VVV5pAHYPcOwruIJjOPuviL2NUkZwWc2TjT88GE4="
         }
       },
       "is_incremental": false,
@@ -2502,7 +2550,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.GainingExperienceEventArgs.html",
-          "hash": "KHUWZaHft9QryZU/YETCXpJUFHjhVhv/X04RqeOMBMw="
+          "hash": "aDeZ60aHBc8ya0WFlQj6d7RgUJlY+5zCTqyUqL0Xscg="
         }
       },
       "is_incremental": false,
@@ -2514,7 +2562,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.GainingLevelEventArgs.html",
-          "hash": "1Nxy4bQaU0yOVJPzfVOBOWWdJd1ThC+uMUL+WPsGTl0="
+          "hash": "J42w82NGFfsZvLznBIGMcxixhaRAexLzVMFZh6rQ8s0="
         }
       },
       "is_incremental": false,
@@ -2526,7 +2574,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.GeneratorActivatedEventArgs.html",
-          "hash": "D44KYlE6b2+RtJmM7zHjPvWi/yXT2vlhRhdbFDuyZzY="
+          "hash": "mEGIzTCcfIlh9Y0/N2VO20lLYkAyCpMcsbciZn6L0uc="
         }
       },
       "is_incremental": false,
@@ -2538,7 +2586,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.HandcuffingEventArgs.html",
-          "hash": "TltE/iWklJWN9Neo8oQopi7w8DAmzZSywfeQVpZjOpA="
+          "hash": "i94vbgO3cvQEOMf5/pi4eqF6mHC0aKL/MRR893wWFgo="
         }
       },
       "is_incremental": false,
@@ -2550,7 +2598,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.HurtingEventArgs.html",
-          "hash": "MQJcu2L4yr1TNC/+IzGfrkiHwU8oFzekxyX6H6iYbZg="
+          "hash": "v093h6qt64jB+jFP/HsZI3cHXF7Eucrd5RVwsxYKW9s="
         }
       },
       "is_incremental": false,
@@ -2562,7 +2610,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractedEventArgs.html",
-          "hash": "wr8iO8Hte5ajZ6TwZUQ8Hm3VICqKN8XK2zQxUFxvwGg="
+          "hash": "td88cql4A/SrviU5bXUSqOgCcul343dS+xDfnLslKpA="
         }
       },
       "is_incremental": false,
@@ -2574,7 +2622,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractingDoorEventArgs.html",
-          "hash": "w6fOZRL2jGujZP22dA/NzVxX1jg+F7JPc9LAtqLORzI="
+          "hash": "Xzj0lAgBcIj1R2X1MW5p36kBaIzwMByU7F0q5AeN1KI="
         }
       },
       "is_incremental": false,
@@ -2586,7 +2634,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractingElevatorEventArgs.html",
-          "hash": "nMAhOIwquteVJmubPoRt/0pR+aVzW6roOPbi3NxwO0g="
+          "hash": "pem4Hd3GaOFZufnbSKfACszIlUc3EavB5bfhq42Jib0="
         }
       },
       "is_incremental": false,
@@ -2598,7 +2646,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractingLockerEventArgs.html",
-          "hash": "7/dWZonwGGXwpjC5vNciyKXVJJgVVZhfbusm6uH6PKQ="
+          "hash": "8J6DEJL23nINB961DUOE/m4mAREPl4XaWgxVeey3DeY="
         }
       },
       "is_incremental": false,
@@ -2610,7 +2658,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.html",
-          "hash": "ya9e8+ao/4z9wrVfDX+71Oq5/UxpuSzezgQw7iYX++o="
+          "hash": "Wrd1bR2CI+wsAzUFxHNxgWe+O5rURME95+mtvldni0Q="
         }
       },
       "is_incremental": false,
@@ -2622,7 +2670,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.InteractingTeslaEventArgs.html",
-          "hash": "OySaxehHCyoKitWZgtgnJW2Ct1Ki8JXNXRSX/ti5luk="
+          "hash": "fFfM3vtQ+eDApvYNfBLH/Qm14PWaJZ9+w41VZ1WQ3GA="
         }
       },
       "is_incremental": false,
@@ -2634,7 +2682,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.IntercomSpeakingEventArgs.html",
-          "hash": "OjGVpeiAIGlOHDUthUbamDTcfC8sQVX+wdUvo1NCpf0="
+          "hash": "wZyB0V7R5FHckwUHSbRBrXS4C3MCMKLHcySv23uie0o="
         }
       },
       "is_incremental": false,
@@ -2646,7 +2694,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.JoinedEventArgs.html",
-          "hash": "65Dcvg+xY2yls80Uy3HENevK/EJdAIsmyoPhCjoLOv4="
+          "hash": "JsOa8p+McRuumKPpdmrg4d+/R2MNijH0/Erbkpbxwb4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.JumpingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.JumpingEventArgs.html",
+          "hash": "2AdqFdbQVVyDNJWUnHJYbjKzdry2hnSnhBbdhEVle2I="
         }
       },
       "is_incremental": false,
@@ -2658,7 +2718,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.KickedEventArgs.html",
-          "hash": "FSNiwSyepVLNbDD6ol5kMJoMRkSmWfCgkVf7AQGq65I="
+          "hash": "/r1PMqAHjEodBa6s6gvvEYEizHu4Rd8MRMfneuyDnyg="
         }
       },
       "is_incremental": false,
@@ -2670,7 +2730,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.KickingEventArgs.html",
-          "hash": "9jzy/fhi2LDOHbzcnlIOCllecduEQFU13p+k/uPi3/E="
+          "hash": "iqJHEPX1c0WyC+W9huFeHAPw6jWQvpo5ChQ0HbxsBvk="
         }
       },
       "is_incremental": false,
@@ -2682,7 +2742,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.LeftEventArgs.html",
-          "hash": "Xo6toKikWV7T1aWG/SQ2d1KMsMwIs2HOb+XIzVUKAhk="
+          "hash": "IFii4JHfXCw644F+6+rzpu1cn+wc3+x679WYzTWYHPU="
         }
       },
       "is_incremental": false,
@@ -2694,7 +2754,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.LocalReportingEventArgs.html",
-          "hash": "9qqKylb0wXX5r/5nfVe5dEHdTKhrG3XDTi9r8zBJwPE="
+          "hash": "thMLoBnwOY0oEZuD4fKpxRIta1twY3cqDDLdwoHsEcI="
         }
       },
       "is_incremental": false,
@@ -2706,7 +2766,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.LockingDownEventArgs.html",
-          "hash": "VUOnRFZXyeNsTalgm+LjojRj8e+G1Rq2scVLZGOXY1E="
+          "hash": "UrZHDrvSu1gZwdlSVVTm9pzsPKuLphCAyce6T8ZLqv8="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.MakingNoiseEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.MakingNoiseEventArgs.html",
+          "hash": "lgZUuAujMNkQcgnjRfkDmnFlFNlM+j8phkv437AD3dE="
         }
       },
       "is_incremental": false,
@@ -2718,7 +2790,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.OpeningGeneratorEventArgs.html",
-          "hash": "XHutQRzi26X/cdZqhZshZ11nPElJDYQkmtjE6K/MbgE="
+          "hash": "zDmHbDUlt/NGH4vhgybXd/jux/NAH7KsfVJIir3J/ec="
         }
       },
       "is_incremental": false,
@@ -2730,7 +2802,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PickingUpAmmoEventArgs.html",
-          "hash": "GTtigBOvwxeMZhXfaq1qiWVHaAUciVtMsBpWDvydGDM="
+          "hash": "TJXBHB37fwBKDhlaXnMk4qV5cW0/D3EvAjyKJHDKFYA="
         }
       },
       "is_incremental": false,
@@ -2742,7 +2814,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PickingUpArmorEventArgs.html",
-          "hash": "fnzLCrWRwx7JiNovjSBeiG/esgbfDCdq1APcZI0xN+o="
+          "hash": "AGcZwlSHFzUvgVnx/6kQMYVMBvvUSHni0qgaleViWX0="
         }
       },
       "is_incremental": false,
@@ -2754,7 +2826,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PickingUpItemEventArgs.html",
-          "hash": "sNTclfN8Ijprx61sLI30shBqwxJc5FBCh2KEvRQpd18="
+          "hash": "a3sYb+1ZYN1G/0ZKgcG9KMO0QqSWYz5HPDPnaoYmWTU="
         }
       },
       "is_incremental": false,
@@ -2766,7 +2838,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PickingUpScp330EventArgs.html",
-          "hash": "4xy2t9j6hnBXmmQC6KH0bnb73UFWTA/UOunIFSqyDvw="
+          "hash": "CotV7BGB6A3fNzW9q/Lc/FJG4YBZNRORCZYZ+VUIIVE="
         }
       },
       "is_incremental": false,
@@ -2778,7 +2850,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PlacingBloodEventArgs.html",
-          "hash": "YL8I56/phWQAKZJKtaKJt+NKPpSSQO2z4Vekt9beGhU="
+          "hash": "W9xHKXRds+sfwWAtH+uNctyZLb5RjWHaW9Ez6V/5LQ4="
         }
       },
       "is_incremental": false,
@@ -2790,7 +2862,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PlacingBulletHole.html",
-          "hash": "vdOVgt2fJkswqjD957kn40duGZdEdWClKU9DL6ab11k="
+          "hash": "uRVpLtKjbVT592UZi2kjYWbBQqr1+/ahJpn84tkVU0c="
         }
       },
       "is_incremental": false,
@@ -2802,7 +2874,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PlacingTantrumEventArgs.html",
-          "hash": "OnY9YWuOjiio/7qVGR7hvUl+KgjMYGS5esSp4JMJUmM="
+          "hash": "m1Jb5UIIW67xgkIhy04RtPnURi3kj6JCo4mj+aZkmcg="
         }
       },
       "is_incremental": false,
@@ -2814,7 +2886,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.PreAuthenticatingEventArgs.html",
-          "hash": "bOGgIMHM7afQNT4lDFCLZZcISecpVrCrdGgMejZbkvE="
+          "hash": "xgHvOPBaQLlKt64UXFUh2mT4l61tG8QqsEqepMt4LJE="
         }
       },
       "is_incremental": false,
@@ -2826,7 +2898,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ProcessingHotkeyEventArgs.html",
-          "hash": "C/EczsWhTndWGVAb5KbHQdap2a74iD763T8UzRhe3IQ="
+          "hash": "mIDtLKtkd8TQZAtyCo+k16jJhVGq2Un28gzchvofI5A="
         }
       },
       "is_incremental": false,
@@ -2838,7 +2910,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ReceivingEffectEventArgs.html",
-          "hash": "eSol8zpuU17jpSk/BQ8nnyZm9kjFHFb1fb8gjvW3u84="
+          "hash": "MfOJeYGfo4votzu9np76jcpWA64+CbfuID6Tij/OutQ="
         }
       },
       "is_incremental": false,
@@ -2850,7 +2922,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.RecontainedEventArgs.html",
-          "hash": "bCWFSP5bZJuzujAL/kVgzGz32kfe4BT6zcB49jlT1aI="
+          "hash": "VXZ74tOAAtKofsQuVYrU5NErFwzpSW+6hAP3JWqoLbE="
         }
       },
       "is_incremental": false,
@@ -2862,7 +2934,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ReloadingWeaponEventArgs.html",
-          "hash": "xoa2pUO0tt+ioIdhBrKge14csVkPUfyO5vCSWlwuwvI="
+          "hash": "ZmfTVAByJBEHfprJ63hAXtqfd21Zzjx9QZpuwOYaDZM="
         }
       },
       "is_incremental": false,
@@ -2874,7 +2946,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.RemovingHandcuffsEventArgs.html",
-          "hash": "Wn7NHg8K8faxcC20DXeQ0qL/uJj7t6CfGrzmVZ2rtOU="
+          "hash": "VV5ah9UsO6vG9Du+4hc2F4H8UWLwlnT6Tf57E8YwnlU="
         }
       },
       "is_incremental": false,
@@ -2886,7 +2958,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html",
-          "hash": "bKMVXUJKRZUfoGtjHT9o7I4w3OG9LIvViMguID/kGUY="
+          "hash": "m3ETn9rQh2G7ThQedad/MOgKVTAnQw/L2GEbe1a/Xts="
         }
       },
       "is_incremental": false,
@@ -2898,7 +2970,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.RespawningTeamEventArgs.html",
-          "hash": "nKLyZnaWXC5Mc/JmAKEy8WlZx0wxniArfpPSkHFuxnk="
+          "hash": "eOe7CTAiTJH561XXjRK3tbL7Q14TB/zZmzY2tD0vj58="
         }
       },
       "is_incremental": false,
@@ -2910,7 +2982,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.RoundEndedEventArgs.html",
-          "hash": "X0upy24woBJkQ9s1iCu7IazhfOdePWF5m1Llk7Si9bA="
+          "hash": "uP2JzXkPVe8xDyrluI8AoTVud2goet4PMJOOR9BN6TQ="
         }
       },
       "is_incremental": false,
@@ -2922,7 +2994,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.SendingCassieMessageEventArgs.html",
-          "hash": "CcqWS9gQtirUhsMBl92VGClvW7e4bCe9rcOIH0/bgAY="
+          "hash": "BY0Jl4qGRiUGP33thSOJ8evXBKuVhUhX2IFx03neCMg="
         }
       },
       "is_incremental": false,
@@ -2934,7 +3006,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ShootingEventArgs.html",
-          "hash": "SZbuvu2/HunBeDgAb6jABqiEELSB+OFqGmBB7tzJV+A="
+          "hash": "oz1i3vtcXzrX9m1nGt5aDGibPDamwpOpMBtPs7U/P38="
         }
       },
       "is_incremental": false,
@@ -2946,7 +3018,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ShotEventArgs.html",
-          "hash": "mm5YfyeFlz4SqHyux9u7UQmtd+91Km7uPnhF869J6c8="
+          "hash": "FFFGd6sHoSG4bFRilRu++5xzGJWxealUI7adgeY3ih8="
         }
       },
       "is_incremental": false,
@@ -2958,7 +3030,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.SpawningEventArgs.html",
-          "hash": "EZ6oVPrKVeM0/THRPMzQiiARm4xSH5x2HSYYWG7G/Yk="
+          "hash": "dgQYQmBwu9Kmnpl7M9zU7mVUcd0qEtEzD5UKahwFwh4="
         }
       },
       "is_incremental": false,
@@ -2970,7 +3042,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.SpawningItemEventArgs.html",
-          "hash": "7nOIh2sGwnOJtgav2W8jCprI5aF7zzEkc2x408c7Qh4="
+          "hash": "fu/1G8NxfES4kO3ka8jtqZfou7yi7FdX/pbnLqfMuR8="
         }
       },
       "is_incremental": false,
@@ -2982,7 +3054,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html",
-          "hash": "1r+GWwPlU1UmmAwkwREnIPDnqkwwBgoizvy7aaJuMPw="
+          "hash": "5E4FgKHcbDU7YKtNS/0P+IZ7j2tBxLixRrkqFq20XOE="
         }
       },
       "is_incremental": false,
@@ -2994,7 +3066,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StartPryingGateEventArgs.html",
-          "hash": "ZNKEGKn452qfs4bHwDHztuoaMnHLBGOq1aLOjXPEWDs="
+          "hash": "sf4ncLF6l71PLMOsRdd4lHZsYR0V6E4SzELAXjZoGz8="
         }
       },
       "is_incremental": false,
@@ -3006,7 +3078,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StartingEventArgs.html",
-          "hash": "/BdiJZtVcyREDYVyuIh2Bsi7+6WjTud6SkGiTumNvhg="
+          "hash": "m7rgHrRzoQDypPwy7YpzHK3LKZ2CdVme8vok5pCcsng="
         }
       },
       "is_incremental": false,
@@ -3018,7 +3090,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StartingRecallEventArgs.html",
-          "hash": "8zemMTdVkf5P1JQ74Xgfo5VJUm+4JM2ejbeVYNhOrhc="
+          "hash": "BTG5GiO46mHPwDGLl/aWF/gDlSBRHJyeM4GPnRSPyPE="
         }
       },
       "is_incremental": false,
@@ -3030,7 +3102,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StartingSpeakerEventArgs.html",
-          "hash": "8BkyDAYVfsYEL4SIb9ONHJvb8g+zuuy0vxaxVN/TEp4="
+          "hash": "8uzVlJcCSXdaH0FT4FBUeskz3p+GSUmIWf5I8XzFR5Y="
         }
       },
       "is_incremental": false,
@@ -3042,7 +3114,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StoppingEventArgs.html",
-          "hash": "O3eMUlReNOLYDlSJe9flUxjENkA5/Y4JvWbo7Ry8jMU="
+          "hash": "9ZQlxly6o6NaXIv5K+uYIriur+XgNTUitJZg4AOVi0w="
         }
       },
       "is_incremental": false,
@@ -3054,7 +3126,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StoppingGeneratorEventArgs.html",
-          "hash": "hSa+a6LMLMHt6QFhaCVTUKB+IbHXB93H/B+xTogAqTs="
+          "hash": "b+PC7+rC99fSwzT4YQqmxTMDZ62h2r2J2xweAXBNwds="
         }
       },
       "is_incremental": false,
@@ -3066,7 +3138,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.StoppingSpeakerEventArgs.html",
-          "hash": "HXstjLb5pLmWrLp3mxXtxJjJgipAv4yYHxv7gscC9lw="
+          "hash": "yQ5cJWQ4kThryMJf5odrd7Cbp8Nw3GktxQbSWqRl9Ps="
         }
       },
       "is_incremental": false,
@@ -3078,7 +3150,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.SyncingDataEventArgs.html",
-          "hash": "NcYS9t7B3p4s47V77036zbJpSySR4Tt56R8yIpNCA5M="
+          "hash": "mm+4rJG/68uGb3P6O86D/l3kl9ozLjRV0/xoILErBIg="
         }
       },
       "is_incremental": false,
@@ -3090,7 +3162,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.TeleportingEventArgs.html",
-          "hash": "R+MIkQvj+LxnAuxh0OEyLg/i30yZw4thtg27risgrtU="
+          "hash": "CuIS+RVVgU7JtLx+pYSFA0p69qQYtXdIGR32/NuShgM="
         }
       },
       "is_incremental": false,
@@ -3102,7 +3174,55 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.ThrowingItemEventArgs.html",
-          "hash": "o/84NW7BsD0igVPaS5C/FrproRqPJ5RJLLhKTb5+kdw="
+          "hash": "GBU4nnGMbDdSILb5rBN+9mX9Oa1IUCtNivDOTmFINS0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingFlashlightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingFlashlightEventArgs.html",
+          "hash": "iG0aaJRNrCyXzPKpC5nPnFnDNr7bpkjv1Cb/PjGjhxw="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingNoClipEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingNoClipEventArgs.html",
+          "hash": "jimToLdCscwQvq1ZZpB5Im3XucZ/U/gYBTPIuTb2bcI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TogglingWeaponFlashlightEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TogglingWeaponFlashlightEventArgs.html",
+          "hash": "YGDrpTOzFDY8siOFyzLWYnSXBgqrE2fbM5kvP7C5oUA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.TransmittingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.TransmittingEventArgs.html",
+          "hash": "Ea8Bn3mv7hSZ4FB3CdCKCtjs66tEk/dC7br7O0mPmbc="
         }
       },
       "is_incremental": false,
@@ -3114,7 +3234,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.TriggeringDoorEventArgs.html",
-          "hash": "No+RkLgK18wG+Jmo69HvU03RFda5EG8MljqHWOj5KvU="
+          "hash": "Z0AtIiZUGpqQg+Z/0PSS7EoZxqTRde5K6fxuexM/K7I="
         }
       },
       "is_incremental": false,
@@ -3126,7 +3246,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.TriggeringTeslaEventArgs.html",
-          "hash": "YqiiD1+ZYEqDZcjf2ZXDbEL4bH1eKn23/wxNrYe1G38="
+          "hash": "HiRSB1wbkfMr5WG1lVdGj5spgkCk1JQoxPp8wPJ/Jt0="
         }
       },
       "is_incremental": false,
@@ -3138,7 +3258,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.TryingNotToCryEventArgs.html",
-          "hash": "UpC9uJSliUGKsftWz5l1tMnwFrea+rBlUxiT9Qf5mk0="
+          "hash": "qLYFEKhTB1qsI4z04LEx5ndMlsQiEVHxHl6MMkKW8jE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.UnloadingWeaponEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.UnloadingWeaponEventArgs.html",
+          "hash": "gTRzQdtdVFEKnL6BbMs9iYud6jywBbT3SzISEFpFWg8="
         }
       },
       "is_incremental": false,
@@ -3150,7 +3282,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UnlockingGeneratorEventArgs.html",
-          "hash": "qzdRTImQQMqHPEncf0KwI1+0exUiKOQhj8MW8AxtTwc="
+          "hash": "XRgtBX0miTlz/u+sSaJpfLon6kiPTsvfjhvxF6nwuTA="
         }
       },
       "is_incremental": false,
@@ -3162,7 +3294,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UpgradingInventoryItemEventArgs.html",
-          "hash": "0BwrgfxlYV+zNYMgMibk3tZvqPfHiQRbq0IvqVcHcR8="
+          "hash": "XYS97lsQNaMCVy+yyXQ0ZP7dQ32Z5iixkNr8TYv38Gw="
         }
       },
       "is_incremental": false,
@@ -3174,7 +3306,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UpgradingItemEventArgs.html",
-          "hash": "lrzEW3mF+MALtSMylJXdDZjpU/PPvj6FoNpSmX1qe4E="
+          "hash": "ZTmcq+Hu0eimzgp3qFL8ZI8DIkbyA1jaQAM/5l1KHrs="
         }
       },
       "is_incremental": false,
@@ -3186,7 +3318,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UpgradingPlayerEventArgs.html",
-          "hash": "95wDzMaWE9AzCtNmXbdQcbw9MoFtYFAa5YfGB5r+FOM="
+          "hash": "ZvYHxMlhUlK1YH6on6sWlBVmAekHopY0WLOAwRw/bME="
         }
       },
       "is_incremental": false,
@@ -3198,7 +3330,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UsedItemEventArgs.html",
-          "hash": "5gCrVZAF1AkgqXu3gvMAkz6RrrqsAAAZoLr0gy9/GR8="
+          "hash": "iI6KpIisgD/ty9pufkR8rycYiGjGbDgHsDtQoGWawLg="
         }
       },
       "is_incremental": false,
@@ -3210,7 +3342,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UsingItemEventArgs.html",
-          "hash": "xFZnFsdad1D9s2/v7FKVHxMgf21bLLbsjghfBeV6eKs="
+          "hash": "uGf3y+KkzblyXca8wUYsTFu3qBrrdEMtQh/Tn8hjzHU="
         }
       },
       "is_incremental": false,
@@ -3222,7 +3354,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UsingMicroHIDEnergyEventArgs.html",
-          "hash": "C/xARMCrq2nUM8qYqgRSkN0f3G0cdf2yWWVo7STTAvw="
+          "hash": "JNSY/iQn7ntCTOBQvCdTXIBrBozGY6OTwvYveRIdD94="
         }
       },
       "is_incremental": false,
@@ -3234,7 +3366,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.UsingRadioBatteryEventArgs.html",
-          "hash": "JYyVz8LQeVxock7gsEyJyZ4PW5WTZNoLHphL6Fndxco="
+          "hash": "Cole/xNVBUU+yVSp7vWIdgIwLhMz5/8M/1ZPUvIzBSQ="
         }
       },
       "is_incremental": false,
@@ -3246,7 +3378,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.VerifiedEventArgs.html",
-          "hash": "EZ9haFTCpwE2zLFgWZWwF0YzBus3n2Qv2HOzx80BAEo="
+          "hash": "m6o2QSJDA1cx69tTOIRiBpmDaSXQFbWvvsXC7oMJf04="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.VoiceChattingEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.VoiceChattingEventArgs.html",
+          "hash": "4JGLnvCtmUKW4QiDiOhRbdOTfNl3dp+99E7R4taFM+U="
         }
       },
       "is_incremental": false,
@@ -3258,7 +3402,19 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.WalkingOnSinkholeEventArgs.html",
-          "hash": "UGFJcBEZJA4iFL97gey3dzqP1/SY5w90wCyxLauMz9o="
+          "hash": "OtpMY+9E3Rp3VznCt+epRs6V6FE2G8ebvBOBX2OdBkA="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Events.EventArgs.WalkingOnTantrumEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Events.EventArgs.WalkingOnTantrumEventArgs.html",
+          "hash": "qr1PPHXfQwzwwHH8VR428CZ/p6Vj2ymatae0gL8vh6c="
         }
       },
       "is_incremental": false,
@@ -3270,7 +3426,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.html",
-          "hash": "GvaGup2JFCCu6SJaSp02UBHW8+Ycb07xGYAiYF+YHyo="
+          "hash": "rQH6hY3CA0C9W+1qNtLlLPpBHDC78VIrhCzZMrakynQ="
         }
       },
       "is_incremental": false,
@@ -3282,7 +3438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Events.CustomEventHandler-1.html",
-          "hash": "JwEBVqaSI6QKRv7Mc+JYNYB6ITDMnzuiEnE2o4J44iI="
+          "hash": "1ZssrD1cPWSjhCkJVqMdPfOuAowoELPqEYSsX6LKZhc="
         }
       },
       "is_incremental": false,
@@ -3294,7 +3450,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Events.CustomEventHandler.html",
-          "hash": "5iVXEUw2cGJBdWXIYcHVrtHCG723tLFoBzzNJzW7mOc="
+          "hash": "edQ5Uqpdt8Z+FOKZGonnzj8mQ4RkM3KaCCHn2vdoa8Q="
         }
       },
       "is_incremental": false,
@@ -3306,7 +3462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Events.html",
-          "hash": "zdNQVfJJa/7KyHAtJNWt7dHQy7LtfjfIdrJT6uYXx3I="
+          "hash": "OqNn/QrKM1Q+TZUYDwfFz34JgK8kREmKZOkpxMsYqsE="
         }
       },
       "is_incremental": false,
@@ -3318,7 +3474,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Extensions.Event.html",
-          "hash": "TvJmUBVmh5VvQVqwngJ1GDihPTG5YGXCsVGUsJ8Nqjo="
+          "hash": "PX/LiyFRxMJHVhbaTTYfTP7g0s+RiKWpGl13/B1/4NQ="
         }
       },
       "is_incremental": false,
@@ -3330,7 +3486,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Extensions.html",
-          "hash": "iDm6Gg/HIU39a37zMcIG3+dNhjyUCl6jqyUG08rkTP4="
+          "hash": "JvXZGoalp910A70CuTux8CdppCtNfaQ4mUHreYG8FS4="
         }
       },
       "is_incremental": false,
@@ -3342,7 +3498,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Cassie.html",
-          "hash": "wDqdEBbxt04g9iFzux+CeizzTPel5UBcZ4QWoAWxI8Y="
+          "hash": "/OYXhokUo+Hp9XL2GhzJXiz9vC/SLiPjSLpzRCY68KY="
         }
       },
       "is_incremental": false,
@@ -3354,7 +3510,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Item.html",
-          "hash": "jbTaDQ2EFbW70arZcirtwBI9C2/jiVvf1kRdd40oMSo="
+          "hash": "HhyHiLE/M0FplCFjOF4N6o/yuWCtfDN7Bds218qpOmA="
         }
       },
       "is_incremental": false,
@@ -3366,7 +3522,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Map.html",
-          "hash": "gGMNclAJ6nzuC8x0zDdZpNSmVk4vGCgNmdJD0vwjR9w="
+          "hash": "C0finN4sfzGGLy4NfD9rUukcnRIEvP5ZwW0yTQjuJIA="
         }
       },
       "is_incremental": false,
@@ -3378,7 +3534,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Player.html",
-          "hash": "qnPh81CLBLPXnTbq9HtriNRisSNjGbJuSrZsx1aMjzA="
+          "hash": "B3VHp7r20WiUcijiPaqrdaMxQIrV4mXMlRqqLztBIzU="
         }
       },
       "is_incremental": false,
@@ -3390,7 +3546,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp049.html",
-          "hash": "l43+mFSP0i/hFKFNg4F9Aof1SFDjOWmencx0QPE97eQ="
+          "hash": "lAVpDobqSiMBycQ2Kck2qK9+jmkgUGnB8oNwoJTgAFA="
         }
       },
       "is_incremental": false,
@@ -3402,7 +3558,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp079.html",
-          "hash": "M0xg82g7NdQC4U1E19/x+v/hYeouHyoPnBEeptTUj+E="
+          "hash": "F/6NOp+IuEa/6VueUS46k2zPFOYV5fNh/VPgx1oDdiA="
         }
       },
       "is_incremental": false,
@@ -3414,7 +3570,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp096.html",
-          "hash": "41eC4lXq3t3gEhNNrlljh/GgDIGPShHUbEJ6+7zcv1A="
+          "hash": "q9D4TrOkGvhaqmr2vD/EgO2DbfrxWXInXkZ+DI8CiKM="
         }
       },
       "is_incremental": false,
@@ -3426,7 +3582,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp106.html",
-          "hash": "Cq2xZUKWA67QsMMuee73ICl2sST+Gg7lNB1zu7iN2Qg="
+          "hash": "n5l5+AutETIqRiyIjEEA5w/kc15C7pgZCk4oA0m9zwQ="
         }
       },
       "is_incremental": false,
@@ -3438,7 +3594,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp173.html",
-          "hash": "5EECsvMuS2qzs1AJx46nEdOp+WVXoCuaFFhvb39Sl+w="
+          "hash": "h+YaIII/rCP18xuxe3gtPCv81YHX2J/dTzdRJdxfiS8="
         }
       },
       "is_incremental": false,
@@ -3450,7 +3606,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Scp914.html",
-          "hash": "nIy6bsk+8Bw5y76o8IygJV85BYN46gajx7FGZC5E004="
+          "hash": "RReIYGHSpo/WUTdeAlbAv+4WS0HwQk3gdQEdY7kZYcY="
         }
       },
       "is_incremental": false,
@@ -3462,7 +3618,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Server.html",
-          "hash": "ziQqu/Lzv84a6Zb2fWWfgkN6SQHeXj22ojEkBCKU0Sg="
+          "hash": "LtneNeKfIWURZfKFgqfH0PZCbg1kuurOUTBAOWYYpjw="
         }
       },
       "is_incremental": false,
@@ -3474,7 +3630,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.Warhead.html",
-          "hash": "oB5jABMc6Mb9voaGngfVXK82pEbrT8J0GlbAPtMgR5E="
+          "hash": "r3oBcqwaadcIohfgw5HpF2H3aEEzwh3WCGY8utkSUGw="
         }
       },
       "is_incremental": false,
@@ -3486,7 +3642,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Handlers.html",
-          "hash": "EuQLn2qrp56Wamjqr9brc+RCGaNa0JKBm3uTc976Nvo="
+          "hash": "+cVtFo8dk2LFagXE5a6OSeqThrlRDgUYOjn9i3H/RTM="
         }
       },
       "is_incremental": false,
@@ -3498,7 +3654,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Fixes.CassieNotSayingUnitNamesFix.html",
-          "hash": "djwr0M0VdWfdVTxI8jefKiPZORjD1Fmdzv0DNRKPgQ8="
+          "hash": "8JSSgY9HPXIkVypc49eKoxixnzyc10GfPDOi9MvurDg="
         }
       },
       "is_incremental": false,
@@ -3510,7 +3666,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Fixes.html",
-          "hash": "EJGYM2G+6bSgjUSx77CjRwr+01hkXNfKZLfXctCjn8k="
+          "hash": "GltV6y1vkTx8j/8vLSR5C6/7NfQ39qIFUPrGYMV8dIE="
         }
       },
       "is_incremental": false,
@@ -3522,7 +3678,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Generic.IndividualFriendlyFire.html",
-          "hash": "bE/zUJAzygjoV2I4PiGuVHdMCCcvnbFMtPajpncFVaM="
+          "hash": "nGTWMTCmeMCrHIw90G+LU3Y08CLoNd5vhJygDX/CoSM="
         }
       },
       "is_incremental": false,
@@ -3534,7 +3690,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Generic.PlayerHasHint.html",
-          "hash": "JwfbtxgTM6rMSGpo4A3GbwbCJU/DapA5UAfj9klh5tw="
+          "hash": "RtwsZw4qNajOj5qP9APr84tKtlHQzZdtt6Edkvg4Uls="
         }
       },
       "is_incremental": false,
@@ -3546,7 +3702,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Patches.Generic.html",
-          "hash": "oA3VTPUSfKAdN2N8xJ4S1dJo9coRj4TH7XezNUd8mDc="
+          "hash": "boOqHOYCIcpnOFG35ThJw6ij8B8vUSoT2+tKQ5qxRT4="
         }
       },
       "is_incremental": false,
@@ -3558,7 +3714,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.html",
-          "hash": "qDXFJGzNGDJ1reZXlXteQh3MmjA5xMQCa5d48tL0IR8="
+          "hash": "1MpbhVtnDqFYooOAX1M6ljqJWt9wvw8Qv+okMxgcFK0="
         }
       },
       "is_incremental": false,
@@ -3570,7 +3726,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Config.html",
-          "hash": "Dv6OyldzpxMNXVzZyM1Mam0L0czPQqw+0EUnBKPPY34="
+          "hash": "B9o5uOb9vZvjyUiq8geL8ZigrOsiin2dVZe+RToW8jQ="
         }
       },
       "is_incremental": false,
@@ -3582,7 +3738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.ConfigManager.html",
-          "hash": "HIJcTydtVd1r/exQ5EqY46jsMmIguCGyGviwOMOQ8Qs="
+          "hash": "L3Ea3wlrF9H6lnkczMv4rB8QVZ9VMZzVJY/wnmJGEWA="
         }
       },
       "is_incremental": false,
@@ -3594,7 +3750,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CommentGatheringTypeInspector.html",
-          "hash": "mOy+JCI382q411Y6Ujx4s4L2vMm2C7qiI8NRWz9KDk8="
+          "hash": "Z3eu4Ilvl6zGavY/JrENuLN25YMHD0o/kJlVKTq8IzI="
         }
       },
       "is_incremental": false,
@@ -3606,7 +3762,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CommentsObjectDescriptor.html",
-          "hash": "wI9Mvvr6/szRkeKDX5Uj5/fPgQ6LtEuz5A5PgLLAgiw="
+          "hash": "/0HY0A+py2oIJykAaNYXHscqxqbhE7gcxo7Lgk8m/sQ="
         }
       },
       "is_incremental": false,
@@ -3618,7 +3774,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CommentsObjectGraphVisitor.html",
-          "hash": "VIJj1ig/FF/W+uvrHD+yXQAFNoHQq0C3G4WFLscrq+s="
+          "hash": "mUB2tD54OkRLY5Qj7E23oQ4WUQF8tk6iGCj7JGlDKmk="
         }
       },
       "is_incremental": false,
@@ -3630,7 +3786,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CommentsPropertyDescriptor.html",
-          "hash": "EjUpGbJAIIdwPl7pMw0yx5sqI9r2Q77fk/BoEm8drXw="
+          "hash": "kT+k1wm+YszJoaQXM//71lEbRFWtrXEVmLyh5O9vLC0="
         }
       },
       "is_incremental": false,
@@ -3642,7 +3798,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.VectorsConverter.html",
-          "hash": "+s5LmvOIuXxROQXgJnsRuDru+zRZIpNudqw05MyaXTo="
+          "hash": "Dqz2eOVgLPvnGjl0PUFX5wKPMWU/emSh2M7yu7/VRKY="
         }
       },
       "is_incremental": false,
@@ -3654,7 +3810,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.CustomConverters.html",
-          "hash": "hXcSGHgUhPfK7h7N1NdMNs/YHT7HVRd4+Q5M0jtfz+0="
+          "hash": "kAEnGFLcWSMurTtfaewOXMJ1XfNE7Y5GddwuY8Gcmy4="
         }
       },
       "is_incremental": false,
@@ -3666,7 +3822,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.ValidatingNodeDeserializer.html",
-          "hash": "TinrGiEuDVwS/B+ONcO1ZRgDTuWm8E+8l3kad+pAdpo="
+          "hash": "cgf4tp5u8pOgViBwIorkMsoOaFAz4Iywg60qoZ3cyRs="
         }
       },
       "is_incremental": false,
@@ -3678,7 +3834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.Configs.html",
-          "hash": "n2FUS+y+QILWP5ZMCY4vwiaZ3VLN16YF2TITcEi2NN4="
+          "hash": "e62KPuXkHENEQU2+UGVQt4KgutaFQegCkkQCvEr8cMo="
         }
       },
       "is_incremental": false,
@@ -3690,7 +3846,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ActionType.html",
-          "hash": "UI325baFa5oIsNpcCIu1i9EP10X0GDsgVTwONSgO3is="
+          "hash": "jUoQCnsPbOIgu8h0RWyb5n+Hq33Bj5eR8xKZScKw0aA="
         }
       },
       "is_incremental": false,
@@ -3702,7 +3858,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.EventType.html",
-          "hash": "Xv9mAyt4lNfh/ZIFqeNrFbhkz0KoFtDUtZEuhg3yJH4="
+          "hash": "3vykjG31mP3QJDDdqliqLiNeOWTi6vxt4BXOupqLAjA="
         }
       },
       "is_incremental": false,
@@ -3714,7 +3870,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ModFeatures.html",
-          "hash": "oHEIYbCqcQjnbbxxC4/qn6xLHMs8i+N57RqledrY9c4="
+          "hash": "NNBE4W4NeU4Zfg6JdLRSsWGPSGlUTe8zJnCnwlW0Szc="
         }
       },
       "is_incremental": false,
@@ -3726,7 +3882,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.html",
-          "hash": "HmX0+MyQ+Z7IAibglmI7Fca2wPZjxdXKOeMpNHbf5Sg="
+          "hash": "93b+KmweKcQAK23bAH8+tDxxtjUJj9EegA28ls02EEs="
         }
       },
       "is_incremental": false,
@@ -3738,7 +3894,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.PluginPriorityComparer.html",
-          "hash": "4bOmi2t+kzyqmY0XmAelgCvPfZsCVhjh2cd4tjqjPao="
+          "hash": "GscSvV9D1917hHse55IbYRmMNOmkR6pkJv7YX2VWiPE="
         }
       },
       "is_incremental": false,
@@ -3750,7 +3906,31 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.html",
-          "hash": "3iTogW4STfIbddgmZCvFVVmjyJHsUwjxmWAy2IyWDgk="
+          "hash": "aezTltjNnBOS9KN+LxJIrIjv1nPa0V4+mYimMKAvgGQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.html",
+          "hash": "Ml9DYjIPpjjC/96nANfLzr0vZ9Oge+a9wT8pJ1mGyhI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.html",
+          "hash": "/MD0Kftp/z8DDVVUxelrDAHU1FuxlhbOhn0VsTn85js="
         }
       },
       "is_incremental": false,
@@ -3762,7 +3942,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.html",
-          "hash": "1mzFmTlP/F+x9Jcl5vXQNWt0FohpT3vqiudXVsLkI5Q="
+          "hash": "KBAnfAqkyRk1AU/nlR5brUvwnB/BtSdblD+i7dq6R2o="
         }
       },
       "is_incremental": false,
@@ -3774,7 +3954,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.PathExtensions.html",
-          "hash": "LwfF65hwyuwlTLDUxWaNnr6YymT1X5JyjcrCpyIRHI8="
+          "hash": "ApXT+xs330aROIAb660j812PyCEghgVQsttOgadn5CE="
         }
       },
       "is_incremental": false,
@@ -3786,7 +3966,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.TranslationManager.html",
-          "hash": "/2EION+UmVa6TJF+T+CYSmr7J5zRARoel0knQfUxcAw="
+          "hash": "9TJWKwbsNEiiGmC0Qw4p9GnsPV5scVCqyMyy8siozW4="
         }
       },
       "is_incremental": false,
@@ -3798,7 +3978,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.html",
-          "hash": "iaQXAzBNSj4s7wnVMmBCstI3Cs4413qWW2ovnjehYq0="
+          "hash": "pfBReoDYV5Ggly5FeRgX79YU6Y37JHosnsIhupbzr6A="
         }
       },
       "is_incremental": false,
@@ -3810,7 +3990,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Add.html",
-          "hash": "cyQZxPaPU5JBVtU3H7xWxqHs1PG9/gBqUL2CJ81Myrs="
+          "hash": "F6ZuprgpYHG/lp7XcX6HSETXmqJZfjotG0UbY0MTPyc="
         }
       },
       "is_incremental": false,
@@ -3822,7 +4002,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Add.html",
-          "hash": "XRQeD8QRaoUYQVx1mwMGPL3VuK7wotGkKB6rD4dTNi0="
+          "hash": "F7CYRdXZwKYXOzFEey4yHHPVXoVdsQhrlQ0qnqfyKj4="
         }
       },
       "is_incremental": false,
@@ -3834,7 +4014,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Group.html",
-          "hash": "ekg8kjHi8t0dAaHYonbFbG9UA0c267UPlf0GgAJTDGI="
+          "hash": "Ux1S9j+qxa1uqCT4337Tt30+I9tVoNI36im5fD99hwM="
         }
       },
       "is_incremental": false,
@@ -3846,7 +4026,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.Remove.html",
-          "hash": "fsQKSVPuJTLDiDdQAw++0urrknPK2q1F4kQwEP5wvnw="
+          "hash": "zPArbvIlPRINTcss64VFnJIYnzegv7LKNo1Epk/AGmA="
         }
       },
       "is_incremental": false,
@@ -3858,7 +4038,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Group.html",
-          "hash": "j8BjpBxebAAW2SiqtHarq8CxwMgR2+uM1Lrz4kpp7JY="
+          "hash": "orIhcTkXAg3oSCP9wl4Ly5kWcbJAjdaWv1iuLnszVAM="
         }
       },
       "is_incremental": false,
@@ -3870,7 +4050,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Permissions.html",
-          "hash": "aIt0DnkbSK++55Eh2RcxzNQtdjt7iwSz7rCIAxaFdlA="
+          "hash": "rpxyBk1Ao03CRMEwMjKzDaSIFMFY0OdG5xzQfxjJ118="
         }
       },
       "is_incremental": false,
@@ -3882,7 +4062,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Reload.html",
-          "hash": "L9ec+tZLX0uOqMOetUtDPJx/xVFGLvgJaDU/k7YguHE="
+          "hash": "nrE6rElTx6NJ3mLJg22MYcpnxJ842fl5IhvOn/cxBu8="
         }
       },
       "is_incremental": false,
@@ -3894,7 +4074,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.Remove.html",
-          "hash": "G70d8AwW6rFKbH8Yy+AMqk4FjoEddjr3wvog0DL9V/8="
+          "hash": "fKfG7s6M8tY7CC9QlV8iYR2vgFpHMSuh+qCNT0TtP1k="
         }
       },
       "is_incremental": false,
@@ -3906,7 +4086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Commands.Permissions.html",
-          "hash": "4WTOPVaLVrbc52GPj3+0S/4aRYV/sKbi6Z1ZOKgNJEI="
+          "hash": "vlbnEMbdnVVQC/ekhcn/vEgKo8FNMMppZdMuyrHIZ+Y="
         }
       },
       "is_incremental": false,
@@ -3918,7 +4098,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Config.html",
-          "hash": "6pmspi053mMUPCS5HtGvVg4MPSPRaR4u3mxqvB3YltM="
+          "hash": "4hgdsOwnhxjhOECRKHfQoOsazuek6Mp7myTEcw8ncGI="
         }
       },
       "is_incremental": false,
@@ -3930,7 +4110,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Extensions.Permissions.html",
-          "hash": "bBm4xPcqbdBr9P6rlgujhfvUqGLozHOAwg/4GVflhUE="
+          "hash": "nWaVYtF+7VqotY5cm2+kNwq4RKns6Otv45/gwcy1DIo="
         }
       },
       "is_incremental": false,
@@ -3942,7 +4122,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Extensions.html",
-          "hash": "q2txgH5s8DerKG4QKB29FGlEFvNIzRmRVDd+VLyA4ms="
+          "hash": "eCV+4WTdXYBMNn/kRNzRxRt9E5+5ovZKCMSgPWR7Mic="
         }
       },
       "is_incremental": false,
@@ -3954,7 +4134,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Features.Group.html",
-          "hash": "7Z4y0zPfCIEoT/zD8m7X5XkpuNhrJ8s27iW9994Ovt4="
+          "hash": "54i0YxAaG7tKuS25/J5vUaTK0NjPWoll1u4LPH/SCUs="
         }
       },
       "is_incremental": false,
@@ -3966,7 +4146,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Features.html",
-          "hash": "iDZJHqlmP+NzDuA8b9kkeI5dhiM55ttDJMbcA+6pOH4="
+          "hash": "46v2iY5196PRTwGGOx1S8oCO04C4JYyvvRiWCA+V7NI="
         }
       },
       "is_incremental": false,
@@ -3978,7 +4158,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.Permissions.html",
-          "hash": "AEK896+fUCmD4rvM+Yb+dronG7Y4Clo76vT4VFwMXgg="
+          "hash": "WTGaLfsfnGRNJZLtjopdLF123NBEGyAXpmVtquw/Ml0="
         }
       },
       "is_incremental": false,
@@ -3990,7 +4170,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Permissions.html",
-          "hash": "LjlvCdP7JXhzp+Ay000fT4rO084Sw4SrzZ2H8+R5DkI="
+          "hash": "u2LKWZHUIaGcpccsoDRzspXzo/0UkE372LVftGpuzjI="
         }
       },
       "is_incremental": false,
@@ -4002,7 +4182,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "UYrZstt7pRN0+1ZqAzLvIKzFtm6gC0qWt+kZKiaod0g="
+          "hash": "tJcHww6qkUpdYj+9prtN29/r35oYwCakPHO+LI/4gHg="
         }
       },
       "is_incremental": false,
@@ -4041,7 +4221,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 325,
+          "total_file_count": 340,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

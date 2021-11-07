@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Ragdoll
    | EXILED Docs ">
-    <meta name="generator" content="docfx 2.58.4.0">
+    <meta name="generator" content="docfx 2.58.9.0">
     
     <link rel="shortcut icon" href="../assets/Exiled_Icon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -128,7 +128,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.%23ctor(RoleType%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L32">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L55">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll__ctor_" data-uid="Exiled.API.Features.Ragdoll.#ctor*"></a>
   <h4 id="Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)">Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)</h4>
@@ -137,7 +137,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Ragdoll(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Ragdoll(RoleType, RagDoll.Info, Vector3, Quaternion, Vector3, bool, bool)&quot;, true)]
+public Ragdoll(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -187,6 +188,76 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.%23ctor(RoleType%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L35">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll__ctor_" data-uid="Exiled.API.Features.Ragdoll.#ctor*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)">Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Ragdoll(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, bool scp096Death = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td><span class="parametername">roleType</span></td>
+        <td><p>The <span class="xref">RoleType</span> to use as ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Ragdoll.Info</span></td>
+        <td><span class="parametername">ragdollInfo</span></td>
+        <td><p><span class="xref">Ragdoll.Info</span> object containing the ragdoll&apos;s info.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
@@ -194,11 +265,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_AllowRecall.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.AllowRecall%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L98">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L122">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_AllowRecall_" data-uid="Exiled.API.Features.Ragdoll.AllowRecall*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_AllowRecall" data-uid="Exiled.API.Features.Ragdoll.AllowRecall">AllowRecall</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the ragdoll is respawnable by SCP-049 .</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the ragdoll is respawnable by SCP-049.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -225,7 +296,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Base.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Base%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L68">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L92">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Base_" data-uid="Exiled.API.Features.Ragdoll.Base*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Base" data-uid="Exiled.API.Features.Ragdoll.Base">Base</h4>
@@ -256,12 +327,12 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_DefaultRagdollOwner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.DefaultRagdollOwner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L79">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_DefaultRagdollOwner_" data-uid="Exiled.API.Features.Ragdoll.DefaultRagdollOwner*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_DefaultRagdollOwner" data-uid="Exiled.API.Features.Ragdoll.DefaultRagdollOwner">DefaultRagdollOwner</h4>
   <div class="markdown level1 summary"><p>Gets the Default <span class="xref">Ragdoll.Info</span>,
-used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_">Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, String)</a>.</p>
+used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_">Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)</a>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -291,7 +362,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_GameObject.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.GameObject%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L78">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L102">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_GameObject_" data-uid="Exiled.API.Features.Ragdoll.GameObject*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_GameObject" data-uid="Exiled.API.Features.Ragdoll.GameObject">GameObject</h4>
@@ -322,7 +393,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Killer.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Killer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L88">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L112">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Killer_" data-uid="Exiled.API.Features.Ragdoll.Killer*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Killer" data-uid="Exiled.API.Features.Ragdoll.Killer">Killer</h4>
@@ -353,7 +424,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Name.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L73">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L97">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Name_" data-uid="Exiled.API.Features.Ragdoll.Name*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Name" data-uid="Exiled.API.Features.Ragdoll.Name">Name</h4>
@@ -384,7 +455,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Owner.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L83">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L107">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Owner_" data-uid="Exiled.API.Features.Ragdoll.Owner*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Owner" data-uid="Exiled.API.Features.Ragdoll.Owner">Owner</h4>
@@ -415,7 +486,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Position.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L112">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L141">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Position_" data-uid="Exiled.API.Features.Ragdoll.Position*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Position" data-uid="Exiled.API.Features.Ragdoll.Position">Position</h4>
@@ -446,7 +517,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Role.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Role%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L93">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L117">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Role_" data-uid="Exiled.API.Features.Ragdoll.Role*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Role" data-uid="Exiled.API.Features.Ragdoll.Role">Role</h4>
@@ -477,7 +548,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Room.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Room%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L107">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L136">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Room_" data-uid="Exiled.API.Features.Ragdoll.Room*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Room" data-uid="Exiled.API.Features.Ragdoll.Room">Room</h4>
@@ -508,7 +579,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Scale.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Scale%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L126">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L155">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Scale_" data-uid="Exiled.API.Features.Ragdoll.Scale*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Scale" data-uid="Exiled.API.Features.Ragdoll.Scale">Scale</h4>
@@ -534,6 +605,37 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Scp096Death.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Scp096Death%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L131">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Scp096Death_" data-uid="Exiled.API.Features.Ragdoll.Scp096Death*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Scp096Death" data-uid="Exiled.API.Features.Ragdoll.Scp096Death">Scp096Death</h4>
+  <div class="markdown level1 summary"><p>Gets a value indicating whether or not the ragdoll death is caused by Scp096.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool Scp096Death { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
@@ -541,7 +643,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Delete.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Delete%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L350">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L606">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Delete_" data-uid="Exiled.API.Features.Ragdoll.Delete*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Delete" data-uid="Exiled.API.Features.Ragdoll.Delete">Delete()</h4>
@@ -557,7 +659,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L359">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L615">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn" data-uid="Exiled.API.Features.Ragdoll.Spawn">Spawn()</h4>
@@ -573,7 +675,7 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player%2CDamageTypes.DamageType%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L147">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L202">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)">Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean)</h4>
@@ -582,7 +684,8 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = true)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, bool, bool)&quot;, true)]
+public static Ragdoll Spawn(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -650,10 +753,96 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player%2CDamageTypes.DamageType%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L177">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)">Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Spawns a ragdoll for a player on a certain position.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(Player victim, DamageTypes.DamageType deathCause, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = true, bool scp096Death = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="parametername">victim</span></td>
+        <td><p>Victim, represented as a player.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DamageTypes.DamageType</span></td>
+        <td><span class="parametername">deathCause</span></td>
+        <td><p>The message to be displayed as his death.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The spawned Ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(Role%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L229">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L383">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)">Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)</h4>
@@ -662,7 +851,8 @@ used in <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Featur
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(Role role, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Spawn(Role, RagDoll.Info, Vector3, Quaternion, Vector3, bool, bool)&quot;, true)]
+public static Ragdoll Spawn(Role role, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -740,10 +930,220 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
 
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(Role%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L336">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)">Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Spawns a ragdoll on the map based on the different arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(Role role, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, bool scp096Death = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Role</span></td>
+        <td><span class="parametername">role</span></td>
+        <td><p>The <a class="xref" href="Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Role">Role</a> to use as ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Ragdoll.Info</span></td>
+        <td><span class="parametername">ragdollInfo</span></td>
+        <td><p><span class="xref">Ragdoll.Info</span> object containing the ragdoll&apos;s info.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The spawned Ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Tip: You can do, for example, &apos;<code data-dev-comment-type="paramref" class="paramref">velocity</code>: &quot;Vector3.up * 3&quot;&apos; to skip parameters.</p>
+</div>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean__examples">Examples</h5>
+  <pre><code>// Code to spawn a fake ragdoll
+if (ev.Player == MyPlugin.TheInmortalPlayer)
+{
+    var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+}</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CDamageTypes.DamageType%2CSystem.String%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Int32%2CSystem.Boolean%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L546">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)">Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Spawns a ragdoll on the map based on the different arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, DamageTypes.DamageType deathCause, string victimNick, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, bool scp096Death = false, string mirrorOwnerId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td><span class="parametername">roleType</span></td>
+        <td><p>The <span class="xref">RoleType</span> to use as ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">DamageTypes.DamageType</span></td>
+        <td><span class="parametername">deathCause</span></td>
+        <td><p>The death cause, expressed as a <span class="xref">DamageTypes.DamageType</span>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">victimNick</span></td>
+        <td><p>The name from the victim, who the corpse belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049. Must have a valid <code data-dev-comment-type="paramref" class="paramref">playerId</code>.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">playerId</span></td>
+        <td><p>Used for recall. The <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Id">Id</a> to be recalled.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">mirrorOwnerId</span></td>
+        <td><p>Can be ignored. The <span class="xref">Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer</span>&apos;s PlayerId field.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The spawned Ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Tip: You can do &apos;<code data-dev-comment-type="paramref" class="paramref">allowRecall</code>: true, <code data-dev-comment-type="paramref" class="paramref">playerId</code>: MyPlayer.Id&apos; to skip parameters.</p>
+</div>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String__examples">Examples</h5>
+  <pre><code>// Code to spawn a fake ragdoll
+if (ev.Player == MyPlugin.TheInmortalPlayer)
+{
+    var fakeRagdoll = Ragdoll.Spawn(RoleType.ClassD, DamageTypes.Fall, &quot;The Falling Guy&quot;, new Vector3(1234f, -1f, 4321f));
+}</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CDamageTypes.DamageType%2CSystem.String%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L332">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L587">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)">Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, String)</h4>
@@ -752,7 +1152,8 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, DamageTypes.DamageType deathCause, string victimNick, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, string mirrorOwnerId = null)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Spawn(RoleType, DamageTypes.DamageType, string, Vector3, Quaternion, Vector3, bool, int, bool, string)&quot;, true)]
+public static Ragdoll Spawn(RoleType roleType, DamageTypes.DamageType deathCause, string victimNick, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, string mirrorOwnerId = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -851,7 +1252,7 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L183">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L288">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)">Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)</h4>
@@ -860,7 +1261,8 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Spawn(RoleType, RagDoll.Info, Vector3, Quaternion, Vector3, bool, bool)&quot;, true)]
+public static Ragdoll Spawn(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -938,10 +1340,220 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
 
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CRagdoll.Info%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L240">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)">Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Spawns a ragdoll on the map based on the different arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, Ragdoll.Info ragdollInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, bool scp096Death = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td><span class="parametername">roleType</span></td>
+        <td><p>The <span class="xref">RoleType</span> to use as ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">Ragdoll.Info</span></td>
+        <td><span class="parametername">ragdollInfo</span></td>
+        <td><p><span class="xref">Ragdoll.Info</span> object containing the ragdoll&apos;s info.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The spawned Ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Tip: You can do, for example, &apos;<code data-dev-comment-type="paramref" class="paramref">velocity</code>: &quot;Vector3.up * 3&quot;&apos; to skip parameters.</p>
+</div>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean__examples">Examples</h5>
+  <pre><code>// Code to spawn a fake ragdoll
+if (ev.Player == MyPlugin.TheInmortalPlayer)
+{
+    var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+}</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CSystem.String%2CPlayerStats.HitInfo%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Int32%2CSystem.Boolean%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L433">View Source</a>
+  </span>
+  <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
+  <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)">Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)</h4>
+  <div class="markdown level1 summary"><p>Spawns a ragdoll on the map based on the different arguments.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, string victimNick, PlayerStats.HitInfo hitInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, bool scp096Death = false, string mirrorOwnerId = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RoleType</span></td>
+        <td><span class="parametername">roleType</span></td>
+        <td><p>The <span class="xref">RoleType</span> to use as ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">victimNick</span></td>
+        <td><p>The name from the victim, who the corpse belongs to.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">PlayerStats.HitInfo</span></td>
+        <td><span class="parametername">hitInfo</span></td>
+        <td><p>The <span class="xref">PlayerStats.HitInfo</span> that displays who killed this ragdoll, and using which tool.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">position</span></td>
+        <td><p>Where the ragdoll will be spawned.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Quaternion</span></td>
+        <td><span class="parametername">rotation</span></td>
+        <td><p>The rotation for the ragdoll.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">UnityEngine.Vector3</span></td>
+        <td><span class="parametername">velocity</span></td>
+        <td><p>The initial velocity the ragdoll will have, as if it was exploded.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">allowRecall</span></td>
+        <td><p>Sets this ragdoll as respawnable by SCP-049.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">playerId</span></td>
+        <td><p>Used for recall. The <a class="xref" href="Exiled.API.Features.Player.html#Exiled_API_Features_Player_Id">Id</a> to be recalled.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">scp096Death</span></td>
+        <td><p>Sets this ragdoll as Scp096&apos;s victim.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">mirrorOwnerId</span></td>
+        <td><p>Can be ignored. The <span class="xref">Dissonance.Integrations.MirrorIgnorance.MirrorIgnorancePlayer</span>&apos;s PlayerId field, likely used in the client.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Ragdoll.html">Ragdoll</a></td>
+        <td><p>The spawned Ragdoll.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Tip: You can do, for example, &apos;<code data-dev-comment-type="paramref" class="paramref">velocity</code>: &quot;Vector3.up * 3&quot;&apos; to skip parameters.</p>
+</div>
+  <h5 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String__examples">Examples</h5>
+  <pre><code>// Code to spawn a fake ragdoll
+if (ev.Player == MyPlugin.TheInmortalPlayer)
+{
+    var fakeRagdoll = Ragdoll.Spawn(ev.Player.Role, ev.Player.Position, victimNick: ev.Player.DisplayNickname, playerId: ev.Player.Id);
+}</code></pre>
+
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll.Spawn(RoleType%2CSystem.String%2CPlayerStats.HitInfo%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CSystem.Boolean%2CSystem.Int32%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L277">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L489">View Source</a>
   </span>
   <a id="Exiled_API_Features_Ragdoll_Spawn_" data-uid="Exiled.API.Features.Ragdoll.Spawn*"></a>
   <h4 id="Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_" data-uid="Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)">Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, String)</h4>
@@ -950,7 +1562,8 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static Ragdoll Spawn(RoleType roleType, string victimNick, PlayerStats.HitInfo hitInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, string mirrorOwnerId = null)</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use Spawn(RoleType, string, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, bool, int, bool, string)&quot;, true)]
+public static Ragdoll Spawn(RoleType roleType, string victimNick, PlayerStats.HitInfo hitInfo, Vector3 position, Quaternion rotation = default(Quaternion), Vector3 velocity = default(Vector3), bool allowRecall = false, int playerId = -1, string mirrorOwnerId = null)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -1071,7 +1684,7 @@ if (ev.Player == MyPlugin.TheInmortalPlayer)
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_API_Features_Ragdoll.md&amp;value=---%0Auid%3A%20Exiled.API.Features.Ragdoll%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.API/Features/Ragdoll.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
