@@ -34,11 +34,13 @@ namespace Exiled.Events.Patches.Events.Player
                     if (!teslaGate.isActiveAndEnabled || teslaGate.InProgress)
                         continue;
 
+                    // TODO: Re-implement
+                    /*
                     if (teslaGate.NetworkInactiveTime > 0f)
                     {
                         teslaGate.NetworkInactiveTime = Mathf.Max(0f, teslaGate.InactiveTime - Time.fixedDeltaTime);
                         continue;
-                    }
+                    }*/
 
                     bool inIdleRange = false;
                     bool isTriggerable = false;

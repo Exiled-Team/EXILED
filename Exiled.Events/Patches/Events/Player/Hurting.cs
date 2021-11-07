@@ -7,11 +7,13 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using global::Utils.Networking;
 
@@ -19,69 +21,191 @@ namespace Exiled.Events.Patches.Events.Player
 
     using InventorySystem.Disarming;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool, bool)"/>.
-    /// Adds the <see cref="Player.Hurting"/> event.
+    /// Adds the <see cref="Handlers.Player.Hurting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
     internal static class Hurting
     {
-        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(Player));
+            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(Player));
+            LocalBuilder mem_0x03 = generator.DeclareLocal(typeof(float));
+            LocalBuilder ev_0x01 = generator.DeclareLocal(typeof(HurtingEventArgs));
+            LocalBuilder ev_0x02 = generator.DeclareLocal(typeof(DyingEventArgs));
+            LocalBuilder cmp_0x01 = generator.DeclareLocal(typeof(int));
+            LocalBuilder cmp_0x02 = generator.DeclareLocal(typeof(int));
+            LocalBuilder cmp_0x03 = generator.DeclareLocal(typeof(int));
+            LocalBuilder cmp_0x04 = generator.DeclareLocal(typeof(int));
+
+            Label ret = generator.DefineLabel();
+            Label cdc = generator.DefineLabel();
+            Label cmova = generator.DefineLabel();
+            Label jcc = generator.DefineLabel();
+            Label into = generator.DefineLabel();
+            Label jmp = generator.DefineLabel();
+
+            MethodInfo sendToAuthenticated = Method(typeof(NetworkUtils), nameof(NetworkUtils.SendToAuthenticated)).MakeGenericMethod(typeof(DisarmedPlayersListMessage));
+
+            newInstructions[0].labels.Add(cdc);
+
+            newInstructions.InsertRange(0, new[]
             {
-                API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
-                API.Features.Player target = API.Features.Player.Get(go);
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
+                new CodeInstruction(OpCodes.Ldarga_S, 1),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.IsPlayer))),
+                new CodeInstruction(OpCodes.Brtrue_S, cmova),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PlayerStats), nameof(PlayerStats.gameObject))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Br_S, jmp),
+                new CodeInstruction(OpCodes.Ldarga_S, 1).WithLabels(cmova),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.RHub))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_2).WithLabels(jmp),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
+                new CodeInstruction(OpCodes.Brtrue_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Ldc_I4_2),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brtrue_S, cdc),
+                new CodeInstruction(OpCodes.Ldarga_S, 1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.Tool))),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(DamageTypes), nameof(DamageTypes.Recontainment))),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brfalse_S, jcc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Ldc_I4_7),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brfalse_S, jcc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnRecontained))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DiedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDied))),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex).WithLabels(jcc),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
+                new CodeInstruction(OpCodes.Brtrue_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsHost))),
+                new CodeInstruction(OpCodes.Brtrue_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.HitInformation))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsGodModeEnabled))),
+                new CodeInstruction(OpCodes.Brtrue_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Conv_I4),
+                new CodeInstruction(OpCodes.Ldc_I4_M1),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Stloc_S, cmp_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Health))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.ArtificialHealth))),
+                new CodeInstruction(OpCodes.Add),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x03.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x03.LocalIndex),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Stloc_S, cmp_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x03.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Clt),
+                new CodeInstruction(OpCodes.Stloc_S, cmp_0x03.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, cmp_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, cmp_0x03.LocalIndex),
+                new CodeInstruction(OpCodes.Or),
+                new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Or),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Attacker))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.HitInformation))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DyingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
+                new CodeInstruction(OpCodes.Brfalse_S, into),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.ItemsToDrop))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.ResetInventory), new[] { typeof(List<API.Features.Items.Item>) })),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Player), nameof(Player.DropItems))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev_0x02.LocalIndex).WithLabels(into),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.Target))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Inventory))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, Method(typeof(DisarmedPlayers), nameof(DisarmedPlayers.SetDisarmedStatus))),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(DisarmedPlayers), nameof(DisarmedPlayers.Entries))),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisarmedPlayersListMessage))[0]),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Call, sendToAuthenticated),
+            });
 
-                if (target == null || target.IsHost || target.Role == RoleType.Spectator)
-                    return true;
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
-                if (info.Tool.Equals(DamageTypes.Recontainment) && target.Role == RoleType.Scp079)
-                {
-                    Scp079.OnRecontained(new RecontainedEventArgs(target));
-                    DiedEventArgs eventArgs = new DiedEventArgs(null, target, info);
-                    Player.OnDied(eventArgs);
-                }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                if (attacker == null || attacker.IsHost)
-                    return true;
-
-                HurtingEventArgs ev = new HurtingEventArgs(attacker, target, info);
-                Player.OnHurting(ev);
-
-                info = ev.HitInformation;
-
-                if (!ev.IsAllowed)
-                    return false;
-
-                if (!ev.Target.IsGodModeEnabled && (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth))
-                {
-                    DyingEventArgs dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformation);
-
-                    Player.OnDying(dyingEventArgs);
-
-                    if (!dyingEventArgs.IsAllowed)
-                        return false;
-
-                    dyingEventArgs.Target.Inventory.SetDisarmedStatus(null);
-                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
-
-                    if (dyingEventArgs.ItemsToDrop != null)
-                    {
-                        dyingEventArgs.Target.ResetInventory(dyingEventArgs.ItemsToDrop);
-                        dyingEventArgs.Target.DropItems();
-                    }
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

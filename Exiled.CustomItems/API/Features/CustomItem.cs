@@ -753,9 +753,17 @@ namespace Exiled.CustomItems.API.Features
 
             ev.IsAllowed = false;
 
+#if DEBUG
+            Log.Debug($"{ev.Player.Nickname} is dropping a {Name} ({ev.Item.Serial})");
+#endif
             TrackedSerials.Remove(ev.Item.Serial);
 
             ev.Player.RemoveItem(ev.Item);
+            if (ev.Player.Inventory.UserInventory.Items.ContainsKey(ev.Item.Serial))
+            {
+                ev.Player.Inventory.UserInventory.Items.Remove(ev.Item.Serial);
+                ev.Player.Inventory.SendItemsNextFrame = true;
+            }
 
             var pickup = Spawn(ev.Player, ev.Item);
             if (pickup.Base.Rb != null && ev.IsThrown)

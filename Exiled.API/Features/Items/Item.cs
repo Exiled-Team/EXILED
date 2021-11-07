@@ -10,9 +10,6 @@ namespace Exiled.API.Features.Items
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
-
-    using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Firearms;
@@ -134,7 +131,13 @@ namespace Exiled.API.Features.Items
                 case KeycardItem keycard:
                     return new Keycard(keycard);
                 case UsableItem usable:
+                {
+                    // TODO: Re-implement
+                    /*if (usable is Scp330Bag scp330Bag)
+                        return new Scp330(scp330Bag);*/
                     return new Usable(usable);
+                }
+
                 case RadioItem radio:
                     return new Radio(radio);
                 case MicroHIDItem micro:
@@ -218,6 +221,12 @@ namespace Exiled.API.Features.Items
             Pickup pickup = Pickup.Get(ipb);
             pickup.Scale = Scale;
             return pickup;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
         }
     }
 }

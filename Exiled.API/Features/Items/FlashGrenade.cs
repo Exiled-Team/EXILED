@@ -93,5 +93,11 @@ namespace Exiled.API.Features.Items
             NetworkServer.Spawn(grenade.gameObject);
             grenade.ServerActivate();
         }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
+        }
     }
 }

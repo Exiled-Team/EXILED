@@ -343,6 +343,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<FlippingCoinEventArgs> FlippingCoin;
 
         /// <summary>
+        /// Invoked before a player toggles the flashlight.
+        /// </summary>
+        public static event CustomEventHandler<TogglingFlashlightEventArgs> TogglingFlashlight;
+
+        /// <summary>
         /// Invoked before a player unloads a weapon.
         /// </summary>
         public static event CustomEventHandler<UnloadingWeaponEventArgs> UnloadingWeapon;
@@ -391,6 +396,11 @@ namespace Exiled.Events.Handlers
         /// Invoked before a player changes move state.
         /// </summary>
         public static event CustomEventHandler<ChangingMoveStateEventArgs> ChangingMoveState;
+
+        /// <summary>
+        /// Invoked after a player changed spectated player.
+        /// </summary>
+        public static event CustomEventHandler<ChangingSpectatedPlayerEventArgs> ChangingSpectatedPlayer;
 
         /// <summary>
         /// Invoked before a player toggles the NoClip mode.
@@ -783,6 +793,12 @@ namespace Exiled.Events.Handlers
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
 
         /// <summary>
+        /// Called before a player toggles the flashlight.
+        /// </summary>
+        /// <param name="ev">The <see cref="TogglingFlashlightEventArgs"/> instance.</param>
+        public static void OnTogglingFlashlight(TogglingFlashlightEventArgs ev) => TogglingFlashlight.InvokeSafely(ev);
+
+        /// <summary>
         /// Called before a player unloads a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> instance.</param>
@@ -841,6 +857,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
         public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
+
+        /// <summary>
+        /// Invoked after a player changes spectated player.
+        /// </summary>
+        /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
+        public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a player toggles the NoClip mode.

@@ -1388,6 +1388,9 @@ namespace Exiled.API.Features
         /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
         public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
         {
+            if (Role == RoleType.Scp0492 && !ReferenceHub.TryGetHub(attackerId, out _))
+                attackerId = Id;
+
             ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
         }
 
@@ -1853,6 +1856,19 @@ namespace Exiled.API.Features
         {
             if (TryGetEffect(effect, out var pEffect))
                 ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
+        }
+
+        /// <summary>
+        /// Enables a random <see cref="EffectType"/> on the player.
+        /// </summary>
+        /// <param name="duration">The amount of time the effect will be active for.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
+        public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
+        {
+            EffectType effectType = (EffectType)Enum.GetValues(typeof(EffectType)).GetValue(UnityEngine.Random.Range(0, Enum.GetValues(typeof(EffectType)).Length));
+            EnableEffect(effectType, duration, addDurationIfActive);
+            return effectType;
         }
 
         /// <summary>
