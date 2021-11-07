@@ -245,7 +245,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || !ev.DamageType.Equals(((Firearm)ev.Attacker.CurrentItem).DamageType))
+            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.Attacker.CurrentItem.Type != ev.DamageType.Weapon)
                 return;
 
             OnHurting(ev);
