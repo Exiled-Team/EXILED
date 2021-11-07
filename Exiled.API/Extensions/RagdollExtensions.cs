@@ -11,6 +11,8 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Features;
 
+    using Ragdoll = global::Ragdoll;
+
     /// <summary>
     /// A set of extensions for <see cref="Ragdoll"/>.
     /// </summary>
