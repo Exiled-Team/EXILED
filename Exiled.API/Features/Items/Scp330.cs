@@ -4,7 +4,8 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
+// TODO: Re-implement
+/*
 namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
@@ -158,4 +159,4 @@ namespace Exiled.API.Features.Items
             return pickup;
         }
     }
-}
+}*/
