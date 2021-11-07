@@ -91,7 +91,7 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // TODO: Set this to 10
-            const int instructionsToRemove = 8;
+            const int instructionsToRemove = 6;
             int offset = -1;
             int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Ldfld && (FieldInfo)code.operand == Field(typeof(Role), nameof(Role.roleId))) + offset;
 
