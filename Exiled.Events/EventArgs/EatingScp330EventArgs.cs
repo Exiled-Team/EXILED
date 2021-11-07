@@ -4,7 +4,8 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
+// TODO: Re-implement
+/*
 namespace Exiled.Events.EventArgs
 {
     using System;
@@ -46,4 +47,4 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public bool IsAllowed { get; set; }
     }
-}
+}*/
