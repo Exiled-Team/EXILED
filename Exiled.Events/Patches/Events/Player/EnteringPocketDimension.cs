@@ -35,16 +35,19 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            int offset = 0;
+            int offset = 3;
 
             // Search for the last "newobj".
-            int index = 0 + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"gray") + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
             LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
 
             // Define the return label and add it to the last "ret" instruction.
             Label returnLabel = generator.DefineLabel();
+
+            Label ifLabel = newInstructions[index].labels[0];
+            newInstructions[index].labels.Clear();
 
             // var ev = new EnteringPocketDimensionEventArgs(Player.Get(taker), Vector3.down * 1998.5f, Player.Get(this.gameObject), true);
             //
@@ -55,7 +58,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ply)
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(ifLabel),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // Vector3.down * 1998.5f
