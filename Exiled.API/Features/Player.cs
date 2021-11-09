@@ -580,12 +580,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can voicechat.
+        /// Gets or sets the player's <see cref="VoicechatMuteStatus"/>.
         /// </summary>
-        public bool IsLocalMuted
+        public VoicechatMuteStatus MuteStatus
         {
-            get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
-            set => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
+            get => ReferenceHub.dissonanceUserSetup.muteStatus;
+            set => ReferenceHub.dissonanceUserSetup.SetMuteStatus(ReferenceHub.dissonanceUserSetup.muteStatus, value);
         }
 
         /// <summary>
