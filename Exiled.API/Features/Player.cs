@@ -595,6 +595,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
+        /// <para >Note: voicechat channels are handled by the client, therefore any changes will be ignored.</para>
         /// </summary>
         public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
         {
