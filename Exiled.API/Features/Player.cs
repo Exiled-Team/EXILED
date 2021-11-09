@@ -163,9 +163,9 @@ namespace Exiled.API.Features
         public Transform CameraTransform { get; private set; }
 
         /// <summary>
-        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
+        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>
         /// </summary>
-        public DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
+        public Assets._Scripts.Dissonance.DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -585,18 +585,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's <see cref="VoicechatMuteStatus"/>.
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.VoicechatMuteStatus"/>.
         /// </summary>
-        public VoicechatMuteStatus MuteStatus
+        public Assets._Scripts.Dissonance.VoicechatMuteStatus MuteStatus
         {
             get => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus;
             set => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus = value;
         }
 
         /// <summary>
-        /// Gets or sets the player's <see cref="SpeakingFlags"/>.
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
         /// </summary>
-        public SpeakingFlags SpeakingFlags
+        public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
         {
             get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
             set => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags = value;
