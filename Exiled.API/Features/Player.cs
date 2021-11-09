@@ -163,7 +163,7 @@ namespace Exiled.API.Features
         public Transform CameraTransform { get; private set; }
 
         /// <summary>
-        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>
+        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
         /// </summary>
         public Assets._Scripts.Dissonance.DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
 
