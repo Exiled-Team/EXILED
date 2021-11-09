@@ -580,6 +580,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player can voicechat.
+        /// </summary>
+        public bool IsLocalMuted
+        {
+            get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
+            set => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
