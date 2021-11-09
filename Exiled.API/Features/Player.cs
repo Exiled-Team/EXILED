@@ -584,8 +584,17 @@ namespace Exiled.API.Features
         /// </summary>
         public VoicechatMuteStatus MuteStatus
         {
-            get => ReferenceHub.dissonanceUserSetup.muteStatus;
-            set => ReferenceHub.dissonanceUserSetup.SetMuteStatus(ReferenceHub.dissonanceUserSetup.muteStatus, value);
+            get => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus;
+            set => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="SpeakingFlags"/>.
+        /// </summary>
+        public SpeakingFlags SpeakingFlags
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
+            set => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags = value;
         }
 
         /// <summary>
