@@ -46,9 +46,6 @@ namespace Exiled.Events.Patches.Events.Player
             // Define the return label and add it to the last "ret" instruction.
             Label returnLabel = generator.DefineLabel();
 
-            Label ifLabel = newInstructions[index].labels[0];
-            newInstructions[index].labels.Clear();
-
             // var ev = new EnteringPocketDimensionEventArgs(Player.Get(taker), Vector3.down * 1998.5f, Player.Get(this.gameObject), true);
             //
             // Handlers.Player.OnEnteringPocketDimension(ev);
@@ -58,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(ply)
-                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(ifLabel),
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // Vector3.down * 1998.5f
