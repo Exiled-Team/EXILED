@@ -27,7 +27,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
-    using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
 
