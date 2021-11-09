@@ -158,12 +158,13 @@ namespace Exiled.Events.Patches.Events.Player
                     while (inventory.UserInventory.Items.Count > 0)
                     {
                         var startCount = inventory.UserInventory.Items.Count;
-                        var item = inventory.ServerDropItem(inventory.UserInventory.Items.ElementAt(0).Key);
+                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        var item = inventory.ServerDropItem(key);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
                         {
-                            inventory.UserInventory.Items.Remove(0);
+                            inventory.UserInventory.Items.Remove(key);
                         }
                         else
                         {
@@ -178,12 +179,13 @@ namespace Exiled.Events.Patches.Events.Player
                     while (inventory.UserInventory.Items.Count > 0)
                     {
                         var startCount = inventory.UserInventory.Items.Count;
-                        inventory.ServerRemoveItem(inventory.UserInventory.Items.ElementAt(0).Key, null);
+                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        inventory.ServerRemoveItem(key, null);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
                         {
-                            inventory.UserInventory.Items.Remove(0);
+                            inventory.UserInventory.Items.Remove(key);
                         }
                     }
 
