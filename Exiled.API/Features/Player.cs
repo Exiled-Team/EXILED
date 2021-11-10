@@ -341,7 +341,10 @@ namespace Exiled.API.Features
                 }
 
                 if (value != null)
+                {
                     Inventory.SetDisarmedStatus(value.Inventory);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+                }
             }
         }
 
@@ -1276,8 +1279,6 @@ namespace Exiled.API.Features
             if (!IsCuffed && Vector3.Distance(Position, cuffer.Position) <= 130f)
             {
                 Cuffer = cuffer;
-                Inventory.SetDisarmedStatus(cuffer.Inventory);
-                new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
             }
         }
 
