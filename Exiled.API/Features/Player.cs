@@ -27,7 +27,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
-    using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
 
@@ -161,6 +160,11 @@ namespace Exiled.API.Features
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
         public Transform CameraTransform { get; private set; }
+
+        /// <summary>
+        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -577,6 +581,25 @@ namespace Exiled.API.Features
                 else
                     MuteHandler.RevokePersistentMute(UserId);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.VoicechatMuteStatus"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.VoicechatMuteStatus MuteStatus
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus;
+            set => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
+        /// <para >Note: voicechat channels are handled by the client, therefore any changes will be ignored.</para>
+        /// </summary>
+        public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
+            set => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags = value;
         }
 
         /// <summary>
