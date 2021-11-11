@@ -1151,7 +1151,7 @@ namespace Exiled.API.Features
                 }
                 else
                 {
-                    int maxNameLength = 31, lastnameDifference = 31;
+                    int lastnameDifference = 31;
                     string firstString = args.ToLower();
 
                     foreach (Player player in Dictionary.Values)
