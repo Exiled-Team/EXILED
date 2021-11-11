@@ -1138,25 +1138,14 @@ namespace Exiled.API.Features
 
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
+                        
+                        string secondString = player.Nickname;
 
-                        if (firstString.Length < maxNameLength)
+                        int nameDifference = secondString.Length - firstString.Length;
+                        if (nameDifference < lastnameDifference)
                         {
-                            int x = maxNameLength - firstString.Length;
-                            int y = maxNameLength - player.Nickname.Length;
-                            string secondString = player.Nickname;
-
-                            for (int i = 0; i < x; i++)
-                                firstString += "z";
-
-                            for (int i = 0; i < y; i++)
-                                secondString += "z";
-
-                            int nameDifference = firstString.GetDistance(secondString);
-                            if (nameDifference < lastnameDifference)
-                            {
-                                lastnameDifference = nameDifference;
-                                playerFound = player;
-                            }
+                            lastnameDifference = nameDifference;
+                            playerFound = player;
                         }
                     }
                 }
