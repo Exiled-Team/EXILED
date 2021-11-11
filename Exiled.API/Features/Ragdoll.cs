@@ -601,6 +601,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.
+        /// </summary>
+        /// <param name="ragdoll">The <see cref="RagDoll"/> to get.</param>
+        /// <returns>A <see cref="Ragdoll"/> or <see langword="null"/> if not found.</returns>
+        public static Ragdoll Get(RagDoll ragdoll) => Map.Ragdolls.FirstOrDefault(rd => rd.Base == ragdoll);
+
+        /// <summary>
         /// Deletes the ragdoll.
         /// </summary>
         public void Delete()
