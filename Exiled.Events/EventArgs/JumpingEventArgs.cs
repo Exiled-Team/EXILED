@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs
         public Vector3 Position { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the client data can be synchronized with the server.
+        /// Gets or sets a value indicating whether the player can jump.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

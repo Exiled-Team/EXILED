@@ -242,7 +242,7 @@ namespace Exiled.API.Features
             }
 
             // Always default to surface transform, since it's static.
-            // The current index of the 'Outside' room is the last one
+            // The current index of the 'Outsise' room is the last one
             if (room == null && rooms.Count != 0)
                 room = rooms[rooms.Count - 1];
 

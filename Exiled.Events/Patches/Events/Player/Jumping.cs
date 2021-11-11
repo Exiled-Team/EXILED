@@ -10,7 +10,6 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
-
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -32,8 +31,7 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(PlayerMovementSync))]
     internal static class Jumping
     {
-        [HarmonyPatch(nameof(PlayerMovementSync.ReceivePosition2DJump))]
-        [HarmonyTranspiler]
+        [HarmonyPatch("ReceivePosition2DJump")]
         private static IEnumerable<CodeInstruction> Transpiler2D(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
@@ -80,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        [HarmonyPatch(nameof(PlayerMovementSync.ReceivePositionJump))]
+        [HarmonyPatch("ReceivePositionJump")]
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
