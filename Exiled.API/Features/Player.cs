@@ -1161,7 +1161,7 @@ namespace Exiled.API.Features
 
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
-                        
+
                         string secondString = player.Nickname;
 
                         int nameDifference = secondString.Length - firstString.Length;
