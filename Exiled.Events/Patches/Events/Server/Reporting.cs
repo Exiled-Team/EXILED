@@ -56,7 +56,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.Reason))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg_S, 2),
             });
 
