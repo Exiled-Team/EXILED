@@ -54,9 +54,9 @@ namespace Exiled.Events.EventArgs
         public int ServerPort { get; }
 
         /// <summary>
-        /// Gets the report reason.
+        /// Gets or sets the report reason.
         /// </summary>
-        public string Reason { get; }
+        public string Reason { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the report will be sent.
