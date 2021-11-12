@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Dummies
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp173.UpdateObservers"/> to prevent counting dummies as looking at Scp173.
+    /// Patches <see cref="API.Features.Player.Scale"/> to prevent network garbage with dummies.
     /// </summary>
     [HarmonyPatch(typeof(API.Features.Player), nameof(API.Features.Player.Scale), MethodType.Setter)]
     internal static class SetScalePatch
