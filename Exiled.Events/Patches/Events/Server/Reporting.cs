@@ -32,6 +32,9 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(LocalReportingEventArgs));
+            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(ReportingCheaterEventArgs));
+
             const int offset = -4;
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_7);
 
@@ -47,9 +50,14 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LocalReportingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.Reason))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
             });
 
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
@@ -65,9 +73,14 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ReportingCheaterEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnReportingCheater))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReportingCheaterEventArgs), nameof(ReportingCheaterEventArgs.Reason))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
