@@ -39,6 +39,78 @@ namespace Exiled.API.Features
         public GameObject GameObject { get; }
 
         /// <summary>
+        /// Gets or sets the dummy's role.
+        /// </summary>
+        public RoleType Role
+        {
+            get => Player.Role;
+            set
+            {
+                UnSpawn();
+                Player.ReferenceHub.characterClassManager.CurClass = value;
+                Spawn();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's nickname.
+        /// </summary>
+        public string Nickname
+        {
+            get => Player.ReferenceHub.nicknameSync.Network_myNickSync;
+            set => Player.ReferenceHub.nicknameSync.Network_myNickSync = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's scale.
+        /// </summary>
+        public Vector3 Scale
+        {
+            get => Player.Scale;
+            set => Player.Scale = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's position.
+        /// </summary>
+        public Vector3 Position
+        {
+            get => Player.Position;
+            set => Player.Position = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's rotation.
+        /// </summary>
+        public Vector2 Rotation
+        {
+            get => Player.Rotations;
+            set => Player.Rotations = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's movement state.
+        /// </summary>
+        public PlayerMovementState MovementState
+        {
+            get => Player.ReferenceHub.animationController.MoveState;
+            set
+            {
+                Player.ReferenceHub.animationController.MoveState = value;
+                Player.ReferenceHub.animationController.RpcReceiveState((byte)value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the dummy's current item.
+        /// </summary>
+        public ItemType CurrentItem
+        {
+            get => Player.CurrentItem.Type;
+            set => Player.Inventory.NetworkCurItem = new InventorySystem.Items.ItemIdentifier(value, 0);
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Dummy"/> class.
         /// </summary>
         /// <param name="spawnPosition">A <see cref="Vector3"/> representing the spawn position of the <see cref="Dummy"/>.</param>
@@ -100,9 +172,7 @@ namespace Exiled.API.Features
             if (spawnRagdoll)
                 GameObject.GetComponent<RagdollManager>().SpawnRagdoll(GameObject.transform.position, GameObject.transform.rotation, Vector3.zero, (int)Player.Role, default, false, string.Empty, Player.Nickname, -1);
 
-            UnSpawn();
-            Player.Role = RoleType.Spectator;
-            Spawn();
+            Role = RoleType.Spectator;
         }
     }
 }
