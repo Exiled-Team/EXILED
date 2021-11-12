@@ -341,7 +341,10 @@ namespace Exiled.API.Features
                 }
 
                 if (value != null)
+                {
                     Inventory.SetDisarmedStatus(value.Inventory);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+                }
             }
         }
 
