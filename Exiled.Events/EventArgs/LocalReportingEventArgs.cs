@@ -42,9 +42,9 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the report reason.
+        /// Gets or sets the report reason.
         /// </summary>
-        public string Reason { get; }
+        public string Reason { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the report can be processed or not.
