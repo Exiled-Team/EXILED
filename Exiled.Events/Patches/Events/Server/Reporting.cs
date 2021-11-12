@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(LocalReportingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
