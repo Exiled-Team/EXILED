@@ -229,7 +229,7 @@ namespace Exiled.API.Features
                 // Scp079 position is constant,
                 // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
-                    room = FindParentRoom(ply.ReferenceHub.scp079PlayerScript.currentCamera.gameObject);
+                    room = FindParentRoom(ply.Camera.gameObject);
             }
 
             if (room == null)
