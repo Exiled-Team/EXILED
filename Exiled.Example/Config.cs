@@ -13,6 +13,8 @@ namespace Exiled.Example
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
 
+    using InventorySystem.Items.Firearms.Attachments;
+
     using UnityEngine;
 
     /// <inheritdoc cref="IConfig"/>
