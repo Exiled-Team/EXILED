@@ -53,42 +53,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the dummy's nickname.
-        /// </summary>
-        public string Nickname
-        {
-            get => Player.ReferenceHub.nicknameSync.Network_myNickSync;
-            set => Player.ReferenceHub.nicknameSync.Network_myNickSync = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the dummy's scale.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get => Player.Scale;
-            set => Player.Scale = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the dummy's position.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => Player.Position;
-            set => Player.Position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the dummy's rotation.
-        /// </summary>
-        public Vector2 Rotation
-        {
-            get => Player.Rotations;
-            set => Player.Rotations = value;
-        }
-
-        /// <summary>
         /// Gets or sets the dummy's movement state.
         /// </summary>
         public PlayerMovementState MovementState
