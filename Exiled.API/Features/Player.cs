@@ -1500,8 +1500,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
         /// </summary>
-        /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
-        /// <param name="amount">The amount of ammo to be set.</param>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be added.</param>
+        /// <param name="amount">The amount of ammo to be added.</param>
         public void AddAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerAddAmmo(ammoType.GetItemType(), amount);
 
         /// <summary>
@@ -1510,6 +1510,13 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
         /// <param name="amount">The amount of ammo to be set.</param>
         public void SetAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be searched for in the player's inventory.</param>
+        /// <returns>The specified <see cref="AmmoType">ammo</see> count.</returns>
+        public ushort GetAmmo(AmmoType ammoType) => Inventory.GetCurAmmo(ammoType.GetItemType());
 
         /// <summary>
         /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.
