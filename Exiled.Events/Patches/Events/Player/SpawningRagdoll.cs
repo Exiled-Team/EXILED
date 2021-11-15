@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int, bool)"/>.
     /// Adds the <see cref="SpawningRagdoll"/> event.
     /// </summary>
-    // [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
+    [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
     internal static class SpawningRagdoll
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -139,7 +139,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x04.LocalIndex),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[1]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[2]),
                 new CodeInstruction(OpCodes.Stloc_S, mem_0x03.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x05.LocalIndex),
                 new CodeInstruction(OpCodes.Ldnull),

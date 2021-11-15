@@ -27,7 +27,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
-    using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
 
@@ -161,6 +160,11 @@ namespace Exiled.API.Features
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
         /// </summary>
         public Transform CameraTransform { get; private set; }
+
+        /// <summary>
+        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -337,7 +341,10 @@ namespace Exiled.API.Features
                 }
 
                 if (value != null)
+                {
                     Inventory.SetDisarmedStatus(value.Inventory);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+                }
             }
         }
 
@@ -577,6 +584,25 @@ namespace Exiled.API.Features
                 else
                     MuteHandler.RevokePersistentMute(UserId);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.VoicechatMuteStatus"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.VoicechatMuteStatus MuteStatus
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus;
+            set => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
+        /// <para >Note: voicechat channels are handled by the client, therefore any changes will be ignored.</para>
+        /// </summary>
+        public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
+            set => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags = value;
         }
 
         /// <summary>
@@ -1128,7 +1154,7 @@ namespace Exiled.API.Features
                 }
                 else
                 {
-                    int maxNameLength = 31, lastnameDifference = 31;
+                    int lastnameDifference = 31;
                     string firstString = args.ToLower();
 
                     foreach (Player player in Dictionary.Values)
@@ -1139,24 +1165,13 @@ namespace Exiled.API.Features
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
-                        if (firstString.Length < maxNameLength)
+                        string secondString = player.Nickname;
+
+                        int nameDifference = secondString.Length - firstString.Length;
+                        if (nameDifference < lastnameDifference)
                         {
-                            int x = maxNameLength - firstString.Length;
-                            int y = maxNameLength - player.Nickname.Length;
-                            string secondString = player.Nickname;
-
-                            for (int i = 0; i < x; i++)
-                                firstString += "z";
-
-                            for (int i = 0; i < y; i++)
-                                secondString += "z";
-
-                            int nameDifference = firstString.GetDistance(secondString);
-                            if (nameDifference < lastnameDifference)
-                            {
-                                lastnameDifference = nameDifference;
-                                playerFound = player;
-                            }
+                            lastnameDifference = nameDifference;
+                            playerFound = player;
                         }
                     }
                 }
@@ -1481,6 +1496,36 @@ namespace Exiled.API.Features
         /// Clears the player's brodcast. Doesn't get logged to the console.
         /// </summary>
         public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
+
+        /// <summary>
+        /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be added.</param>
+        /// <param name="amount">The amount of ammo to be added.</param>
+        public void AddAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerAddAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be searched for in the player's inventory.</param>
+        /// <returns>The specified <see cref="AmmoType">ammo</see> count.</returns>
+        public ushort GetAmmo(AmmoType ammoType) => Inventory.GetCurAmmo(ammoType.GetItemType());
+
+        /// <summary>
+        /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
+        /// <param name="amount">The amount of ammo that will be dropped.</param>
+        /// <param name="checkMinimals">Whether ammo limits will be taken into consideration.</param>
+        /// <returns>Whether ammo was dropped.</returns>
+        public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
