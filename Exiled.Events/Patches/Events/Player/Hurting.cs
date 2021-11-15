@@ -38,6 +38,10 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            const int offset = 2;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call &&
+            (MethodInfo)instruction.operand == Method(typeof(ArtificialHealthManager), nameof(ArtificialHealthManager.GetAhpValue))) + offset;
+
             LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(Player));
             LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(Player));
             LocalBuilder mem_0x03 = generator.DeclareLocal(typeof(float));
@@ -55,11 +59,9 @@ namespace Exiled.Events.Patches.Events.Player
             Label into = generator.DefineLabel();
             Label jmp = generator.DefineLabel();
 
-            MethodInfo sendToAuthenticated = Method(typeof(NetworkUtils), nameof(NetworkUtils.SendToAuthenticated)).MakeGenericMethod(typeof(DisarmedPlayersListMessage));
+            newInstructions[index].labels.Add(cdc);
 
-            newInstructions[0].labels.Add(cdc);
-
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_2),
                 new CodeInstruction(OpCodes.Brfalse_S, cdc),
@@ -197,7 +199,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(DisarmedPlayers), nameof(DisarmedPlayers.Entries))),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DisarmedPlayersListMessage))[0]),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Call, sendToAuthenticated),
+                new CodeInstruction(OpCodes.Call, Method(typeof(NetworkUtils), nameof(NetworkUtils.SendToAuthenticated)).MakeGenericMethod(typeof(DisarmedPlayersListMessage))),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(ret);
