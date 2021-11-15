@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Server
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_3).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnLocalReporting))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
-                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LocalReportingEventArgs), nameof(LocalReportingEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg_S, 2),
             });
