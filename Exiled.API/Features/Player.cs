@@ -1498,6 +1498,36 @@ namespace Exiled.API.Features
         public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
 
         /// <summary>
+        /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be added.</param>
+        /// <param name="amount">The amount of ammo to be added.</param>
+        public void AddAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerAddAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be searched for in the player's inventory.</param>
+        /// <returns>The specified <see cref="AmmoType">ammo</see> count.</returns>
+        public ushort GetAmmo(AmmoType ammoType) => Inventory.GetCurAmmo(ammoType.GetItemType());
+
+        /// <summary>
+        /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
+        /// <param name="amount">The amount of ammo that will be dropped.</param>
+        /// <param name="checkMinimals">Whether ammo limits will be taken into consideration.</param>
+        /// <returns>Whether ammo was dropped.</returns>
+        public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
+
+        /// <summary>
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
