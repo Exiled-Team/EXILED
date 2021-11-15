@@ -139,7 +139,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x04.LocalIndex),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[1]),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[2]),
                 new CodeInstruction(OpCodes.Stloc_S, mem_0x03.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x05.LocalIndex),
                 new CodeInstruction(OpCodes.Ldnull),
