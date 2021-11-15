@@ -229,7 +229,7 @@ namespace Exiled.API.Features
                 // Scp079 position is constant,
                 // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
-                    room = FindParentRoom(ply.ReferenceHub.scp079PlayerScript.currentCamera.gameObject);
+                    room = FindParentRoom(ply.Camera.gameObject);
             }
 
             if (room == null)
@@ -238,13 +238,13 @@ namespace Exiled.API.Features
                 Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
-                    room = CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
-            }
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
-            // Always default to surface transform, since it's static.
-            // The current index of the 'Outside' room is the last one
-            if (room == null && rooms.Count != 0)
-                room = rooms[rooms.Count - 1];
+                // Always default to surface transform, since it's static.
+                // The current index of the 'Outside' room is the last one
+                if (rooms.Count != 0)
+                    return rooms.FirstOrDefault(r => r.gameObject.name == "Outside");
+            }
 
             return room;
         }
