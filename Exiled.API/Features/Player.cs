@@ -1092,21 +1092,21 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
         /// <returns>The <see cref="Player"/> owning the <see cref="uint">NetID</see>; otherwise <see langword="null"></see> if not found.</returns>
-        public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
+        public static Player Get(uint netId) => List.FirstOrDefault(player => player.NetworkIdentity.netId == netId && !player.IsDummy);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkConnection"/>, if any.
         /// </summary>
         /// <param name="connection">The player's <see cref="NetworkConnection"/>.</param>
         /// <returns>The <see cref="Player"/> owning the <see cref="NetworkConnection"/>; otherwise <see langword="null"></see> if not found.</returns>
-        public static Player Get(NetworkConnection connection) => ReferenceHub.TryGetHubNetID(connection.identity.netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
+        public static Player Get(NetworkConnection connection) => List.FirstOrDefault(player => player.NetworkIdentity == connection.identity && !player.IsDummy);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkIdentity"/>, if any.
         /// </summary>
         /// <param name="identity">The player's <see cref="NetworkIdentity"/>.</param>
         /// <returns>The <see cref="Player"/> owning the <see cref="NetworkIdentity"/>; otherwise <see langword="null"></see> if not found.</returns>
-        public static Player Get(NetworkIdentity identity) => List.FirstOrDefault(player => player.NetworkIdentity == identity);
+        public static Player Get(NetworkIdentity identity) => List.FirstOrDefault(player => player.NetworkIdentity == identity && !player.IsDummy);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
