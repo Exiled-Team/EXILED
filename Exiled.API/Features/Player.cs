@@ -13,6 +13,8 @@ namespace Exiled.API.Features
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
+    using CommandSystem;
+
     using CustomPlayerEffects;
 
     using Exiled.API.Enums;
@@ -305,8 +307,14 @@ namespace Exiled.API.Features
         /// </summary>
         public bool IsOverwatchEnabled
         {
-            get => ReferenceHub.serverRoles.OverwatchEnabled;
-            set => ReferenceHub.serverRoles.SetOverwatchStatus(value);
+            get => IsDummy ? false : ReferenceHub.serverRoles.OverwatchEnabled;
+            set
+            {
+                if (IsDummy)
+                    return;
+
+                ReferenceHub.serverRoles.SetOverwatchStatus(value);
+            }
         }
 
         /// <summary>
@@ -386,7 +394,16 @@ namespace Exiled.API.Features
         public RoleType Role
         {
             get => ReferenceHub.characterClassManager.NetworkCurClass;
-            set => SetRole(value);
+            set
+            {
+                if (IsDummy)
+                {
+                    Dummy.Get(this).Role = value;
+                    return;
+                }
+
+                SetRole(value);
+            }
         }
 
         /// <summary>
@@ -420,7 +437,16 @@ namespace Exiled.API.Features
         public PlayerMovementState MoveState
         {
             get => ReferenceHub.animationController.MoveState;
-            set => ReferenceHub.animationController.MoveState = value;
+            set
+            {
+                if (IsDummy)
+                {
+                    Dummy.Get(this).MovementState = value;
+                    return;
+                }
+
+                ReferenceHub.animationController.MoveState = value;
+            }
         }
 
         /// <summary>
@@ -461,7 +487,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's command sender instance.
         /// </summary>
-        public PlayerCommandSender Sender => ReferenceHub.queryProcessor._sender;
+        public PlayerCommandSender Sender => IsDummy ? null : ReferenceHub.queryProcessor._sender;
 
         /// <summary>
         /// Gets player's <see cref="NetworkConnection"/>.
@@ -476,7 +502,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is the host.
         /// </summary>
-        public bool IsHost => ReferenceHub.isDedicatedServer;
+        public bool IsHost => IsDummy ? false : ReferenceHub.isDedicatedServer;
 
         /// <summary>
         /// Gets a value indicating whether the player is a dummy.
@@ -532,7 +558,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets a value indicating whether the player friendly fire is enabled.
-        /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
+        /// <para>This only allows to deal friendly fire damage.</para>
         /// </summary>
         public bool IsFriendlyFireEnabled { get; set; } = false;
 
@@ -604,7 +630,7 @@ namespace Exiled.API.Features
         public bool IsTransmitting => ReferenceHub.radio.UsingRadio;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has godmode enabled.
+        /// Gets or sets a value indicating whether the player has GodMode enabled.
         /// </summary>
         public bool IsGodModeEnabled
         {
@@ -698,6 +724,9 @@ namespace Exiled.API.Features
 
             set
             {
+                if (IsDummy)
+                    return;
+
                 if (value == null || value.Type == ItemType.None)
                 {
                     Inventory.ServerSelectItem(0);
@@ -941,7 +970,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
+        public bool IsInPocketDimension => CurrentRoom.Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether player should use stamina system.
@@ -969,7 +998,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> of spectators that are currently spectating this <see cref="Player"/>.
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> of spectators that are currently spectating this player.
         /// </summary>
         public IEnumerable<Player> CurrentSpectatingPlayers
         {
@@ -986,7 +1015,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be null.
+        /// Gets or sets currently spectated <see cref="Player"/> by this player.
+        /// <para>May be null.</para>
         /// </summary>
         public Player SpectatedPlayer
         {
@@ -1003,7 +1033,7 @@ namespace Exiled.API.Features
             set
             {
                 if (IsAlive)
-                    throw new InvalidOperationException("You cannot set Spectated Player when you are alive!");
+                    throw new InvalidOperationException("You cannot set spectated player when you are alive!");
 
                 ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
                 ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
@@ -1019,56 +1049,70 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
         /// </summary>
         /// <param name="side">The players' side.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side && !player.IsDummy);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team && !player.IsDummy);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
         /// </summary>
         /// <param name="role">The players' role.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role && !player.IsDummy);
 
         /// <summary>
-        /// Gets the <see cref="Player"/> belonging to the ICommandSender, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="ICommandSender"/>, if any.
         /// </summary>
-        /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <param name="sender">The <see cref="ICommandSender"/>.</param>
+        /// <returns>The <see cref="Player"/> belonging to the <see cref="ICommandSender"/>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
 
         /// <summary>
-        /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>;, if any.
         /// </summary>
-        /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <param name="sender">The <see cref="CommandSender"/>.</param>
+        /// <returns>The <see cref="Player"/> belonging to the <see cref="CommandSender"/>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
-        /// Gets the Player belonging to the ReferenceHub, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>, if any.
         /// </summary>
-        /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
-        /// <returns>Returns a player or null if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
+        /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
+        /// <returns>The <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>; otherwise <see langword="null"/> if not found.</returns>
+        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject).IsDummy ? null : Get(referenceHub.gameObject);
 
         /// <summary>
-        /// Gets the Player belonging to a specific NetID, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="uint">NetID</see>, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
-        /// <returns>The player owning the netId, or null if not found.</returns>
-        public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
+        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="uint">NetID</see>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Player Get(uint netId) => List.FirstOrDefault(player => player.NetworkIdentity.netId == netId && !player.IsDummy);
 
         /// <summary>
-        /// Gets the Player belonging to the GameObject, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkConnection"/>, if any.
+        /// </summary>
+        /// <param name="connection">The player's <see cref="NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="NetworkConnection"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Player Get(NetworkConnection connection) => List.FirstOrDefault(player => player.NetworkIdentity == connection.identity && !player.IsDummy);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkIdentity"/>, if any.
+        /// </summary>
+        /// <param name="identity">The player's <see cref="NetworkIdentity"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="NetworkIdentity"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Player Get(NetworkIdentity identity) => List.FirstOrDefault(player => player.NetworkIdentity == identity && !player.IsDummy);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
         /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <returns>The <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
             if (gameObject == null)
@@ -1080,13 +1124,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player belonging to the player with the specified id.
+        /// Gets the <see cref="Player"/> belonging to the specified <see cref="int">id</see>.
         /// </summary>
-        /// <param name="id">The player id.</param>
-        /// <returns>Returns the player found or null if not found.</returns>
+        /// <param name="id">The player's <see cref="int">id</see>.</param>
+        /// <returns>The <see cref="Player"/> belonging to the specified <see cref="int">id</see>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(int id)
         {
-            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null && !player.IsDummy)
                 return player;
 
             foreach (Player playerFound in Dictionary.Values)
@@ -1103,10 +1147,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player by his identifier.
+        /// Gets the <see cref="Player"/> by his <see cref="string">identifier</see>.
         /// </summary>
-        /// <param name="args">The player's nickname, steamID64 or Discord ID.</param>
-        /// <returns>Returns the player found or null if not found.</returns>
+        /// <param name="args">The player's <see cref="string">nickname</see>, <see cref="string">SteamID64</see> or <see cref="string">Discord ID</see>.</param>
+        /// <returns>The <see cref="Player"/> with the specified <see cref="string">identifier</see>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(string args)
         {
             try
@@ -1114,17 +1158,17 @@ namespace Exiled.API.Features
                 if (string.IsNullOrWhiteSpace(args))
                     return null;
 
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null && !playerFound.IsDummy)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
-                    return Get(id);
+                    return Get(id).IsDummy ? null : Get(id);
 
                 if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
                 {
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (player.UserId == args)
+                        if (player.UserId == args && !player.IsDummy)
                         {
                             playerFound = player;
                             break;
@@ -1138,7 +1182,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.IsVerified || player.Nickname == null)
+                        if (!player.IsVerified || player.Nickname == null || player.IsDummy)
                             continue;
 
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
@@ -1376,7 +1420,13 @@ namespace Exiled.API.Features
         /// Disconnects a <see cref="ReferenceHub">player</see>.
         /// </summary>
         /// <param name="reason">The disconnection reason.</param>
-        public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
+        public void Disconnect(string reason = null)
+        {
+            if (IsDummy)
+                return;
+
+            ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
+        }
 
         /// <summary>
         /// Resets the player's stamina.
@@ -1424,7 +1474,13 @@ namespace Exiled.API.Features
         /// Kills the player.
         /// </summary>
         /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
+        public void Kill(DamageTypes.DamageType damageType = default)
+        {
+            if (IsDummy)
+                return;
+
+            Hurt(-1f, damageType);
+        }
 
         /// <summary>
         /// Bans the player.
@@ -1432,14 +1488,26 @@ namespace Exiled.API.Features
         /// <param name="duration">The ban duration.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="issuer">The ban issuer nickname.</param>
-        public void Ban(int duration, string reason, string issuer = "Console") => Server.BanPlayer.BanUser(GameObject, duration, reason, issuer, false);
+        public void Ban(int duration, string reason, string issuer = "Console")
+        {
+            if (IsDummy)
+                return;
+
+            Server.BanPlayer.BanUser(GameObject, duration, reason, issuer, false);
+        }
 
         /// <summary>
         /// Kicks the player.
         /// </summary>
         /// <param name="reason">The kick reason.</param>
         /// <param name="issuer">The kick issuer nickname.</param>
-        public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
+        public void Kick(string reason, string issuer = "Console")
+        {
+            if (IsDummy)
+                return;
+
+            Ban(0, reason, issuer);
+        }
 
         /// <summary>
         /// Blink the player's tag.
@@ -1483,7 +1551,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Clears the player's brodcast. Doesn't get logged to the console.
+        /// Clears the player's brodcasts. Doesn't get logged to the console.
         /// </summary>
         public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
 
@@ -1966,13 +2034,26 @@ namespace Exiled.API.Features
         /// Opens the report window.
         /// </summary>
         /// <param name="text">The text to send.</param>
-        public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
+        public void OpenReportWindow(string text)
+        {
+            if (IsDummy)
+                return;
+
+            SendConsoleMessage($"[REPORTING] {text}", "white");
+        }
 
         /// <summary>
         /// Places a Tantrum (Scp173's ability) under the player.
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
+
+        /// <summary>
+        /// Places blood under the player.
+        /// </summary>
+        /// <param name="type">The blood type.</param>
+        /// <param name="amountMultiplier">The blood amount multiplier.</param>
+        public void PlaceBlood(int type, float amountMultiplier) => Map.PlaceBlood(Position, type, amountMultiplier);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
