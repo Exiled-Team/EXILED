@@ -1343,7 +1343,16 @@ namespace Exiled.API.Features
         public bool RemoveItem(Item item, bool destroy = true)
         {
             if (!ItemsValue.Contains(item))
+            {
                 return false;
+            }
+
+            if (!Inventory.UserInventory.Items.ContainsKey(item.Serial))
+            {
+                ItemsValue.Remove(item);
+                return false;
+            }
+
             if (destroy)
             {
                 Inventory.ServerRemoveItem(item.Serial, null);
