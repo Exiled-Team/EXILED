@@ -1346,11 +1346,11 @@ namespace Exiled.API.Features
             {
                 return false;
             }
-            
+
             if (!Inventory.UserInventory.Items.ContainsKey(item.Serial))
             {
                 ItemsValue.Remove(item);
-                return false;       
+                return false;
             }
 
             if (destroy)
