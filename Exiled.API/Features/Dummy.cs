@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Dummy.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -10,18 +10,23 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+
+    using Exiled.API.Features.Items;
+
+    using InventorySystem.Items.Firearms.Modules;
+
     using Mirror;
     using UnityEngine;
 
     /// <summary>
-    /// A set of tools to handle npcs more easily.
+    /// A set of tools to handle NPCs more easily.
     /// </summary>
     public class Dummy
     {
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Dummy"/> on the server.
         /// </summary>
-        public static readonly Dictionary<GameObject, Dummy> Dictionary = new Dictionary<GameObject, Dummy>();
+        internal static readonly Dictionary<GameObject, Dummy> Dictionary = new Dictionary<GameObject, Dummy>();
 
         /// <summary>
         /// Gets a list of all the spawned <see cref="Dummy"/>.
@@ -57,7 +62,7 @@ namespace Exiled.API.Features
         /// </summary>
         public PlayerMovementState MovementState
         {
-            get => Player.ReferenceHub.animationController.MoveState;
+            get => Player.MoveState;
             set
             {
                 Player.ReferenceHub.animationController.MoveState = value;
@@ -68,44 +73,69 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the dummy's current item.
         /// </summary>
-        public ItemType CurrentItem
+        public Item CurrentItem
         {
-            get => Player.CurrentItem.Type;
-            set => Player.Inventory.NetworkCurItem = new InventorySystem.Items.ItemIdentifier(value, 0);
+            get => Player.CurrentItem;
+            set => Player.Inventory.NetworkCurItem = new InventorySystem.Items.ItemIdentifier(value.Type, 0);
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not the dummy is aiming with a weapon.
+        /// </summary>
+        public bool IsAimingDownWeapon
+        {
+            get => Player.IsAimingDownWeapon;
+            set
+            {
+                if (!(CurrentItem is Firearm firearm))
+                    return;
+
+                firearm.Base.AdsModule.ServerAds = value;
+            }
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Dummy"/> class.
         /// </summary>
-        /// <param name="spawnPosition">A <see cref="Vector3"/> representing the spawn position of the <see cref="Dummy"/>.</param>
+        /// <param name="position">A <see cref="Vector3"/> representing the spawn position of the <see cref="Dummy"/>.</param>
         /// <param name="scale">A <see cref="Vector3"/> representing the size of the <see cref="Dummy"/>.</param>
         /// <param name="role">The <see cref="RoleType"/> the <see cref="Dummy"/> will spawn as.</param>
         /// <param name="nick">The name of the <see cref="Dummy"/>.</param>
-        /// <param name="hasGoodMode">A value indicating whether or not the <see cref="Dummy"/> has good mode.</param>
-        public Dummy(Vector3 spawnPosition, Vector3 scale, RoleType role = RoleType.Tutorial, string nick = "NPC", bool hasGoodMode = true)
+        public Dummy(Vector3 position, Vector3 scale, RoleType role = RoleType.Tutorial, string nick = "NPC")
         {
             GameObject = Object.Instantiate(NetworkManager.singleton.playerPrefab);
-            var referenceHub = GameObject.GetComponent<ReferenceHub>();
+            ReferenceHub referenceHub = GameObject.GetComponent<ReferenceHub>();
 
             GameObject.transform.localScale = scale;
-            GameObject.transform.position = spawnPosition;
+            GameObject.transform.position = position;
 
             referenceHub.queryProcessor.PlayerId = -1;
             referenceHub.queryProcessor.NetworkPlayerId = -1;
             referenceHub.queryProcessor._ipAddress = "127.0.0.WAN";
-
             referenceHub.characterClassManager.CurClass = role;
-            referenceHub.characterClassManager.GodMode = hasGoodMode;
             referenceHub.playerStats.SetHPAmount(100);
-
             referenceHub.nicknameSync.Network_myNickSync = nick;
 
             NetworkServer.Spawn(GameObject);
-            Player = new Player(GameObject);
 
+            Player = new Player(GameObject);
             Dictionary.Add(GameObject, this);
             PlayerManager.AddPlayer(GameObject, CustomNetworkManager.slots);
         }
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to the <see cref="Features.Player"/>, if any.
+        /// </summary>
+        /// <param name="player">The <see cref="Features.Player"/>.</param>
+        /// <returns>The <see cref="Dummy"/> belonging to the <see cref="Features.Player"/>; otherwise <see langword="null"/> if not found.</returns>
+        public static Dummy Get(Player player) => Dummy.List.FirstOrDefault(dummy => dummy.Player == player);
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
+        /// </summary>
+        /// <param name="gameObject">The <see cref="Features.Player"/>.</param>
+        /// <returns>The <see cref="Dummy"/> belonging to the <see cref="UnityEngine.GameObject"/>; otherwise <see langword="null"/> if not found.</returns>
+        public static Dummy Get(GameObject gameObject) => Dummy.List.FirstOrDefault(dummy => dummy.GameObject == gameObject);
 
         /// <summary>
         /// Spawns the dummy if it is not spawned.
@@ -128,13 +158,14 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Destroys the dummy.
+        /// Kills the dummy.
         /// </summary>
-        /// <param name="spawnRagdoll">A value indicating whether or not it should spawn a <see cref="Ragdoll"/>.</param>
-        public void Kill(bool spawnRagdoll = false)
+        /// <param name="spawnRagdoll">A value indicating whether or not the <see cref="Ragdoll"/> can be spawned.</param>
+        /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> to show as death cause.</param>
+        public void Kill(bool spawnRagdoll = false, DamageTypes.DamageType damageType = default)
         {
             if (spawnRagdoll)
-                GameObject.GetComponent<RagdollManager>().SpawnRagdoll(GameObject.transform.position, GameObject.transform.rotation, Vector3.zero, (int)Player.Role, default, false, string.Empty, Player.Nickname, -1);
+                Exiled.API.Features.Ragdoll.Spawn(Player, damageType, Player.Position, Quaternion.Euler(Player.Rotation), default, false, false);
 
             Role = RoleType.Spectator;
         }
