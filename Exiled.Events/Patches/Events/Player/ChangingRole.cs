@@ -156,13 +156,39 @@ namespace Exiled.Events.Patches.Events.Player
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
                     while (inventory.UserInventory.Items.Count > 0)
-                        list.Add(inventory.ServerDropItem(inventory.UserInventory.Items.ElementAt(0).Key));
+                    {
+                        var startCount = inventory.UserInventory.Items.Count;
+                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        var item = inventory.ServerDropItem(key);
+
+                        // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
+                        if (startCount == inventory.UserInventory.Items.Count)
+                        {
+                            inventory.UserInventory.Items.Remove(key);
+                        }
+                        else
+                        {
+                            list.Add(item);
+                        }
+                    }
+
                     InventoryItemProvider.PreviousInventoryPickups[player.ReferenceHub] = list;
                 }
                 else
                 {
                     while (inventory.UserInventory.Items.Count > 0)
-                        inventory.ServerRemoveItem(inventory.UserInventory.Items.ElementAt(0).Key, null);
+                    {
+                        var startCount = inventory.UserInventory.Items.Count;
+                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        inventory.ServerRemoveItem(key, null);
+
+                        // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
+                        if (startCount == inventory.UserInventory.Items.Count)
+                        {
+                            inventory.UserInventory.Items.Remove(key);
+                        }
+                    }
+
                     inventory.UserInventory.ReserveAmmo.Clear();
                     inventory.SendAmmoNextFrame = true;
                 }
