@@ -1088,11 +1088,25 @@ namespace Exiled.API.Features
         public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject).IsDummy ? null : Get(referenceHub.gameObject);
 
         /// <summary>
-        /// Gets the Player belonging to a specific NetID, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="uint">NetID</see>, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
-        /// <returns>The player owning the netId, or null if not found.</returns>
+        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="uint">NetID</see>; otherwise <see langword="null"></see> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkConnection"/>, if any.
+        /// </summary>
+        /// <param name="connection">The player's <see cref="NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="NetworkConnection"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Player Get(NetworkConnection connection) => ReferenceHub.TryGetHubNetID(connection.identity.netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkIdentity"/>, if any.
+        /// </summary>
+        /// <param name="identity">The player's <see cref="NetworkIdentity"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="NetworkIdentity"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Player Get(NetworkIdentity identity) => ReferenceHub.TryGetHubNetID(identity.netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
