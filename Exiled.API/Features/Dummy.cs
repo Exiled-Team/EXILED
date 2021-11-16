@@ -13,8 +13,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Features.Items;
 
-    using InventorySystem.Items.Firearms.Modules;
-
     using Mirror;
     using UnityEngine;
 
