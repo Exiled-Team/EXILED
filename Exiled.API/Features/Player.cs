@@ -1106,7 +1106,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="identity">The player's <see cref="NetworkIdentity"/>.</param>
         /// <returns>The <see cref="Player"/> owning the <see cref="NetworkIdentity"/>; otherwise <see langword="null"></see> if not found.</returns>
-        public static Player Get(NetworkIdentity identity) => ReferenceHub.TryGetHubNetID(identity.netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
+        public static Player Get(NetworkIdentity identity) => List.FirstOrDefault(player => player.NetworkIdentity == identity);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
