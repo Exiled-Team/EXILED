@@ -128,14 +128,42 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Features.Player"/>.</param>
         /// <returns>The <see cref="Dummy"/> belonging to the <see cref="Features.Player"/>; otherwise <see langword="null"/> if not found.</returns>
-        public static Dummy Get(Player player) => Dummy.List.FirstOrDefault(dummy => dummy.Player == player);
+        public static Dummy Get(Player player) => Get(player.GameObject);
 
         /// <summary>
         /// Gets the <see cref="Dummy"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
-        /// <param name="gameObject">The <see cref="Features.Player"/>.</param>
+        /// <param name="gameObject">The dummy's <see cref="UnityEngine.GameObject"/>.</param>
         /// <returns>The <see cref="Dummy"/> belonging to the <see cref="UnityEngine.GameObject"/>; otherwise <see langword="null"/> if not found.</returns>
         public static Dummy Get(GameObject gameObject) => Dummy.List.FirstOrDefault(dummy => dummy.GameObject == gameObject);
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to the <see cref="ReferenceHub"/>, if any.
+        /// </summary>
+        /// <param name="referenceHub">The dummy's <see cref="ReferenceHub"/>.</param>
+        /// <returns>The <see cref="Dummy"/> belonging to the <see cref="ReferenceHub"/>; otherwise <see langword="null"/> if not found.</returns>
+        public static Dummy Get(ReferenceHub referenceHub) => Dummy.List.FirstOrDefault(dummy => dummy.Player.ReferenceHub == referenceHub);
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to a specific <see cref="uint">NetID</see>, if any.
+        /// </summary>
+        /// <param name="netId">The dummy's <see cref="NetworkIdentity.netId"/>.</param>
+        /// <returns>The <see cref="Dummy"/> owning the <see cref="uint">NetID</see>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Dummy Get(uint netId) => Dummy.List.FirstOrDefault(dummy => dummy.Player.NetworkIdentity.netId == netId);
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to a specific <see cref="NetworkConnection"/>, if any.
+        /// </summary>
+        /// <param name="connection">The dummy's <see cref="NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Dummy"/> owning the <see cref="NetworkConnection"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Dummy Get(NetworkConnection connection) => Dummy.List.FirstOrDefault(dummy => dummy.Player.NetworkIdentity == connection.identity);
+
+        /// <summary>
+        /// Gets the <see cref="Dummy"/> belonging to a specific <see cref="NetworkIdentity"/>, if any.
+        /// </summary>
+        /// <param name="identity">The dummy's <see cref="NetworkIdentity"/>.</param>
+        /// <returns>The <see cref="Dummy"/> owning the <see cref="NetworkIdentity"/>; otherwise <see langword="null"></see> if not found.</returns>
+        public static Dummy Get(NetworkIdentity identity) => Dummy.List.FirstOrDefault(dummy => dummy.Player.NetworkIdentity == identity);
 
         /// <summary>
         /// Spawns the dummy if it is not spawned.
