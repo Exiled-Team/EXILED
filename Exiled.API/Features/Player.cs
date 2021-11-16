@@ -1085,14 +1085,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
         /// <returns>The <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>; otherwise <see langword="null"/> if not found.</returns>
-        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
+        public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject).IsDummy ? null : Get(referenceHub.gameObject);
 
         /// <summary>
         /// Gets the Player belonging to a specific NetID, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
         /// <returns>The player owning the netId, or null if not found.</returns>
-        public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
+        public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) && !Get(hub).IsDummy ? Get(hub) : null;
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
@@ -1116,7 +1116,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Player"/> belonging to the specified <see cref="int">id</see>; otherwise <see langword="null"/> if not found.</returns>
         public static Player Get(int id)
         {
-            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
+            if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null && !player.IsDummy)
                 return player;
 
             foreach (Player playerFound in Dictionary.Values)
@@ -1144,17 +1144,17 @@ namespace Exiled.API.Features
                 if (string.IsNullOrWhiteSpace(args))
                     return null;
 
-                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null)
+                if (UserIdsCache.TryGetValue(args, out Player playerFound) && playerFound?.ReferenceHub != null && !playerFound.IsDummy)
                     return playerFound;
 
                 if (int.TryParse(args, out int id))
-                    return Get(id);
+                    return Get(id).IsDummy ? null : Get(id);
 
                 if (args.EndsWith("@steam") || args.EndsWith("@discord") || args.EndsWith("@northwood") || args.EndsWith("@patreon"))
                 {
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (player.UserId == args)
+                        if (player.UserId == args && !player.IsDummy)
                         {
                             playerFound = player;
                             break;
@@ -1168,7 +1168,7 @@ namespace Exiled.API.Features
 
                     foreach (Player player in Dictionary.Values)
                     {
-                        if (!player.IsVerified || player.Nickname == null)
+                        if (!player.IsVerified || player.Nickname == null || player.IsDummy)
                             continue;
 
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
