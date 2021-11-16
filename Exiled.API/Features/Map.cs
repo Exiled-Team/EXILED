@@ -466,6 +466,14 @@ namespace Exiled.API.Features
         public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
+        /// Places blood with the specified parameters.
+        /// </summary>
+        /// <param name="position">The location in which the blood will be spawned.</param>
+        /// <param name="type">The blood type.</param>
+        /// <param name="amountMultiplier">The blood amount multiplier.</param>
+        public static void PlaceBlood(Vector3 position, int type, float amountMultiplier = 1f) => PlayerManager.hostHub.characterClassManager.RpcPlaceBlood(position, type, amountMultiplier);
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
