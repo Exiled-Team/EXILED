@@ -120,6 +120,11 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual RoleType EscapeAsUnCuffed { get; set; }
 
         /// <summary>
+        /// Gets or sets the scale of this role.
+        /// </summary>
+        protected virtual Vector3 Scale { get; set; }
+
+        /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
@@ -274,6 +279,9 @@ namespace Exiled.CustomRoles.API.Features
                 if (pos != Vector3.zero)
                     player.Position = pos + (Vector3.up * 1.5f);
 
+                if (Scale != Vector3.zero)
+                    player.Scale = Scale;
+
                 if (!KeepInventoryOnSpawn)
                 {
                     Log.Debug($"{Name}: Clearing {player.Nickname}'s inventory.", CustomRoles.Instance.Config.Debug);
@@ -307,8 +315,12 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void RemoveRole(Player player)
         {
             TrackedPlayers.Remove(player);
+            if (Scale != Vector3.zero)
+                player.Scale = new Vector3(1, 1, 1);
+
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
+
             foreach (CustomAbility ability in CustomAbilities)
             {
                 ability.RemoveAbility(player);
