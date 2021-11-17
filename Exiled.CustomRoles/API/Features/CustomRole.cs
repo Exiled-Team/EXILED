@@ -69,11 +69,6 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the chance of this role.
-        /// </summary>
-        public abstract float Chance { get; set; }
-
-        /// <summary>
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
