@@ -105,12 +105,12 @@ namespace Exiled.CustomRoles.API.Features
         protected virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating the role when player escape as cuffed.
+        /// Gets or sets a value indicating the role when player escapes while cuffed.
         /// </summary>
         protected virtual RoleType EscapeAsCuffed { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating the role when player escape hasn't cuffed.
+        /// Gets or sets a value indicating the role when the player escapes while not cuffed.
         /// </summary>
         protected virtual RoleType EscapeAsUnCuffed { get; set; }
 
