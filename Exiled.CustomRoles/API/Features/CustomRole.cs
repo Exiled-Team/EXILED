@@ -80,6 +80,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual List<CustomAbility> CustomAbilities { get; set; } = new List<CustomAbility>();
 
         /// <summary>
+        /// Gets or sets the scale of this role.
+        /// </summary>
+        protected virtual Vector3 Scale { get; set; }
+
+        /// <summary>
         /// Gets or sets the starting inventory for the role.
         /// </summary>
         protected virtual List<string> Inventory { get; set; } = new List<string>();
@@ -113,11 +118,6 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets a value indicating the role when the player escapes while not cuffed.
         /// </summary>
         protected virtual RoleType EscapeAsUnCuffed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the scale of this role.
-        /// </summary>
-        protected virtual Vector3 Scale { get; set; }
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
