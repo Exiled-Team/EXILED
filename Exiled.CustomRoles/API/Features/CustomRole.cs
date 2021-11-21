@@ -263,7 +263,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Adding role to {player.Nickname}.", CustomRoles.Instance.Config.Debug);
             if (Role != RoleType.None)
             {
-                player.SetRole(Role, SpawnReason.ForceClass, true);
+                player.SetRole(GetRandomRole(), SpawnReason.ForceClass, true);
             }
 
             Timing.CallDelayed(1.5f, () =>
@@ -394,6 +394,28 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             return Vector3.zero;
+        }
+
+        /// <summary>
+        /// Gets a random <see cref="RoleType"/> from <see cref="SpawnProperties"/>.
+        /// </summary>
+        /// <returns>The chosen role.</returns>
+        protected RoleType GetRandomRole()
+        {
+            if (SpawnProperties == null || !SpawnProperties.RoleSpawnPoints.Any())
+                return Role;
+
+            if (SpawnProperties.RoleSpawnPoints.Count > 0)
+            {
+                foreach (var role in SpawnProperties.RoleSpawnPoints)
+                {
+                    int r = Loader.Random.Next(100);
+                    if (r <= role.Chance)
+                        return role.Role;
+                }
+            }
+
+            return Role;
         }
 
         /// <summary>
