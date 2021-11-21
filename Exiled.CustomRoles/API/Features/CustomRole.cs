@@ -82,7 +82,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the scale of this role.
         /// </summary>
-        protected virtual Vector3 Scale { get; set; }
+        public virtual Vector3 Scale { get; set; }
 
         /// <summary>
         /// Gets or sets the starting inventory for the role.
