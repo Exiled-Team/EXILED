@@ -82,6 +82,8 @@ namespace Exiled.Events.Patches.Events.Dummies
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(Vector3))[1]),
                 new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Starg_S, 1),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.ForcePosition), new[] { typeof(Vector3) })),
