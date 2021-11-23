@@ -259,7 +259,8 @@ namespace Exiled.API.Extensions
         // This determines what attachment codes can be added together
         // to give us the combined code we have, so that we can determine
         // which attachments are present for any given value.
-        // Credit: "TheGeneral" on StackOverflow
+        // Credits: "TheGeneral" on StackOverflow
+        // https://stackoverflow.com/questions/69762657/how-to-find-a-given-number-by-adding-up-numbers-from-list-of-numbers-and-return
         private static IEnumerable<T[]> GetCombinations<T>(T[] source)
         {
             for (int i = 0; i < (1 << source.Length); i++)
