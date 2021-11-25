@@ -311,7 +311,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             TrackedPlayers.Remove(player);
             if (Scale != Vector3.zero)
-                player.Scale = Vector3.One;
+                player.Scale = Vector3.one;
 
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
