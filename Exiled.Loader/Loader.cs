@@ -232,9 +232,9 @@ namespace Exiled.Loader
                 {
                     if (type.IsAbstract || type.IsInterface)
                     {
-                        continue;   
+                        continue;
                     }
-                    
+
                     if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
