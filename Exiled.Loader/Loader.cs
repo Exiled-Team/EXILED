@@ -232,6 +232,7 @@ namespace Exiled.Loader
                 {
                     if (type.IsAbstract || type.IsInterface)
                     {
+                        Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.", ShouldDebugBeShown);
                         continue;
                     }
 
