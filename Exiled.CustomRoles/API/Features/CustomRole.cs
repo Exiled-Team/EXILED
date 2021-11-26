@@ -300,8 +300,8 @@ namespace Exiled.CustomRoles.API.Features
         public virtual void RemoveRole(Player player)
         {
             TrackedPlayers.Remove(player);
-            if (Scale != Vector3.zero)
-                player.Scale = Vector3.one;
+
+            player.Scale = Vector3.one;
 
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
