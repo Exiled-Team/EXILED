@@ -39,6 +39,8 @@ namespace Exiled.API.Features
     using PlayableScps;
     using PlayableScps.ScriptableObjects;
 
+    using PlayerStatsSystem;
+
     using RemoteAdmin;
 
     using UnityEngine;
@@ -648,10 +650,10 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.Health;
+            get => ReferenceHub.playerStats.StatModules[0].CurValue;
             set
             {
-                ReferenceHub.playerStats.Health = value;
+                ReferenceHub.playerStats.StatModules[0].CurValue = value;
 
                 if (value > MaxHealth)
                     MaxHealth = (int)value;
@@ -663,8 +665,8 @@ namespace Exiled.API.Features
         /// </summary>
         public int MaxHealth
         {
-            get => ReferenceHub.playerStats.maxHP;
-            set => ReferenceHub.playerStats.maxHP = value;
+            get => ReferenceHub.characterClassManager.CurRole.maxHP;
+            set => ReferenceHub.characterClassManager.CurRole.maxHP = value;
         }
 
         /// <summary>
@@ -673,32 +675,31 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
+            get => ReferenceHub.playerStats.StatModules[1].CurValue;
             set
             {
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = Mathf.CeilToInt(value);
 
-                ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
+                ReferenceHub.playerStats.StatModules[1].CurValue = value;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the player's artificial health decay.
-        /// </summary>
-        public float ArtificialHealthDecay
-        {
-            get => ReferenceHub.playerStats.NetworkArtificialHpDecay;
-            set => ReferenceHub.playerStats.NetworkArtificialHpDecay = value;
         }
 
         /// <summary>
         /// Gets or sets the player's maximum artificial health.
         /// </summary>
-        public int MaxArtificialHealth
+        public float MaxArtificialHealth
         {
-            get => ReferenceHub.playerStats.MaxArtificialHealth;
-            set => ReferenceHub.playerStats.MaxArtificialHealth = value;
+            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar;
+            set => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar = value;
+        }
+
+        /// <summary>
+        /// Gets a list of all active Artificial Health processes on the player.
+        /// </summary>
+        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
+        {
+            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
         }
 
         /// <summary>
@@ -1405,26 +1406,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damage">The damage to be inflicted.</param>
-        /// <param name="damageType">The damage type.</param>
-        /// <param name="attackerName">The attacker name.</param>
-        /// <param name="attackerId">The attacker player id.</param>
-        /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
-        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
-        {
-            if (Role == RoleType.Scp0492 && !ReferenceHub.TryGetHub(attackerId, out _))
-                attackerId = Id;
-
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
-        }
-
-        /// <summary>
-        /// Hurts the player.
-        /// </summary>
-        /// <param name="damage">The damage to be inflicted.</param>
-        /// <param name="attacker">The attacker.</param>
-        /// <param name="damageType">The damage type.</param>
-        public void Hurt(float damage, Player attacker, DamageTypes.DamageType damageType = default) => Hurt(damage, damageType, attacker?.Nickname, attacker?.Id ?? 0);
+        /// <param name="damageReason"> The reason for the damage being dealt.</param>
+        /// <param name="damage">The amount of damage to deal.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
+        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>
         /// Heals the player.
@@ -1434,7 +1419,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                ReferenceHub.playerStats.HealHPAmount(amount);
+                ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -1442,8 +1427,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
+        /// <param name="deathReason">The reason the player has been killed.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(string deathReason, string cassieAnnouncement = "") => ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
 
         /// <summary>
         /// Bans the player.

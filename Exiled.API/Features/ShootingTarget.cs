@@ -16,9 +16,11 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
-    using BaseTarget = InventorySystem.Items.Firearms.Utilities.ShootingTarget;
+    using BaseTarget = AdminToys.ShootingTarget;
 
     /// <summary>
     /// A wrapper class for <see cref="BaseTarget"/>.
@@ -198,11 +200,10 @@ namespace Exiled.API.Features
         /// Damages the target with the given damage, item, footprint, and hit location.
         /// </summary>
         /// <param name="damage">The damage to be dealt.</param>
-        /// <param name="item">The <see cref="IDamageDealer"/> dealing the damage.</param>
-        /// <param name="attackerFootprint">The <see cref="Footprinting.Footprint"/> of the attacker.</param>
+        /// <param name="damageHandler">The <see cref="DamageHandlerBase"/> dealing the damage.</param>
         /// <param name="exactHit">The exact location of the hit.</param>
         /// <returns>Whether or not the damage was sent.</returns>
-        public bool Damage(float damage, IDamageDealer item, Footprinting.Footprint attackerFootprint, Vector3 exactHit) =>
-            Base.Damage(damage, item, attackerFootprint, exactHit);
+        public bool Damage(float damage, DamageHandlerBase damageHandler, Vector3 exactHit) =>
+            Base.Damage(damage, damageHandler, exactHit);
     }
 }

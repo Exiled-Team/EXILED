@@ -18,12 +18,14 @@ namespace Exiled.Events.Patches.Events.Player
 
     using NorthwoodLib.Pools;
 
+    using PlayerStatsSystem;
+
     using static HarmonyLib.AccessTools;
 
-    using BaseTarget = InventorySystem.Items.Firearms.Utilities.ShootingTarget;
+    using BaseTarget = AdminToys.ShootingTarget;
 
     /// <summary>
-    /// Patches <see cref="BaseTarget.Damage(float, InventorySystem.Items.IDamageDealer, Footprinting.Footprint, UnityEngine.Vector3)"/>.
+    /// Patches <see cref="BaseTarget.Damage(float, DamageHandlerBase, UnityEngine.Vector3)"/>.
     /// Adds the <see cref="Handlers.Player.DamagingShootingTarget"/> event.
     /// </summary>
     [HarmonyPatch(typeof(BaseTarget), nameof(BaseTarget.Damage))]

@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             // Search for the first "RoundSummary.changed_into_zombies++", then subtract the offset to get "ldstr".
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldsfld &&
-            (FieldInfo)instruction.operand == Field(typeof(RoundSummary), nameof(RoundSummary.changed_into_zombies))) + offset;
+            (FieldInfo)instruction.operand == Field(typeof(RoundSummary), nameof(RoundSummary.ChangedIntoZombies))) + offset;
 
             // var ev = new FinishingRecallEventArgs(Player.Get(referenceHub), Player.Get(this.Hub), true);
             //

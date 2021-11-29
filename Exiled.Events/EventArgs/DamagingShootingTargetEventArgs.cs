@@ -11,8 +11,11 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
 
     using InventorySystem.Items;
+
+    using PlayerStatsSystem;
 
     using UnityEngine;
 
@@ -26,16 +29,14 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="shootingTarget"><inheritdoc cref="ShootingTarget"/></param>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="attackerFootprint"><inheritdoc cref="AttackerFootprint"/></param>
+        /// <param name="damageHandler"><inheritdoc cref="Item"/></param>
         /// <param name="hitLocation"><inheritdoc cref="HitLocation"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DamagingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, IDamageDealer item, Footprinting.Footprint attackerFootprint, Vector3 hitLocation, bool isAllowed = true)
+        public DamagingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, DamageHandlerBase damageHandler, Vector3 hitLocation, bool isAllowed = true)
         {
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);
-            Item = API.Features.Items.Item.Get(item as ItemBase);
-            AttackerFootprint = attackerFootprint;
+            Item = player.CurrentItem;
             HitLocation = hitLocation;
             IsAllowed = isAllowed;
         }
@@ -53,12 +54,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the item dealing the damage.
         /// </summary>
-        public API.Features.Items.Item Item { get; }
-
-        /// <summary>
-        /// Gets the attacker's footprint.
-        /// </summary>
-        public Footprinting.Footprint AttackerFootprint { get; }
+        public Item Item { get; }
 
         /// <summary>
         /// Gets the exact world location the bullet impacted the target.

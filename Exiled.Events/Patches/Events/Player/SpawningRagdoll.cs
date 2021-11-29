@@ -4,7 +4,8 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-
+// TODO: This
+/*
 namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
@@ -18,15 +19,17 @@ namespace Exiled.Events.Patches.Events.Player
 
     using NorthwoodLib.Pools;
 
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int, bool)"/>.
+    /// Patches <see cref="Ragdoll.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)"/>.
     /// Adds the <see cref="SpawningRagdoll"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
+    [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -157,4 +160,4 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-}
+}*/

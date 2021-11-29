@@ -14,6 +14,8 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
+    using PlayerStatsSystem;
+
     /// <summary>
     /// Contains all information before a player dies.
     /// </summary>
@@ -24,14 +26,14 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="killer"><inheritdoc cref="Killer"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="hitInformation"><inheritdoc cref="HitInformation"/></param>
+        /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DyingEventArgs(Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
+        public DyingEventArgs(Player killer, Player target, DamageHandlerBase damageHandler, bool isAllowed = true)
         {
             ItemsToDrop = new List<Item>(target.Items.ToList());
             Killer = killer;
             Target = target;
-            HitInformation = hitInformation;
+            DamageHandler = damageHandler;
             IsAllowed = isAllowed;
         }
 
@@ -51,9 +53,9 @@ namespace Exiled.Events.EventArgs
         public List<Item> ItemsToDrop { get; set; }
 
         /// <summary>
-        /// Gets or sets the hit information.
+        /// Gets or sets the damage handler for the event.
         /// </summary>
-        public PlayerStats.HitInfo HitInformation { get; set; }
+        public DamageHandlerBase DamageHandler { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be killed.

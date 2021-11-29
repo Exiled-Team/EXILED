@@ -23,6 +23,8 @@ namespace Exiled.Events.Patches.Events.Server
 
     using MEC;
 
+    using RoundRestarting;
+
     using UnityEngine;
 
     using Console = GameCore.Console;
@@ -88,8 +90,8 @@ namespace Exiled.Events.Patches.Events.Server
                 int num1 = newList.mtf_and_guards + newList.scientists;
                 int num2 = newList.chaos_insurgents + newList.class_ds;
                 int num3 = newList.scps_except_zombies + newList.zombies;
-                int num4 = newList.class_ds + RoundSummary.escaped_ds;
-                int num5 = newList.scientists + RoundSummary.escaped_scientists;
+                int num4 = newList.class_ds + RoundSummary.EscapedClassD;
+                int num5 = newList.scientists + RoundSummary.EscapedScientists;
                 float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
                 float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
@@ -145,13 +147,13 @@ namespace Exiled.Events.Patches.Events.Server
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
-                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, roundEndedEventArgs.TimeToRestart);
+                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, roundEndedEventArgs.TimeToRestart);
                     }
 
                     yield return Timing.WaitForSeconds(timeToRoundRestart - 1);
                     roundSummary.RpcDimScreen();
                     yield return Timing.WaitForSeconds(1f);
-                    ReferenceHub.LocalHub.playerStats.Roundrestart();
+                    RoundRestart.InitiateRoundRestart();
                     yield break;
                 }
             }

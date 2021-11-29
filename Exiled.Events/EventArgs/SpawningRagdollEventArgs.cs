@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
     /// <summary>
@@ -29,7 +31,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="rotation"><inheritdoc cref="Rotation"/></param>
         /// <param name="velocity"><inheritdoc cref="Velocity"/></param>
         /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
-        /// <param name="hinInformations"><inheritdoc cref="HitInformations"/></param>
+        /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandlerBase"/></param>
         /// <param name="isRecallAllowed"><inheritdoc cref="IsRecallAllowed"/></param>
         /// <param name="dissonanceId"><inheritdoc cref="DissonanceId"/></param>
         /// <param name="playerName"><inheritdoc cref="PlayerNickname"/></param>
@@ -43,7 +45,7 @@ namespace Exiled.Events.EventArgs
             Quaternion rotation,
             Vector3 velocity,
             RoleType roleType,
-            PlayerStats.HitInfo hinInformations,
+            DamageHandlerBase damageHandlerBase,
             bool isRecallAllowed,
             string dissonanceId,
             string playerName,
@@ -57,7 +59,7 @@ namespace Exiled.Events.EventArgs
             Rotation = rotation;
             Velocity = velocity;
             RoleType = roleType;
-            HitInformations = hinInformations;
+            DamageHandlerBase = damageHandlerBase;
             IsRecallAllowed = isRecallAllowed;
             DissonanceId = dissonanceId;
             PlayerNickname = playerName;
@@ -97,9 +99,9 @@ namespace Exiled.Events.EventArgs
         public RoleType RoleType { get; set; }
 
         /// <summary>
-        /// Gets or sets the hit informations on the ragdoll.
+        /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public PlayerStats.HitInfo HitInformations { get; set; }
+        public DamageHandlerBase DamageHandlerBase { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be revived by SCP-049.

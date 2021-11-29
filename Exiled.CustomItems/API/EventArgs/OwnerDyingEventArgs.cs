@@ -10,6 +10,8 @@ namespace Exiled.CustomItems.API.EventArgs
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
+    using PlayerStatsSystem;
+
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
 
@@ -24,7 +26,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : this(item, ev.Killer, ev.Target, ev.HitInformation, ev.IsAllowed)
+            : this(item, ev.Killer, ev.Target, ev.DamageHandler, ev.IsAllowed)
         {
         }
 
@@ -34,10 +36,10 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="killer"><inheritdoc cref="DyingEventArgs.Killer"/></param>
         /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
-        /// <param name="hitInformation"><inheritdoc cref="DyingEventArgs.HitInformation"/></param>
+        /// <param name="damageHandler"><inheritdoc cref="DyingEventArgs.DamageHandler"/></param>
         /// <param name="isAllowed"><inheritdoc cref="DyingEventArgs.IsAllowed"/></param>
-        public OwnerDyingEventArgs(Item item, Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
-            : base(killer, target, hitInformation, isAllowed)
+        public OwnerDyingEventArgs(Item item, Player killer, Player target, DamageHandlerBase damageHandler, bool isAllowed = true)
+            : base(killer, target, damageHandler, isAllowed)
         {
             Item = item;
         }

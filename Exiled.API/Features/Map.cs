@@ -197,7 +197,7 @@ namespace Exiled.API.Features
         public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
 
         /// <summary>
-        /// Gets the <see cref="global::AmbientSoundPlayer"/>.
+        /// Gets the <see cref="AmbientSoundPlayer"/>.
         /// </summary>
         public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
