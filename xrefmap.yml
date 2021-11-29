@@ -5823,6 +5823,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.ActiveEffects
   nameWithType: Player.ActiveEffects
+- uid: Exiled.API.Features.Player.AddAmmo(Exiled.API.Enums.AmmoType,System.UInt16)
+  name: AddAmmo(AmmoType, UInt16)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddAmmo_Exiled_API_Enums_AmmoType_System_UInt16_
+  commentId: M:Exiled.API.Features.Player.AddAmmo(Exiled.API.Enums.AmmoType,System.UInt16)
+  fullName: Exiled.API.Features.Player.AddAmmo(Exiled.API.Enums.AmmoType, System.UInt16)
+  nameWithType: Player.AddAmmo(AmmoType, UInt16)
+- uid: Exiled.API.Features.Player.AddAmmo*
+  name: AddAmmo
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddAmmo_
+  commentId: Overload:Exiled.API.Features.Player.AddAmmo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.AddAmmo
+  nameWithType: Player.AddAmmo
 - uid: Exiled.API.Features.Player.AddItem(Exiled.API.Features.Items.Item)
   name: AddItem(Item)
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_AddItem_Exiled_API_Features_Items_Item_
@@ -6304,6 +6317,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.DisplayNickname
   nameWithType: Player.DisplayNickname
+- uid: Exiled.API.Features.Player.DissonanceUserSetup
+  name: DissonanceUserSetup
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DissonanceUserSetup
+  commentId: P:Exiled.API.Features.Player.DissonanceUserSetup
+  fullName: Exiled.API.Features.Player.DissonanceUserSetup
+  nameWithType: Player.DissonanceUserSetup
+- uid: Exiled.API.Features.Player.DissonanceUserSetup*
+  name: DissonanceUserSetup
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DissonanceUserSetup_
+  commentId: Overload:Exiled.API.Features.Player.DissonanceUserSetup
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.DissonanceUserSetup
+  nameWithType: Player.DissonanceUserSetup
 - uid: Exiled.API.Features.Player.DoNotTrack
   name: DoNotTrack
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DoNotTrack
@@ -6317,6 +6343,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.DoNotTrack
   nameWithType: Player.DoNotTrack
+- uid: Exiled.API.Features.Player.DropAmmo(Exiled.API.Enums.AmmoType,System.UInt16,System.Boolean)
+  name: DropAmmo(AmmoType, UInt16, Boolean)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropAmmo_Exiled_API_Enums_AmmoType_System_UInt16_System_Boolean_
+  commentId: M:Exiled.API.Features.Player.DropAmmo(Exiled.API.Enums.AmmoType,System.UInt16,System.Boolean)
+  fullName: Exiled.API.Features.Player.DropAmmo(Exiled.API.Enums.AmmoType, System.UInt16, System.Boolean)
+  nameWithType: Player.DropAmmo(AmmoType, UInt16, Boolean)
+- uid: Exiled.API.Features.Player.DropAmmo*
+  name: DropAmmo
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropAmmo_
+  commentId: Overload:Exiled.API.Features.Player.DropAmmo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.DropAmmo
+  nameWithType: Player.DropAmmo
 - uid: Exiled.API.Features.Player.DropHeldItem
   name: DropHeldItem()
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DropHeldItem
@@ -6525,6 +6564,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.Get
   nameWithType: Player.Get
+- uid: Exiled.API.Features.Player.GetAmmo(Exiled.API.Enums.AmmoType)
+  name: GetAmmo(AmmoType)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetAmmo_Exiled_API_Enums_AmmoType_
+  commentId: M:Exiled.API.Features.Player.GetAmmo(Exiled.API.Enums.AmmoType)
+  fullName: Exiled.API.Features.Player.GetAmmo(Exiled.API.Enums.AmmoType)
+  nameWithType: Player.GetAmmo(AmmoType)
+- uid: Exiled.API.Features.Player.GetAmmo*
+  name: GetAmmo
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetAmmo_
+  commentId: Overload:Exiled.API.Features.Player.GetAmmo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.GetAmmo
+  nameWithType: Player.GetAmmo
 - uid: Exiled.API.Features.Player.GetEffect(Exiled.API.Enums.EffectType)
   name: GetEffect(EffectType)
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_GetEffect_Exiled_API_Enums_EffectType_
@@ -7336,6 +7388,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.MoveState
   nameWithType: Player.MoveState
+- uid: Exiled.API.Features.Player.MuteStatus
+  name: MuteStatus
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_MuteStatus
+  commentId: P:Exiled.API.Features.Player.MuteStatus
+  fullName: Exiled.API.Features.Player.MuteStatus
+  nameWithType: Player.MuteStatus
+- uid: Exiled.API.Features.Player.MuteStatus*
+  name: MuteStatus
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_MuteStatus_
+  commentId: Overload:Exiled.API.Features.Player.MuteStatus
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.MuteStatus
+  nameWithType: Player.MuteStatus
 - uid: Exiled.API.Features.Player.NetworkIdentity
   name: NetworkIdentity
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_NetworkIdentity
@@ -7718,6 +7783,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.SessionVariables
   nameWithType: Player.SessionVariables
+- uid: Exiled.API.Features.Player.SetAmmo(Exiled.API.Enums.AmmoType,System.UInt16)
+  name: SetAmmo(AmmoType, UInt16)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetAmmo_Exiled_API_Enums_AmmoType_System_UInt16_
+  commentId: M:Exiled.API.Features.Player.SetAmmo(Exiled.API.Enums.AmmoType,System.UInt16)
+  fullName: Exiled.API.Features.Player.SetAmmo(Exiled.API.Enums.AmmoType, System.UInt16)
+  nameWithType: Player.SetAmmo(AmmoType, UInt16)
+- uid: Exiled.API.Features.Player.SetAmmo*
+  name: SetAmmo
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetAmmo_
+  commentId: Overload:Exiled.API.Features.Player.SetAmmo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.SetAmmo
+  nameWithType: Player.SetAmmo
 - uid: Exiled.API.Features.Player.SetCamera(Camera079)
   name: SetCamera(Camera079)
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SetCamera_Camera079_
@@ -7821,6 +7899,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.Speaker
   nameWithType: Player.Speaker
+- uid: Exiled.API.Features.Player.SpeakingFlags
+  name: SpeakingFlags
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SpeakingFlags
+  commentId: P:Exiled.API.Features.Player.SpeakingFlags
+  fullName: Exiled.API.Features.Player.SpeakingFlags
+  nameWithType: Player.SpeakingFlags
+- uid: Exiled.API.Features.Player.SpeakingFlags*
+  name: SpeakingFlags
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SpeakingFlags_
+  commentId: Overload:Exiled.API.Features.Player.SpeakingFlags
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.SpeakingFlags
+  nameWithType: Player.SpeakingFlags
 - uid: Exiled.API.Features.Player.SpectatedPlayer
   name: SpectatedPlayer
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_SpectatedPlayer
@@ -8444,6 +8535,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.GameObject
   nameWithType: Ragdoll.GameObject
+- uid: Exiled.API.Features.Ragdoll.Get(Ragdoll)
+  name: Get(Ragdoll)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_Ragdoll_
+  commentId: M:Exiled.API.Features.Ragdoll.Get(Ragdoll)
+  fullName: Exiled.API.Features.Ragdoll.Get(Ragdoll)
+  nameWithType: Ragdoll.Get(Ragdoll)
+- uid: Exiled.API.Features.Ragdoll.Get*
+  name: Get
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_
+  commentId: Overload:Exiled.API.Features.Ragdoll.Get
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.Get
+  nameWithType: Ragdoll.Get
 - uid: Exiled.API.Features.Ragdoll.Killer
   name: Killer
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Killer
