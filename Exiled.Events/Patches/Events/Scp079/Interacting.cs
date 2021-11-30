@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // teslaGameObject.GetComponent<TeslaGate>();
-                new CodeInstruction(OpCodes.Ldloc_S, 32),
+                new CodeInstruction(OpCodes.Ldloc_S, 33),
 
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_2),
@@ -86,7 +86,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region TriggeringDoorEventArgs
+                        #region TriggeringDoorEventArgs
 
             // Declare a local variable of the type "TriggeringDoorEventArgs";
             LocalBuilder interactingDoorEv = generator.DeclareLocal(typeof(TriggeringDoorEventArgs));
@@ -146,7 +146,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region LockingDownEventArgs
+                        #region LockingDownEventArgs
 
             // Declare a local variable of the type "LockingDownEventArgs";
             LocalBuilder lockingDown = generator.DeclareLocal(typeof(LockingDownEventArgs));
@@ -200,7 +200,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region StartingSpeakerEventArgs
+                        #region StartingSpeakerEventArgs
 
             // Declare a local variable of the type "StartingSpeakerEventArgs";
             LocalBuilder startingSpeakerEv = generator.DeclareLocal(typeof(StartingSpeakerEventArgs));
@@ -264,7 +264,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region StoppingSpeakerEventArgs
+                        #region StoppingSpeakerEventArgs
 
             offset = -1;
 
@@ -319,7 +319,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
             #endregion
 
-            #region ElevatorTeleportingEventArgs
+                        #region ElevatorTeleportingEventArgs
 
             // Index offset.
             offset = 5;

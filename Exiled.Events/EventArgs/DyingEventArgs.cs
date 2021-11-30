@@ -24,17 +24,14 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="DyingEventArgs"/> class.
         /// </summary>
-        /// <param name="killer"><inheritdoc cref="Killer"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DyingEventArgs(Player killer, Player target, DamageHandlerBase damageHandler, bool isAllowed = true)
+        public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             ItemsToDrop = new List<Item>(target.Items.ToList());
-            Killer = killer;
+            Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
             DamageHandler = damageHandler;
-            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -60,6 +57,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be killed.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

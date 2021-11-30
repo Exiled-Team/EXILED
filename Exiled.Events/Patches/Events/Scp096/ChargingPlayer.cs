@@ -50,11 +50,13 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             // Declare a local variable of type ChargingPlayerEventArgs.
             LocalBuilder ev = generator.DeclareLocal(typeof(ChargingPlayerEventArgs));
+            LocalBuilder contains = generator.DeclareLocal(typeof(bool));
 
             newInstructions.InsertRange(index, new[]
             {
                 // if (!ChargedPlayers.Add(target))
                 //    return;
+                new CodeInstruction(OpCodes.Stloc, contains.LocalIndex),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ChargingPlayer), nameof(ChargedPlayers))).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargedPlayers.Add))),
@@ -89,6 +91,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.Damage))),
                 new CodeInstruction(OpCodes.Stloc_0),
+                new CodeInstruction(OpCodes.Ldloc, contains.LocalIndex),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

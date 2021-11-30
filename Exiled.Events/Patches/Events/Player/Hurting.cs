@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
                 new CodeInstruction(OpCodes.Brfalse, notRecontainment),
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Property(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Ldc_I4_7),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Brfalse, not079),
@@ -91,7 +91,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // if (!ev.IsAllowed)
                 //    return;
-                new CodeInstruction(OpCodes.Callvirt, Property(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, ret),
             });
 
