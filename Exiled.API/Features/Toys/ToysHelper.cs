@@ -15,27 +15,50 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class ToysHelper
     {
-        private static PrimitiveObjectToy baseObject = null;
+        private static PrimitiveObjectToy primitiveBaseObject = null;
+        private static LightSourceToy lightBaseObject = null;
 
         /// <summary>
-        /// Gets the base AdminToy object to instantiate when creating a new toy.
+        /// Gets the base AdminToy object to instantiate when creating a new primitive.
         /// </summary>
-        public static PrimitiveObjectToy BaseObject
+        public static PrimitiveObjectToy PrimitiveBaseObject
         {
             get
             {
-                if (baseObject == null)
+                if (primitiveBaseObject == null)
                 {
                     foreach (var gameObject in NetworkClient.prefabs.Values)
                     {
                         if (gameObject.TryGetComponent<PrimitiveObjectToy>(out var component))
                         {
-                            baseObject = component;
+                            primitiveBaseObject = component;
                         }
                     }
                 }
 
-                return baseObject;
+                return primitiveBaseObject;
+            }
+        }
+
+        /// <summary>
+        /// Gets the base AdminToy object to instantiate when creating a new light.
+        /// </summary>
+        public static LightSourceToy LightBaseObject
+        {
+            get
+            {
+                if (lightBaseObject == null)
+                {
+                    foreach (var gameObject in NetworkClient.prefabs.Values)
+                    {
+                        if (gameObject.TryGetComponent<LightSourceToy>(out var component))
+                        {
+                            lightBaseObject = component;
+                        }
+                    }
+                }
+
+                return lightBaseObject;
             }
         }
     }

@@ -17,20 +17,18 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class Primitive
     {
-        private PrimitiveObjectToy toy = null;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive"/> class.
         /// </summary>
         public Primitive()
         {
-            toy = UnityEngine.Object.Instantiate(ToysHelper.BaseObject);
+            Base = UnityEngine.Object.Instantiate(ToysHelper.PrimitiveBaseObject);
         }
 
         /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
         /// </summary>
-        public PrimitiveObjectToy Base => toy;
+        public PrimitiveObjectToy Base { get; } = null;
 
         /// <summary>
         /// Gets or sets the material color of the primitive.
@@ -101,7 +99,7 @@ namespace Exiled.API.Features.Toys
             transform.rotation = Rotation;
             transform.localScale = Scale;
 
-            NetworkServer.Spawn(toy.gameObject);
+            NetworkServer.Spawn(Base.gameObject);
         }
     }
 }
