@@ -23,7 +23,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs"/> class.
         /// </summary>
-        /// <param name="Ragdoll"><inheritdoc cref="Owner"/></param>
         /// <param name="ragdollInfo"><inheritdoc cref="RagdollInfo"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandlerBase"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
