@@ -23,30 +23,25 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs"/> class.
         /// </summary>
-        /// <param name="owner"><inheritdoc cref="Owner"/></param>
+        /// <param name="Ragdoll"><inheritdoc cref="Owner"/></param>
         /// <param name="ragdollInfo"><inheritdoc cref="RagdollInfo"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandlerBase"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningRagdollEventArgs(
-            Player owner,
             RagdollInfo ragdollInfo,
             DamageHandlerBase damageHandlerBase,
             bool isAllowed = true)
         {
-            Owner = owner;
             RagdollInfo = ragdollInfo;
             DamageHandlerBase = damageHandlerBase;
+            Owner = Player.Get(ragdollInfo.OwnerHub);
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Player">Owner</see> of the ragdoll.
+        /// Gets the <see cref="Player">Owner</see> of the ragdoll.
         /// </summary>
-        public Player Owner
-        {
-            get => Owner;
-            set => RagdollInfo = new RagdollInfo(value.ReferenceHub, DamageHandlerBase, Position, Rotation);
-        }
+        public Player Owner { get; }
 
         /// <summary>
         /// Gets or sets the spawning position of the ragdoll.
