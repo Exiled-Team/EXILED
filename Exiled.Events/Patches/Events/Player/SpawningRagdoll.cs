@@ -46,8 +46,6 @@ namespace Exiled.Events.Patches.Events.Player
 
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
 
-            API.Features.Log.Debug(newInstructions[index]);
-
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
