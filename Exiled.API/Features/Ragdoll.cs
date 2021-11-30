@@ -63,12 +63,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdoll">The encapsulated <see cref="RagDoll"/>.</param>
-        /// <param name="ragdollInfo">The <see cref="RagDoll"/>'s <see cref="RagdollInfo"/>.</param>
-        internal Ragdoll(RagDoll ragdoll, RagdollInfo ragdollInfo)
-        {
-            this.ragdoll = ragdoll;
-            NetworkInfo = ragdollInfo;
-        }
+        internal Ragdoll(RagDoll ragdoll) => this.ragdoll = ragdoll;
 
         /// <summary>
         /// Gets or sets the <see cref="RagDoll"/>s clean up time.
