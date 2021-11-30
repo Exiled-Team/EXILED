@@ -49,11 +49,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
-        /// <param name="roleType">The ragdoll's <see cref="RoleType"/>.</param>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        public Ragdoll(RoleType roleType, RagdollInfo ragdollInfo)
+        public Ragdoll(RagdollInfo ragdollInfo)
         {
-            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(roleType).model_ragdoll;
+            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
@@ -229,12 +228,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Spawns a <see cref="Ragdoll"/> on the map.
         /// </summary>
-        /// <param name="roleType">The ragdoll's <see cref="RoleType"/>.</param>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
         /// <returns>The spawned <see cref="Ragdoll"/>.</returns>
-        public static Ragdoll Spawn(RoleType roleType, RagdollInfo ragdollInfo)
+        public static Ragdoll Spawn(RagdollInfo ragdollInfo)
         {
-            Ragdoll ragdoll = new Ragdoll(roleType, ragdollInfo);
+            Ragdoll ragdoll = new Ragdoll(ragdollInfo);
             ragdoll.Spawn();
             return ragdoll;
         }
