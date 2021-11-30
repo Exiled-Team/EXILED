@@ -101,5 +101,13 @@ namespace Exiled.API.Features.Toys
 
             NetworkServer.Spawn(Base.gameObject);
         }
+
+        /// <summary>
+        /// Removes the primitive from the game. Use <see cref="Spawn"/> to bring it back.
+        /// </summary>
+        public void Destroy()
+        {
+            NetworkServer.UnSpawn(Base.gameObject);
+        }
     }
 }
