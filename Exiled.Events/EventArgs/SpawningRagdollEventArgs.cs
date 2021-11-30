@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs"/> class.
         /// </summary>
-        /// <param name="ragdollInfo"><inheritdoc cref="RagdollInfo"/></param>
+        /// <param name="ragdollInfo"><inheritdoc cref="Info"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandlerBase"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningRagdollEventArgs(
@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
             DamageHandlerBase damageHandlerBase,
             bool isAllowed = true)
         {
-            RagdollInfo = ragdollInfo;
+            Info = ragdollInfo;
             DamageHandlerBase = damageHandlerBase;
             Owner = Player.Get(ragdollInfo.OwnerHub);
             IsAllowed = isAllowed;
@@ -47,8 +47,8 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public Vector3 Position
         {
-            get => RagdollInfo.StartPosition;
-            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Rotation);
+            get => Info.StartPosition;
+            set => Info = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Rotation);
         }
 
         /// <summary>
@@ -56,8 +56,8 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public Quaternion Rotation
         {
-            get => RagdollInfo.StartRotation;
-            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Position, value);
+            get => Info.StartRotation;
+            set => Info = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Position, value);
         }
 
         /// <summary>
@@ -65,28 +65,28 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public RoleType Role
         {
-            get => RagdollInfo.RoleType;
-            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Position, Rotation, Nickname, CreationTime);
+            get => Info.RoleType;
+            set => Info = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Position, Rotation, Nickname, CreationTime);
         }
 
         /// <summary>
         /// Gets the ragdoll's creation time.
         /// </summary>
-        public double CreationTime => RagdollInfo.CreationTime;
+        public double CreationTime => Info.CreationTime;
 
         /// <summary>
         /// Gets or sets the ragdoll's nickname.
         /// </summary>
         public string Nickname
         {
-            get => RagdollInfo.Nickname;
-            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Role, Position, Rotation, value, CreationTime);
+            get => Info.Nickname;
+            set => Info = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Role, Position, Rotation, value, CreationTime);
         }
 
         /// <summary>
-        /// Gets or sets the ragdoll's <see cref="global::RagdollInfo"/>.
+        /// Gets or sets the ragdoll's <see cref="RagdollInfo"/>.
         /// </summary>
-        public RagdollInfo RagdollInfo { get; set; }
+        public RagdollInfo Info { get; set; }
 
         /// <summary>
         /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase"/>.
