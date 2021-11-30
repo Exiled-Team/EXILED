@@ -20,126 +20,87 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class SpawningRagdollEventArgs : EventArgs
     {
-        private int playerId;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="SpawningRagdollEventArgs"/> class.
         /// </summary>
-        /// <param name="killer"><inheritdoc cref="Killer"/></param>
         /// <param name="owner"><inheritdoc cref="Owner"/></param>
-        /// <param name="position"><inheritdoc cref="Position"/></param>
-        /// <param name="rotation"><inheritdoc cref="Rotation"/></param>
-        /// <param name="velocity"><inheritdoc cref="Velocity"/></param>
-        /// <param name="roleType"><inheritdoc cref="RoleType"/></param>
+        /// <param name="ragdollInfo"><inheritdoc cref="RagdollInfo"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandlerBase"/></param>
-        /// <param name="isRecallAllowed"><inheritdoc cref="IsRecallAllowed"/></param>
-        /// <param name="dissonanceId"><inheritdoc cref="DissonanceId"/></param>
-        /// <param name="playerName"><inheritdoc cref="PlayerNickname"/></param>
-        /// <param name="playerId"><inheritdoc cref="PlayerId"/></param>
-        /// <param name="scp096Death"><inheritdoc cref="Scp096Death"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public SpawningRagdollEventArgs(
-            Player killer,
             Player owner,
-            Vector3 position,
-            Quaternion rotation,
-            Vector3 velocity,
-            RoleType roleType,
+            RagdollInfo ragdollInfo,
             DamageHandlerBase damageHandlerBase,
-            bool isRecallAllowed,
-            string dissonanceId,
-            string playerName,
-            int playerId,
-            bool scp096Death = false,
             bool isAllowed = true)
         {
-            Killer = killer;
             Owner = owner;
-            Position = position;
-            Rotation = rotation;
-            Velocity = velocity;
-            RoleType = roleType;
+            RagdollInfo = ragdollInfo;
             DamageHandlerBase = damageHandlerBase;
-            IsRecallAllowed = isRecallAllowed;
-            DissonanceId = dissonanceId;
-            PlayerNickname = playerName;
-            PlayerId = playerId;
-            Scp096Death = scp096Death;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the player who killed the owner of the ragdoll.
+        /// Gets or sets the <see cref="Player">Owner</see> of the ragdoll.
         /// </summary>
-        public Player Killer { get; }
-
-        /// <summary>
-        /// Gets the owner of the ragdoll (typically the player who died).
-        /// </summary>
-        public Player Owner { get; }
+        public Player Owner
+        {
+            get => Owner;
+            set => RagdollInfo = new RagdollInfo(value.ReferenceHub, DamageHandlerBase, Position, Rotation);
+        }
 
         /// <summary>
         /// Gets or sets the spawning position of the ragdoll.
         /// </summary>
-        public Vector3 Position { get; set; }
+        public Vector3 Position
+        {
+            get => RagdollInfo.StartPosition;
+            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Rotation);
+        }
 
         /// <summary>
-        /// Gets or sets the ragdoll rotation.
+        /// Gets or sets the ragdoll's rotation.
         /// </summary>
-        public Quaternion Rotation { get; set; }
+        public Quaternion Rotation
+        {
+            get => RagdollInfo.StartRotation;
+            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Position, value);
+        }
 
         /// <summary>
-        /// Gets or sets the adapted ragdoll velocity.
+        /// Gets or sets the ragdoll's <see cref="RoleType"/>.
         /// </summary>
-        public Vector3 Velocity { get; set; }
+        public RoleType Role
+        {
+            get => RagdollInfo.RoleType;
+            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, value, Position, Rotation, Nickname, CreationTime);
+        }
 
         /// <summary>
-        /// Gets or sets the RoleType of the ragdoll owner.
+        /// Gets the ragdoll's creation time.
         /// </summary>
-        public RoleType RoleType { get; set; }
+        public double CreationTime => RagdollInfo.CreationTime;
 
         /// <summary>
-        /// Gets or sets the <see cref="DamageHandlerBase"/>.
+        /// Gets or sets the ragdoll's nickname.
+        /// </summary>
+        public string Nickname
+        {
+            get => RagdollInfo.Nickname;
+            set => RagdollInfo = new RagdollInfo(Owner.ReferenceHub, DamageHandlerBase, Role, Position, Rotation, value, CreationTime);
+        }
+
+        /// <summary>
+        /// Gets or sets the ragdoll's <see cref="global::RagdollInfo"/>.
+        /// </summary>
+        public RagdollInfo RagdollInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ragdoll's <see cref="PlayerStatsSystem.DamageHandlerBase"/>.
         /// </summary>
         public DamageHandlerBase DamageHandlerBase { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can be revived by SCP-049.
-        /// </summary>
-        public bool IsRecallAllowed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ragdoll dissonance id.
-        /// </summary>
-        public string DissonanceId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ragdoll player nickname.
-        /// </summary>
-        public string PlayerNickname { get; set; }
-
-        /// <summary>
-        /// Gets or sets the ragdoll player id.
-        /// </summary>
-        public int PlayerId
-        {
-            get => playerId;
-            set
-            {
-                if (Player.Get(value) == null)
-                    return;
-
-                playerId = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the ragdoll's death is caused by Scp096.
-        /// </summary>
-        public bool Scp096Death { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the ragdoll will be spawned.
+        /// Gets or sets a value indicating whether or not the ragdoll can be spawned.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
