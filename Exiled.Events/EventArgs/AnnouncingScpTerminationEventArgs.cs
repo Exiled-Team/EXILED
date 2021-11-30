@@ -18,20 +18,20 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {
-        private string terminationCause;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs"/> class.
         /// </summary>
         /// <param name="scp"><inheritdoc cref="Player"/></param>
         /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandler"/></param>
-        public AnnouncingScpTerminationEventArgs(Player scp, DamageHandlerBase damageHandlerBase)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public AnnouncingScpTerminationEventArgs(Player scp, DamageHandlerBase damageHandlerBase, bool isAllowed = true)
         {
             Player = scp;
             Role = scp.ReferenceHub.characterClassManager.CurRole;
             DamageHandler = damageHandlerBase;
             Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
-            terminationCause = damageHandlerBase.CassieDeathAnnouncement;
+            TerminationCause = damageHandlerBase.CassieDeathAnnouncement;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -57,11 +57,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the termination cause.
         /// </summary>
-        public string TerminationCause
-        {
-            get => terminationCause;
-            set => terminationCause = value;
-        }
+        public string TerminationCause { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
