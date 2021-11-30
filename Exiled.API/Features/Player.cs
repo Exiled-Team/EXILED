@@ -1406,6 +1406,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
         /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="damage">The amount of damage to deal.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
