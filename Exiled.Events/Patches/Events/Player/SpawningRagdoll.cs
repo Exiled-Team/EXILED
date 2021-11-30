@@ -39,6 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
             LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
+            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(API.Features.Ragdoll));
 
             Label ret = generator.DefineLabel();
 
@@ -49,8 +50,6 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
@@ -75,17 +74,25 @@ namespace Exiled.Events.Patches.Events.Player
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloca_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.RagdollInfo))),
             });
 
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
+
+            newInstructions.RemoveRange(index, 4);
+
             newInstructions.InsertRange(newInstructions.Count - 1, new[]
             {
-                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
                 new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Ldloca_S, mem_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.RagdollInfo))),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[2]),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_1, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.gameObject))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Mirror.NetworkServer), nameof(Mirror.NetworkServer.Spawn), new[] { typeof(GameObject), typeof(Mirror.NetworkConnection) })),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Add))),
             });
 
