@@ -154,10 +154,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the ragdoll is respawnable by SCP-049.
         /// </summary>
-        public bool AllowRecall
-        {
-            get => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
-        }
+        public bool AllowRecall => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
 
         /// <summary>
         /// Gets the <see cref="Room"/> the ragdoll is located in.
@@ -190,6 +187,15 @@ namespace Exiled.API.Features
                 ragdoll.transform.localScale = value;
                 Mirror.NetworkServer.Spawn(GameObject);
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the ragdoll's death reason.
+        /// </summary>
+        public string DeathReason
+        {
+            get => DamageHandler.ServerLogsText;
+            set => (DamageHandler as UniversalDamageHandler)._logsText = value;
         }
 
         /// <summary>
