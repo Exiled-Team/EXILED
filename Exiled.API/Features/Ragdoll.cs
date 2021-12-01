@@ -206,11 +206,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the ragdoll's death reason.
         /// </summary>
-        public string DeathReason
-        {
-            get => DamageHandler.ServerLogsText;
-            set => (DamageHandler as UniversalDamageHandler)._logsText = value;
-        }
+        public string DeathReason => DamageHandler.ServerLogsText;
 
         /// <summary>
         /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.
