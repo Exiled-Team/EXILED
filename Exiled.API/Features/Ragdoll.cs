@@ -204,7 +204,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the ragdoll's death reason.
+        /// Gets the ragdoll's death reason.
         /// </summary>
         public string DeathReason => DamageHandler.ServerLogsText;
 
