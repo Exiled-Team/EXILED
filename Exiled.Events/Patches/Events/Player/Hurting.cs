@@ -42,6 +42,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
+            int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder hurtingEv = generator.DeclareLocal(typeof(HurtingEventArgs));
 
