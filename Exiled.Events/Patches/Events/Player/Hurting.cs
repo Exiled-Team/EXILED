@@ -47,7 +47,6 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder hurtingEv = generator.DeclareLocal(typeof(HurtingEventArgs));
 
-            Label not079 = generator.DefineLabel();
             Label notRecontainment = generator.DefineLabel();
             Label ret = generator.DefineLabel();
 
@@ -74,11 +73,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Ldc_I4_7),
                 new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brfalse, not079),
+                new CodeInstruction(OpCodes.Brfalse, notRecontainment),
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
-                new CodeInstruction(OpCodes.Ret).WithLabels(not079),
 
                 // var ev = new HurtingEventArgs(player, handler)
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
