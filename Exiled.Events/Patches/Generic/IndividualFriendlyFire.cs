@@ -49,6 +49,8 @@ namespace Exiled.Events.Patches.Generic
         {
             if (Server.FriendlyFire)
                 return true;
+            return false;
+            /*
             if (attackerHub == null || victimHub == null)
                 return true;
             Player attacker = Player.Get(attackerHub);
@@ -56,7 +58,7 @@ namespace Exiled.Events.Patches.Generic
             if (attacker == null || victim == null)
                 return true;
 
-            return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();
+            return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();*/
         }
     }
 
