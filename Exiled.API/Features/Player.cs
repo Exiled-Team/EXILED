@@ -50,7 +50,7 @@ namespace Exiled.API.Features
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -67,7 +67,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
-        /// <param name="referenceHub">The <see cref="ReferenceHub"/> of the player to be encapsulated.</param>
+        /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
@@ -77,7 +77,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
@@ -90,7 +90,7 @@ namespace Exiled.API.Features
         ~Player() => HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
         {
@@ -144,22 +144,22 @@ namespace Exiled.API.Features
         public bool HasHint { get; internal set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s Radio.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio">.
         /// </summary>
         public global::Radio Radio => ReferenceHub.radio;
 
         /// <summary>
-        /// Gets the HintDisplay of the player.
+        /// Gets the <see cref="Hints.HintDisplay"/> of the player.
         /// </summary>
         public HintDisplay HintDisplay { get; private set; }
 
         /// <summary>
-        /// Gets the player's inventory.
+        /// Gets the player's <see cref="InventorySystem.Inventory"/>.
         /// </summary>
         public Inventory Inventory { get; private set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="Transform">PlayerCameraReference</see>.
         /// </summary>
         public Transform CameraTransform { get; private set; }
 
