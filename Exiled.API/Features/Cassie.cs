@@ -9,9 +9,11 @@ namespace Exiled.API.Features
 {
     using MEC;
 
+    using PlayerStatsSystem;
+
     using Respawning;
 
-    using static PlayerStats;
+    using static PlayerStatsSystem.PlayerStats;
 
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E more easily.
@@ -90,28 +92,27 @@ namespace Exiled.API.Features
         /// <summary>
         /// Announce a SCP Termination.
         /// </summary>
-        /// <param name="scp">SCP Role.</param>
+        /// <param name="scp">SCP to announce termination of.</param>
         /// <param name="info">HitInformation.</param>
-        /// <param name="groupId">Group ID.</param>
-        public static void SCPTermination(Role scp, HitInfo info, string groupId)
-            => NineTailedFoxAnnouncer.AnnounceScpTermination(scp, info, groupId);
+        public static void SCPTermination(Player scp, DamageHandlerBase info)
+            => NineTailedFoxAnnouncer.AnnounceScpTermination(scp.ReferenceHub, info);
 
         /// <summary>
         /// Announce the termination of a custom SCP name.
         /// </summary>
         /// <param name="scpname">SCP Name.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomSCPTermination(string scpname, HitInfo info)
+        public static void CustomSCPTermination(string scpname, DamageHandlerBase info)
         {
             string result = scpname;
-            if (info.Tool == DamageTypes.Tesla)
+            if (info is MicroHidDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Tool == DamageTypes.Nuke)
+            else if (info is WarheadDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Tool == DamageTypes.Decont)
+            else if (info is UniversalDamageHandler)
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (ReferenceHub.TryGetHub(info.PlayerId, out ReferenceHub referenceHub))
-                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(referenceHub.characterClassManager.CurRole.team, referenceHub.characterClassManager.CurUnitName);
+            else if (info is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
+                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 

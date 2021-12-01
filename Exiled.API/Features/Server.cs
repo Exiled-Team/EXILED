@@ -8,7 +8,14 @@
 namespace Exiled.API.Features
 {
     using System.Reflection;
+
+    using MEC;
+
     using Mirror;
+
+    using PlayerStatsSystem;
+
+    using RoundRestarting;
 
     /// <summary>
     /// A set of tools to easily work with the server.
@@ -145,13 +152,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Shutdown()
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            // To avoid delays between reconnecting players, just kick them
-            if (playerStats != null)
-                playerStats.RpcRoundrestart(0f, false);
-
-            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
+            global::Shutdown.Quit();
         }
 
         /// <summary>
@@ -162,14 +163,8 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is false, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            if (playerStats == null)
-                return false;
-
-            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
-
-            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            Timing.CallDelayed(0.5f, Restart);
 
             return true;
         }
@@ -182,14 +177,8 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is false, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            if (playerStats == null)
-                return false;
-
-            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
-
-            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            Timing.CallDelayed(0.5f, Shutdown);
             return true;
         }
 

@@ -26,17 +26,14 @@ namespace Exiled.Events.EventArgs
         /// <param name="victim"><inheritdoc cref="Victim"/></param>
         /// <param name="isTarget"><inheritdoc cref="IsTarget"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        /// <param name="endCharge"><inheritdoc cref="EndCharge"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChargingPlayerEventArgs(Scp096 scp096, Player player, Player victim, bool isTarget, float damage, bool endCharge, bool isAllowed = true)
+        public ChargingPlayerEventArgs(Scp096 scp096, Player player, Player victim, bool isTarget, float damage)
         {
             Scp096 = scp096;
             Player = player;
             Victim = victim;
             IsTarget = isTarget;
             Damage = damage;
-            EndCharge = endCharge;
-            IsAllowed = isAllowed;
+            EndCharge = IsTarget;
         }
 
         /// <summary>
@@ -72,6 +69,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-096 can hit the target.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

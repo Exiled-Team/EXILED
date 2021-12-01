@@ -19,86 +19,51 @@ namespace Exiled.Events.Patches.Events.Player
 
     using NorthwoodLib.Pools;
 
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool, bool)"/>.
+    /// Patches <see cref="PlayerStats.KillPlayer(DamageHandlerBase)"/>.
     /// Adds the <see cref="Handlers.Player.Died"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.KillPlayer))]
     internal static class Died
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            Label ret = generator.DefineLabel();
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
 
-            // The index offset.
-            const int offset = -2;
+            newInstructions.InsertRange(0, new[]
+            {
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DyingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, ret),
+            });
 
-            // Find the index of "playerStats.SetHpAmount" method and add the offset.
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                                     (MethodInfo)instruction.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.SetClassID))) + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
 
-            // Define the return label and add it to the starting instruction.
-            Label returnLabel = generator.DefineLabel();
-            newInstructions[index].WithLabels(returnLabel);
-
-            // Used to identify the real attacker,
-            // if `info.IsPlayer` is true, transfers control to the label `attacterPlayerGetAfterInstance`
-            Label attackerInstanceVsHitInfoSource = generator.DefineLabel();
-            Label attacterPlayerGetAfterInstance = generator.DefineLabel();
-
-            // Declare the attacker local variable.
-            LocalBuilder attacker = generator.DeclareLocal(typeof(Player));
-
-            // Declare the target local variable.
-            LocalBuilder target = generator.DeclareLocal(typeof(Player));
-
-            // Player attacker = Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
-            // Player target = Player.Get(go);
-            //
-            // if (target == null || attacker == null || target.IsGodModeEnabled)
-            //  return;
-            //
-            // var ev = new DiedEventArgs(attacker, target, info, true);
-            //
-            // Handlers.Player.OnDied(ev);
-            //
-            // info = ev.HitInformations;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarga_S, 1),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.IsPlayer))),
-                new CodeInstruction(OpCodes.Brtrue_S, attackerInstanceVsHitInfoSource),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Br_S, attacterPlayerGetAfterInstance),
-                new CodeInstruction(OpCodes.Ldarg_1).WithLabels(attackerInstanceVsHitInfoSource),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats.HitInfo), nameof(PlayerStats.HitInfo.RHub))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })).WithLabels(attacterPlayerGetAfterInstance),
-                new CodeInstruction(OpCodes.Stloc_S, attacker.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_2),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, target.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc_S, attacker.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc_S, target.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.IsGodModeEnabled))),
-                new CodeInstruction(OpCodes.Brtrue_S, returnLabel),
-                new CodeInstruction(OpCodes.Ldloc_S, attacker.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, target.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DiedEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDied))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(DiedEventArgs), nameof(DiedEventArgs.HitInformations))),
-                new CodeInstruction(OpCodes.Starg_S, 1),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

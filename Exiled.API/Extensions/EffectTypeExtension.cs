@@ -43,12 +43,19 @@ namespace Exiled.API.Extensions
                 case EffectType.Flashed: return typeof(Flashed);
                 case EffectType.Hemorrhage: return typeof(Hemorrhage);
                 case EffectType.Invigorated: return typeof(Invigorated);
-                case EffectType.Panic: return typeof(Panic);
+                case EffectType.BodyshotReduction: return typeof(BodyshotReduction);
                 case EffectType.Poisoned: return typeof(Poisoned);
                 case EffectType.Scp207: return typeof(Scp207);
                 case EffectType.Invisible: return typeof(Invisible);
                 case EffectType.SinkHole: return typeof(SinkHole);
                 case EffectType.Visuals939: return typeof(Visuals939);
+                case EffectType.DamageReduction: return typeof(DamageReduction);
+                case EffectType.MovementBoost: return typeof(MovementBoost);
+                case EffectType.RainbowTaste: return typeof(RainbowTaste);
+                case EffectType.SeveredHands: return typeof(SeveredHands);
+                case EffectType.Stained: return typeof(Stained);
+                case EffectType.Visual173Blink: return typeof(Visuals173Blink);
+                case EffectType.Vitality: return typeof(Vitality);
             }
 
             // This should never happen
