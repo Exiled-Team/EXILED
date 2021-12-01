@@ -130,19 +130,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Player%2CPlayerStats.HitInfo%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerStatsSystem.DamageHandlerBase)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
     <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DyingEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_System_Boolean_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)">DyingEventArgs(Player, Player, PlayerStats.HitInfo, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)">DyingEventArgs(Player, DamageHandlerBase)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.DyingEventArgs.html">DyingEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DyingEventArgs(Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public DyingEventArgs(Player target, DamageHandlerBase damageHandler)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -156,23 +156,13 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">killer</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DyingEventArgs.Killer"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td><span class="parametername">target</span></td>
         <td><inheritdoc cref="P:Exiled.Events.EventArgs.DyingEventArgs.Target"></inheritdoc></td>
       </tr>
       <tr>
-        <td><span class="xref">PlayerStats.HitInfo</span></td>
-        <td><span class="parametername">hitInformation</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DyingEventArgs.HitInformation"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DyingEventArgs.IsAllowed"></inheritdoc></td>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
+        <td><span class="parametername">damageHandler</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.DyingEventArgs.DamageHandler"></inheritdoc></td>
       </tr>
     </tbody>
   </table>
@@ -180,19 +170,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_HitInformation.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.HitInformation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_DamageHandler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.DamageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L56">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L55">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_DyingEventArgs_HitInformation_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.HitInformation*"></a>
-  <h4 id="Exiled_Events_EventArgs_DyingEventArgs_HitInformation" data-uid="Exiled.Events.EventArgs.DyingEventArgs.HitInformation">HitInformation</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the hit information.</p>
+  <a id="Exiled_Events_EventArgs_DyingEventArgs_DamageHandler_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.DamageHandler*"></a>
+  <h4 id="Exiled_Events_EventArgs_DyingEventArgs_DamageHandler" data-uid="Exiled.Events.EventArgs.DyingEventArgs.DamageHandler">DamageHandler</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the damage handler for the event.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PlayerStats.HitInfo HitInformation { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DamageHandlerBase DamageHandler { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -204,7 +194,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">PlayerStats.HitInfo</span></td>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -214,7 +204,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L61">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L60">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DyingEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_DyingEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.DyingEventArgs.IsAllowed">IsAllowed</h4>
@@ -245,7 +235,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_ItemsToDrop.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.ItemsToDrop%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L51">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L50">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DyingEventArgs_ItemsToDrop_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.ItemsToDrop*"></a>
   <h4 id="Exiled_Events_EventArgs_DyingEventArgs_ItemsToDrop" data-uid="Exiled.Events.EventArgs.DyingEventArgs.ItemsToDrop">ItemsToDrop</h4>
@@ -276,7 +266,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_Killer.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.Killer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L41">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L40">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DyingEventArgs_Killer_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.Killer*"></a>
   <h4 id="Exiled_Events_EventArgs_DyingEventArgs_Killer" data-uid="Exiled.Events.EventArgs.DyingEventArgs.Killer">Killer</h4>
@@ -307,7 +297,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs_Target.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L46">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L45">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_DyingEventArgs_Target_" data-uid="Exiled.Events.EventArgs.DyingEventArgs.Target*"></a>
   <h4 id="Exiled_Events_EventArgs_DyingEventArgs_Target" data-uid="Exiled.Events.EventArgs.DyingEventArgs.Target">Target</h4>
@@ -348,7 +338,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_DyingEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.DyingEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L20" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/DyingEventArgs.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

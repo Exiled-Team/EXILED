@@ -129,19 +129,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_RoleType_PlayerStats_HitInfo_System_Boolean_System_String_System_String_System_Int32_System_Boolean_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.%23ctor(Exiled.API.Features.Player%2CExiled.API.Features.Player%2CUnityEngine.Vector3%2CUnityEngine.Quaternion%2CUnityEngine.Vector3%2CRoleType%2CPlayerStats.HitInfo%2CSystem.Boolean%2CSystem.String%2CSystem.String%2CSystem.Int32%2CSystem.Boolean%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_RagdollInfo_PlayerStatsSystem_DamageHandlerBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.%23ctor(RagdollInfo%2CPlayerStatsSystem.DamageHandlerBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L39">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L29">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_RoleType_PlayerStats_HitInfo_System_Boolean_System_String_System_String_System_Int32_System_Boolean_System_Boolean_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,RoleType,PlayerStats.HitInfo,System.Boolean,System.String,System.String,System.Int32,System.Boolean,System.Boolean)">SpawningRagdollEventArgs(Player, Player, Vector3, Quaternion, Vector3, RoleType, PlayerStats.HitInfo, Boolean, String, String, Int32, Boolean, Boolean)</h4>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_RagdollInfo_PlayerStatsSystem_DamageHandlerBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(RagdollInfo,PlayerStatsSystem.DamageHandlerBase,System.Boolean)">SpawningRagdollEventArgs(RagdollInfo, DamageHandlerBase, Boolean)</h4>
   <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="Exiled.Events.EventArgs.SpawningRagdollEventArgs.html">SpawningRagdollEventArgs</a> class.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public SpawningRagdollEventArgs(Player killer, Player owner, Vector3 position, Quaternion rotation, Vector3 velocity, RoleType roleType, PlayerStats.HitInfo hinInformations, bool isRecallAllowed, string dissonanceId, string playerName, int playerId, bool scp096Death = false, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public SpawningRagdollEventArgs(RagdollInfo ragdollInfo, DamageHandlerBase damageHandlerBase, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -154,64 +154,14 @@
     </thead>
     <tbody>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">killer</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer"></inheritdoc></td>
+        <td><span class="xref">RagdollInfo</span></td>
+        <td><span class="parametername">ragdollInfo</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info"></inheritdoc></td>
       </tr>
       <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">owner</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">position</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Quaternion</span></td>
-        <td><span class="parametername">rotation</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td><span class="parametername">velocity</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">RoleType</span></td>
-        <td><span class="parametername">roleType</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">PlayerStats.HitInfo</span></td>
-        <td><span class="parametername">hinInformations</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">isRecallAllowed</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">dissonanceId</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">playerName</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">playerId</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId"></inheritdoc></td>
-      </tr>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><span class="parametername">scp096Death</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death"></inheritdoc></td>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
+        <td><span class="parametername">damageHandlerBase</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
@@ -224,19 +174,19 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_DissonanceId.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_CreationTime.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L112">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L75">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_DissonanceId_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_DissonanceId" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId">DissonanceId</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the ragdoll dissonance id.</p>
+  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_CreationTime_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_CreationTime" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime">CreationTime</h4>
+  <div class="markdown level1 summary"><p>Gets the ragdoll&apos;s creation time.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string DissonanceId { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public double CreationTime { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -248,26 +198,26 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Double</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_HitInformations.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_DamageHandlerBase.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L102">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L94">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_HitInformations_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_HitInformations" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations">HitInformations</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the hit informations on the ragdoll.</p>
+  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_DamageHandlerBase_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_DamageHandlerBase" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase">DamageHandlerBase</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s <span class="xref">PlayerStatsSystem.DamageHandlerBase</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public PlayerStats.HitInfo HitInformations { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DamageHandlerBase DamageHandlerBase { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -279,7 +229,38 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">PlayerStats.HitInfo</span></td>
+        <td><span class="xref">PlayerStatsSystem.DamageHandlerBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Info.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L89">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Info_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Info" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info">Info</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s <span class="xref">RagdollInfo</span>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public RagdollInfo Info { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">RagdollInfo</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -289,11 +270,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L142">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L99">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed">IsAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the ragdoll will be spawned.</p>
+  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the ragdoll can be spawned.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -317,19 +298,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsRecallAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Nickname.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L107">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L80">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsRecallAllowed_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsRecallAllowed" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed">IsRecallAllowed</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the player can be revived by SCP-049.</p>
+  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Nickname_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Nickname" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname">Nickname</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s nickname.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsRecallAllowed { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Nickname { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -341,38 +322,7 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Killer.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L72">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Killer_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Killer" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer">Killer</h4>
-  <div class="markdown level1 summary"><p>Gets the player who killed the owner of the ragdoll.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Player Killer { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -382,11 +332,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Owner.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L77">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L43">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Owner_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner*"></a>
   <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Owner" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner">Owner</h4>
-  <div class="markdown level1 summary"><p>Gets the owner of the ragdoll (typically the player who died).</p>
+  <div class="markdown level1 summary"><p>Gets the <a class="xref" href="Exiled.API.Features.Player.html">Player</a> of the ragdoll.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -410,72 +360,10 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerId.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L122">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerId_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerId" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId">PlayerId</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the ragdoll player id.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int PlayerId { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerNickname.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L117">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerNickname_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerNickname" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname">PlayerNickname</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the ragdoll player nickname.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string PlayerNickname { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Position.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L82">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L48">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Position_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position*"></a>
   <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Position" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position">Position</h4>
@@ -503,19 +391,19 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_RoleType.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Role.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L97">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L66">View Source</a>
   </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_RoleType_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_RoleType" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType">RoleType</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the RoleType of the ragdoll owner.</p>
+  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Role_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role*"></a>
+  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Role" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role">Role</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s <span class="xref">RoleType</span>.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RoleType RoleType { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public RoleType Role { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -537,11 +425,11 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Rotation.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L87">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L57">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Rotation_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation*"></a>
   <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Rotation" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation">Rotation</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the ragdoll rotation.</p>
+  <div class="markdown level1 summary"><p>Gets or sets the ragdoll&apos;s rotation.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -563,68 +451,6 @@
       </tr>
     </tbody>
   </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Scp096Death.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L137">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Scp096Death_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Scp096Death" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death">Scp096Death</h4>
-  <div class="markdown level1 summary"><p>Gets or sets a value indicating whether or not the ragdoll&apos;s death is caused by Scp096.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Scp096Death { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs_Velocity.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L92">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Velocity_" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity*"></a>
-  <h4 id="Exiled_Events_EventArgs_SpawningRagdollEventArgs_Velocity" data-uid="Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity">Velocity</h4>
-  <div class="markdown level1 summary"><p>Gets or sets the adapted ragdoll velocity.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Vector3 Velocity { get; set; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">UnityEngine.Vector3</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Exiled.API.Extensions.ReflectionExtensions.html#Exiled_API_Extensions_ReflectionExtensions_CopyProperties_System_Object_System_Object_">ReflectionExtensions.CopyProperties(Object, Object)</a>
@@ -640,7 +466,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_SpawningRagdollEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.SpawningRagdollEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/SpawningRagdollEventArgs.cs/#L21" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

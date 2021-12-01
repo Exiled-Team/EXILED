@@ -883,6 +883,12 @@ references:
   commentId: F:Exiled.API.Enums.EffectType.Blinded
   fullName: Exiled.API.Enums.EffectType.Blinded
   nameWithType: EffectType.Blinded
+- uid: Exiled.API.Enums.EffectType.BodyshotReduction
+  name: BodyshotReduction
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_BodyshotReduction
+  commentId: F:Exiled.API.Enums.EffectType.BodyshotReduction
+  fullName: Exiled.API.Enums.EffectType.BodyshotReduction
+  nameWithType: EffectType.BodyshotReduction
 - uid: Exiled.API.Enums.EffectType.Burned
   name: Burned
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Burned
@@ -901,6 +907,12 @@ references:
   commentId: F:Exiled.API.Enums.EffectType.Corroding
   fullName: Exiled.API.Enums.EffectType.Corroding
   nameWithType: EffectType.Corroding
+- uid: Exiled.API.Enums.EffectType.DamageReduction
+  name: DamageReduction
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_DamageReduction
+  commentId: F:Exiled.API.Enums.EffectType.DamageReduction
+  fullName: Exiled.API.Enums.EffectType.DamageReduction
+  nameWithType: EffectType.DamageReduction
 - uid: Exiled.API.Enums.EffectType.Deafened
   name: Deafened
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Deafened
@@ -955,36 +967,66 @@ references:
   commentId: F:Exiled.API.Enums.EffectType.Invisible
   fullName: Exiled.API.Enums.EffectType.Invisible
   nameWithType: EffectType.Invisible
-- uid: Exiled.API.Enums.EffectType.Panic
-  name: Panic
-  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Panic
-  commentId: F:Exiled.API.Enums.EffectType.Panic
-  fullName: Exiled.API.Enums.EffectType.Panic
-  nameWithType: EffectType.Panic
+- uid: Exiled.API.Enums.EffectType.MovementBoost
+  name: MovementBoost
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_MovementBoost
+  commentId: F:Exiled.API.Enums.EffectType.MovementBoost
+  fullName: Exiled.API.Enums.EffectType.MovementBoost
+  nameWithType: EffectType.MovementBoost
 - uid: Exiled.API.Enums.EffectType.Poisoned
   name: Poisoned
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Poisoned
   commentId: F:Exiled.API.Enums.EffectType.Poisoned
   fullName: Exiled.API.Enums.EffectType.Poisoned
   nameWithType: EffectType.Poisoned
+- uid: Exiled.API.Enums.EffectType.RainbowTaste
+  name: RainbowTaste
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_RainbowTaste
+  commentId: F:Exiled.API.Enums.EffectType.RainbowTaste
+  fullName: Exiled.API.Enums.EffectType.RainbowTaste
+  nameWithType: EffectType.RainbowTaste
 - uid: Exiled.API.Enums.EffectType.Scp207
   name: Scp207
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Scp207
   commentId: F:Exiled.API.Enums.EffectType.Scp207
   fullName: Exiled.API.Enums.EffectType.Scp207
   nameWithType: EffectType.Scp207
+- uid: Exiled.API.Enums.EffectType.SeveredHands
+  name: SeveredHands
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_SeveredHands
+  commentId: F:Exiled.API.Enums.EffectType.SeveredHands
+  fullName: Exiled.API.Enums.EffectType.SeveredHands
+  nameWithType: EffectType.SeveredHands
 - uid: Exiled.API.Enums.EffectType.SinkHole
   name: SinkHole
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_SinkHole
   commentId: F:Exiled.API.Enums.EffectType.SinkHole
   fullName: Exiled.API.Enums.EffectType.SinkHole
   nameWithType: EffectType.SinkHole
+- uid: Exiled.API.Enums.EffectType.Stained
+  name: Stained
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Stained
+  commentId: F:Exiled.API.Enums.EffectType.Stained
+  fullName: Exiled.API.Enums.EffectType.Stained
+  nameWithType: EffectType.Stained
+- uid: Exiled.API.Enums.EffectType.Visual173Blink
+  name: Visual173Blink
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Visual173Blink
+  commentId: F:Exiled.API.Enums.EffectType.Visual173Blink
+  fullName: Exiled.API.Enums.EffectType.Visual173Blink
+  nameWithType: EffectType.Visual173Blink
 - uid: Exiled.API.Enums.EffectType.Visuals939
   name: Visuals939
   href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Visuals939
   commentId: F:Exiled.API.Enums.EffectType.Visuals939
   fullName: Exiled.API.Enums.EffectType.Visuals939
   nameWithType: EffectType.Visuals939
+- uid: Exiled.API.Enums.EffectType.Vitality
+  name: Vitality
+  href: api/Exiled.API.Enums.EffectType.html#Exiled_API_Enums_EffectType_Vitality
+  commentId: F:Exiled.API.Enums.EffectType.Vitality
+  fullName: Exiled.API.Enums.EffectType.Vitality
+  nameWithType: EffectType.Vitality
 - uid: Exiled.API.Enums.ElevatorType
   name: ElevatorType
   href: api/Exiled.API.Enums.ElevatorType.html
@@ -2509,64 +2551,6 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Extensions.MirrorExtensions.WriterExtensions
   nameWithType: MirrorExtensions.WriterExtensions
-- uid: Exiled.API.Extensions.RagdollExtensions
-  name: RagdollExtensions
-  href: api/Exiled.API.Extensions.RagdollExtensions.html
-  commentId: T:Exiled.API.Extensions.RagdollExtensions
-  fullName: Exiled.API.Extensions.RagdollExtensions
-  nameWithType: RagdollExtensions
-- uid: Exiled.API.Extensions.RagdollExtensions.GetKiller(Exiled.API.Features.Ragdoll)
-  name: GetKiller(Ragdoll)
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetKiller_Exiled_API_Features_Ragdoll_
-  commentId: M:Exiled.API.Extensions.RagdollExtensions.GetKiller(Exiled.API.Features.Ragdoll)
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetKiller(Exiled.API.Features.Ragdoll)
-  nameWithType: RagdollExtensions.GetKiller(Ragdoll)
-- uid: Exiled.API.Extensions.RagdollExtensions.GetKiller*
-  name: GetKiller
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetKiller_
-  commentId: Overload:Exiled.API.Extensions.RagdollExtensions.GetKiller
-  isSpec: "True"
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetKiller
-  nameWithType: RagdollExtensions.GetKiller
-- uid: Exiled.API.Extensions.RagdollExtensions.GetOwner(Exiled.API.Features.Ragdoll)
-  name: GetOwner(Ragdoll)
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetOwner_Exiled_API_Features_Ragdoll_
-  commentId: M:Exiled.API.Extensions.RagdollExtensions.GetOwner(Exiled.API.Features.Ragdoll)
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetOwner(Exiled.API.Features.Ragdoll)
-  nameWithType: RagdollExtensions.GetOwner(Ragdoll)
-- uid: Exiled.API.Extensions.RagdollExtensions.GetOwner*
-  name: GetOwner
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetOwner_
-  commentId: Overload:Exiled.API.Extensions.RagdollExtensions.GetOwner
-  isSpec: "True"
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetOwner
-  nameWithType: RagdollExtensions.GetOwner
-- uid: Exiled.API.Extensions.RagdollExtensions.GetRole(Exiled.API.Features.Ragdoll)
-  name: GetRole(Ragdoll)
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetRole_Exiled_API_Features_Ragdoll_
-  commentId: M:Exiled.API.Extensions.RagdollExtensions.GetRole(Exiled.API.Features.Ragdoll)
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetRole(Exiled.API.Features.Ragdoll)
-  nameWithType: RagdollExtensions.GetRole(Ragdoll)
-- uid: Exiled.API.Extensions.RagdollExtensions.GetRole*
-  name: GetRole
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetRole_
-  commentId: Overload:Exiled.API.Extensions.RagdollExtensions.GetRole
-  isSpec: "True"
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetRole
-  nameWithType: RagdollExtensions.GetRole
-- uid: Exiled.API.Extensions.RagdollExtensions.GetRoom(Exiled.API.Features.Ragdoll)
-  name: GetRoom(Ragdoll)
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetRoom_Exiled_API_Features_Ragdoll_
-  commentId: M:Exiled.API.Extensions.RagdollExtensions.GetRoom(Exiled.API.Features.Ragdoll)
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetRoom(Exiled.API.Features.Ragdoll)
-  nameWithType: RagdollExtensions.GetRoom(Ragdoll)
-- uid: Exiled.API.Extensions.RagdollExtensions.GetRoom*
-  name: GetRoom
-  href: api/Exiled.API.Extensions.RagdollExtensions.html#Exiled_API_Extensions_RagdollExtensions_GetRoom_
-  commentId: Overload:Exiled.API.Extensions.RagdollExtensions.GetRoom
-  isSpec: "True"
-  fullName: Exiled.API.Extensions.RagdollExtensions.GetRoom
-  nameWithType: RagdollExtensions.GetRoom
 - uid: Exiled.API.Extensions.ReflectionExtensions
   name: ReflectionExtensions
   href: api/Exiled.API.Extensions.ReflectionExtensions.html
@@ -3126,12 +3110,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Cassie.ConvertTeam
   nameWithType: Cassie.ConvertTeam
-- uid: Exiled.API.Features.Cassie.CustomSCPTermination(System.String,PlayerStats.HitInfo)
-  name: CustomSCPTermination(String, PlayerStats.HitInfo)
-  href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_CustomSCPTermination_System_String_PlayerStats_HitInfo_
-  commentId: M:Exiled.API.Features.Cassie.CustomSCPTermination(System.String,PlayerStats.HitInfo)
-  fullName: Exiled.API.Features.Cassie.CustomSCPTermination(System.String, PlayerStats.HitInfo)
-  nameWithType: Cassie.CustomSCPTermination(String, PlayerStats.HitInfo)
+- uid: Exiled.API.Features.Cassie.CustomSCPTermination(System.String,PlayerStatsSystem.DamageHandlerBase)
+  name: CustomSCPTermination(String, DamageHandlerBase)
+  href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_CustomSCPTermination_System_String_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.API.Features.Cassie.CustomSCPTermination(System.String,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.API.Features.Cassie.CustomSCPTermination(System.String, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: Cassie.CustomSCPTermination(String, DamageHandlerBase)
 - uid: Exiled.API.Features.Cassie.CustomSCPTermination*
   name: CustomSCPTermination
   href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_CustomSCPTermination_
@@ -3204,12 +3188,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Cassie.Message
   nameWithType: Cassie.Message
-- uid: Exiled.API.Features.Cassie.SCPTermination(Role,PlayerStats.HitInfo,System.String)
-  name: SCPTermination(Role, PlayerStats.HitInfo, String)
-  href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_SCPTermination_Role_PlayerStats_HitInfo_System_String_
-  commentId: M:Exiled.API.Features.Cassie.SCPTermination(Role,PlayerStats.HitInfo,System.String)
-  fullName: Exiled.API.Features.Cassie.SCPTermination(Role, PlayerStats.HitInfo, System.String)
-  nameWithType: Cassie.SCPTermination(Role, PlayerStats.HitInfo, String)
+- uid: Exiled.API.Features.Cassie.SCPTermination(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: SCPTermination(Player, DamageHandlerBase)
+  href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_SCPTermination_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.API.Features.Cassie.SCPTermination(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.API.Features.Cassie.SCPTermination(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: Cassie.SCPTermination(Player, DamageHandlerBase)
 - uid: Exiled.API.Features.Cassie.SCPTermination*
   name: SCPTermination
   href: api/Exiled.API.Features.Cassie.html#Exiled_API_Features_Cassie_SCPTermination_
@@ -4043,19 +4027,6 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Firearm.Base
   nameWithType: Firearm.Base
-- uid: Exiled.API.Features.Items.Firearm.DamageType
-  name: DamageType
-  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_DamageType
-  commentId: P:Exiled.API.Features.Items.Firearm.DamageType
-  fullName: Exiled.API.Features.Items.Firearm.DamageType
-  nameWithType: Firearm.DamageType
-- uid: Exiled.API.Features.Items.Firearm.DamageType*
-  name: DamageType
-  href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_DamageType_
-  commentId: Overload:Exiled.API.Features.Items.Firearm.DamageType
-  isSpec: "True"
-  fullName: Exiled.API.Features.Items.Firearm.DamageType
-  nameWithType: Firearm.DamageType
 - uid: Exiled.API.Features.Items.Firearm.FireRate
   name: FireRate
   href: api/Exiled.API.Features.Items.Firearm.html#Exiled_API_Features_Items_Firearm_FireRate
@@ -5810,6 +5781,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.Abilities
   nameWithType: Player.Abilities
+- uid: Exiled.API.Features.Player.ActiveArtificialHealthProcesses
+  name: ActiveArtificialHealthProcesses
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_ActiveArtificialHealthProcesses
+  commentId: P:Exiled.API.Features.Player.ActiveArtificialHealthProcesses
+  fullName: Exiled.API.Features.Player.ActiveArtificialHealthProcesses
+  nameWithType: Player.ActiveArtificialHealthProcesses
+- uid: Exiled.API.Features.Player.ActiveArtificialHealthProcesses*
+  name: ActiveArtificialHealthProcesses
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_ActiveArtificialHealthProcesses_
+  commentId: Overload:Exiled.API.Features.Player.ActiveArtificialHealthProcesses
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.ActiveArtificialHealthProcesses
+  nameWithType: Player.ActiveArtificialHealthProcesses
 - uid: Exiled.API.Features.Player.ActiveEffects
   name: ActiveEffects
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_ActiveEffects
@@ -5936,19 +5920,6 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.ArtificialHealth
   nameWithType: Player.ArtificialHealth
-- uid: Exiled.API.Features.Player.ArtificialHealthDecay
-  name: ArtificialHealthDecay
-  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_ArtificialHealthDecay
-  commentId: P:Exiled.API.Features.Player.ArtificialHealthDecay
-  fullName: Exiled.API.Features.Player.ArtificialHealthDecay
-  nameWithType: Player.ArtificialHealthDecay
-- uid: Exiled.API.Features.Player.ArtificialHealthDecay*
-  name: ArtificialHealthDecay
-  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_ArtificialHealthDecay_
-  commentId: Overload:Exiled.API.Features.Player.ArtificialHealthDecay
-  isSpec: "True"
-  fullName: Exiled.API.Features.Player.ArtificialHealthDecay
-  nameWithType: Player.ArtificialHealthDecay
 - uid: Exiled.API.Features.Player.AuthenticationToken
   name: AuthenticationToken
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_AuthenticationToken
@@ -6758,18 +6729,18 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.HintDisplay
   nameWithType: Player.HintDisplay
-- uid: Exiled.API.Features.Player.Hurt(System.Single,DamageTypes.DamageType,System.String,System.Int32,System.Boolean)
-  name: Hurt(Single, DamageTypes.DamageType, String, Int32, Boolean)
-  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_System_Single_DamageTypes_DamageType_System_String_System_Int32_System_Boolean_
-  commentId: M:Exiled.API.Features.Player.Hurt(System.Single,DamageTypes.DamageType,System.String,System.Int32,System.Boolean)
-  fullName: Exiled.API.Features.Player.Hurt(System.Single, DamageTypes.DamageType, System.String, System.Int32, System.Boolean)
-  nameWithType: Player.Hurt(Single, DamageTypes.DamageType, String, Int32, Boolean)
-- uid: Exiled.API.Features.Player.Hurt(System.Single,Exiled.API.Features.Player,DamageTypes.DamageType)
-  name: Hurt(Single, Player, DamageTypes.DamageType)
-  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_System_Single_Exiled_API_Features_Player_DamageTypes_DamageType_
-  commentId: M:Exiled.API.Features.Player.Hurt(System.Single,Exiled.API.Features.Player,DamageTypes.DamageType)
-  fullName: Exiled.API.Features.Player.Hurt(System.Single, Exiled.API.Features.Player, DamageTypes.DamageType)
-  nameWithType: Player.Hurt(Single, Player, DamageTypes.DamageType)
+- uid: Exiled.API.Features.Player.Hurt(PlayerStatsSystem.DamageHandlerBase)
+  name: Hurt(DamageHandlerBase)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.API.Features.Player.Hurt(PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.API.Features.Player.Hurt(PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: Player.Hurt(DamageHandlerBase)
+- uid: Exiled.API.Features.Player.Hurt(System.String,System.Single,System.String)
+  name: Hurt(String, Single, String)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_System_String_System_Single_System_String_
+  commentId: M:Exiled.API.Features.Player.Hurt(System.String,System.Single,System.String)
+  fullName: Exiled.API.Features.Player.Hurt(System.String, System.Single, System.String)
+  nameWithType: Player.Hurt(String, Single, String)
 - uid: Exiled.API.Features.Player.Hurt*
   name: Hurt
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Hurt_
@@ -7258,12 +7229,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Player.Kick
   nameWithType: Player.Kick
-- uid: Exiled.API.Features.Player.Kill(DamageTypes.DamageType)
-  name: Kill(DamageTypes.DamageType)
-  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_DamageTypes_DamageType_
-  commentId: M:Exiled.API.Features.Player.Kill(DamageTypes.DamageType)
-  fullName: Exiled.API.Features.Player.Kill(DamageTypes.DamageType)
-  nameWithType: Player.Kill(DamageTypes.DamageType)
+- uid: Exiled.API.Features.Player.Kill(System.String,System.String)
+  name: Kill(String, String)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_System_String_System_String_
+  commentId: M:Exiled.API.Features.Player.Kill(System.String,System.String)
+  fullName: Exiled.API.Features.Player.Kill(System.String, System.String)
+  nameWithType: Player.Kill(String, String)
 - uid: Exiled.API.Features.Player.Kill*
   name: Kill
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Kill_
@@ -8451,18 +8422,18 @@ references:
   commentId: T:Exiled.API.Features.Ragdoll
   fullName: Exiled.API.Features.Ragdoll
   nameWithType: Ragdoll
-- uid: Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  name: Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Ragdoll(RoleType, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean)
-  nameWithType: Ragdoll.Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-- uid: Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  name: Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll__ctor_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.#ctor(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Ragdoll(RoleType, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Boolean)
-  nameWithType: Ragdoll.Ragdoll(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
+- uid: Exiled.API.Features.Ragdoll.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  name: Ragdoll(Player, DamageHandlerBase, Boolean)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_System_Boolean_
+  commentId: M:Exiled.API.Features.Ragdoll.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  fullName: Exiled.API.Features.Ragdoll.Ragdoll(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase, System.Boolean)
+  nameWithType: Ragdoll.Ragdoll(Player, DamageHandlerBase, Boolean)
+- uid: Exiled.API.Features.Ragdoll.#ctor(RagdollInfo,System.Boolean)
+  name: Ragdoll(RagdollInfo, Boolean)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll__ctor_RagdollInfo_System_Boolean_
+  commentId: M:Exiled.API.Features.Ragdoll.#ctor(RagdollInfo,System.Boolean)
+  fullName: Exiled.API.Features.Ragdoll.Ragdoll(RagdollInfo, System.Boolean)
+  nameWithType: Ragdoll.Ragdoll(RagdollInfo, Boolean)
 - uid: Exiled.API.Features.Ragdoll.#ctor*
   name: Ragdoll
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll__ctor_
@@ -8470,6 +8441,32 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Ragdoll
   nameWithType: Ragdoll.Ragdoll
+- uid: Exiled.API.Features.Ragdoll.AllowAnimations
+  name: AllowAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_AllowAnimations
+  commentId: P:Exiled.API.Features.Ragdoll.AllowAnimations
+  fullName: Exiled.API.Features.Ragdoll.AllowAnimations
+  nameWithType: Ragdoll.AllowAnimations
+- uid: Exiled.API.Features.Ragdoll.AllowAnimations*
+  name: AllowAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_AllowAnimations_
+  commentId: Overload:Exiled.API.Features.Ragdoll.AllowAnimations
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.AllowAnimations
+  nameWithType: Ragdoll.AllowAnimations
+- uid: Exiled.API.Features.Ragdoll.AllowCleanUp
+  name: AllowCleanUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_AllowCleanUp
+  commentId: P:Exiled.API.Features.Ragdoll.AllowCleanUp
+  fullName: Exiled.API.Features.Ragdoll.AllowCleanUp
+  nameWithType: Ragdoll.AllowCleanUp
+- uid: Exiled.API.Features.Ragdoll.AllowCleanUp*
+  name: AllowCleanUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_AllowCleanUp_
+  commentId: Overload:Exiled.API.Features.Ragdoll.AllowCleanUp
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.AllowCleanUp
+  nameWithType: Ragdoll.AllowCleanUp
 - uid: Exiled.API.Features.Ragdoll.AllowRecall
   name: AllowRecall
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_AllowRecall
@@ -8496,19 +8493,71 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Base
   nameWithType: Ragdoll.Base
-- uid: Exiled.API.Features.Ragdoll.DefaultRagdollOwner
-  name: DefaultRagdollOwner
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DefaultRagdollOwner
-  commentId: P:Exiled.API.Features.Ragdoll.DefaultRagdollOwner
-  fullName: Exiled.API.Features.Ragdoll.DefaultRagdollOwner
-  nameWithType: Ragdoll.DefaultRagdollOwner
-- uid: Exiled.API.Features.Ragdoll.DefaultRagdollOwner*
-  name: DefaultRagdollOwner
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DefaultRagdollOwner_
-  commentId: Overload:Exiled.API.Features.Ragdoll.DefaultRagdollOwner
+- uid: Exiled.API.Features.Ragdoll.CanBeCleanedUp
+  name: CanBeCleanedUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CanBeCleanedUp
+  commentId: P:Exiled.API.Features.Ragdoll.CanBeCleanedUp
+  fullName: Exiled.API.Features.Ragdoll.CanBeCleanedUp
+  nameWithType: Ragdoll.CanBeCleanedUp
+- uid: Exiled.API.Features.Ragdoll.CanBeCleanedUp*
+  name: CanBeCleanedUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CanBeCleanedUp_
+  commentId: Overload:Exiled.API.Features.Ragdoll.CanBeCleanedUp
   isSpec: "True"
-  fullName: Exiled.API.Features.Ragdoll.DefaultRagdollOwner
-  nameWithType: Ragdoll.DefaultRagdollOwner
+  fullName: Exiled.API.Features.Ragdoll.CanBeCleanedUp
+  nameWithType: Ragdoll.CanBeCleanedUp
+- uid: Exiled.API.Features.Ragdoll.CleanUpTime
+  name: CleanUpTime
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CleanUpTime
+  commentId: P:Exiled.API.Features.Ragdoll.CleanUpTime
+  fullName: Exiled.API.Features.Ragdoll.CleanUpTime
+  nameWithType: Ragdoll.CleanUpTime
+- uid: Exiled.API.Features.Ragdoll.CleanUpTime*
+  name: CleanUpTime
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_CleanUpTime_
+  commentId: Overload:Exiled.API.Features.Ragdoll.CleanUpTime
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.CleanUpTime
+  nameWithType: Ragdoll.CleanUpTime
+- uid: Exiled.API.Features.Ragdoll.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DamageHandler
+  commentId: P:Exiled.API.Features.Ragdoll.DamageHandler
+  fullName: Exiled.API.Features.Ragdoll.DamageHandler
+  nameWithType: Ragdoll.DamageHandler
+- uid: Exiled.API.Features.Ragdoll.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DamageHandler_
+  commentId: Overload:Exiled.API.Features.Ragdoll.DamageHandler
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.DamageHandler
+  nameWithType: Ragdoll.DamageHandler
+- uid: Exiled.API.Features.Ragdoll.DeathAnimations
+  name: DeathAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DeathAnimations
+  commentId: P:Exiled.API.Features.Ragdoll.DeathAnimations
+  fullName: Exiled.API.Features.Ragdoll.DeathAnimations
+  nameWithType: Ragdoll.DeathAnimations
+- uid: Exiled.API.Features.Ragdoll.DeathAnimations*
+  name: DeathAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DeathAnimations_
+  commentId: Overload:Exiled.API.Features.Ragdoll.DeathAnimations
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.DeathAnimations
+  nameWithType: Ragdoll.DeathAnimations
+- uid: Exiled.API.Features.Ragdoll.DeathReason
+  name: DeathReason
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DeathReason
+  commentId: P:Exiled.API.Features.Ragdoll.DeathReason
+  fullName: Exiled.API.Features.Ragdoll.DeathReason
+  nameWithType: Ragdoll.DeathReason
+- uid: Exiled.API.Features.Ragdoll.DeathReason*
+  name: DeathReason
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_DeathReason_
+  commentId: Overload:Exiled.API.Features.Ragdoll.DeathReason
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.DeathReason
+  nameWithType: Ragdoll.DeathReason
 - uid: Exiled.API.Features.Ragdoll.Delete
   name: Delete()
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Delete
@@ -8535,12 +8584,27 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.GameObject
   nameWithType: Ragdoll.GameObject
+- uid: Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
+  name: Get(Player)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_Exiled_API_Features_Player_
+  commentId: M:Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
+  fullName: Exiled.API.Features.Ragdoll.Get(Exiled.API.Features.Player)
+  nameWithType: Ragdoll.Get(Player)
 - uid: Exiled.API.Features.Ragdoll.Get(Ragdoll)
   name: Get(Ragdoll)
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_Ragdoll_
   commentId: M:Exiled.API.Features.Ragdoll.Get(Ragdoll)
   fullName: Exiled.API.Features.Ragdoll.Get(Ragdoll)
   nameWithType: Ragdoll.Get(Ragdoll)
+- uid: Exiled.API.Features.Ragdoll.Get(System.Collections.Generic.IEnumerable{Exiled.API.Features.Player})
+  name: Get(IEnumerable<Player>)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_System_Collections_Generic_IEnumerable_Exiled_API_Features_Player__
+  commentId: M:Exiled.API.Features.Ragdoll.Get(System.Collections.Generic.IEnumerable{Exiled.API.Features.Player})
+  name.vb: Get(IEnumerable(Of Player))
+  fullName: Exiled.API.Features.Ragdoll.Get(System.Collections.Generic.IEnumerable<Exiled.API.Features.Player>)
+  fullName.vb: Exiled.API.Features.Ragdoll.Get(System.Collections.Generic.IEnumerable(Of Exiled.API.Features.Player))
+  nameWithType: Ragdoll.Get(IEnumerable<Player>)
+  nameWithType.vb: Ragdoll.Get(IEnumerable(Of Player))
 - uid: Exiled.API.Features.Ragdoll.Get*
   name: Get
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Get_
@@ -8548,19 +8612,32 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Get
   nameWithType: Ragdoll.Get
-- uid: Exiled.API.Features.Ragdoll.Killer
-  name: Killer
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Killer
-  commentId: P:Exiled.API.Features.Ragdoll.Killer
-  fullName: Exiled.API.Features.Ragdoll.Killer
-  nameWithType: Ragdoll.Killer
-- uid: Exiled.API.Features.Ragdoll.Killer*
-  name: Killer
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Killer_
-  commentId: Overload:Exiled.API.Features.Ragdoll.Killer
+- uid: Exiled.API.Features.Ragdoll.IsCleanedUp
+  name: IsCleanedUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_IsCleanedUp
+  commentId: P:Exiled.API.Features.Ragdoll.IsCleanedUp
+  fullName: Exiled.API.Features.Ragdoll.IsCleanedUp
+  nameWithType: Ragdoll.IsCleanedUp
+- uid: Exiled.API.Features.Ragdoll.IsCleanedUp*
+  name: IsCleanedUp
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_IsCleanedUp_
+  commentId: Overload:Exiled.API.Features.Ragdoll.IsCleanedUp
   isSpec: "True"
-  fullName: Exiled.API.Features.Ragdoll.Killer
-  nameWithType: Ragdoll.Killer
+  fullName: Exiled.API.Features.Ragdoll.IsCleanedUp
+  nameWithType: Ragdoll.IsCleanedUp
+- uid: Exiled.API.Features.Ragdoll.IsPlayingAnimations
+  name: IsPlayingAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_IsPlayingAnimations
+  commentId: P:Exiled.API.Features.Ragdoll.IsPlayingAnimations
+  fullName: Exiled.API.Features.Ragdoll.IsPlayingAnimations
+  nameWithType: Ragdoll.IsPlayingAnimations
+- uid: Exiled.API.Features.Ragdoll.IsPlayingAnimations*
+  name: IsPlayingAnimations
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_IsPlayingAnimations_
+  commentId: Overload:Exiled.API.Features.Ragdoll.IsPlayingAnimations
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.IsPlayingAnimations
+  nameWithType: Ragdoll.IsPlayingAnimations
 - uid: Exiled.API.Features.Ragdoll.Name
   name: Name
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Name
@@ -8574,6 +8651,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Name
   nameWithType: Ragdoll.Name
+- uid: Exiled.API.Features.Ragdoll.NetworkInfo
+  name: NetworkInfo
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_NetworkInfo
+  commentId: P:Exiled.API.Features.Ragdoll.NetworkInfo
+  fullName: Exiled.API.Features.Ragdoll.NetworkInfo
+  nameWithType: Ragdoll.NetworkInfo
+- uid: Exiled.API.Features.Ragdoll.NetworkInfo*
+  name: NetworkInfo
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_NetworkInfo_
+  commentId: Overload:Exiled.API.Features.Ragdoll.NetworkInfo
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.NetworkInfo
+  nameWithType: Ragdoll.NetworkInfo
 - uid: Exiled.API.Features.Ragdoll.Owner
   name: Owner
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Owner
@@ -8626,6 +8716,19 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Room
   nameWithType: Ragdoll.Room
+- uid: Exiled.API.Features.Ragdoll.Rotation
+  name: Rotation
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Rotation
+  commentId: P:Exiled.API.Features.Ragdoll.Rotation
+  fullName: Exiled.API.Features.Ragdoll.Rotation
+  nameWithType: Ragdoll.Rotation
+- uid: Exiled.API.Features.Ragdoll.Rotation*
+  name: Rotation
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Rotation_
+  commentId: Overload:Exiled.API.Features.Ragdoll.Rotation
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.Rotation
+  nameWithType: Ragdoll.Rotation
 - uid: Exiled.API.Features.Ragdoll.Scale
   name: Scale
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Scale
@@ -8639,85 +8742,24 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Scale
   nameWithType: Ragdoll.Scale
-- uid: Exiled.API.Features.Ragdoll.Scp096Death
-  name: Scp096Death
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Scp096Death
-  commentId: P:Exiled.API.Features.Ragdoll.Scp096Death
-  fullName: Exiled.API.Features.Ragdoll.Scp096Death
-  nameWithType: Ragdoll.Scp096Death
-- uid: Exiled.API.Features.Ragdoll.Scp096Death*
-  name: Scp096Death
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Scp096Death_
-  commentId: Overload:Exiled.API.Features.Ragdoll.Scp096Death
-  isSpec: "True"
-  fullName: Exiled.API.Features.Ragdoll.Scp096Death
-  nameWithType: Ragdoll.Scp096Death
 - uid: Exiled.API.Features.Ragdoll.Spawn
   name: Spawn()
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn
   commentId: M:Exiled.API.Features.Ragdoll.Spawn
   fullName: Exiled.API.Features.Ragdoll.Spawn()
   nameWithType: Ragdoll.Spawn()
-- uid: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  name: Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player, DamageTypes.DamageType, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean)
-  nameWithType: Ragdoll.Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  name: Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_DamageTypes_DamageType_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,DamageTypes.DamageType,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player, DamageTypes.DamageType, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Boolean)
-  nameWithType: Ragdoll.Spawn(Player, DamageTypes.DamageType, Vector3, Quaternion, Vector3, Boolean, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  name: Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(Role, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean)
-  nameWithType: Ragdoll.Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  name: Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_Role_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(Role,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(Role, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Boolean)
-  nameWithType: Ragdoll.Spawn(Role, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)
-  name: Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, DamageTypes.DamageType, System.String, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Int32, System.Boolean, System.String)
-  nameWithType: Ragdoll.Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)
-  name: Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, String)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_DamageTypes_DamageType_System_String_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,DamageTypes.DamageType,System.String,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, DamageTypes.DamageType, System.String, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Int32, System.String)
-  nameWithType: Ragdoll.Spawn(RoleType, DamageTypes.DamageType, String, Vector3, Quaternion, Vector3, Boolean, Int32, String)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  name: Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean)
-  nameWithType: Ragdoll.Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  name: Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_Ragdoll_Info_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Boolean_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,Ragdoll.Info,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Boolean)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, Ragdoll.Info, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Boolean)
-  nameWithType: Ragdoll.Spawn(RoleType, Ragdoll.Info, Vector3, Quaternion, Vector3, Boolean, Boolean)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)
-  name: Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_Boolean_System_String_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.Boolean,System.String)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, System.String, PlayerStats.HitInfo, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Int32, System.Boolean, System.String)
-  nameWithType: Ragdoll.Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, Boolean, String)
-- uid: Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)
-  name: Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, String)
-  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RoleType_System_String_PlayerStats_HitInfo_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_System_Boolean_System_Int32_System_String_
-  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RoleType,System.String,PlayerStats.HitInfo,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,System.Boolean,System.Int32,System.String)
-  fullName: Exiled.API.Features.Ragdoll.Spawn(RoleType, System.String, PlayerStats.HitInfo, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, System.Boolean, System.Int32, System.String)
-  nameWithType: Ragdoll.Spawn(RoleType, String, PlayerStats.HitInfo, Vector3, Quaternion, Vector3, Boolean, Int32, String)
+- uid: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: Spawn(Player, DamageHandlerBase)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.API.Features.Ragdoll.Spawn(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: Ragdoll.Spawn(Player, DamageHandlerBase)
+- uid: Exiled.API.Features.Ragdoll.Spawn(RagdollInfo)
+  name: Spawn(RagdollInfo)
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_RagdollInfo_
+  commentId: M:Exiled.API.Features.Ragdoll.Spawn(RagdollInfo)
+  fullName: Exiled.API.Features.Ragdoll.Spawn(RagdollInfo)
+  nameWithType: Ragdoll.Spawn(RagdollInfo)
 - uid: Exiled.API.Features.Ragdoll.Spawn*
   name: Spawn
   href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_Spawn_
@@ -8725,6 +8767,32 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Ragdoll.Spawn
   nameWithType: Ragdoll.Spawn
+- uid: Exiled.API.Features.Ragdoll.SpecialRigidbodies
+  name: SpecialRigidbodies
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_SpecialRigidbodies
+  commentId: P:Exiled.API.Features.Ragdoll.SpecialRigidbodies
+  fullName: Exiled.API.Features.Ragdoll.SpecialRigidbodies
+  nameWithType: Ragdoll.SpecialRigidbodies
+- uid: Exiled.API.Features.Ragdoll.SpecialRigidbodies*
+  name: SpecialRigidbodies
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_SpecialRigidbodies_
+  commentId: Overload:Exiled.API.Features.Ragdoll.SpecialRigidbodies
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.SpecialRigidbodies
+  nameWithType: Ragdoll.SpecialRigidbodies
+- uid: Exiled.API.Features.Ragdoll.UnSpawn
+  name: UnSpawn()
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_UnSpawn
+  commentId: M:Exiled.API.Features.Ragdoll.UnSpawn
+  fullName: Exiled.API.Features.Ragdoll.UnSpawn()
+  nameWithType: Ragdoll.UnSpawn()
+- uid: Exiled.API.Features.Ragdoll.UnSpawn*
+  name: UnSpawn
+  href: api/Exiled.API.Features.Ragdoll.html#Exiled_API_Features_Ragdoll_UnSpawn_
+  commentId: Overload:Exiled.API.Features.Ragdoll.UnSpawn
+  isSpec: "True"
+  fullName: Exiled.API.Features.Ragdoll.UnSpawn
+  nameWithType: Ragdoll.UnSpawn
 - uid: Exiled.API.Features.Respawn
   name: Respawn
   href: api/Exiled.API.Features.Respawn.html
@@ -9268,19 +9336,6 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Round.Kills
   nameWithType: Round.Kills
-- uid: Exiled.API.Features.Round.KillsByFrag
-  name: KillsByFrag
-  href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_KillsByFrag
-  commentId: P:Exiled.API.Features.Round.KillsByFrag
-  fullName: Exiled.API.Features.Round.KillsByFrag
-  nameWithType: Round.KillsByFrag
-- uid: Exiled.API.Features.Round.KillsByFrag*
-  name: KillsByFrag
-  href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_KillsByFrag_
-  commentId: Overload:Exiled.API.Features.Round.KillsByFrag
-  isSpec: "True"
-  fullName: Exiled.API.Features.Round.KillsByFrag
-  nameWithType: Round.KillsByFrag
 - uid: Exiled.API.Features.Round.KillsByScp
   name: KillsByScp
   href: api/Exiled.API.Features.Round.html#Exiled_API_Features_Round_KillsByScp
@@ -9365,19 +9420,6 @@ references:
   commentId: T:Exiled.API.Features.Scp096
   fullName: Exiled.API.Features.Scp096
   nameWithType: Scp096
-- uid: Exiled.API.Features.Scp096.MaxShield
-  name: MaxShield
-  href: api/Exiled.API.Features.Scp096.html#Exiled_API_Features_Scp096_MaxShield
-  commentId: P:Exiled.API.Features.Scp096.MaxShield
-  fullName: Exiled.API.Features.Scp096.MaxShield
-  nameWithType: Scp096.MaxShield
-- uid: Exiled.API.Features.Scp096.MaxShield*
-  name: MaxShield
-  href: api/Exiled.API.Features.Scp096.html#Exiled_API_Features_Scp096_MaxShield_
-  commentId: Overload:Exiled.API.Features.Scp096.MaxShield
-  isSpec: "True"
-  fullName: Exiled.API.Features.Scp096.MaxShield
-  nameWithType: Scp096.MaxShield
 - uid: Exiled.API.Features.Scp096.TurnedPlayers
   name: TurnedPlayers
   href: api/Exiled.API.Features.Scp096.html#Exiled_API_Features_Scp096_TurnedPlayers
@@ -9740,11 +9782,11 @@ references:
   commentId: T:Exiled.API.Features.ShootingTarget
   fullName: Exiled.API.Features.ShootingTarget
   nameWithType: ShootingTarget
-- uid: Exiled.API.Features.ShootingTarget.#ctor(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
+- uid: Exiled.API.Features.ShootingTarget.#ctor(AdminToys.ShootingTarget)
   name: ShootingTarget(ShootingTarget)
-  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget__ctor_InventorySystem_Items_Firearms_Utilities_ShootingTarget_
-  commentId: M:Exiled.API.Features.ShootingTarget.#ctor(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
-  fullName: Exiled.API.Features.ShootingTarget.ShootingTarget(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
+  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget__ctor_AdminToys_ShootingTarget_
+  commentId: M:Exiled.API.Features.ShootingTarget.#ctor(AdminToys.ShootingTarget)
+  fullName: Exiled.API.Features.ShootingTarget.ShootingTarget(AdminToys.ShootingTarget)
   nameWithType: ShootingTarget.ShootingTarget(ShootingTarget)
 - uid: Exiled.API.Features.ShootingTarget.#ctor*
   name: ShootingTarget
@@ -9818,12 +9860,12 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.ShootingTarget.Clear
   nameWithType: ShootingTarget.Clear
-- uid: Exiled.API.Features.ShootingTarget.Damage(System.Single,InventorySystem.Items.IDamageDealer,Footprinting.Footprint,UnityEngine.Vector3)
-  name: Damage(Single, IDamageDealer, Footprint, Vector3)
-  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget_Damage_System_Single_InventorySystem_Items_IDamageDealer_Footprinting_Footprint_UnityEngine_Vector3_
-  commentId: M:Exiled.API.Features.ShootingTarget.Damage(System.Single,InventorySystem.Items.IDamageDealer,Footprinting.Footprint,UnityEngine.Vector3)
-  fullName: Exiled.API.Features.ShootingTarget.Damage(System.Single, InventorySystem.Items.IDamageDealer, Footprinting.Footprint, UnityEngine.Vector3)
-  nameWithType: ShootingTarget.Damage(Single, IDamageDealer, Footprint, Vector3)
+- uid: Exiled.API.Features.ShootingTarget.Damage(System.Single,PlayerStatsSystem.DamageHandlerBase,UnityEngine.Vector3)
+  name: Damage(Single, DamageHandlerBase, Vector3)
+  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget_Damage_System_Single_PlayerStatsSystem_DamageHandlerBase_UnityEngine_Vector3_
+  commentId: M:Exiled.API.Features.ShootingTarget.Damage(System.Single,PlayerStatsSystem.DamageHandlerBase,UnityEngine.Vector3)
+  fullName: Exiled.API.Features.ShootingTarget.Damage(System.Single, PlayerStatsSystem.DamageHandlerBase, UnityEngine.Vector3)
+  nameWithType: ShootingTarget.Damage(Single, DamageHandlerBase, Vector3)
 - uid: Exiled.API.Features.ShootingTarget.Damage*
   name: Damage
   href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget_Damage_
@@ -9831,11 +9873,11 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.ShootingTarget.Damage
   nameWithType: ShootingTarget.Damage
-- uid: Exiled.API.Features.ShootingTarget.Get(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
+- uid: Exiled.API.Features.ShootingTarget.Get(AdminToys.ShootingTarget)
   name: Get(ShootingTarget)
-  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget_Get_InventorySystem_Items_Firearms_Utilities_ShootingTarget_
-  commentId: M:Exiled.API.Features.ShootingTarget.Get(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
-  fullName: Exiled.API.Features.ShootingTarget.Get(InventorySystem.Items.Firearms.Utilities.ShootingTarget)
+  href: api/Exiled.API.Features.ShootingTarget.html#Exiled_API_Features_ShootingTarget_Get_AdminToys_ShootingTarget_
+  commentId: M:Exiled.API.Features.ShootingTarget.Get(AdminToys.ShootingTarget)
+  fullName: Exiled.API.Features.ShootingTarget.Get(AdminToys.ShootingTarget)
   nameWithType: ShootingTarget.Get(ShootingTarget)
 - uid: Exiled.API.Features.ShootingTarget.Get*
   name: Get
@@ -11236,12 +11278,12 @@ references:
   commentId: T:Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs
   fullName: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs
   nameWithType: OwnerDyingEventArgs
-- uid: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  name: OwnerDyingEventArgs(Item, Player, Player, PlayerStats.HitInfo, Boolean)
-  href: api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html#Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_System_Boolean_
-  commentId: M:Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  fullName: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.OwnerDyingEventArgs(Exiled.API.Features.Items.Item, Exiled.API.Features.Player, Exiled.API.Features.Player, PlayerStats.HitInfo, System.Boolean)
-  nameWithType: OwnerDyingEventArgs.OwnerDyingEventArgs(Item, Player, Player, PlayerStats.HitInfo, Boolean)
+- uid: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: OwnerDyingEventArgs(Item, Player, DamageHandlerBase)
+  href: api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html#Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.OwnerDyingEventArgs(Exiled.API.Features.Items.Item, Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: OwnerDyingEventArgs.OwnerDyingEventArgs(Item, Player, DamageHandlerBase)
 - uid: Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.#ctor(Exiled.API.Features.Items.Item,Exiled.Events.EventArgs.DyingEventArgs)
   name: OwnerDyingEventArgs(Item, DyingEventArgs)
   href: api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html#Exiled_CustomItems_API_EventArgs_OwnerDyingEventArgs__ctor_Exiled_API_Features_Items_Item_Exiled_Events_EventArgs_DyingEventArgs_
@@ -14610,19 +14652,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.Config.LogRaCommands
   nameWithType: Config.LogRaCommands
-- uid: Exiled.Events.Config.Scp096MaxShieldAmount
-  name: Scp096MaxShieldAmount
-  href: api/Exiled.Events.Config.html#Exiled_Events_Config_Scp096MaxShieldAmount
-  commentId: P:Exiled.Events.Config.Scp096MaxShieldAmount
-  fullName: Exiled.Events.Config.Scp096MaxShieldAmount
-  nameWithType: Config.Scp096MaxShieldAmount
-- uid: Exiled.Events.Config.Scp096MaxShieldAmount*
-  name: Scp096MaxShieldAmount
-  href: api/Exiled.Events.Config.html#Exiled_Events_Config_Scp096MaxShieldAmount_
-  commentId: Overload:Exiled.Events.Config.Scp096MaxShieldAmount
-  isSpec: "True"
-  fullName: Exiled.Events.Config.Scp096MaxShieldAmount
-  nameWithType: Config.Scp096MaxShieldAmount
 - uid: Exiled.Events.Config.ShouldDropInventory
   name: ShouldDropInventory
   href: api/Exiled.Events.Config.html#Exiled_Events_Config_ShouldDropInventory
@@ -15164,12 +15193,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs
   fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs
   nameWithType: AnnouncingScpTerminationEventArgs
-- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,Role,PlayerStats.HitInfo,System.String,System.Boolean)
-  name: AnnouncingScpTerminationEventArgs(Player, Role, PlayerStats.HitInfo, String, Boolean)
-  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_Exiled_API_Features_Player_Role_PlayerStats_HitInfo_System_String_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,Role,PlayerStats.HitInfo,System.String,System.Boolean)
-  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs(Exiled.API.Features.Player, Role, PlayerStats.HitInfo, System.String, System.Boolean)
-  nameWithType: AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs(Player, Role, PlayerStats.HitInfo, String, Boolean)
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  name: AnnouncingScpTerminationEventArgs(Player, DamageHandlerBase, Boolean)
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase, System.Boolean)
+  nameWithType: AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs(Player, DamageHandlerBase, Boolean)
 - uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor*
   name: AnnouncingScpTerminationEventArgs
   href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_
@@ -15177,19 +15206,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs
   nameWithType: AnnouncingScpTerminationEventArgs.AnnouncingScpTerminationEventArgs
-- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo
-  name: HitInfo
-  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_HitInfo
-  commentId: P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo
-  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo
-  nameWithType: AnnouncingScpTerminationEventArgs.HitInfo
-- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo*
-  name: HitInfo
-  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_HitInfo_
-  commentId: Overload:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_DamageHandler
+  commentId: P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
+  nameWithType: AnnouncingScpTerminationEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_DamageHandler_
+  commentId: Overload:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.HitInfo
-  nameWithType: AnnouncingScpTerminationEventArgs.HitInfo
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
+  nameWithType: AnnouncingScpTerminationEventArgs.DamageHandler
 - uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_IsAllowed
@@ -15216,6 +15245,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Killer
   nameWithType: AnnouncingScpTerminationEventArgs.Killer
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player
+  name: Player
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Player
+  commentId: P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player
+  nameWithType: AnnouncingScpTerminationEventArgs.Player
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player*
+  name: Player
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Player_
+  commentId: Overload:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player
+  nameWithType: AnnouncingScpTerminationEventArgs.Player
 - uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role
   name: Role
   href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Role
@@ -16618,12 +16660,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.ChargingPlayerEventArgs
   fullName: Exiled.Events.EventArgs.ChargingPlayerEventArgs
   nameWithType: ChargingPlayerEventArgs
-- uid: Exiled.Events.EventArgs.ChargingPlayerEventArgs.#ctor(PlayableScps.Scp096,Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean,System.Single,System.Boolean,System.Boolean)
-  name: ChargingPlayerEventArgs(Scp096, Player, Player, Boolean, Single, Boolean, Boolean)
-  href: api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.html#Exiled_Events_EventArgs_ChargingPlayerEventArgs__ctor_PlayableScps_Scp096_Exiled_API_Features_Player_Exiled_API_Features_Player_System_Boolean_System_Single_System_Boolean_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.ChargingPlayerEventArgs.#ctor(PlayableScps.Scp096,Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean,System.Single,System.Boolean,System.Boolean)
-  fullName: Exiled.Events.EventArgs.ChargingPlayerEventArgs.ChargingPlayerEventArgs(PlayableScps.Scp096, Exiled.API.Features.Player, Exiled.API.Features.Player, System.Boolean, System.Single, System.Boolean, System.Boolean)
-  nameWithType: ChargingPlayerEventArgs.ChargingPlayerEventArgs(Scp096, Player, Player, Boolean, Single, Boolean, Boolean)
+- uid: Exiled.Events.EventArgs.ChargingPlayerEventArgs.#ctor(PlayableScps.Scp096,Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean,System.Single)
+  name: ChargingPlayerEventArgs(Scp096, Player, Player, Boolean, Single)
+  href: api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.html#Exiled_Events_EventArgs_ChargingPlayerEventArgs__ctor_PlayableScps_Scp096_Exiled_API_Features_Player_Exiled_API_Features_Player_System_Boolean_System_Single_
+  commentId: M:Exiled.Events.EventArgs.ChargingPlayerEventArgs.#ctor(PlayableScps.Scp096,Exiled.API.Features.Player,Exiled.API.Features.Player,System.Boolean,System.Single)
+  fullName: Exiled.Events.EventArgs.ChargingPlayerEventArgs.ChargingPlayerEventArgs(PlayableScps.Scp096, Exiled.API.Features.Player, Exiled.API.Features.Player, System.Boolean, System.Single)
+  nameWithType: ChargingPlayerEventArgs.ChargingPlayerEventArgs(Scp096, Player, Player, Boolean, Single)
 - uid: Exiled.Events.EventArgs.ChargingPlayerEventArgs.#ctor*
   name: ChargingPlayerEventArgs
   href: api/Exiled.Events.EventArgs.ChargingPlayerEventArgs.html#Exiled_Events_EventArgs_ChargingPlayerEventArgs__ctor_
@@ -16863,12 +16905,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs
   fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs
   nameWithType: DamagingShootingTargetEventArgs
-- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Utilities.ShootingTarget,InventorySystem.Items.IDamageDealer,Footprinting.Footprint,UnityEngine.Vector3,System.Boolean)
-  name: DamagingShootingTargetEventArgs(Player, ShootingTarget, IDamageDealer, Footprint, Vector3, Boolean)
-  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Firearms_Utilities_ShootingTarget_InventorySystem_Items_IDamageDealer_Footprinting_Footprint_UnityEngine_Vector3_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Utilities.ShootingTarget,InventorySystem.Items.IDamageDealer,Footprinting.Footprint,UnityEngine.Vector3,System.Boolean)
-  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs(Exiled.API.Features.Player, InventorySystem.Items.Firearms.Utilities.ShootingTarget, InventorySystem.Items.IDamageDealer, Footprinting.Footprint, UnityEngine.Vector3, System.Boolean)
-  nameWithType: DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs(Player, ShootingTarget, IDamageDealer, Footprint, Vector3, Boolean)
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,System.Single,System.Single,UnityEngine.Vector3,AdminToys.ShootingTarget,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  name: DamagingShootingTargetEventArgs(Player, Single, Single, Vector3, ShootingTarget, DamageHandlerBase, Boolean)
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs__ctor_Exiled_API_Features_Player_System_Single_System_Single_UnityEngine_Vector3_AdminToys_ShootingTarget_PlayerStatsSystem_DamageHandlerBase_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,System.Single,System.Single,UnityEngine.Vector3,AdminToys.ShootingTarget,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs(Exiled.API.Features.Player, System.Single, System.Single, UnityEngine.Vector3, AdminToys.ShootingTarget, PlayerStatsSystem.DamageHandlerBase, System.Boolean)
+  nameWithType: DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs(Player, Single, Single, Vector3, ShootingTarget, DamageHandlerBase, Boolean)
 - uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.#ctor*
   name: DamagingShootingTargetEventArgs
   href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs__ctor_
@@ -16876,19 +16918,45 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs
   nameWithType: DamagingShootingTargetEventArgs.DamagingShootingTargetEventArgs
-- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint
-  name: AttackerFootprint
-  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_AttackerFootprint
-  commentId: P:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint
-  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint
-  nameWithType: DamagingShootingTargetEventArgs.AttackerFootprint
-- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint*
-  name: AttackerFootprint
-  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_AttackerFootprint_
-  commentId: Overload:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount
+  name: Amount
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_Amount
+  commentId: P:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount
+  nameWithType: DamagingShootingTargetEventArgs.Amount
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount*
+  name: Amount
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_Amount_
+  commentId: Overload:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.AttackerFootprint
-  nameWithType: DamagingShootingTargetEventArgs.AttackerFootprint
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Amount
+  nameWithType: DamagingShootingTargetEventArgs.Amount
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_DamageHandler
+  commentId: P:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler
+  nameWithType: DamagingShootingTargetEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_DamageHandler_
+  commentId: Overload:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.DamageHandler
+  nameWithType: DamagingShootingTargetEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance
+  name: Distance
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_Distance
+  commentId: P:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance
+  nameWithType: DamagingShootingTargetEventArgs.Distance
+- uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance*
+  name: Distance
+  href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_Distance_
+  commentId: Overload:Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.Distance
+  nameWithType: DamagingShootingTargetEventArgs.Distance
 - uid: Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.HitLocation
   name: HitLocation
   href: api/Exiled.Events.EventArgs.DamagingShootingTargetEventArgs.html#Exiled_Events_EventArgs_DamagingShootingTargetEventArgs_HitLocation
@@ -17172,12 +17240,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.DiedEventArgs
   fullName: Exiled.Events.EventArgs.DiedEventArgs
   nameWithType: DiedEventArgs
-- uid: Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo)
-  name: DiedEventArgs(Player, Player, PlayerStats.HitInfo)
-  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_
-  commentId: M:Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo)
-  fullName: Exiled.Events.EventArgs.DiedEventArgs.DiedEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Player, PlayerStats.HitInfo)
-  nameWithType: DiedEventArgs.DiedEventArgs(Player, Player, PlayerStats.HitInfo)
+- uid: Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: DiedEventArgs(Player, DamageHandlerBase)
+  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.Events.EventArgs.DiedEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.Events.EventArgs.DiedEventArgs.DiedEventArgs(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: DiedEventArgs.DiedEventArgs(Player, DamageHandlerBase)
 - uid: Exiled.Events.EventArgs.DiedEventArgs.#ctor*
   name: DiedEventArgs
   href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs__ctor_
@@ -17185,19 +17253,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.DiedEventArgs.DiedEventArgs
   nameWithType: DiedEventArgs.DiedEventArgs
-- uid: Exiled.Events.EventArgs.DiedEventArgs.HitInformations
-  name: HitInformations
-  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_HitInformations
-  commentId: P:Exiled.Events.EventArgs.DiedEventArgs.HitInformations
-  fullName: Exiled.Events.EventArgs.DiedEventArgs.HitInformations
-  nameWithType: DiedEventArgs.HitInformations
-- uid: Exiled.Events.EventArgs.DiedEventArgs.HitInformations*
-  name: HitInformations
-  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_HitInformations_
-  commentId: Overload:Exiled.Events.EventArgs.DiedEventArgs.HitInformations
+- uid: Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_DamageHandler
+  commentId: P:Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
+  fullName: Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
+  nameWithType: DiedEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DiedEventArgs.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_DamageHandler_
+  commentId: Overload:Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.DiedEventArgs.HitInformations
-  nameWithType: DiedEventArgs.HitInformations
+  fullName: Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
+  nameWithType: DiedEventArgs.DamageHandler
 - uid: Exiled.Events.EventArgs.DiedEventArgs.Killer
   name: Killer
   href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_Killer
@@ -17462,12 +17530,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.DyingEventArgs
   fullName: Exiled.Events.EventArgs.DyingEventArgs
   nameWithType: DyingEventArgs
-- uid: Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  name: DyingEventArgs(Player, Player, PlayerStats.HitInfo, Boolean)
-  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  fullName: Exiled.Events.EventArgs.DyingEventArgs.DyingEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Player, PlayerStats.HitInfo, System.Boolean)
-  nameWithType: DyingEventArgs.DyingEventArgs(Player, Player, PlayerStats.HitInfo, Boolean)
+- uid: Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: DyingEventArgs(Player, DamageHandlerBase)
+  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.Events.EventArgs.DyingEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.Events.EventArgs.DyingEventArgs.DyingEventArgs(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: DyingEventArgs.DyingEventArgs(Player, DamageHandlerBase)
 - uid: Exiled.Events.EventArgs.DyingEventArgs.#ctor*
   name: DyingEventArgs
   href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs__ctor_
@@ -17475,19 +17543,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.DyingEventArgs.DyingEventArgs
   nameWithType: DyingEventArgs.DyingEventArgs
-- uid: Exiled.Events.EventArgs.DyingEventArgs.HitInformation
-  name: HitInformation
-  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_HitInformation
-  commentId: P:Exiled.Events.EventArgs.DyingEventArgs.HitInformation
-  fullName: Exiled.Events.EventArgs.DyingEventArgs.HitInformation
-  nameWithType: DyingEventArgs.HitInformation
-- uid: Exiled.Events.EventArgs.DyingEventArgs.HitInformation*
-  name: HitInformation
-  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_HitInformation_
-  commentId: Overload:Exiled.Events.EventArgs.DyingEventArgs.HitInformation
+- uid: Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_DamageHandler
+  commentId: P:Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
+  fullName: Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
+  nameWithType: DyingEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DyingEventArgs.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_DamageHandler_
+  commentId: Overload:Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.DyingEventArgs.HitInformation
-  nameWithType: DyingEventArgs.HitInformation
+  fullName: Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
+  nameWithType: DyingEventArgs.DamageHandler
 - uid: Exiled.Events.EventArgs.DyingEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_IsAllowed
@@ -18525,12 +18593,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.HurtingEventArgs
   fullName: Exiled.Events.EventArgs.HurtingEventArgs
   nameWithType: HurtingEventArgs
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  name: HurtingEventArgs(Player, Player, PlayerStats.HitInfo, Boolean)
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_PlayerStats_HitInfo_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.HurtingEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,PlayerStats.HitInfo,System.Boolean)
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.HurtingEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Player, PlayerStats.HitInfo, System.Boolean)
-  nameWithType: HurtingEventArgs.HurtingEventArgs(Player, Player, PlayerStats.HitInfo, Boolean)
+- uid: Exiled.Events.EventArgs.HurtingEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: HurtingEventArgs(Player, DamageHandlerBase)
+  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.Events.EventArgs.HurtingEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.Events.EventArgs.HurtingEventArgs.HurtingEventArgs(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: HurtingEventArgs.HurtingEventArgs(Player, DamageHandlerBase)
 - uid: Exiled.Events.EventArgs.HurtingEventArgs.#ctor*
   name: HurtingEventArgs
   href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs__ctor_
@@ -18564,32 +18632,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.HurtingEventArgs.Attacker
   nameWithType: HurtingEventArgs.Attacker
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.DamageType
-  name: DamageType
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_DamageType
-  commentId: P:Exiled.Events.EventArgs.HurtingEventArgs.DamageType
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.DamageType
-  nameWithType: HurtingEventArgs.DamageType
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.DamageType*
-  name: DamageType
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_DamageType_
-  commentId: Overload:Exiled.Events.EventArgs.HurtingEventArgs.DamageType
+- uid: Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_DamageHandler
+  commentId: P:Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
+  fullName: Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
+  nameWithType: HurtingEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler*
+  name: DamageHandler
+  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_DamageHandler_
+  commentId: Overload:Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.DamageType
-  nameWithType: HurtingEventArgs.DamageType
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.HitInformation
-  name: HitInformation
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_HitInformation
-  commentId: P:Exiled.Events.EventArgs.HurtingEventArgs.HitInformation
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.HitInformation
-  nameWithType: HurtingEventArgs.HitInformation
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.HitInformation*
-  name: HitInformation
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_HitInformation_
-  commentId: Overload:Exiled.Events.EventArgs.HurtingEventArgs.HitInformation
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.HitInformation
-  nameWithType: HurtingEventArgs.HitInformation
+  fullName: Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
+  nameWithType: HurtingEventArgs.DamageHandler
 - uid: Exiled.Events.EventArgs.HurtingEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_IsAllowed
@@ -18616,19 +18671,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.HurtingEventArgs.Target
   nameWithType: HurtingEventArgs.Target
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.Time
-  name: Time
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_Time
-  commentId: P:Exiled.Events.EventArgs.HurtingEventArgs.Time
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.Time
-  nameWithType: HurtingEventArgs.Time
-- uid: Exiled.Events.EventArgs.HurtingEventArgs.Time*
-  name: Time
-  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_Time_
-  commentId: Overload:Exiled.Events.EventArgs.HurtingEventArgs.Time
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.HurtingEventArgs.Time
-  nameWithType: HurtingEventArgs.Time
 - uid: Exiled.Events.EventArgs.InteractedEventArgs
   name: InteractedEventArgs
   href: api/Exiled.Events.EventArgs.InteractedEventArgs.html
@@ -18893,11 +18935,11 @@ references:
   commentId: T:Exiled.Events.EventArgs.InteractingShootingTargetEventArgs
   fullName: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs
   nameWithType: InteractingShootingTargetEventArgs
-- uid: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Utilities.ShootingTarget,Exiled.API.Enums.ShootingTargetButton,System.Int32,System.Int32,System.Boolean)
+- uid: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,AdminToys.ShootingTarget,Exiled.API.Enums.ShootingTargetButton,System.Int32,System.Int32,System.Boolean)
   name: InteractingShootingTargetEventArgs(Player, ShootingTarget, ShootingTargetButton, Int32, Int32, Boolean)
-  href: api/Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.html#Exiled_Events_EventArgs_InteractingShootingTargetEventArgs__ctor_Exiled_API_Features_Player_InventorySystem_Items_Firearms_Utilities_ShootingTarget_Exiled_API_Enums_ShootingTargetButton_System_Int32_System_Int32_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,InventorySystem.Items.Firearms.Utilities.ShootingTarget,Exiled.API.Enums.ShootingTargetButton,System.Int32,System.Int32,System.Boolean)
-  fullName: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.InteractingShootingTargetEventArgs(Exiled.API.Features.Player, InventorySystem.Items.Firearms.Utilities.ShootingTarget, Exiled.API.Enums.ShootingTargetButton, System.Int32, System.Int32, System.Boolean)
+  href: api/Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.html#Exiled_Events_EventArgs_InteractingShootingTargetEventArgs__ctor_Exiled_API_Features_Player_AdminToys_ShootingTarget_Exiled_API_Enums_ShootingTargetButton_System_Int32_System_Int32_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.#ctor(Exiled.API.Features.Player,AdminToys.ShootingTarget,Exiled.API.Enums.ShootingTargetButton,System.Int32,System.Int32,System.Boolean)
+  fullName: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.InteractingShootingTargetEventArgs(Exiled.API.Features.Player, AdminToys.ShootingTarget, Exiled.API.Enums.ShootingTargetButton, System.Int32, System.Int32, System.Boolean)
   nameWithType: InteractingShootingTargetEventArgs.InteractingShootingTargetEventArgs(Player, ShootingTarget, ShootingTargetButton, Int32, Int32, Boolean)
 - uid: Exiled.Events.EventArgs.InteractingShootingTargetEventArgs.#ctor*
   name: InteractingShootingTargetEventArgs
@@ -20530,6 +20572,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.IsAllowed
   nameWithType: ReportingCheaterEventArgs.IsAllowed
+- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer
+  name: Issuer
+  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Issuer
+  commentId: P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer
+  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer
+  nameWithType: ReportingCheaterEventArgs.Issuer
+- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer*
+  name: Issuer
+  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Issuer_
+  commentId: Overload:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer
+  nameWithType: ReportingCheaterEventArgs.Issuer
 - uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reason
   name: Reason
   href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reason
@@ -20543,32 +20598,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reason
   nameWithType: ReportingCheaterEventArgs.Reason
-- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported
-  name: Reported
-  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reported
-  commentId: P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported
-  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported
-  nameWithType: ReportingCheaterEventArgs.Reported
-- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported*
-  name: Reported
-  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reported_
-  commentId: Overload:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported
-  nameWithType: ReportingCheaterEventArgs.Reported
-- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter
-  name: Reporter
-  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reporter
-  commentId: P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter
-  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter
-  nameWithType: ReportingCheaterEventArgs.Reporter
-- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter*
-  name: Reporter
-  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reporter_
-  commentId: Overload:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter
-  nameWithType: ReportingCheaterEventArgs.Reporter
 - uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.ServerPort
   name: ServerPort
   href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_ServerPort
@@ -20582,6 +20611,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.ServerPort
   nameWithType: ReportingCheaterEventArgs.ServerPort
+- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target
+  name: Target
+  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Target
+  commentId: P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target
+  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target
+  nameWithType: ReportingCheaterEventArgs.Target
+- uid: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target*
+  name: Target
+  href: api/Exiled.Events.EventArgs.ReportingCheaterEventArgs.html#Exiled_Events_EventArgs_ReportingCheaterEventArgs_Target_
+  commentId: Overload:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target
+  nameWithType: ReportingCheaterEventArgs.Target
 - uid: Exiled.Events.EventArgs.RespawningTeamEventArgs
   name: RespawningTeamEventArgs
   href: api/Exiled.Events.EventArgs.RespawningTeamEventArgs.html
@@ -21101,12 +21143,12 @@ references:
   commentId: T:Exiled.Events.EventArgs.SpawningRagdollEventArgs
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs
   nameWithType: SpawningRagdollEventArgs
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,RoleType,PlayerStats.HitInfo,System.Boolean,System.String,System.String,System.Int32,System.Boolean,System.Boolean)
-  name: SpawningRagdollEventArgs(Player, Player, Vector3, Quaternion, Vector3, RoleType, PlayerStats.HitInfo, Boolean, String, String, Int32, Boolean, Boolean)
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_Exiled_API_Features_Player_Exiled_API_Features_Player_UnityEngine_Vector3_UnityEngine_Quaternion_UnityEngine_Vector3_RoleType_PlayerStats_HitInfo_System_Boolean_System_String_System_String_System_Int32_System_Boolean_System_Boolean_
-  commentId: M:Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(Exiled.API.Features.Player,Exiled.API.Features.Player,UnityEngine.Vector3,UnityEngine.Quaternion,UnityEngine.Vector3,RoleType,PlayerStats.HitInfo,System.Boolean,System.String,System.String,System.Int32,System.Boolean,System.Boolean)
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.SpawningRagdollEventArgs(Exiled.API.Features.Player, Exiled.API.Features.Player, UnityEngine.Vector3, UnityEngine.Quaternion, UnityEngine.Vector3, RoleType, PlayerStats.HitInfo, System.Boolean, System.String, System.String, System.Int32, System.Boolean, System.Boolean)
-  nameWithType: SpawningRagdollEventArgs.SpawningRagdollEventArgs(Player, Player, Vector3, Quaternion, Vector3, RoleType, PlayerStats.HitInfo, Boolean, String, String, Int32, Boolean, Boolean)
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(RagdollInfo,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  name: SpawningRagdollEventArgs(RagdollInfo, DamageHandlerBase, Boolean)
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_RagdollInfo_PlayerStatsSystem_DamageHandlerBase_System_Boolean_
+  commentId: M:Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor(RagdollInfo,PlayerStatsSystem.DamageHandlerBase,System.Boolean)
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.SpawningRagdollEventArgs(RagdollInfo, PlayerStatsSystem.DamageHandlerBase, System.Boolean)
+  nameWithType: SpawningRagdollEventArgs.SpawningRagdollEventArgs(RagdollInfo, DamageHandlerBase, Boolean)
 - uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.#ctor*
   name: SpawningRagdollEventArgs
   href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs__ctor_
@@ -21114,32 +21156,45 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.SpawningRagdollEventArgs
   nameWithType: SpawningRagdollEventArgs.SpawningRagdollEventArgs
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId
-  name: DissonanceId
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_DissonanceId
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId
-  nameWithType: SpawningRagdollEventArgs.DissonanceId
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId*
-  name: DissonanceId
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_DissonanceId_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime
+  name: CreationTime
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_CreationTime
+  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime
+  nameWithType: SpawningRagdollEventArgs.CreationTime
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime*
+  name: CreationTime
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_CreationTime_
+  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DissonanceId
-  nameWithType: SpawningRagdollEventArgs.DissonanceId
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations
-  name: HitInformations
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_HitInformations
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations
-  nameWithType: SpawningRagdollEventArgs.HitInformations
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations*
-  name: HitInformations
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_HitInformations_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.CreationTime
+  nameWithType: SpawningRagdollEventArgs.CreationTime
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase
+  name: DamageHandlerBase
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_DamageHandlerBase
+  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase
+  nameWithType: SpawningRagdollEventArgs.DamageHandlerBase
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase*
+  name: DamageHandlerBase
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_DamageHandlerBase_
+  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.HitInformations
-  nameWithType: SpawningRagdollEventArgs.HitInformations
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.DamageHandlerBase
+  nameWithType: SpawningRagdollEventArgs.DamageHandlerBase
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info
+  name: Info
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Info
+  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info
+  nameWithType: SpawningRagdollEventArgs.Info
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info*
+  name: Info
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Info_
+  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Info
+  nameWithType: SpawningRagdollEventArgs.Info
 - uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsAllowed
@@ -21153,32 +21208,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsAllowed
   nameWithType: SpawningRagdollEventArgs.IsAllowed
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed
-  name: IsRecallAllowed
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsRecallAllowed
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed
-  nameWithType: SpawningRagdollEventArgs.IsRecallAllowed
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed*
-  name: IsRecallAllowed
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_IsRecallAllowed_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname
+  name: Nickname
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Nickname
+  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname
+  nameWithType: SpawningRagdollEventArgs.Nickname
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname*
+  name: Nickname
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Nickname_
+  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.IsRecallAllowed
-  nameWithType: SpawningRagdollEventArgs.IsRecallAllowed
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer
-  name: Killer
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Killer
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer
-  nameWithType: SpawningRagdollEventArgs.Killer
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer*
-  name: Killer
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Killer_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Killer
-  nameWithType: SpawningRagdollEventArgs.Killer
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Nickname
+  nameWithType: SpawningRagdollEventArgs.Nickname
 - uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner
   name: Owner
   href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Owner
@@ -21192,32 +21234,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Owner
   nameWithType: SpawningRagdollEventArgs.Owner
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId
-  name: PlayerId
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerId
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId
-  nameWithType: SpawningRagdollEventArgs.PlayerId
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId*
-  name: PlayerId
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerId_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerId
-  nameWithType: SpawningRagdollEventArgs.PlayerId
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname
-  name: PlayerNickname
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerNickname
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname
-  nameWithType: SpawningRagdollEventArgs.PlayerNickname
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname*
-  name: PlayerNickname
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_PlayerNickname_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.PlayerNickname
-  nameWithType: SpawningRagdollEventArgs.PlayerNickname
 - uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position
   name: Position
   href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Position
@@ -21231,19 +21247,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Position
   nameWithType: SpawningRagdollEventArgs.Position
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType
-  name: RoleType
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_RoleType
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType
-  nameWithType: SpawningRagdollEventArgs.RoleType
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType*
-  name: RoleType
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_RoleType_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role
+  name: Role
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Role
+  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role
+  nameWithType: SpawningRagdollEventArgs.Role
+- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role*
+  name: Role
+  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Role_
+  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role
   isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.RoleType
-  nameWithType: SpawningRagdollEventArgs.RoleType
+  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Role
+  nameWithType: SpawningRagdollEventArgs.Role
 - uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation
   name: Rotation
   href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Rotation
@@ -21257,32 +21273,6 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Rotation
   nameWithType: SpawningRagdollEventArgs.Rotation
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death
-  name: Scp096Death
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Scp096Death
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death
-  nameWithType: SpawningRagdollEventArgs.Scp096Death
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death*
-  name: Scp096Death
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Scp096Death_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Scp096Death
-  nameWithType: SpawningRagdollEventArgs.Scp096Death
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity
-  name: Velocity
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Velocity
-  commentId: P:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity
-  nameWithType: SpawningRagdollEventArgs.Velocity
-- uid: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity*
-  name: Velocity
-  href: api/Exiled.Events.EventArgs.SpawningRagdollEventArgs.html#Exiled_Events_EventArgs_SpawningRagdollEventArgs_Velocity_
-  commentId: Overload:Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity
-  isSpec: "True"
-  fullName: Exiled.Events.EventArgs.SpawningRagdollEventArgs.Velocity
-  nameWithType: SpawningRagdollEventArgs.Velocity
 - uid: Exiled.Events.EventArgs.StartingEventArgs
   name: StartingEventArgs
   href: api/Exiled.Events.EventArgs.StartingEventArgs.html

@@ -141,7 +141,7 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public ReportingCheaterEventArgs(Player reporter, Player reported, int serverPort, string reason, bool isAllowed = true)</code></pre>
+    <pre><code class="lang-csharp hljs">public ReportingCheaterEventArgs(Player issuer, Player target, int serverPort, string reason, bool isAllowed = true)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -155,13 +155,13 @@
     <tbody>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">reporter</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter"></inheritdoc></td>
+        <td><span class="parametername">issuer</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer"></inheritdoc></td>
       </tr>
       <tr>
         <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td><span class="parametername">reported</span></td>
-        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported"></inheritdoc></td>
+        <td><span class="parametername">target</span></td>
+        <td><inheritdoc cref="P:Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target"></inheritdoc></td>
       </tr>
       <tr>
         <td><span class="xref">System.Int32</span></td>
@@ -215,6 +215,37 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_Issuer.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ReportingCheaterEventArgs.cs/#L44">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Issuer_" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer*"></a>
+  <h4 id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Issuer" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Issuer">Issuer</h4>
+  <div class="markdown level1 summary"><p>Gets the issuing player.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Player Issuer { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reason.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reason%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -246,68 +277,6 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reported.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ReportingCheaterEventArgs.cs/#L49">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reported_" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported*"></a>
-  <h4 id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reported" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reported">Reported</h4>
-  <div class="markdown level1 summary"><p>Gets the reported player.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Player Reported { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reporter.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ReportingCheaterEventArgs.cs/#L44">View Source</a>
-  </span>
-  <a id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reporter_" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter*"></a>
-  <h4 id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Reporter" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Reporter">Reporter</h4>
-  <div class="markdown level1 summary"><p>Gets the reporter player.</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Player Reporter { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_ServerPort.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.ServerPort%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
@@ -333,6 +302,37 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_ReportingCheaterEventArgs_Target.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/ReportingCheaterEventArgs.cs/#L49">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Target_" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target*"></a>
+  <h4 id="Exiled_Events_EventArgs_ReportingCheaterEventArgs_Target" data-uid="Exiled.Events.EventArgs.ReportingCheaterEventArgs.Target">Target</h4>
+  <div class="markdown level1 summary"><p>Gets the targeted player.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Player Target { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.Player.html">Player</a></td>
         <td></td>
       </tr>
     </tbody>
