@@ -73,7 +73,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets or sets a value indicating whether the light should have shadows.
         /// </summary>
-        public bool NetworkLightShadows
+        public bool Shadows
         {
             get => Base.NetworkLightShadows;
             set => Base.NetworkLightShadows = value;
