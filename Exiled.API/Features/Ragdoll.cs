@@ -277,5 +277,10 @@ namespace Exiled.API.Features
         /// Spawns the ragdoll.
         /// </summary>
         public void Spawn() => NetworkServer.Spawn(GameObject);
+
+        /// <summary>
+        /// Un-spawns the ragdoll.
+        /// </summary>
+        public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
     }
 }
