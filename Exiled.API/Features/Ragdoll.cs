@@ -176,6 +176,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the ragdoll's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => ragdoll.transform.rotation;
+            set
+            {
+                Mirror.NetworkServer.UnSpawn(GameObject);
+                ragdoll.transform.rotation = value;
+                Mirror.NetworkServer.Spawn(GameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the ragdoll's scale.
         /// </summary>
         public Vector3 Scale
