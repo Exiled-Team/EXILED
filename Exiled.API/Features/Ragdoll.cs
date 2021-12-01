@@ -38,7 +38,8 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        public Ragdoll(Player player, DamageHandlerBase handler)
+        /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
+        public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
@@ -46,13 +47,16 @@ namespace Exiled.API.Features
             ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
             this.ragdoll = ragdoll;
             Map.RagdollsValue.Add(this);
+            if (canBeSpawned)
+                Spawn();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        public Ragdoll(RagdollInfo ragdollInfo)
+        /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
+        public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
@@ -60,6 +64,8 @@ namespace Exiled.API.Features
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
             Map.RagdollsValue.Add(this);
+            if (canBeSpawned)
+                Spawn();
         }
 
         /// <summary>
