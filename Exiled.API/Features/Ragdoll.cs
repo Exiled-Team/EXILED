@@ -38,25 +38,34 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        public Ragdoll(Player player, DamageHandlerBase handler)
+        /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
+        public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
+            this.ragdoll = ragdoll;
+            Map.RagdollsValue.Add(this);
+            if (canBeSpawned)
+                Spawn();
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Ragdoll"/> class.
         /// </summary>
-        /// <param name="roleType">The ragdoll's <see cref="RoleType"/>.</param>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        public Ragdoll(RoleType roleType, RagdollInfo ragdollInfo)
+        /// <param name="canBeSpawned">A value that represents whether the ragdoll can be spawned.</param>
+        public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
-            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(roleType).model_ragdoll;
+            GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
             if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
+            this.ragdoll = ragdoll;
+            Map.RagdollsValue.Add(this);
+            if (canBeSpawned)
+                Spawn();
         }
 
         /// <summary>
@@ -259,26 +268,13 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The ragdoll's <see cref="Player">owner</see>.</param>
         /// <param name="handler">The player's <see cref="DamageHandlerBase"/>.</param>
-        /// <returns>The spawned <see cref="Ragdoll"/>.</returns>
-        public static Ragdoll Spawn(Player player, DamageHandlerBase handler)
-        {
-            Ragdoll ragdoll = new Ragdoll(player, handler);
-            ragdoll.Spawn();
-            return ragdoll;
-        }
+        public static void Spawn(Player player, DamageHandlerBase handler) => ServerSpawnRagdoll(player.ReferenceHub, handler);
 
         /// <summary>
         /// Spawns a <see cref="Ragdoll"/> on the map.
         /// </summary>
-        /// <param name="roleType">The ragdoll's <see cref="RoleType"/>.</param>
         /// <param name="ragdollInfo">The ragdoll's <see cref="RagdollInfo"/>.</param>
-        /// <returns>The spawned <see cref="Ragdoll"/>.</returns>
-        public static Ragdoll Spawn(RoleType roleType, RagdollInfo ragdollInfo)
-        {
-            Ragdoll ragdoll = new Ragdoll(roleType, ragdollInfo);
-            ragdoll.Spawn();
-            return ragdoll;
-        }
+        public static void Spawn(RagdollInfo ragdollInfo) => ServerSpawnRagdoll(ragdollInfo.OwnerHub, ragdollInfo.Handler);
 
         /// <summary>
         /// Deletes the ragdoll.
