@@ -144,7 +144,7 @@ namespace Exiled.API.Features
         public bool HasHint { get; internal set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio">.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
         /// </summary>
         public global::Radio Radio => ReferenceHub.radio;
 
