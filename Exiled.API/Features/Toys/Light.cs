@@ -25,6 +25,15 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Light"/> class from a <see cref="LightSourceToy"/>.
+        /// </summary>
+        /// <param name="toy">The toy to be wrapped.</param>
+        public Light(LightSourceToy toy)
+        {
+            Base = toy;
+        }
+
+        /// <summary>
         /// Gets the base <see cref="LightSourceToy"/>.
         /// </summary>
         public LightSourceToy Base { get; } = null;

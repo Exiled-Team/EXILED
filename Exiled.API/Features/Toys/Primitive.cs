@@ -26,6 +26,16 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Primitive"/> class from a <see cref="PrimitiveObjectToy"/>.
+        /// </summary>
+        /// <param name="toy">The toy to be wrapped.</param>
+        public Primitive(PrimitiveObjectToy toy)
+        {
+            Base = toy;
+            Collidable = toy.NetworkPosition.x < 0 && toy.NetworkPosition.y < 0 && toy.NetworkPosition.z < 0;
+        }
+
+        /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
         /// </summary>
         public PrimitiveObjectToy Base { get; } = null;
