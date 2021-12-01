@@ -276,10 +276,10 @@ namespace Exiled.API.Features
 
         private static ZoneType FindZone(GameObject gameObject)
         {
-            var transform = gameObject.transform;
+            Transform transform = gameObject.transform;
 
             if (transform.parent == null)
-                return ZoneType.Unspecified;
+                return ZoneType.Surface;
 
             switch (transform.parent.name)
             {

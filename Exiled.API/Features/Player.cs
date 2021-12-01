@@ -28,7 +28,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
-    using InventorySystem.Items.Firearms.Modules;
 
     using MEC;
 
@@ -41,6 +40,8 @@ namespace Exiled.API.Features
     using PlayableScps;
     using PlayableScps.ScriptableObjects;
 
+    using PlayerStatsSystem;
+
     using RemoteAdmin;
 
     using UnityEngine;
@@ -50,7 +51,7 @@ namespace Exiled.API.Features
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
-    /// Represents the in-game player, by encapsulating a <see cref="ReferenceHub"/>.
+    /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
     /// </summary>
     public class Player
     {
@@ -67,7 +68,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
-        /// <param name="referenceHub">The <see cref="ReferenceHub"/> of the player to be encapsulated.</param>
+        /// <param name="referenceHub">The <see cref="global::ReferenceHub"/> of the player to be encapsulated.</param>
         public Player(ReferenceHub referenceHub)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
@@ -77,7 +78,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
         /// </summary>
-        /// <param name="gameObject">The <see cref="GameObject"/> of the player.</param>
+        /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/> of the player.</param>
         public Player(GameObject gameObject)
         {
             readOnlyItems = ItemsValue.AsReadOnly();
@@ -90,7 +91,7 @@ namespace Exiled.API.Features
         ~Player() => HashSetPool<int>.Shared.Return(TargetGhostsHashSet);
 
         /// <summary>
-        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/> on the server.
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> containing all <see cref="Player"/>'s on the server.
         /// </summary>
         public static Dictionary<GameObject, Player> Dictionary { get; } = new Dictionary<GameObject, Player>(20);
 
@@ -110,7 +111,7 @@ namespace Exiled.API.Features
         public static Dictionary<int, Player> IdsCache { get; } = new Dictionary<int, Player>(20);
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>.
+        /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
         public ReferenceHub ReferenceHub
         {
@@ -141,24 +142,29 @@ namespace Exiled.API.Features
         public bool HasHint { get; internal set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s Radio.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="global::Radio"/>.
         /// </summary>
         public global::Radio Radio => ReferenceHub.radio;
 
         /// <summary>
-        /// Gets the HintDisplay of the player.
+        /// Gets the <see cref="Hints.HintDisplay"/> of the player.
         /// </summary>
         public HintDisplay HintDisplay { get; private set; }
 
         /// <summary>
-        /// Gets the player's inventory.
+        /// Gets the player's <see cref="InventorySystem.Inventory"/>.
         /// </summary>
         public Inventory Inventory { get; private set; }
 
         /// <summary>
-        /// Gets the encapsulated <see cref="ReferenceHub"/>'s PlayerCamera.
+        /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="Transform">PlayerCameraReference</see>.
         /// </summary>
         public Transform CameraTransform { get; private set; }
+
+        /// <summary>
+        /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.DissonanceUserSetup DissonanceUserSetup => referenceHub.dissonanceUserSetup;
 
         /// <summary>
         /// Gets or sets the player's id.
@@ -335,7 +341,10 @@ namespace Exiled.API.Features
                 }
 
                 if (value != null)
+                {
                     Inventory.SetDisarmedStatus(value.Inventory);
+                    new DisarmedPlayersListMessage(DisarmedPlayers.Entries).SendToAuthenticated();
+                }
             }
         }
 
@@ -578,6 +587,25 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.VoicechatMuteStatus"/>.
+        /// </summary>
+        public Assets._Scripts.Dissonance.VoicechatMuteStatus MuteStatus
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus;
+            set => ReferenceHub.dissonanceUserSetup.NetworkmuteStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
+        /// <para >Note: voicechat channels are handled by the client, therefore any changes will be ignored.</para>
+        /// </summary>
+        public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
+        {
+            get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
+            set => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
@@ -620,10 +648,10 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.Health;
+            get => ReferenceHub.playerStats.StatModules[0].CurValue;
             set
             {
-                ReferenceHub.playerStats.Health = value;
+                ReferenceHub.playerStats.StatModules[0].CurValue = value;
 
                 if (value > MaxHealth)
                     MaxHealth = (int)value;
@@ -635,8 +663,8 @@ namespace Exiled.API.Features
         /// </summary>
         public int MaxHealth
         {
-            get => ReferenceHub.playerStats.maxHP;
-            set => ReferenceHub.playerStats.maxHP = value;
+            get => ReferenceHub.characterClassManager.CurRole.maxHP;
+            set => ReferenceHub.characterClassManager.CurRole.maxHP = value;
         }
 
         /// <summary>
@@ -645,32 +673,31 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ArtificialHealthManager.GetAhpValue(ReferenceHub.playerStats);
+            get => ReferenceHub.playerStats.StatModules[1].CurValue;
             set
             {
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = Mathf.CeilToInt(value);
 
-                ArtificialHealthManager.ForceAhpValue(ReferenceHub.playerStats, value);
+                ReferenceHub.playerStats.StatModules[1].CurValue = value;
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the player's artificial health decay.
-        /// </summary>
-        public float ArtificialHealthDecay
-        {
-            get => ReferenceHub.playerStats.NetworkArtificialHpDecay;
-            set => ReferenceHub.playerStats.NetworkArtificialHpDecay = value;
         }
 
         /// <summary>
         /// Gets or sets the player's maximum artificial health.
         /// </summary>
-        public int MaxArtificialHealth
+        public float MaxArtificialHealth
         {
-            get => ReferenceHub.playerStats.MaxArtificialHealth;
-            set => ReferenceHub.playerStats.MaxArtificialHealth = value;
+            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar;
+            set => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar = value;
+        }
+
+        /// <summary>
+        /// Gets a list of all active Artificial Health processes on the player.
+        /// </summary>
+        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
+        {
+            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
         }
 
         /// <summary>
@@ -1131,7 +1158,7 @@ namespace Exiled.API.Features
                 }
                 else
                 {
-                    int maxNameLength = 31, lastnameDifference = 31;
+                    int lastnameDifference = 31;
                     string firstString = args.ToLower();
 
                     foreach (Player player in Dictionary.Values)
@@ -1142,24 +1169,13 @@ namespace Exiled.API.Features
                         if (!player.Nickname.Contains(args, StringComparison.OrdinalIgnoreCase))
                             continue;
 
-                        if (firstString.Length < maxNameLength)
+                        string secondString = player.Nickname;
+
+                        int nameDifference = secondString.Length - firstString.Length;
+                        if (nameDifference < lastnameDifference)
                         {
-                            int x = maxNameLength - firstString.Length;
-                            int y = maxNameLength - player.Nickname.Length;
-                            string secondString = player.Nickname;
-
-                            for (int i = 0; i < x; i++)
-                                firstString += "z";
-
-                            for (int i = 0; i < y; i++)
-                                secondString += "z";
-
-                            int nameDifference = firstString.GetDistance(secondString);
-                            if (nameDifference < lastnameDifference)
-                            {
-                                lastnameDifference = nameDifference;
-                                playerFound = player;
-                            }
+                            lastnameDifference = nameDifference;
+                            playerFound = player;
                         }
                     }
                 }
@@ -1331,7 +1347,16 @@ namespace Exiled.API.Features
         public bool RemoveItem(Item item, bool destroy = true)
         {
             if (!ItemsValue.Contains(item))
+            {
                 return false;
+            }
+
+            if (!Inventory.UserInventory.Items.ContainsKey(item.Serial))
+            {
+                ItemsValue.Remove(item);
+                return false;
+            }
+
             if (destroy)
             {
                 Inventory.ServerRemoveItem(item.Serial, null);
@@ -1384,26 +1409,16 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damage">The damage to be inflicted.</param>
-        /// <param name="damageType">The damage type.</param>
-        /// <param name="attackerName">The attacker name.</param>
-        /// <param name="attackerId">The attacker player id.</param>
-        /// <param name="isAttackerNameCustom">Indicates whether the attacker name that will be shown by looking at the ragdoll is custom.</param>
-        public void Hurt(float damage, DamageTypes.DamageType damageType = default, string attackerName = "WORLD", int attackerId = 0, bool isAttackerNameCustom = false)
-        {
-            if (Role == RoleType.Scp0492 && !ReferenceHub.TryGetHub(attackerId, out _))
-                attackerId = Id;
-
-            ReferenceHub.playerStats.HurtPlayer(new PlayerStats.HitInfo(damage, attackerName, damageType ?? DamageTypes.None, attackerId, isAttackerNameCustom), GameObject);
-        }
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
 
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damage">The damage to be inflicted.</param>
-        /// <param name="attacker">The attacker.</param>
-        /// <param name="damageType">The damage type.</param>
-        public void Hurt(float damage, Player attacker, DamageTypes.DamageType damageType = default) => Hurt(damage, damageType, attacker?.Nickname, attacker?.Id ?? 0);
+        /// <param name="damageReason"> The reason for the damage being dealt.</param>
+        /// <param name="damage">The amount of damage to deal.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
+        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>
         /// Heals the player.
@@ -1413,7 +1428,7 @@ namespace Exiled.API.Features
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
             if (!overrideMaxHealth)
-                ReferenceHub.playerStats.HealHPAmount(amount);
+                ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
             else
                 Health += amount;
         }
@@ -1421,8 +1436,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageType">The <see cref="DamageTypes.DamageType"/> that will kill the player.</param>
-        public void Kill(DamageTypes.DamageType damageType = default) => Hurt(-1f, damageType);
+        /// <param name="deathReason">The reason the player has been killed.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(string deathReason, string cassieAnnouncement = "") => ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
 
         /// <summary>
         /// Bans the player.
@@ -1484,6 +1500,36 @@ namespace Exiled.API.Features
         /// Clears the player's brodcast. Doesn't get logged to the console.
         /// </summary>
         public void ClearBroadcasts() => Server.Broadcast.TargetClearElements(Connection);
+
+        /// <summary>
+        /// Adds the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be added.</param>
+        /// <param name="amount">The amount of ammo to be added.</param>
+        public void AddAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerAddAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
+        /// <param name="amount">The amount of ammo to be set.</param>
+        public void SetAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerSetAmmo(ammoType.GetItemType(), amount);
+
+        /// <summary>
+        /// Gets the ammo count of a specified <see cref="AmmoType">ammo type</see> in a player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> to be searched for in the player's inventory.</param>
+        /// <returns>The specified <see cref="AmmoType">ammo</see> count.</returns>
+        public ushort GetAmmo(AmmoType ammoType) => Inventory.GetCurAmmo(ammoType.GetItemType());
+
+        /// <summary>
+        /// Drops a specific <see cref="AmmoType"/> out of the player's inventory.
+        /// </summary>
+        /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
+        /// <param name="amount">The amount of ammo that will be dropped.</param>
+        /// <param name="checkMinimals">Whether ammo limits will be taken into consideration.</param>
+        /// <returns>Whether ammo was dropped.</returns>
+        public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.

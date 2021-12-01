@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.Explode()"/>.
+    /// Patches <see cref="ExplosionGrenade.Explode(Footprint, Vector3, ExplosionGrenade)"/>.
     /// Adds the <see cref="Handlers.Map.OnExplodingGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.Explode))]
@@ -70,16 +70,16 @@ namespace Exiled.Events.Patches.Events.Map
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this.PreviousOwner);
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_2),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ExplosionGrenade), nameof(ExplosionGrenade.PreviousOwner))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // this
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_2),
 
                 // Collider[]
-                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloc_3),
 
                 new CodeInstruction(OpCodes.Newobj, DeclaredConstructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(Player), typeof(EffectGrenade), typeof(Collider[]) })),
                 new CodeInstruction(OpCodes.Dup),
@@ -89,9 +89,9 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ExplodingGrenadeEventArgs), nameof(ExplodingGrenadeEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Call, Method(typeof(ExplodingFragGrenade), nameof(TrimColliders))),
-                new CodeInstruction(OpCodes.Stloc_2),
+                new CodeInstruction(OpCodes.Stloc_3),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

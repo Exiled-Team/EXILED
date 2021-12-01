@@ -32,7 +32,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.Tool}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
+            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.Killer.CurrentItem}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>

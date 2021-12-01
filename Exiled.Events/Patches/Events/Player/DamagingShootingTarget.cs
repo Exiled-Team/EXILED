@@ -16,62 +16,54 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
+    using Mirror;
+
     using NorthwoodLib.Pools;
+
+    using PlayerStatsSystem;
 
     using static HarmonyLib.AccessTools;
 
-    using BaseTarget = InventorySystem.Items.Firearms.Utilities.ShootingTarget;
-
     /// <summary>
-    /// Patches <see cref="BaseTarget.Damage(float, InventorySystem.Items.IDamageDealer, Footprinting.Footprint, UnityEngine.Vector3)"/>.
+    /// Patches <see cref="AdminToys.ShootingTarget.TargetRpcReceiveData(NetworkConnection, float, float, UnityEngine.Vector3, DamageHandlerBase)"/>.
     /// Adds the <see cref="Handlers.Player.DamagingShootingTarget"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(BaseTarget), nameof(BaseTarget.Damage))]
+    [HarmonyPatch(typeof(AdminToys.ShootingTarget), nameof(AdminToys.ShootingTarget.TargetRpcReceiveData))]
     internal static class DamagingShootingTarget
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_0) + offset;
+            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(DamagingShootingTargetEventArgs));
 
-            Label returnLabel = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
 
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
-
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new[]
             {
-                // Player.Get(ReferenceHub)
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-
-                // this
-                new CodeInstruction(OpCodes.Ldarg_0),
-
-                // item
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(uint) })),
                 new CodeInstruction(OpCodes.Ldarg_2),
-
-                // attackerFootprint
                 new CodeInstruction(OpCodes.Ldarg_3),
-
-                // hitLocation
-                new CodeInstruction(OpCodes.Ldarg, 4),
-
-                // true
+                new CodeInstruction(OpCodes.Ldarg_S, 4),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_S, 5),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-
-                // OnDamagingShootingTarget(DamagingShootingTargetEventArgs)
-                // if (!IsAllowed)
-                //   return
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
-
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse_S, ret),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Starg_S, 2),
             });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

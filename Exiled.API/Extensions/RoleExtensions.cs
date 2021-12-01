@@ -125,7 +125,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the spawn point <see cref="Vector3"/> and rotation <see cref="float"/>.</returns>
         public static Tuple<Vector3, float> GetRandomSpawnProperties(this RoleType roleType)
         {
-            GameObject randomPosition = CharacterClassManager._spawnpointManager.GetRandomPosition(roleType);
+            GameObject randomPosition = SpawnpointManager.GetRandomPosition(roleType);
 
             return randomPosition == null ? new Tuple<Vector3, float>(Vector3.zero, 0f) : new Tuple<Vector3, float>(randomPosition.transform.position, randomPosition.transform.rotation.eulerAngles.y);
         }

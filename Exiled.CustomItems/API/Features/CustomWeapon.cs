@@ -21,6 +21,8 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
     using static CustomItems;
@@ -245,7 +247,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || ev.Attacker.CurrentItem.Type != ev.DamageType.Weapon)
+            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || !(ev.DamageHandler is FirearmDamageHandler firearmDamageHandler) || firearmDamageHandler.WeaponType != Type)
                 return;
 
             OnHurting(ev);

@@ -15,11 +15,6 @@ namespace Exiled.API.Features
     public static class Scp096
     {
         /// <summary>
-        /// Gets or Sets a value indicating the max shield amount SCP-096 can have during his docile state.
-        /// </summary>
-        public static float MaxShield { get; set; } = 1000;
-
-        /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-096.
         /// </summary>
         public static HashSet<Player> TurnedPlayers { get; } = new HashSet<Player>(20);
