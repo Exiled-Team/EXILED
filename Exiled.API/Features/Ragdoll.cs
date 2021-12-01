@@ -118,6 +118,26 @@ namespace Exiled.API.Features
         public bool IsCleanedUp => ragdoll._cleanedUp;
 
         /// <summary>
+        /// Gets or sets a value indicating whether can be cleaned up.
+        /// </summary>
+        public bool CanBeCleanedUp
+        {
+            get => IgnoredRagdolls.Contains(Base);
+            set
+            {
+                if (!value || IgnoredRagdolls.Contains(Base))
+                {
+                    if (!value && IgnoredRagdolls.Contains(Base))
+                        IgnoredRagdolls.Remove(Base);
+                }
+                else
+                {
+                    IgnoredRagdolls.Add(Base);
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the ragdoll is currently playing animations.
         /// </summary>
         public bool IsPlayingAnimations => ragdoll._playingLocalAnims;
@@ -209,6 +229,11 @@ namespace Exiled.API.Features
         public string DeathReason => DamageHandler.ServerLogsText;
 
         /// <summary>
+        /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RagDoll"/>'s that will be ignored by clean up event.
+        /// </summary>
+        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new HashSet<RagDoll>();
+
+        /// <summary>
         /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.
         /// </summary>
         /// <param name="ragdoll">The <see cref="RagDoll"/> to get.</param>
@@ -268,5 +293,10 @@ namespace Exiled.API.Features
         /// Spawns the ragdoll.
         /// </summary>
         public void Spawn() => NetworkServer.Spawn(GameObject);
+
+        /// <summary>
+        /// Un-spawns the ragdoll.
+        /// </summary>
+        public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
     }
 }
