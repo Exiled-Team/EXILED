@@ -1350,6 +1350,7 @@ namespace Exiled.API.Features
 
             if (!Inventory.UserInventory.Items.ContainsKey(item.Serial))
             {
+                Log.Warn($"Server Freeze Detected. Removing Item. Serial Id: {item.Serial}, Type: {item.Type}");
                 ItemsValue.Remove(item);
                 return false;
             }
