@@ -85,7 +85,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Removes the light from the game. Use <see cref="Spawn"/> to bring it back.
         /// </summary>
-        public void Destroy()
+        public void UnSpawn()
         {
             NetworkServer.UnSpawn(Base.gameObject);
         }
