@@ -19,34 +19,34 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="ReportingCheaterEventArgs"/> class.
         /// </summary>
-        /// <param name="reporter"><inheritdoc cref="Reporter"/></param>
-        /// <param name="reported"><inheritdoc cref="Reported"/></param>
+        /// <param name="issuer"><inheritdoc cref="Issuer"/></param>
+        /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="serverPort"><inheritdoc cref="ServerPort"/></param>
         /// <param name="reason"><inheritdoc cref="Reason"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ReportingCheaterEventArgs(
-            Player reporter,
-            Player reported,
+            Player issuer,
+            Player target,
             int serverPort,
             string reason,
             bool isAllowed = true)
         {
-            Reporter = reporter;
-            Reported = reported;
+            Issuer = issuer;
+            Target = target;
             ServerPort = serverPort;
             Reason = reason;
             IsAllowed = isAllowed;
         }
 
         /// <summary>
-        /// Gets the reporter player.
+        /// Gets the issuing player.
         /// </summary>
-        public Player Reporter { get; }
+        public Player Issuer { get; }
 
         /// <summary>
-        /// Gets the reported player.
+        /// Gets the targeted player.
         /// </summary>
-        public Player Reported { get; }
+        public Player Target { get; }
 
         /// <summary>
         /// Gets the server id.

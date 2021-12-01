@@ -431,6 +431,9 @@ namespace Exiled.CustomRoles.API.Features
             {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
                 Role role = CharacterClassManager._staticClasses.SafeGet(Role);
+
+                // TODO: This
+                /*
                 Ragdoll.Info info = new Ragdoll.Info
                 {
                     ClassColor = role.classColor,
@@ -441,6 +444,7 @@ namespace Exiled.CustomRoles.API.Features
                     PlayerId = ev.Target.Id,
                 };
                 Exiled.API.Features.Ragdoll.Spawn(role, info, ev.Target.Position, Quaternion.Euler(ev.Target.Rotation), default, false, false);
+                */
             }
         }
     }

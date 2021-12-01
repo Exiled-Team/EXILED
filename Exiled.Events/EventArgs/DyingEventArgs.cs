@@ -14,6 +14,8 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
+    using PlayerStatsSystem;
+
     /// <summary>
     /// Contains all information before a player dies.
     /// </summary>
@@ -22,17 +24,14 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="DyingEventArgs"/> class.
         /// </summary>
-        /// <param name="killer"><inheritdoc cref="Killer"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="hitInformation"><inheritdoc cref="HitInformation"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public DyingEventArgs(Player killer, Player target, PlayerStats.HitInfo hitInformation, bool isAllowed = true)
+        /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
+        public DyingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             ItemsToDrop = new List<Item>(target.Items.ToList());
-            Killer = killer;
+            Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
-            HitInformation = hitInformation;
-            IsAllowed = isAllowed;
+            DamageHandler = damageHandler;
         }
 
         /// <summary>
@@ -51,13 +50,13 @@ namespace Exiled.Events.EventArgs
         public List<Item> ItemsToDrop { get; set; }
 
         /// <summary>
-        /// Gets or sets the hit information.
+        /// Gets or sets the damage handler for the event.
         /// </summary>
-        public PlayerStats.HitInfo HitInformation { get; set; }
+        public DamageHandlerBase DamageHandler { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be killed.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

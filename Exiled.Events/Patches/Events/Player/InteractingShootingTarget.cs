@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     using static HarmonyLib.AccessTools;
 
-    using BaseTarget = InventorySystem.Items.Firearms.Utilities.ShootingTarget;
+    using BaseTarget = AdminToys.ShootingTarget;
 
     /// <summary>
     /// Patches <see cref="BaseTarget.ServerInteract(ReferenceHub, byte)"/>.

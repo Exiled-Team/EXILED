@@ -15,13 +15,17 @@ namespace Exiled.Events.Patches.Events.Server
 
     using NorthwoodLib.Pools;
 
+    using PlayerStatsSystem;
+
+    using RoundRestarting;
+
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerStats.Roundrestart"/>.
+    /// Patches <see cref="RoundRestart.InitiateRoundRestart"/>.
     /// Adds the RestartingRound event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.Roundrestart))]
+    [HarmonyPatch(typeof(RoundRestart), nameof(RoundRestart.InitiateRoundRestart))]
     internal static class RestartingRound
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

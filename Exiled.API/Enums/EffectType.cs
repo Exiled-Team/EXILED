@@ -88,9 +88,9 @@ namespace Exiled.API.Enums
         Invigorated,
 
         /// <summary>
-        /// Increases the player's stamina consumption.
+        /// Reduces damage taken by body shots.
         /// </summary>
-        Panic,
+        BodyshotReduction,
 
         /// <summary>
         /// Damages the player every 5 seconds, starting low and ramping hight.
@@ -116,5 +116,40 @@ namespace Exiled.API.Enums
         /// Gives the player the sound vision of SCP-939.
         /// </summary>
         Visuals939,
+
+        /// <summary>
+        /// Reduces all damage taken.
+        /// </summary>
+        DamageReduction,
+
+        /// <summary>
+        /// Increases movement speed.
+        /// </summary>
+        MovementBoost,
+
+        /// <summary>
+        /// Severely reduces damage taken.
+        /// </summary>
+        RainbowTaste,
+
+        /// <summary>
+        /// Drops the player's current item and deals damage while effect is active.
+        /// </summary>
+        SeveredHands,
+
+        /// <summary>
+        /// Stops the player from sprinting and reduces movement speed by 20%.
+        /// </summary>
+        Stained,
+
+        /// <summary>
+        /// Causes the player to blink.
+        /// </summary>
+        Visual173Blink,
+
+        /// <summary>
+        /// Causes the player to slowly regenerate health.
+        /// </summary>
+        Vitality,
     }
 }
