@@ -174,10 +174,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the ragdoll is respawnable by SCP-049.
         /// </summary>
-        public bool AllowRecall
-        {
-            get => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
-        }
+        public bool AllowRecall => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
 
         /// <summary>
         /// Gets the <see cref="Room"/> the ragdoll is located in.
@@ -199,6 +196,20 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the ragdoll's rotation.
+        /// </summary>
+        public Quaternion Rotation
+        {
+            get => ragdoll.transform.rotation;
+            set
+            {
+                Mirror.NetworkServer.UnSpawn(GameObject);
+                ragdoll.transform.rotation = value;
+                Mirror.NetworkServer.Spawn(GameObject);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the ragdoll's scale.
         /// </summary>
         public Vector3 Scale
@@ -211,6 +222,11 @@ namespace Exiled.API.Features
                 Mirror.NetworkServer.Spawn(GameObject);
             }
         }
+
+        /// <summary>
+        /// Gets the ragdoll's death reason.
+        /// </summary>
+        public string DeathReason => DamageHandler.ServerLogsText;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RagDoll"/>'s that will be ignored by clean up event.
