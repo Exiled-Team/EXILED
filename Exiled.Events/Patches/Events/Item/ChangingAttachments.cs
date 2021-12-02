@@ -16,7 +16,6 @@ namespace Exiled.Events.Patches.Events.Item
 
     using HarmonyLib;
 
-    using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
 
     using Mirror;
@@ -43,9 +42,12 @@ namespace Exiled.Events.Patches.Events.Item
 
             LocalBuilder wCode_0x01 = generator.DeclareLocal(typeof(uint));
             LocalBuilder wCode_0x02 = generator.DeclareLocal(typeof(uint));
+            LocalBuilder wCode_0x03 = generator.DeclareLocal(typeof(uint));
+            LocalBuilder wCode_0x04 = generator.DeclareLocal(typeof(uint));
             LocalBuilder attachment_0x01 = generator.DeclareLocal(typeof(FirearmAttachment));
             LocalBuilder attachment_0x02 = generator.DeclareLocal(typeof(FirearmAttachment));
             LocalBuilder repIter_1 = generator.DeclareLocal(typeof(int));
+            LocalBuilder repIter_Id = generator.DeclareLocal(typeof(FirearmAttachment));
             LocalBuilder identifier_0x01 = generator.DeclareLocal(typeof(AttachmentIdentifier));
             LocalBuilder identifier_0x02 = generator.DeclareLocal(typeof(AttachmentIdentifier));
             LocalBuilder un_M_arr = generator.DeclareLocal(typeof(AttachmentIdentifier[]));
@@ -60,6 +62,7 @@ namespace Exiled.Events.Patches.Events.Item
             LocalBuilder cmp_0x05 = generator.DeclareLocal(typeof(bool));
             LocalBuilder cmp_0x06 = generator.DeclareLocal(typeof(bool));
             LocalBuilder tmp_0x01 = generator.DeclareLocal(typeof(uint));
+            LocalBuilder tmp_0x02 = generator.DeclareLocal(typeof(AttachmentIdentifier));
 
             Label ret = generator.DefineLabel();
             Label rep = generator.DefineLabel();
@@ -85,13 +88,13 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Brtrue_S, ret),
-                new CodeInstruction(OpCodes.Ldarga_S, 1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Stloc_S, wCode_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Firearm), nameof(Firearm.Status))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(FirearmStatus), nameof(FirearmStatus.Attachments))),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Stloc_S, wCode_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
+                new CodeInstruction(OpCodes.Stloc_S, wCode_0x03.LocalIndex),
                 new CodeInstruction(OpCodes.Ldnull),
                 new CodeInstruction(OpCodes.Stloc_S, attachment_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Ldnull),
@@ -106,9 +109,11 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm.Attachments))),
                 new CodeInstruction(OpCodes.Ldloc_S, repIter_1.LocalIndex),
                 new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Stloc_S, repIter_Id.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, repIter_Id.LocalIndex),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(FirearmAttachment), nameof(FirearmAttachment.IsEnabled))),
                 new CodeInstruction(OpCodes.Brfalse_S, al),
-                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x03.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.And),
                 new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
@@ -120,19 +125,17 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Stloc_S, cmp_0x01.LocalIndex).WithLabels(jmp),
                 new CodeInstruction(OpCodes.Ldloc_S, cmp_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse_S, jcc),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm.Attachments))),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_1.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Nop),
+                new CodeInstruction(OpCodes.Ldloc_S, repIter_Id.LocalIndex),
                 new CodeInstruction(OpCodes.Stloc_S, attachment_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, wCode_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Nop),
                 new CodeInstruction(OpCodes.Br_S, blMul),
-                new CodeInstruction(OpCodes.Ldloc_1).WithLabels(jcc),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm.Attachments))),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_1.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Ldloc_S, repIter_Id.LocalIndex).WithLabels(jcc),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(FirearmAttachment), nameof(FirearmAttachment.IsEnabled))),
                 new CodeInstruction(OpCodes.Brtrue_S, cmovge),
-                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x03.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.And),
                 new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
@@ -142,11 +145,12 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Stloc_S, cmp_0x02.LocalIndex).WithLabels(cmovgt),
                 new CodeInstruction(OpCodes.Ldloc_S, cmp_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Brfalse_S, blMul),
-                new CodeInstruction(OpCodes.Ldloc_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Firearm), nameof(Firearm.Attachments))),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_1.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelem_Ref),
+                new CodeInstruction(OpCodes.Nop),
+                new CodeInstruction(OpCodes.Ldloc_S, repIter_Id.LocalIndex),
                 new CodeInstruction(OpCodes.Stloc_S, attachment_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, wCode_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Nop),
                 new CodeInstruction(OpCodes.Ldloc_S, tmp_0x01.LocalIndex).WithLabels(blMul),
                 new CodeInstruction(OpCodes.Ldc_I4_2),
                 new CodeInstruction(OpCodes.Mul),
@@ -175,41 +179,33 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, AttachmentIdentifier[]>), "get_Item", new[] { typeof(ItemType) })),
                 new CodeInstruction(OpCodes.Stloc_S, un_M_arr.LocalIndex),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Stloc_S, repIter_2.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, repIter_2),
                 new CodeInstruction(OpCodes.Br_S, fndRep),
                 new CodeInstruction(OpCodes.Nop).WithLabels(fndLpHd),
                 new CodeInstruction(OpCodes.Ldloc_S, un_M_arr.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, repIter_2.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelema, typeof(AttachmentIdentifier)),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Name))),
-                new CodeInstruction(OpCodes.Ldloc_S, attachment_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(FirearmAttachment), nameof(FirearmAttachment.Name))),
+                new CodeInstruction(OpCodes.Ldelem, typeof(AttachmentIdentifier)),
+                new CodeInstruction(OpCodes.Stloc_S, tmp_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloca_S, tmp_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Code))),
+                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Stloc_S, cmp_0x04.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, cmp_0x04.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, fndJmp),
-                new CodeInstruction(OpCodes.Nop),
-                new CodeInstruction(OpCodes.Ldloc_S, un_M_arr.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_2.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelem, typeof(AttachmentIdentifier)),
+                new CodeInstruction(OpCodes.Brfalse_S, fndJcc),
+                new CodeInstruction(OpCodes.Ldloc_S, tmp_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Stloc_S, identifier_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Nop),
-                new CodeInstruction(OpCodes.Ldloc_S, un_M_arr.LocalIndex).WithLabels(fndJmp),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_2.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelema, typeof(AttachmentIdentifier)),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Name))),
-                new CodeInstruction(OpCodes.Ldloc_S, attachment_0x02.LocalIndex),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(FirearmAttachment), nameof(FirearmAttachment.Name))),
+                new CodeInstruction(OpCodes.Br_S, fndJmp),
+                new CodeInstruction(OpCodes.Ldloca_S, tmp_0x02.LocalIndex).WithLabels(fndJcc),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Code))),
+                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x01.LocalIndex),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Stloc_S, cmp_0x05.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, cmp_0x05.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse_S, fndJcc),
-                new CodeInstruction(OpCodes.Nop),
-                new CodeInstruction(OpCodes.Ldloc_S, un_M_arr.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, repIter_2.LocalIndex),
-                new CodeInstruction(OpCodes.Ldelem, typeof(AttachmentIdentifier)),
+                new CodeInstruction(OpCodes.Brfalse_S, fndJmp),
+                new CodeInstruction(OpCodes.Ldloc_S, tmp_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Stloc_S, identifier_0x02.LocalIndex),
-                new CodeInstruction(OpCodes.Nop).WithLabels(fndJcc),
+                new CodeInstruction(OpCodes.Nop).WithLabels(fndJmp),
                 new CodeInstruction(OpCodes.Ldloc_S, repIter_2.LocalIndex),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Add),
@@ -239,16 +235,18 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingAttachmentsEventArgs), nameof(ChangingAttachmentsEventArgs.NewAttachmentIdentifier))),
-                new CodeInstruction(OpCodes.Stloc_S, identifier_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarga_S, 1),
-                new CodeInstruction(OpCodes.Ldloca_S, identifier_0x01.LocalIndex),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Code))),
+                new CodeInstruction(OpCodes.Stloc_S, store_data_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloca_S, store_data_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Code))),
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(AttachmentsUtils), nameof(AttachmentsUtils.GetCurrentAttachmentsCode))),
                 new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Ldloca_S, identifier_0x02.LocalIndex),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(AttachmentIdentifier), nameof(AttachmentIdentifier.Code))),
                 new CodeInstruction(OpCodes.Sub),
+                new CodeInstruction(OpCodes.Stloc_S, wCode_0x04.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarga_S, 1),
+                new CodeInstruction(OpCodes.Ldloc_S, wCode_0x04.LocalIndex),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(AttachmentsChangeRequest), nameof(AttachmentsChangeRequest.AttachmentsCode))),
             });
 
