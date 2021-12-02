@@ -78,14 +78,14 @@ namespace Exiled.API.Features.Items
         {
         }
 
-        /// <summary>
+/// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
         public static IReadOnlyDictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => new Dictionary<ItemType, AttachmentIdentifier[]>()
         {
             {
                 ItemType.GunCOM15,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
@@ -98,7 +98,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunCOM18,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
@@ -112,7 +112,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunRevolver,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.StandardBarrel, AttachmentSlot.Barrel),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.ExtendedBarrel, AttachmentSlot.Barrel),
@@ -123,13 +123,13 @@ namespace Exiled.API.Features.Items
                     new AttachmentIdentifier(64, AttachmentNameTranslation.CylinderMag4, AttachmentSlot.Ammunition),
                     new AttachmentIdentifier(128, AttachmentNameTranslation.CylinderMag8, AttachmentSlot.Ammunition),
                     new AttachmentIdentifier(256, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
-                    new AttachmentIdentifier(256, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
-                    new AttachmentIdentifier(512, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(512, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
+                    new AttachmentIdentifier(1024, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
                 }
             },
             {
                 ItemType.GunE11SR,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
@@ -137,7 +137,7 @@ namespace Exiled.API.Features.Items
                     new AttachmentIdentifier(8, AttachmentNameTranslation.NightVisionSight, AttachmentSlot.Sight),
                     new AttachmentIdentifier(16, AttachmentNameTranslation.ScopeSight, AttachmentSlot.Sight),
                     new AttachmentIdentifier(32, AttachmentNameTranslation.StandardMagFMJ, AttachmentSlot.Ammunition),
-                    new AttachmentIdentifier(64, AttachmentNameTranslation.ExtendedMagFMJ, AttachmentSlot.Ammunition),
+                    new AttachmentIdentifier(64, AttachmentNameTranslation.DrumMagFMJ, AttachmentSlot.Ammunition),
                     new AttachmentIdentifier(128, AttachmentNameTranslation.LowcapMagJHP, AttachmentSlot.Ammunition),
                     new AttachmentIdentifier(256, AttachmentNameTranslation.LowcapMagAP, AttachmentSlot.Ammunition),
                     new AttachmentIdentifier(512, AttachmentNameTranslation.RifleBody, AttachmentSlot.Body),
@@ -160,7 +160,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunCrossvec,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
@@ -180,7 +180,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunFSP9,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
@@ -200,7 +200,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunAK,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
@@ -226,7 +226,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunLogicer,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.DotSight, AttachmentSlot.Sight),
@@ -244,7 +244,7 @@ namespace Exiled.API.Features.Items
             },
             {
                 ItemType.GunShotgun,
-                new AttachmentIdentifier[]
+                new[]
                 {
                     new AttachmentIdentifier(1, AttachmentNameTranslation.IronSights, AttachmentSlot.Sight),
                     new AttachmentIdentifier(2, AttachmentNameTranslation.HoloSight, AttachmentSlot.Sight),
@@ -310,11 +310,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the <see cref="FirearmAttachment"/>s of the firearm.
         /// </summary>
-        public FirearmAttachment[] Attachments
-        {
-            get => Base.Attachments;
-            private set => Base.Attachments = value;
-        }
+        public FirearmAttachment[] Attachments => Base.Attachments;
 
         /// <summary>
         /// Gets the <see cref="Enums.BaseCode"/> of the firearm.
