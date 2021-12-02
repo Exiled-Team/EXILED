@@ -78,7 +78,7 @@ namespace Exiled.API.Features.Items
         {
         }
 
-/// <summary>
+        /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
         public static IReadOnlyDictionary<ItemType, AttachmentIdentifier[]> AvailableAttachments => new Dictionary<ItemType, AttachmentIdentifier[]>()
