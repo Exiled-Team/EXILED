@@ -7,15 +7,8 @@
 
 namespace Exiled.Example.Events
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Extensions;
     using Exiled.API.Features;
-    using Exiled.API.Structs;
     using Exiled.Events.EventArgs;
-
-    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// Handles Map events.
