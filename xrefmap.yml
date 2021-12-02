@@ -529,6 +529,12 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.Bleeding
   fullName: Exiled.API.Enums.DamageType.Bleeding
   nameWithType: DamageType.Bleeding
+- uid: Exiled.API.Enums.DamageType.Crushed
+  name: Crushed
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Crushed
+  commentId: F:Exiled.API.Enums.DamageType.Crushed
+  fullName: Exiled.API.Enums.DamageType.Crushed
+  nameWithType: DamageType.Crushed
 - uid: Exiled.API.Enums.DamageType.Decontamination
   name: Decontamination
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Decontamination
@@ -547,24 +553,48 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.Falldown
   fullName: Exiled.API.Enums.DamageType.Falldown
   nameWithType: DamageType.Falldown
+- uid: Exiled.API.Enums.DamageType.FemurBreaker
+  name: FemurBreaker
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_FemurBreaker
+  commentId: F:Exiled.API.Enums.DamageType.FemurBreaker
+  fullName: Exiled.API.Enums.DamageType.FemurBreaker
+  nameWithType: DamageType.FemurBreaker
 - uid: Exiled.API.Enums.DamageType.Firearm
   name: Firearm
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Firearm
   commentId: F:Exiled.API.Enums.DamageType.Firearm
   fullName: Exiled.API.Enums.DamageType.Firearm
   nameWithType: DamageType.Firearm
+- uid: Exiled.API.Enums.DamageType.FriendlyFireDetector
+  name: FriendlyFireDetector
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_FriendlyFireDetector
+  commentId: F:Exiled.API.Enums.DamageType.FriendlyFireDetector
+  fullName: Exiled.API.Enums.DamageType.FriendlyFireDetector
+  nameWithType: DamageType.FriendlyFireDetector
 - uid: Exiled.API.Enums.DamageType.MicroHid
   name: MicroHid
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_MicroHid
   commentId: F:Exiled.API.Enums.DamageType.MicroHid
   fullName: Exiled.API.Enums.DamageType.MicroHid
   nameWithType: DamageType.MicroHid
+- uid: Exiled.API.Enums.DamageType.PocketDimension
+  name: PocketDimension
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_PocketDimension
+  commentId: F:Exiled.API.Enums.DamageType.PocketDimension
+  fullName: Exiled.API.Enums.DamageType.PocketDimension
+  nameWithType: DamageType.PocketDimension
 - uid: Exiled.API.Enums.DamageType.Poison
   name: Poison
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Poison
   commentId: F:Exiled.API.Enums.DamageType.Poison
   fullName: Exiled.API.Enums.DamageType.Poison
   nameWithType: DamageType.Poison
+- uid: Exiled.API.Enums.DamageType.Recontainment
+  name: Recontainment
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Recontainment
+  commentId: F:Exiled.API.Enums.DamageType.Recontainment
+  fullName: Exiled.API.Enums.DamageType.Recontainment
+  nameWithType: DamageType.Recontainment
 - uid: Exiled.API.Enums.DamageType.Scp
   name: Scp
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Scp
@@ -577,6 +607,18 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.Scp018
   fullName: Exiled.API.Enums.DamageType.Scp018
   nameWithType: DamageType.Scp018
+- uid: Exiled.API.Enums.DamageType.Scp207
+  name: Scp207
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Scp207
+  commentId: F:Exiled.API.Enums.DamageType.Scp207
+  fullName: Exiled.API.Enums.DamageType.Scp207
+  nameWithType: DamageType.Scp207
+- uid: Exiled.API.Enums.DamageType.SeveredHands
+  name: SeveredHands
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_SeveredHands
+  commentId: F:Exiled.API.Enums.DamageType.SeveredHands
+  fullName: Exiled.API.Enums.DamageType.SeveredHands
+  nameWithType: DamageType.SeveredHands
 - uid: Exiled.API.Enums.DamageType.Tesla
   name: Tesla
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Tesla
