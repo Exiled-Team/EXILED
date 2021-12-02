@@ -511,6 +511,78 @@ references:
   commentId: F:Exiled.API.Enums.CameraType.WC
   fullName: Exiled.API.Enums.CameraType.WC
   nameWithType: CameraType.WC
+- uid: Exiled.API.Enums.DamageType
+  name: DamageType
+  href: api/Exiled.API.Enums.DamageType.html
+  commentId: T:Exiled.API.Enums.DamageType
+  fullName: Exiled.API.Enums.DamageType
+  nameWithType: DamageType
+- uid: Exiled.API.Enums.DamageType.Asphyxiation
+  name: Asphyxiation
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Asphyxiation
+  commentId: F:Exiled.API.Enums.DamageType.Asphyxiation
+  fullName: Exiled.API.Enums.DamageType.Asphyxiation
+  nameWithType: DamageType.Asphyxiation
+- uid: Exiled.API.Enums.DamageType.Bleeding
+  name: Bleeding
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Bleeding
+  commentId: F:Exiled.API.Enums.DamageType.Bleeding
+  fullName: Exiled.API.Enums.DamageType.Bleeding
+  nameWithType: DamageType.Bleeding
+- uid: Exiled.API.Enums.DamageType.Decontamination
+  name: Decontamination
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Decontamination
+  commentId: F:Exiled.API.Enums.DamageType.Decontamination
+  fullName: Exiled.API.Enums.DamageType.Decontamination
+  nameWithType: DamageType.Decontamination
+- uid: Exiled.API.Enums.DamageType.Falldown
+  name: Falldown
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Falldown
+  commentId: F:Exiled.API.Enums.DamageType.Falldown
+  fullName: Exiled.API.Enums.DamageType.Falldown
+  nameWithType: DamageType.Falldown
+- uid: Exiled.API.Enums.DamageType.Firearm
+  name: Firearm
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Firearm
+  commentId: F:Exiled.API.Enums.DamageType.Firearm
+  fullName: Exiled.API.Enums.DamageType.Firearm
+  nameWithType: DamageType.Firearm
+- uid: Exiled.API.Enums.DamageType.MicroHid
+  name: MicroHid
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_MicroHid
+  commentId: F:Exiled.API.Enums.DamageType.MicroHid
+  fullName: Exiled.API.Enums.DamageType.MicroHid
+  nameWithType: DamageType.MicroHid
+- uid: Exiled.API.Enums.DamageType.Poison
+  name: Poison
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Poison
+  commentId: F:Exiled.API.Enums.DamageType.Poison
+  fullName: Exiled.API.Enums.DamageType.Poison
+  nameWithType: DamageType.Poison
+- uid: Exiled.API.Enums.DamageType.Scp
+  name: Scp
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Scp
+  commentId: F:Exiled.API.Enums.DamageType.Scp
+  fullName: Exiled.API.Enums.DamageType.Scp
+  nameWithType: DamageType.Scp
+- uid: Exiled.API.Enums.DamageType.Tesla
+  name: Tesla
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Tesla
+  commentId: F:Exiled.API.Enums.DamageType.Tesla
+  fullName: Exiled.API.Enums.DamageType.Tesla
+  nameWithType: DamageType.Tesla
+- uid: Exiled.API.Enums.DamageType.Unknown
+  name: Unknown
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Unknown
+  commentId: F:Exiled.API.Enums.DamageType.Unknown
+  fullName: Exiled.API.Enums.DamageType.Unknown
+  nameWithType: DamageType.Unknown
+- uid: Exiled.API.Enums.DamageType.Warhead
+  name: Warhead
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Warhead
+  commentId: F:Exiled.API.Enums.DamageType.Warhead
+  fullName: Exiled.API.Enums.DamageType.Warhead
+  nameWithType: DamageType.Warhead
 - uid: Exiled.API.Enums.DoorBeepType
   name: DoorBeepType
   href: api/Exiled.API.Enums.DoorBeepType.html
@@ -3252,6 +3324,116 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Components.CollisionHandler.Owner
   nameWithType: CollisionHandler.Owner
+- uid: Exiled.API.Features.DamageHandler
+  name: DamageHandler
+  href: api/Exiled.API.Features.DamageHandler.html
+  commentId: T:Exiled.API.Features.DamageHandler
+  fullName: Exiled.API.Features.DamageHandler
+  nameWithType: DamageHandler
+- uid: Exiled.API.Features.DamageHandler.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  name: DamageHandler(Player, DamageHandlerBase)
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_
+  commentId: M:Exiled.API.Features.DamageHandler.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase)
+  fullName: Exiled.API.Features.DamageHandler.DamageHandler(Exiled.API.Features.Player, PlayerStatsSystem.DamageHandlerBase)
+  nameWithType: DamageHandler.DamageHandler(Player, DamageHandlerBase)
+- uid: Exiled.API.Features.DamageHandler.#ctor*
+  name: DamageHandler
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler__ctor_
+  commentId: Overload:Exiled.API.Features.DamageHandler.#ctor
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.DamageHandler
+  nameWithType: DamageHandler.DamageHandler
+- uid: Exiled.API.Features.DamageHandler.Amount
+  name: Amount
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Amount
+  commentId: P:Exiled.API.Features.DamageHandler.Amount
+  fullName: Exiled.API.Features.DamageHandler.Amount
+  nameWithType: DamageHandler.Amount
+- uid: Exiled.API.Features.DamageHandler.Amount*
+  name: Amount
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Amount_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Amount
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Amount
+  nameWithType: DamageHandler.Amount
+- uid: Exiled.API.Features.DamageHandler.Attacker
+  name: Attacker
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Attacker
+  commentId: P:Exiled.API.Features.DamageHandler.Attacker
+  fullName: Exiled.API.Features.DamageHandler.Attacker
+  nameWithType: DamageHandler.Attacker
+- uid: Exiled.API.Features.DamageHandler.Attacker*
+  name: Attacker
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Attacker_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Attacker
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Attacker
+  nameWithType: DamageHandler.Attacker
+- uid: Exiled.API.Features.DamageHandler.Base
+  name: Base
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Base
+  commentId: P:Exiled.API.Features.DamageHandler.Base
+  fullName: Exiled.API.Features.DamageHandler.Base
+  nameWithType: DamageHandler.Base
+- uid: Exiled.API.Features.DamageHandler.Base*
+  name: Base
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Base_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Base
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Base
+  nameWithType: DamageHandler.Base
+- uid: Exiled.API.Features.DamageHandler.Item
+  name: Item
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Item
+  commentId: P:Exiled.API.Features.DamageHandler.Item
+  fullName: Exiled.API.Features.DamageHandler.Item
+  nameWithType: DamageHandler.Item
+- uid: Exiled.API.Features.DamageHandler.Item*
+  name: Item
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Item_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Item
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Item
+  nameWithType: DamageHandler.Item
+- uid: Exiled.API.Features.DamageHandler.Target
+  name: Target
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Target
+  commentId: P:Exiled.API.Features.DamageHandler.Target
+  fullName: Exiled.API.Features.DamageHandler.Target
+  nameWithType: DamageHandler.Target
+- uid: Exiled.API.Features.DamageHandler.Target*
+  name: Target
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Target_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Target
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Target
+  nameWithType: DamageHandler.Target
+- uid: Exiled.API.Features.DamageHandler.ToString
+  name: ToString()
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_ToString
+  commentId: M:Exiled.API.Features.DamageHandler.ToString
+  fullName: Exiled.API.Features.DamageHandler.ToString()
+  nameWithType: DamageHandler.ToString()
+- uid: Exiled.API.Features.DamageHandler.ToString*
+  name: ToString
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_ToString_
+  commentId: Overload:Exiled.API.Features.DamageHandler.ToString
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.ToString
+  nameWithType: DamageHandler.ToString
+- uid: Exiled.API.Features.DamageHandler.Type
+  name: Type
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Type
+  commentId: P:Exiled.API.Features.DamageHandler.Type
+  fullName: Exiled.API.Features.DamageHandler.Type
+  nameWithType: DamageHandler.Type
+- uid: Exiled.API.Features.DamageHandler.Type*
+  name: Type
+  href: api/Exiled.API.Features.DamageHandler.html#Exiled_API_Features_DamageHandler_Type_
+  commentId: Overload:Exiled.API.Features.DamageHandler.Type
+  isSpec: "True"
+  fullName: Exiled.API.Features.DamageHandler.Type
+  nameWithType: DamageHandler.Type
 - uid: Exiled.API.Features.Door
   name: Door
   href: api/Exiled.API.Features.Door.html
@@ -6262,6 +6444,22 @@ references:
   fullName.vb: Exiled.API.Features.Player.DisableEffect(Of T)()
   nameWithType: Player.DisableEffect<T>()
   nameWithType.vb: Player.DisableEffect(Of T)()
+- uid: Exiled.API.Features.Player.DisableEffects(System.Collections.Generic.IEnumerable{Exiled.API.Enums.EffectType})
+  name: DisableEffects(IEnumerable<EffectType>)
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableEffects_System_Collections_Generic_IEnumerable_Exiled_API_Enums_EffectType__
+  commentId: M:Exiled.API.Features.Player.DisableEffects(System.Collections.Generic.IEnumerable{Exiled.API.Enums.EffectType})
+  name.vb: DisableEffects(IEnumerable(Of EffectType))
+  fullName: Exiled.API.Features.Player.DisableEffects(System.Collections.Generic.IEnumerable<Exiled.API.Enums.EffectType>)
+  fullName.vb: Exiled.API.Features.Player.DisableEffects(System.Collections.Generic.IEnumerable(Of Exiled.API.Enums.EffectType))
+  nameWithType: Player.DisableEffects(IEnumerable<EffectType>)
+  nameWithType.vb: Player.DisableEffects(IEnumerable(Of EffectType))
+- uid: Exiled.API.Features.Player.DisableEffects*
+  name: DisableEffects
+  href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_DisableEffects_
+  commentId: Overload:Exiled.API.Features.Player.DisableEffects
+  isSpec: "True"
+  fullName: Exiled.API.Features.Player.DisableEffects
+  nameWithType: Player.DisableEffects
 - uid: Exiled.API.Features.Player.Disconnect(System.String)
   name: Disconnect(String)
   href: api/Exiled.API.Features.Player.html#Exiled_API_Features_Player_Disconnect_System_String_
@@ -15219,6 +15417,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler
   nameWithType: AnnouncingScpTerminationEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler
+  name: Handler
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Handler
+  commentId: P:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler
+  nameWithType: AnnouncingScpTerminationEventArgs.Handler
+- uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler*
+  name: Handler
+  href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Handler_
+  commentId: Overload:Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler
+  nameWithType: AnnouncingScpTerminationEventArgs.Handler
 - uid: Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html#Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_IsAllowed
@@ -17266,6 +17477,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.DiedEventArgs.DamageHandler
   nameWithType: DiedEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DiedEventArgs.Handler
+  name: Handler
+  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_Handler
+  commentId: P:Exiled.Events.EventArgs.DiedEventArgs.Handler
+  fullName: Exiled.Events.EventArgs.DiedEventArgs.Handler
+  nameWithType: DiedEventArgs.Handler
+- uid: Exiled.Events.EventArgs.DiedEventArgs.Handler*
+  name: Handler
+  href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_Handler_
+  commentId: Overload:Exiled.Events.EventArgs.DiedEventArgs.Handler
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.DiedEventArgs.Handler
+  nameWithType: DiedEventArgs.Handler
 - uid: Exiled.Events.EventArgs.DiedEventArgs.Killer
   name: Killer
   href: api/Exiled.Events.EventArgs.DiedEventArgs.html#Exiled_Events_EventArgs_DiedEventArgs_Killer
@@ -17556,6 +17780,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.DyingEventArgs.DamageHandler
   nameWithType: DyingEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.DyingEventArgs.Handler
+  name: Handler
+  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_Handler
+  commentId: P:Exiled.Events.EventArgs.DyingEventArgs.Handler
+  fullName: Exiled.Events.EventArgs.DyingEventArgs.Handler
+  nameWithType: DyingEventArgs.Handler
+- uid: Exiled.Events.EventArgs.DyingEventArgs.Handler*
+  name: Handler
+  href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_Handler_
+  commentId: Overload:Exiled.Events.EventArgs.DyingEventArgs.Handler
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.DyingEventArgs.Handler
+  nameWithType: DyingEventArgs.Handler
 - uid: Exiled.Events.EventArgs.DyingEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.DyingEventArgs.html#Exiled_Events_EventArgs_DyingEventArgs_IsAllowed
@@ -18645,6 +18882,19 @@ references:
   isSpec: "True"
   fullName: Exiled.Events.EventArgs.HurtingEventArgs.DamageHandler
   nameWithType: HurtingEventArgs.DamageHandler
+- uid: Exiled.Events.EventArgs.HurtingEventArgs.Handler
+  name: Handler
+  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_Handler
+  commentId: P:Exiled.Events.EventArgs.HurtingEventArgs.Handler
+  fullName: Exiled.Events.EventArgs.HurtingEventArgs.Handler
+  nameWithType: HurtingEventArgs.Handler
+- uid: Exiled.Events.EventArgs.HurtingEventArgs.Handler*
+  name: Handler
+  href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_Handler_
+  commentId: Overload:Exiled.Events.EventArgs.HurtingEventArgs.Handler
+  isSpec: "True"
+  fullName: Exiled.Events.EventArgs.HurtingEventArgs.Handler
+  nameWithType: HurtingEventArgs.Handler
 - uid: Exiled.Events.EventArgs.HurtingEventArgs.IsAllowed
   name: IsAllowed
   href: api/Exiled.Events.EventArgs.HurtingEventArgs.html#Exiled_Events_EventArgs_HurtingEventArgs_IsAllowed

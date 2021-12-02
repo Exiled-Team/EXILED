@@ -146,6 +146,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Enums.DamageType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Enums.DamageType.html",
+          "hash": "mboYtERuLt3e/1PcS9zDqeD12pUL64cV4nOzhVZaXts="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/docs/api/Exiled.API.Enums.DoorBeepType.yml",
       "output": {
         ".html": {
@@ -414,7 +426,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.html",
-          "hash": "jeHcUM99fRzRqH4JhlR9g7DCe6zbNPiGL4l+wd3ABXk="
+          "hash": "DdqEB0PM/60OAGEVMld6vP3oYU2KP5kHJ0AehbTdlMw="
         }
       },
       "is_incremental": false,
@@ -607,6 +619,18 @@
         ".html": {
           "relative_path": "api/Exiled.API.Features.Components.html",
           "hash": "nvw3fCKpvXBWRmbr0+gd6mcmwkTnfHIMnqe1MRXMVhM="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.DamageHandler.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.DamageHandler.html",
+          "hash": "1e1NoXje78abJUGxut8fh7k0E6iQL2OiKlVUBPzvImc="
         }
       },
       "is_incremental": false,
@@ -834,7 +858,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Player.html",
-          "hash": "cMlvQCvTBKomfTThjXytIAf5RTzQ++20KjyNhh0U4Yc="
+          "hash": "g56dP36xlXxDBT0y6xD7svcr/Heb4bazZFJwEvqlfxA="
         }
       },
       "is_incremental": false,
@@ -1062,7 +1086,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.html",
-          "hash": "UIMRK5sF18R9GynozSEnFNJ8ZKD/AsLTb1juUMxAb8M="
+          "hash": "Hlk8rkpZkMkxjUud0o/nMW6Pvmp8LnG6URoh+jcX7ds="
         }
       },
       "is_incremental": false,
@@ -1314,7 +1338,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.CustomItems.API.EventArgs.OwnerDyingEventArgs.html",
-          "hash": "K/SOEyj6SVdnVhdoGqX+p1mtWUeQe7yH/VPi/H6FoOg="
+          "hash": "4xfXF3zsIhaZKbkaRopBnJBHQDQku5QrDp+25K2XndU="
         }
       },
       "is_incremental": false,
@@ -1926,7 +1950,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.html",
-          "hash": "fU2fDSS67NE7dlGEdXUs2o/4uWLMT3CPchlrDQwf39Q="
+          "hash": "1WtGfaKdU1z+WyQWQXl8VR8Zi7LkxmE61dp3sa5Yuhs="
         }
       },
       "is_incremental": false,
@@ -2322,7 +2346,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DiedEventArgs.html",
-          "hash": "M1HvAkr9+HFERvMm9SG/HqskG96dMXxfeY19AxAT/T0="
+          "hash": "LcWndgJ8FGuPucLiRiViS9qVhdyc1X2InZHoG4ICrA0="
         }
       },
       "is_incremental": false,
@@ -2382,7 +2406,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DyingEventArgs.html",
-          "hash": "0DQ1NXIft76EkBw/mG8sk5iuYrSh0KddjOE+FCy9CtM="
+          "hash": "3wLy51Zly7CaTFBJGirEBJUJvWI7fnEOYAW+Uqs6M6s="
         }
       },
       "is_incremental": false,
@@ -2586,7 +2610,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.HurtingEventArgs.html",
-          "hash": "Ysz/i/usyv0DWq4Zw9hw/oVGYE7Z4uUj2oc9IVr3rRg="
+          "hash": "kDYYbnCeIbVuIQ4640IlJK9obxqWcZTS0TWpi8H9ReA="
         }
       },
       "is_incremental": false,
@@ -4170,7 +4194,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "M6MFX0FV/RlFU2hJH74Iy0+NB32NWlv5NLNO1hGao+Y="
+          "hash": "udDYPeI4YRLN6UBogWdxTXu9++UVFaARvbKa93OqIAE="
         }
       },
       "is_incremental": false,
@@ -4209,7 +4233,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 339,
+          "total_file_count": 341,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {

@@ -132,7 +132,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_System_Boolean_.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.%23ctor(Exiled.API.Features.Player%2CPlayerStatsSystem.DamageHandlerBase%2CSystem.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L27">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L28">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs__ctor_Exiled_API_Features_Player_PlayerStatsSystem_DamageHandlerBase_System_Boolean_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.#ctor(Exiled.API.Features.Player,PlayerStatsSystem.DamageHandlerBase,System.Boolean)">AnnouncingScpTerminationEventArgs(Player, DamageHandlerBase, Boolean)</h4>
@@ -177,7 +177,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_DamageHandler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L55">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L56">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_DamageHandler_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_DamageHandler" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.DamageHandler">DamageHandler</h4>
@@ -186,7 +186,8 @@
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public DamageHandlerBase DamageHandler { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Obsolete(&quot;Use AnnouncingScpTerminationEventArgs.Handler&quot;)]
+public DamageHandlerBase DamageHandler { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -205,10 +206,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Handler.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L62">View Source</a>
+  </span>
+  <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Handler_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler*"></a>
+  <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Handler" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Handler">Handler</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the <a class="xref" href="Exiled.API.Features.DamageHandler.html">DamageHandler</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DamageHandler Handler { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="Exiled.API.Features.DamageHandler.html">DamageHandler</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_IsAllowed.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L65">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L72">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_IsAllowed_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_IsAllowed" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.IsAllowed">IsAllowed</h4>
@@ -239,7 +271,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Killer.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Killer%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L45">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L46">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Killer_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Killer*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Killer" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Killer">Killer</h4>
@@ -270,7 +302,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Player.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L40">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L41">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Player_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Player" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Player">Player</h4>
@@ -301,7 +333,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Role.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L50">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L51">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Role_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_Role" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.Role">Role</h4>
@@ -332,7 +364,7 @@
     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_TerminationCause.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.TerminationCause%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L60">View Source</a>
+    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L67">View Source</a>
   </span>
   <a id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_TerminationCause_" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.TerminationCause*"></a>
   <h4 id="Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs_TerminationCause" data-uid="Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs.TerminationCause">TerminationCause</h4>
@@ -373,7 +405,7 @@
                     <a href="https://github.com/Exiled-Team/EXILED/new/dev/apiSpec/new?filename=Exiled_Events_EventArgs_AnnouncingScpTerminationEventArgs.md&amp;value=---%0Auid%3A%20Exiled.Events.EventArgs.AnnouncingScpTerminationEventArgs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Exiled-Team/EXILED/blob/master/Exiled.Events/EventArgs/AnnouncingScpTerminationEventArgs.cs/#L20" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
