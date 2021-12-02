@@ -74,12 +74,8 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public float Amount
         {
-            get => damageHandler is StandardDamageHandler standardDamageHandler ? standardDamageHandler.Damage : 0.0f;
-            set
-            {
-                if (damageHandler is StandardDamageHandler standardDamageHandler)
-                    standardDamageHandler.Damage = value;
-            }
+            get => Handler.Amount;
+            set => Handler.Amount = value;
         }
 
         /// <summary>

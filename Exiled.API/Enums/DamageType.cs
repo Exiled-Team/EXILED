@@ -13,6 +13,11 @@ namespace Exiled.API.Enums
     public enum DamageType
     {
         /// <summary>
+        /// Unknown damage source.
+        /// </summary>
+        Unknown,
+
+        /// <summary>
         /// Fall damage.
         /// </summary>
         Falldown,
@@ -58,8 +63,8 @@ namespace Exiled.API.Enums
         Tesla,
 
         /// <summary>
-        /// Unknown damage source.
+        /// Damage is dealt by an SCP.
         /// </summary>
-        Unknown,
+        Scp,
     }
 }

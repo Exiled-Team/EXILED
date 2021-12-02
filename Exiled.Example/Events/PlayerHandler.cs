@@ -211,5 +211,16 @@ namespace Exiled.Example.Events
                 ev.NewRole = RoleType.Tutorial;
             Log.Info($"{ev.Player.Nickname} is trying to escape! Their new role will be {ev.NewRole}");
         }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
+        public void OnHurting(HurtingEventArgs ev)
+        {
+            Log.Info($"{ev.Target} is being hurt by {ev.Handler.Type}");
+            if (ev.Target.Role == RoleType.Scientist)
+            {
+                Log.Info("Target is a nerd, setting damage to 1 because it's mean to bully nerds.");
+                ev.Amount = 1f;
+            }
+        }
     }
 }
