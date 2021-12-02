@@ -66,5 +66,15 @@ namespace Exiled.API.Enums
         /// Damage is dealt by an SCP.
         /// </summary>
         Scp,
+
+        /// <summary>
+        /// Damage dealt by frag grenades.
+        /// </summary>
+        Explosion,
+
+        /// <summary>
+        /// Damage dealt by SCP-018
+        /// </summary>
+        Scp018,
     }
 }

@@ -89,6 +89,10 @@ namespace Exiled.API.Features
                             return DamageType.Warhead;
                         case ScpDamageHandler _:
                             return DamageType.Scp;
+                        case ExplosionDamageHandler _:
+                            return DamageType.Explosion;
+                        case Scp018DamageHandler _:
+                            return DamageType.Scp018;
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
