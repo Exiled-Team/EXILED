@@ -150,7 +150,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.DamageType.html",
-          "hash": "mboYtERuLt3e/1PcS9zDqeD12pUL64cV4nOzhVZaXts="
+          "hash": "4Euq+SC5YkV1P8DLqqjirpmAkBi/G45TJ5QfV3ZAS2c="
         }
       },
       "is_incremental": false,
@@ -630,7 +630,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.DamageHandler.html",
-          "hash": "1e1NoXje78abJUGxut8fh7k0E6iQL2OiKlVUBPzvImc="
+          "hash": "enGAvFq8tbbTB7x+yvE6dqWf3xE4kjuqdJZ0l2PPwCI="
         }
       },
       "is_incremental": false,

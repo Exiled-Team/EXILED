@@ -535,6 +535,12 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.Decontamination
   fullName: Exiled.API.Enums.DamageType.Decontamination
   nameWithType: DamageType.Decontamination
+- uid: Exiled.API.Enums.DamageType.Explosion
+  name: Explosion
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Explosion
+  commentId: F:Exiled.API.Enums.DamageType.Explosion
+  fullName: Exiled.API.Enums.DamageType.Explosion
+  nameWithType: DamageType.Explosion
 - uid: Exiled.API.Enums.DamageType.Falldown
   name: Falldown
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Falldown
@@ -565,6 +571,12 @@ references:
   commentId: F:Exiled.API.Enums.DamageType.Scp
   fullName: Exiled.API.Enums.DamageType.Scp
   nameWithType: DamageType.Scp
+- uid: Exiled.API.Enums.DamageType.Scp018
+  name: Scp018
+  href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Scp018
+  commentId: F:Exiled.API.Enums.DamageType.Scp018
+  fullName: Exiled.API.Enums.DamageType.Scp018
+  nameWithType: DamageType.Scp018
 - uid: Exiled.API.Enums.DamageType.Tesla
   name: Tesla
   href: api/Exiled.API.Enums.DamageType.html#Exiled_API_Enums_DamageType_Tesla

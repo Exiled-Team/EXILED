@@ -22,7 +22,7 @@
   "api/Exiled.API.Enums.DamageType.html": {
     "href": "api/Exiled.API.Enums.DamageType.html",
     "title": "Enum DamageType | EXILED Docs",
-    "keywords": "Enum DamageType Identifiers for types of damage. Namespace : Exiled.API.Enums Assembly : Exiled.API.dll Syntax public enum DamageType Fields Name Description Asphyxiation Asphyxiated . Bleeding Bleeding . Decontamination LCZ Decontamination. Falldown Fall damage. Firearm Damage dealt by a Firearm . MicroHid Damage dealt by a MicroHid . Poison Poisoned . Scp Damage is dealt by an SCP. Tesla Damage dealt by a Tesla Gate. Unknown Unknown damage source. Warhead Alpha Warhead. Extension Methods ReflectionExtensions.CopyProperties(Object)"
+    "keywords": "Enum DamageType Identifiers for types of damage. Namespace : Exiled.API.Enums Assembly : Exiled.API.dll Syntax public enum DamageType Fields Name Description Asphyxiation Asphyxiated . Bleeding Bleeding . Decontamination LCZ Decontamination. Explosion Damage dealt by frag grenades. Falldown Fall damage. Firearm Damage dealt by a Firearm . MicroHid Damage dealt by a MicroHid . Poison Poisoned . Scp Damage is dealt by an SCP. Scp018 Damage dealt by SCP-018 Tesla Damage dealt by a Tesla Gate. Unknown Unknown damage source. Warhead Alpha Warhead. Extension Methods ReflectionExtensions.CopyProperties(Object)"
   },
   "api/Exiled.API.Enums.DoorBeepType.html": {
     "href": "api/Exiled.API.Enums.DoorBeepType.html",
