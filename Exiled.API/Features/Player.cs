@@ -1865,6 +1865,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Disables a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> on the player.
+        /// </summary>
+        /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to disable.</param>
+        public void DisableEffects(IEnumerable<EffectType> effects)
+        {
+            foreach (EffectType effect in effects)
+                DisableEffect(effect);
+        }
+
+        /// <summary>
         /// Enables a <see cref="PlayerEffect">status effect</see> on the player.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
@@ -1918,7 +1928,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType">status effect</see> on the player.
+        /// Enables a <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effects will be active for.</param>
