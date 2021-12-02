@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using Dissonance;
+
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
@@ -41,7 +43,7 @@ namespace Exiled.API.Features
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="Player"/> attacker.
+        /// Gets or sets the <see cref="Player"/> attacker. CAN BE NULL!.
         /// </summary>
         public Player Attacker { get; set; }
 
@@ -112,7 +114,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Item"/> used to create the damage handler.
+        /// Gets the <see cref="Item"/> used to create the damage handler. CAN BE NULL!.
         /// </summary>
         public Item Item { get; }
 

@@ -52,15 +52,15 @@ namespace Exiled.Events.EventArgs
         public List<Item> ItemsToDrop { get; set; }
 
         /// <summary>
-        /// Gets the damage handler for the event.
+        /// Gets or sets the damage handler for the event.
         /// </summary>
         [Obsolete("Use DyingEventArgs.Handler")]
-        public DamageHandlerBase DamageHandler { get; }
+        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.DamageHandler"/>.
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
-        public DamageHandler Handler { get; }
+        public DamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be killed.

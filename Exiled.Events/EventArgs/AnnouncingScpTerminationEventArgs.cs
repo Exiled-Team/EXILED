@@ -19,8 +19,6 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {
-        private DamageHandler handler;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs"/> class.
         /// </summary>
@@ -31,7 +29,6 @@ namespace Exiled.Events.EventArgs
         {
             Player = scp;
             Role = scp.ReferenceHub.characterClassManager.CurRole;
-            DamageHandler = damageHandlerBase;
             Handler = new DamageHandler(scp, damageHandlerBase);
             Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             TerminationCause = damageHandlerBase.CassieDeathAnnouncement;
@@ -57,20 +54,12 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
         [Obsolete("Use AnnouncingScpTerminationEventArgs.Handler")]
-        public DamageHandlerBase DamageHandler { get; set; }
+        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
 
         /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
-        public DamageHandler Handler
-        {
-            get => handler;
-            set
-            {
-                handler = value;
-                DamageHandler = value.Base;
-            }
-        }
+        public DamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets the termination cause.

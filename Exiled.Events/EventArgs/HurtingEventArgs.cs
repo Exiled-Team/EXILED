@@ -52,8 +52,8 @@ namespace Exiled.Events.EventArgs
         [Obsolete("Use HurtingEventArgs.Handler instead.")]
         public DamageHandlerBase DamageHandler
         {
-            get => damageHandler;
-            private set => damageHandler = value;
+            get => Handler.Base;
+            private set => Handler.Base = value;
         }
 
         /// <summary>

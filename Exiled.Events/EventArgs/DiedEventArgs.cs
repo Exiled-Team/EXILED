@@ -28,7 +28,6 @@ namespace Exiled.Events.EventArgs
         {
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
-            DamageHandler = damageHandler;
             Handler = new DamageHandler(target, damageHandler);
         }
 
@@ -43,14 +42,14 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the <see cref="DamageHandlerBase"/>.
+        /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
         [Obsolete("Use DiedEventArgs.Handler", false)]
-        public DamageHandlerBase DamageHandler { get; }
+        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.DamageHandler"/>.
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
-        public DamageHandler Handler { get; }
+        public DamageHandler Handler { get; set; }
     }
 }
