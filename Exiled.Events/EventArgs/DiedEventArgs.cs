@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
@@ -28,6 +29,7 @@ namespace Exiled.Events.EventArgs
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
             DamageHandler = damageHandler;
+            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -41,8 +43,14 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DamageHandlerBase"/>.
+        /// Gets the <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public DamageHandlerBase DamageHandler { get; set; }
+        [Obsolete("Use DiedEventArgs.Handler", false)]
+        public DamageHandlerBase DamageHandler { get; }
+
+        /// <summary>
+        /// Gets the <see cref="API.Features.DamageHandler"/>.
+        /// </summary>
+        public DamageHandler Handler { get; }
     }
 }

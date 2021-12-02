@@ -11,8 +11,8 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
@@ -22,9 +22,11 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using Map = Exiled.Events.Handlers.Map;
+
     /// <summary>
     /// Patches <see cref="NineTailedFoxAnnouncer.AnnounceScpTermination(ReferenceHub, DamageHandlerBase)"/>.
-    /// Adds the <see cref="Map.AnnouncingScpTermination"/> event.
+    /// Adds the <see cref="Handlers.Map.AnnouncingScpTermination"/> event.
     /// </summary>
     [HarmonyPatch(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.AnnounceScpTermination))]
     internal static class AnnouncingScpTermination
@@ -55,7 +57,8 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.DamageHandler))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.Handler))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Base))),
                 new CodeInstruction(OpCodes.Starg, 1),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.singleton))),
                 new CodeInstruction(OpCodes.Ldc_R4, 0f),

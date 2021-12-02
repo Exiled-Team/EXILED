@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
@@ -18,6 +19,8 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class AnnouncingScpTerminationEventArgs : EventArgs
     {
+        private DamageHandler handler;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs"/> class.
         /// </summary>
@@ -52,7 +55,21 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
+        [Obsolete("Use AnnouncingScpTerminationEventArgs.Handler")]
         public DamageHandlerBase DamageHandler { get; set; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
+        /// </summary>
+        public DamageHandler Handler
+        {
+            get => handler;
+            set
+            {
+                handler = value;
+                DamageHandler = value.Base;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the termination cause.
