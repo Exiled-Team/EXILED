@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
@@ -28,7 +29,7 @@ namespace Exiled.Events.EventArgs
         {
             Player = scp;
             Role = scp.ReferenceHub.characterClassManager.CurRole;
-            DamageHandler = damageHandlerBase;
+            Handler = new DamageHandler(scp, damageHandlerBase);
             Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             TerminationCause = damageHandlerBase.CassieDeathAnnouncement;
             IsAllowed = isAllowed;
@@ -52,7 +53,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public DamageHandlerBase DamageHandler { get; set; }
+        [Obsolete("Use AnnouncingScpTerminationEventArgs.Handler")]
+        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
+        /// </summary>
+        public DamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets the termination cause.
