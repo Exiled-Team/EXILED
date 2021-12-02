@@ -113,5 +113,8 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Item"/> used to create the damage handler.
         /// </summary>
         public Item Item { get; }
+
+        /// <inheritdoc/>
+        public override string ToString() => $"{Target} {Amount} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";
     }
 }
