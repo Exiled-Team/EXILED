@@ -49,7 +49,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the hit informations.
         /// </summary>
-        [Obsolete("Use HurtingEventArgs.Handler instead.")]
+        [Obsolete("Use HurtingEventArgs.Handler instead.", true)]
         public DamageHandlerBase DamageHandler
         {
             get => Handler.Base;

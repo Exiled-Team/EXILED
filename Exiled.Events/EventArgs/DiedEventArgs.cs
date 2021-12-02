@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the <see cref="DamageHandlerBase"/>.
         /// </summary>
-        [Obsolete("Use DiedEventArgs.Handler", false)]
+        [Obsolete("Use DiedEventArgs.Handler", true)]
         public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
 
         /// <summary>
