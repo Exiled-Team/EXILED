@@ -2346,7 +2346,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DiedEventArgs.html",
-          "hash": "LcWndgJ8FGuPucLiRiViS9qVhdyc1X2InZHoG4ICrA0="
+          "hash": "EdHnV/k7X/wkUS6sfm/sLyzOg4oIz5LYQAswp11AiF0="
         }
       },
       "is_incremental": false,
@@ -2406,7 +2406,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.DyingEventArgs.html",
-          "hash": "3wLy51Zly7CaTFBJGirEBJUJvWI7fnEOYAW+Uqs6M6s="
+          "hash": "XFXlR6tuwhc7ALvurb0zmCG/LOhSDoomLSAe4PjthPo="
         }
       },
       "is_incremental": false,
@@ -2610,7 +2610,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.EventArgs.HurtingEventArgs.html",
-          "hash": "kDYYbnCeIbVuIQ4640IlJK9obxqWcZTS0TWpi8H9ReA="
+          "hash": "pe5FRiQ1IqtSnZOwQ/yZRFvrsl8ZLToqUI+6I3ITIfQ="
         }
       },
       "is_incremental": false,
