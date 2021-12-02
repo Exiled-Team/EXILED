@@ -28,12 +28,12 @@ namespace Exiled.API.Enums
         GunRevolver = 297,
 
         /// <summary>
-        /// The COM15's base code.
+        /// The E11SR's base code.
         /// </summary>
         GunE11SR = 4737569,
 
         /// <summary>
-        /// The COM15's base code.
+        /// The Crossvec's base code.
         /// </summary>
         GunCrossvec = 1105,
 
