@@ -104,6 +104,21 @@ namespace Exiled.API.Features
                                 return DamageType.Falldown;
                             if (translation.Id == DeathTranslations.Tesla.Id)
                                 return DamageType.Tesla;
+                            if (translation.Id == DeathTranslations.BulletWounds.Id)
+                                return DamageType.BulletWounds;
+                            if (translation.Id == DeathTranslations.Explosion.Id)
+                                return DamageType.Explosion;
+                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
+                                return DamageType.FriendlyFire;
+                            if (translation.Id == DeathTranslations.PocketDecay.Id)
+                                return DamageType.PocketDimension;
+                            if (translation.Id == DeathTranslations.Recontained.Id)
+                                return DamageType.Recontained;
+                            if (translation.Id == DeathTranslations.SeveredHands.Id)
+                                return DamageType.SeveredHands;
+                            if (translation.Id == DeathTranslations.Zombie.Id)
+                                return DamageType.Zombie;
+
                             break;
                         }
                     }

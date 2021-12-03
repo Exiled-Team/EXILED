@@ -66,5 +66,40 @@ namespace Exiled.API.Enums
         /// Damage is dealt by an SCP.
         /// </summary>
         Scp,
+
+        /// <summary>
+        /// Damage dealt by Bullets.
+        /// </summary>
+        BulletWounds,
+
+        /// <summary>
+        /// Damage dealt by Explosions.
+        /// </summary>
+        Explosion,
+
+        /// <summary>
+        /// Damage dealt by Friendly Fire.
+        /// </summary>
+        FriendlyFire,
+
+        /// <summary>
+        /// Damage dealth by Pocket Dimension.
+        /// </summary>
+        PocketDimension,
+
+        /// <summary>
+        /// Damage dealth by Recontainment.
+        /// </summary>
+        Recontained,
+
+        /// <summary>
+        /// Damage dealth by Severed Hands from SCP-330.
+        /// </summary>
+        SeveredHands,
+
+        /// <summary>
+        /// Damage dealth by Scp 049-2
+        /// </summary>
+        Zombie,
     }
 }
