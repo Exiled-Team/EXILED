@@ -91,13 +91,17 @@ namespace Exiled.API.Features
                         case WarheadDamageHandler _:
                             return DamageType.Warhead;
                         case ScpDamageHandler scp:
-                            return scp._translationId == DeathTranslations.PocketDecay.Id ? DamageType.PocketDimension : DamageType.Scp;
+                            return DamageType.Scp;
                         case ExplosionDamageHandler _:
                             return DamageType.Explosion;
                         case Scp018DamageHandler _:
                             return DamageType.Scp018;
                         case RecontainmentDamageHandler _:
                             return DamageType.Recontainment;
+                        case CustomReasonDamageHandler_:
+                            return DamageType.CustomDamage;
+                        case Scp096DamageHandler _:
+                            return DamageType.Scp096;
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -111,6 +115,8 @@ namespace Exiled.API.Features
                                 return DamageType.Poison;
                             if (translation.Id == DeathTranslations.Falldown.Id)
                                 return DamageType.Falldown;
+                            if (translation.Id == DeathTranslations.PocketDecay.Id)
+                                return DamageType.PocketDimension;
                             if (translation.Id == DeathTranslations.Tesla.Id)
                                 return DamageType.Tesla;
                             if (translation.Id == DeathTranslations.Scp207.Id)

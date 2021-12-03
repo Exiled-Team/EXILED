@@ -68,6 +68,11 @@ namespace Exiled.API.Enums
         Scp,
 
         /// <summary>
+        /// Damage dealt by SCP-096.
+        /// </summary>
+        Scp096,
+
+        /// <summary>
         /// Damage dealt by frag grenades.
         /// </summary>
         Explosion,
@@ -111,5 +116,10 @@ namespace Exiled.API.Enums
         /// Damage caused by severed hands.
         /// </summary>
         SeveredHands,
+
+        /// <summary>
+        /// Damage cause by CustomDamageHandler plugin.
+        /// </summary>
+        CustomDamage,
     }
 }
