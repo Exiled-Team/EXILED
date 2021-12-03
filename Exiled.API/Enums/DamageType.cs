@@ -72,7 +72,6 @@ namespace Exiled.API.Enums
         /// </summary>
         Scp096,
 
-        /// <summary>
         /// Damage dealt by frag grenades.
         /// </summary>
         Explosion,
