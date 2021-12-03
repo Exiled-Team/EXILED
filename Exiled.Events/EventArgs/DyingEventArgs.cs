@@ -32,7 +32,6 @@ namespace Exiled.Events.EventArgs
             ItemsToDrop = new List<Item>(target.Items.ToList());
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
-            DamageHandler = damageHandler;
             Handler = new DamageHandler(target, damageHandler);
         }
 
@@ -54,7 +53,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the damage handler for the event.
         /// </summary>
-        [Obsolete("Use DyingEventArgs.Handler")]
+        [Obsolete("Use DyingEventArgs.Handler", true)]
         public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
 
         /// <summary>

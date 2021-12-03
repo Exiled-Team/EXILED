@@ -76,10 +76,13 @@ namespace Exiled.API.Features
             {
                 if (Item != null)
                 {
-                    if (Item is Firearm)
-                        return DamageType.Firearm;
-                    else if (Item is MicroHid)
-                        return DamageType.MicroHid;
+                    switch (Item)
+                    {
+                        case Firearm _:
+                            return DamageType.Firearm;
+                        case MicroHid _:
+                            return DamageType.MicroHid;
+                    }
                 }
                 else
                 {
@@ -87,8 +90,14 @@ namespace Exiled.API.Features
                     {
                         case WarheadDamageHandler _:
                             return DamageType.Warhead;
-                        case ScpDamageHandler _:
-                            return DamageType.Scp;
+                        case ScpDamageHandler scp:
+                            return scp._translationId == DeathTranslations.PocketDecay.Id ? DamageType.PocketDimension : DamageType.Scp;
+                        case ExplosionDamageHandler _:
+                            return DamageType.Explosion;
+                        case Scp018DamageHandler _:
+                            return DamageType.Scp018;
+                        case RecontainmentDamageHandler _:
+                            return DamageType.Recontainment;
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -104,6 +113,18 @@ namespace Exiled.API.Features
                                 return DamageType.Falldown;
                             if (translation.Id == DeathTranslations.Tesla.Id)
                                 return DamageType.Tesla;
+                            if (translation.Id == DeathTranslations.Scp207.Id)
+                                return DamageType.Scp207;
+                            if (translation.Id == DeathTranslations.Crushed.Id)
+                                return DamageType.Crushed;
+                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
+                                return DamageType.FemurBreaker;
+                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
+                                return DamageType.FriendlyFireDetector;
+                            if (translation.Id == DeathTranslations.SeveredHands.Id)
+                                return DamageType.SeveredHands;
+
+                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
                         }
                     }

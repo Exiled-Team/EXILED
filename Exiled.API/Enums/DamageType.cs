@@ -66,5 +66,50 @@ namespace Exiled.API.Enums
         /// Damage is dealt by an SCP.
         /// </summary>
         Scp,
+
+        /// <summary>
+        /// Damage dealt by frag grenades.
+        /// </summary>
+        Explosion,
+
+        /// <summary>
+        /// Damage dealt by SCP-018.
+        /// </summary>
+        Scp018,
+
+        /// <summary>
+        /// Damage dealt by SCP-207.
+        /// </summary>
+        Scp207,
+
+        /// <summary>
+        /// Damage is dealt by SCP Recontainment procedure.
+        /// </summary>
+        Recontainment,
+
+        /// <summary>
+        /// Crushed by the checkpoint killer trigger.
+        /// </summary>
+        Crushed,
+
+        /// <summary>
+        /// Damage caused by the femur breaker.
+        /// </summary>
+        FemurBreaker,
+
+        /// <summary>
+        /// Damage caused by the pocket dimension.
+        /// </summary>
+        PocketDimension,
+
+        /// <summary>
+        /// Damage caused by the friendly fire detector.
+        /// </summary>
+        FriendlyFireDetector,
+
+        /// <summary>
+        /// Damage caused by severed hands.
+        /// </summary>
+        SeveredHands,
     }
 }
