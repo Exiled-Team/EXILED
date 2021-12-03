@@ -83,7 +83,7 @@ namespace Exiled.API.Enums
         FriendlyFire,
 
         /// <summary>
-        /// Damage dealth by Pocket Dimension.
+        /// Damage is dealth by Pocket Dimension.
         /// </summary>
         PocketDimension,
 
@@ -93,13 +93,23 @@ namespace Exiled.API.Enums
         Recontained,
 
         /// <summary>
-        /// Damage dealth by Severed Hands from SCP-330.
+        /// Damage is dealth by Severed Hands from SCP-330.
         /// </summary>
         SeveredHands,
 
         /// <summary>
-        /// Damage dealth by Scp 049-2
+        /// Damage is dealth by Scp049-2
         /// </summary>
         Zombie,
+
+        /// <summary>
+        /// Damage dealth by getting crushed.
+        /// </summary>
+        Crushed,
+
+        /// <summary>
+        /// Damage dealth by Scp207
+        /// </summary>
+        Scp207,
     }
 }

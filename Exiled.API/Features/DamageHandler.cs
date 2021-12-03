@@ -118,6 +118,10 @@ namespace Exiled.API.Features
                                 return DamageType.SeveredHands;
                             if (translation.Id == DeathTranslations.Zombie.Id)
                                 return DamageType.Zombie;
+                            if (translation.Id == DeathTranslations.Crushed.Id)
+                                return DamageType.Crushed;
+                            if (translation.Id == DeathTranslations.Scp207.Id)
+                                return DamageType.Scp207;
 
                             break;
                         }
