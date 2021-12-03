@@ -76,10 +76,13 @@ namespace Exiled.API.Features
             {
                 if (Item != null)
                 {
-                    if (Item is Firearm)
-                        return DamageType.Firearm;
-                    else if (Item is MicroHid)
-                        return DamageType.MicroHid;
+                    switch (Item)
+                    {
+                        case Firearm _:
+                            return DamageType.Firearm;
+                        case MicroHid _:
+                            return DamageType.MicroHid;
+                    }
                 }
                 else
                 {
@@ -124,7 +127,6 @@ namespace Exiled.API.Features
                                 return DamageType.BulletWounds;
                             if (translation.Id == DeathTranslations.Explosion.Id)
                                 return DamageType.Explosion;
-
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
 

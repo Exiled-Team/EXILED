@@ -111,7 +111,7 @@ namespace Exiled.API.Enums
         /// Damage caused by severed hands.
         /// </summary>
         SeveredHands,
-
+        
         /// <summary>
         /// Damage dealt by Bullets.
         /// </summary>
