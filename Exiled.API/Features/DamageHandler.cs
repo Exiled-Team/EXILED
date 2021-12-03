@@ -122,7 +122,6 @@ namespace Exiled.API.Features
                                 return DamageType.Crushed;
                             if (translation.Id == DeathTranslations.Scp207.Id)
                                 return DamageType.Scp207;
-
                             break;
                         }
                     }

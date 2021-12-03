@@ -111,5 +111,6 @@ namespace Exiled.API.Enums
         /// Damage dealth by Scp207
         /// </summary>
         Scp207,
+
     }
 }
