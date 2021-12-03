@@ -89,6 +89,8 @@ namespace Exiled.API.Features
                             return DamageType.Warhead;
                         case ScpDamageHandler _:
                             return DamageType.Scp;
+                        case RecontainmentDamageHandler _:
+                            return DamageType.Recontained;
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -112,8 +114,6 @@ namespace Exiled.API.Features
                                 return DamageType.FriendlyFire;
                             if (translation.Id == DeathTranslations.PocketDecay.Id)
                                 return DamageType.PocketDimension;
-                            if (translation.Id == DeathTranslations.Recontained.Id)
-                                return DamageType.Recontained;
                             if (translation.Id == DeathTranslations.SeveredHands.Id)
                                 return DamageType.SeveredHands;
                             if (translation.Id == DeathTranslations.Zombie.Id)
