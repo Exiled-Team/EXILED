@@ -68,48 +68,53 @@ namespace Exiled.API.Enums
         Scp,
 
         /// <summary>
-        /// Damage dealt by Bullets.
-        /// </summary>
-        BulletWounds,
-
-        /// <summary>
-        /// Damage dealt by Explosions.
+        /// Damage dealt by frag grenades.
         /// </summary>
         Explosion,
 
         /// <summary>
-        /// Damage dealt by Friendly Fire.
+        /// Damage dealt by SCP-018.
         /// </summary>
-        FriendlyFire,
+        Scp018,
 
         /// <summary>
-        /// Damage is dealth by Pocket Dimension.
+        /// Damage dealt by SCP-207.
         /// </summary>
-        PocketDimension,
+        Scp207,
 
         /// <summary>
-        /// Damage dealth by Recontainment.
+        /// Damage is dealt by SCP Recontainment procedure.
         /// </summary>
-        Recontained,
+        Recontainment,
 
         /// <summary>
-        /// Damage is dealth by Severed Hands from SCP-330.
-        /// </summary>
-        SeveredHands,
-
-        /// <summary>
-        /// Damage is dealth by Scp049-2
-        /// </summary>
-        Zombie,
-
-        /// <summary>
-        /// Damage dealth by getting crushed.
+        /// Crushed by the checkpoint killer trigger.
         /// </summary>
         Crushed,
 
         /// <summary>
-        /// Damage dealth by Scp207.
+        /// Damage caused by the femur breaker.
         /// </summary>
-        Scp207,
+        FemurBreaker,
+
+        /// <summary>
+        /// Damage caused by the pocket dimension.
+        /// </summary>
+        PocketDimension,
+
+        /// <summary>
+        /// Damage caused by the friendly fire detector.
+        /// </summary>
+        FriendlyFireDetector,
+
+        /// <summary>
+        /// Damage caused by severed hands.
+        /// </summary>
+        SeveredHands,
+
+        /// <summary>
+        /// Damage dealt by Bullets.
+        /// </summary>
+        BulletWounds,
     }
 }

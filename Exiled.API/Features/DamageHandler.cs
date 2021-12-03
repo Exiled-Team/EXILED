@@ -87,10 +87,10 @@ namespace Exiled.API.Features
                     {
                         case WarheadDamageHandler _:
                             return DamageType.Warhead;
-                        case ScpDamageHandler _:
-                            return DamageType.Scp;
+                        case ScpDamageHandler scp:
+                            return scp._translationId == DeathTranslations.PocketDecay.Id ? DamageType.PocketDimension : DamageType.Scp;
                         case RecontainmentDamageHandler _:
-                            return DamageType.Recontained;
+                            return DamageType.Recontainment;
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
@@ -106,22 +106,20 @@ namespace Exiled.API.Features
                                 return DamageType.Falldown;
                             if (translation.Id == DeathTranslations.Tesla.Id)
                                 return DamageType.Tesla;
+                            if (translation.Id == DeathTranslations.Scp207.Id)
+                                return DamageType.Scp207;
+                            if (translation.Id == DeathTranslations.Crushed.Id)
+                                return DamageType.Crushed;
+                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
+                                return DamageType.FemurBreaker;
+                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
+                                return DamageType.FriendlyFireDetector;
+                            if (translation.Id == DeathTranslations.SeveredHands.Id)
+                                return DamageType.SeveredHands;
                             if (translation.Id == DeathTranslations.BulletWounds.Id)
                                 return DamageType.BulletWounds;
                             if (translation.Id == DeathTranslations.Explosion.Id)
                                 return DamageType.Explosion;
-                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
-                                return DamageType.FriendlyFire;
-                            if (translation.Id == DeathTranslations.PocketDecay.Id)
-                                return DamageType.PocketDimension;
-                            if (translation.Id == DeathTranslations.SeveredHands.Id)
-                                return DamageType.SeveredHands;
-                            if (translation.Id == DeathTranslations.Zombie.Id)
-                                return DamageType.Zombie;
-                            if (translation.Id == DeathTranslations.Crushed.Id)
-                                return DamageType.Crushed;
-                            if (translation.Id == DeathTranslations.Scp207.Id)
-                                return DamageType.Scp207;
                             break;
                         }
                     }
