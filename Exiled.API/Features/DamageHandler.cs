@@ -89,6 +89,10 @@ namespace Exiled.API.Features
                             return DamageType.Warhead;
                         case ScpDamageHandler scp:
                             return scp._translationId == DeathTranslations.PocketDecay.Id ? DamageType.PocketDimension : DamageType.Scp;
+                        case ExplosionDamageHandler _:
+                            return DamageType.Explosion;
+                        case Scp018DamageHandler _:
+                            return DamageType.Scp018;
                         case RecontainmentDamageHandler _:
                             return DamageType.Recontainment;
                         case UniversalDamageHandler universal:
@@ -120,6 +124,10 @@ namespace Exiled.API.Features
                                 return DamageType.BulletWounds;
                             if (translation.Id == DeathTranslations.Explosion.Id)
                                 return DamageType.Explosion;
+
+
+                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+
                             break;
                         }
                     }
