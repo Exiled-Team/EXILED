@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 yield return Timing.WaitForSeconds(2.5f);
 
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
+                while (RoundSummary.RoundLock || (ReferenceHub.LocalHub != null && ReferenceHub.LocalHub.characterClassManager != null && !RoundSummary.RoundInProgress()) || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
                     yield return Timing.WaitForOneFrame;
 
                 RoundSummary.SumInfo_ClassList newList = default;
