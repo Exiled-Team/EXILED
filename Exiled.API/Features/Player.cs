@@ -663,11 +663,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's maximum health.
         /// </summary>
-        public int MaxHealth
-        {
-            get => ReferenceHub.characterClassManager.CurRole.maxHP;
-            set => ReferenceHub.characterClassManager.CurRole.maxHP = value;
-        }
+        public int MaxHealth { get; set; }
 
         /// <summary>
         /// Gets or sets the player's artificial health.
@@ -1290,6 +1286,7 @@ namespace Exiled.API.Features
         public void SetRole(RoleType newRole, SpawnReason reason = SpawnReason.ForceClass, bool lite = false)
         {
             ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, (CharacterClassManager.SpawnReason)reason, lite);
+            MaxHealth = ReferenceHub.characterClassManager.Classes.SafeGet(newRole).maxHP;
         }
 
         /// <summary>
