@@ -1286,7 +1286,6 @@ namespace Exiled.API.Features
         public void SetRole(RoleType newRole, SpawnReason reason = SpawnReason.ForceClass, bool lite = false)
         {
             ReferenceHub.characterClassManager.SetPlayersClass(newRole, GameObject, (CharacterClassManager.SpawnReason)reason, lite);
-            MaxHealth = ReferenceHub.characterClassManager.Classes.SafeGet(newRole).maxHP;
         }
 
         /// <summary>
