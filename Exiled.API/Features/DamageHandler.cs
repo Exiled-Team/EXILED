@@ -76,10 +76,13 @@ namespace Exiled.API.Features
             {
                 if (Item != null)
                 {
-                    if (Item is Firearm)
-                        return DamageType.Firearm;
-                    else if (Item is MicroHid)
-                        return DamageType.MicroHid;
+                    switch (Item)
+                    {
+                        case Firearm _:
+                            return DamageType.Firearm;
+                        case MicroHid _:
+                            return DamageType.MicroHid;
+                    }
                 }
                 else
                 {
