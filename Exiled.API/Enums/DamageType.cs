@@ -108,9 +108,8 @@ namespace Exiled.API.Enums
         Crushed,
 
         /// <summary>
-        /// Damage dealth by Scp207
+        /// Damage dealth by Scp207.
         /// </summary>
         Scp207,
-
     }
 }
