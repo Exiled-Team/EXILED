@@ -7,17 +7,16 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
-    using Exiled.API.Features;
-
 #pragma warning disable SA1118
+    using System;
     using System.Collections.Generic;
     using System.Reflection.Emit;
+
+    using GameCore;
 
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
-
-    using PlayerStatsSystem;
 
     using RoundRestarting;
 
@@ -48,7 +47,13 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Ceq),
 
-                // if (goto normal round restart)
+                // if (prev) -> goto normal round restart
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index - 1].operand),
+
+                // ShouldServerRestart()
+                new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
+
+                // if (prev) -> goto normal round restart
                 new CodeInstruction(OpCodes.Brtrue, newInstructions[index - 1].operand),
             });
 
@@ -61,6 +66,23 @@ namespace Exiled.Events.Patches.Events.Server
         private static void ShowDebugLine()
         {
             API.Features.Log.Debug("Round restarting", Loader.Loader.ShouldDebugBeShown);
+        }
+
+        private static bool ShouldServerRestart()
+        {
+            bool flag = false;
+
+            try
+            {
+                int num = ConfigFile.ServerConfig.GetInt("restart_after_rounds");
+                flag = num > 0 && RoundRestart.UptimeRounds >= num;
+            }
+            catch (Exception ex)
+            {
+                ServerConsole.AddLog("Failed to check the restart_after_rounds config value: " + ex.Message, ConsoleColor.Red);
+            }
+
+            return flag;
         }
     }
 }
