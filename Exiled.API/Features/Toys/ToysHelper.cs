@@ -15,8 +15,8 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class ToysHelper
     {
-        private static PrimitiveObjectToy primitiveBaseObject = null;
-        private static LightSourceToy lightBaseObject = null;
+        private static PrimitiveObjectToy primitiveBaseObject;
+        private static LightSourceToy lightBaseObject;
 
         /// <summary>
         /// Gets the base AdminToy object to instantiate when creating a new primitive.
