@@ -92,7 +92,9 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the amount of movement smoothening on the primitive.
+        /// Gets or sets the amount of movement smoothening on the light.
+        /// You can assign it as a byte (0-255), where higher values mean less smooth movement.
+        /// Use 60 for an stable smooth movement => 60 times per second.
         /// </summary>
         public byte Smoothing
         {
