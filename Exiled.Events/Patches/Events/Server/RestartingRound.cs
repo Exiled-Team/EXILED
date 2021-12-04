@@ -38,9 +38,9 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
             });
 
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse);
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index + 1, new[]
             {
                 // ServerStatic.StopNextRound == 1 (restarting)
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
@@ -48,13 +48,13 @@ namespace Exiled.Events.Patches.Events.Server
                 new CodeInstruction(OpCodes.Ceq),
 
                 // if (prev) -> goto normal round restart
-                new CodeInstruction(OpCodes.Brtrue, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index].operand),
 
                 // ShouldServerRestart()
                 new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShouldServerRestart))),
 
                 // if (prev) -> goto normal round restart
-                new CodeInstruction(OpCodes.Brtrue, newInstructions[index - 1].operand),
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index].operand),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
