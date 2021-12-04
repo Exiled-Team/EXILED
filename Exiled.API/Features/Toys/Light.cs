@@ -90,9 +90,9 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the light should have shadows.
+        /// Gets or sets a value indicating whether the light should cause shadows from other objects.
         /// </summary>
-        public bool Shadows
+        public bool ShadowEmission
         {
             get => Base.NetworkLightShadows;
             set => Base.NetworkLightShadows = value;
