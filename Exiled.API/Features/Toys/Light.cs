@@ -52,6 +52,15 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Gets or sets the amount of movement smoothening on the light.
+        /// </summary>
+        public byte Smoothing
+        {
+            get => Base.NetworkMovementSmoothing;
+            set => Base.NetworkMovementSmoothing = value;
+        }
+
+        /// <summary>
         /// Gets or sets the intensity of the light.
         /// </summary>
         public float Intensity

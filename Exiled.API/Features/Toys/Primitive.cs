@@ -92,6 +92,15 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Gets or sets the amount of movement smoothening on the primitive.
+        /// </summary>
+        public byte Smoothing
+        {
+            get => Base.NetworkMovementSmoothing;
+            set => Base.NetworkMovementSmoothing = value;
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether gets or sets if the primitive can be collided with.
         /// </summary>
         public bool Collidable
