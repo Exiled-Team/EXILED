@@ -663,11 +663,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's maximum health.
         /// </summary>
-        public int MaxHealth
-        {
-            get => ReferenceHub.characterClassManager.CurRole.maxHP;
-            set => ReferenceHub.characterClassManager.CurRole.maxHP = value;
-        }
+        public int MaxHealth { get; set; }
 
         /// <summary>
         /// Gets or sets the player's artificial health.
