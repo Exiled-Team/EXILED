@@ -48,6 +48,19 @@ namespace Exiled.API.Features
                 { DeathTranslations.MicroHID, DamageType.MicroHid },
             };
 
+        private readonly Dictionary<ItemType, DamageType> itemConversion = new Dictionary<ItemType, DamageType>
+        {
+            { ItemType.GunCrossvec, DamageType.Crossvec },
+            { ItemType.GunLogicer, DamageType.Logicer },
+            { ItemType.GunRevolver, DamageType.Revolver },
+            { ItemType.GunShotgun, DamageType.Shotgun },
+            { ItemType.GunAK, DamageType.AK },
+            { ItemType.GunCOM15, DamageType.Com15 },
+            { ItemType.GunCOM18, DamageType.Com18 },
+            { ItemType.GunFSP9, DamageType.Fsp9 },
+            { ItemType.GunE11SR, DamageType.E11Sr },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DamageHandler"/> class.
         /// </summary>
@@ -58,7 +71,7 @@ namespace Exiled.API.Features
             Base = handlerBase;
             Target = target;
             Attacker = handlerBase is AttackerDamageHandler attacker ? Player.Get(attacker.Attacker.Hub) : null;
-            Item = Attacker?.CurrentItem;
+            Item = handlerBase is FirearmDamageHandler ? Attacker.CurrentItem : null;
         }
 
         /// <summary>
@@ -108,6 +121,8 @@ namespace Exiled.API.Features
                     switch (Item)
                     {
                         case Firearm _:
+                            if (Item != null && itemConversion.ContainsKey(Item.Type))
+                                return itemConversion[Item.Type];
                             return DamageType.Firearm;
                         case MicroHid _:
                             return DamageType.MicroHid;

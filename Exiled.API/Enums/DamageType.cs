@@ -146,5 +146,50 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="RoleType.Scp106"/>.
         /// </summary>
         Scp106,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCrossvec"/>.
+        /// </summary>
+        Crossvec,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunLogicer"/>.
+        /// </summary>
+        Logicer,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunRevolver"/>.
+        /// </summary>
+        Revolver,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunShotgun"/>.
+        /// </summary>
+        Shotgun,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunAK"/>.
+        /// </summary>
+        AK,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCOM15"/>.
+        /// </summary>
+        Com15,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCOM18"/>.
+        /// </summary>
+        Com18,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunFSP9"/>.
+        /// </summary>
+        Fsp9,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunE11SR"/>.
+        /// </summary>
+        E11Sr,
     }
 }
