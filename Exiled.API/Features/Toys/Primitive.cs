@@ -17,6 +17,8 @@ namespace Exiled.API.Features.Toys
     /// </summary>
     public class Primitive
     {
+        private bool collidable = true;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive"/> class.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the base <see cref="PrimitiveObjectToy"/>.
         /// </summary>
-        public PrimitiveObjectToy Base { get; } = null;
+        public PrimitiveObjectToy Base { get; }
 
         /// <summary>
         /// Gets or sets the material color of the primitive.
@@ -82,27 +84,32 @@ namespace Exiled.API.Features.Toys
         public Vector3 Scale
         {
             get => Base.NetworkScale;
-            set => Base.NetworkScale = value;
+            set
+            {
+                Base.NetworkScale = value;
+                RefreshCollidable();
+            }
         }
 
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets if the primitive can be collided with.
         /// </summary>
-        public bool Collidable { get; set; } = true;
+        public bool Collidable
+        {
+            get => collidable;
+            set
+            {
+                collidable = value;
+                RefreshCollidable();
+            }
+        }
 
         /// <summary>
         /// Spawns the primitive.
         /// </summary>
         public void Spawn()
         {
-            if (!Collidable)
-            {
-                Scale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
-            }
-            else
-            {
-                Scale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
-            }
+            RefreshCollidable();
 
             var transform = Base.transform;
             transform.position = Position;
@@ -118,6 +125,18 @@ namespace Exiled.API.Features.Toys
         public void UnSpawn()
         {
             NetworkServer.UnSpawn(Base.gameObject);
+        }
+
+        private void RefreshCollidable()
+        {
+            if (!Collidable)
+            {
+                Scale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
+            }
+            else
+            {
+                Scale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
+            }
         }
     }
 }

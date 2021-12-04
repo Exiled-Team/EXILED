@@ -21,7 +21,7 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Light()
         {
-            Base = UnityEngine.Object.Instantiate(ToysHelper.LightBaseObject);
+            Base = Object.Instantiate(ToysHelper.LightBaseObject);
         }
 
         /// <summary>
@@ -36,12 +36,20 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the base <see cref="LightSourceToy"/>.
         /// </summary>
-        public LightSourceToy Base { get; } = null;
+        public LightSourceToy Base { get; }
 
         /// <summary>
         /// Gets or sets the position of the light.
         /// </summary>
-        public Vector3 Position { get; set; } = Vector3.zero;
+        public Vector3 Position
+        {
+            get => Base.NetworkPosition;
+            set
+            {
+                Base.transform.position = value;
+                Base.NetworkPosition = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the intensity of the light.
