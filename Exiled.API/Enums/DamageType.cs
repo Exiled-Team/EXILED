@@ -111,5 +111,40 @@ namespace Exiled.API.Enums
         /// Damage caused by severed hands.
         /// </summary>
         SeveredHands,
+
+        /// <summary>
+        /// Damage caused by a custom source.
+        /// </summary>
+        Custom,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp049"/>.
+        /// </summary>
+        Scp049,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp096"/>.
+        /// </summary>
+        Scp096,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp173"/>.
+        /// </summary>
+        Scp173,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp93953"/> or <see cref="RoleType.Scp93989"/>.
+        /// </summary>
+        Scp939,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp0492"/>.
+        /// </summary>
+        Scp0492,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp106"/>.
+        /// </summary>
+        Scp106
     }
 }
