@@ -145,6 +145,6 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Damage caused by <see cref="RoleType.Scp106"/>.
         /// </summary>
-        Scp106
+        Scp106,
     }
 }
