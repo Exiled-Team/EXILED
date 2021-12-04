@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Server
 {
+    using Exiled.API.Features;
+
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
@@ -35,6 +37,19 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Server), nameof(Handlers.Server.OnRestartingRound))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(RestartingRound), nameof(RestartingRound.ShowDebugLine))),
+            });
+
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Brfalse) + 1;
+
+            newInstructions.InsertRange(index, new[]
+            {
+                // ServerStatic.StopNextRound == 1 (restarting)
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ServerStatic), nameof(ServerStatic.StopNextRound))),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ceq),
+
+                // if (goto normal round restart)
+                new CodeInstruction(OpCodes.Brtrue, newInstructions[index - 1].operand),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
