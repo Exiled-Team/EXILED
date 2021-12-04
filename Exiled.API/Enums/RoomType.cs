@@ -33,9 +33,9 @@ namespace Exiled.API.Enums
         LczStraight,
 
         /// <summary>
-        /// Lower Containment SCP 012 Room.
+        /// Lower Containment SCP 330 Room.
         /// </summary>
-        Lcz012,
+        Lcz330,
 
         /// <summary>
         /// Lower Containment SCP 914 Room.

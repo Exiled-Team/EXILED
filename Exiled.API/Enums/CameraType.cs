@@ -50,14 +50,19 @@ namespace Exiled.API.Enums
         Lcz173Bottom = 14,
 
         /// <summary>
-        /// Represents the camera outside of SCP-012's room
+        /// Represents the camera outside of SCP-330's room
         /// </summary>
-        Lcz012 = 54,
+        Lcz330 = 100,//Is not correct i dont know how get it
 
         /// <summary>
-        /// Represents the camera at the bottom of SCP-012's containment chamber.
+        /// Represents the camera in the controller room of SCP-330's containment chamber.
         /// </summary>
-        Lcz012Bottom = 53,
+        Lcz330Control = 101,//Is not correct i dont know how get it
+
+        /// <summary>
+        /// Represents the camera in the testroom of SCP-330's containment chamber.
+        /// </summary>
+        Lcz330Test = 102,//Is not correct i dont know how get it
 
         /// <summary>
         /// Represents the LCZ cafe.
