@@ -48,7 +48,7 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/>.
+        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
@@ -63,7 +63,7 @@ namespace Exiled.API.Enums
         Tesla,
 
         /// <summary>
-        /// Damage is dealt by an SCP.
+        /// Damage is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleType"/> used is not available.
         /// </summary>
         Scp,
 
