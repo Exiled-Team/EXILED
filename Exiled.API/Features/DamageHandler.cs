@@ -121,6 +121,8 @@ namespace Exiled.API.Features
                             return DamageType.Custom;
                         case WarheadDamageHandler _:
                             return DamageType.Warhead;
+                        case Scp096DamageHandler _:
+                            return DamageType.Scp096;
                         case ScpDamageHandler scp:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
