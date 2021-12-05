@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="maxHp"><inheritdoc cref="NewMaxHp"/></param>
         /// <param name="autoResetTime"><inheritdoc cref="NewAutoResetTime"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public InteractingShootingTargetEventArgs(Player player, InventorySystem.Items.Firearms.Utilities.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
+        public InteractingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
         {
             Player = player;
             ShootingTarget = ShootingTarget.Get(shootingTarget);

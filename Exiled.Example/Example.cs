@@ -76,6 +76,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Destroying += playerHandler.OnDestroying;
             Exiled.Events.Handlers.Player.Spawning += playerHandler.OnSpawning;
             Exiled.Events.Handlers.Player.Escaping += playerHandler.OnEscaping;
+            Exiled.Events.Handlers.Player.Hurting += playerHandler.OnHurting;
             Exiled.Events.Handlers.Player.Dying += playerHandler.OnDying;
             Exiled.Events.Handlers.Player.Died += playerHandler.OnDied;
             Exiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;

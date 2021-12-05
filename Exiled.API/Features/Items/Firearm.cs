@@ -82,11 +82,6 @@ namespace Exiled.API.Features.Items
         public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
 
         /// <summary>
-        /// Gets the <see cref="DamageTypes.DamageType"/> of the firearm.
-        /// </summary>
-        public DamageTypes.DamageType DamageType => Base.DamageType;
-
-        /// <summary>
         /// Gets a value indicating whether the firearm is being aimed.
         /// </summary>
         public bool Aiming => Base.AdsModule.ServerAds;

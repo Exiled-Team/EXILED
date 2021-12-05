@@ -11,6 +11,10 @@ namespace Exiled.API.Features
 
     using GameCore;
 
+    using PlayerStatsSystem;
+
+    using RoundRestarting;
+
     /// <summary>
     /// A set of tools to handle the round more easily.
     /// </summary>
@@ -52,12 +56,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of players who have escaped as <see cref="RoleType.ClassD"/>.
         /// </summary>
-        public static int EscapedDClasses => RoundSummary.escaped_ds;
+        public static int EscapedDClasses => RoundSummary.EscapedClassD;
 
         /// <summary>
         /// Gets the number of players who have escaped as <see cref="RoleType.Scientist"/>.
         /// </summary>
-        public static int EscapedScientists => RoundSummary.escaped_scientists;
+        public static int EscapedScientists => RoundSummary.EscapedScientists;
 
         /// <summary>
         /// Gets the number of kills.
@@ -67,22 +71,17 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the number of kills made by SCPs.
         /// </summary>
-        public static int KillsByScp => RoundSummary.kills_by_scp;
-
-        /// <summary>
-        /// Gets the number of kills made by frag grenades.
-        /// </summary>
-        public static int KillsByFrag => RoundSummary.kills_by_frag;
+        public static int KillsByScp => RoundSummary.KilledBySCPs;
 
         /// <summary>
         /// Gets the number of players who have been turned into zombies.
         /// </summary>
-        public static int ChangedIntoZombies => RoundSummary.changed_into_zombies;
+        public static int ChangedIntoZombies => RoundSummary.ChangedIntoZombies;
 
         /// <summary>
         /// Gets the number of rounds since the server started.
         /// </summary>
-        public static uint UptimeRounds => PlayerStats.UptimeRounds;
+        public static int UptimeRounds => RoundRestart.UptimeRounds;
 
         /// <summary>
         /// Restarts the round with custom settings.
@@ -106,8 +105,6 @@ namespace Exiled.API.Features
         /// </param>
         public static void Restart(bool fastRestart = true, bool overrideRestartAction = false, ServerStatic.NextRoundAction restartAction = ServerStatic.NextRoundAction.DoNothing)
         {
-            var pStats = Server.Host.ReferenceHub != null ? Server.Host.ReferenceHub.playerStats : null;
-
             if (overrideRestartAction)
                 ServerStatic.StopNextRound = restartAction;
 
@@ -116,15 +113,7 @@ namespace Exiled.API.Features
             var oldValue = CustomNetworkManager.EnableFastRestart;
             CustomNetworkManager.EnableFastRestart = fastRestart;
 
-            if (pStats != null)
-            {
-                pStats.Roundrestart();
-            }
-            else
-            {
-                // Don't print a shutdown message if some plugin calls that method between restarts
-                PlayerStats.StaticChangeLevel(noShutdownMessage: true);
-            }
+            RoundRestart.InitiateRoundRestart();
 
             CustomNetworkManager.EnableFastRestart = oldValue;
         }
@@ -132,7 +121,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Restarts the round silently.
         /// </summary>
-        public static void RestartSilently() => Restart(fastRestart: true, overrideRestartAction: true, restartAction: ServerStatic.NextRoundAction.DoNothing);
+        public static void RestartSilently() => Restart(true, true, ServerStatic.NextRoundAction.DoNothing);
 
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.

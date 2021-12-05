@@ -32,7 +32,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
-            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.HitInformations.Tool}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
+            Log.Info($"{ev.Target?.Nickname} ({ev.Target?.Role}) died from {ev.Killer.CurrentItem}! {ev.Killer?.Nickname} ({ev.Killer?.Role}) killed him!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
@@ -210,6 +210,17 @@ namespace Exiled.Example.Events
             if (ev.Player.Role == RoleType.Scientist)
                 ev.NewRole = RoleType.Tutorial;
             Log.Info($"{ev.Player.Nickname} is trying to escape! Their new role will be {ev.NewRole}");
+        }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnHurting(HurtingEventArgs)"/>
+        public void OnHurting(HurtingEventArgs ev)
+        {
+            Log.Info($"{ev.Target} is being hurt by {ev.Handler.Type}");
+            if (ev.Target.Role == RoleType.Scientist)
+            {
+                Log.Info("Target is a nerd, setting damage to 1 because it's mean to bully nerds.");
+                ev.Amount = 1f;
+            }
         }
     }
 }

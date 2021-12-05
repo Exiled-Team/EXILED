@@ -4,8 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-// TODO: Re-implement
-/*
+
 namespace Exiled.Events.Patches.Events.Scp330
 {
     #pragma warning disable SA1118
@@ -37,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             int offset = -3;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ApplyEffects))) + offset;
+            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt && (MethodInfo)instruction.operand == Method(typeof(ICandy), nameof(ICandy.ServerApplyEffects))) + offset;
 
             var returnLabel = generator.DefineLabel();
 
@@ -95,4 +94,4 @@ namespace Exiled.Events.Patches.Events.Scp330
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-}*/
+}
