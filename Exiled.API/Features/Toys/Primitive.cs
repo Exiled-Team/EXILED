@@ -140,11 +140,11 @@ namespace Exiled.API.Features.Toys
         {
             if (!Collidable)
             {
-                Scale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
+                Base.NetworkScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
             }
             else
             {
-                Scale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
+                Base.NetworkScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
             }
         }
     }
