@@ -369,6 +369,13 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets a plugin with its prefix or name.
+        /// </summary>
+        /// <param name="args">The name or prefix of the plugin (Using the prefix is recommended).</param>
+        /// <returns>The desired plugin, null if not found.</returns>
+        public static IPlugin<IConfig> GetPlugin(string args) => Plugins.FirstOrDefault(x => x.Name == args || x.Prefix == args);
+
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
             var requiredVersion = plugin.RequiredExiledVersion;

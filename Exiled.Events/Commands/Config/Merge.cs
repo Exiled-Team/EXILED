@@ -37,7 +37,7 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender != Server.Host.Sender)
+            if (sender.LogName != "SERVER CONSOLE")
             {
                 response = "This command can't be used inside the game.";
                 return false;
@@ -54,7 +54,7 @@ namespace Exiled.Events.Commands.Config
             var haveBeenSaved = ConfigManager.Save(configs);
             File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
 
-            response = $"Configs have been merged successfully! Feel free to remove the {Paths.IndividualConfigs} file.";
+            response = $"Configs have been merged successfully! Feel free to remove the directory in the following path:\n\"{Paths.IndividualConfigs}\"";
             return haveBeenSaved;
         }
     }
