@@ -37,8 +37,6 @@ namespace Exiled.API.Features
             Prefix = Name.ToSnakeCase();
             Author = Assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
             Version = Assembly.GetName().Version;
-            ConfigPath = Paths.GetConfigPath(Prefix);
-            TranslationPath = Paths.GetTranslationPath(Prefix);
         }
 
         /// <inheritdoc/>
@@ -77,10 +75,10 @@ namespace Exiled.API.Features
         public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
-        public string ConfigPath { get; }
+        public string ConfigPath => Paths.GetConfigPath(Prefix);
 
         /// <inheritdoc/>
-        public string TranslationPath { get; }
+        public string TranslationPath => Paths.GetTranslationPath(Prefix);
 
         /// <inheritdoc/>
         public virtual void OnEnabled()

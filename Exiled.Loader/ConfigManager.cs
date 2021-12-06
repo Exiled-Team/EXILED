@@ -194,6 +194,9 @@ namespace Exiled.Loader
             }
         }
 
+        /// <inheritdoc cref="Save(string, string)"/>
+        public static bool SaveConfig(this IPlugin<IConfig> plugin, string configs) => Save(plugin.Prefix, configs);
+
         /// <summary>
         /// Saves plugin configs.
         /// </summary>

@@ -110,7 +110,7 @@ namespace Exiled.Loader
 
             try
             {
-                translation = (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(File.ReadAllText(plugin.TranslationPath)), plugin.InternalTranslation.GetType());
+                translation = (ITranslation)Loader.Deserializer.Deserialize(File.ReadAllText(plugin.TranslationPath), plugin.InternalTranslation.GetType());
                 plugin.InternalTranslation.CopyProperties(translation);
             }
             catch (YamlException yamlException)
