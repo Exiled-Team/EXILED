@@ -11,11 +11,10 @@ namespace Exiled.Loader
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
-
     using YamlDotNet.Core;
 
     /// <summary>
@@ -32,7 +31,7 @@ namespace Exiled.Loader
         {
             try
             {
-                Log.Info("Loading plugin translations...");
+                Log.Info($"Loading plugin translations... ({Loader.Config.ConfigType})");
 
                 Dictionary<string, object> rawDeserializedTranslations = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawTranslations) ?? new Dictionary<string, object>();
                 SortedDictionary<string, ITranslation> deserializedTranslations = new SortedDictionary<string, ITranslation>(StringComparer.Ordinal);
@@ -42,30 +41,10 @@ namespace Exiled.Loader
                     if (plugin.InternalTranslation == null)
                         continue;
 
-                    if (!rawDeserializedTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
-                    {
-                        Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
-
-                        deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            deserializedTranslations.Add(plugin.Prefix, (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType()));
-
-                            plugin.InternalTranslation.CopyProperties(deserializedTranslations[plugin.Prefix]);
-                        }
-                        catch (YamlException yamlException)
-                        {
-                            Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException}");
-
-                            deserializedTranslations.Add(plugin.Prefix, plugin.InternalTranslation);
-                        }
-                    }
+                    deserializedTranslations.Add(plugin.Prefix, Loader.Config.ConfigType == ConfigType.Default ? plugin.LoadTranslation(rawDeserializedTranslations) : plugin.LoadIndividualTranslation());
                 }
 
-                // Make sure that no keys in the config file were discarded.
+                // Make sure that no keys in the translation file were discarded. (Individual can ignore this since rawDeserializedTranslations is null)
                 if (!rawDeserializedTranslations.Keys.All(deserializedTranslations.ContainsKey))
                 {
                     Log.Warn("Missing plugins have been detected in the translations. A backup translations file will be created at \"" + Paths.BackupTranslations + "\".");
@@ -85,13 +64,72 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Loads the translations of a plugin based on the default distribution.
+        /// </summary>
+        /// <param name="plugin">The plugin which its translation has to be loaded.</param>
+        /// <param name="rawTranslations">The raw translations to check whether or not the plugin already has a translation config.</param>
+        /// <returns>The <see cref="ITranslation"/> of the desired plugin.</returns>
+        public static ITranslation LoadTranslation(this IPlugin<IConfig> plugin, Dictionary<string, object> rawTranslations)
+        {
+            if (!rawTranslations.TryGetValue(plugin.Prefix, out object rawDeserializedTranslation))
+            {
+                Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
+                return plugin.InternalTranslation;
+            }
+
+            ITranslation translation;
+
+            try
+            {
+                translation = (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedTranslation), plugin.InternalTranslation.GetType());
+                plugin.InternalTranslation.CopyProperties(translation);
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException}");
+                translation = plugin.InternalTranslation;
+            }
+
+            return translation;
+        }
+
+        /// <summary>
+        /// Loads the translations of a plugin based in the individual distribution.
+        /// </summary>
+        /// <param name="plugin">The plugin which its translations will be loaded.</param>
+        /// <returns>The translation of the desired plugin.</returns>
+        public static ITranslation LoadIndividualTranslation(this IPlugin<IConfig> plugin)
+        {
+            if (!File.Exists(plugin.TranslationPath))
+            {
+                Log.Warn($"{plugin.Name} doesn't have default translations, generating...");
+                return plugin.InternalTranslation;
+            }
+
+            ITranslation translation;
+
+            try
+            {
+                translation = (ITranslation)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(File.ReadAllText(plugin.TranslationPath)), plugin.InternalTranslation.GetType());
+                plugin.InternalTranslation.CopyProperties(translation);
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"{plugin.Name} translations could not be loaded, some of them are in a wrong format, default translations will be loaded instead!\n{yamlException}");
+                translation = plugin.InternalTranslation;
+            }
+
+            return translation;
+        }
+
+        /// <summary>
         /// Reads, Loads and Saves plugin translations.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
         public static bool Reload() => Save(Load(Read()));
 
         /// <summary>
-        /// Saves plugin translations.
+        /// Saves default distribution translations.
         /// </summary>
         /// <param name="translations">The translations to be saved, already serialized in yaml format.</param>
         /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
@@ -114,6 +152,31 @@ namespace Exiled.Loader
         /// <summary>
         /// Saves plugin translations.
         /// </summary>
+        /// <param name="pluginPrefix">The prefix of the plugin which its translation is going to be saved.</param>
+        /// <param name="translations">The translations to be saved, already serialized in yaml format.</param>
+        /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
+        public static bool Save(this string pluginPrefix, string translations)
+        {
+            string translationsPath = Paths.GetTranslationPath(pluginPrefix);
+
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(Paths.IndividualTranslations, pluginPrefix));
+                File.WriteAllText(translationsPath, translations ?? string.Empty);
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while saving translations to {translationsPath} path: {exception}");
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves plugin translations.
+        /// </summary>
         /// <param name="translations">The translations to be saved.</param>
         /// <returns>Returns a value indicating whether the translations have been saved successfully or not.</returns>
         public static bool Save(SortedDictionary<string, ITranslation> translations)
@@ -122,6 +185,16 @@ namespace Exiled.Loader
             {
                 if (translations == null || translations.Count == 0)
                     return false;
+
+                if (Loader.Config.ConfigType == ConfigType.Default)
+                {
+                    return Save(Loader.Serializer.Serialize(translations));
+                }
+
+                foreach (var plugin in translations)
+                {
+                    Save(plugin.Key, Loader.Serializer.Serialize(plugin.Value));
+                }
 
                 return Save(Loader.Serializer.Serialize(translations));
             }
@@ -139,6 +212,9 @@ namespace Exiled.Loader
         /// <returns>Returns the read translations.</returns>
         public static string Read()
         {
+            if (Loader.Config.ConfigType != ConfigType.Default)
+                return string.Empty;
+
             try
             {
                 if (File.Exists(Paths.Translations))
@@ -150,6 +226,34 @@ namespace Exiled.Loader
             }
 
             return string.Empty;
+        }
+
+        /// <summary>
+        /// Clears the translations.
+        /// </summary>
+        /// <returns>Returns a value indicating whether translations have been cleared successfully or not.</returns>
+        public static bool Clear()
+        {
+            try
+            {
+                if (Loader.Config.ConfigType == ConfigType.Default)
+                {
+                    Save(string.Empty);
+                    return true;
+                }
+
+                foreach (var plugin in Loader.Plugins)
+                {
+                    Save(plugin.Prefix, string.Empty);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error has occurred while clearing translations:\n" + e);
+                return false;
+            }
         }
     }
 }
