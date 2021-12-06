@@ -130,7 +130,7 @@ namespace Exiled.Loader
 
             try
             {
-                config = (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(File.ReadAllText(plugin.ConfigPath)), plugin.Config.GetType());
+                config = (IConfig)Loader.Deserializer.Deserialize(File.ReadAllText(plugin.ConfigPath), plugin.Config.GetType());
                 plugin.Config.CopyProperties(config);
             }
             catch (YamlException yamlException)
