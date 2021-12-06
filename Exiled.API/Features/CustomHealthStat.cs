@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     public class CustomHealthStat : HealthStat
     {
         /// <inheritdoc/>
-        public override float MaxValue => CustomMaxValue;
+        public override float MaxValue => CustomMaxValue == default ? base.MaxValue : CustomMaxValue;
 
         /// <summary>
         /// Gets or sets the maximum amount of health the player will have.
