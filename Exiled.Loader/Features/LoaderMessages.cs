@@ -46,6 +46,22 @@ namespace Exiled.Loader.Features
    |____)_)";
 
         /// <summary>
+        /// Gets the halloween loader message.
+        /// </summary>
+        public static string Halloween => @"
+@@@@@@@@  @@@  @@@  @@@  @@@       @@@@@@@@  @@@@@@@
+@@@@@@@@  @@@  @@@  @@@  @@@       @@@@@@@@  @@@@@@@@
+@@!       @@!  !@@  @@!  @@!       @@!       @@!  @@@
+!@!       !@!  @!!  !@!  !@!       !@!       !@!  @!@
+@!!!:!     !@@!@!   !!@  @!!       @!!!:!    @!@  !@!
+!!!!!:      @!!!    !!!  !!!       !!!!!:    !@!  !!!
+!!:        !: :!!   !!:  !!:       !!:       !!:  !!!
+:!:       :!:  !:!  :!:   :!:      :!:       :!:  !:!
+ :: ::::   ::  :::   ::   :: ::::   :: ::::   :::: ::
+: :: ::    :   ::   :    : :: : :  : :: ::   :: :  :
+                                                       ";
+
+        /// <summary>
         /// Gets the loader message according to the actual month.
         /// </summary>
         /// <returns>The correspondent loader message.</returns>
@@ -55,6 +71,8 @@ namespace Exiled.Loader.Features
             {
                 case 12:
                     return Christmas;
+                case 10:
+                    return Halloween;
                 default:
                     return Default;
             }
