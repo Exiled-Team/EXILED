@@ -55,20 +55,19 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
 
-            if (!Directory.Exists(Paths.Configs))
-                Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Plugins);
+            Directory.CreateDirectory(Paths.Dependencies);
 
-            if (!Directory.Exists(Paths.Plugins))
-                Directory.CreateDirectory(Paths.Plugins);
-
-            if (!Directory.Exists(Paths.Dependencies))
-                Directory.CreateDirectory(Paths.Dependencies);
+            if (Config.ConfigType == ConfigType.Separated)
+                Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
         /// <summary>
@@ -156,17 +155,8 @@ namespace Exiled.Loader
                 AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
-            ServerConsole.AddLog(
-                @"Welcome to
-   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
- ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
-  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                  ▀                                 ", ConsoleColor.Green);
+
+            ServerConsole.AddLog($"Welcome to\n{LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -496,10 +486,6 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
-
-                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
-                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
-                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
 
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {

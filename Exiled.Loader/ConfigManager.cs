@@ -11,6 +11,7 @@ namespace Exiled.Loader
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
@@ -22,6 +23,28 @@ namespace Exiled.Loader
     public static class ConfigManager
     {
         /// <summary>
+        /// Loads the loader configs.
+        /// </summary>
+        public static void LoadLoaderConfigs()
+        {
+            if (!File.Exists(Paths.LoaderConfig))
+            {
+                Log.Warn($"The Loader doesn't have default configs, generating...");
+                File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
+                return;
+            }
+
+            try
+            {
+                Loader.Config.CopyProperties(Loader.Deserializer.Deserialize<Config>(File.ReadAllText(Paths.LoaderConfig)));
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"Exiled.Loader configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException}");
+            }
+        }
+
+        /// <summary>
         /// Loads all plugin configs.
         /// </summary>
         /// <param name="rawConfigs">The raw configs to be loaded.</param>
@@ -30,50 +53,17 @@ namespace Exiled.Loader
         {
             try
             {
-                Log.Info("Loading plugin configs...");
+                Log.Info($"Loading plugin configs... ({Loader.Config.ConfigType})");
 
                 Dictionary<string, object> rawDeserializedConfigs = Loader.Deserializer.Deserialize<Dictionary<string, object>>(rawConfigs) ?? new Dictionary<string, object>();
                 SortedDictionary<string, IConfig> deserializedConfigs = new SortedDictionary<string, IConfig>(StringComparer.Ordinal);
 
-                if (!rawDeserializedConfigs.TryGetValue("exiled_loader", out object rawDeserializedConfig))
-                {
-                    Log.Warn($"Exiled.Loader doesn't have default configs, generating...");
-
-                    deserializedConfigs.Add("exiled_loader", Loader.Config);
-                }
-                else
-                {
-                    deserializedConfigs.Add("exiled_loader", Loader.Deserializer.Deserialize<Config>(Loader.Serializer.Serialize(rawDeserializedConfig)));
-
-                    Loader.Config.CopyProperties(deserializedConfigs["exiled_loader"]);
-                }
-
                 foreach (IPlugin<IConfig> plugin in Loader.Plugins)
                 {
-                    if (!rawDeserializedConfigs.TryGetValue(plugin.Prefix, out rawDeserializedConfig))
-                    {
-                        Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
-
-                        deserializedConfigs.Add(plugin.Prefix, plugin.Config);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            deserializedConfigs.Add(plugin.Prefix, (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType()));
-
-                            plugin.Config.CopyProperties(deserializedConfigs[plugin.Prefix]);
-                        }
-                        catch (YamlException yamlException)
-                        {
-                            Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead! {yamlException}");
-
-                            deserializedConfigs.Add(plugin.Prefix, plugin.Config);
-                        }
-                    }
+                    deserializedConfigs.Add(plugin.Prefix, Loader.Config.ConfigType == ConfigType.Default ? plugin.LoadConfig(rawDeserializedConfigs) : plugin.LoadIndividualConfig());
                 }
 
-                // Make sure that no keys in the config file were discarded.
+                // Make sure that no keys in the config file were discarded. (Individual can ignore this since rawDeserializedConfigs is null)
                 if (!rawDeserializedConfigs.Keys.All(deserializedConfigs.ContainsKey))
                 {
                     Log.Warn("Missing plugins have been detected in the config. A backup config file will be created at \"" + Paths.BackupConfig + "\".");
@@ -93,13 +83,73 @@ namespace Exiled.Loader
         }
 
         /// <summary>
+        /// Loads the config of a plugin using the default distribution.
+        /// </summary>
+        /// <param name="plugin">The plugin which config will be loaded.</param>
+        /// <param name="rawConfigs">The raw configs to detect if the plugin already has generated configs.</param>
+        /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
+        public static IConfig LoadConfig(this IPlugin<IConfig> plugin, Dictionary<string, object> rawConfigs)
+        {
+            if (!rawConfigs.TryGetValue(plugin.Prefix, out var rawDeserializedConfig))
+            {
+                Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
+
+                return plugin.Config;
+            }
+
+            IConfig config;
+
+            try
+            {
+                config = (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(rawDeserializedConfig), plugin.Config.GetType());
+                plugin.Config.CopyProperties(config);
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead!\n{yamlException}");
+                config = plugin.Config;
+            }
+
+            return config;
+        }
+
+        /// <summary>
+        /// Loads the config of a plugin using the individual distribution.
+        /// </summary>
+        /// <param name="plugin">The plugin which its config will be loaded.</param>
+        /// <returns>The <see cref="IConfig"/> of the plugin.</returns>
+        public static IConfig LoadIndividualConfig(this IPlugin<IConfig> plugin)
+        {
+            if (!File.Exists(plugin.ConfigPath))
+            {
+                Log.Warn($"{plugin.Name} doesn't have default configs, generating...");
+                return plugin.Config;
+            }
+
+            IConfig config;
+
+            try
+            {
+                config = (IConfig)Loader.Deserializer.Deserialize(Loader.Serializer.Serialize(File.ReadAllText(plugin.ConfigPath)), plugin.Config.GetType());
+                plugin.Config.CopyProperties(config);
+            }
+            catch (YamlException yamlException)
+            {
+                Log.Error($"{plugin.Name} configs could not be loaded, some of them are in a wrong format, default configs will be loaded instead!\n{yamlException}");
+                config = plugin.Config;
+            }
+
+            return config;
+        }
+
+        /// <summary>
         /// Reads, Loads and Saves plugin configs.
         /// </summary>
         /// <returns>Returns a value indicating if the reloading process has been completed successfully or not.</returns>
         public static bool Reload() => Save(LoadSorted(Read()));
 
         /// <summary>
-        /// Saves plugin configs.
+        /// Saves default distribution configs.
         /// </summary>
         /// <param name="configs">The configs to be saved, already serialized in yaml format.</param>
         /// <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
@@ -122,6 +172,31 @@ namespace Exiled.Loader
         /// <summary>
         /// Saves plugin configs.
         /// </summary>
+        /// <param name="pluginPrefix">The prefix of the plugin which its config is going to be saved.</param>
+        /// <param name="configs">The configs to be saved, already serialized in yaml format.</param>
+        /// <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
+        public static bool Save(this string pluginPrefix, string configs)
+        {
+            string configPath = Paths.GetConfigPath(pluginPrefix);
+
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(Paths.IndividualConfigs, pluginPrefix));
+                File.WriteAllText(configPath, configs ?? string.Empty);
+
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"An error has occurred while saving configs to {configPath} path: {exception}");
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves plugin configs.
+        /// </summary>
         /// <param name="configs">The configs to be saved.</param>
         /// <returns>Returns a value indicating whether the configs have been saved successfully or not.</returns>
         public static bool Save(SortedDictionary<string, IConfig> configs)
@@ -131,11 +206,21 @@ namespace Exiled.Loader
                 if (configs == null || configs.Count == 0)
                     return false;
 
-                return Save(Loader.Serializer.Serialize(configs));
+                if (Loader.Config.ConfigType == ConfigType.Default)
+                {
+                    return Save(Loader.Serializer.Serialize(configs));
+                }
+
+                foreach (var config in configs)
+                {
+                    Save(config.Key, Loader.Serializer.Serialize(config.Value));
+                }
+
+                return true;
             }
             catch (YamlException yamlException)
             {
-                Log.Error($"An error has occurred while serializing configs: {yamlException}");
+                Log.Error($"An error has occurred while serializing configs:\n{yamlException}");
 
                 return false;
             }
@@ -147,6 +232,9 @@ namespace Exiled.Loader
         /// <returns>Returns the read configs.</returns>
         public static string Read()
         {
+            if (Loader.Config.ConfigType != ConfigType.Default)
+                return string.Empty;
+
             try
             {
                 if (File.Exists(Paths.Config))
@@ -164,7 +252,29 @@ namespace Exiled.Loader
         /// Clears the configs.
         /// </summary>
         /// <returns>Returns a value indicating whether configs have been cleared successfully or not.</returns>
-        public static bool Clear() => Save(string.Empty);
+        public static bool Clear()
+        {
+            try
+            {
+                if (Loader.Config.ConfigType == ConfigType.Default)
+                {
+                    Save(string.Empty);
+                    return true;
+                }
+
+                foreach (var plugin in Loader.Plugins)
+                {
+                    Save(plugin.Prefix, string.Empty);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error has occurred while clearing configs:\n" + e);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Reloads RemoteAdmin configs.
@@ -179,7 +289,7 @@ namespace Exiled.Loader
 
             foreach (Player p in Player.List)
             {
-                p.ReferenceHub.serverRoles.SetGroup(null, false, false, false);
+                p.ReferenceHub.serverRoles.SetGroup(null, false);
                 p.ReferenceHub.serverRoles.RefreshPermissions();
             }
         }
