@@ -162,7 +162,7 @@ namespace Exiled.Loader
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
 
-            ServerConsole.AddLog($"Welcome to\n{LoaderMessages.GetMessage()}", ConsoleColor.Green);
+            ServerConsole.AddLog($"Welcome to {LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
 
         /// <summary>
