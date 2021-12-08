@@ -74,7 +74,6 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
-            Footprint = new Footprint(ReferenceHub);
         }
 
         /// <summary>
@@ -85,7 +84,6 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
-            Footprint = new Footprint(ReferenceHub);
         }
 
         /// <summary>
@@ -129,6 +127,7 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
+                Footprint = new Footprint(value);
             }
         }
 
