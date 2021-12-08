@@ -28,6 +28,8 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
 
+    using Footprinting;
+
     using MEC;
 
     using Mirror;
@@ -72,6 +74,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
+            Footprint = new Footprint(ReferenceHub);
         }
 
         /// <summary>
@@ -82,6 +85,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
+            Footprint = new Footprint(ReferenceHub);
         }
 
         /// <summary>
@@ -1027,6 +1031,11 @@ namespace Exiled.API.Features
                 ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
+
+        /// <summary>
+        /// Gets the player's <see cref="Footprint"/>.
+        /// </summary>
+        public Footprint Footprint { get; private set; }
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
