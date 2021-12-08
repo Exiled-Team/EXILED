@@ -127,7 +127,6 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
-                Footprint = new Footprint(value);
             }
         }
 
@@ -1034,7 +1033,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="Footprint"/>.
         /// </summary>
-        public Footprint Footprint { get; private set; }
+        public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
