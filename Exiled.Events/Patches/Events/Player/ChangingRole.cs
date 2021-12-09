@@ -100,6 +100,15 @@ namespace Exiled.Events.Patches.Events.Player
                 // escape = ev.IsEscaped
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg, 3),
+
+                // ev.Player.MaxHealth = this.Classes.SafeGet(ev.NewRole)
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RoleExtensionMethods), nameof(RoleExtensionMethods.SafeGet), new[] { typeof(Role[]), typeof(RoleType) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
             });
 
             offset = 0;
