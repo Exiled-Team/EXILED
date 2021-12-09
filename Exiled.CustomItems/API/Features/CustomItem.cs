@@ -20,6 +20,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
@@ -363,67 +364,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position)
         {
-            Pickup pickup = null;
-            Item item = null;
-            if (Type.IsMedical())
-            {
-                item = new Usable(Type);
-            }
-            else if (Type.IsAmmo())
-            {
-                item = new Ammo(Type);
-            }
-            else if (Type.IsArmor())
-            {
-                item = new Armor(Type);
-            }
-            else if (Type.IsKeycard())
-            {
-                item = new Keycard(Type);
-            }
-            else if (Type.IsThrowable())
-            {
-                switch (Type)
-                {
-                    case ItemType.GrenadeFlash:
-                        item = new FlashGrenade(Type);
-                        break;
-                    case ItemType.GrenadeHE:
-                    case ItemType.SCP018:
-                        item = new ExplosiveGrenade(Type);
-                        break;
-                }
-            }
-            else if (Type.IsWeapon())
-            {
-                switch (Type)
-                {
-                    case ItemType.MicroHID:
-                        item = new MicroHid(Type);
-                        break;
-                    default:
-                        item = new Firearm(Type);
-                        break;
-                }
-            }
-            else if (Type.IsUtility())
-            {
-                switch (Type)
-                {
-                    case ItemType.Radio:
-                        item = new Radio(Type);
-                        break;
-                    case ItemType.Flashlight:
-                        item = new Flashlight(Type);
-                        break;
-                }
-            }
-            else
-            {
-                item = new Item(Type);
-            }
-
-            pickup = item.Spawn(position);
+            Pickup pickup = CreateCorrectItem().Spawn(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
@@ -559,7 +500,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, CreateCorrectItem(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -713,6 +654,74 @@ namespace Exiled.CustomItems.API.Features
         protected virtual void ShowSelectedMessage(Player player)
         {
             player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
+        }
+
+        /// <summary>
+        /// This method will take the item's <see cref="Type"/> and create a new <see cref="Item"/> of the correct subtype for the <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="itemBase">The <see cref="ItemBase"/> to be used for creation, if any.</param>
+        /// <returns>The <see cref="Item"/> created.</returns>
+        protected Item CreateCorrectItem(ItemBase itemBase = null)
+        {
+            if (itemBase != null)
+                return Item.Get(itemBase);
+
+            Item item = null;
+            if (Type.IsMedical())
+            {
+                item = new Usable(Type);
+            }
+            else if (Type.IsAmmo())
+            {
+                item = new Ammo(Type);
+            }
+            else if (Type.IsArmor())
+            {
+                item = new Armor(Type);
+            }
+            else if (Type.IsKeycard())
+            {
+                item = new Keycard(Type);
+            }
+            else if (Type.IsThrowable())
+            {
+                switch (Type)
+                {
+                    case ItemType.GrenadeFlash:
+                        item = new FlashGrenade(Type);
+                        break;
+                    case ItemType.GrenadeHE:
+                    case ItemType.SCP018:
+                        item = new ExplosiveGrenade(Type);
+                        break;
+                }
+            }
+            else if (Type.IsWeapon())
+            {
+                switch (Type)
+                {
+                    case ItemType.MicroHID:
+                        item = new MicroHid(Type);
+                        break;
+                    default:
+                        item = new Firearm(Type);
+                        break;
+                }
+            }
+            else if (Type.IsUtility())
+            {
+                switch (Type)
+                {
+                    case ItemType.Radio:
+                        item = new Radio(Type);
+                        break;
+                    case ItemType.Flashlight:
+                        item = new Flashlight(Type);
+                        break;
+                }
+            }
+
+            return item ?? new Item(Type);
         }
 
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
