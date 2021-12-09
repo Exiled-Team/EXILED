@@ -65,6 +65,7 @@ namespace Exiled.API.Features
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
+        private CustomHealthStat healthStat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -127,6 +128,8 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
+
+                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
             }
         }
 
@@ -652,10 +655,10 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.StatModules[0].CurValue;
+            get => healthStat.CurValue;
             set
             {
-                ReferenceHub.playerStats.StatModules[0].CurValue = value;
+                healthStat.CurValue = value;
 
                 if (value > MaxHealth)
                     MaxHealth = (int)value;
@@ -665,7 +668,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's maximum health.
         /// </summary>
-        public int MaxHealth { get; set; }
+        public int MaxHealth
+        {
+            get => (int)healthStat.MaxValue;
+            set => healthStat.CustomMaxValue = value;
+        }
 
         /// <summary>
         /// Gets or sets the player's artificial health.
