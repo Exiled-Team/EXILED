@@ -363,7 +363,67 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position)
         {
-            var pickup = new Item(Type).Spawn(position);
+            Pickup pickup = null;
+            Item item = null;
+            if (Type.IsMedical())
+            {
+                item = new Usable(Type);
+            }
+            else if (Type.IsAmmo())
+            {
+                item = new Ammo(Type);
+            }
+            else if (Type.IsArmor())
+            {
+                item = new Armor(Type);
+            }
+            else if (Type.IsKeycard())
+            {
+                item = new Keycard(Type);
+            }
+            else if (Type.IsThrowable())
+            {
+                switch (Type)
+                {
+                    case ItemType.GrenadeFlash:
+                        item = new FlashGrenade(Type);
+                        break;
+                    case ItemType.GrenadeHE:
+                    case ItemType.SCP018:
+                        item = new ExplosiveGrenade(Type);
+                        break;
+                }
+            }
+            else if (Type.IsWeapon())
+            {
+                switch (Type)
+                {
+                    case ItemType.MicroHID:
+                        item = new MicroHid(Type);
+                        break;
+                    default:
+                        item = new Firearm(Type);
+                        break;
+                }
+            }
+            else if (Type.IsUtility())
+            {
+                switch (Type)
+                {
+                    case ItemType.Radio:
+                        item = new Radio(Type);
+                        break;
+                    case ItemType.Flashlight:
+                        item = new Flashlight(Type);
+                        break;
+                }
+            }
+            else
+            {
+                item = new Item(Type);
+            }
+
+            pickup = item.Spawn(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
