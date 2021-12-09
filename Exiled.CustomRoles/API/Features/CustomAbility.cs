@@ -12,6 +12,7 @@ namespace Exiled.CustomRoles.API.Features
     using System.Linq;
 
     using Exiled.API.Features;
+    using YamlDotNet.Serialization;
 
     /// <summary>
     /// The custom ability base class.
@@ -36,6 +37,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets all players who have this ability.
         /// </summary>
+        [YamlIgnore]
         public HashSet<Player> Players { get; } = new HashSet<Player>();
 
         /// <summary>

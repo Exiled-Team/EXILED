@@ -48,7 +48,7 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/>.
+        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
@@ -63,7 +63,7 @@ namespace Exiled.API.Enums
         Tesla,
 
         /// <summary>
-        /// Damage is dealt by an SCP.
+        /// Damage is dealt by a <see cref="Side.Scp"/> when the <see cref="RoleType"/> used is not available.
         /// </summary>
         Scp,
 
@@ -111,5 +111,85 @@ namespace Exiled.API.Enums
         /// Damage caused by severed hands.
         /// </summary>
         SeveredHands,
+
+        /// <summary>
+        /// Damage caused by a custom source.
+        /// </summary>
+        Custom,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp049"/>.
+        /// </summary>
+        Scp049,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp096"/>.
+        /// </summary>
+        Scp096,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp173"/>.
+        /// </summary>
+        Scp173,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp93953"/> or <see cref="RoleType.Scp93989"/>.
+        /// </summary>
+        Scp939,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp0492"/>.
+        /// </summary>
+        Scp0492,
+
+        /// <summary>
+        /// Damage caused by <see cref="RoleType.Scp106"/>.
+        /// </summary>
+        Scp106,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCrossvec"/>.
+        /// </summary>
+        Crossvec,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunLogicer"/>.
+        /// </summary>
+        Logicer,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunRevolver"/>.
+        /// </summary>
+        Revolver,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunShotgun"/>.
+        /// </summary>
+        Shotgun,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunAK"/>.
+        /// </summary>
+        AK,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCOM15"/>.
+        /// </summary>
+        Com15,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunCOM18"/>.
+        /// </summary>
+        Com18,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunFSP9"/>.
+        /// </summary>
+        Fsp9,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.GunE11SR"/>.
+        /// </summary>
+        E11Sr,
     }
 }
