@@ -34,8 +34,10 @@ namespace Exiled.Events.Patches.Events.Warhead
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
+            const int offset = -2;
+
+            // Search for "br.s" and then add offset to get the index of the third "ldc.i4.0".
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) + offset;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;
