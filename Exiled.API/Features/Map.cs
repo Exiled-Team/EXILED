@@ -361,6 +361,34 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Unlocks all doors of the facility.
+        /// </summary>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        public static void UnlockAllDoors(ZoneType zoneType)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.ChangeLock(DoorLockType.None);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unlocks all doors of the facility.
+        /// </summary>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                UnlockAllDoors(zone);
+        }
+
+        /// <summary>
         /// Unlocks all doors in the facility.
         /// </summary>
         public static void UnlockAllDoors()
