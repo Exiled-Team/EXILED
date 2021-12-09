@@ -666,9 +666,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's maximum health.
         /// </summary>
-        public float MaxHealth
+        public int MaxHealth
         {
-            get => healthStat.MaxValue;
+            get => (int)healthStat.MaxValue;
             set => healthStat.CustomMaxValue = value;
         }
 
