@@ -19,6 +19,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
+    using Footprinting;
+
     using Hints;
 
     using InventorySystem;
@@ -1027,6 +1029,11 @@ namespace Exiled.API.Features
                 ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
+
+        /// <summary>
+        /// Gets the player's <see cref="Footprint"/>.
+        /// </summary>
+        public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
