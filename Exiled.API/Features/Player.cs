@@ -130,7 +130,8 @@ namespace Exiled.API.Features
                 CameraTransform = value.PlayerCameraReference;
 
                 value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
-                value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
+                if (!value.playerStats._dictionarizedTypes.ContainsKey(typeof(HealthStat)))
+                    value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
         }
 
