@@ -123,6 +123,7 @@ namespace Exiled.API.Features
                         case Firearm _:
                             if (Item != null && itemConversion.ContainsKey(Item.Type))
                                 return itemConversion[Item.Type];
+
                             return DamageType.Firearm;
                         case MicroHid _:
                             return DamageType.MicroHid;
@@ -155,8 +156,31 @@ namespace Exiled.API.Features
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+
                             if (translationConversion.ContainsKey(translation))
                                 return translationConversion[translation];
+                            if (translation.Id == DeathTranslations.Asphyxiated.Id)
+                                return DamageType.Asphyxiation;
+                            if (translation.Id == DeathTranslations.Bleeding.Id)
+                                return DamageType.Bleeding;
+                            if (translation.Id == DeathTranslations.Decontamination.Id)
+                                return DamageType.Decontamination;
+                            if (translation.Id == DeathTranslations.Poisoned.Id)
+                                return DamageType.Poison;
+                            if (translation.Id == DeathTranslations.Falldown.Id)
+                                return DamageType.Falldown;
+                            if (translation.Id == DeathTranslations.Tesla.Id)
+                                return DamageType.Tesla;
+                            if (translation.Id == DeathTranslations.Scp207.Id)
+                                return DamageType.Scp207;
+                            if (translation.Id == DeathTranslations.Crushed.Id)
+                                return DamageType.Crushed;
+                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
+                                return DamageType.FemurBreaker;
+                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
+                                return DamageType.FriendlyFireDetector;
+                            if (translation.Id == DeathTranslations.SeveredHands.Id)
+                                return DamageType.SeveredHands;
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
