@@ -7,7 +7,7 @@
 
 namespace Exiled.API.Features
 {
-    using System;
+        using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -19,6 +19,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
+    using Footprinting;
+
     using Hints;
 
     using InventorySystem;
@@ -27,8 +29,6 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
-
-    using Footprinting;
 
     using MEC;
 
