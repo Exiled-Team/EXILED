@@ -663,7 +663,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Item"/> created.</returns>
         protected Item CreateCorrectItem(ItemBase itemBase = null)
         {
-            if (itemBase != null)
+            if (itemBase == null)
                 itemBase = Server.Host.Inventory.CreateItemInstance(Type, false);
             return Item.Get(itemBase);
         }
