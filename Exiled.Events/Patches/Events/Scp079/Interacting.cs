@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Declare a local variable of the type "InteractingTeslaEventArgs";
             LocalBuilder interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
 
-            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, true);
+            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel);
             //
             // Handlers.Map.OnInteractingTesla(ev);
             //
