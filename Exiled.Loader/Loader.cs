@@ -149,6 +149,12 @@ namespace Exiled.Loader
             ConfigManager.Reload();
             TranslationManager.Reload();
 
+            if (!Config.IsEnabled)
+            {
+                Log.Warn("Loading EXILED has been disabled in a config. No plugins will be enabled.");
+                return;
+            }
+
             EnablePlugins();
 
             BuildInfoCommand.ModDescription = string.Join(
