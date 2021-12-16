@@ -123,7 +123,10 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                grenade.ProcessPlayer(player.ReferenceHub);
+                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                {
+                    grenade.ProcessPlayer(player.ReferenceHub);
+                }
             }
         }
     }
