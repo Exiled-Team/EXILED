@@ -123,8 +123,7 @@ namespace Exiled.Events.Patches.Events.Map
         {
             foreach (Player player in players)
             {
-                if (IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(grenade.PreviousOwner.Hub, player.ReferenceHub, grenade.PreviousOwner.Role))
-                    grenade.ProcessPlayer(player.ReferenceHub);
+                grenade.ProcessPlayer(player.ReferenceHub);
             }
         }
     }
