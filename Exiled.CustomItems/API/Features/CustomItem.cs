@@ -778,7 +778,7 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.Inventory.SendItemsNextFrame = true;
             }
 
-            var pickup = Spawn(ev.Player, ev.Item);
+            Pickup pickup = Spawn(ev.Player, ev.Item);
             if (pickup.Base.Rb != null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));

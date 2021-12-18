@@ -14,6 +14,7 @@ namespace Exiled.API.Extensions
     using Exiled.API.Features.Items;
 
     using InventorySystem;
+    using InventorySystem.Items;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -92,7 +93,7 @@ namespace Exiled.API.Extensions
         /// <returns>Returns the item durability.</returns>
         public static byte GetMaxAmmo(this ItemType item)
         {
-            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out var itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
+            if (!InventoryItemLoader.AvailableItems.TryGetValue(item, out ItemBase itemBase) || !(itemBase is InventorySystem.Items.Firearms.Firearm firearm))
                 return 0;
 
             return firearm.AmmoManagerModule.MaxAmmo;
