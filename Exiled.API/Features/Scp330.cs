@@ -101,13 +101,11 @@ namespace Exiled.API.Features
         public void GiveRandomCandy(Player player)
         {
             int randomCandyType = UnityEngine.Random.Range(1, 8);
-
-            Scp330Bag bag;
-            if (!Scp330Bag.TryGetBag(player.ReferenceHub, out bag))
+            if (!player.HasItem(ItemType.SCP330))
                 return;
 
-            bag.TryAddSpecific((CandyKindID)randomCandyType);
-            bag.ServerRefreshBag();
+            Base.TryAddSpecific((CandyKindID)randomCandyType);
+            Base.ServerRefreshBag();
         }
 
         /// <summary>
@@ -117,12 +115,11 @@ namespace Exiled.API.Features
         /// <param name="candy"><see cref="CandyKindID"/>.</param>
         public void GiveCandy(Player player, CandyKindID candy)
         {
-            Scp330Bag bag;
-            if (!Scp330Bag.TryGetBag(player.ReferenceHub, out bag))
+            if (!player.HasItem(ItemType.SCP330))
                 return;
 
-            bag.TryAddSpecific(candy);
-            bag.ServerRefreshBag();
+            Base.TryAddSpecific(candy);
+            Base.ServerRefreshBag();
         }
 
         /// <summary>
@@ -131,10 +128,20 @@ namespace Exiled.API.Features
         /// <param name="player">Player to give a bag to.</param>
         public void GiveBag(Player player)
         {
-            Scp330Bag bag;
-            if (Scp330Bag.TryGetBag(player.ReferenceHub, out bag))
+            if (player.HasItem(ItemType.SCP330))
                 return;
             player.AddItem(ItemType.SCP330);
+        }
+
+        /// <summary>
+        /// Removes the Scp-330 Bag from the player.
+        /// </summary>
+        /// <param name="player">Player to remove the bag.</param>
+        public void RemoveBag(Player player)
+        {
+            if (!player.HasItem(ItemType.SCP330))
+                return;
+            player.RemoveItem(new Items.Item(ItemType.SCP330), true);
         }
     }
 }
