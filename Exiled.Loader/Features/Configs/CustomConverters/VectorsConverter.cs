@@ -34,8 +34,8 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
             if (!parser.TryConsume<MappingStart>(out _))
                 throw new InvalidDataException($"Cannot deserialize object of type {type.FullName}.");
 
-            var coordinates = ListPool<object>.Shared.Rent(4);
-            var i = 0;
+            List<object> coordinates = ListPool<object>.Shared.Rent(4);
+            int i = 0;
 
             while (!parser.TryConsume<MappingEnd>(out _))
             {
@@ -45,7 +45,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
                     continue;
                 }
 
-                if (!parser.TryConsume<Scalar>(out var scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out var coordinate))
+                if (!parser.TryConsume<Scalar>(out Scalar scalar) || !float.TryParse(scalar.Value, NumberStyles.Float, CultureInfo.GetCultureInfo("en-US"), out float coordinate))
                 {
                     ListPool<object>.Shared.Return(coordinates);
                     throw new InvalidDataException($"Invalid float value.");
@@ -64,7 +64,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc/>
         public void WriteYaml(IEmitter emitter, object value, Type type)
         {
-            var coordinates = new Dictionary<string, float>(4);
+            Dictionary<string, float> coordinates = new Dictionary<string, float>(4);
 
             if (value is Vector2 vector2)
             {
@@ -87,7 +87,7 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
 
             emitter.Emit(new MappingStart());
 
-            foreach (var coordinate in coordinates)
+            foreach (KeyValuePair<string, float> coordinate in coordinates)
             {
                 emitter.Emit(new Scalar(coordinate.Key));
                 emitter.Emit(new Scalar(coordinate.Value.ToString(CultureInfo.GetCultureInfo("en-US"))));

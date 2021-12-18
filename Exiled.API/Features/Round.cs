@@ -110,7 +110,7 @@ namespace Exiled.API.Features
 
             // Great hack since the game has no
             // hard dependency on 'CustomNetworkManager.EnableFastRestart'
-            var oldValue = CustomNetworkManager.EnableFastRestart;
+            bool oldValue = CustomNetworkManager.EnableFastRestart;
             CustomNetworkManager.EnableFastRestart = fastRestart;
 
             RoundRestart.InitiateRoundRestart();

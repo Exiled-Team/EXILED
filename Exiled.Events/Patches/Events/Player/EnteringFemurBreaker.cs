@@ -31,11 +31,11 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_3);
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_3);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new EnteringFemurBreakerEventArgs(Player, true);
             //

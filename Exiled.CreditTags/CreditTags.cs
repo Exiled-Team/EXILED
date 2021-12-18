@@ -86,7 +86,7 @@ namespace Exiled.CreditTags
             if (player.DoNotTrack && !Instance.Config.IgnoreDntFlag && !force)
                 return false;
 
-            if (RankCache.TryGetValue(player.UserId, out var cachedRank))
+            if (RankCache.TryGetValue(player.UserId, out RankType cachedRank))
             {
                 ShowRank(cachedRank);
                 return true;
@@ -99,7 +99,7 @@ namespace Exiled.CreditTags
 
             void SuccessHandler(string result)
             {
-                if (Enum.TryParse<RankType>(result, out var kind))
+                if (Enum.TryParse<RankType>(result, out RankType kind))
                 {
                     RankCache[player.UserId] = kind;
                     ShowRank(kind);
@@ -128,7 +128,7 @@ namespace Exiled.CreditTags
                 bool canReceiveCreditCustomInfo =
                     string.IsNullOrEmpty(player.CustomInfo) || Config.CustomPlayerInfoOverride;
 
-                if (Ranks.TryGetValue(rank, out var value))
+                if (Ranks.TryGetValue(rank, out Rank value))
                 {
                     switch (Config.Mode)
                     {

@@ -72,7 +72,7 @@ namespace Exiled.Loader.Features.Configs
         /// <inheritdoc/>
         public IObjectDescriptor Read(object target)
         {
-            var description = baseDescriptor.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute description = baseDescriptor.GetCustomAttribute<DescriptionAttribute>();
             return description != null
                 ? new CommentsObjectDescriptor(baseDescriptor.Read(target), description.Description)
                 : baseDescriptor.Read(target);

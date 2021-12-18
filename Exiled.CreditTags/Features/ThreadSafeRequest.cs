@@ -35,11 +35,11 @@ namespace Exiled.CreditTags.Features
 
         private static IEnumerator<float> MakeRequest(string url, Action<ThreadSafeRequest> errorHandler, Action<string> resultHandler)
         {
-            var request = new ThreadSafeRequest();
+            ThreadSafeRequest request = new ThreadSafeRequest();
 
             Task.Run(() =>
             {
-                request.Result = HttpQuery.Get(url, out var success, out var code);
+                request.Result = HttpQuery.Get(url, out bool success, out HttpStatusCode code);
                 request.Success = success;
                 request.Code = code;
 

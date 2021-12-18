@@ -108,7 +108,7 @@ namespace Exiled.Updater
 
         private HttpClient CreateHttpClient()
         {
-            var client = new HttpClient()
+            HttpClient client = new HttpClient()
             {
                 Timeout = TimeSpan.FromSeconds(480),
             };
@@ -122,11 +122,11 @@ namespace Exiled.Updater
         {
             _stage = Stage.Start;
 
-            var updateThread = new Thread(() =>
+            Thread updateThread = new Thread(() =>
             {
-                using (var client = CreateHttpClient())
+                using (HttpClient client = CreateHttpClient())
                 {
-                    if (FindUpdate(client, forced, out var newVersion))
+                    if (FindUpdate(client, forced, out NewVersion newVersion))
                     {
                         _stage = Stage.Installing;
                         Update(client, newVersion);
@@ -162,15 +162,15 @@ namespace Exiled.Updater
         {
             try
             {
-                var smallestVersion = FindSmallestExiledVersion();
+                ExiledLibrary smallestVersion = FindSmallestExiledVersion();
                 Log.Info($"Found the smallest version of Exiled - {smallestVersion.Library.GetName().Name}:{smallestVersion.Version}");
 
                 // TODO: make it loop pages to find an update
-                var releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
+                TaggedRelease[] releases = TagReleases(client.GetReleases(REPOID, new GetReleasesSettings(50, 1)).GetAwaiter().GetResult());
 
-                if (FindRelease(releases, out var targetRelease, smallestVersion, forced))
+                if (FindRelease(releases, out Release targetRelease, smallestVersion, forced))
                 {
-                    if (!FindAsset(GetInstallerName(), targetRelease, out var asset))
+                    if (!FindAsset(GetInstallerName(), targetRelease, out ReleaseAsset asset))
                     {
                         // Error: no asset
                         Log.Warn("Couldn't find the asset, the update will not be installed");
@@ -199,11 +199,11 @@ namespace Exiled.Updater
 
         private bool FindRelease(TaggedRelease[] releases, out Release release, ExiledLibrary smallestVersion, bool forced = false)
         {
-            var includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease();
+            bool includePRE = Config.ShouldDownloadTestingReleases || OneOfExiledIsPrerelease();
 
             for (int z = 0; z < releases.Length; z++)
             {
-                var taggedRelease = releases[z];
+                TaggedRelease taggedRelease = releases[z];
                 if (taggedRelease.Release.PreRelease && !includePRE)
                     continue;
 
@@ -237,8 +237,8 @@ namespace Exiled.Updater
 
         private TaggedRelease[] TagReleases(Release[] releases)
         {
-            var arr = new TaggedRelease[releases.Length];
-            for (var z = 0; z < arr.Length; z++)
+            TaggedRelease[] arr = new TaggedRelease[releases.Length];
+            for (int z = 0; z < arr.Length; z++)
             {
                 arr[z] = new TaggedRelease(releases[z]);
             }
@@ -287,18 +287,18 @@ namespace Exiled.Updater
             try
             {
                 Log.Info("Downloading installer...");
-                using (var installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult())
+                using (HttpResponseMessage installer = client.GetAsync(newVersion.Asset.BrowserDownloadUrl).ConfigureAwait(false).GetAwaiter().GetResult())
                 {
                     Log.Info("Downloaded!");
 
-                    var serverPath = Environment.CurrentDirectory;
-                    var installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
+                    string serverPath = Environment.CurrentDirectory;
+                    string installerPath = Path.Combine(serverPath, newVersion.Asset.Name);
 
                     if (File.Exists(installerPath) && PlatformId == PlatformID.Unix)
                         LinuxPermission.SetFileUserAndGroupReadWriteExecutePermissions(installerPath);
 
-                    using (var installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
-                    using (var fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    using (Stream installerStream = installer.Content.ReadAsStreamAsync().ConfigureAwait(false).GetAwaiter().GetResult())
+                    using (FileStream fs = new FileStream(installerPath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
                         installerStream.CopyToAsync(fs).ConfigureAwait(false).GetAwaiter().GetResult();
                     }
@@ -311,7 +311,7 @@ namespace Exiled.Updater
                         Log.Error("Couldn't find the downloaded installer!");
                     }
 
-                    var startInfo = new ProcessStartInfo
+                    ProcessStartInfo startInfo = new ProcessStartInfo
                     {
                         WorkingDirectory = serverPath,
                         FileName = installerPath,
@@ -324,7 +324,7 @@ namespace Exiled.Updater
                         StandardOutputEncoding = ProcessEncoding,
                     };
 
-                    var installerProcess = Process.Start(startInfo);
+                    Process installerProcess = Process.Start(startInfo);
                     installerProcess.OutputDataReceived += (s, args) =>
                     {
                         if (!string.IsNullOrEmpty(args.Data))
