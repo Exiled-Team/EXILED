@@ -5216,6 +5216,122 @@ references:
   isSpec: "True"
   fullName: Exiled.API.Features.Items.Radio.ToString
   nameWithType: Radio.ToString
+- uid: Exiled.API.Features.Items.Scp330
+  name: Scp330
+  href: api/Exiled.API.Features.Items.Scp330.html
+  commentId: T:Exiled.API.Features.Items.Scp330
+  fullName: Exiled.API.Features.Items.Scp330
+  nameWithType: Scp330
+- uid: Exiled.API.Features.Items.Scp330.#ctor(InventorySystem.Items.Usables.Scp330.Scp330Bag)
+  name: Scp330(Scp330Bag)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330__ctor_InventorySystem_Items_Usables_Scp330_Scp330Bag_
+  commentId: M:Exiled.API.Features.Items.Scp330.#ctor(InventorySystem.Items.Usables.Scp330.Scp330Bag)
+  fullName: Exiled.API.Features.Items.Scp330.Scp330(InventorySystem.Items.Usables.Scp330.Scp330Bag)
+  nameWithType: Scp330.Scp330(Scp330Bag)
+- uid: Exiled.API.Features.Items.Scp330.#ctor(ItemType)
+  name: Scp330(ItemType)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330__ctor_ItemType_
+  commentId: M:Exiled.API.Features.Items.Scp330.#ctor(ItemType)
+  fullName: Exiled.API.Features.Items.Scp330.Scp330(ItemType)
+  nameWithType: Scp330.Scp330(ItemType)
+- uid: Exiled.API.Features.Items.Scp330.#ctor*
+  name: Scp330
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330__ctor_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.#ctor
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.Scp330
+  nameWithType: Scp330.Scp330
+- uid: Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)
+  name: AddCandy(CandyKindID)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_AddCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_
+  commentId: M:Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)
+  fullName: Exiled.API.Features.Items.Scp330.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID)
+  nameWithType: Scp330.AddCandy(CandyKindID)
+- uid: Exiled.API.Features.Items.Scp330.AddCandy*
+  name: AddCandy
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_AddCandy_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.AddCandy
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.AddCandy
+  nameWithType: Scp330.AddCandy
+- uid: Exiled.API.Features.Items.Scp330.Base
+  name: Base
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Base
+  commentId: P:Exiled.API.Features.Items.Scp330.Base
+  fullName: Exiled.API.Features.Items.Scp330.Base
+  nameWithType: Scp330.Base
+- uid: Exiled.API.Features.Items.Scp330.Base*
+  name: Base
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Base_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.Base
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.Base
+  nameWithType: Scp330.Base
+- uid: Exiled.API.Features.Items.Scp330.Candies
+  name: Candies
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Candies
+  commentId: P:Exiled.API.Features.Items.Scp330.Candies
+  fullName: Exiled.API.Features.Items.Scp330.Candies
+  nameWithType: Scp330.Candies
+- uid: Exiled.API.Features.Items.Scp330.Candies*
+  name: Candies
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Candies_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.Candies
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.Candies
+  nameWithType: Scp330.Candies
+- uid: Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean,System.Boolean,System.Boolean,InventorySystem.Items.Usables.Scp330.CandyKindID)
+  name: DropCandy(CandyKindID, Boolean, Boolean, Boolean, CandyKindID)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_DropCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_System_Boolean_System_Boolean_InventorySystem_Items_Usables_Scp330_CandyKindID_
+  commentId: M:Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean,System.Boolean,System.Boolean,InventorySystem.Items.Usables.Scp330.CandyKindID)
+  fullName: Exiled.API.Features.Items.Scp330.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID, System.Boolean, System.Boolean, System.Boolean, InventorySystem.Items.Usables.Scp330.CandyKindID)
+  nameWithType: Scp330.DropCandy(CandyKindID, Boolean, Boolean, Boolean, CandyKindID)
+- uid: Exiled.API.Features.Items.Scp330.DropCandy*
+  name: DropCandy
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_DropCandy_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.DropCandy
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.DropCandy
+  nameWithType: Scp330.DropCandy
+- uid: Exiled.API.Features.Items.Scp330.ExposedType
+  name: ExposedType
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_ExposedType
+  commentId: P:Exiled.API.Features.Items.Scp330.ExposedType
+  fullName: Exiled.API.Features.Items.Scp330.ExposedType
+  nameWithType: Scp330.ExposedType
+- uid: Exiled.API.Features.Items.Scp330.ExposedType*
+  name: ExposedType
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_ExposedType_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.ExposedType
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.ExposedType
+  nameWithType: Scp330.ExposedType
+- uid: Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean)
+  name: RemoveCandy(CandyKindID, Boolean)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_RemoveCandy_InventorySystem_Items_Usables_Scp330_CandyKindID_System_Boolean_
+  commentId: M:Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID,System.Boolean)
+  fullName: Exiled.API.Features.Items.Scp330.RemoveCandy(InventorySystem.Items.Usables.Scp330.CandyKindID, System.Boolean)
+  nameWithType: Scp330.RemoveCandy(CandyKindID, Boolean)
+- uid: Exiled.API.Features.Items.Scp330.RemoveCandy*
+  name: RemoveCandy
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_RemoveCandy_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.RemoveCandy
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.RemoveCandy
+  nameWithType: Scp330.RemoveCandy
+- uid: Exiled.API.Features.Items.Scp330.Spawn(UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean)
+  name: Spawn(Vector3, Quaternion, Boolean)
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Spawn_UnityEngine_Vector3_UnityEngine_Quaternion_System_Boolean_
+  commentId: M:Exiled.API.Features.Items.Scp330.Spawn(UnityEngine.Vector3,UnityEngine.Quaternion,System.Boolean)
+  fullName: Exiled.API.Features.Items.Scp330.Spawn(UnityEngine.Vector3, UnityEngine.Quaternion, System.Boolean)
+  nameWithType: Scp330.Spawn(Vector3, Quaternion, Boolean)
+- uid: Exiled.API.Features.Items.Scp330.Spawn*
+  name: Spawn
+  href: api/Exiled.API.Features.Items.Scp330.html#Exiled_API_Features_Items_Scp330_Spawn_
+  commentId: Overload:Exiled.API.Features.Items.Scp330.Spawn
+  isSpec: "True"
+  fullName: Exiled.API.Features.Items.Scp330.Spawn
+  nameWithType: Scp330.Spawn
 - uid: Exiled.API.Features.Items.Throwable
   name: Throwable
   href: api/Exiled.API.Features.Items.Throwable.html

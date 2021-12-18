@@ -258,7 +258,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Enums.KeycardPermissions.html",
-          "hash": "APMK91ZEpgWKVR68QatvNDAQ2z/HsOzoOCa1lH3SXKc="
+          "hash": "PydsSXA4vfi5vyb/1366SrYWr56MXvzM/plD9A/ksng="
         }
       },
       "is_incremental": false,
@@ -438,7 +438,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.CameraExtensions.html",
-          "hash": "33ScVgQvwmbIPh2NAAYoOO8uPcKEs9zfUMOcxLSmAKc="
+          "hash": "sHIDNBtAxhZGgg4oPdkh1ZR9Lx/4qCkxW3n4hWAz0eU="
         }
       },
       "is_incremental": false,
@@ -462,7 +462,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.ItemExtensions.html",
-          "hash": "64dAJTRJRJLhR8uW1aE5/gJhudXDI04x3oK0xkyG+Dw="
+          "hash": "2ptRWe1qO8VWwlbl0sRS6q84WHNaSpbp+lE2iRNdGB8="
         }
       },
       "is_incremental": false,
@@ -474,7 +474,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Extensions.LiftTypeExtension.html",
-          "hash": "sFa7FGWzz04+CwMIHAEJwKYKlVxWBTJJxmnrUgh2wSo="
+          "hash": "Kjz7jRIfsPN3jHU754OSDYk6yrOFqd+TUv1Pcl1B7Bw="
         }
       },
       "is_incremental": false,
@@ -738,7 +738,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Item.html",
-          "hash": "Ggr0OBWVCKWppNOhM0loAhT1kr9S2WCm8dS/oF4l35w="
+          "hash": "M87CXaAxnnw29/zNXWcxHM9TbQPC/4JD7Cls/SN7UDM="
         }
       },
       "is_incremental": false,
@@ -794,6 +794,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Scp330.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Exiled.API.Features.Items.Scp330.html",
+          "hash": "v5rkoO06TmKHe/vq4Jk6MxuQE1XbArqqpmBSBdSEz70="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "obj/docs/api/Exiled.API.Features.Items.Throwable.yml",
       "output": {
         ".html": {
@@ -810,7 +822,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.Usable.html",
-          "hash": "OIrBjl396qjx3JS4oLToZVxqKSoQgG/5Az25bvLslCc="
+          "hash": "om2yCz2aefBY0DnVgjIGg6Q7X17M/EhCG/AXrMkPGug="
         }
       },
       "is_incremental": false,
@@ -822,7 +834,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.API.Features.Items.html",
-          "hash": "PqWPXON5r+ymhaj7Vfl+SbELOt0VP58qjIeV+dSrKog="
+          "hash": "Db8n0wJQCGpTaf3e6J2MltehrrJLLS7tyZp0Jk8n5g8="
         }
       },
       "is_incremental": false,
@@ -1734,7 +1746,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Configs.html",
-          "hash": "blyIhDGyLQQectQ/MruKZ8R9GUa80edYONzJNnbAGfk="
+          "hash": "UPP0lMKs+krxMc79Bu7hS2VrV5i5g/r7eoIbBjNCN28="
         }
       },
       "is_incremental": false,
@@ -1794,7 +1806,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Events.Commands.Reload.Translations.html",
-          "hash": "EeUDpQt8lw0ZW1ChZr2zdVnLssRrWhQKrNrhu/v425w="
+          "hash": "In2dHNA97u1Z9lblq5tkKgq6O1akYfBU/Ph4TyQeia0="
         }
       },
       "is_incremental": false,
@@ -3906,7 +3918,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ActionType.html",
-          "hash": "jUoQCnsPbOIgu8h0RWyb5n+Hq33Bj5eR8xKZScKw0aA="
+          "hash": "Jt+zHH5+IQncJ8lA00dEkomKPkRVTJP1ya/n2L+mPDc="
         }
       },
       "is_incremental": false,
@@ -3918,7 +3930,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.EventType.html",
-          "hash": "3vykjG31mP3QJDDdqliqLiNeOWTi6vxt4BXOupqLAjA="
+          "hash": "rWB0rxPUjpi/10bzsrl8ItzO0pWlMPqycXwSCXP7KLA="
         }
       },
       "is_incremental": false,
@@ -3930,7 +3942,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.ModFeatures.html",
-          "hash": "NNBE4W4NeU4Zfg6JdLRSsWGPSGlUTe8zJnCnwlW0Szc="
+          "hash": "JqtxpiJkVf/i70nMs0TcEpZo8jgdJGUCcmMHiHKyo48="
         }
       },
       "is_incremental": false,
@@ -3942,7 +3954,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Features.MultiAdminFeatures.html",
-          "hash": "93b+KmweKcQAK23bAH8+tDxxtjUJj9EegA28ls02EEs="
+          "hash": "+obLJOVgKyWQpa/sSzemZgUKgcYNp1LG6QOi7uZ5y/k="
         }
       },
       "is_incremental": false,
@@ -3978,7 +3990,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.TOKEN_ELEVATION_TYPE.html",
-          "hash": "7EphOSoUWMdgkDtWuHQ8NUKx3g/+O7HYBm3traiFYiU="
+          "hash": "oD6zAHSVbYEqnJABqw7HvyXshFz61ATzVu7aVLe2C7Y="
         }
       },
       "is_incremental": false,
@@ -3990,7 +4002,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.TOKEN_INFORMATION_CLASS.html",
-          "hash": "alKmHWqoOV5ok+LIXoputHn+56sIKWMpwMsBkYder/Q="
+          "hash": "npPbX+O+ZIgCFe23O2ITSI7fIZTasksXbOn6WFzpxUQ="
         }
       },
       "is_incremental": false,
@@ -4002,7 +4014,7 @@
       "output": {
         ".html": {
           "relative_path": "api/Exiled.Loader.Loader.html",
-          "hash": "QJXQZfxieeYQDwtl/RAnhb7iFbjK90lgrLv8bWcoY2I="
+          "hash": "804nQjhoa76lxQSdm8XIbdcoEAFcod2iqwNJ9Jqoj7A="
         }
       },
       "is_incremental": false,
@@ -4242,7 +4254,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "DAw0jbEeJKmyr6q8OCvPL1xNRiLUf1+kkkpaCDOezS4="
+          "hash": "FZnmwAufJuPs7J7Hy9aDhlJsjdIVPwIUv5TKtbtQBHQ="
         }
       },
       "is_incremental": false,
@@ -4281,7 +4293,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 345,
+          "total_file_count": 346,
           "skipped_file_count": 0
         },
         "ResourceDocumentProcessor": {
