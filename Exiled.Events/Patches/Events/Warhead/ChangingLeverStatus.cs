@@ -28,13 +28,13 @@ namespace Exiled.Events.Patches.Events.Warhead
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var offset = 2;
+            int offset = 2;
 
-            var index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + offset;
 
             newInstructions.InsertRange(index, new[]
             {
@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             index += offset;
 
-            var moveIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + 2;
+            int moveIndex = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Brtrue_S) + 2;
 
             newInstructions[index].MoveLabelsTo(newInstructions[moveIndex]);
 

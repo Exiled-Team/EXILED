@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.Commands
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using CommandSystem;
@@ -66,7 +67,7 @@ namespace Exiled.CustomItems.Commands
             {
                 if (sender is PlayerCommandSender playerCommandSender)
                 {
-                    var player = Player.Get(playerCommandSender.SenderId);
+                    Player player = Player.Get(playerCommandSender.SenderId);
 
                     if (!CheckEligible(player))
                     {
@@ -89,8 +90,8 @@ namespace Exiled.CustomItems.Commands
             {
                 case "*":
                 case "all":
-                    var eligiblePlayers = Player.List.Where(CheckEligible).ToList();
-                    foreach (var ply in eligiblePlayers)
+                    List<Player> eligiblePlayers = Player.List.Where(CheckEligible).ToList();
+                    foreach (Player ply in eligiblePlayers)
                         item.Give(ply);
 
                     response = $"Custom item {item.Name} given to all players who can receive them ({eligiblePlayers.Count} players)";

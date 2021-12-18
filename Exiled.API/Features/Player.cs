@@ -1826,7 +1826,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
         public bool TryGetSessionVariable<T>(string key, out T result)
         {
-            if (SessionVariables.TryGetValue(key, out var value) && value is T type)
+            if (SessionVariables.TryGetValue(key, out object value) && value is T type)
             {
                 result = type;
                 return true;
@@ -1872,7 +1872,7 @@ namespace Exiled.API.Features
         /// <param name="effect">The <see cref="EffectType"/> to disable.</param>
         public void DisableEffect(EffectType effect)
         {
-            if (TryGetEffect(effect, out var playerEffect))
+            if (TryGetEffect(effect, out PlayerEffect playerEffect))
                 playerEffect.IsEnabled = false;
         }
 
@@ -1922,7 +1922,7 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
         {
-            if (TryGetEffect(effect, out var pEffect))
+            if (TryGetEffect(effect, out PlayerEffect pEffect))
                 ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
         }
 
@@ -1949,7 +1949,7 @@ namespace Exiled.API.Features
         {
             foreach (EffectType effect in effects)
             {
-                if (TryGetEffect(effect, out var pEffect))
+                if (TryGetEffect(effect, out PlayerEffect pEffect))
                     EnableEffect(pEffect, duration, addDurationIfActive);
             }
         }
@@ -1961,7 +1961,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="PlayerEffect"/>.</returns>
         public PlayerEffect GetEffect(EffectType effect)
         {
-            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(effect.Type(), out var playerEffect);
+            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(effect.Type(), out PlayerEffect playerEffect);
 
             return playerEffect;
         }

@@ -8,6 +8,7 @@
 namespace Exiled.Loader.Features
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
 #pragma warning disable SA1602 // Enumeration items should be documented
@@ -61,16 +62,16 @@ namespace Exiled.Loader.Features
 
         static MultiAdminFeatures()
         {
-            foreach (var startArg in Environment.GetCommandLineArgs())
+            foreach (string startArg in Environment.GetCommandLineArgs())
             {
                 if (startArg.StartsWith(MULTIADMIN_CONSOLE_PREFIX, StringComparison.OrdinalIgnoreCase))
                 {
                     MultiAdminUsed = true;
 
-                    var separatedInfo = startArg.Split(MultiAdminValueSeparator).Skip(1);
+                    IEnumerable<string> separatedInfo = startArg.Split(MultiAdminValueSeparator).Skip(1);
                     MultiAdminVersion = separatedInfo.ElementAtOrDefault(0);
-                    var features = separatedInfo.ElementAtOrDefault(1);
-                    if (!string.IsNullOrEmpty(features) && int.TryParse(features, out var modFeatures))
+                    string features = separatedInfo.ElementAtOrDefault(1);
+                    if (!string.IsNullOrEmpty(features) && int.TryParse(features, out int modFeatures))
                     {
                         MultiAdminModFeatures = (ModFeatures)modFeatures;
                         return;
@@ -102,7 +103,7 @@ namespace Exiled.Loader.Features
             if (ServerStatic.ServerOutput is null)
                 return false;
 
-            var multiAdminAvailable = ConvertToMultiAdminAvailable(actionType);
+            string multiAdminAvailable = ConvertToMultiAdminAvailable(actionType);
             if (!(value is null))
                 multiAdminAvailable = string.Concat(multiAdminAvailable, MultiAdminValueSeparatorStr, value);
 
@@ -112,13 +113,13 @@ namespace Exiled.Loader.Features
 
         public static string ConvertToMultiAdminAvailable(EventType eventType)
         {
-            var eventName = PrepareStr(eventType.ToString());
+            string eventName = PrepareStr(eventType.ToString());
             return string.Concat(MULTIADMIN_PREFIX, MultiAdminValueSeparatorStr, eventName, MultiAdminKeySeparatorStr, MULTIADMIN_EVENT_SUFFIX);
         }
 
         public static string ConvertToMultiAdminAvailable(ActionType actionType)
         {
-            var actionName = PrepareStr(actionType.ToString());
+            string actionName = PrepareStr(actionType.ToString());
             return string.Concat(MULTIADMIN_PREFIX, MultiAdminValueSeparatorStr, actionName);
         }
 

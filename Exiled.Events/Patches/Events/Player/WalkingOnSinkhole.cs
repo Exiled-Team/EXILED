@@ -27,13 +27,13 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = 1;
+            int offset = 1;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bgt_Un_S) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bgt_Un_S) + offset;
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {

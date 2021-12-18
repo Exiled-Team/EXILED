@@ -11,6 +11,7 @@ namespace Exiled.Events.Commands.Reload
 
     using CommandSystem;
 
+    using Exiled.API.Interfaces;
     using Exiled.Loader;
     using Exiled.Permissions.Extensions;
 
@@ -46,7 +47,7 @@ namespace Exiled.Events.Commands.Reload
 
             Handlers.Server.OnReloadedTranslations();
 
-            foreach (var plugin in Loader.Plugins)
+            foreach (IPlugin<IConfig> plugin in Loader.Plugins)
             {
                 plugin.OnUnregisteringCommands();
                 plugin.OnRegisteringCommands();

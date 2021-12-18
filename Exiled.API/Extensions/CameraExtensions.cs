@@ -8,6 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -49,16 +50,16 @@ namespace Exiled.API.Extensions
         {
             OrderedCameraTypes.Clear();
 
-            var cameras = Map.Cameras;
+            ReadOnlyCollection<Camera079> cameras = Map.Cameras;
 
-            var cameraCount = cameras.Count;
+            int cameraCount = cameras.Count;
             for (int i = 0; i < cameraCount; i++)
             {
-                var camera = cameras[i];
-                var cameraID = camera.GetInstanceID();
+                Camera079 camera = cameras[i];
+                int cameraID = camera.GetInstanceID();
 
-                var cameraType = (CameraType)cameraID;
-                var room = Map.FindParentRoom(camera.gameObject);
+                CameraType cameraType = (CameraType)cameraID;
+                Room room = Map.FindParentRoom(camera.gameObject);
 
                 if (OrderedCameraTypes.ContainsKey(cameraID))
                     OrderedCameraTypes.Remove(cameraID);
