@@ -51,8 +51,8 @@ namespace Exiled.CreditTags
             [RankType.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
             [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
             [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
-            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "F333FF"),
-            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "dark_red", "9B0404"),
+            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "FF96DE"),
+            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "FF1493"),
         };
 
         /// <summary>
