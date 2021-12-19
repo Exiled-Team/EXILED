@@ -46,6 +46,7 @@ namespace Exiled.API.Features
                 { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
                 { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
                 { DeathTranslations.MicroHID, DamageType.MicroHid },
+                { DeathTranslations.Hypothermia, DamageType.Hypothermia },
             };
 
         private readonly Dictionary<ItemType, DamageType> itemConversion = new Dictionary<ItemType, DamageType>
@@ -59,6 +60,7 @@ namespace Exiled.API.Features
             { ItemType.GunCOM18, DamageType.Com18 },
             { ItemType.GunFSP9, DamageType.Fsp9 },
             { ItemType.GunE11SR, DamageType.E11Sr },
+            { ItemType.MolecularDisruptor, DamageType.MolecularDisruptor },
         };
 
         /// <summary>
@@ -181,6 +183,8 @@ namespace Exiled.API.Features
                                     return DamageType.FriendlyFireDetector;
                                 if (translation.Id == DeathTranslations.SeveredHands.Id)
                                     return DamageType.SeveredHands;
+                                if (translation.Id == DeathTranslations.Hypothermia.Id)
+                                    return DamageType.Hypothermia;
 
                                 Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                                 break;
