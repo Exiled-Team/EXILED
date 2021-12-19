@@ -15,7 +15,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     /// <summary>
-    /// A Wrapper class for Scp-330.
+    /// A Wrapper class for <see cref="Scp330Bag"/>.
     /// </summary>
     public class Scp330
     {
@@ -35,9 +35,19 @@ namespace Exiled.API.Features
         public Scp330Bag Base { get; }
 
         /// <summary>
-        /// Gets the transform from the bag.
+        /// Gets the <see cref="Component.transform"/>.
         /// </summary>
         public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets the <see cref="Transform.position"/>.
+        /// </summary>
+        public Vector3 Position => Base.transform.position;
+
+        /// <summary>
+        /// Gets the <see cref="Transform.rotation"/>.
+        /// </summary>
+        public Quaternion Rotation => Base.transform.rotation;
 
         /// <summary>
         /// Gets the room the bag is in.
@@ -45,14 +55,14 @@ namespace Exiled.API.Features
         public Room Room { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the bag is allowed to be equipped.
+        /// Gets a value indicating whether the bag can be equipped.
         /// </summary>
-        public bool AllowEquip => Base.AllowEquip;
+        public bool CanBeEquipped => Base.AllowEquip;
 
         /// <summary>
-        /// Gets a value indicating whether the bag is allowed to be holstered.
+        /// Gets a value indicating whether the bag can be holstered.
         /// </summary>
-        public bool AllowHolster => Base.AllowHolster;
+        public bool CanBeHolstered => Base.AllowHolster;
 
         /// <summary>
         /// Gets all candies inside the bag.
@@ -60,24 +70,29 @@ namespace Exiled.API.Features
         public List<CandyKindID> Candies => Base.Candies;
 
         /// <summary>
-        /// Gets the owner of the bag.
+        /// Gets the <see cref="Player"/> who owns the bag.
         /// </summary>
-        public ReferenceHub Owner => Base.Owner;
+        public Player Owner => Player.Get(Base.Owner);
 
         /// <summary>
-        /// Gets the owners inventory.
+        /// Gets or sets the unique serial number for the item.
+        /// </summary>
+        public ushort Serial { get => Base.ItemSerial; set => Base.ItemSerial = value; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp330.Owner"/>s <see cref="Inventory"/>.
         /// </summary>
         public Inventory OwnerInventory => Base.OwnerInventory;
 
         /// <summary>
-        /// Gets the remaining cooldown from the bag.
+        /// Gets the remaining cooldown of the bag.
         /// </summary>
         public float RemainingCooldown => Base.RemainingCooldown;
 
         /// <summary>
         /// Gets the selected candy id.
         /// </summary>
-        public int SelectedCandiesId => Base.SelectedCandyId;
+        public int SelectedCandyId => Base.SelectedCandyId;
 
         /// <summary>
         /// Gets the weight of the bag.
@@ -87,7 +102,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether an candy is selected.
         /// </summary>
-        public bool CandySelected => Base.IsCandySelected;
+        public bool IsCandySelected => Base.IsCandySelected;
 
         /// <summary>
         /// Refreshes the bag.
@@ -95,7 +110,7 @@ namespace Exiled.API.Features
         public void ServerRefreshBag() => Base.ServerRefreshBag();
 
         /// <summary>
-        /// Give an random Candy to the player.
+        /// Give a random Candy to the player.
         /// </summary>
         /// <param name="player">Player to give a random candy to.</param>
         public void GiveRandomCandy(Player player)
@@ -109,7 +124,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Give a specific Candy to the player.
+        /// Gives a specific Candy to the player.
         /// </summary>
         /// <param name="player">Player to give the candy to.</param>
         /// <param name="candy"><see cref="CandyKindID"/>.</param>
