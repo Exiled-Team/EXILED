@@ -129,6 +129,7 @@ namespace Exiled.API.Features
                             return DamageType.Firearm;
                         case MicroHid _:
                             return DamageType.MicroHid;
+
                     }
                 }
                 else
@@ -155,6 +156,8 @@ namespace Exiled.API.Features
                             return DamageType.Scp018;
                         case RecontainmentDamageHandler _:
                             return DamageType.Recontainment;
+                        case DisruptorDamageHandler _:
+                            return DamageType.MolecularDisruptor;
                         case UniversalDamageHandler universal:
                             {
                                 DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
