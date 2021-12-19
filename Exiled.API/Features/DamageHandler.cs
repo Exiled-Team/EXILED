@@ -140,51 +140,51 @@ namespace Exiled.API.Features
                         case Scp096DamageHandler _:
                             return DamageType.Scp096;
                         case ScpDamageHandler scp:
-                            return DamageType.Scp;
-						case ExplosionDamageHandler _:
+                            {
+                                DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
+                                if (translation.Id == DeathTranslations.PocketDecay.Id)
+                                    return DamageType.Scp106;
+                                return translationConversion.ContainsKey(translation) ? translationConversion[translation] : DamageType.Scp;
+                            }
+
+                        case ExplosionDamageHandler _:
                             return DamageType.Explosion;
                         case Scp018DamageHandler _:
                             return DamageType.Scp018;
                         case RecontainmentDamageHandler _:
                             return DamageType.Recontainment;
-                        case CustomReasonDamageHandler_:
-                            return DamageType.CustomDamage;
-                        case Scp096DamageHandler _:
-                            return DamageType.Scp096;
                         case UniversalDamageHandler universal:
-                        {
-                            DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                            {
+                                DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                            if (translationConversion.ContainsKey(translation))
-                                return translationConversion[translation];
-                            if (translation.Id == DeathTranslations.Asphyxiated.Id)
-                                return DamageType.Asphyxiation;
-                            if (translation.Id == DeathTranslations.Bleeding.Id)
-                                return DamageType.Bleeding;
-                            if (translation.Id == DeathTranslations.Decontamination.Id)
-                                return DamageType.Decontamination;
-                            if (translation.Id == DeathTranslations.Poisoned.Id)
-                                return DamageType.Poison;
-                            if (translation.Id == DeathTranslations.Falldown.Id)
-                                return DamageType.Falldown;
-                            if (translation.Id == DeathTranslations.PocketDecay.Id)
-                                return DamageType.PocketDimension;
-                            if (translation.Id == DeathTranslations.Tesla.Id)
-                                return DamageType.Tesla;
-                            if (translation.Id == DeathTranslations.Scp207.Id)
-                                return DamageType.Scp207;
-                            if (translation.Id == DeathTranslations.Crushed.Id)
-                                return DamageType.Crushed;
-                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
-                                return DamageType.FemurBreaker;
-                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
-                                return DamageType.FriendlyFireDetector;
-                            if (translation.Id == DeathTranslations.SeveredHands.Id)
-                                return DamageType.SeveredHands;
+                                if (translationConversion.ContainsKey(translation))
+                                    return translationConversion[translation];
+                                if (translation.Id == DeathTranslations.Asphyxiated.Id)
+                                    return DamageType.Asphyxiation;
+                                if (translation.Id == DeathTranslations.Bleeding.Id)
+                                    return DamageType.Bleeding;
+                                if (translation.Id == DeathTranslations.Decontamination.Id)
+                                    return DamageType.Decontamination;
+                                if (translation.Id == DeathTranslations.Poisoned.Id)
+                                    return DamageType.Poison;
+                                if (translation.Id == DeathTranslations.Falldown.Id)
+                                    return DamageType.Falldown;
+                                if (translation.Id == DeathTranslations.Tesla.Id)
+                                    return DamageType.Tesla;
+                                if (translation.Id == DeathTranslations.Scp207.Id)
+                                    return DamageType.Scp207;
+                                if (translation.Id == DeathTranslations.Crushed.Id)
+                                    return DamageType.Crushed;
+                                if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
+                                    return DamageType.FemurBreaker;
+                                if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
+                                    return DamageType.FriendlyFireDetector;
+                                if (translation.Id == DeathTranslations.SeveredHands.Id)
+                                    return DamageType.SeveredHands;
 
-                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                            break;
-                        }
+                                Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                                break;
+                            }
                     }
                 }
 
