@@ -28,9 +28,9 @@ namespace Exiled.Events.Patches.Events.Cassie
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // SendingCassieMessageEventArgs ev = new SendingCassieMessageEventArgs(words, makeHold, makeNoise, true);
             // Cassie.OnSendingCassieMessage(ev);

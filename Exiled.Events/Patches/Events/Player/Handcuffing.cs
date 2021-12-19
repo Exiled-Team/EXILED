@@ -32,13 +32,13 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = 1;
+            int offset = 1;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Bne_Un_S) + offset;
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new RemovingHandcuffsEventArgs(Player, Player, true);
             // Handlers.Player.OnRemovingHandcuffs(ev);

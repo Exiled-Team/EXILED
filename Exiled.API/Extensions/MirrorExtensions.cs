@@ -45,15 +45,15 @@ namespace Exiled.API.Extensions
             {
                 if (WriterExtensionsValue.Count == 0)
                 {
-                    foreach (var method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2))
+                    foreach (MethodInfo method in typeof(NetworkWriterExtensions).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (var method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2 && x.ReturnType == typeof(void)))
+                    foreach (MethodInfo method in typeof(GeneratedNetworkCode).GetMethods().Where(x => !x.IsGenericMethod && x.GetParameters()?.Length == 2 && x.ReturnType == typeof(void)))
                         WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
 
-                    foreach (var serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
+                    foreach (Type serializer in typeof(ServerConsole).Assembly.GetTypes().Where(x => x.Name.EndsWith("Serializer")))
                     {
-                        foreach (var method in serializer.GetMethods().Where(x => x.ReturnType == typeof(void) && x.Name.StartsWith("Write")))
+                        foreach (MethodInfo method in serializer.GetMethods().Where(x => x.ReturnType == typeof(void) && x.Name.StartsWith("Write")))
                             WriterExtensionsValue.Add(method.GetParameters().First(x => x.ParameterType != typeof(NetworkWriter)).ParameterType, method);
                     }
                 }
@@ -71,17 +71,17 @@ namespace Exiled.API.Extensions
             {
                 if (SyncVarDirtyBitsValue.Count == 0)
                 {
-                    foreach (var property in typeof(ServerConsole).Assembly.GetTypes()
+                    foreach (PropertyInfo property in typeof(ServerConsole).Assembly.GetTypes()
                         .SelectMany(x => x.GetProperties())
                         .Where(m => m.Name.StartsWith("Network")))
                     {
-                        var setMethod = property.GetSetMethod();
+                        MethodInfo setMethod = property.GetSetMethod();
                         if (setMethod == null)
                             continue;
-                        var methodBody = setMethod.GetMethodBody();
+                        MethodBody methodBody = setMethod.GetMethodBody();
                         if (methodBody == null)
                             continue;
-                        var bytecodes = methodBody.GetILAsByteArray();
+                        byte[] bytecodes = methodBody.GetILAsByteArray();
                         if (!SyncVarDirtyBitsValue.ContainsKey($"{property.Name}"))
                             SyncVarDirtyBitsValue.Add($"{property.Name}", bytecodes[bytecodes.LastIndexOf((byte)OpCodes.Ldc_I8.Value) + 1]);
                     }
@@ -202,7 +202,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">Model type.</param>
         public static void ChangeAppearance(this Player player, RoleType type)
         {
-            foreach (var target in Player.List.Where(x => x != player))
+            foreach (Player target in Player.List.Where(x => x != player))
                 SendFakeSyncVar(target, player.ReferenceHub.networkIdentity, typeof(CharacterClassManager), nameof(CharacterClassManager.NetworkCurClass), (sbyte)type);
         }
 
@@ -288,10 +288,10 @@ namespace Exiled.API.Extensions
         {
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
-            foreach (var value in values)
+            foreach (object value in values)
                 WriterExtensions[value.GetType()].Invoke(null, new object[] { writer, value });
 
-            var msg = new RpcMessage
+            RpcMessage msg = new RpcMessage
             {
                 netId = behaviorOwner.netId,
                 componentIndex = GetComponentIndex(behaviorOwner, targetType),
@@ -344,7 +344,7 @@ namespace Exiled.API.Extensions
             {
                 netId = identity.netId,
             };
-            foreach (var ply in Player.List)
+            foreach (Player ply in Player.List)
             {
                 ply.Connection.Send(objectDestroyMessage, 0);
                 SendSpawnMessageMethodInfo.Invoke(null, new object[] { identity, ply.Connection });

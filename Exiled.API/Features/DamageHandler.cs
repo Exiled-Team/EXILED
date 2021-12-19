@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System.Collections.Generic;
+
     using Dissonance;
 
     using Exiled.API.Enums;
@@ -19,6 +21,46 @@ namespace Exiled.API.Features
     /// </summary>
     public class DamageHandler
     {
+        private readonly Dictionary<DeathTranslation, DamageType> translationConversion = new Dictionary<DeathTranslation, DamageType>
+            {
+                { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
+                { DeathTranslations.Bleeding, DamageType.Bleeding },
+                { DeathTranslations.Crushed, DamageType.Crushed },
+                { DeathTranslations.Decontamination, DamageType.Decontamination },
+                { DeathTranslations.Explosion, DamageType.Explosion },
+                { DeathTranslations.Falldown, DamageType.Falldown },
+                { DeathTranslations.Poisoned, DamageType.Poison },
+                { DeathTranslations.Recontained, DamageType.Recontainment },
+                { DeathTranslations.Scp049, DamageType.Scp049 },
+                { DeathTranslations.Scp096, DamageType.Scp096 },
+                { DeathTranslations.Scp173, DamageType.Scp173 },
+                { DeathTranslations.Scp207, DamageType.Scp207 },
+                { DeathTranslations.Scp939, DamageType.Scp939 },
+                { DeathTranslations.Tesla, DamageType.Tesla },
+                { DeathTranslations.Unknown, DamageType.Unknown },
+                { DeathTranslations.Warhead, DamageType.Warhead },
+                { DeathTranslations.Zombie, DamageType.Scp0492 },
+                { DeathTranslations.BulletWounds, DamageType.Firearm },
+                { DeathTranslations.PocketDecay, DamageType.PocketDimension },
+                { DeathTranslations.SeveredHands, DamageType.SeveredHands },
+                { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
+                { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
+                { DeathTranslations.MicroHID, DamageType.MicroHid },
+            };
+
+        private readonly Dictionary<ItemType, DamageType> itemConversion = new Dictionary<ItemType, DamageType>
+        {
+            { ItemType.GunCrossvec, DamageType.Crossvec },
+            { ItemType.GunLogicer, DamageType.Logicer },
+            { ItemType.GunRevolver, DamageType.Revolver },
+            { ItemType.GunShotgun, DamageType.Shotgun },
+            { ItemType.GunAK, DamageType.AK },
+            { ItemType.GunCOM15, DamageType.Com15 },
+            { ItemType.GunCOM18, DamageType.Com18 },
+            { ItemType.GunFSP9, DamageType.Fsp9 },
+            { ItemType.GunE11SR, DamageType.E11Sr },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DamageHandler"/> class.
         /// </summary>
@@ -29,7 +71,7 @@ namespace Exiled.API.Features
             Base = handlerBase;
             Target = target;
             Attacker = handlerBase is AttackerDamageHandler attacker ? Player.Get(attacker.Attacker.Hub) : null;
-            Item = Attacker?.CurrentItem;
+            Item = handlerBase is FirearmDamageHandler ? Attacker.CurrentItem : null;
         }
 
         /// <summary>
@@ -79,6 +121,9 @@ namespace Exiled.API.Features
                     switch (Item)
                     {
                         case Firearm _:
+                            if (Item != null && itemConversion.ContainsKey(Item.Type))
+                                return itemConversion[Item.Type];
+
                             return DamageType.Firearm;
                         case MicroHid _:
                             return DamageType.MicroHid;
@@ -88,11 +133,15 @@ namespace Exiled.API.Features
                 {
                     switch (Base)
                     {
+                        case CustomReasonDamageHandler _:
+                            return DamageType.Custom;
                         case WarheadDamageHandler _:
                             return DamageType.Warhead;
+                        case Scp096DamageHandler _:
+                            return DamageType.Scp096;
                         case ScpDamageHandler scp:
                             return DamageType.Scp;
-                        case ExplosionDamageHandler _:
+						case ExplosionDamageHandler _:
                             return DamageType.Explosion;
                         case Scp018DamageHandler _:
                             return DamageType.Scp018;
@@ -105,6 +154,9 @@ namespace Exiled.API.Features
                         case UniversalDamageHandler universal:
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+
+                            if (translationConversion.ContainsKey(translation))
+                                return translationConversion[translation];
                             if (translation.Id == DeathTranslations.Asphyxiated.Id)
                                 return DamageType.Asphyxiation;
                             if (translation.Id == DeathTranslations.Bleeding.Id)

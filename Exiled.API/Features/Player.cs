@@ -19,6 +19,8 @@ namespace Exiled.API.Features
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
+    using Footprinting;
+
     using Hints;
 
     using InventorySystem;
@@ -63,6 +65,7 @@ namespace Exiled.API.Features
 
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
+        private CustomHealthStat healthStat;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -125,6 +128,10 @@ namespace Exiled.API.Features
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
+
+                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
+                if (!value.playerStats._dictionarizedTypes.ContainsKey(typeof(HealthStat)))
+                    value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
         }
 
@@ -650,10 +657,10 @@ namespace Exiled.API.Features
         /// </summary>
         public float Health
         {
-            get => ReferenceHub.playerStats.StatModules[0].CurValue;
+            get => healthStat.CurValue;
             set
             {
-                ReferenceHub.playerStats.StatModules[0].CurValue = value;
+                healthStat.CurValue = value;
 
                 if (value > MaxHealth)
                     MaxHealth = (int)value;
@@ -665,8 +672,8 @@ namespace Exiled.API.Features
         /// </summary>
         public int MaxHealth
         {
-            get => ReferenceHub.characterClassManager.CurRole.maxHP;
-            set => ReferenceHub.characterClassManager.CurRole.maxHP = value;
+            get => (int)healthStat.MaxValue;
+            set => healthStat.CustomMaxValue = value;
         }
 
         /// <summary>
@@ -963,7 +970,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is in the pocket dimension.
         /// </summary>
-        public bool IsInPocketDimension => Map.FindParentRoom(GameObject).Type == RoomType.Pocket;
+        public bool IsInPocketDimension => Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
 
         /// <summary>
         /// Gets or sets a value indicating whether player should use stamina system.
@@ -1031,6 +1038,11 @@ namespace Exiled.API.Features
                 ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
+
+        /// <summary>
+        /// Gets the player's <see cref="Footprint"/>.
+        /// </summary>
+        public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
@@ -1814,7 +1826,7 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if the SessionVariables contains an element with the specified key; otherwise, <see langword="false"/>.</returns>
         public bool TryGetSessionVariable<T>(string key, out T result)
         {
-            if (SessionVariables.TryGetValue(key, out var value) && value is T type)
+            if (SessionVariables.TryGetValue(key, out object value) && value is T type)
             {
                 result = type;
                 return true;
@@ -1860,7 +1872,7 @@ namespace Exiled.API.Features
         /// <param name="effect">The <see cref="EffectType"/> to disable.</param>
         public void DisableEffect(EffectType effect)
         {
-            if (TryGetEffect(effect, out var playerEffect))
+            if (TryGetEffect(effect, out PlayerEffect playerEffect))
                 playerEffect.IsEnabled = false;
         }
 
@@ -1910,7 +1922,7 @@ namespace Exiled.API.Features
         /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
         public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
         {
-            if (TryGetEffect(effect, out var pEffect))
+            if (TryGetEffect(effect, out PlayerEffect pEffect))
                 ReferenceHub.playerEffectsController.EnableEffect(pEffect, duration, addDurationIfActive);
         }
 
@@ -1937,7 +1949,7 @@ namespace Exiled.API.Features
         {
             foreach (EffectType effect in effects)
             {
-                if (TryGetEffect(effect, out var pEffect))
+                if (TryGetEffect(effect, out PlayerEffect pEffect))
                     EnableEffect(pEffect, duration, addDurationIfActive);
             }
         }
@@ -1949,7 +1961,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="PlayerEffect"/>.</returns>
         public PlayerEffect GetEffect(EffectType effect)
         {
-            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(effect.Type(), out var playerEffect);
+            ReferenceHub.playerEffectsController.AllEffects.TryGetValue(effect.Type(), out PlayerEffect playerEffect);
 
             return playerEffect;
         }

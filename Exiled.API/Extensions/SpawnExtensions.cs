@@ -49,7 +49,7 @@ namespace Exiled.API.Extensions
             if (string.IsNullOrEmpty(doorName))
                 return null;
 
-            return DoorNametagExtension.NamedDoors.TryGetValue(doorName, out var nametag) ? nametag.transform : null;
+            return DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nametag) ? nametag.transform : null;
         }
 
         /// <summary>

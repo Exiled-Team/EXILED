@@ -39,8 +39,8 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            int offset = 0;
-            int index = 0;
+            int offset = 5;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRoleEventArgs));
             LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
@@ -50,7 +50,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // Player.Get(this._hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
@@ -100,6 +100,15 @@ namespace Exiled.Events.Patches.Events.Player
                 // escape = ev.IsEscaped
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Reason))),
                 new CodeInstruction(OpCodes.Starg, 3),
+
+                // ev.Player.MaxHealth = this.Classes.SafeGet(ev.NewRole)
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager.Classes))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Call, Method(typeof(RoleExtensionMethods), nameof(RoleExtensionMethods.SafeGet), new[] { typeof(Role[]), typeof(RoleType) })),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
             });
 
             offset = 0;
@@ -157,9 +166,9 @@ namespace Exiled.Events.Patches.Events.Player
                         bodyArmor.DontRemoveExcessOnDrop = true;
                     while (inventory.UserInventory.Items.Count > 0)
                     {
-                        var startCount = inventory.UserInventory.Items.Count;
-                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
-                        var item = inventory.ServerDropItem(key);
+                        int startCount = inventory.UserInventory.Items.Count;
+                        ushort key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        ItemPickupBase item = inventory.ServerDropItem(key);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
                         if (startCount == inventory.UserInventory.Items.Count)
@@ -178,8 +187,8 @@ namespace Exiled.Events.Patches.Events.Player
                 {
                     while (inventory.UserInventory.Items.Count > 0)
                     {
-                        var startCount = inventory.UserInventory.Items.Count;
-                        var key = inventory.UserInventory.Items.ElementAt(0).Key;
+                        int startCount = inventory.UserInventory.Items.Count;
+                        ushort key = inventory.UserInventory.Items.ElementAt(0).Key;
                         inventory.ServerRemoveItem(key, null);
 
                         // If the list wasn't changed, we need to manually remove the item to avoid a softlock.
@@ -193,9 +202,9 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.SendAmmoNextFrame = true;
                 }
 
-                foreach (var keyValuePair in ammo)
+                foreach (KeyValuePair<ItemType, ushort> keyValuePair in ammo)
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
-                foreach (var item in items)
+                foreach (ItemType item in items)
                     InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
             }
             catch (Exception e)

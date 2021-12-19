@@ -20,6 +20,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Pickups;
 
@@ -363,7 +364,7 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>The <see cref="Pickup"/> wrapper of the spawned <see cref="CustomItem"/>.</returns>
         public virtual Pickup Spawn(Vector3 position)
         {
-            var pickup = new Item(Type).Spawn(position);
+            Pickup pickup = CreateCorrectItem().Spawn(position);
             pickup.Weight = Weight;
             TrackedSerials.Add(pickup.Serial);
 
@@ -499,7 +500,7 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> who will receive the item.</param>
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
-        public virtual void Give(Player player, bool displayMessage = true) => Give(player, new Item(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
+        public virtual void Give(Player player, bool displayMessage = true) => Give(player, CreateCorrectItem(player.Inventory.CreateItemInstance(Type, true)), displayMessage);
 
         /// <summary>
         /// Called when the item is registered.
@@ -655,6 +656,18 @@ namespace Exiled.CustomItems.API.Features
             player.ShowHint(string.Format(Instance.Config.SelectedHint.Content, Name, Description), Instance.Config.PickedUpHint.Duration);
         }
 
+        /// <summary>
+        /// This method will take the item's <see cref="Type"/> and create a new <see cref="Item"/> of the correct subtype for the <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="itemBase">The <see cref="ItemBase"/> to be used for creation, if any.</param>
+        /// <returns>The <see cref="Item"/> created.</returns>
+        protected Item CreateCorrectItem(ItemBase itemBase = null)
+        {
+            if (itemBase == null)
+                itemBase = Server.Host.Inventory.CreateItemInstance(Type, false);
+            return Item.Get(itemBase);
+        }
+
         private void OnInternalOwnerChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Reason == SpawnReason.Escaped)
@@ -765,7 +778,7 @@ namespace Exiled.CustomItems.API.Features
                 ev.Player.Inventory.SendItemsNextFrame = true;
             }
 
-            var pickup = Spawn(ev.Player, ev.Item);
+            Pickup pickup = Spawn(ev.Player, ev.Item);
             if (pickup.Base.Rb != null && ev.IsThrown)
             {
                 Vector3 vector = (ev.Player.ReferenceHub.playerMovementSync.PlayerVelocity / 3f) + (ev.Player.ReferenceHub.PlayerCameraReference.forward * 6f * (Mathf.Clamp01(Mathf.InverseLerp(7f, 0.1f, pickup.Base.Rb.mass)) + 0.3f));

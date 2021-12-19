@@ -209,7 +209,7 @@ namespace Exiled.API.Features
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
-            var rooms = Rooms;
+            ReadOnlyCollection<Room> rooms = Rooms;
 
             Room room = null;
 
@@ -223,7 +223,7 @@ namespace Exiled.API.Features
             else
             {
                 // Check for Scp079 if it's a player
-                var ply = Player.Get(objectInRoom);
+                Player ply = Player.Get(objectInRoom);
 
                 // Raycasting doesn't make sense,
                 // Scp079 position is constant,
@@ -358,6 +358,34 @@ namespace Exiled.API.Features
         {
             foreach (ZoneType zone in zoneTypes)
                 LockAllDoors(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all doors of the facility.
+        /// </summary>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        public static void UnlockAllDoors(ZoneType zoneType)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.ChangeLock(DoorLockType.None);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unlocks all doors of the facility.
+        /// </summary>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                UnlockAllDoors(zone);
         }
 
         /// <summary>
