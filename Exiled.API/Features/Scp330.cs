@@ -156,7 +156,7 @@ namespace Exiled.API.Features
         {
             if (!player.HasItem(ItemType.SCP330))
                 return;
-            player.RemoveItem(new Items.Item(ItemType.SCP330), true);
+            player.RemoveItem(new Items.Item(ItemType.SCP330));
         }
     }
 }
