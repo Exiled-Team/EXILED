@@ -153,7 +153,7 @@ namespace Exiled.API.Enums
         Vitality,
 
         /// <summary>
-        /// Amougs.
+        /// Causes the player to slowly freeze.
         /// </summary>
         Hypothermia,
     }
