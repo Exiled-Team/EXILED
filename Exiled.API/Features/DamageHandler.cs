@@ -9,8 +9,6 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
 
-    using Dissonance;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
@@ -22,31 +20,32 @@ namespace Exiled.API.Features
     public class DamageHandler
     {
         private readonly Dictionary<DeathTranslation, DamageType> translationConversion = new Dictionary<DeathTranslation, DamageType>
-            {
-                { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
-                { DeathTranslations.Bleeding, DamageType.Bleeding },
-                { DeathTranslations.Crushed, DamageType.Crushed },
-                { DeathTranslations.Decontamination, DamageType.Decontamination },
-                { DeathTranslations.Explosion, DamageType.Explosion },
-                { DeathTranslations.Falldown, DamageType.Falldown },
-                { DeathTranslations.Poisoned, DamageType.Poison },
-                { DeathTranslations.Recontained, DamageType.Recontainment },
-                { DeathTranslations.Scp049, DamageType.Scp049 },
-                { DeathTranslations.Scp096, DamageType.Scp096 },
-                { DeathTranslations.Scp173, DamageType.Scp173 },
-                { DeathTranslations.Scp207, DamageType.Scp207 },
-                { DeathTranslations.Scp939, DamageType.Scp939 },
-                { DeathTranslations.Tesla, DamageType.Tesla },
-                { DeathTranslations.Unknown, DamageType.Unknown },
-                { DeathTranslations.Warhead, DamageType.Warhead },
-                { DeathTranslations.Zombie, DamageType.Scp0492 },
-                { DeathTranslations.BulletWounds, DamageType.Firearm },
-                { DeathTranslations.PocketDecay, DamageType.PocketDimension },
-                { DeathTranslations.SeveredHands, DamageType.SeveredHands },
-                { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
-                { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
-                { DeathTranslations.MicroHID, DamageType.MicroHid },
-            };
+        {
+            { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
+            { DeathTranslations.Bleeding, DamageType.Bleeding },
+            { DeathTranslations.Crushed, DamageType.Crushed },
+            { DeathTranslations.Decontamination, DamageType.Decontamination },
+            { DeathTranslations.Explosion, DamageType.Explosion },
+            { DeathTranslations.Falldown, DamageType.Falldown },
+            { DeathTranslations.Poisoned, DamageType.Poison },
+            { DeathTranslations.Recontained, DamageType.Recontainment },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
+            { DeathTranslations.Scp049, DamageType.Scp049 },
+            { DeathTranslations.Scp096, DamageType.Scp096 },
+            { DeathTranslations.Scp173, DamageType.Scp173 },
+            { DeathTranslations.Scp207, DamageType.Scp207 },
+            { DeathTranslations.Scp939, DamageType.Scp939 },
+            { DeathTranslations.Tesla, DamageType.Tesla },
+            { DeathTranslations.Unknown, DamageType.Unknown },
+            { DeathTranslations.Warhead, DamageType.Warhead },
+            { DeathTranslations.Zombie, DamageType.Scp0492 },
+            { DeathTranslations.BulletWounds, DamageType.Firearm },
+            { DeathTranslations.PocketDecay, DamageType.PocketDimension },
+            { DeathTranslations.SeveredHands, DamageType.SeveredHands },
+            { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
+            { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
+            { DeathTranslations.MicroHID, DamageType.MicroHid },
+        };
 
         private readonly Dictionary<ItemType, DamageType> itemConversion = new Dictionary<ItemType, DamageType>
         {
@@ -140,12 +139,12 @@ namespace Exiled.API.Features
                         case Scp096DamageHandler _:
                             return DamageType.Scp096;
                         case ScpDamageHandler scp:
-                        {
-                            DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
-                            if (translation.Id == DeathTranslations.PocketDecay.Id)
-                                return DamageType.Scp106;
-                            return translationConversion.ContainsKey(translation) ? translationConversion[translation] : DamageType.Scp;
-                        }
+                            {
+                                DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
+                                if (translation.Id == DeathTranslations.PocketDecay.Id)
+                                    return DamageType.Scp106;
+                                return translationConversion.ContainsKey(translation) ? translationConversion[translation] : DamageType.Scp;
+                            }
 
                         case ExplosionDamageHandler _:
                             return DamageType.Explosion;
@@ -153,38 +152,18 @@ namespace Exiled.API.Features
                             return DamageType.Scp018;
                         case RecontainmentDamageHandler _:
                             return DamageType.Recontainment;
+                        case DisruptorDamageHandler _:
+                            return DamageType.MolecularDisruptor;
                         case UniversalDamageHandler universal:
-                        {
-                            DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+                            {
+                                DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                            if (translationConversion.ContainsKey(translation))
-                                return translationConversion[translation];
-                            if (translation.Id == DeathTranslations.Asphyxiated.Id)
-                                return DamageType.Asphyxiation;
-                            if (translation.Id == DeathTranslations.Bleeding.Id)
-                                return DamageType.Bleeding;
-                            if (translation.Id == DeathTranslations.Decontamination.Id)
-                                return DamageType.Decontamination;
-                            if (translation.Id == DeathTranslations.Poisoned.Id)
-                                return DamageType.Poison;
-                            if (translation.Id == DeathTranslations.Falldown.Id)
-                                return DamageType.Falldown;
-                            if (translation.Id == DeathTranslations.Tesla.Id)
-                                return DamageType.Tesla;
-                            if (translation.Id == DeathTranslations.Scp207.Id)
-                                return DamageType.Scp207;
-                            if (translation.Id == DeathTranslations.Crushed.Id)
-                                return DamageType.Crushed;
-                            if (translation.Id == DeathTranslations.UsedAs106Bait.Id)
-                                return DamageType.FemurBreaker;
-                            if (translation.Id == DeathTranslations.FriendlyFireDetector.Id)
-                                return DamageType.FriendlyFireDetector;
-                            if (translation.Id == DeathTranslations.SeveredHands.Id)
-                                return DamageType.SeveredHands;
+                                if (translationConversion.ContainsKey(translation))
+                                    return translationConversion[translation];
 
-                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
-                            break;
-                        }
+                                Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                                break;
+                            }
                     }
                 }
 
