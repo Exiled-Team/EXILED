@@ -179,8 +179,8 @@ namespace Exiled.API.Features
         public void Destroy()
         {
             PlayerManager.RemovePlayer(GameObject, CustomNetworkManager.slots);
-            Object.Destroy(GameObject);
             Dictionary.Remove(GameObject);
+            Object.Destroy(GameObject);
         }
 
         /// <summary>
