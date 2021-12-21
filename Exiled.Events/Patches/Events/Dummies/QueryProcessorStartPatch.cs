@@ -33,7 +33,8 @@ namespace Exiled.Events.Patches.Events.Dummies
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             int offset = 1;
-            int index = newInstructions.FindIndex(instruction => (FieldInfo)instruction.operand == Field(typeof(QueryProcessor), nameof(QueryProcessor._ipAddress))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld &&
+            (FieldInfo)instruction.operand == Field(typeof(QueryProcessor), nameof(QueryProcessor._ipAddress))) + offset;
 
             Label jmp = generator.DefineLabel();
 
@@ -42,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Dummies
             newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(QueryProcessor), nameof(QueryProcessor.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsDummy))),
                 new CodeInstruction(OpCodes.Brtrue_S, jmp),

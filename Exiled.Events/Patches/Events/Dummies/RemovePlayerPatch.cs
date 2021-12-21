@@ -35,7 +35,8 @@ namespace Exiled.Events.Patches.Events.Dummies
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Dummy), nameof(Dummy.List))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.Count)).MakeGenericMethod(typeof(Dummy))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToList)).MakeGenericMethod(typeof(Dummy))),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(List<Dummy>), nameof(List<Dummy>.Count))),
                 new CodeInstruction(OpCodes.Sub),
             });
 

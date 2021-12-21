@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Dummies
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Player), nameof(API.Features.Player.IsDummy))),
                 new CodeInstruction(OpCodes.Brtrue_S, ret),
