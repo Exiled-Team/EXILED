@@ -48,11 +48,6 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// <see cref="EffectType.Hypothermia"/>
-        /// </summary>
-        Hypothermia,
-
-        /// <summary>
         /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
@@ -201,5 +196,10 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.MolecularDisruptor"/>.
         /// </summary>
         MolecularDisruptor,
+
+        /// <summary>
+        /// <see cref="EffectType.Hypothermia"/>
+        /// </summary>
+        Hypothermia,
     }
 }
