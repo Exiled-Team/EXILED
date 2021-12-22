@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         public void ServerRefreshBag() => Base.ServerRefreshBag();
 
         /// <summary>
-        /// Give a random Candy to the player.
+        /// Gives a random Candy to the player.
         /// </summary>
         /// <param name="player">Player to give a random candy to.</param>
         public void GiveRandomCandy(Player player)
