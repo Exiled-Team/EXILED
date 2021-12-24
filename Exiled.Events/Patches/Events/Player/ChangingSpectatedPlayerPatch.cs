@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             int index = newInstructions.FindIndex(x => x.opcode == OpCodes.Ret) + 1;
 
-            var firstLabel = new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]);
+            CodeInstruction firstLabel = new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]);
             newInstructions[index].WithLabels(endLabel);
 
             newInstructions.InsertRange(

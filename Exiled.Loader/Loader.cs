@@ -252,7 +252,7 @@ namespace Exiled.Loader
 
                     IPlugin<IConfig> plugin = null;
 
-                    var constructor = type.GetConstructor(Type.EmptyTypes);
+                    ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor != null)
                     {
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
@@ -263,7 +263,7 @@ namespace Exiled.Loader
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
 
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        object value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -387,8 +387,8 @@ namespace Exiled.Loader
 
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
-            var requiredVersion = plugin.RequiredExiledVersion;
-            var actualVersion = Version;
+            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version actualVersion = Version;
 
             // Check Major version
             // It's increased when an incompatible API change was made

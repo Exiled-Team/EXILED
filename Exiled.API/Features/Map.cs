@@ -209,7 +209,7 @@ namespace Exiled.API.Features
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
-            var rooms = Rooms;
+            ReadOnlyCollection<Room> rooms = Rooms;
 
             Room room = null;
 
@@ -223,7 +223,7 @@ namespace Exiled.API.Features
             else
             {
                 // Check for Scp079 if it's a player
-                var ply = Player.Get(objectInRoom);
+                Player ply = Player.Get(objectInRoom);
 
                 // Raycasting doesn't make sense,
                 // Scp079 position is constant,

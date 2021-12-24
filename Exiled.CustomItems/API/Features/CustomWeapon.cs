@@ -67,7 +67,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
         {
-            var pickup = new Item(Type).Spawn(position);
+            Pickup pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
@@ -81,7 +81,7 @@ namespace Exiled.CustomItems.API.Features
             {
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
-                var pickup = firearm.Spawn(position);
+                Pickup pickup = firearm.Spawn(position);
 
                 TrackedSerials.Add(pickup.Serial);
 
