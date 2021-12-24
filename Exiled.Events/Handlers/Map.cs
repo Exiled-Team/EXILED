@@ -13,6 +13,8 @@ namespace Exiled.Events.Handlers
 
     using MapGeneration.Distributors;
 
+    using MEC;
+
     using static Exiled.Events.Events;
 
     /// <summary>
@@ -143,7 +145,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called after the map is generated.
         /// </summary>
-        public static void OnGenerated() => Generated.InvokeSafely();
+        public static void OnGenerated() => Timing.CallDelayed(0.15f, () => Generated.InvokeSafely());
 
         /// <summary>
         /// Called before the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
