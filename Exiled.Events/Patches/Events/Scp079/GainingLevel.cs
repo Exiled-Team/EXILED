@@ -31,11 +31,11 @@ namespace Exiled.Events.Patches.Events.Scp079
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var ev = generator.DeclareLocal(typeof(GainingLevelEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(GainingLevelEventArgs));
 
             // GainingLevelEventArgs ev = new GainingLevelEventArgs(Player, newLvl, true);
             //

@@ -34,14 +34,14 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = -7;
+            int offset = -7;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+                                                                 (MethodInfo)instruction.operand == Method(typeof(Mathf), nameof(Mathf.Clamp01))) + offset;
 
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             newInstructions.InsertRange(index, new[]
             {

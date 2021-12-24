@@ -31,11 +31,11 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = -6;
-            var index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
+            int offset = -6;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
 
-            var ev = generator.DeclareLocal(typeof(DroppingAmmoEventArgs));
-            var returnLabel = generator.DefineLabel();
+            LocalBuilder ev = generator.DeclareLocal(typeof(DroppingAmmoEventArgs));
+            Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {

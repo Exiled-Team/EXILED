@@ -36,18 +36,18 @@ namespace Exiled.Events.Patches.Events.Player
             int index = newInstructions.FindIndex(instruction => instruction.operand is MethodInfo methodInfo
             && methodInfo == Method(typeof(Locker), nameof(Locker.RpcPlayDenied))) + offset;
 
-            var openLockerLabel = newInstructions[index].labels[0];
+            Label openLockerLabel = newInstructions[index].labels[0];
 
             offset = 1;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
-            var runChecksLabel = newInstructions[index].labels[0];
+            Label runChecksLabel = newInstructions[index].labels[0];
 
             // Remove the default IsAllowed check.
             newInstructions.RemoveRange(index, 13);
 
-            var evLabel = generator.DefineLabel();
-            var trueLabel = generator.DefineLabel();
+            Label evLabel = generator.DefineLabel();
+            Label trueLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
             {
