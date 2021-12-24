@@ -101,9 +101,18 @@ namespace Exiled.API.Features.Items
         public bool IsCandySelected => Base.IsCandySelected;
 
         /// <summary>
-        /// Gets the <see cref="CandyKindID"/>s held in this bag.
+        /// Gets the <see cref="CandyType"/>s held in this bag.
         /// </summary>
-        public IReadOnlyCollection<CandyKindID> Candies => Base.Candies.AsReadOnly();
+        public IReadOnlyCollection<CandyType> Candies
+        {
+            get
+            {
+                List<CandyType> list = new List<CandyType>();
+                foreach (var candy in Base.Candies)
+                    list.Add((CandyType)CandyType.Parse(typeof(CandyKindID), candy.ToString()));
+                return list.AsReadOnly();
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="Owner"/>s <see cref="Inventory"/>.
