@@ -9,6 +9,9 @@ namespace Exiled.API.Features.Items
 {
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
+
+    using InventorySystem;
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
@@ -43,9 +46,69 @@ namespace Exiled.API.Features.Items
         public new Scp330Bag Base { get; }
 
         /// <summary>
+        /// Gets the <see cref="Player"/> who owns the bag.
+        /// </summary>
+        public new Player Owner => Player.Get(Base.Owner);
+
+        /// <summary>
+        /// Gets the <see cref="Component.transform"/>.
+        /// </summary>
+        public Transform Transform => Base.transform;
+
+        /// <summary>
+        /// Gets or sets the <see cref="Transform.position"/>.
+        /// </summary>
+        public Vector3 Position { get => Base.transform.position; set => Base.transform.position = value; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Transform.rotation"/>.
+        /// </summary>
+        public Quaternion Rotation { get => Base.transform.rotation; set => Base.transform.rotation = value; }
+
+        /// <summary>
+        /// Gets a value indicating whether the bag can be equipped.
+        /// </summary>
+        public bool CanBeEquipped => Base.AllowEquip;
+
+        /// <summary>
+        /// Gets a value indicating whether the bag can be holstered.
+        /// </summary>
+        public bool CanBeHolstered => Base.AllowHolster;
+
+        /// <summary>
+        /// Gets or sets the unique serial number for the item.
+        /// </summary>
+        public new ushort Serial { get => Base.ItemSerial; set => Base.ItemSerial = value; }
+
+        /// <summary>
+        /// Gets or sets the remaining cooldown of the bag.
+        /// </summary>
+        public new float RemainingCooldown { get => Base.RemainingCooldown; set => Base.RemainingCooldown = value; }
+
+        /// <summary>
+        /// Gets the selected candy id.
+        /// </summary>
+        public int SelectedCandyId => Base.SelectedCandyId;
+
+        /// <summary>
+        /// Gets the weight of the bag.
+        /// </summary>
+        public new float Weight => Base.Weight;
+
+        /// <summary>
+        /// Gets a value indicating whether an candy is selected.
+        /// </summary>
+        public bool IsCandySelected => Base.IsCandySelected;
+
+        /// <summary>
         /// Gets the <see cref="CandyKindID"/>s held in this bag.
         /// </summary>
         public IReadOnlyCollection<CandyKindID> Candies => Base.Candies.AsReadOnly();
+
+        /// <summary>
+        /// Gets the <see cref="Owner"/>s <see cref="Inventory"/>.
+        /// </summary>
+        public Inventory OwnerInventory => Base.OwnerInventory;
 
         /// <summary>
         /// Gets or sets the exposed type. When set to a candy color, the bag will appear as that candy when dropped with the <see cref="Spawn"/> method. Setting it to <see cref="CandyKindID.None"/> results in it looking like a bag.
@@ -129,6 +192,17 @@ namespace Exiled.API.Features.Items
             }
 
             return pickups;
+        }
+
+        /// <summary>
+        /// Adds an random candie to this bag.
+        /// </summary>
+        public void AddRandomCandy()
+        {
+            int randomCandyType = UnityEngine.Random.Range(1, 8);
+
+            Base.TryAddSpecific((CandyKindID)randomCandyType);
+            Base.ServerRefreshBag();
         }
 
         /// <summary>
