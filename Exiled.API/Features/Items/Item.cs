@@ -25,6 +25,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
 
@@ -138,9 +139,8 @@ namespace Exiled.API.Features.Items
                     return new Keycard(keycard);
                 case UsableItem usable:
                 {
-                    // TODO: Re-implement
-                    /*if (usable is Scp330Bag scp330Bag)
-                        return new Scp330(scp330Bag);*/
+                    if (usable is Scp330Bag scp330Bag)
+                        return new Scp330(scp330Bag);
                     return new Usable(usable);
                 }
 

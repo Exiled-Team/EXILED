@@ -31,5 +31,15 @@ namespace Exiled.CreditTags.Enums
         /// Exiled Plugin Developer.
         /// </summary>
         PluginDev = 3,
+
+        /// <summary>
+        /// EXILED Tournament Participant.
+        /// </summary>
+        TournamentParticipant = 4,
+
+        /// <summary>
+        /// EXILED Tournament Champion.
+        /// </summary>
+        TournamentChampion = 5,
     }
 }

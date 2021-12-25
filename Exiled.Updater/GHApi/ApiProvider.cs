@@ -7,6 +7,7 @@
 
 namespace Exiled.Updater.GHApi
 {
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace Exiled.Updater.GHApi
 
         public static async Task<Release[]> GetReleases(long repoId, GetReleasesSettings settings, HttpClient client)
         {
-            var url = string.Format(GetReleasesTemplate, repoId) + settings.Build();
-            using (var httpResponse = await client.GetAsync(url).ConfigureAwait(false))
-            using (var streamContnet = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
+            string url = string.Format(GetReleasesTemplate, repoId) + settings.Build();
+            using (HttpResponseMessage httpResponse = await client.GetAsync(url).ConfigureAwait(false))
+            using (Stream streamContnet = await httpResponse.Content.ReadAsStreamAsync().ConfigureAwait(false))
             {
                 return JsonSerializer.Deserialize<Release[]>(streamContnet)
                     .OrderByDescending(r => r.CreatedAt.Ticks)

@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="global::Ragdoll.UpdateCleanup()"/>.
+    /// Patches <see cref="global::Ragdoll.UpdateCleanup"/>.
     /// </summary>
     [HarmonyPatch(typeof(global::Ragdoll), nameof(global::Ragdoll.UpdateCleanup))]
     internal class RagdollCleanUpPatch

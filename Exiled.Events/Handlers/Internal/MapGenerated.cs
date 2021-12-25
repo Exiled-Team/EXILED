@@ -19,6 +19,8 @@ namespace Exiled.Events.Handlers.Internal
     using MapGeneration;
     using MapGeneration.Distributors;
 
+    using MEC;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -45,7 +47,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
-            GenerateCache();
+            Timing.CallDelayed(0.15f, GenerateCache);
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();

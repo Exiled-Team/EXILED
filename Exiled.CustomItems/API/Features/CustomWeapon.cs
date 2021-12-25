@@ -70,6 +70,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
+            Pickup pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
@@ -247,7 +248,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (!Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || !(ev.DamageHandler is FirearmDamageHandler firearmDamageHandler) || firearmDamageHandler.WeaponType != Type)
+            if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler.Item != null && ev.Handler.Item.Type != Type))
                 return;
 
             OnHurting(ev);

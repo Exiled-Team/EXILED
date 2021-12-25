@@ -30,11 +30,11 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var ev = generator.DeclareLocal(typeof(ChangingRadioPresetEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingRadioPresetEventArgs));
 
             newInstructions.InsertRange(0, new[]
             {

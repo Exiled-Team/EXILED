@@ -20,6 +20,7 @@ namespace Exiled.Events.EventArgs
     public class HurtingEventArgs : EventArgs
     {
         private DamageHandlerBase damageHandler;
+        private DamageHandler handler;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HurtingEventArgs"/> class.
@@ -32,7 +33,7 @@ namespace Exiled.Events.EventArgs
                 ? Player.Get(attackerDamageHandler.Attacker.Hub)
                 : null;
             Target = target;
-            DamageHandler = damageHandler;
+            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -48,10 +49,24 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the hit informations.
         /// </summary>
+        [Obsolete("Use HurtingEventArgs.Handler instead.", true)]
         public DamageHandlerBase DamageHandler
         {
-            get => damageHandler;
-            private set => damageHandler = value;
+            get => Handler.Base;
+            private set => Handler.Base = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/> for the event.
+        /// </summary>
+        public DamageHandler Handler
+        {
+            get => handler;
+            set
+            {
+                handler = value;
+                damageHandler = value.Base;
+            }
         }
 
         /// <summary>
@@ -59,12 +74,8 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         public float Amount
         {
-            get => damageHandler is StandardDamageHandler standardDamageHandler ? standardDamageHandler.Damage : 0.0f;
-            set
-            {
-                if (damageHandler is StandardDamageHandler standardDamageHandler)
-                    standardDamageHandler.Damage = value;
-            }
+            get => Handler.Amount;
+            set => Handler.Amount = value;
         }
 
         /// <summary>

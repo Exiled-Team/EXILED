@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -31,7 +32,7 @@ namespace Exiled.Events.EventArgs
             ItemsToDrop = new List<Item>(target.Items.ToList());
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
-            DamageHandler = damageHandler;
+            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -52,7 +53,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the damage handler for the event.
         /// </summary>
-        public DamageHandlerBase DamageHandler { get; set; }
+        [Obsolete("Use DyingEventArgs.Handler", true)]
+        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
+
+        /// <summary>
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
+        /// </summary>
+        public DamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be killed.

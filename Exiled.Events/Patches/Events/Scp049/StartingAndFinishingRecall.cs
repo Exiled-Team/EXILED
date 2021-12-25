@@ -45,12 +45,12 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp049), nameof(Scp049.Hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldflda, Field(typeof(global::Ragdoll), nameof(global::Ragdoll.Info))),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(RagdollInfo), nameof(RagdollInfo.OwnerHub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp049), nameof(Scp049.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingRecallEventArgs))[0]),
@@ -65,10 +65,10 @@ namespace Exiled.Events.Patches.Events.Scp049
 
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldloc_S, 6),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp049), nameof(Scp049.Hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldloc_S, 6),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(FinishingRecallEventArgs))[0]),
