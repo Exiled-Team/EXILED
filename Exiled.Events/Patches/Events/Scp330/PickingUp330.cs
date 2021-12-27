@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             // We put the event code right at the beginning of the method.
             newInstructions.InsertRange(0, new[]
             {
-                // var ev = new PickingUpSco330EventArgs(Player.Get(ply), pickup);
+                // var ev = new PickingUpScp330EventArgs(Player.Get(ply), pickup);
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_1),
