@@ -418,11 +418,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Door"/>.
         /// </summary>
-        /// <param name="onlyUnbroken">Whether or not it filthers broken doors.</param>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door GetRandomDoor(bool onlyUnbroken = false)
+        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            return onlyUnbroken ? DoorsValue.Where(x => !x.IsBroken).ToList().RandomItem() : DoorsValue.RandomItem();
+            return onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList().RandomItem() : DoorsValue.RandomItem();
         }
 
         /// <summary>
