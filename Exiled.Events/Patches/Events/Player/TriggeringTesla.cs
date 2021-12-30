@@ -47,17 +47,15 @@ namespace Exiled.Events.Patches.Events.Player
                         if (allHub.Value.isDedicatedServer || allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
                             continue;
 
-                        if (!inIdleRange)
-                            inIdleRange = teslaGate.PlayerInIdleRange(allHub.Value);
-
-                        if (teslaGate.PlayerInRange(allHub.Value))
+                        if (teslaGate.PlayerInIdleRange(allHub.Value))
                         {
-                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate, teslaGate.PlayerInHurtRange(allHub.Key), inIdleRange);
+                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate, teslaGate.PlayerInHurtRange(allHub.Key), teslaGate.PlayerInRange(allHub.Value));
                             Player.OnTriggeringTesla(ev);
 
                             if (ev.IsTriggerable && !isTriggerable)
                                 isTriggerable = ev.IsTriggerable;
-                            if (ev.IsInIdleRange && !inIdleRange)
+
+                            if (!inIdleRange)
                                 inIdleRange = ev.IsInIdleRange;
                         }
                     }

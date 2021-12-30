@@ -24,8 +24,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
         /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
         /// <param name="isInIdleRange"><inheritdoc cref="IsInIdleRange"/></param>
-
-        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable = true, bool isInIdleRange = true)
+        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable, bool isInIdleRange = true)
         {
             Player = player;
             Tesla = tesla;
