@@ -20,11 +20,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TriggeringTeslaEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
         /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
         /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        public TriggeringTeslaEventArgs(Player player, bool isInHurtingRange, bool isTriggerable = true)
+        public TriggeringTeslaEventArgs(Player player,TeslaGate tesla, bool isInHurtingRange, bool isTriggerable = true)
         {
             Player = player;
+            Tesla = tesla;
             IsInHurtingRange = isInHurtingRange;
             IsTriggerable = isTriggerable;
         }
@@ -33,6 +35,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who triggered the tesla.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets the Tesla.
+        /// </summary>
+        public TeslaGate Tesla { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is in hurting range.
