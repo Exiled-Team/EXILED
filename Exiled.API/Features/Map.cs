@@ -423,7 +423,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            return onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList().RandomItem() : DoorsValue.RandomItem();
+            return onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList().RandomItem() : DoorsValue.RandomItem();
         }
 
         /// <summary>
