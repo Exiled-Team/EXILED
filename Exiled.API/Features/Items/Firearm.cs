@@ -50,7 +50,7 @@ namespace Exiled.API.Features.Items
                     break;
             }
 
-            Base._status = new FirearmStatus(MaxAmmo, FirearmStatusFlags.MagazineInserted, 0);
+            Base._status = new FirearmStatus(MaxAmmo, FirearmStatusFlags.MagazineInserted, Base.GetCurrentAttachmentsCode());
         }
 
         /// <summary>
