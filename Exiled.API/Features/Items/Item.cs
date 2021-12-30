@@ -206,7 +206,7 @@ namespace Exiled.API.Features.Items
                             ammo = 6;
                             break;
                         case MolecularDisruptor _:
-                            ammo = 1;
+                            ammo = 5;
                             break;
                         default:
                             ammo = 0;
