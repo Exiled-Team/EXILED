@@ -43,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp330
             newInstructions.InsertRange(index, new[]
             {
                 // var ev = new InteractingScp330EventArgs(Player.Get(ply), num);
-                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(InteractingScp330EventArgs))[0]),
