@@ -400,8 +400,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Room"/>.
         /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <returns><see cref="Room"/> object.</returns>
-        public static Room GetRandomRoom() => Rooms[Random.Range(0, Rooms.Count)];
+        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
+        {
+            int count = 0;
+
+            if (type == ZoneType.Unspecified)
+                count = Rooms.Count();
+            else
+                count = Rooms.Where(x => x.Zone == type).Count();
+            return Rooms[Random.Range(0, count)];
+        }
 
         /// <summary>
         /// Gets an random <see cref="Camera079"/>.
@@ -412,9 +422,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Door"/>.
         /// </summary>
-        /// <param name="onlyUnbroken">test.</param>
+        /// <param name="onlyUnbroken">Whether or not it filthers broken doors.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door GetRandomDoor(bool onlyUnbroken = false) => Doors[Random.Range(0, Doors.Count)];
+        public static Door GetRandomDoor(bool onlyUnbroken = false)
+        {
+            int count = 0;
+
+            if (!onlyUnbroken)
+                count = Doors.Count();
+            else
+                count = Doors.Where(x => x is IDamageableDoor dbase && dbase.IsDestroyed).Count();
+
+            return Doors[Random.Range(0, count)];
+        }
 
         /// <summary>
         /// Gets an random <see cref="Lift"/>.
@@ -431,9 +451,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Pickup"/>.
         /// </summary>
-        /// <param name="type">Test.</param>
+        /// <param name="type">Filters by <see cref="ItemType"/>.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
-        public static Pickup GetRandomPickup(ItemType type = ItemType.None) => Pickups[Random.Range(0, Pickups.Count)];
+        public static Pickup GetRandomPickup(ItemType type = ItemType.None)
+        {
+            int count = 0;
+
+            if (type == ItemType.None)
+                count = Pickups.Count();
+            else
+                count = Pickups.Where(x => x.Type == type).Count();
+
+            return Pickups[Random.Range(0, count)];
+        }
 
         /// <summary>
         /// Gets the camera with the given ID.
