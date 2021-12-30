@@ -191,5 +191,15 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunE11SR"/>.
         /// </summary>
         E11Sr,
+
+        /// <summary>
+        /// Damage caused by <see cref="ItemType.MolecularDisruptor"/>.
+        /// </summary>
+        MolecularDisruptor,
+
+        /// <summary>
+        /// Damage caused by <see cref="EffectType.Hypothermia"/>.
+        /// </summary>
+        Hypothermia,
     }
 }

@@ -151,5 +151,10 @@ namespace Exiled.API.Enums
         /// Causes the player to slowly regenerate health.
         /// </summary>
         Vitality,
+
+        /// <summary>
+        /// Causes the player to slowly freeze.
+        /// </summary>
+        Hypothermia,
     }
 }
