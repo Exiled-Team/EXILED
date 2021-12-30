@@ -404,13 +404,10 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
         {
-            int count = 0;
-
-            if (type == ZoneType.Unspecified)
-                count = Rooms.Count();
-            else
-                count = Rooms.Where(x => x.Zone == type).Count();
-            return Rooms[Random.Range(0, count)];
+            List<Room> rooms = Rooms.ToList();
+            if (type != ZoneType.Unspecified)
+                rooms = Rooms.Where(x => x.Zone == type).ToList();
+            return rooms[Random.Range(0, rooms.Count)];
         }
 
         /// <summary>
@@ -426,14 +423,10 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door GetRandomDoor(bool onlyUnbroken = false)
         {
-            int count = 0;
-
-            if (!onlyUnbroken)
-                count = Doors.Count();
-            else
-                count = Doors.Where(x => x is IDamageableDoor dbase && !dbase.IsDestroyed).Count();
-
-            return Doors[Random.Range(0, count)];
+            List<Door> doors = Doors.ToList();
+            if (onlyUnbroken)
+                doors = Doors.Where(x => x is IDamageableDoor dbase && !dbase.IsDestroyed).ToList();
+            return doors[Random.Range(0, doors.Count)];
         }
 
         /// <summary>
@@ -455,14 +448,10 @@ namespace Exiled.API.Features
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
-            int count = 0;
-
-            if (type == ItemType.None)
-                count = Pickups.Count();
-            else
-                count = Pickups.Where(x => x.Type == type).Count();
-
-            return Pickups[Random.Range(0, count)];
+            List<Pickup> pickups = Pickups.ToList();
+            if (type != ItemType.None)
+                pickups = Pickups.Where(x => x.Type == type).ToList();
+            return pickups[Random.Range(0, pickups.Count)];
         }
 
         /// <summary>
