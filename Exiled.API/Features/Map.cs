@@ -398,6 +398,42 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets an random <see cref="Room"/>.
+        /// </summary>
+        /// <returns><see cref="Room"/> object.</returns>
+        public static Room GetRandomRoom() => Rooms[Random.Range(0, Rooms.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Camera079"/>.
+        /// </summary>
+        /// <returns><see cref="Camera079"/> object.</returns>
+        public static Camera079 GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Door"/>.
+        /// </summary>
+        /// <returns><see cref="Door"/> object.</returns>
+        public static Door GetRandomDoor() => Doors[Random.Range(0, Doors.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Lift"/>.
+        /// </summary>
+        /// <returns><see cref="Lift"/> object.</returns>
+        public static Lift GetRandomLift() => Lifts[Random.Range(0, Lifts.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Locker"/>.
+        /// </summary>
+        /// <returns><see cref="Locker"/> object.</returns>
+        public static Locker GetRandomLocker() => Lockers[Random.Range(0, Lockers.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Pickup"/>.
+        /// </summary>
+        /// <returns><see cref="Pickup"/> object.</returns>
+        public static Pickup GetRandomPickup() => Pickups[Random.Range(0, Pickups.Count)];
+
+        /// <summary>
         /// Gets the camera with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
