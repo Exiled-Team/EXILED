@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using PlayableScps.ScriptableObjects;
 
     using UnityEngine;
@@ -395,6 +397,57 @@ namespace Exiled.API.Features
         {
             foreach (Door door in Doors)
                 door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Room"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <returns><see cref="Room"/> object.</returns>
+        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
+        {
+            return type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList().RandomItem() : RoomsValue.RandomItem();
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Camera079"/>.
+        /// </summary>
+        /// <returns><see cref="Camera079"/> object.</returns>
+        public static Camera079 GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Door"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
+        /// <returns><see cref="Door"/> object.</returns>
+        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
+        {
+            return onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList().RandomItem() : DoorsValue.RandomItem();
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Lift"/>.
+        /// </summary>
+        /// <returns><see cref="Lift"/> object.</returns>
+        public static Lift GetRandomLift() => Lifts[Random.Range(0, Lifts.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Locker"/>.
+        /// </summary>
+        /// <returns><see cref="Locker"/> object.</returns>
+        public static Locker GetRandomLocker() => Lockers[Random.Range(0, Lockers.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Pickup"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ItemType"/>.</param>
+        /// <returns><see cref="Pickup"/> object.</returns>
+        public static Pickup GetRandomPickup(ItemType type = ItemType.None)
+        {
+            return type != ItemType.None
+                ? Pickups.Where(p => p.Type == type).ToList().RandomItem()
+                : Pickups.ToList().RandomItem();
         }
 
         /// <summary>
