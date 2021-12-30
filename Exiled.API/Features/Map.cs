@@ -412,8 +412,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Door"/>.
         /// </summary>
+        /// <param name="onlyUnbroken">test.</param>
         /// <returns><see cref="Door"/> object.</returns>
-        public static Door GetRandomDoor() => Doors[Random.Range(0, Doors.Count)];
+        public static Door GetRandomDoor(bool onlyUnbroken = false) => Doors[Random.Range(0, Doors.Count)];
 
         /// <summary>
         /// Gets an random <see cref="Lift"/>.
@@ -430,8 +431,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets an random <see cref="Pickup"/>.
         /// </summary>
+        /// <param name="type">Test.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
-        public static Pickup GetRandomPickup() => Pickups[Random.Range(0, Pickups.Count)];
+        public static Pickup GetRandomPickup(ItemType type = ItemType.None) => Pickups[Random.Range(0, Pickups.Count)];
 
         /// <summary>
         /// Gets the camera with the given ID.
