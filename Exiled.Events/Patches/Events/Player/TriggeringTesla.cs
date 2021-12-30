@@ -52,11 +52,13 @@ namespace Exiled.Events.Patches.Events.Player
 
                         if (teslaGate.PlayerInRange(allHub.Value))
                         {
-                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate, teslaGate.PlayerInHurtRange(allHub.Key));
+                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate, teslaGate.PlayerInHurtRange(allHub.Key), inIdleRange);
                             Player.OnTriggeringTesla(ev);
 
                             if (ev.IsTriggerable && !isTriggerable)
                                 isTriggerable = ev.IsTriggerable;
+                            if (ev.IsTriggerable && !inIdleRange)
+                                inIdleRange = ev.IsTriggerable;
                         }
                     }
 
