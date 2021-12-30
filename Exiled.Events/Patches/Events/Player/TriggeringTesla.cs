@@ -57,8 +57,8 @@ namespace Exiled.Events.Patches.Events.Player
 
                             if (ev.IsTriggerable && !isTriggerable)
                                 isTriggerable = ev.IsTriggerable;
-                            if (ev.IsTriggerable && !inIdleRange)
-                                inIdleRange = ev.IsTriggerable;
+                            if (ev.IsInIdleRange && !inIdleRange)
+                                inIdleRange = ev.IsInIdleRange;
                         }
                     }
 
