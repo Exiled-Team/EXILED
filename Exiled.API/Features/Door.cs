@@ -105,6 +105,11 @@ namespace Exiled.API.Features
         public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is broken.
+        /// </summary>
+        public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
+
+        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();

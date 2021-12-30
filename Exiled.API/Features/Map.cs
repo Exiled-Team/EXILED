@@ -25,6 +25,8 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
     using PlayableScps.ScriptableObjects;
 
     using UnityEngine;
@@ -404,10 +406,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
         {
-            List<Room> rooms = Rooms.ToList();
-            if (type != ZoneType.Unspecified)
-                rooms = Rooms.Where(x => x.Zone == type).ToList();
-            return rooms[Random.Range(0, rooms.Count)];
+            return type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList().RandomItem() : RoomsValue.RandomItem();
         }
 
         /// <summary>
@@ -423,10 +422,7 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door GetRandomDoor(bool onlyUnbroken = false)
         {
-            List<Door> doors = Doors.ToList();
-            if (onlyUnbroken)
-                doors = Doors.Where(x => x is IDamageableDoor dbase && !dbase.IsDestroyed).ToList();
-            return doors[Random.Range(0, doors.Count)];
+            return onlyUnbroken ? DoorsValue.Where(x => !x.IsBroken).ToList().RandomItem() : DoorsValue.RandomItem();
         }
 
         /// <summary>
@@ -448,10 +444,9 @@ namespace Exiled.API.Features
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
-            List<Pickup> pickups = Pickups.ToList();
-            if (type != ItemType.None)
-                pickups = Pickups.Where(x => x.Type == type).ToList();
-            return pickups[Random.Range(0, pickups.Count)];
+            return type != ItemType.None
+                ? Pickups.Where(p => p.Type == type).ToList().RandomItem()
+                : Pickups.ToList().RandomItem();
         }
 
         /// <summary>
