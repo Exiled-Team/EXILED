@@ -408,6 +408,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
+        /// Invoked before a player picks up a SCP-330 candy.
+        /// </summary>
+        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
+
+        /// <summary>
+        /// Invoked before a player interacts with SCP-330.
+        /// </summary>
+        public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -869,5 +879,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player picks up a SCP-330 candy.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player interacts with SCP-330.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
+        public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
     }
 }
