@@ -158,6 +158,8 @@ namespace Exiled.API.Features
                             return DamageType.Recontainment;
                         case DisruptorDamageHandler _:
                             return DamageType.MolecularDisruptor;
+                        case MicroHidDamageHandler _:
+                            return DamageType.MicroHid;
                         case UniversalDamageHandler universal:
                             {
                                 DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
