@@ -806,11 +806,8 @@ namespace Exiled.CustomItems.API.Features
             if (!ev.IsAllowed)
                 return;
 
-            ev.IsAllowed = false;
-
-            Give(ev.Player, ev.Pickup);
-
-            ev.Pickup.Destroy();
+            if (!TrackedSerials.Contains(ev.Pickup.Serial))
+                TrackedSerials.Add(ev.Pickup.Serial);
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
