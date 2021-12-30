@@ -205,6 +205,9 @@ namespace Exiled.API.Features.Items
                         case Revolver _:
                             ammo = 6;
                             break;
+                        case MolecularDisruptor _:
+                            ammo = 1;
+                            break;
                         default:
                             ammo = 0;
                             break;

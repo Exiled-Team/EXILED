@@ -42,6 +42,9 @@ namespace Exiled.API.Features.Items
                 case Shotgun shotgun:
                     Base.AmmoManagerModule = new TubularMagazineAmmoManager(shotgun, Serial, shotgun._ammoCapacity, shotgun._numberOfChambers, 0.5f, 3, "ShellsToLoad", ActionName.Zoom, ActionName.Shoot);
                     break;
+                case MolecularDisruptor molecularDisruptor:
+                    Base.AmmoManagerModule = new DisruptorAction(molecularDisruptor, 0.0f, 0.0f, true);
+                    break;
                 default:
                     Base.AmmoManagerModule = new ClipLoadedInternalMagAmmoManager(Base, 6);
                     break;
