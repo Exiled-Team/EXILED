@@ -431,7 +431,7 @@ namespace Exiled.API.Features
             if (!onlyUnbroken)
                 count = Doors.Count();
             else
-                count = Doors.Where(x => x is IDamageableDoor dbase && dbase.IsDestroyed).Count();
+                count = Doors.Where(x => x is IDamageableDoor dbase && !dbase.IsDestroyed).Count();
 
             return Doors[Random.Range(0, count)];
         }
