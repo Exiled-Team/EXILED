@@ -148,12 +148,24 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Restarts the server after a given delay has passed. Reconnects all players.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void Restart(float delay) => Timing.CallDelayed(delay, Restart);
+
+        /// <summary>
         /// Shutdowns the server, disconnects all players.
         /// </summary>
         public static void Shutdown()
         {
             global::Shutdown.Quit();
         }
+
+        /// <summary>
+        /// Shutdowns the server after a given delay has passed. Disconnects all players.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void Shutdown(float delay) => Timing.CallDelayed(delay, Shutdown);
 
         /// <summary>
         /// Redirects players to a server on another port, restarts the current server.

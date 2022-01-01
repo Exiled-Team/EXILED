@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
 
+    using MEC;
+
     using Respawning;
 
     using UnityEngine;
@@ -80,6 +82,12 @@ namespace Exiled.API.Features
         public static void SummonNtfChopper() => PlayEffects(new RespawnEffectType[] { RespawnEffectType.SummonNtfChopper });
 
         /// <summary>
+        /// Summons the NTF chopper after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void SummonNtfChopper(float delay) => Timing.CallDelayed(delay, SummonNtfChopper);
+
+        /// <summary>
         /// Summons the <see cref="Side.ChaosInsurgency"/> van.
         /// </summary>
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
@@ -96,6 +104,14 @@ namespace Exiled.API.Features
                 RespawnEffectType.SummonChaosInsurgencyVan,
             });
         }
+
+        /// <summary>
+        /// Summons the <see cref="Side.ChaosInsurgency"/> van after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
+        public static void SummonChaosInsurgencyVan(float delay, bool playMusic = true) =>
+            Timing.CallDelayed(delay, () => SummonChaosInsurgencyVan(playMusic));
 
         /// <summary>
         /// Grants tickets to a <see cref="SpawnableTeamType"/>.
@@ -119,5 +135,14 @@ namespace Exiled.API.Features
                 RespawnEffectsController.ExecuteAllEffects(RespawnEffectsController.EffectType.Selection, team);
             }
         }
+
+        /// <summary>
+        /// Forces a spawn wave of the given <see cref="SpawnableTeamType"/> after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        /// <param name="team">The <see cref="SpawnableTeamType"/> to spawn.</param>
+        /// <param name="playEffects">Whether or not effects will be played with the spawn.</param>
+        public static void ForceWave(float delay, SpawnableTeamType team, bool playEffects = false) =>
+            Timing.CallDelayed(delay, () => ForceWave(team, playEffects));
     }
 }

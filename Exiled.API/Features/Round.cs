@@ -11,6 +11,8 @@ namespace Exiled.API.Features
 
     using GameCore;
 
+    using MEC;
+
     using PlayerStatsSystem;
 
     using RoundRestarting;
@@ -124,6 +126,12 @@ namespace Exiled.API.Features
         public static void RestartSilently() => Restart(true, true, ServerStatic.NextRoundAction.DoNothing);
 
         /// <summary>
+        /// Restarts the round silently after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void RestartSilenty(float delay) => Timing.CallDelayed(delay, RestartSilently);
+
+        /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
@@ -144,8 +152,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Forces the round to end after a given delay has passed, regardless of which factions are alive.
+        /// </summary>
+        /// <remarks>This method does not return any value regarding whether or not the request to end the round was successful. If this value is required, please use ForceEnd() with a coroutine instead of this method.</remarks>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void ForceEnd(float delay) => Timing.CallDelayed(delay, () => ForceEnd());
+
+        /// <summary>
         /// Start the round.
         /// </summary>
         public static void Start() => CharacterClassManager.ForceRoundStart();
+
+        /// <summary>
+        /// Start the round after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public static void Start(float delay) => Timing.CallDelayed(delay, Start);
     }
 }

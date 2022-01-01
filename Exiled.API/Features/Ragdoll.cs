@@ -13,6 +13,8 @@ namespace Exiled.API.Features
 
     using DeathAnimations;
 
+    using MEC;
+
     using Mirror;
 
     using PlayableScps;
@@ -286,13 +288,31 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Deletes the ragdoll after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public void Delete(float delay) => Timing.CallDelayed(delay, Delete);
+
+        /// <summary>
         /// Spawns the ragdoll.
         /// </summary>
         public void Spawn() => NetworkServer.Spawn(GameObject);
 
         /// <summary>
+        /// Spawns the ragdoll after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public void Spawn(float delay) => Timing.CallDelayed(delay, Spawn);
+
+        /// <summary>
         /// Un-spawns the ragdoll.
         /// </summary>
         public void UnSpawn() => NetworkServer.UnSpawn(GameObject);
+
+        /// <summary>
+        /// Un-spawns the ragdoll after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public void UnSpawn(float delay) => Timing.CallDelayed(delay, UnSpawn);
     }
 }
