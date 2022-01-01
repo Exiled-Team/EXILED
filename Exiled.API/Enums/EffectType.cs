@@ -93,12 +93,12 @@ namespace Exiled.API.Enums
         BodyshotReduction,
 
         /// <summary>
-        /// Damages the player every 5 seconds, starting low and increasing overtime.
+        /// Damages the player every 5 seconds, starting low and increasing over time.
         /// </summary>
         Poisoned,
 
         /// <summary>
-        /// Increases the speed of the player but also drains health.
+        /// Increases the speed of the player while also draining health.
         /// </summary>
         Scp207,
 
