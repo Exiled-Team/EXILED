@@ -292,7 +292,7 @@ namespace Exiled.API.Features
         /// Unlocks and clears all active locks on the door after a given delay has passed.
         /// </summary>
         /// <param name="delay">Delay in seconds.</param>
-        public void Unlock(float delay) => MEC.Timing.CallDelayed(delay, () => Unlock());
+        public void Unlock(float delay) => MEC.Timing.CallDelayed(delay, Unlock);
 
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.

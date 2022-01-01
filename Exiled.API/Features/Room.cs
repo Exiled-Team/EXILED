@@ -167,7 +167,7 @@ namespace Exiled.API.Features
         /// Unlocks all the doors in the room after a given delay has passed.
         /// </summary>
         /// <param name="delay">Delay in seconds.</param>
-        public void UnlockAll(float delay) => MEC.Timing.CallDelayed(delay, () => UnlockAll());
+        public void UnlockAll(float delay) => MEC.Timing.CallDelayed(delay, UnlockAll);
 
         /// <summary>
         /// Resets the room color to default.
