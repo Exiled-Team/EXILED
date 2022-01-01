@@ -33,17 +33,17 @@ namespace Exiled.API.Enums
         Blinded,
 
         /// <summary>
-        /// Increases damage the player gets.
+        /// Increases damage the player receives. Does not apply any standalone damage.
         /// </summary>
         Burned,
 
         /// <summary>
-        /// Blurs the player's screen when rotating.
+        /// Blurs the player's screen while rotating.
         /// </summary>
         Concussed,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
         /// </summary>
         Corroding,
 
@@ -63,7 +63,7 @@ namespace Exiled.API.Enums
         Disabled,
 
         /// <summary>
-        /// Stops the player's movement.
+        /// Prevents the player from moving.
         /// </summary>
         Ensnared,
 
@@ -93,32 +93,32 @@ namespace Exiled.API.Enums
         BodyshotReduction,
 
         /// <summary>
-        /// Damages the player every 5 seconds, starting low and ramping hight.
+        /// Damages the player every 5 seconds, starting low and increasing overtime.
         /// </summary>
         Poisoned,
 
         /// <summary>
-        /// Makes the player faster but also drains health.
+        /// Increases the speed of the player but also drains health.
         /// </summary>
         Scp207,
 
         /// <summary>
-        /// Makes the player invisibility.
+        /// Makes the player invisible.
         /// </summary>
         Invisible,
 
         /// <summary>
-        /// Slows down the player's movement with SCP-106 effect.
+        /// Slows down the player's movement with the SCP-106 sinkhole effect.
         /// </summary>
         SinkHole,
 
         /// <summary>
-        /// Gives the player the sound vision of SCP-939.
+        /// Gives the player the SCP-939 sound vision.
         /// </summary>
         Visuals939,
 
         /// <summary>
-        /// Reduces all damage taken.
+        /// Reduces overall damage taken.
         /// </summary>
         DamageReduction,
 
@@ -138,7 +138,7 @@ namespace Exiled.API.Enums
         SeveredHands,
 
         /// <summary>
-        /// Stops the player from sprinting and reduces movement speed by 20%.
+        /// Prevents the player from sprinting and reduces movement speed by 20%.
         /// </summary>
         Stained,
 

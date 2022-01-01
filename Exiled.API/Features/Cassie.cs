@@ -16,7 +16,7 @@ namespace Exiled.API.Features
     using static PlayerStatsSystem.PlayerStats;
 
     /// <summary>
-    /// A set of tools to use in-game C.A.S.S.I.E more easily.
+    /// A set of tools to use in-game C.A.S.S.I.E.
     /// </summary>
     public static class Cassie
     {
@@ -73,7 +73,7 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
 
         /// <summary>
-        /// Converts a Team into a Cassie-Readable CONTAINMENTUNIT.
+        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
         /// </summary>
         /// <param name="team"><see cref="Team"/>.</param>
         /// <param name="unitName">Unit Name.</param>
