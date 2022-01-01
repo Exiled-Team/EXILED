@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Side.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -13,7 +13,9 @@ namespace Exiled.API.Enums
     public enum Side
     {
         /// <summary>
-        /// The same as <see cref="Team.SCP"/>.
+        /// SCP team. Same as <see cref="Team.SCP"/>.
+        /// Contains all SCP-related roles: <see cref="RoleType.Scp049"/>, <see cref="RoleType.Scp0492"/>, <see cref="RoleType.Scp079"/>, <see cref="RoleType.Scp096"/>,
+        /// <see cref="RoleType.Scp106"/>, <see cref="RoleType.Scp173"/>, <see cref="RoleType.Scp93953"/>, and <see cref="RoleType.Scp93989"/>.
         /// </summary>
         Scp,
 
@@ -31,12 +33,12 @@ namespace Exiled.API.Enums
         ChaosInsurgency,
 
         /// <summary>
-        /// <see cref="Team.TUT"/>.
+        /// Tutorial team. Contains <see cref="RoleType.Tutorial"/>. Same as <see cref="Team.TUT"/>.
         /// </summary>
         Tutorial,
 
         /// <summary>
-        /// <see cref="Team.RIP"/>.
+        /// No team. Same as <see cref="Team.RIP"/>.
         /// </summary>
         None,
     }
