@@ -34,7 +34,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets a value indicating how many times this player has interacted with 330.
+        /// Gets a value indicating how many times this player has interacted with SCP-330.
         /// </summary>
         public int UsageCount { get; }
 
@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs
         public bool ShouldSever { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is allowed to interact with the 330.
+        /// Gets or sets a value indicating whether the player is allowed to interact with SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; } = true;
     }
