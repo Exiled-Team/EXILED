@@ -126,6 +126,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks all the doors in the room after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public void LockDown(float delay, float duration, DoorLockType lockType = DoorLockType.Regular079) =>
+            MEC.Timing.CallDelayed(delay, () => LockDown(duration, lockType));
+
+        /// <summary>
         /// Locks all the doors and turns off all lights in the room.
         /// </summary>
         /// <param name="duration">Duration in seconds.</param>
@@ -137,6 +146,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks all the doors and turns off all lights in the room after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="lockType">DoorLockType of the blackout.</param>
+        public void Blackout(float delay, float duration, DoorLockType lockType = DoorLockType.Regular079) =>
+            MEC.Timing.CallDelayed(delay, () => Blackout(duration, lockType));
+
+        /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
         public void UnlockAll()
@@ -144,6 +162,12 @@ namespace Exiled.API.Features
             foreach (Door door in Doors)
                 door.Unlock();
         }
+
+        /// <summary>
+        /// Unlocks all the doors in the room after a given delay has passed.
+        /// </summary>
+        /// <param name="delay">Delay in seconds.</param>
+        public void UnlockAll(float delay) => MEC.Timing.CallDelayed(delay, () => UnlockAll());
 
         /// <summary>
         /// Resets the room color to default.
