@@ -18,7 +18,7 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Compares two <see cref="UserGroup"/>'s for equality.
         /// </summary>
-        /// <param name="this">The fist <see cref="UserGroup"/>.</param>
+        /// <param name="this">The first <see cref="UserGroup"/>.</param>
         /// <param name="other">The second <see cref="UserGroup"/>.</param>
         /// <returns><c>true</c> if they are equal; otherwise, <c>false</c>.</returns>
         public static bool EqualsTo(this UserGroup @this, UserGroup other)

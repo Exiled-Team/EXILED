@@ -44,12 +44,12 @@ namespace Exiled.Events.EventArgs
         public Player Shooter { get; }
 
         /// <summary>
-        /// Gets the target of the shot. Can be null!.
+        /// Gets the target of the shot. Can be <see langword="null"/>!.
         /// </summary>
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the hitbox type of the shot. Can be null!.
+        /// Gets the hitbox type of the shot. Can be <see langword="null"/>!.
         /// </summary>
         public HitboxIdentity Hitbox { get; }
 

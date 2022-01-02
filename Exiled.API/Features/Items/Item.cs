@@ -102,10 +102,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets the Weight of the item.
         /// </summary>
-        public float Weight
-        {
-            get => Base.Weight;
-        }
+        public float Weight => Base.Weight;
 
         /// <summary>
         /// Gets the <see cref="Player"/> who owns the item.

@@ -38,17 +38,17 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Elevator"/> instance.
+        /// Gets the <see cref="Lift.Elevator"/> instance.
         /// </summary>
         public Lift.Elevator Elevator { get; }
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> instance.
+        /// Gets the <see cref="global::Lift"/> instance.
         /// </summary>
         public Lift Lift { get; }
 
         /// <summary>
-        /// Gets the <see cref="Lift"/> current <see cref="Status"/>.
+        /// Gets the <see cref="global::Lift"/>'s current <see cref="Lift.Status"/>.
         /// </summary>
         public Lift.Status Status { get; }
 

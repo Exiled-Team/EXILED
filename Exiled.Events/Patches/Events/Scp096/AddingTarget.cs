@@ -18,6 +18,7 @@ namespace Exiled.Events.Patches.Events.Scp096
     using HarmonyLib;
 
     using NorthwoodLib.Pools;
+    using PlayableScps;
 
     using UnityEngine;
 
@@ -65,9 +66,9 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
-                // this.EnrageTimePerReset;
+                // AddingTarget.GetRageTime(this)
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Scp096), nameof(Scp096.EnrageTimePerReset))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(AddingTarget), nameof(GetRageTime))),
 
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
@@ -144,6 +145,15 @@ namespace Exiled.Events.Patches.Events.Scp096
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static float GetRageTime(Scp096 scp096)
+        {
+            bool isValidTimeAddition = scp096.PlayerState == Scp096PlayerState.Docile ||
+                                       scp096.PlayerState == Scp096PlayerState.TryNotToCry ||
+                                       scp096.PlayerState == Scp096PlayerState.Enraging;
+
+            return isValidTimeAddition ? scp096.EnrageTimePerReset : 0f;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Exiled.Events.Handlers.Internal
     using MapGeneration;
     using MapGeneration.Distributors;
 
+    using MEC;
+
     using NorthwoodLib.Pools;
 
     using UnityEngine;
@@ -59,7 +61,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
-            GenerateLockers();
+            Timing.CallDelayed(0.15f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
