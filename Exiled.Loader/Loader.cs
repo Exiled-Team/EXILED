@@ -36,7 +36,7 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
-        private static string normalText = @"
+        private const string NormalText = @"
    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
   ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
@@ -47,7 +47,7 @@ namespace Exiled.Loader
   ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
                                                                    ";
 
-        private static string easterEggText = @"
+        private const string EasterEggText = @"
    ▄████████    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
   ███    ███   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
   ███    █▀    ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
@@ -186,7 +186,7 @@ namespace Exiled.Loader
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
             ServerConsole.AddLog(
                 $@"Welcome to
-{(Random.NextDouble() <= 0.14 ? easterEggText : normalText)}", ConsoleColor.Green);
+{(Random.NextDouble() <= 0.14 ? EasterEggText : NormalText)}", ConsoleColor.Green);
         }
 
         /// <summary>
