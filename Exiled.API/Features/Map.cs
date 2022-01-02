@@ -461,7 +461,7 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Camera079">camera</see> with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns>The <see cref="Camera079"/> with the given ID.</returns>
+        /// <returns>The <see cref="Camera079"/> with the given ID, or <see langword="null"/> if not found.</returns>
         public static Camera079 GetCameraById(ushort cameraId)
         {
             foreach (Camera079 camera in Scp079PlayerScript.allCameras)
@@ -485,7 +485,7 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Door">door</see> with the given door name.
         /// </summary>
         /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
+        /// <returns>The <see cref="Door"/> or <see langword="null"/> if a door with this name doesn't exist.</returns>
         public static Door GetDoorByName(string doorName)
         {
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
@@ -526,7 +526,7 @@ namespace Exiled.API.Features
         public static void PlayAmbientSound(int id)
         {
             if (id >= AmbientSoundPlayer.clips.Length)
-                throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
+                throw new IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
 
             AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
         }
