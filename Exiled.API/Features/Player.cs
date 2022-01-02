@@ -1578,6 +1578,7 @@ namespace Exiled.API.Features
                 List<Item> items = new List<Item>(amount);
                 for (int i = 0; i < amount; i++)
                     items.Add(AddItem(itemType));
+
                 return items;
             }
 
@@ -1588,13 +1589,19 @@ namespace Exiled.API.Features
         /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="items">The list of items to be added.</param>
-        public void AddItem(List<ItemType> items)
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Item"/>s that were added to the player's inventory.</returns>
+        public IEnumerable<Item> AddItem(List<ItemType> items)
         {
             if (items.Count > 0)
             {
+                List<Item> returnItems = new List<Item>(items.Count);
                 for (int i = 0; i < items.Count; i++)
-                    AddItem(items[i]);
+                    returnItems.Add(AddItem(items[i]));
+
+                return returnItems;
             }
+
+            return new List<Item>(0);
         }
 
         /// <summary>
