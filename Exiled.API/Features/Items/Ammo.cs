@@ -17,6 +17,11 @@ namespace Exiled.API.Features.Items
     public class Ammo : Item
     {
         /// <summary>
+        /// Specifies the maximum amount of ammo that may be held at one time.
+        /// </summary>
+        public const ushort AmmoLimit = 65535;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Ammo"/> class.
         /// </summary>
         /// <param name="itemBase"><inheritdoc cref="Base"/></param>
