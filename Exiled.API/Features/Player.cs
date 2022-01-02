@@ -245,7 +245,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is verified.
         /// </summary>
         /// <remarks>
-        /// This is always false if <c>online_mode</c> is set to <see langword="false"/>.
+        /// This is always <see langword="false"/> if <c>online_mode</c> is set to <see langword="false"/>.
         /// </remarks>
         public bool IsVerified { get; internal set; }
 
@@ -940,7 +940,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the global badge of the player, can be null if none.
+        /// Gets the global badge of the player, can be <see langword="null"/> if none.
         /// </summary>
         public Badge? GlobalBadge
         {
@@ -1093,7 +1093,7 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
@@ -1903,7 +1903,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
             where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
 
@@ -1912,7 +1912,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(PlayerEffect effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableEffect(effect, duration, addDurationIfActive);
 
@@ -1921,7 +1921,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
@@ -1931,7 +1931,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
         {
             if (TryGetEffect(effect, out PlayerEffect pEffect))
@@ -1942,7 +1942,7 @@ namespace Exiled.API.Features
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
         {
@@ -1956,7 +1956,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effects will be active for.</param>
-        /// <param name="addDurationIfActive">If an effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If an effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffects(IEnumerable<EffectType> effects, float duration = 0f, bool addDurationIfActive = false)
         {
             foreach (EffectType effect in effects)

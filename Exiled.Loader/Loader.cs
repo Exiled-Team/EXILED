@@ -224,7 +224,7 @@ namespace Exiled.Loader
         /// Loads an assembly.
         /// </summary>
         /// <param name="path">The path to load the assembly from.</param>
-        /// <returns>Returns the loaded assembly or null.</returns>
+        /// <returns>Returns the loaded assembly or <see langword="null"/>.</returns>
         public static Assembly LoadAssembly(string path)
         {
             try
@@ -243,7 +243,7 @@ namespace Exiled.Loader
         /// Create a plugin instance.
         /// </summary>
         /// <param name="assembly">The plugin assembly.</param>
-        /// <returns>Returns the created plugin instance or null.</returns>
+        /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
             try
