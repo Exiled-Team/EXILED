@@ -228,11 +228,11 @@ namespace Exiled.API.Features
             }
             else
             {
-                // Check for Scp079 if it's a player
+                // Check for SCP-079 if it's a player
                 Player ply = Player.Get(objectInRoom);
 
                 // Raycasting doesn't make sense,
-                // Scp079 position is constant,
+                // SCP-079 position is constant,
                 // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
                     room = FindParentRoom(ply.Camera.gameObject);
@@ -532,7 +532,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Places a Tantrum (Scp173's ability) in the indicated position.
+        /// Places a Tantrum (SCP-173's ability) in the indicated position.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
