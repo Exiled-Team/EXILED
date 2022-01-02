@@ -296,14 +296,14 @@ namespace Exiled.API.Features
             }
         }
 
-        private static void FindObjectInTheRoom(GameObject gameObject, out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
+        private static void FindObjectsInRoom(GameObject gameObject, out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
         {
             cameraList = new List<Camera079>();
             doors = new List<Door>();
             flickerableLightController = null;
             foreach (var scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
             {
-                if (!(scp079Interactable == null))
+                if (scp079Interactable != null)
                 {
                     switch (scp079Interactable.type)
                     {
@@ -344,7 +344,7 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
 
-            FindObjectInTheRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = cameras;
             FlickerableLightController = flickerableLightController;
