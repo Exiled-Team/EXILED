@@ -129,7 +129,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the max health of the door, if it is breakable.
+        /// Gets or sets the max health of the door. No effect if the door cannot be broken.
         /// </summary>
         public float MaxHealth
         {
@@ -142,7 +142,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the door's remaining health, if it is breakable.
+        /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
         /// </summary>
         public float Health
         {
@@ -207,9 +207,9 @@ namespace Exiled.API.Features
             : new Door(doorVariant);
 
         /// <summary>
-        /// Breaks the specified door, if it is not already broken.
+        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
-        /// <returns>True if the door was broken, false if it was unable to be broken, or was already broken before.</returns>
+        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
         public bool BreakDoor()
         {
             if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
@@ -222,17 +222,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Damages the door, if it's breakable.
+        /// Damages the door. No effect if the door cannot be broken.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The damage type to use.</param>
-        /// <returns>True if the door was damaged.</returns>
+        /// <returns><see langword="true"/> if the door was damaged.</returns>
         public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
 
         /// <summary>
-        /// Tries to pry the door open.
+        /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
-        /// <returns>True if the door was able to be pried open.</returns>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
         public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Unlocks the door.
+        /// Unlocks and clears all active locks on the door.
         /// </summary>
         public void Unlock() => ChangeLock(DoorLockType.None);
 

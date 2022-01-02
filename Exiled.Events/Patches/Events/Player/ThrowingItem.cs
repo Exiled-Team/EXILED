@@ -71,8 +71,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemMessage), nameof(ThrowableNetworkHandler.ThrowableItemMessage.CameraRotation))),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemMessage), nameof(ThrowableNetworkHandler.ThrowableItemMessage.CameraPosition))),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ThrowableNetworkHandler.ThrowableItemMessage), nameof(ThrowableNetworkHandler.ThrowableItemMessage.PlayerVelocity))),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ThrowableNetworkHandler.ThrowableItemMessage))[0]),
                 new CodeInstruction(OpCodes.Starg_S, 1),
             });

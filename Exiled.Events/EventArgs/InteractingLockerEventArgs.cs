@@ -39,7 +39,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Locker"/> instance.
+        /// Gets the <see cref="MapGeneration.Distributors.Locker"/> instance.
         /// </summary>
         public Locker Locker { get; }
 

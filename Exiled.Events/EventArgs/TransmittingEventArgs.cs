@@ -41,12 +41,12 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the player's <see cref="Radio"/> component.
+        /// Gets the player's <see cref="global::Radio"/> component.
         /// </summary>
         public Radio Radio { get; }
 
         /// <summary>
-        /// Gets the <see cref="Radio"/>'s DissonanceUserSetup.
+        /// Gets the <see cref="global::Radio"/>'s DissonanceUserSetup.
         /// </summary>
         public DissonanceUserSetup DissonanceUserSetup { get; }
 
