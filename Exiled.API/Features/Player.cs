@@ -1570,13 +1570,18 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(ItemType itemType, int amount)
+        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Item"/>s that were added to the player's inventory.</returns>
+        public IEnumerable<Item> AddItem(ItemType itemType, int amount)
         {
             if (amount > 0)
             {
+                List<Item> items = new List<Item>(amount);
                 for (int i = 0; i < amount; i++)
-                    AddItem(itemType);
+                    items.Add(AddItem(itemType));
+                return items;
             }
+
+            return new List<Item>(0);
         }
 
         /// <summary>
