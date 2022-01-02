@@ -47,7 +47,7 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
-            Timing.CallDelayed(0.15f, GenerateCache);
+            GenerateCache();
             LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
@@ -61,7 +61,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
-            GenerateLockers();
+            Timing.CallDelayed(0.15f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
