@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -32,6 +33,7 @@ namespace Exiled.API.Features
     using UnityEngine;
 
     using Object = UnityEngine.Object;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A set of tools to easily handle the in-game map.
@@ -88,6 +90,8 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
+
+        private static System.Random random = new System.Random();
 
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
@@ -406,7 +410,8 @@ namespace Exiled.API.Features
         /// <returns><see cref="Room"/> object.</returns>
         public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
         {
-            return type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList().RandomItem() : RoomsValue.RandomItem();
+            List<Room> rooms = type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList() : RoomsValue;
+            return rooms[random.Next(Math.Max(0, rooms.Count - 1))];
         }
 
         /// <summary>
@@ -423,7 +428,8 @@ namespace Exiled.API.Features
         /// <returns><see cref="Door"/> object.</returns>
         public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
         {
-            return onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList().RandomItem() : DoorsValue.RandomItem();
+            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
+            return doors[random.Next(Math.Max(0, doors.Count - 1))];
         }
 
         /// <summary>
@@ -445,9 +451,10 @@ namespace Exiled.API.Features
         /// <returns><see cref="Pickup"/> object.</returns>
         public static Pickup GetRandomPickup(ItemType type = ItemType.None)
         {
-            return type != ItemType.None
-                ? Pickups.Where(p => p.Type == type).ToList().RandomItem()
-                : Pickups.ToList().RandomItem();
+            List<Pickup> pickups = type != ItemType.None
+                ? Pickups.Where(p => p.Type == type).ToList()
+                : Pickups.ToList();
+            return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
         }
 
         /// <summary>
