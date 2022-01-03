@@ -2048,7 +2048,7 @@ namespace Exiled.API.Features
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject Prum() => Map.PlaceTantrum(Position);
+        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <summary>
         /// Adds a candy of the specified type to the player's current <see cref="Scp330Bag"/> or adds a <see cref="Scp330Bag"/> to the player's inventory with the specified <see cref="CandyKindID"/>.
