@@ -24,8 +24,8 @@ namespace Exiled.Events.EventArgs
         public InteractingScp330EventArgs(Player player, int usage)
         {
             Player = player;
-            UsageCount = usage++;
-            ShouldSever = usage > 1;
+            UsageCount = usage;
+            ShouldSever = usage > 2;
         }
 
         /// <summary>
