@@ -29,6 +29,7 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Usables.Scp330;
 
     using MEC;
 
@@ -2047,7 +2048,28 @@ namespace Exiled.API.Features
         /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
-        public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
+        public GameObject Prum() => Map.PlaceTantrum(Position);
+
+        /// <summary>
+        /// Adds a candy of the specified type to the player's current <see cref="Scp330Bag"/> or adds a <see cref="Scp330Bag"/> to the player's inventory with the specified <see cref="CandyKindID"/>.
+        /// </summary>
+        /// <param name="candy">The candy to be added.</param>
+        /// <returns>The <see cref="CandyKindID"/> added to the player's bag.</returns>
+        public CandyKindID AddCandy(CandyKindID candy)
+        {
+            if (Items.All(x => x.Type != ItemType.SCP330))
+            {
+                Scp330Bag bag = (Scp330Bag)AddItem(ItemType.SCP330).Base;
+
+                if (bag.TryAddSpecific(candy))
+                    bag.TryRemove(0);
+                return candy;
+            }
+
+            if (Scp330Bag.TryGetBag(ReferenceHub, out var b) && b.TryAddSpecific(candy))
+                b.ServerRefreshBag();
+            return candy;
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
