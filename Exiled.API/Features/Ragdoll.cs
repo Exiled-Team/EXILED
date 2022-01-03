@@ -171,7 +171,7 @@ namespace Exiled.API.Features
         public GameObject GameObject => ragdoll.gameObject;
 
         /// <summary>
-        /// Gets the owner <see cref="Player"/>. Can be null if the ragdoll does not have an owner.
+        /// Gets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
         /// </summary>
         public Player Owner => Player.Get(ragdoll.Info.OwnerHub);
 

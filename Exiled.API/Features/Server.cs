@@ -29,7 +29,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the player's host of the server.
-        /// Might be null when called when the server isn't loaded.
+        /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
         public static Player Host
         {
@@ -159,8 +159,8 @@ namespace Exiled.API.Features
         /// Redirects players to a server on another port, restarts the current server.
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
-        /// <returns>true, if redirection was successful; otherwise, false.</returns>
-        /// <remarks>If the returned value is false, the server won't restart.</remarks>
+        /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>If the returned value is <see langword="false"/>, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
@@ -173,8 +173,8 @@ namespace Exiled.API.Features
         /// Redirects players to a server on another port, shutdowns the current server.
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
-        /// <returns>true, if redirection was successful; otherwise, false.</returns>
-        /// <remarks>If the returned value is false, the server won't shutdown.</remarks>
+        /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>If the returned value is <see langword="false"/>, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
