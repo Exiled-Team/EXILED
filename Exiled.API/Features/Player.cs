@@ -1054,6 +1054,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Dictionary<ItemType, AttachmentIdentifier[]> Preferences => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
 
+        /// <summary>
         /// Gets the player's <see cref="Footprinting.Footprint"/>.
         /// </summary>
         public Footprint Footprint => new Footprint(ReferenceHub);
