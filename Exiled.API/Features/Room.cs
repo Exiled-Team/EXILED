@@ -15,8 +15,6 @@ namespace Exiled.API.Features
 
     using Interactables.Interobjects.DoorUtils;
 
-    using MapGeneration;
-
     using Mirror;
 
     using UnityEngine;
@@ -296,58 +294,35 @@ namespace Exiled.API.Features
             }
         }
 
-        private static void FindObjectInTheRoom(GameObject gameObject, out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
+        private static IEnumerable<Door> FindDoors(GameObject gameObject)
         {
-            cameraList = new List<Camera079>();
-            doors = new List<Door>();
-            flickerableLightController = null;
-            foreach (var scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
+            List<Door> doors = new List<Door>();
+            foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
+                doors.Add(Door.Get(doorVariant));
+            return doors;
+        }
+
+        private static List<Camera079> FindCameras(GameObject gameObject)
+        {
+            List<Camera079> cameraList = new List<Camera079>();
+            foreach (Camera079 camera in Map.Cameras)
             {
-                if (!(scp079Interactable == null))
+                if (camera.Room().gameObject == gameObject)
                 {
-                    switch (scp079Interactable.type)
-                    {
-                        case Scp079Interactable.InteractableType.Door:
-                            {
-                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
-                                    doors.Add(Door.Get(doorVariant));
-                                break;
-                            }
-
-                        case Scp079Interactable.InteractableType.Camera:
-                            {
-                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
-                                    cameraList.Add(camera);
-                                break;
-                            }
-
-                        case Scp079Interactable.InteractableType.LightController:
-                            {
-                                if (scp079Interactable.TryGetComponent(out FlickerableLightController lightController))
-                                    flickerableLightController = lightController;
-                                break;
-                            }
-                    }
+                    cameraList.Add(camera);
                 }
             }
 
-            if (flickerableLightController == null && gameObject.transform.position.y > 900)
-            {
-                flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
-            }
-
-            return;
+            return cameraList;
         }
 
         private void Start()
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
-
-            FindObjectInTheRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
-            Doors = doors;
-            Cameras = cameras;
-            FlickerableLightController = flickerableLightController;
+            Doors = FindDoors(gameObject);
+            Cameras = FindCameras(gameObject);
+            FlickerableLightController = GetComponentInChildren<FlickerableLightController>();
         }
     }
 }
