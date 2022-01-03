@@ -175,8 +175,8 @@ namespace Exiled.API.Features
                     return RoomType.LczCurve;
                 case "LCZ_Straight":
                     return RoomType.LczStraight;
-                case "LCZ_012":
-                    return RoomType.Lcz012;
+                case "LCZ_330":
+                    return RoomType.Lcz330;
                 case "LCZ_914":
                     return RoomType.Lcz914;
                 case "LCZ_Crossing":

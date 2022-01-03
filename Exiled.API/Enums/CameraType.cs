@@ -118,6 +118,16 @@ namespace Exiled.API.Enums
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.
         /// </summary>
         HczBChkp = 16,
+
+        /// <summary>
+        /// Represents the camera facing the entrance of the SCP-330 Room.
+        /// </summary>
+        Lcz330Hall = 53,
+
+        /// <summary>
+        /// Represents the camera facing the SCP-330.
+        /// </summary>
+        Lcz330Chamber = 54,
         #endregion
 
         #region Hcz
