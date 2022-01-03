@@ -41,7 +41,7 @@ namespace Exiled.API.Extensions
         /// Tries to get the <see cref="Transform"/> of the door used for a specific <see cref="SpawnLocation"/>.
         /// </summary>
         /// <param name="location">The <see cref="SpawnLocation"/> to check.</param>
-        /// <returns>The <see cref="Transform"/> used for that spawn location. Can be null.</returns>
+        /// <returns>The <see cref="Transform"/> used for that spawn location. Can be <see langword="null"/>.</returns>
         public static Transform GetDoor(this SpawnLocation location)
         {
             string doorName = location.GetDoorName();

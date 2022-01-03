@@ -124,7 +124,7 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Invoked before changing a player's role.
         /// </summary>
-        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
@@ -408,6 +408,16 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<TogglingNoClipEventArgs> TogglingNoClip;
 
         /// <summary>
+        /// Invoked before a player picks up a SCP-330 candy.
+        /// </summary>
+        public static event CustomEventHandler<PickingUpScp330EventArgs> PickingUpScp330;
+
+        /// <summary>
+        /// Invoked before a player interacts with SCP-330.
+        /// </summary>
+        public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
+
+        /// <summary>
         /// Called before pre-authenticating a player.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -531,7 +541,7 @@ namespace Exiled.Events.Handlers
         /// Called before changing a player's role.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRoleEventArgs"/> instance.</param>
-        /// <remarks>If you set IsAllowed to false when Escape is true, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
+        /// <remarks>If you set IsAllowed to <see langword="false"/> when Escape is <see langword="true"/>, tickets will still be given to the escapee's team even though they will 'fail' to escape. Use <see cref="Escaping"/> to block escapes instead.</remarks>
         public static void OnChangingRole(ChangingRoleEventArgs ev) => ChangingRole.InvokeSafely(ev);
 
         /// <summary>
@@ -869,5 +879,17 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player picks up a SCP-330 candy.
+        /// </summary>
+        /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
+        public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a player interacts with SCP-330.
+        /// </summary>
+        /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
+        public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
     }
 }

@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 #pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -34,8 +35,8 @@ namespace Exiled.Events.Patches.Events.Warhead
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            // Search for "br.s" and then subtract 2 to get the index of the third "ldc.i4.0".
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Br_S) - 2;
+            // Search for "call" with method "ServerLogs::AddLog" and then add 1 to insert method after "ServerLogs::AddLog".
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(ServerLogs), nameof(ServerLogs.AddLog))) + 1;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;
@@ -43,6 +44,9 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Generate the return label.
             Label returnLabel = generator.DefineLabel();
 
+            // if(!this.inProgress)
+            //   return;
+            //
             // var ev = new StoppingEventArgs(Player.Get(disabler), true);
             //
             // Handlers.Warhead.OnStopping(ev);
@@ -51,6 +55,9 @@ namespace Exiled.Events.Patches.Events.Warhead
             //   return;
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AlphaWarheadController), nameof(AlphaWarheadController.inProgress))),
+                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),

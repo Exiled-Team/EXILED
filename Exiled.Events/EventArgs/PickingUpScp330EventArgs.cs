@@ -11,6 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
+    using InventorySystem.Items.Usables.Scp330;
+
     /// <summary>
     /// Contains all informations before a player interacts with SCP-330.
     /// </summary>
@@ -20,16 +22,11 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="PickingUpScp330EventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="usage"><inheritdoc cref="Usage"/></param>
-        /// <param name="item"><inheritdoc cref="ItemId"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PickingUpScp330EventArgs(Player player, int usage, ItemType item, bool isAllowed = true)
+        /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
+        public PickingUpScp330EventArgs(Player player, Scp330Pickup pickup)
         {
             Player = player;
-            Usage = usage;
-            IsSevere = usage > 2;
-            ItemId = item;
-            IsAllowed = isAllowed;
+            Pickup = pickup;
         }
 
         /// <summary>
@@ -40,21 +37,11 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can interact with SCP-330.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
 
         /// <summary>
-        /// Gets or sets player's pickup counter.
+        /// Gets or sets a value representing the <see cref="Scp330Pickup"/> being picked up.
         /// </summary>
-        public int Usage { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the interaction should be severe.
-        /// </summary>
-        public bool IsSevere { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating what item will be picked up.
-        /// </summary>
-        public ItemType ItemId { get; set; }
+        public Scp330Pickup Pickup { get; set; }
     }
 }

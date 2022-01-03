@@ -34,7 +34,7 @@ namespace Exiled.Events.Handlers
         public static void OnFinishingRecall(FinishingRecallEventArgs ev) => FinishingRecall.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before Scp049 starts to recall a player.
+        /// Called before SCP-049 starts to recall a player.
         /// </summary>
         /// <param name="ev">The <see cref="StartingRecallEventArgs"/> instance.</param>
         public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);

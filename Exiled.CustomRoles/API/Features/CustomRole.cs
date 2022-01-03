@@ -108,21 +108,21 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets a <see cref="CustomRole"/> by ID.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(int id) => Registered?.FirstOrDefault(r => r.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by type.
         /// </summary>
         /// <param name="t">The <see cref="Type"/> to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(Type t) => Registered.FirstOrDefault(r => r.GetType() == t);
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomRole Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="name">The name of the role to get.</param>
         /// <param name="customRole">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
+        /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomRole customRole)
         {
             if (string.IsNullOrEmpty(name))
@@ -161,7 +161,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The player to check.</param>
         /// <param name="customRoles">The custom roles the player has.</param>
         /// <returns>True if the player has custom roles.</returns>
-        /// <exception cref="ArgumentNullException">If the player is null.</exception>
+        /// <exception cref="ArgumentNullException">If the player is <see langword="null"/>.</exception>
         public static bool TryGet(Player player, out IReadOnlyCollection<CustomRole> customRoles)
         {
             if (player == null)

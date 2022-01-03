@@ -36,6 +36,28 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
+        private const string NormalText = @"
+   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
+  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
+  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
+ ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
+▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
+  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
+  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
+  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
+                                                                   ";
+
+        private const string EasterEggText = @"
+   ▄████████    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
+  ███    ███   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
+  ███    █▀    ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
+  ███         ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
+▀███████████ ▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
+         ███   ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
+   ▄█    ███   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
+ ▄████████▀    ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
+                                                                                ";
+
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
@@ -165,16 +187,8 @@ namespace Exiled.Loader
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
             ServerConsole.AddLog(
-                @"Welcome to
-   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
- ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
-  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                  ▀                                 ", ConsoleColor.Green);
+                $@"Welcome to
+{(Random.NextDouble() <= 0.14 ? EasterEggText : NormalText)}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -212,7 +226,7 @@ namespace Exiled.Loader
         /// Loads an assembly.
         /// </summary>
         /// <param name="path">The path to load the assembly from.</param>
-        /// <returns>Returns the loaded assembly or null.</returns>
+        /// <returns>Returns the loaded assembly or <see langword="null"/>.</returns>
         public static Assembly LoadAssembly(string path)
         {
             try
@@ -231,7 +245,7 @@ namespace Exiled.Loader
         /// Create a plugin instance.
         /// </summary>
         /// <param name="assembly">The plugin assembly.</param>
-        /// <returns>Returns the created plugin instance or null.</returns>
+        /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
             try

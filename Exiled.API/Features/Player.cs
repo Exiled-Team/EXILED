@@ -243,13 +243,13 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player is verified.
         /// </summary>
         /// <remarks>
-        /// This is always false if online_mode is set to false.
+        /// This is always <see langword="false"/> if <c>online_mode</c> is set to <see langword="false"/>.
         /// </remarks>
         public bool IsVerified { get; internal set; }
 
         /// <summary>
         /// Gets or sets the player's display nickname.
-        /// May be null.
+        /// May be <see langword="null"/>.
         /// </summary>
         public string DisplayNickname
         {
@@ -264,7 +264,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's player info area bitmask.
-        /// You can hide player info elements with this.
+        /// This property can be used to hide player name elements, such as the player's name, badges, etc.
         /// </summary>
         public PlayerInfoArea InfoArea
         {
@@ -273,7 +273,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's custom player info string.
+        /// Gets or sets the player's custom player info string. This string is displayed along with the player's <see cref="InfoArea"/>.
         /// </summary>
         public string CustomInfo
         {
@@ -282,7 +282,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the dictionary of player's session variables. It is not being saved on player disconnect.
+        /// Gets the dictionary of the player's session variables.
+        /// <para>
+        /// Session variables can be used to save temporary data on players. Data is stored in a <see cref="Dictionary{TKey, TValue}"/>.
+        /// The key of the data is always a <see cref="string"/>, whereas the value can be any <see cref="object"/>.
+        /// The data stored in a player's session variables can be accessed by different assemblies; it is recommended to uniquely identify stored data so that it does not conflict with other plugins that may also be using the same name.
+        /// Data saved with session variables is not being saved on player disconnect. If the data must be saved after the player's disconnects, a database must be used instead.
+        /// </para>
         /// </summary>
         public Dictionary<string, object> SessionVariables { get; } = new Dictionary<string, object>();
 
@@ -292,12 +298,12 @@ namespace Exiled.API.Features
         public bool IsInvisible { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the player can be tracked.
+        /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
-        /// Gets a value indicating whether the player is connected to the server.
+        /// Gets a value indicating whether the player is fully connected to the server.
         /// </summary>
         public bool IsConnected => GameObject != null;
 
@@ -321,7 +327,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the cuffer <see cref="Player"/>.
+        /// Gets or sets a value indicating the <see cref="Player"/> that currently has the player cuffed.
+        /// <para>
+        /// This value will be <see langword="null"/> if the player is not cuffed. Setting this value to <see langword="null"/> will uncuff the player if they are cuffed.
+        /// </para>
         /// </summary>
         public Player Cuffer
         {
@@ -385,12 +394,12 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="Team"/>.
+        /// Gets the player's <see cref="global::Team"/>.
         /// </summary>
         public Team Team => Role.GetTeam();
 
         /// <summary>
-        /// Gets the player's <see cref="LeadingTeam"/>.
+        /// Gets the player's <see cref="Enums.LeadingTeam"/>.
         /// </summary>
         public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
 
@@ -409,8 +418,9 @@ namespace Exiled.API.Features
         public Color RoleColor => Role.GetColor();
 
         /// <summary>
-        /// Gets a value indicating whether the player is cuffed. Note: players can be cuffed without another player being the cuffer.
+        /// Gets a value indicating whether the player is cuffed.
         /// </summary>
+        /// <remarks>Players can be cuffed without another player being the cuffer.</remarks>
         public bool IsCuffed => Cuffer != null;
 
         /// <summary>
@@ -516,6 +526,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
+        /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
         public bool IsScp => Team == Team.SCP;
 
@@ -535,14 +546,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="Enums.Side"/> they're currently in.
+        /// Gets the player's <see cref="Enums.Side"/>.
         /// </summary>
         public Side Side => Team.GetSide();
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player friendly fire is enabled.
-        /// This only isAllowed to deal friendly fire damage, not take friendly fire damage.
+        /// Gets or sets a value indicating whether the player's friendly fire is enabled.
+        /// This property only determines if this player can deal damage to players on the same team;
+        /// This player can be damaged by other players on their own team even if this property is <see langword="false"/>.
         /// </summary>
+        /// <remarks>This property currently does not function, and is planned to be re-implemented in the future.</remarks>
         public bool IsFriendlyFireEnabled { get; set; } = false;
 
         /// <summary>
@@ -568,7 +581,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's bypass mode is enabled.
+        /// Gets or sets a value indicating whether or not the player's bypass mode is enabled.
         /// </summary>
         public bool IsBypassModeEnabled
         {
@@ -577,7 +590,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is muted.
+        /// Gets or sets a value indicating whether or not the player is muted.
         /// </summary>
         public bool IsMuted
         {
@@ -604,8 +617,8 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the player's <see cref="Assets._Scripts.Dissonance.SpeakingFlags"/>.
-        /// <para >Note: voicechat channels are handled by the client, therefore any changes will be ignored.</para>
         /// </summary>
+        /// <remarks>Voicechat channels are handled by the client, therefore any changes will be ignored.</remarks>
         public Assets._Scripts.Dissonance.SpeakingFlags SpeakingFlags
         {
             get => ReferenceHub.dissonanceUserSetup.NetworkspeakingFlags;
@@ -613,7 +626,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player is intercom muted.
+        /// Gets or sets a value indicating whether or not the player is intercom muted.
         /// </summary>
         public bool IsIntercomMuted
         {
@@ -622,17 +635,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the player is voice chatting.
+        /// Gets a value indicating whether or not the player is voice chatting.
         /// </summary>
         public bool IsVoiceChatting => ReferenceHub.radio.UsingVoiceChat;
 
         /// <summary>
-        /// Gets a value indicating whether the player is transmitting.
+        /// Gets a value indicating whether or not the player is transmitting on a Radio.
         /// </summary>
         public bool IsTransmitting => ReferenceHub.radio.UsingRadio;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player has godmode enabled.
+        /// Gets or sets a value indicating whether or not the player has godmode enabled.
         /// </summary>
         public bool IsGodModeEnabled
         {
@@ -742,7 +755,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the abilities of SCP-079. Can be null.
+        /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
         /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
@@ -756,7 +769,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the levels of SCP-079. Can be null.
+        /// Gets or sets SCP-079's levels. Can be <see langword="null"/>.
         /// Only applies if the player is SCP-079.
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
@@ -770,7 +783,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the speaker this player is currently using. Can be null.
+        /// Gets or sets the speaker this player is currently using. Can be <see langword="null"/>.
         /// Only applies if the player is SCP-079.
         /// </summary>
         public string Speaker
@@ -784,7 +797,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the doors this player has locked. Can be null.
+        /// Gets or sets the doors this player has locked. Can be <see langword="null"/>.
         /// Only applies if the player is SCP-079.
         /// </summary>
         public SyncList<uint> LockedDoors
@@ -815,7 +828,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Stamina"/> class.
+        /// Gets the <see cref="global::Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
 
@@ -925,7 +938,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the global badge of the player, can be null if none.
+        /// Gets the global badge of the player, can be <see langword="null"/> if none.
         /// </summary>
         public Badge? GlobalBadge
         {
@@ -941,7 +954,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player's badge is hidden.
+        /// Gets or sets a value indicating whether or not the player's badge is hidden.
         /// </summary>
         public bool BadgeHidden
         {
@@ -966,19 +979,18 @@ namespace Exiled.API.Features
         public bool IsGlobalModerator => ReferenceHub.serverRoles.RaEverywhere;
 
         /// <summary>
-        /// Gets a value indicating whether the player is in the pocket dimension.
+        /// Gets a value indicating whether or not the player is in the pocket dimension.
         /// </summary>
         public bool IsInPocketDimension => Map.FindParentRoom(GameObject)?.Type == RoomType.Pocket;
 
         /// <summary>
-        /// Gets or sets a value indicating whether player should use stamina system.
+        /// Gets or sets a value indicating whether or not the player should use stamina system.
         /// </summary>
         public bool IsUsingStamina { get; set; } = true;
 
         /// <summary>
-        /// Gets player's ping.
+        /// Gets the player's ping.
         /// </summary>
-        /// <returns>Return player ping.</returns>
         public int Ping => LiteNetLib4MirrorServer.GetPing(Connection.connectionId);
 
         /// <summary>
@@ -987,7 +999,7 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
-        /// Gets or sets a value indicating whether the player can send inputs.
+        /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
         public bool CanSendInputs
         {
@@ -1013,7 +1025,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be null.
+        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
         /// </summary>
         public Player SpectatedPlayer
         {
@@ -1042,7 +1054,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Dictionary<ItemType, AttachmentIdentifier[]> Preferences => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
 
-        /// Gets the player's <see cref="Footprint"/>.
+        /// Gets the player's <see cref="Footprinting.Footprint"/>.
         /// </summary>
         public Footprint Footprint => new Footprint(ReferenceHub);
 
@@ -1052,59 +1064,59 @@ namespace Exiled.API.Features
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers => new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
-        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side.
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
 
         /// <summary>
-        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team.
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
 
         /// <summary>
-        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role.
+        /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
-        /// Gets the <see cref="Player"/> belonging to the ICommandSender, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
 
         /// <summary>
-        /// Gets the <see cref="Player"/> belonging to the CommandSender, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
-        /// Gets the Player belonging to the ReferenceHub, if any.
+        /// Gets the Player belonging to the <see cref="global::ReferenceHub"/>, if any.
         /// </summary>
-        /// <param name="referenceHub">The player's <see cref="ReferenceHub"/>.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
+        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
         public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
-        /// Gets the Player belonging to a specific NetID, if any.
+        /// Gets the Player belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
-        /// <returns>The player owning the netId, or null if not found.</returns>
+        /// <returns>The player owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
         /// <summary>
-        /// Gets the Player belonging to the GameObject, if any.
+        /// Gets the Player belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
         /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
-        /// <returns>Returns a player or null if not found.</returns>
+        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
             if (gameObject == null)
@@ -1116,10 +1128,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player belonging to the player with the specified id.
+        /// Gets the player belonging to the specified id.
         /// </summary>
         /// <param name="id">The player id.</param>
-        /// <returns>Returns the player found or null if not found.</returns>
+        /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
         public static Player Get(int id)
         {
             if (IdsCache.TryGetValue(id, out Player player) && player?.ReferenceHub != null)
@@ -1139,10 +1151,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player by his identifier.
+        /// Gets the player by identifier.
         /// </summary>
         /// <param name="args">The player's nickname, steamID64 or Discord ID.</param>
-        /// <returns>Returns the player found or null if not found.</returns>
+        /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
         public static Player Get(string args)
         {
             try
@@ -1237,9 +1249,9 @@ namespace Exiled.API.Features
         /// <summary>
         /// Tries to get an item from a player's inventory.
         /// </summary>
-        /// <param name="serial">The <see cref="ushort"/> unique identifier of the item.</param>
-        /// <param name="item">The <see cref="ItemBase"/> found. Null if it doesn't exist.</param>
-        /// <returns>True if the item is found.</returns>
+        /// <param name="serial">The unique identifier of the item.</param>
+        /// <param name="item">The <see cref="ItemBase"/> found. <see langword="null"/> if it doesn't exist.</param>
+        /// <returns><see langword="true"/> if the item is found, <see langword="false"/> otherwise.</returns>
         public bool TryGetItem(ushort serial, out ItemBase item) => Inventory.UserInventory.Items.TryGetValue(serial, out item);
 
         /// <summary>
@@ -1332,14 +1344,14 @@ namespace Exiled.API.Features
         /// Indicates whether the player has an item.
         /// </summary>
         /// <param name="item">The item to search for.</param>
-        /// <returns>true, if the player has it; otherwise, false.</returns>
+        /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
         public bool HasItem(Item item) => Inventory.UserInventory.Items.ContainsValue(item.Base);
 
         /// <summary>
         /// Indicates whether the player has an item type.
         /// </summary>
         /// <param name="type">The type to search for.</param>
-        /// <returns>true, if the player has it; otherwise, false.</returns>
+        /// <returns><see langword="true"/>, if the player has it; otherwise, <see langword="false"/>.</returns>
         public bool HasItem(ItemType type) => Inventory.UserInventory.Items.Any(tempItem => tempItem.Value.ItemTypeId == type);
 
         /// <summary>
@@ -1407,7 +1419,7 @@ namespace Exiled.API.Features
         public void SendConsoleMessage(Player target, string message, string color) => ReferenceHub.characterClassManager.TargetConsolePrint(target.Connection, message, color);
 
         /// <summary>
-        /// Disconnects a <see cref="ReferenceHub">player</see>.
+        /// Disconnects a <see cref="global::ReferenceHub">player</see>.
         /// </summary>
         /// <param name="reason">The disconnection reason.</param>
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
@@ -1493,7 +1505,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// A simple broadcast to a <see cref="ReferenceHub"/>. Doesn't get logged to the console and can be monospaced.
+        /// Shows a broadcast to the player. Doesn't get logged to the console and can be monospaced.
         /// </summary>
         /// <param name="duration">The broadcast duration.</param>
         /// <param name="message">The message to be broadcasted.</param>
@@ -1539,7 +1551,7 @@ namespace Exiled.API.Features
         /// <param name="ammoType">The <see cref="AmmoType"/> that will be dropped.</param>
         /// <param name="amount">The amount of ammo that will be dropped.</param>
         /// <param name="checkMinimals">Whether ammo limits will be taken into consideration.</param>
-        /// <returns>Whether ammo was dropped.</returns>
+        /// <returns><see langword="true"/> if ammo was dropped; otherwise, <see langword="false"/>.</returns>
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
@@ -1941,7 +1953,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Simple way to show a hint to the player.
+        /// Show a hint to the player.
         /// </summary>
         /// <param name="message">The message to be shown.</param>
         /// <param name="duration">The duration the text will be on screen.</param>
@@ -1959,7 +1971,7 @@ namespace Exiled.API.Features
         /// Sends a HitMarker to the player.
         /// </summary>
         [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
-        public void ShowHitMarker() => Hitmarker.SendHitmarker(Connection, 1f);
+        public void ShowHitMarker() => ShowHitMarker(1f);
 
         /// <summary>
         /// Sends a HitMarker to the player.
@@ -2001,7 +2013,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        ///  Disables all currently active <see cref="PlayerEffect">status effects</see>.
+        /// Disables all currently active <see cref="PlayerEffect">status effects</see>.
         /// </summary>
         public void DisableAllEffects()
         {
@@ -2041,7 +2053,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to enable.</typeparam>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect<T>(float duration = 0f, bool addDurationIfActive = false)
             where T : PlayerEffect => ReferenceHub.playerEffectsController.EnableEffect<T>(duration, addDurationIfActive);
 
@@ -2050,7 +2062,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(PlayerEffect effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableEffect(effect, duration, addDurationIfActive);
 
@@ -2059,7 +2071,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The name of the <see cref="PlayerEffect"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A bool indicating whether the effect was valid and successfully enabled.</returns>
         public bool EnableEffect(string effect, float duration = 0f, bool addDurationIfActive = false)
             => ReferenceHub.playerEffectsController.EnableByString(effect, duration, addDurationIfActive);
@@ -2069,7 +2081,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effect">The <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffect(EffectType effect, float duration = 0f, bool addDurationIfActive = false)
         {
             if (TryGetEffect(effect, out PlayerEffect pEffect))
@@ -2080,7 +2092,7 @@ namespace Exiled.API.Features
         /// Enables a random <see cref="EffectType"/> on the player.
         /// </summary>
         /// <param name="duration">The amount of time the effect will be active for.</param>
-        /// <param name="addDurationIfActive">If the effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If the effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         /// <returns>A <see cref="EffectType"/> that was given to the player.</returns>
         public EffectType ApplyRandomEffect(float duration = 0f, bool addDurationIfActive = false)
         {
@@ -2094,7 +2106,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="effects">The <see cref="IEnumerable{T}"/> of <see cref="EffectType"/> to enable.</param>
         /// <param name="duration">The amount of time the effects will be active for.</param>
-        /// <param name="addDurationIfActive">If an effect is already active, setting to true will add this duration onto the effect.</param>
+        /// <param name="addDurationIfActive">If an effect is already active, setting to <see langword="true"/> will add this duration onto the effect.</param>
         public void EnableEffects(IEnumerable<EffectType> effects, float duration = 0f, bool addDurationIfActive = false)
         {
             foreach (EffectType effect in effects)
@@ -2182,7 +2194,7 @@ namespace Exiled.API.Features
         public void OpenReportWindow(string text) => SendConsoleMessage($"[REPORTING] {text}", "white");
 
         /// <summary>
-        /// Places a Tantrum (Scp173's ability) under the player.
+        /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);

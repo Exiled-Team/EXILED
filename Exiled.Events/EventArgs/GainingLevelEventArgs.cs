@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets or sets the new level of SCP-079.
+        /// Gets or sets SCP-079's new level.
         /// </summary>
         public int NewLevel { get; set; }
 
