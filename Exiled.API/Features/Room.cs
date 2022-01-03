@@ -336,8 +336,6 @@ namespace Exiled.API.Features
             {
                 flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
             }
-
-            return;
         }
 
         private void Start()
