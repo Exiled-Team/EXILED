@@ -22,7 +22,7 @@ namespace Exiled.Events.Extensions
         /// <typeparam name="T">Event arg type.</typeparam>
         /// <param name="ev">Source event.</param>
         /// <param name="arg">Event arg.</param>
-        /// <exception cref="ArgumentNullException">Event or its arg is null.</exception>
+        /// <exception cref="ArgumentNullException">Event or its arg is <see langword="null"/>.</exception>
         public static void InvokeSafely<T>(this Events.CustomEventHandler<T> ev, T arg)
             where T : EventArgs
         {
@@ -47,7 +47,7 @@ namespace Exiled.Events.Extensions
         /// Executes all <see cref="Events.CustomEventHandler"/> listeners safely.
         /// </summary>
         /// <param name="ev">Source event.</param>
-        /// <exception cref="ArgumentNullException">Event is null.</exception>
+        /// <exception cref="ArgumentNullException">Event is <see langword="null"/>.</exception>
         public static void InvokeSafely(this Events.CustomEventHandler ev)
         {
             if (ev == null)

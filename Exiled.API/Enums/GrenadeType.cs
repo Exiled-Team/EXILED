@@ -25,7 +25,7 @@ namespace Exiled.API.Enums
         Flashbang,
 
         /// <summary>
-        /// Scp018 ball.
+        /// SCP-018 ball.
         /// Used by <see cref="ItemType.SCP018"/>.
         /// </summary>
         Scp018,

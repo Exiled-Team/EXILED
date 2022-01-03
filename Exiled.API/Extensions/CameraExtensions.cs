@@ -23,10 +23,10 @@ namespace Exiled.API.Extensions
         private static readonly Dictionary<int, Room> OrderedCameraRooms = new Dictionary<int, Room>();
 
         /// <summary>
-        /// Returns the <see cref="Room"/> the camera is in, or null if not found.
+        /// Returns the <see cref="Room"/> the camera is in, or <see langword="null"/> if not found.
         /// </summary>
         /// <param name="camera">The <see cref="Camera079"/> to check.</param>
-        /// <returns>A <see cref="Room"/>, or null if not found.</returns>
+        /// <returns>A <see cref="Room"/>, or <see langword="null"/> if not found.</returns>
         public static Room Room(this Camera079 camera) => OrderedCameraRooms.TryGetValue(camera.GetInstanceID(), out Room room) ? room : null;
 
         /// <summary>
