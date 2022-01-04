@@ -102,6 +102,11 @@ namespace Exiled.API.Features.Items
         public ItemType Type { get; internal set; }
 
         /// <summary>
+        /// Gets the <see cref="ItemCategory"/> of the item.
+        /// </summary>
+        public ItemCategory Category => Base.Category;
+
+        /// <summary>
         /// Gets the Weight of the item.
         /// </summary>
         public float Weight => Base.Weight;

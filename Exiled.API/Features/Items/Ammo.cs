@@ -17,7 +17,10 @@ namespace Exiled.API.Features.Items
     public class Ammo : Item
     {
         /// <summary>
-        /// Specifies the maximum amount of ammo that may be held at one time.
+        /// Specifies the absolute maximum amount of ammo that may be held at one time, if ammo is forcefully given to the player (regardless of worn armor or server configuration).
+        /// <para>
+        /// For accessing the maximum amount of ammo that may be held based on worn armor and server settings, see <see cref="Player.GetMaxAmmo(ItemType)"/>.
+        /// </para>
         /// </summary>
         public const ushort AmmoLimit = 65535;
 
