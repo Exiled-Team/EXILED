@@ -70,7 +70,6 @@ namespace Exiled.CustomItems.API.Features
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
-            Pickup pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
