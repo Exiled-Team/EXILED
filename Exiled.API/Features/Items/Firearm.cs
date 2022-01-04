@@ -380,10 +380,7 @@ namespace Exiled.API.Features.Items
         /// Adds a <see cref="FirearmAttachment"/> of the specified <see cref="AttachmentNameTranslation"/> to the firearm.
         /// </summary>
         /// <param name="attachmentName">The <see cref="AttachmentNameTranslation"/> to add.</param>
-        public void AddAttachment(AttachmentNameTranslation attachmentName)
-        {
-            AddAttachment(new AttachmentIdentifier(attachmentName));
-        }
+        public void AddAttachment(AttachmentNameTranslation attachmentName) => AddAttachment(new AttachmentIdentifier(attachmentName));
 
         /// <summary>
         /// Adds a <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to the firearm.
@@ -392,9 +389,7 @@ namespace Exiled.API.Features.Items
         public void AddAttachment(IEnumerable<AttachmentIdentifier> identifiers)
         {
             foreach (AttachmentIdentifier identifier in identifiers)
-            {
                 AddAttachment(identifier);
-            }
         }
 
         /// <summary>
@@ -404,9 +399,7 @@ namespace Exiled.API.Features.Items
         public void AddAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
         {
             foreach (AttachmentNameTranslation attachmentName in attachmentNames)
-            {
                 AddAttachment(new AttachmentIdentifier(attachmentName));
-            }
         }
 
         /// <summary>
@@ -465,9 +458,7 @@ namespace Exiled.API.Features.Items
         public void RemoveAttachment(IEnumerable<AttachmentIdentifier> identifiers)
         {
             foreach (AttachmentIdentifier identifier in identifiers)
-            {
                 RemoveAttachment(identifier);
-            }
         }
 
         /// <summary>
@@ -477,9 +468,7 @@ namespace Exiled.API.Features.Items
         public void RemoveAttachment(IEnumerable<AttachmentNameTranslation> attachmentNames)
         {
             foreach (AttachmentNameTranslation attachmentName in attachmentNames)
-            {
                 RemoveAttachment(attachmentName);
-            }
         }
 
         /// <summary>
@@ -489,9 +478,7 @@ namespace Exiled.API.Features.Items
         public void RemoveAttachment(IEnumerable<AttachmentSlot> attachmentSlots)
         {
             foreach (AttachmentSlot attachmentSlot in attachmentSlots)
-            {
                 RemoveAttachment(attachmentSlot);
-            }
         }
 
         /// <summary>
@@ -617,7 +604,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
         /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
-        public void RemovePrefence(Player player, ItemType itemType)
+        public void RemovePreference(Player player, ItemType itemType)
         {
             foreach (KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>> kvp in PlayerPreferences)
             {
@@ -634,10 +621,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
         /// <param name="itemType">The <see cref="ItemType"/> to remove.</param>
-        public void RemovePrefence(IEnumerable<Player> players, ItemType itemType)
+        public void RemovePreference(IEnumerable<Player> players, ItemType itemType)
         {
             foreach (Player player in players)
-                RemovePrefence(player, itemType);
+                RemovePreference(player, itemType);
         }
 
         /// <summary>
@@ -645,10 +632,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="player">The <see cref="Player"/> of which must be removed.</param>
         /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
-        public void RemovePrefence(Player player, IEnumerable<ItemType> itemTypes)
+        public void RemovePreference(Player player, IEnumerable<ItemType> itemTypes)
         {
             foreach (ItemType itemType in itemTypes)
-                RemovePrefence(player, itemType);
+                RemovePreference(player, itemType);
         }
 
         /// <summary>
@@ -656,10 +643,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="players">The <see cref="IEnumerable{T}"/> of <see cref="Player"/> of which must be removed.</param>
         /// <param name="itemTypes">The <see cref="IEnumerable{T}"/> of <see cref="ItemType"/> to remove.</param>
-        public void RemovePrefence(IEnumerable<Player> players, IEnumerable<ItemType> itemTypes)
+        public void RemovePreference(IEnumerable<Player> players, IEnumerable<ItemType> itemTypes)
         {
             foreach ((Player player, ItemType itemType) in players.SelectMany(player => itemTypes.Select(itemType => (player, itemType))))
-                RemovePrefence(player, itemType);
+                RemovePreference(player, itemType);
         }
 
         /// <summary>
