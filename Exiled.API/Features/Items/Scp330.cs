@@ -56,7 +56,7 @@ namespace Exiled.API.Features.Items
         /// Adds a specific candy to the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to add.</param>
-        [System.Obsolete("Please use RemoveCandy(CandyKindID, out bool) instead.")]
+        [System.Obsolete("Please use RemoveCandy(CandyKindID, out bool) instead.", true)]
         public void AddCandy(CandyKindID type)
         {
             AddCandy(type, out _);
@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
         /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
-        [System.Obsolete("Please use RemoveCandy(CandyKindID, out int, bool) instead.")]
+        [System.Obsolete("Please use RemoveCandy(CandyKindID, out int, bool) instead.", true)]
         public void RemoveCandy(CandyKindID type, bool removeAll = false)
         {
             RemoveCandy(type, out _, removeAll);

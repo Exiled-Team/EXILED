@@ -1570,7 +1570,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        [Obsolete("Please use AddItem(ItemType, int, out IEnumerable<Item>) instead.")]
+        [Obsolete("Please use AddItem(ItemType, int, out IEnumerable<Item>) instead.", true)]
         public void AddItem(ItemType itemType, int amount)
         {
             AddItem(itemType, amount, out _);
@@ -1601,7 +1601,7 @@ namespace Exiled.API.Features
         /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="items">The list of items to be added.</param>
-        [Obsolete("Please use AddItem(List<ItemType>, out IEnumerable<Item>) instead.")]
+        [Obsolete("Please use AddItem(List<ItemType>, out IEnumerable<Item>) instead.", true)]
         public void AddItem(List<ItemType> items)
         {
             AddItem(items, out _);
