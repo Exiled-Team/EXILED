@@ -107,21 +107,21 @@ namespace Exiled.CustomItems.API.Features
         /// Gets a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, null if not registered.</returns>
+        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem Get(int id) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Id == id);
 
         /// <summary>
         /// Gets a <see cref="CustomItem"/> with a specific name.
         /// </summary>
         /// <param name="name">The <see cref="CustomItem"/> name.</param>
-        /// <returns>The <see cref="CustomItem"/> matching the search, null if not registered.</returns>
+        /// <returns>The <see cref="CustomItem"/> matching the search, <see langword="null"/> if not registered.</returns>
         public static CustomItem Get(string name) => Registered?.FirstOrDefault(tempCustomItem => tempCustomItem.Name == name);
 
         /// <summary>
         /// Tries to get a <see cref="CustomItem"/> with a specific ID.
         /// </summary>
         /// <param name="id">The <see cref="CustomItem"/> ID to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, null if not registered.</param>
+        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(int id, out CustomItem customItem)
         {
@@ -134,7 +134,7 @@ namespace Exiled.CustomItems.API.Features
         /// Tries to get a <see cref="CustomItem"/> with a specific name.
         /// </summary>
         /// <param name="name">The <see cref="CustomItem"/> name to look for.</param>
-        /// <param name="customItem">The found <see cref="CustomItem"/>, null if not registered.</param>
+        /// <param name="customItem">The found <see cref="CustomItem"/>, <see langword="null"/> if not registered.</param>
         /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was found or not.</returns>
         public static bool TryGet(string name, out CustomItem customItem)
         {
