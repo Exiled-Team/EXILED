@@ -1570,19 +1570,31 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        /// <returns>An <see cref="IEnumerable{T}"/> of <see cref="Item"/>s that were added to the player's inventory.</returns>
-        public IEnumerable<Item> AddItem(ItemType itemType, int amount)
+        [Obsolete("Please use AddItem(ItemType, int, out IEnumerable<Item>) instead.")]
+        public void AddItem(ItemType itemType, int amount)
+        {
+            AddItem(itemType, amount, out _);
+        }
+
+        /// <summary>
+        /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="Item"/>s that were added to the player's inventory.</param>
+        public void AddItem(ItemType itemType, int amount, out IEnumerable<Item> items)
         {
             if (amount > 0)
             {
-                List<Item> items = new List<Item>(amount);
+                List<Item> returnItems = new List<Item>(amount);
                 for (int i = 0; i < amount; i++)
-                    items.Add(AddItem(itemType));
+                    returnItems.Add(AddItem(itemType));
 
-                return items;
+                items = returnItems;
+                return;
             }
 
-            return new List<Item>(0);
+            items = new List<Item>(0);
         }
 
         /// <summary>
