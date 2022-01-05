@@ -50,6 +50,7 @@ namespace Exiled.API.Features.Items
         {
             Base = itemBase;
             Type = itemBase.ItemTypeId;
+            Category = itemBase.Category;
             Serial = Base.OwnerInventory.UserInventory.Items.FirstOrDefault(i => i.Value == Base).Key;
             if (Serial == 0)
             {
@@ -98,6 +99,11 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="ItemType"/> of the item.
         /// </summary>
         public ItemType Type { get; internal set; }
+
+        /// <summary>
+        /// Gets the <see cref="ItemCategory"/> of the item.
+        /// </summary>
+        public ItemCategory Category { get; internal set; }
 
         /// <summary>
         /// Gets the Weight of the item.
