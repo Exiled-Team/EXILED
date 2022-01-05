@@ -20,6 +20,11 @@ namespace Exiled.API.Enums
         #region Lcz
 
         /// <summary>
+        /// Represents a camera inside of an LCZ airlock.
+        /// </summary>
+        LczAirlock,
+
+        /// <summary>
         /// Represents the camera inside the Class-D spawns.
         /// </summary>
         LczClassDSpawn = 55,
@@ -27,7 +32,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera inside SCP-372's containment room.
         /// </summary>
-        LczGlassBox = 92,
+        LczGlassRoom = 92,
 
         /// <summary>
         /// Represents the camera outside of SCP-173's containment chamber.
@@ -70,14 +75,24 @@ namespace Exiled.API.Enums
         LczArmory = 81,
 
         /// <summary>
-        /// Represents the plant room in LCZ.
+        /// Represents the greenhouse room in LCZ.
         /// </summary>
-        LczPlants = 82,
+        LczGreenhouse = 82,
 
         /// <summary>
         /// Represents the camera inside the WC hallway.
         /// </summary>
         WC = 20,
+
+        /// <summary>
+        /// Represents the camera inside SCP-330's containment chamber.
+        /// </summary>
+        Lcz330,
+
+        /// <summary>
+        /// Represents the camera inside the hall leading to SCP-330's containment chamber.
+        /// </summary>
+        Lcz330Hall,
 
         /// <summary>
         /// Represents the camera inside SCP-914.
@@ -118,6 +133,26 @@ namespace Exiled.API.Enums
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.
         /// </summary>
         HczBChkp = 16,
+
+        /// <summary>
+        /// Represents a camera in a LCZ X-Intersection.
+        /// </summary>
+        LczXIntersection,
+
+        /// <summary>
+        /// Represents a camera in a LCZ T-Intersection.
+        /// </summary>
+        LczTIntersection,
+
+        /// <summary>
+        /// Represents a camera in a LCZ hallway.
+        /// </summary>
+        LczHall,
+
+        /// <summary>
+        /// Represents a camera in a LCZ corner.
+        /// </summary>
+        LczCorner,
         #endregion
 
         #region Hcz
@@ -181,6 +216,11 @@ namespace Exiled.API.Enums
         /// Represents the camera on the top level of the server room.
         /// </summary>
         HczServerTop = 85,
+
+        /// <summary>
+        /// Represents a camera placed next to an HCZ tesla gate.
+        /// </summary>
+        HczTeslaGate,
 
         /// <summary>
         /// Represents the camera in the HID hallway.
@@ -256,6 +296,26 @@ namespace Exiled.API.Enums
         /// Represents the camera facing toward the entrance zone checkpoint (in HCZ).
         /// </summary>
         HczChkpEz = 99,
+
+        /// <summary>
+        /// Represents a camera in a HCZ X-Intersection.
+        /// </summary>
+        HczXIntersection,
+
+        /// <summary>
+        /// Represents a camera in a HCZ T-Intersection.
+        /// </summary>
+        HczTIntersection,
+
+        /// <summary>
+        /// Represents a camera in a HCZ hallway.
+        /// </summary>
+        HczHall,
+
+        /// <summary>
+        /// Represents a camera in a HCZ corner.
+        /// </summary>
+        HczCorner,
         #endregion
 
         #region Ez
@@ -289,6 +349,31 @@ namespace Exiled.API.Enums
         /// Represents the camera inside of Gate B (entrance zone).
         /// </summary>
         EzGateB = 10,
+
+        /// <summary>
+        /// Represents a camera inside of an EZ office.
+        /// </summary>
+        EzOffice,
+
+        /// <summary>
+        /// Represents a camera in an EZ X-Intersection.
+        /// </summary>
+        EzXIntersection,
+
+        /// <summary>
+        /// Represents a camera in an EZ T-Intersection.
+        /// </summary>
+        EzTIntersection,
+
+        /// <summary>
+        /// Represents a camera in an EZ hallway.
+        /// </summary>
+        EzHall,
+
+        /// <summary>
+        /// Represents a camera in an EZ corner.
+        /// </summary>
+        EzCorner,
         #endregion
 
         #region Surface
@@ -296,7 +381,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera outside of the Gate A elevator (surface).
         /// </summary>
-        GateA = 27,
+        SurfaceGateA = 27,
 
         /// <summary>
         /// Represents the camera above the Gate A balcony.
@@ -337,6 +422,44 @@ namespace Exiled.API.Enums
         /// Represents the EXIT camera (above the Class-D and Scientist extraction point).
         /// </summary>
         Exit = 31,
+        #endregion
+
+        #region Unspecified
+
+        /// <summary>
+        /// A corner, zone unknown (either LCZ, HCZ, or EZ).
+        /// </summary>
+        Corner,
+
+        /// <summary>
+        /// A hallway, zone unknown (either LCZ or HCZ).
+        /// </summary>
+        Hallway,
+
+        /// <summary>
+        /// A T-insection, zone unknown (either LCZ or HCZ).
+        /// </summary>
+        TIntersection,
+
+        /// <summary>
+        /// An X-intersection, zone unknown (either LCZ or HCZ).
+        /// </summary>
+        XIntersection,
+
+        /// <summary>
+        /// An office, zone unknown (either LCZ or EZ).
+        /// </summary>
+        Office,
+
+        /// <summary>
+        /// An unspecified camera related to Gate A - Either the camera in EZ, or the closest camera to the elevator on the surface.
+        /// </summary>
+        GateA,
+
+        /// <summary>
+        /// An unspecified camera related to Gate B - Either the camera in EZ, or the camera near the surface gate on the surface.
+        /// </summary>
+        GateB,
         #endregion
     }
 }
