@@ -16,7 +16,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents an unknown camera.
         /// </summary>
-        Unknown = 0,
+        Unknown = -1,
         #region Lcz
 
         /// <summary>
@@ -27,62 +27,62 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera inside the Class-D spawns.
         /// </summary>
-        LczClassDSpawn = 55,
+        LczClassDSpawn,
 
         /// <summary>
         /// Represents the camera inside SCP-372's containment room.
         /// </summary>
-        LczGlassRoom = 92,
+        LczGlassRoom,
 
         /// <summary>
         /// Represents the camera outside of SCP-173's containment chamber.
         /// </summary>
-        Lcz173Hallway = 11,
+        Lcz173Hallway,
 
         /// <summary>
         /// Represents the camera outside the 173_ARMORY door.
         /// </summary>
-        Lcz173Armory = 12,
+        Lcz173Armory,
 
         /// <summary>
         /// Represents the camera inside of SCP-173's containment chamber.
         /// </summary>
-        Lcz173Containment = 13,
+        Lcz173Containment,
 
         /// <summary>
         /// Represents the camera above the 173_BOTTOM door.
         /// </summary>
-        Lcz173Bottom = 14,
+        Lcz173Bottom,
 
         /// <summary>
         /// Represents the camera outside of SCP-012's room
         /// </summary>
-        Lcz012 = 54,
+        Lcz012,
 
         /// <summary>
         /// Represents the camera at the bottom of SCP-012's containment chamber.
         /// </summary>
-        Lcz012Bottom = 53,
+        Lcz012Bottom,
 
         /// <summary>
         /// Represents the LCZ cafe.
         /// </summary>
-        LczCafe = 59,
+        LczCafe,
 
         /// <summary>
         /// Represents the camera inside the LCZ armory.
         /// </summary>
-        LczArmory = 81,
+        LczArmory,
 
         /// <summary>
         /// Represents the greenhouse room in LCZ.
         /// </summary>
-        LczGreenhouse = 82,
+        LczGreenhouse,
 
         /// <summary>
         /// Represents the camera inside the WC hallway.
         /// </summary>
-        WC = 20,
+        WC,
 
         /// <summary>
         /// Represents the camera inside SCP-330's containment chamber.
@@ -97,42 +97,42 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera inside SCP-914.
         /// </summary>
-        Lcz914 = 36,
+        Lcz914,
 
         /// <summary>
         /// Represents the camera outside SCP-914.
         /// </summary>
-        Lcz914Hallway = 35,
+        Lcz914Hallway,
 
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in LCZ.
         /// </summary>
-        LczALight = 75,
+        LczALight,
 
         /// <summary>
         /// Represents the camera in the LCZ B <see cref="Lift"/> in LCZ.
         /// </summary>
-        LczBLight = 17,
+        LczBLight,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ A checkpoint, on the Light Containment side.
         /// </summary>
-        LczAChkp = 74,
+        LczAChkp,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Light Containment side.
         /// </summary>
-        LczBChkp = 18,
+        LczBChkp,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ A checkpoint, on the Heavy Containment side.
         /// </summary>
-        HczAChkp = 76,
+        HczAChkp,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.
         /// </summary>
-        HczBChkp = 16,
+        HczBChkp,
 
         /// <summary>
         /// Represents a camera in a LCZ X-Intersection.
@@ -160,62 +160,62 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in HCZ.
         /// </summary>
-        LczAHeavy = 60,
+        LczAHeavy,
 
         /// <summary>
         /// Represents the camera in the LCZ B <see cref="Lift"/> in heavy.
         /// </summary>
-        LczBHeavy = 91,
+        LczBHeavy,
 
         /// <summary>
         /// Represents the camera in the pre-hallway in front of 079_FIRST door.
         /// </summary>
-        Hcz079PreHallway = 77,
+        Hcz079PreHallway,
 
         /// <summary>
         /// Represents the camera in the hallway between the 079_FIRST and 079_SECOND doors.
         /// </summary>
-        Hcz079Hallway = 78,
+        Hcz079Hallway,
 
         /// <summary>
         /// Represents the camera inside SCP-079's containment chamber.
         /// </summary>
-        Hcz079Interior = 198,
+        Hcz079Interior,
 
         /// <summary>
         /// Represents the camera outside of SCP-096's containment chamber.
         /// </summary>
-        Hcz096 = 61,
+        Hcz096,
 
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is in front of the elevator.
         /// </summary>
-        Hcz049Elevator = 67,
+        Hcz049Elevator,
 
         /// <summary>
         /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is not in front of the elevator.
         /// </summary>
-        Hcz049Hall = 69,
+        Hcz049Hall,
 
         /// <summary>
         /// Represents the camera that faces toward the 049_ARMORY door.
         /// </summary>
-        Hcz049Armory = 64,
+        Hcz049Armory,
 
         /// <summary>
         /// Represents the hallway camera in the server room.
         /// </summary>
-        HczServerHall = 83,
+        HczServerHall,
 
         /// <summary>
         /// Represents the camera on the bottom level of the server room.
         /// </summary>
-        HczServerBottom = 84,
+        HczServerBottom,
 
         /// <summary>
         /// Represents the camera on the top level of the server room.
         /// </summary>
-        HczServerTop = 85,
+        HczServerTop,
 
         /// <summary>
         /// Represents a camera placed next to an HCZ tesla gate.
@@ -225,77 +225,77 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the HID hallway.
         /// </summary>
-        HczHidHall = 71,
+        HczHidHall,
 
         /// <summary>
         /// Represents the camera inside the Micro-HID room.
         /// </summary>
-        HczHidInterior = 72,
+        HczHidInterior,
 
         /// <summary>
         /// Represents the camera outside of the alpha warhead <see cref="Lift"/> in HCZ.
         /// </summary>
-        HczWarheadHall = 90,
+        HczWarheadHall,
 
         /// <summary>
         /// Represents the camera inside of the alpha warhead room.
         /// </summary>
-        HczWarheadRoom = 89,
+        HczWarheadRoom,
 
         /// <summary>
         /// Represents the camera above the alpha warhead switch.
         /// </summary>
-        HczWarheadSwitch = 87,
+        HczWarheadSwitch,
 
         /// <summary>
         /// Represents the camera inside the alpha warhead armory.
         /// </summary>
-        HczWarheadArmory = 88,
+        HczWarheadArmory,
 
         /// <summary>
         /// Represents the camera inside SCP-939's containment room.
         /// </summary>
-        Hcz939 = 79,
+        Hcz939,
 
         /// <summary>
         /// Represents the camera above the HCZ_ARMORY door.
         /// </summary>
-        HczArmory = 38,
+        HczArmory,
 
         /// <summary>
         /// Represents the SCP-106 MAIN CAM camera (above the door leading to SCP-106's room).
         /// </summary>
-        Hcz106First = 46,
+        Hcz106First,
 
         /// <summary>
         /// Represents the SCP-106 SECOND camera (outside the 106_PRIMARY door).
         /// </summary>
-        Hcz106Second = 43,
+        Hcz106Second,
 
         /// <summary>
         /// Represents the 106 ENT A camera (above the 106_PRIMARY door inside the containment room).
         /// </summary>
-        Hcz106Primary = 45,
+        Hcz106Primary,
 
         /// <summary>
         /// Represents the 106 ENT B camera (above the 106_SECONDARY door inside the containment room).
         /// </summary>
-        Hcz106Secondary = 44,
+        Hcz106Secondary,
 
         /// <summary>
         /// Represents the camera above the femur breaker.
         /// </summary>
-        Hcz106Recontainer = 47,
+        Hcz106Recontainer,
 
         /// <summary>
         /// Represents the camera facing toward the stairs in SCP-106's containment chamber.
         /// </summary>
-        Hcz106Stairs = 48,
+        Hcz106Stairs,
 
         /// <summary>
         /// Represents the camera facing toward the entrance zone checkpoint (in HCZ).
         /// </summary>
-        HczChkpEz = 99,
+        HczChkpEz,
 
         /// <summary>
         /// Represents a camera in a HCZ X-Intersection.
@@ -323,32 +323,32 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera facing toward the heavy containment zone checkpoint (in EZ).
         /// </summary>
-        EzChkpHcz = 100,
+        EzChkpHcz,
 
         /// <summary>
         /// Represents the camera outside the INTERCOM door.
         /// </summary>
-        EzIntercomHall = 50,
+        EzIntercomHall,
 
         /// <summary>
         /// Represents the camera inside the INTERCOM door.
         /// </summary>
-        EzIntercomStairs = 52,
+        EzIntercomStairs,
 
         /// <summary>
         /// Represents the camera facing the intercom.
         /// </summary>
-        EzIntercomInterior = 49,
+        EzIntercomInterior,
 
         /// <summary>
         /// Represents the camera inside of Gate A (entrance zone).
         /// </summary>
-        EzGateA = 62,
+        EzGateA,
 
         /// <summary>
         /// Represents the camera inside of Gate B (entrance zone).
         /// </summary>
-        EzGateB = 10,
+        EzGateB,
 
         /// <summary>
         /// Represents a camera inside of an EZ office.
@@ -381,47 +381,47 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera outside of the Gate A elevator (surface).
         /// </summary>
-        SurfaceGateA = 27,
+        SurfaceGateA,
 
         /// <summary>
         /// Represents the camera above the Gate A balcony.
         /// </summary>
-        Bridge = 32,
+        Bridge,
 
         /// <summary>
         /// Represents the camera on the tower at Gate A.
         /// </summary>
-        Tower = 28,
+        Tower,
 
         /// <summary>
         /// Represents the camera facing the NUKE_SURFACE door.
         /// </summary>
-        Backstreet = 29,
+        Backstreet,
 
         /// <summary>
         /// Represents the camera facing the SURFACE_GATE door (Gate B side)
         /// </summary>
-        SurfaceGate = 30,
+        SurfaceGate,
 
         /// <summary>
         /// Represents the camera on the Gate B walkway.
         /// </summary>
-        Streetcam = 33,
+        Streetcam,
 
         /// <summary>
         /// Represents the HELIPAD camera.
         /// </summary>
-        Helipad = 26,
+        Helipad,
 
         /// <summary>
         /// Represents the ESCAPE ZONE camera (facing toward the ESCAPE door).
         /// </summary>
-        EscapeZone = 25,
+        EscapeZone,
 
         /// <summary>
         /// Represents the EXIT camera (above the Class-D and Scientist extraction point).
         /// </summary>
-        Exit = 31,
+        Exit,
         #endregion
 
         #region Unspecified
