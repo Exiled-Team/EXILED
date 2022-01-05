@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Toys
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for primitive Admin Toys.
+    /// A wrapper class for <see cref="AdminToys.PrimitiveObjectToy"/>.
     /// </summary>
     public class Primitive
     {
@@ -28,9 +28,9 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Primitive"/> class from a <see cref="PrimitiveObjectToy"/>.
+        /// Initializes a new instance of the <see cref="Primitive"/> class from a <see cref="AdminToys.PrimitiveObjectToy"/>.
         /// </summary>
-        /// <param name="toy">The toy to be wrapped.</param>
+        /// <param name="toy">The <see cref="AdminToys.PrimitiveObjectToy"/> to be wrapped.</param>
         public Primitive(PrimitiveObjectToy toy)
         {
             Base = toy;
@@ -38,7 +38,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base <see cref="PrimitiveObjectToy"/>.
+        /// Gets the base <see cref="AdminToys.PrimitiveObjectToy"/>.
         /// </summary>
         public PrimitiveObjectToy Base { get; }
 
@@ -66,7 +66,11 @@ namespace Exiled.API.Features.Toys
         public Vector3 Position
         {
             get => Base.NetworkPosition;
-            set => Base.NetworkPosition = value;
+            set
+            {
+                Base.transform.position = value;
+                Base.NetworkPosition = value;
+            }
         }
 
         /// <summary>
@@ -75,7 +79,11 @@ namespace Exiled.API.Features.Toys
         public Quaternion Rotation
         {
             get => Base.NetworkRotation.Value;
-            set => Base.NetworkRotation = new LowPrecisionQuaternion(value);
+            set
+            {
+                Base.transform.rotation = value;
+                Base.NetworkRotation = new LowPrecisionQuaternion(value);
+            }
         }
 
         /// <summary>
@@ -86,13 +94,16 @@ namespace Exiled.API.Features.Toys
             get => Base.NetworkScale;
             set
             {
+                Base.transform.localScale = value;
                 Base.NetworkScale = value;
+
                 RefreshCollidable();
             }
         }
 
         /// <summary>
-        /// Gets or sets the amount of movement smoothening on the primitive. Higher values mean less smooth movement, and 60 is an ideal value.
+        /// Gets or sets the amount of movement smoothening on the primitive.
+        /// <para>Higher values mean less smooth movement, and 60 is an ideal value.</para>
         /// </summary>
         public byte Smoothing
         {
@@ -101,7 +112,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets if the primitive can be collided with.
+        /// Gets or sets a value indicating whether the primitive can be collided with.
         /// </summary>
         public bool Collidable
         {
@@ -138,13 +149,13 @@ namespace Exiled.API.Features.Toys
 
         private void RefreshCollidable()
         {
-            if (!Collidable)
+            if (Collidable)
             {
-                Base.NetworkScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
+                Base.NetworkScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
             }
             else
             {
-                Base.NetworkScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
+                Base.NetworkScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
             }
         }
     }

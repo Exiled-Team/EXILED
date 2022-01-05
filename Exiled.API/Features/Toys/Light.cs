@@ -12,7 +12,7 @@ namespace Exiled.API.Features.Toys
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for light source Admin Toys.
+    /// A wrapper class for <see cref="AdminToys.LightSourceToy"/>.
     /// </summary>
     public class Light
     {
@@ -25,16 +25,16 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Light"/> class from a <see cref="LightSourceToy"/>.
+        /// Initializes a new instance of the <see cref="Light"/> class from a <see cref="AdminToys.LightSourceToy"/>.
         /// </summary>
-        /// <param name="toy">The toy to be wrapped.</param>
+        /// <param name="toy">The <see cref="AdminToys.LightSourceToy"/> to be wrapped.</param>
         public Light(LightSourceToy toy)
         {
             Base = toy;
         }
 
         /// <summary>
-        /// Gets the base <see cref="LightSourceToy"/>.
+        /// Gets the base <see cref="AdminToys.LightSourceToy"/>.
         /// </summary>
         public LightSourceToy Base { get; }
 
@@ -52,7 +52,8 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the amount of movement smoothening on the light. Higher values mean less smooth movement, and 60 is an ideal value.
+        /// Gets or sets the amount of movement smoothening on the light.
+        /// <para>Higher values mean less smooth movement, and 60 is an ideal value.</para>
         /// </summary>
         public byte Smoothing
         {

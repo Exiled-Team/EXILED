@@ -19,7 +19,7 @@ namespace Exiled.API.Features.Toys
         private static LightSourceToy lightBaseObject;
 
         /// <summary>
-        /// Gets the base AdminToy object to instantiate when creating a new primitive.
+        /// Gets the base <see cref="AdminToys.PrimitiveObjectToy"/> to instantiate when creating a new primitive.
         /// </summary>
         public static PrimitiveObjectToy PrimitiveBaseObject
         {
@@ -41,7 +41,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base AdminToy object to instantiate when creating a new light.
+        /// Gets the base <see cref="AdminToys.LightSourceToy"/> to instantiate when creating a new light.
         /// </summary>
         public static LightSourceToy LightBaseObject
         {
