@@ -55,16 +55,6 @@ namespace Exiled.API.Enums
         Lcz173Bottom,
 
         /// <summary>
-        /// Represents the camera outside of SCP-012's room
-        /// </summary>
-        Lcz012,
-
-        /// <summary>
-        /// Represents the camera at the bottom of SCP-012's containment chamber.
-        /// </summary>
-        Lcz012Bottom,
-
-        /// <summary>
         /// Represents the LCZ cafe.
         /// </summary>
         LczCafe,
