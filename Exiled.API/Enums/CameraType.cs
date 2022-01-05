@@ -107,32 +107,32 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in LCZ.
         /// </summary>
-        LczALight,
+        LczALifts,
 
         /// <summary>
         /// Represents the camera in the LCZ B <see cref="Lift"/> in LCZ.
         /// </summary>
-        LczBLight,
+        LczBLifts,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ A checkpoint, on the Light Containment side.
         /// </summary>
-        LczAChkp,
+        HczAEntrance,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Light Containment side.
         /// </summary>
-        LczBChkp,
+        HczBEntrance,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ A checkpoint, on the Heavy Containment side.
         /// </summary>
-        HczAChkp,
+        LczAEntrance,
 
         /// <summary>
         /// Represents the camera facing the LCZ/HCZ B checkpoint, on the Heavy Containment side.
         /// </summary>
-        HczBChkp,
+        LczBEntrance,
 
         /// <summary>
         /// Represents a camera in a LCZ X-Intersection.
@@ -160,12 +160,12 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera in the LCZ A <see cref="Lift"/> in HCZ.
         /// </summary>
-        LczAHeavy,
+        HczALifts,
 
         /// <summary>
         /// Represents the camera in the LCZ B <see cref="Lift"/> in heavy.
         /// </summary>
-        LczBHeavy,
+        HczBLifts,
 
         /// <summary>
         /// Represents the camera in the pre-hallway in front of 079_FIRST door.
@@ -180,7 +180,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera inside SCP-079's containment chamber.
         /// </summary>
-        Hcz079Interior,
+        Hcz079Main,
 
         /// <summary>
         /// Represents the camera outside of SCP-096's containment chamber.
@@ -295,7 +295,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera facing toward the entrance zone checkpoint (in HCZ).
         /// </summary>
-        HczChkpEz,
+        EzEntrance,
 
         /// <summary>
         /// Represents a camera in a HCZ X-Intersection.
@@ -323,7 +323,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents the camera facing toward the heavy containment zone checkpoint (in EZ).
         /// </summary>
-        EzChkpHcz,
+        HczEntrance,
 
         /// <summary>
         /// Represents the camera outside the INTERCOM door.
