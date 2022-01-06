@@ -46,8 +46,20 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
+        [System.Obsolete("Please use new ExplosiveGrenade(GrenadeType, Player) instead. This constructor will be removed soon.")]
         public ExplosiveGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExplosiveGrenade"/> class, as well as an explosive grenade item. This class should only be used for explosive grenades (Frag grenade and SCP-018). For the flash grenade, see the <see cref="FlashGrenade"/> class.
+        /// </summary>
+        /// <param name="type">The type of grenade. Should be either <see cref="GrenadeType.FragGrenade"/> or <see cref="GrenadeType.Scp018"/>; for flash grenades, see the <see cref="FlashGrenade"/> class.</param>
+        /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
+        /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
+        public ExplosiveGrenade(GrenadeType type, Player player = null)
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type == GrenadeType.Scp018 ? ItemType.SCP018 : ItemType.GrenadeHE, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type == GrenadeType.Scp018 ? ItemType.SCP018 : ItemType.GrenadeHE, true))
         {
         }
 

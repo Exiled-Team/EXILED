@@ -23,14 +23,12 @@ namespace Exiled.Events.EventArgs
         /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
         /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
         /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        /// <param name="isInIdleRange"><inheritdoc cref="IsInIdleRange"/></param>
-        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable, bool isInIdleRange = true)
+        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable)
         {
             Player = player;
             Tesla = tesla;
             IsInHurtingRange = isInHurtingRange;
             IsTriggerable = isTriggerable;
-            IsInIdleRange = isInIdleRange;
         }
 
         /// <summary>
@@ -56,6 +54,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the is going to be idle.
         /// </summary>
-        public bool IsInIdleRange { get; set; }
+        public bool IsInIdleRange { get; set; } = true;
     }
 }

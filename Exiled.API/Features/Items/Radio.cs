@@ -33,8 +33,17 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
+        [System.Obsolete("Please use new Radio() instead. This constructor will be removed in the future.", true)]
         public Radio(ItemType type)
             : this((RadioItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Radio"/> class, as well as a new Radio item.
+        /// </summary>
+        public Radio()
+            : this((RadioItem)Server.Host.Inventory.CreateItemInstance(ItemType.Radio, false))
         {
         }
 

@@ -7,8 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using Exiled.API.Extensions;
+    using Exiled.API.Structs;
 
     using InventorySystem.Items;
     using InventorySystem.Items.Armor;
@@ -26,6 +30,8 @@ namespace Exiled.API.Features.Items
     using Mirror;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemBase"/>.
@@ -172,6 +178,64 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="position">The location to spawn the item.</param>
         /// <param name="rotation">The rotation of the item.</param>
+        /// <param name="identifiers">The attachments to be added.</param>
+        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
+        public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default, IEnumerable<AttachmentIdentifier> identifiers = null)
+        {
+            Base.PickupDropModel.Info.ItemId = Type;
+            Base.PickupDropModel.Info.Position = position;
+            Base.PickupDropModel.Info.Weight = Weight;
+            Base.PickupDropModel.Info.Rotation = new LowPrecisionQuaternion(rotation);
+            Base.PickupDropModel.NetworkInfo = Base.PickupDropModel.Info;
+
+            ItemPickupBase ipb = Object.Instantiate(Base.PickupDropModel, position, rotation);
+            if (ipb is FirearmPickup firearmPickup)
+            {
+                if (this is Firearm firearm)
+                {
+                    if (identifiers != null)
+                        firearm.AddAttachment(identifiers);
+
+                    firearmPickup.Status = new FirearmStatus(firearm.Ammo, FirearmStatusFlags.MagazineInserted, firearmPickup.Status.Attachments);
+                }
+                else
+                {
+                    byte ammo;
+                    switch (Base)
+                    {
+                        case AutomaticFirearm auto:
+                            ammo = auto._baseMaxAmmo;
+                            break;
+                        case Shotgun shotgun:
+                            ammo = shotgun._ammoCapacity;
+                            break;
+                        case Revolver _:
+                            ammo = 6;
+                            break;
+                        default:
+                            ammo = 0;
+                            break;
+                    }
+
+                    uint code = identifiers != null ? (uint)firearmPickup.Info.ItemId.GetBaseCode() + identifiers.GetAttachmentsCode() : firearmPickup.Status.Attachments;
+                    firearmPickup.Status = new FirearmStatus(ammo, FirearmStatusFlags.MagazineInserted, code);
+                }
+
+                firearmPickup.NetworkStatus = firearmPickup.Status;
+            }
+
+            NetworkServer.Spawn(ipb.gameObject);
+            ipb.InfoReceived(default, Base.PickupDropModel.NetworkInfo);
+            Pickup pickup = Pickup.Get(ipb);
+            pickup.Scale = Scale;
+            return pickup;
+        }
+
+        /// <summary>
+        /// Spawns the item on the map.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <param name="rotation">The rotation of the item.</param>
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position, Quaternion rotation = default)
         {
@@ -219,6 +283,13 @@ namespace Exiled.API.Features.Items
             pickup.Scale = Scale;
             return pickup;
         }
+
+        /// <summary>
+        /// Spawns the item on the map.
+        /// </summary>
+        /// <param name="position">The location to spawn the item.</param>
+        /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
+        public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
 
         /// <inheritdoc/>
         public override string ToString()

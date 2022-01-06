@@ -346,8 +346,6 @@ namespace Exiled.API.Features
                     return DoorType.NukeArmory;
                 case "LCZ_ARMORY":
                     return DoorType.LczArmory;
-                case "012":
-                    return DoorType.Scp012;
                 case "SURFACE_NUKE":
                     return DoorType.NukeSurface;
                 case "HID":
@@ -368,8 +366,6 @@ namespace Exiled.API.Features
                     return DoorType.GateB;
                 case "079_SECOND":
                     return DoorType.Scp079Second;
-                case "012_LOCKER":
-                    return DoorType.Scp012Locker;
                 case "SERVERS_BOTTOM":
                     return DoorType.ServersBottom;
                 case "173_CONNECTOR":
@@ -378,8 +374,6 @@ namespace Exiled.API.Features
                     return DoorType.LczWc;
                 case "HID_RIGHT":
                     return DoorType.HIDRight;
-                case "012_BOTTOM":
-                    return DoorType.Scp012Bottom;
                 case "HID_LEFT":
                     return DoorType.HIDLeft;
                 case "173_ARMORY":
@@ -390,6 +384,10 @@ namespace Exiled.API.Features
                     return DoorType.GR18;
                 case "SURFACE_GATE":
                     return DoorType.SurfaceGate;
+                case "330":
+                    return DoorType.Scp330;
+                case "330_CHAMBER":
+                    return DoorType.Scp330Chamber;
 
                 // Doors spawned by the DoorSpawnPoint component
                 case "LCZ_CAFE":
