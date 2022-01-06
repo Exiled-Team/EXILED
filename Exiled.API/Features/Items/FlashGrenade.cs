@@ -44,8 +44,19 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
+        [System.Obsolete("Please use new FlashGrenade(Player) instead. This constructor will be removed in the future.", true)]
         public FlashGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FlashGrenade"/> class, as well as a new flash grenade item.
+        /// </summary>
+        /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
+        /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
+        public FlashGrenade(Player player = null)
+            : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
         {
         }
 

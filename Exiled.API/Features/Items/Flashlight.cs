@@ -32,8 +32,17 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
+        [Obsolete("Please use new Flashlight() instead. This constructor will be removed in the future.", true)]
         public Flashlight(ItemType type)
             : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
+        /// </summary>
+        public Flashlight()
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(ItemType.Flashlight, false))
         {
         }
 

@@ -13,6 +13,8 @@ namespace Exiled.Example
     using Exiled.API.Features;
     using Exiled.API.Interfaces;
 
+    using InventorySystem.Items.Firearms.Attachments;
+
     using UnityEngine;
 
     /// <inheritdoc cref="IConfig"/>
@@ -106,5 +108,18 @@ namespace Exiled.Example
         /// </summary>
         [Description("This is a Vector3 config, the same can be done by using a Vector2 or a Vector4")]
         public Vector3 Vector3 { get; private set; } = new Vector3(1.3f, -2.5f, 3);
+
+        /// <summary>
+        /// Gets the <see cref="List{T}"/> of <see cref="AttachmentNameTranslation"/> config.
+        /// </summary>
+        [Description("This is a list of AttachmentNameTranslation config")]
+        public List<AttachmentNameTranslation> Attachments { get; private set; } = new List<AttachmentNameTranslation>()
+        {
+            AttachmentNameTranslation.AmmoCounter,
+            AttachmentNameTranslation.DotSight,
+            AttachmentNameTranslation.RifleBody,
+            AttachmentNameTranslation.RecoilReducingStock,
+            AttachmentNameTranslation.StandardMagAP,
+        };
     }
 }

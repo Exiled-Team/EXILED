@@ -192,7 +192,7 @@ namespace Exiled.Permissions.Extensions
         /// </summary>
         /// <param name="player">The player to be checked.</param>
         /// <param name="permission">The permission to be checked.</param>
-        /// <returns>true if the player's current or native group has permissions; otherwise, false.</returns>
+        /// <returns><see langword="true"/> if the player's current or native group has permissions; otherwise, <see langword="false"/>.</returns>
         public static bool CheckPermission(this Player player, string permission)
         {
             if (string.IsNullOrEmpty(permission))
