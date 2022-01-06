@@ -44,7 +44,7 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomAbility Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="name">The name of the role to get.</param>
         /// <param name="customAbility">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
+        /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomAbility customAbility)
         {
             if (string.IsNullOrEmpty(name))

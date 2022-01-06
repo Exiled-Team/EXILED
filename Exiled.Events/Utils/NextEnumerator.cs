@@ -32,7 +32,7 @@ namespace Exiled.Events.Utils
 
         /// <summary>
         /// Gets the next element in the collection.
-        /// Might be null if there's no element after <see cref="Current"/>.
+        /// Might be <see langword="null"/> if there's no element after <see cref="Current"/>.
         /// </summary>
         public T NextCurrent { get; private set; }
 
