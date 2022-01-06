@@ -45,7 +45,10 @@ namespace Exiled.API.Extensions
             ["wc"] = CameraType.WC,
 
             // Heavy Containment
-            ["049 hall 1"] = CameraType.Hcz049Elevator,
+            ["049 hall 1"] = CameraType.Hcz049Hall,
+            ["049 hall 2"] = CameraType.Hcz049Hall,
+            ["049 hall 3"] = CameraType.Hcz049Hall,
+            ["049 hall 4"] = CameraType.Hcz049Hall,
             ["049 hall 5"] = CameraType.Hcz049Armory,
             ["106 ent a"] = CameraType.Hcz106Primary,
             ["106 ent b"] = CameraType.Hcz106Secondary,
@@ -66,7 +69,8 @@ namespace Exiled.API.Extensions
             ["sacrificer"] = CameraType.Hcz106Recontainer, // i love this camera name
             ["servers"] = CameraType.HczServerTop,
             ["servhall"] = CameraType.HczServerHall,
-            ["scp-049 hall"] = CameraType.Hcz049Hall,
+            ["scp-049 hall"] = CameraType.Hcz049Elevator,
+            ["scp-079 control"] = CameraType.Hcz079Control,
             ["scp-079 main cam"] = CameraType.Hcz079Main,
             ["scp-096 cr"] = CameraType.Hcz096,
             ["scp-106 main cam"] = CameraType.Hcz106First,

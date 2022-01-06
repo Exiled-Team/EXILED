@@ -173,6 +173,11 @@ namespace Exiled.API.Enums
         Hcz079Main,
 
         /// <summary>
+        /// Represents the camera inside SCP-079's control room.
+        /// </summary>
+        Hcz079Control,
+
+        /// <summary>
         /// Represents the camera outside of SCP-096's containment chamber.
         /// </summary>
         Hcz096,
@@ -183,12 +188,12 @@ namespace Exiled.API.Enums
         Hcz049Elevator,
 
         /// <summary>
-        /// Represents the camera in the SCP-049 <see cref="Lift"/> hallway that is not in front of the elevator.
+        /// Represents one of the four cameras found in the hallway leading to SCP-049's containment chamber, and the SCP-049 armory.
         /// </summary>
         Hcz049Hall,
 
         /// <summary>
-        /// Represents the camera that faces toward the 049_ARMORY door.
+        /// Represents the camera that faces toward the <c>049_ARMORY</c> <see cref="Exiled.API.Features.Door"/>.
         /// </summary>
         Hcz049Armory,
 
