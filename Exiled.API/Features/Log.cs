@@ -39,15 +39,15 @@ namespace Exiled.API.Features
         /// Server must have exiled_debug config enabled.
         /// </summary>
         /// <typeparam name="T">The inputted object's type.</typeparam>
-        /// <param name="message">The message to be sent.</param>
+        /// <param name="object">The object to be logged and returned.</param>
         /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
-        /// <returns>Returns the <typeparamref name="T"/> object inputted in <paramref name="message"/>.</returns>
-        public static T DebugObject<T>(T message, bool canBeSent = true)
+        /// <returns>Returns the <typeparamref name="T"/> object inputted in <paramref name="object"/>.</returns>
+        public static T DebugObject<T>(T @object, bool canBeSent = true)
         {
             if (canBeSent)
-                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Debug, System.ConsoleColor.Green);
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {@object}", LogLevel.Debug, System.ConsoleColor.Green);
 
-            return message;
+            return @object;
         }
 
         /// <summary>
