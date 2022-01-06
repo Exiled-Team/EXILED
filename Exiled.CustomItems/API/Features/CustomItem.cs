@@ -10,6 +10,7 @@ namespace Exiled.CustomItems.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -277,50 +278,45 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <summary>
-        /// Registers a <see cref="CustomItem"/>.
+        /// Registers all the <see cref="CustomItem"/>'s present in the current assembly.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
-        public bool TryRegister()
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> RegisterItems()
         {
-            if (!Registered.Contains(this))
+            List<CustomItem> registeredItems = new List<CustomItem>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (Registered.Any(customItem => customItem.Id == Id))
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(ExiledSerializable)) is null)
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializable), true))
                 {
-                    Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
-
-                    return false;
+                    CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
+                    customItem.Type = (attribute as ExiledSerializable).ItemType;
+                    customItem.TryRegister();
+                    registeredItems.Add(customItem);
                 }
-
-                Registered.Add(this);
-
-                Init();
-
-                Log.Debug($"{Name} ({Id}) [{Type}] has been successfully registered.", Instance.Config.Debug);
-
-                return true;
             }
 
-            Log.Warn($"Couldn't register {Name} ({Id}) [{Type}] as it already exists.");
-
-            return false;
+            return registeredItems;
         }
 
         /// <summary>
-        /// Tries to unregister a <see cref="CustomItem"/>.
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
         /// </summary>
-        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was unregistered or not.</returns>
-        public bool TryUnregister()
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems()
         {
-            Destroy();
+            List<CustomItem> unregisteredItems = new List<CustomItem>();
 
-            if (!Registered.Remove(this))
+            foreach (CustomItem customItem in Registered)
             {
-                Log.Warn($"Cannot unregister {Name} ({Id}) [{Type}], it hasn't been registered yet.");
-
-                return false;
+                customItem.TryUnregister();
+                unregisteredItems.Add(customItem);
             }
 
-            return true;
+            return unregisteredItems;
         }
 
         /// <summary>
@@ -530,6 +526,53 @@ namespace Exiled.CustomItems.API.Features
 
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
+
+        /// <summary>
+        /// Registers a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was registered or not.</returns>
+        internal bool TryRegister()
+        {
+            if (!Registered.Contains(this))
+            {
+                if (Registered.Any(customItem => customItem.Id == Id))
+                {
+                    Log.Warn($"{Name} has tried to register with the same custom item ID as another item: {Id}. It will not be registered.");
+
+                    return false;
+                }
+
+                Registered.Add(this);
+
+                Init();
+
+                Log.Debug($"{Name} ({Id}) [{Type}] has been successfully registered.", Instance.Config.Debug);
+
+                return true;
+            }
+
+            Log.Warn($"Couldn't register {Name} ({Id}) [{Type}] as it already exists.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to unregister a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <returns>Returns a value indicating whether the <see cref="CustomItem"/> was unregistered or not.</returns>
+        internal bool TryUnregister()
+        {
+            Destroy();
+
+            if (!Registered.Remove(this))
+            {
+                Log.Warn($"Cannot unregister {Name} ({Id}) [{Type}], it hasn't been registered yet.");
+
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Called after the manager is initialized, to allow loading of special event handlers.
