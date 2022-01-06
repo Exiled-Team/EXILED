@@ -69,6 +69,11 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the CustomInfo of this role.
+        /// </summary>
+        public abstract string CustomInfo { get; set; }
+
+        /// <summary>
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
@@ -277,7 +282,8 @@ namespace Exiled.CustomRoles.API.Features
             });
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
-            player.CustomInfo = $"{Name} (Custom Role)";
+            player.CustomInfo = CustomInfo;
+            player.InfoArea &= ~PlayerInfoArea.Role;
             if (CustomAbilities != null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
@@ -298,6 +304,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
+            player.InfoArea |= ~PlayerInfoArea.Role;
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
             foreach (CustomAbility ability in CustomAbilities)
