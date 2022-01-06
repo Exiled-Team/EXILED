@@ -16,7 +16,7 @@ namespace Exiled.API.Enums
         /// <summary>
         /// Represents an unknown camera.
         /// </summary>
-        Unknown = -1,
+        Unknown,
         #region Lcz
 
         /// <summary>
