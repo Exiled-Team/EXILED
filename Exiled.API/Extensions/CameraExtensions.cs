@@ -24,6 +24,7 @@ namespace Exiled.API.Extensions
         private static readonly Dictionary<string, CameraType> NameToCameraType = new Dictionary<string, CameraType>
         {
             // Light Containment
+            ["173 chamber"] = CameraType.Lcz173Chamber,
             ["173 hallway"] = CameraType.Lcz173Hallway,
             ["173 gunroom"] = CameraType.Lcz173Armory,
             ["914 hallway"] = CameraType.Lcz914Hallway,
@@ -40,9 +41,9 @@ namespace Exiled.API.Extensions
             ["lcz @ b"] = CameraType.LczBLifts,
             ["scp-173 stairs"] = CameraType.Lcz173Bottom,
             ["scp-914"] = CameraType.Lcz914,
-            ["tc-01 chamber"] = CameraType.Lcz330,
+            ["tc-01 chamber"] = CameraType.Lcz330Chamber,
             ["tc-01 hall"] = CameraType.Lcz330Hall,
-            ["wc"] = CameraType.WC,
+            ["wc"] = CameraType.LczWC,
 
             // Heavy Containment
             ["049 hall 1"] = CameraType.Hcz049Hall,
