@@ -150,7 +150,7 @@ namespace Exiled.API.Extensions
                         case ZoneType.LightContainment:
                             return CameraType.LczTIntersection;
                         case ZoneType.HeavyContainment:
-                            return CameraType.LczTIntersection;
+                            return CameraType.HczTIntersection;
                     }
                 }
                 else if (cameraName == "straight")
