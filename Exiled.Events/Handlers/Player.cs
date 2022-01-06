@@ -857,7 +857,7 @@ namespace Exiled.Events.Handlers
         public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a player presses the transmission key.
+        /// Called after a player presses the transmission key.
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
         public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
@@ -869,7 +869,7 @@ namespace Exiled.Events.Handlers
         public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a player changes spectated player.
+        /// Called after a player changes spectated player.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
         public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);
