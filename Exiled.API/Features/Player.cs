@@ -29,6 +29,7 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Usables.Scp330;
 
     using MEC;
 
@@ -1733,6 +1734,35 @@ namespace Exiled.API.Features
             {
                 for (int i = 0; i < items.Count; i++)
                     AddItem(items[i]);
+            }
+        }
+
+        /// <summary>
+        /// Gives the player a specific candy. Will give the player a bag if they do not already have one.
+        /// </summary>
+        /// <param name="candyType">The <see cref="CandyKindID"/> to give.</param>
+        /// <returns><see langword="true"/> if a candy was given.</returns>
+        public bool TryAddCandy(CandyKindID candyType)
+        {
+            bool flag = false;
+            if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
+            {
+                flag = bag.TryAddSpecific(candyType);
+                if (flag)
+                    bag.ServerRefreshBag();
+                return flag;
+            }
+            else
+            {
+                if (Items.Count > 7)
+                    return false;
+
+                Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
+                foreach (CandyKindID candy in scp330.Candies)
+                    scp330.RemoveCandy(candy);
+                scp330.AddCandy(candyType);
+
+                return true;
             }
         }
 
