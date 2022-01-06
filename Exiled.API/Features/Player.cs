@@ -1979,10 +1979,10 @@ namespace Exiled.API.Features
             switch (type)
             {
                 case GrenadeType.Flashbang:
-                    throwable = new FlashGrenade(ItemType.GrenadeFlash);
+                    throwable = new FlashGrenade();
                     break;
                 default:
-                    throwable = new ExplosiveGrenade(type == GrenadeType.Scp018 ? ItemType.SCP018 : ItemType.GrenadeHE);
+                    throwable = new ExplosiveGrenade(type);
                     break;
             }
 
