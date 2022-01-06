@@ -485,6 +485,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (displayMessage)
                 ShowPickedUpMessage(player);
+
+            Timing.CallDelayed(0.05f, () => OnAcquired(player));
         }
 
         /// <summary>
@@ -627,6 +629,14 @@ namespace Exiled.CustomItems.API.Features
 
         /// <inheritdoc cref="OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingEventArgs)"/>
         protected virtual void OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs ev)
+        {
+        }
+
+        /// <summary>
+        /// Called anytime the item enters a player's inventory by any means.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> acquiring the item.</param>
+        protected virtual void OnAcquired(Player player)
         {
         }
 
@@ -808,6 +818,8 @@ namespace Exiled.CustomItems.API.Features
 
             if (!TrackedSerials.Contains(ev.Pickup.Serial))
                 TrackedSerials.Add(ev.Pickup.Serial);
+
+            Timing.CallDelayed(0.05f, () => OnAcquired(ev.Player));
         }
 
         private void OnInternalChanging(ChangingItemEventArgs ev)
