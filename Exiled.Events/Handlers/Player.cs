@@ -43,7 +43,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<BannedEventArgs> Banned;
 
         /// <summary>
-        /// Invoked after a <see cref="Exiled.API.Features.Player"/> uses an item.
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> uses an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
         /// Invoked after <see cref="ItemUsed"/>, if a player's class has
@@ -52,7 +52,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsedItemEventArgs> ItemUsed;
 
         /// <summary>
-        /// Invoked after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a medical item.
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a <see cref="Exiled.API.Features.Items.Usable"/>.
         /// </summary>
         public static event CustomEventHandler<CancellingItemUseEventArgs> CancellingItemUse;
 
@@ -62,7 +62,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractedEventArgs> Interacted;
 
         /// <summary>
-        /// Invoked before spawning a <see cref="Exiled.API.Features.Player"/> ragdoll.
+        /// Invoked before spawning a <see cref="Exiled.API.Features.Player"/> <see cref="Exiled.API.Features.Ragdoll"/>.
         /// </summary>
         public static event CustomEventHandler<SpawningRagdollEventArgs> SpawningRagdoll;
 
@@ -82,7 +82,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<DeactivatingWorkstationEventArgs> DeactivatingWorkstation;
 
         /// <summary>
-        /// Invoked before using an item.
+        /// Invoked before using an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<UsingItemEventArgs> UsingItem;
 
@@ -112,7 +112,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<HurtingEventArgs> Hurting;
 
         /// <summary>
-        /// Invoked before a player dies.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> dies.
         /// </summary>
         public static event CustomEventHandler<DyingEventArgs> Dying;
 
@@ -128,17 +128,17 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ChangingRoleEventArgs> ChangingRole;
 
         /// <summary>
-        /// Invoked before throwing an item.
+        /// Invoked before throwing an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<ThrowingItemEventArgs> ThrowingItem;
 
         /// <summary>
-        /// Invoked before dropping an item.
+        /// Invoked before dropping an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<DroppingItemEventArgs> DroppingItem;
 
         /// <summary>
-        /// Invoked before dropping a null item.
+        /// Invoked before dropping a null <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<DroppingNullEventArgs> DroppingNull;
 
@@ -153,7 +153,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<PickingUpArmorEventArgs> PickingUpArmor;
 
         /// <summary>
-        /// Invoked before picking up an item.
+        /// Invoked before picking up an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         public static event CustomEventHandler<PickingUpItemEventArgs> PickingUpItem;
 
@@ -223,7 +223,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SyncingDataEventArgs> SyncingData;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> held item changes.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> held <see cref="Exiled.API.Features.Items.Item"/> changes.
         /// </summary>
         public static event CustomEventHandler<ChangingItemEventArgs> ChangingItem;
 
