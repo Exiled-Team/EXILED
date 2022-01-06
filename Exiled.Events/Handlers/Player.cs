@@ -755,13 +755,13 @@ namespace Exiled.Events.Handlers
         public static void OnChangingRadioPreset(ChangingRadioPresetEventArgs ev) => ChangingRadioPreset.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player's MicroHID state is changed.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> MicroHID state is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingRadioPresetEventArgs"/> instance.</param>
         public static void OnChangingMicroHIDState(ChangingMicroHIDStateEventArgs ev) => ChangingMicroHIDState.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player's MicroHID energy is changed.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> MicroHID energy is changed.
         /// </summary>
         /// <param name="ev">The <see cref="UsingMicroHIDEnergyEventArgs"/> instance.</param>
         public static void OnUsingMicroHIDEnergy(UsingMicroHIDEnergyEventArgs ev) => UsingMicroHIDEnergy.InvokeSafely(ev);
@@ -779,115 +779,115 @@ namespace Exiled.Events.Handlers
         public static void OnDroppingAmmo(DroppingAmmoEventArgs ev) => DroppingAmmo.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player walks on a sinkhole.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> walks on a sinkhole.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnSinkholeEventArgs"/> instance.</param>
         public static void OnWalkingOnSinkhole(WalkingOnSinkholeEventArgs ev) => WalkingOnSinkhole.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player interacts with a shooting target.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingShootingTargetEventArgs"/> instance.</param>
         public static void OnInteractingShootingTarget(InteractingShootingTargetEventArgs ev) => InteractingShootingTarget.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player damages a shooting target.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> damages a shooting target.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingShootingTargetEventArgs"/> instance.</param>
         public static void OnDamagingShootingTarget(DamagingShootingTargetEventArgs ev) => DamagingShootingTarget.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player flips a coin.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> flips a coin.
         /// </summary>
         /// <param name="ev">The <see cref="FlippingCoinEventArgs"/> instance.</param>
         public static void OnFlippingCoin(FlippingCoinEventArgs ev) => FlippingCoin.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player toggles the flashlight.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> toggles the flashlight.
         /// </summary>
         /// <param name="ev">The <see cref="TogglingFlashlightEventArgs"/> instance.</param>
         public static void OnTogglingFlashlight(TogglingFlashlightEventArgs ev) => TogglingFlashlight.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player unloads a weapon.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> unloads a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="UnloadingWeaponEventArgs"/> instance.</param>
         public static void OnUnloadingWeapon(UnloadingWeaponEventArgs ev) => UnloadingWeapon.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player triggers an aim action.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> triggers an aim action.
         /// </summary>
         /// <param name="ev">The <see cref="AimingDownSightEventArgs"/> instance.</param>
         public static void OnAimingDownSight(AimingDownSightEventArgs ev) => AimingDownSight.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player toggles the weapon's flashlight.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> toggles the weapon's flashlight.
         /// </summary>
         /// <param name="ev">The <see cref="TogglingWeaponFlashlightEventArgs"/> instance.</param>
         public static void OnTogglingWeaponFlashlight(TogglingWeaponFlashlightEventArgs ev) => TogglingWeaponFlashlight.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player dryfires a weapon.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> dryfires a weapon.
         /// </summary>
         /// <param name="ev">The <see cref="DryfiringWeaponEventArgs"/> instance.</param>
         public static void OnDryfiringWeapon(DryfiringWeaponEventArgs ev) => DryfiringWeapon.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player walks on a tantrum.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> walks on a tantrum.
         /// </summary>
         /// /// <param name="ev">The <see cref="WalkingOnTantrumEventArgs"/> instance.</param>
         public static void OnWalkingOnTantrum(WalkingOnTantrumEventArgs ev) => WalkingOnTantrum.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a player presses the voicechat key.
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> presses the voicechat key.
         /// </summary>
         /// <param name="ev">The <see cref="VoiceChattingEventArgs"/> instance.</param>
         public static void OnVoiceChatting(VoiceChattingEventArgs ev) => VoiceChatting.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player makes noise.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> makes noise.
         /// </summary>
         /// <param name="ev">The <see cref="MakingNoiseEventArgs"/> instance.</param>
         public static void OnMakingNoise(MakingNoiseEventArgs ev) => MakingNoise.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player jumps.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> jumps.
         /// </summary>
         /// <param name="ev">The <see cref="JumpingEventArgs"/> instance.</param>
         public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a player presses the transmission key.
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> presses the transmission key.
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
         public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player changes move state.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> changes move state.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingMoveStateEventArgs"/> instance.</param>
         public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a player changes spectated player.
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> changes spectated player.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
         public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player toggles the NoClip mode.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> toggles the NoClip mode.
         /// </summary>
         /// <param name="ev">The <see cref="TogglingNoClipEventArgs"/> instance.</param>
         public static void OnTogglingNoClip(TogglingNoClipEventArgs ev) => TogglingNoClip.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player picks up a SCP-330 candy.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> picks up a SCP-330 candy.
         /// </summary>
         /// <param name="ev">The <see cref="PickingUpScp330EventArgs"/> instance.</param>
         public static void OnPickingUp330(PickingUpScp330EventArgs ev) => PickingUpScp330.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a player interacts with SCP-330.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
