@@ -82,27 +82,27 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the starting inventory for the role.
         /// </summary>
-        protected virtual List<string> Inventory { get; set; } = new List<string>();
+        public virtual List<string> Inventory { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
-        protected virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        public virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
         /// </summary>
-        protected virtual bool KeepInventoryOnSpawn { get; set; }
+        public virtual bool KeepInventoryOnSpawn { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether players die when this role is removed.
         /// </summary>
-        protected virtual bool RemovalKillsPlayer { get; set; } = true;
+        public virtual bool RemovalKillsPlayer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep this role when they die.
         /// </summary>
-        protected virtual bool KeepRoleOnDeath { get; set; }
+        public virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
@@ -278,8 +278,12 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
             player.CustomInfo = $"{Name} (Custom Role)";
-            foreach (CustomAbility ability in CustomAbilities)
-                ability.AddAbility(player);
+            if (CustomAbilities != null)
+            {
+                foreach (CustomAbility ability in CustomAbilities)
+                    ability.AddAbility(player);
+            }
+
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
@@ -291,7 +295,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
         public virtual void RemoveRole(Player player)
         {
+            Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
+            player.CustomInfo = string.Empty;
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
             foreach (CustomAbility ability in CustomAbilities)
