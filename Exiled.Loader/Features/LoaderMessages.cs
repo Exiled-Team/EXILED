@@ -29,6 +29,20 @@ namespace Exiled.Loader.Features
                                   ▀                                 ";
 
         /// <summary>
+        /// Gets the easter egg loader message.
+        /// </summary>
+        public static string EasterEgg => @"
+   ▄████████    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
+  ███    ███   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
+  ███    █▀    ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
+  ███         ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
+▀███████████ ▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
+         ███   ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
+   ▄█    ███   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
+ ▄████████▀    ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
+                                                                                ";
+
+        /// <summary>
         /// Gets the christmas loader message.
         /// </summary>
         public static string Christmas => @"
@@ -67,6 +81,9 @@ namespace Exiled.Loader.Features
         /// <returns>The correspondent loader message.</returns>
         public static string GetMessage()
         {
+            if (Loader.Random.NextDouble() <= 0.14)
+                return EasterEgg;
+
             switch (DateTime.Today.Month)
             {
                 case 12:

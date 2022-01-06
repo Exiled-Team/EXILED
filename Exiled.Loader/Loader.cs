@@ -144,17 +144,17 @@ namespace Exiled.Loader
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
+            if (!Config.IsEnabled)
+            {
+                Log.Warn("Exiled Loader is disabled. No plugins will be loaded.");
+                return;
+            }
+
             LoadDependencies();
             LoadPlugins();
 
             ConfigManager.Reload();
             TranslationManager.Reload();
-
-            if (!Config.IsEnabled)
-            {
-                Log.Warn("Loading EXILED has been disabled in a config. No plugins will be enabled.");
-                return;
-            }
 
             EnablePlugins();
 

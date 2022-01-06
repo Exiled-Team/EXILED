@@ -37,12 +37,6 @@ namespace Exiled.Events.Commands.Config
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (sender.LogName != "SERVER CONSOLE")
-            {
-                response = "This command can't be used inside the game.";
-                return false;
-            }
-
             if (Loader.Config.ConfigType == ConfigType.Separated)
             {
                 response = "Configs are actually separated.";
