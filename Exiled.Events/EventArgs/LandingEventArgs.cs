@@ -11,18 +11,18 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all the information when a player lands.
+    /// Contains all the information after a <see cref="Exiled.API.Features.Player"/> lands.
     /// </summary>
     public class LandingEventArgs : EventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LandingEventArgs"/> class.
         /// </summary>
-        /// <param name="player">The player landing.</param>
+        /// <param name="player">The <inheritdoc cref="Player"/> landing.</param>
         public LandingEventArgs(Player player) => Player = player;
 
         /// <summary>
-        /// Gets the player landing.
+        /// Gets the <see cref="Exiled.API.Features.Player"/> who's landing.
         /// </summary>
         public Player Player { get; }
     }
