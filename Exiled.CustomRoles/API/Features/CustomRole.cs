@@ -278,8 +278,12 @@ namespace Exiled.CustomRoles.API.Features
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
             player.CustomInfo = $"{Name} (Custom Role)";
-            foreach (CustomAbility ability in CustomAbilities)
-                ability.AddAbility(player);
+            if (CustomAbilities != null)
+            {
+                foreach (CustomAbility ability in CustomAbilities)
+                    ability.AddAbility(player);
+            }
+
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
@@ -291,7 +295,9 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
         public virtual void RemoveRole(Player player)
         {
+            Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
+            player.CustomInfo = string.Empty;
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
             foreach (CustomAbility ability in CustomAbilities)
