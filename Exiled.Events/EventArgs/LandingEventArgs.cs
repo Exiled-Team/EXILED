@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
 
     /// <summary>
-    /// Contains all the information after a <see cref="Exiled.API.Features.Player"/> lands.
+    /// Contains all the information after a <see cref="Exiled.API.Features.Player"/> lands on the ground.
     /// </summary>
     public class LandingEventArgs : EventArgs
     {
