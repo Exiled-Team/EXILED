@@ -31,9 +31,9 @@ namespace Exiled.API.Features
         public static DateTime StartedTime => DateTime.Now - ElapsedTime;
 
         /// <summary>
-        /// Gets a value indicating whether the round is started or not.
+        /// Gets a value indicating whether the round is not started or has ended or not.
         /// </summary>
-        public static bool IsStarted => RoundSummary.RoundInProgress();
+        public static bool IsInProgress => RoundSummary.RoundInProgress();
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
