@@ -34,7 +34,9 @@ namespace Exiled.API.Features.Toys
         public Primitive(PrimitiveObjectToy toy)
         {
             Base = toy;
-            Collidable = toy.NetworkPosition.x < 0 && toy.NetworkPosition.y < 0 && toy.NetworkPosition.z < 0;
+
+            var position = toy.transform.position;
+            Collidable = position.x < 0 && position.y < 0 && position.z < 0;
         }
 
         /// <summary>
@@ -65,12 +67,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Position
         {
-            get => Base.NetworkPosition;
-            set
-            {
-                Base.transform.position = value;
-                Base.NetworkPosition = value;
-            }
+            get => Base.transform.position;
+            set => Base.transform.position = value;
         }
 
         /// <summary>
@@ -78,12 +76,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Quaternion Rotation
         {
-            get => Base.NetworkRotation.Value;
-            set
-            {
-                Base.transform.rotation = value;
-                Base.NetworkRotation = new LowPrecisionQuaternion(value);
-            }
+            get => Base.transform.rotation;
+            set => Base.transform.rotation = value;
         }
 
         /// <summary>
@@ -91,11 +85,10 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.NetworkScale;
+            get => Base.transform.localScale;
             set
             {
                 Base.transform.localScale = value;
-                Base.NetworkScale = value;
 
                 RefreshCollidable();
             }
@@ -129,12 +122,11 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public void Spawn()
         {
-            RefreshCollidable();
-
             var transform = Base.transform;
             transform.position = Position;
             transform.rotation = Rotation;
-            transform.localScale = Scale;
+
+            RefreshCollidable();
 
             NetworkServer.Spawn(Base.gameObject);
         }
@@ -151,11 +143,11 @@ namespace Exiled.API.Features.Toys
         {
             if (Collidable)
             {
-                Base.NetworkScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
+                Base.transform.localScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
             }
             else
             {
-                Base.NetworkScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
+                Base.transform.localScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
             }
         }
     }

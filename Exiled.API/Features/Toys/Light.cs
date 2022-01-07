@@ -43,12 +43,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Vector3 Position
         {
-            get => Base.NetworkPosition;
-            set
-            {
-                Base.transform.position = value;
-                Base.NetworkPosition = value;
-            }
+            get => Base.transform.position;
+            set => Base.transform.position = value;
         }
 
         /// <summary>
@@ -104,7 +100,6 @@ namespace Exiled.API.Features.Toys
         {
             var transform = Base.transform;
             transform.position = Position;
-            transform.localScale = Vector3.one;
 
             NetworkServer.Spawn(Base.gameObject);
         }
