@@ -9,6 +9,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -24,23 +25,23 @@ namespace Exiled.Events.Patches.Events.Warhead
     /// Patch the <see cref="AlphaWarheadController.StartDetonation"/>.
     /// Adds the <see cref="Handlers.Warhead.Starting"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))]
+    [HarmonyPatch(typeof(AlphaWarheadController), nameof(AlphaWarheadController.Update))]
     internal static class StartingByServer
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int offset = 0;
+            const int offset = -2;
 
             // Search for the last "ldarg.0".
-            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))) + offset;
 
             // Get the count to find the previous index
             int oldCount = newInstructions.Count;
 
-            // Get the return label from the last instruction.
-            object returnLabel = newInstructions[index - 1].operand;
+            // Define a return label for us to use.
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new StartingEventArgs(Server.Host, true);
             //
@@ -62,6 +63,9 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Add the starting labels to the first injected instruction.
             // Calculate the difference and get the valid index - is better and easy than using a list
             newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
+
+            // Add our return label to the method's natural ret instruction.
+            newInstructions[index].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
