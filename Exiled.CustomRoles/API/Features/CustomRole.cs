@@ -110,6 +110,11 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool KeepRoleOnDeath { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating the <see cref="Player"/>'s size.
+        /// </summary>
+        public virtual Vector3 Scale { get; set; } = Vector3.one;
+
+        /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
         /// </summary>
         /// <param name="id">The ID of the role to get.</param>
@@ -279,6 +284,7 @@ namespace Exiled.CustomRoles.API.Features
                 Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
                 player.Health = MaxHealth;
                 player.MaxHealth = MaxHealth;
+                player.Scale = Scale;
             });
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
@@ -305,6 +311,7 @@ namespace Exiled.CustomRoles.API.Features
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
             player.InfoArea |= ~PlayerInfoArea.Role;
+            player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
             foreach (CustomAbility ability in CustomAbilities)
