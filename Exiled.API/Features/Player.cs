@@ -697,8 +697,14 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses.First().Limit;
-            set => ActiveArtificialHealthProcesses.First().Limit = value;
+            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            set
+            {
+                if (ActiveArtificialHealthProcesses.Count() < 1)
+                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+
+                ActiveArtificialHealthProcesses.First().Limit = value;
+            }
         }
 
         /// <summary>
