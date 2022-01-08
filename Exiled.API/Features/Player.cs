@@ -1000,6 +1000,11 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
+        /// Gets a value indicating whether the player inventory is full.
+        /// </summary>
+        public bool IsInventoryFull => Items.Count >= 8;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
         public bool CanSendInputs
