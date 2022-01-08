@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Warhead
 
             const int offset = -2;
 
-            // Search for the last "ldarg.0".
+            // Search for the only call AlphaWarheadController.StartDetonation
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call && (MethodInfo)instruction.operand == Method(typeof(AlphaWarheadController), nameof(AlphaWarheadController.StartDetonation))) + offset;
 
             // Get the count to find the previous index
