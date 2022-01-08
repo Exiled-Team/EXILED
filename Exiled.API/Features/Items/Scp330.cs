@@ -65,7 +65,7 @@ namespace Exiled.API.Features.Items
         /// Adds a specific candy to the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to add.</param>
-        [System.Obsolete("Please use RemoveCandy(CandyKindID, out bool) instead.", true)]
+        [System.Obsolete("Please use AddCandy(CandyKindID, out bool) instead.", true)]
         public void AddCandy(CandyKindID type)
         {
             AddCandy(type, out _);
