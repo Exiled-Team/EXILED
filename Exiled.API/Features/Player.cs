@@ -2038,7 +2038,7 @@ namespace Exiled.API.Features
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
         /// <summary>
-        /// Gives a new.
+        /// Gives a new <see cref="AhpStat">to the player</see>.
         /// </summary>
         /// <param name="amount">The amount to give the player.</param>
         /// <param name="limit">The maximum AHP for this stat.</param>
