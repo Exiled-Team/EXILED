@@ -460,15 +460,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Given the name of a camera, returns its <see cref="CameraType"/>, or <see langword="null"/> if the camera does not exist.
+        /// Given the name of a camera, returns its <see cref="CameraType"/>, or <see cref="CameraType.Unknown"/> if the camera does not exist.
         /// </summary>
         /// <param name="cameraName">The name of the camera.</param>
         /// <returns>The <see cref="CameraType"/>, or <see langword="null"/> if it does not exist.</returns>
-        public static CameraType? GetCameraType(string cameraName)
+        public static CameraType GetCameraType(string cameraName)
         {
             Camera079 cam = GetCameraByName(cameraName);
             if (!cam)
-                return null;
+                return CameraType.Unknown;
 
             return cam.Type();
         }
