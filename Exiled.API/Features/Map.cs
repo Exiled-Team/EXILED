@@ -480,7 +480,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Camera079"/> with the given ID, or <see langword="null"/> if not found.</returns>
         public static Camera079 GetCameraById(ushort cameraId)
         {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            foreach (Camera079 camera in Cameras)
             {
                 if (camera.cameraId == cameraId)
                     return camera;
@@ -497,7 +497,7 @@ namespace Exiled.API.Features
         public static Camera079 GetCameraByName(string cameraName)
         {
             cameraName = cameraName.ToLower();
-            foreach (var cam in Scp079PlayerScript.allCameras)
+            foreach (Camera079 cam in Cameras)
             {
                 if (cam.cameraName.ToLower() == cameraName)
                     return cam;
@@ -513,7 +513,7 @@ namespace Exiled.API.Features
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
         public static Camera079 GetCameraByType(CameraType cameraType)
         {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            foreach (Camera079 camera in Cameras)
             {
                 if (camera.Type() == cameraType)
                     return camera;
