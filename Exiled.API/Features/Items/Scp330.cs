@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
 
     using InventorySystem.Items.Usables.Scp330;
@@ -14,6 +15,8 @@ namespace Exiled.API.Features.Items
     using Mirror;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for SCP-330 bags.
@@ -34,7 +37,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Scp330"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
-        [System.Obsolete("Please use new Scp330() instead. This constructor will be removed in the future.", true)]
+        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.", true)]
         public Scp330(ItemType type)
             : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(type, false))
         {
@@ -43,7 +46,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class, as well as a new SCP-330 bag item.
         /// </summary>
-        public Scp330()
+        internal Scp330()
             : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(ItemType.SCP330, false))
         {
         }

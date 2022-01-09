@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
     using Exiled.API.Structs;
 
@@ -33,7 +35,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Base"/></param>
-        [System.Obsolete("Please use new Radio() instead. This constructor will be removed in the future.", true)]
+        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.", true)]
         public Radio(ItemType type)
             : this((RadioItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
@@ -42,7 +44,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class, as well as a new Radio item.
         /// </summary>
-        public Radio()
+        internal Radio()
             : this((RadioItem)Server.Host.Inventory.CreateItemInstance(ItemType.Radio, false))
         {
         }
