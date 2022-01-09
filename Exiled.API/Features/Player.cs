@@ -700,7 +700,7 @@ namespace Exiled.API.Features
             get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
             set
             {
-                if (ActiveArtificialHealthProcesses.Count() < 1)
+                if (!ActiveArtificialHealthProcesses.Any())
                     ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
 
                 ActiveArtificialHealthProcesses.First().Limit = value;
