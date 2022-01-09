@@ -1469,10 +1469,12 @@ namespace Exiled.API.Features
         /// <param name="overrideMaxHealth">Whether healing should exceed their max health.</param>
         public void Heal(float amount, bool overrideMaxHealth = false)
         {
-            if (!overrideMaxHealth)
-                ((HealthStat)ReferenceHub.playerStats.StatModules[0]).ServerHeal(amount);
+            float newHealth = Health + amount;
+            
+            if (!overrideMaxHealth && newHealth > MaxHealth)
+                Health = MaxHealth;
             else
-                Health += amount;
+                Health = newHealth;
         }
 
         /// <summary>
