@@ -52,6 +52,16 @@ namespace Exiled.API.Features
         public RoomType Type { get; private set; }
 
         /// <summary>
+        /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.
+        /// </summary>
+        public RoomIdentifier RoomIdentifier { get; private set; }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="global::TeslaGate"/> in the room, or <see langword="null"/> if this room does not contain one.
+        /// </summary>
+        public TeslaGate TeslaGate { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
         public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom.Transform == Transform);
@@ -342,6 +352,8 @@ namespace Exiled.API.Features
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
+            RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
+            TeslaGate = gameObject.GetComponentInChildren<TeslaGate>();
 
             FindObjectsInRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
