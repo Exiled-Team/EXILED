@@ -51,12 +51,6 @@ namespace Exiled.Events.EventArgs
         public Role Role { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DamageHandlerBase"/>.
-        /// </summary>
-        [Obsolete("Use AnnouncingScpTerminationEventArgs.Handler")]
-        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
-
-        /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
         public DamageHandler Handler { get; set; }

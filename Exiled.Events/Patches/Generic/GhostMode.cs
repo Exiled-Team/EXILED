@@ -24,7 +24,6 @@ namespace Exiled.Events.Patches.Generic
     using Scp096 = PlayableScps.Scp096;
 
 #pragma warning disable SA1028 // Code should not contain trailing whitespace
-#pragma warning disable CS0618 // Type or member is obsolete (Player.TargetGhosts)
 #pragma warning disable SA1515 // Single-line comment should be preceded by blank line
 #pragma warning disable SA1513 // Closing brace should be followed by blank line
 #pragma warning disable SA1512 // Single-line comments should not be followed by blank line
