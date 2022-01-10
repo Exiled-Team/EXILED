@@ -30,11 +30,13 @@ namespace Exiled.API.Extensions
         /// Check if a <see cref="DamageType">damage type</see> is caused by SCP.
         /// </summary>
         /// <param name="type">The damage type to be checked.</param>
+        /// <param name="checkItems">Indicates whether the SCP-items damage types should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by SCP or not.</returns>
-        public static bool IsScp(this DamageType type)
+        public static bool IsScp(this DamageType type, bool checkItems = true)
             => type == DamageType.Scp || type == DamageType.Scp049 ||
                type == DamageType.Scp096 || type == DamageType.Scp106 ||
-               type == DamageType.Scp173 || type == DamageType.Scp939 || type == DamageType.Scp0492;
+               type == DamageType.Scp173 || type == DamageType.Scp939 ||
+               type == DamageType.Scp0492 || (checkItems && (type == DamageType.Scp018 || type == DamageType.Scp207));
 
         /// <summary>
         /// Check if a <see cref="DamageType">damage type</see> is caused by status effect.
@@ -42,6 +44,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">The damage type to be checked.</param>
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by status effect or not.</returns>
         public static bool IsStatusEffect(this DamageType type)
-            => type == DamageType.Asphyxiation || type == DamageType.Poison || type == DamageType.Bleeding;
+            => type == DamageType.Asphyxiation || type == DamageType.Poison ||
+               type == DamageType.Bleeding || type == DamageType.Scp207;
     }
 }
