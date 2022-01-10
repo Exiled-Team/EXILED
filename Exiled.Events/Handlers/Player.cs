@@ -388,6 +388,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<JumpingEventArgs> Jumping;
 
         /// <summary>
+        /// Invoked after a <see cref="Exiled.API.Features.Player"/> lands.
+        /// </summary>
+        public static event CustomEventHandler<LandingEventArgs> Landing;
+
+        /// <summary>
         /// Invoked after a <see cref="Exiled.API.Features.Player"/> presses the transmission key.
         /// </summary>
         public static event CustomEventHandler<TransmittingEventArgs> Transmitting;
@@ -855,6 +860,12 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="JumpingEventArgs"/> instance.</param>
         public static void OnJumping(JumpingEventArgs ev) => Jumping.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called after a <see cref="Exiled.API.Features.Player"/> lands.
+        /// </summary>
+        /// <param name="ev">The <see cref="LandingEventArgs"/> instance.</param>
+        public static void OnLanding(LandingEventArgs ev) => Landing.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="Exiled.API.Features.Player"/> presses the transmission key.
