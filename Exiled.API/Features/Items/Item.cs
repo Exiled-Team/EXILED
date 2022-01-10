@@ -7,10 +7,12 @@
 
 namespace Exiled.API.Features.Items
 {
+#pragma warning disable CS0618
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
@@ -164,6 +166,76 @@ namespace Exiled.API.Features.Items
 
                 default:
                     return new Item(itemBase);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Item"/> with the proper inherited subclass.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
+        /// <param name="owner">The <see cref="Player"/> who owns the item by default.</param>
+        /// <returns>The <see cref="Item"/> created. This can be cast as a subclass.</returns>
+        public static Item Create(ItemType type, Player owner = null)
+        {
+            switch (type)
+            {
+                case ItemType.Adrenaline:
+                case ItemType.Medkit:
+                case ItemType.Painkillers:
+                case ItemType.SCP500:
+                case ItemType.SCP207:
+                case ItemType.SCP268:
+                    return new Usable(type);
+                case ItemType.Ammo9x19:
+                case ItemType.Ammo12gauge:
+                case ItemType.Ammo44cal:
+                case ItemType.Ammo556x45:
+                case ItemType.Ammo762x39:
+                    return new Ammo(type);
+                case ItemType.Flashlight:
+                    return new Flashlight();
+                case ItemType.Radio:
+                    return new Radio();
+                case ItemType.MicroHID:
+                    return new MicroHid();
+                case ItemType.GrenadeFlash:
+                    return new FlashGrenade(owner);
+                case ItemType.GrenadeHE:
+                case ItemType.SCP018:
+                    return new ExplosiveGrenade(type, owner);
+                case ItemType.GunCrossvec:
+                case ItemType.GunLogicer:
+                case ItemType.GunRevolver:
+                case ItemType.GunShotgun:
+                case ItemType.GunAK:
+                case ItemType.GunCOM15:
+                case ItemType.GunCOM18:
+                case ItemType.GunE11SR:
+                case ItemType.GunFSP9:
+                    return new Firearm(type);
+                case ItemType.KeycardGuard:
+                case ItemType.KeycardJanitor:
+                case ItemType.KeycardO5:
+                case ItemType.KeycardScientist:
+                case ItemType.KeycardChaosInsurgency:
+                case ItemType.KeycardContainmentEngineer:
+                case ItemType.KeycardFacilityManager:
+                case ItemType.KeycardResearchCoordinator:
+                case ItemType.KeycardZoneManager:
+                case ItemType.KeycardNTFCommander:
+                case ItemType.KeycardNTFLieutenant:
+                case ItemType.KeycardNTFOfficer:
+                    return new Keycard(type);
+                case ItemType.ArmorLight:
+                case ItemType.ArmorCombat:
+                case ItemType.ArmorHeavy:
+                    return new Armor(type);
+                case ItemType.SCP330:
+                    return new Scp330();
+                case ItemType.SCP2176:
+                    return new Throwable(type);
+                default:
+                    return new Item(type);
             }
         }
 

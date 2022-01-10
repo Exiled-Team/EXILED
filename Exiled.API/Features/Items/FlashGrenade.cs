@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
@@ -18,6 +19,8 @@ namespace Exiled.API.Features.Items
     using Mirror;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="FlashbangGrenade"/>.
@@ -44,7 +47,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        [System.Obsolete("Please use new FlashGrenade(Player) instead. This constructor will be removed in the future.", true)]
+        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.", true)]
         public FlashGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
@@ -55,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="player">The owner of the grenade. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        public FlashGrenade(Player player = null)
+        internal FlashGrenade(Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(ItemType.GrenadeFlash, false) : (ThrowableItem)player.Inventory.CreateItemInstance(ItemType.GrenadeFlash, true))
         {
         }

@@ -196,7 +196,7 @@ namespace Exiled.Example.Events
             if (ev.RoleType == RoleType.Scientist)
             {
                 ev.Position = new Vector3(53f, 1020f, -44f);
-                Timing.CallDelayed(1f, () => ev.Player.CurrentItem = new Firearm(ItemType.GunCrossvec));
+                Timing.CallDelayed(1f, () => ev.Player.CurrentItem = Item.Create(ItemType.GunCrossvec));
                 Timing.CallDelayed(1f, () => ev.Player.AddItem(ItemType.GunLogicer));
             }
         }

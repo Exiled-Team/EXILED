@@ -59,6 +59,7 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
+#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -1959,7 +1960,7 @@ namespace Exiled.API.Features
                     throwable = new FlashGrenade();
                     break;
                 default:
-                    throwable = new ExplosiveGrenade(type);
+                    throwable = new ExplosiveGrenade(type.GetItemType());
                     break;
             }
 

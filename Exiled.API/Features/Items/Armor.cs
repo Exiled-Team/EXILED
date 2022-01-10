@@ -43,6 +43,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
+        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
         public Armor(ItemType type)
             : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
         {
