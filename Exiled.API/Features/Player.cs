@@ -2026,6 +2026,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets a <see cref="StatBase"/> module from the player's <see cref="PlayerStats"/> component.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <returns>The <typeparamref name="T"/> module that was requested.</returns>
+        public T GetModule<T>()
+            where T : StatBase
+            => ReferenceHub.playerStats.GetModule<T>();
+
+        /// <summary>
         /// Gets a <see cref="bool"/> describing whether the given <see cref="PlayerEffect">status effect</see> is currently enabled.
         /// </summary>
         /// <typeparam name="T">The <see cref="PlayerEffect"/> to check.</typeparam>
