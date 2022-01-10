@@ -38,21 +38,26 @@ namespace Exiled.Events.Patches.Events.Warhead
         /// <param name="instructions">The <see cref="List{T}"/> of instructions to add to.</param>
         internal static void InsertInstructions(int index, ILGenerator generator, ref List<CodeInstruction> instructions)
         {
-            Label retLabel = generator.DefineLabel();
-            instructions.InsertRange(index, new[]
+            Label cdcLabel = generator.DefineLabel();
+            CodeInstruction[] instructionsToInsert =
             {
                 new CodeInstruction(OpCodes.Ldarg_2).MoveLabelsFrom(instructions[index]),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ICommandSender) })),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))),
-                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(StartingEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Warhead), nameof(Handlers.Warhead.OnStarting))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(StartingEventArgs), nameof(StartingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse, retLabel),
-            });
+                new CodeInstruction(OpCodes.Brtrue, cdcLabel),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldstr, "Action prevented by a plugin."),
+                new CodeInstruction(OpCodes.Stind_Ref),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Ret),
+            };
 
-            instructions[instructions.Count - 1].labels.Add(retLabel);
+            instructions.InsertRange(index, instructionsToInsert);
+            instructions[index + instructionsToInsert.Length].labels.Add(cdcLabel);
         }
     }
 
