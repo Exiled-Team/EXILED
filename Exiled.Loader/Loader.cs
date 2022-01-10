@@ -110,7 +110,6 @@ namespace Exiled.Loader
         /// </summary>
         public static ISerializer Serializer { get; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -122,7 +121,6 @@ namespace Exiled.Loader
         /// </summary>
         public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())
-            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()

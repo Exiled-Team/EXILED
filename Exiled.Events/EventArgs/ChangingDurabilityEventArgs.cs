@@ -7,54 +7,32 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Features;
-    using Exiled.API.Features.Items;
+    using InventorySystem.Items.Firearms;
 
     /// <summary>
     /// Contains all informations before changing item durability.
     /// </summary>
-    public class ChangingDurabilityEventArgs : System.EventArgs
+    public class ChangingDurabilityEventArgs : ChangingAttributesEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingDurabilityEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
-        /// <param name="oldDurability"><inheritdoc cref="OldDurability"/></param>
+        /// <param name="item"><inheritdoc cref="ChangingAttributesEventArgs.OldItem"/></param>
         /// <param name="newDurability"><inheritdoc cref="NewDurability"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingDurabilityEventArgs(Player player, InventorySystem.Items.Firearms.Firearm firearm, byte oldDurability, byte newDurability, bool isAllowed = true)
+        /// <param name="isAllowed"><inheritdoc cref="ChangingAttributesEventArgs.IsAllowed"/></param>
+        public ChangingDurabilityEventArgs(Firearm item, float newDurability, bool isAllowed = true)
+            : base(item, item, isAllowed)
         {
-            Player = player;
-            Firearm = (Firearm)Item.Get(firearm);
-            OldDurability = oldDurability;
+            Item = (API.Features.Items.Firearm)API.Features.Items.Item.Get(item);
             NewDurability = newDurability;
-            IsAllowed = isAllowed;
         }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's changing the <see cref="Firearm"/>'s durability.
-        /// </summary>
-        public Player Player { get; }
+        /// <inheritdoc cref="Item"/>
+        public API.Features.Items.Firearm Item { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> the durability is being changed to.
+        /// Gets or sets the new durability to be used by the weapon.
         /// </summary>
-        public Firearm Firearm { get; }
-
-        /// <summary>
-        /// Gets the old durability.
-        /// </summary>
-        public byte OldDurability { get; }
-
-        /// <summary>
-        /// Gets or sets the new durability to be used by the firearm.
-        /// </summary>
-        public byte NewDurability { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the durability can be changed.
-        /// </summary>
-        public bool IsAllowed { get; set; }
+        public float NewDurability { get; set; }
     }
 }

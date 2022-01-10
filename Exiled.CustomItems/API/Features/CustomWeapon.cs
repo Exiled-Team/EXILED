@@ -15,15 +15,18 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
+    using InventorySystem.Items;
     using InventorySystem.Items.Firearms;
-    using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Pickups;
 
     using MEC;
 
     using PlayerStatsSystem;
 
     using UnityEngine;
+
+    using YamlDotNet.Serialization;
 
     using static CustomItems;
 
@@ -34,9 +37,9 @@ namespace Exiled.CustomItems.API.Features
     public abstract class CustomWeapon : CustomItem
     {
         /// <summary>
-        /// Gets or sets value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
+        /// Gets or sets the weapon modifiers.
         /// </summary>
-        public virtual AttachmentNameTranslation[] Attachments { get; set; }
+        public abstract Modifiers Modifiers { get; set; }
 
         /// <inheritdoc/>
         public override ItemType Type
@@ -64,12 +67,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
         {
-            Item item = new Item(Type);
-
-            if (item is Firearm firearm && !Attachments.IsEmpty())
-                firearm.AddAttachment(Attachments);
-
-            Pickup pickup = item.Spawn(position);
+            Pickup pickup = new Item(Type).Spawn(position);
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
@@ -81,8 +79,6 @@ namespace Exiled.CustomItems.API.Features
         {
             if (item is Firearm firearm)
             {
-                if (!Attachments.IsEmpty())
-                    firearm.AddAttachment(Attachments);
                 byte ammo = firearm.Ammo;
                 Log.Debug($"{nameof(Name)}.{nameof(Spawn)}: Spawning weapon with {ammo} ammo.", Instance.Config.Debug);
                 Pickup pickup = firearm.Spawn(position);
@@ -114,8 +110,6 @@ namespace Exiled.CustomItems.API.Features
 
             if (item is Firearm firearm)
             {
-                if (!Attachments.IsEmpty())
-                    firearm.AddAttachment(Attachments);
                 firearm.Ammo = ClipSize;
             }
 
