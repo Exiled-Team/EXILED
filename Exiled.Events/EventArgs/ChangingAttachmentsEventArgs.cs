@@ -7,60 +7,49 @@
 
 namespace Exiled.Events.EventArgs
 {
-    using Exiled.API.Features;
+    using Exiled.API.Enums;
     using Exiled.API.Features.Items;
-    using Exiled.API.Structs;
+
+    using Firearm = InventorySystem.Items.Firearms.Firearm;
 
     /// <summary>
     /// Contains all informations before changing item attachments.
     /// </summary>
-    public class ChangingAttachmentsEventArgs : System.EventArgs
+    public class ChangingAttachmentsEventArgs : ChangingAttributesEventArgs
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ChangingAttachmentsEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
-        /// <param name="oldIdentifier"><inheritdoc cref="OldAttachmentIdentifier"/></param>
-        /// <param name="newIdentifier"><inheritdoc cref="NewAttachmentIdentifier"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public ChangingAttachmentsEventArgs(
-            Player player,
-            Firearm firearm,
-            AttachmentIdentifier oldIdentifier,
-            AttachmentIdentifier newIdentifier,
-            bool isAllowed = true)
+        /// <param name="item"><inheritdoc cref="ChangingAttributesEventArgs.OldItem"/></param>
+        /// <param name="newSight"><inheritdoc cref="NewSight"/></param>
+        /// <param name="newBarrel"><inheritdoc cref="NewBarrel"/></param>
+        /// <param name="newOther"><inheritdoc cref="NewOther"/></param>
+        /// <param name="isAllowed"><inheritdoc cref="ChangingAttributesEventArgs.IsAllowed"/></param>
+        public ChangingAttachmentsEventArgs(Firearm item, SightType newSight, BarrelType newBarrel, OtherType newOther, bool isAllowed = true)
+            : base(item, item, isAllowed)
         {
-            Player = player;
-            Firearm = firearm;
-            OldAttachmentIdentifier = oldIdentifier;
-            NewAttachmentIdentifier = newIdentifier;
-            IsAllowed = isAllowed;
+            NewSight = newSight;
+            NewBarrel = newBarrel;
+            NewOther = newOther;
+            OldItem = (API.Features.Items.Firearm)Item.Get(item);
         }
 
-        /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's changing attachments.
-        /// </summary>
-        public Player Player { get; }
+        /// <inheritdoc cref="ChangingAttributesEventArgs.OldItem"/>
+        public new API.Features.Items.Firearm OldItem { get; }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Items.Firearm"/> which is being modified.
+        /// Gets the new item sight attachment.
         /// </summary>
-        public Firearm Firearm { get; }
+        public SightType NewSight { get; }
 
         /// <summary>
-        /// Gets the old <see cref="AttachmentIdentifier"/>.
+        /// Gets the new item barrel attachment.
         /// </summary>
-        public AttachmentIdentifier OldAttachmentIdentifier { get; }
+        public BarrelType NewBarrel { get; }
 
         /// <summary>
-        /// Gets or sets the new <see cref="AttachmentIdentifier"/>.
+        /// Gets the new item other attachment.
         /// </summary>
-        public AttachmentIdentifier NewAttachmentIdentifier { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether or not the attachments can be changed.
-        /// </summary>
-        public bool IsAllowed { get; set; }
+        public OtherType NewOther { get; }
     }
 }

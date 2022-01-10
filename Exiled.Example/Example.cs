@@ -109,7 +109,6 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
-            Exiled.Events.Handlers.Item.ReceivingPreference += itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem += scp914Handler.OnUpgradingItem;
 
@@ -151,7 +150,6 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
-            Exiled.Events.Handlers.Item.ReceivingPreference -= itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem -= scp914Handler.OnUpgradingItem;
 

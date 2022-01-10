@@ -8,6 +8,7 @@
 namespace Exiled.Example.Commands
 {
     using System;
+    using System.Linq;
 
     using CommandSystem;
 
