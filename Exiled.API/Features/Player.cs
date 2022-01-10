@@ -2226,6 +2226,20 @@ namespace Exiled.API.Features
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
 
+        /// <summary>
+        /// Gives a new <see cref="AhpStat">to the player</see>.
+        /// </summary>
+        /// <param name="amount">The amount to give the player.</param>
+        /// <param name="limit">The maximum AHP for this stat.</param>
+        /// <param name="decay">How much value is lost per second.</param>
+        /// <param name="efficacy">Percent of incoming damage absorbed by this stat.</param>
+        /// <param name="sustain">The number of seconds to delay the start of the decay.</param>
+        /// <param name="persistant">Whether or not the process is removed when the value hits 0.</param>
+        public void AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
+        {
+            ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
+        }
+
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
