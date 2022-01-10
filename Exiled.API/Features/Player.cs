@@ -701,7 +701,7 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = Mathf.CeilToInt(value);
 
-                ReferenceHub.playerStats.StatModules[1].CurValue = value;
+                ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
         }
 
@@ -710,8 +710,14 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar;
-            set => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            set
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+
+                ActiveArtificialHealthProcesses.First().Limit = value;
+            }
         }
 
         /// <summary>
