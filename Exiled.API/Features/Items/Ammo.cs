@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Firearms.Ammo;
@@ -30,6 +32,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Ammo"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
+        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
         public Ammo(ItemType type)
             : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {

@@ -282,6 +282,24 @@ namespace Exiled.API.Features
         public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
+        /// Unlocks and clears all active locks on the door after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Lock(float time, DoorLockType flagsToUnlock)
+        {
+            ChangeLock(flagsToUnlock);
+            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+        }
+
+        /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()

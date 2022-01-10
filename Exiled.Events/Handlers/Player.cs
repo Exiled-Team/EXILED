@@ -868,7 +868,7 @@ namespace Exiled.Events.Handlers
         public static void OnLanding(LandingEventArgs ev) => Landing.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a <see cref="Exiled.API.Features.Player"/> presses the transmission key.
+        /// Called after a <see cref="Exiled.API.Features.Player"/> presses the transmission key.
         /// </summary>
         /// <param name="ev">The <see cref="TransmittingEventArgs"/> instance.</param>
         public static void OnTransmitting(TransmittingEventArgs ev) => Transmitting.InvokeSafely(ev);
@@ -880,7 +880,7 @@ namespace Exiled.Events.Handlers
         public static void OnChangingMoveState(ChangingMoveStateEventArgs ev) => ChangingMoveState.InvokeSafely(ev);
 
         /// <summary>
-        /// Invoked after a <see cref="Exiled.API.Features.Player"/> changes spectated player.
+        /// Called after a <see cref="Exiled.API.Features.Player"/> changes spectated player.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingSpectatedPlayerEventArgs"/> instance.</param>
         public static void OnChangingSpectatedPlayer(ChangingSpectatedPlayerEventArgs ev) => ChangingSpectatedPlayer.InvokeSafely(ev);

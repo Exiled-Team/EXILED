@@ -36,28 +36,6 @@ namespace Exiled.Loader
     /// </summary>
     public static class Loader
     {
-        private const string NormalText = @"
-   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
- ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
-  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                                                   ";
-
-        private const string EasterEggText = @"
-   ▄████████    ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀    ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
-  ███         ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀███████████ ▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-         ███   ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-   ▄█    ███   ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
- ▄████████▀    ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                                                                ";
-
         static Loader()
         {
             Log.Info($"Initializing at {Environment.CurrentDirectory}");
@@ -77,20 +55,19 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
 
-            if (!Directory.Exists(Paths.Configs))
-                Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Plugins);
+            Directory.CreateDirectory(Paths.Dependencies);
 
-            if (!Directory.Exists(Paths.Plugins))
-                Directory.CreateDirectory(Paths.Plugins);
-
-            if (!Directory.Exists(Paths.Dependencies))
-                Directory.CreateDirectory(Paths.Dependencies);
+            if (Config.ConfigType == ConfigType.Separated)
+                Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
         /// <summary>
@@ -167,17 +144,17 @@ namespace Exiled.Loader
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
+            if (!Config.IsEnabled)
+            {
+                Log.Warn("Exiled Loader is disabled. No plugins will be loaded.");
+                return;
+            }
+
             LoadDependencies();
             LoadPlugins();
 
             ConfigManager.Reload();
             TranslationManager.Reload();
-
-            if (!Config.IsEnabled)
-            {
-                Log.Warn("Loading EXILED has been disabled in a config. No plugins will be enabled.");
-                return;
-            }
 
             EnablePlugins();
 
@@ -186,9 +163,8 @@ namespace Exiled.Loader
                 AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
-            ServerConsole.AddLog(
-                $@"Welcome to
-{(Random.NextDouble() <= 0.14 ? EasterEggText : NormalText)}", ConsoleColor.Green);
+
+            ServerConsole.AddLog($"Welcome to {LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -401,6 +377,13 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets a plugin with its prefix or name.
+        /// </summary>
+        /// <param name="args">The name or prefix of the plugin (Using the prefix is recommended).</param>
+        /// <returns>The desired plugin, null if not found.</returns>
+        public static IPlugin<IConfig> GetPlugin(string args) => Plugins.FirstOrDefault(x => x.Name == args || x.Prefix == args);
+
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
             Version requiredVersion = plugin.RequiredExiledVersion;
@@ -518,10 +501,6 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
-
-                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
-                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
-                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
 
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {

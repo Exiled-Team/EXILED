@@ -7,6 +7,7 @@
 
 namespace Exiled.CustomItems.API.EventArgs
 {
+    using Exiled.API.Features;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -35,7 +36,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
-        /// <param name="damageHandler"><inheritdoc cref="DyingEventArgs.DamageHandler"/></param>
+        /// <param name="damageHandler"><inheritdoc cref="DamageHandler.Base"/></param>
         public OwnerDyingEventArgs(Item item, Player target, DamageHandlerBase damageHandler)
             : base(target, damageHandler)
         {

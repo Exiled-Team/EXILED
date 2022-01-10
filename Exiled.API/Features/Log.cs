@@ -35,6 +35,22 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Sends a <see cref="LogLevel.Debug"/> level messages to the game console.
+        /// Server must have exiled_debug config enabled.
+        /// </summary>
+        /// <typeparam name="T">The inputted object's type.</typeparam>
+        /// <param name="object">The object to be logged and returned.</param>
+        /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
+        /// <returns>Returns the <typeparamref name="T"/> object inputted in <paramref name="object"/>.</returns>
+        public static T DebugObject<T>(T @object, bool canBeSent = true)
+        {
+            if (canBeSent)
+                Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {@object}", LogLevel.Debug, System.ConsoleColor.Green);
+
+            return @object;
+        }
+
+        /// <summary>
         /// Sends a <see cref="LogLevel.Warn"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>

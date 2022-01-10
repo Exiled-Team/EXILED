@@ -59,6 +59,7 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
+#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -700,7 +701,7 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = Mathf.CeilToInt(value);
 
-                ReferenceHub.playerStats.StatModules[1].CurValue = value;
+                ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
         }
 
@@ -709,8 +710,14 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar;
-            set => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            set
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+
+                ActiveArtificialHealthProcesses.First().Limit = value;
+            }
         }
 
         /// <summary>
@@ -1000,6 +1007,11 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
+        /// Gets a value indicating whether the player inventory is full.
+        /// </summary>
+        public bool IsInventoryFull => Items.Count >= 8;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
         public bool CanSendInputs
@@ -1063,7 +1075,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
-        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers => new ConditionalWeakTable<ReferenceHub, Player>();
+        internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
@@ -1672,13 +1684,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
-        /// <param name="items">The list of items to be added.</param>
-        [Obsolete("Use Player::AddItem(IEnumerable) instead", true)]
-        public void AddItem(List<ItemType> items) => AddItem(items);
-
-        /// <summary>
-        /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
-        /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         public void AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
         {
@@ -1857,13 +1862,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Add the list of items to the player's inventory.
         /// </summary>
-        /// <param name="items">The list of items to be added.</param>
-        [Obsolete("Use Player::AddItem(IEnumerable) instead.", true)]
-        public void AddItem(List<Item> items) => AddItem(items);
-
-        /// <summary>
-        /// Add the list of items to the player's inventory.
-        /// </summary>
         /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Item"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
         public void AddItem(Dictionary<Item, IEnumerable<AttachmentIdentifier>> items)
         {
@@ -1925,13 +1923,6 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        [Obsolete("Use Player::ResetInventory(IEnumerable) instead.", true)]
-        public void ResetInventory(List<ItemType> newItems) => ResetInventory(newItems);
-
-        /// <summary>
-        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
-        /// </summary>
-        /// <param name="newItems">The new items that have to be added to the inventory.</param>
         public void ResetInventory(IEnumerable<Item> newItems)
         {
             ClearInventory();
@@ -1944,13 +1935,6 @@ namespace Exiled.API.Features
                 }
             }
         }
-
-        /// <summary>
-        /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
-        /// </summary>
-        /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        [Obsolete("Use Player::ResetInventory(IEnumerable) instead.", true)]
-        public void ResetInventory(List<Item> newItems) => ResetInventory(newItems);
 
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
@@ -1982,7 +1966,7 @@ namespace Exiled.API.Features
                     throwable = new FlashGrenade();
                     break;
                 default:
-                    throwable = new ExplosiveGrenade(type);
+                    throwable = new ExplosiveGrenade(type.GetItemType());
                     break;
             }
 
@@ -2019,12 +2003,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sends a HitMarker to the player.
         /// </summary>
-        [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
-        public void ShowHitMarker() => ShowHitMarker(1f);
-
-        /// <summary>
-        /// Sends a HitMarker to the player.
-        /// </summary>
         /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
         public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
@@ -2046,6 +2024,15 @@ namespace Exiled.API.Features
             result = default;
             return false;
         }
+
+        /// <summary>
+        /// Gets a <see cref="StatBase"/> module from the player's <see cref="PlayerStats"/> component.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <returns>The <typeparamref name="T"/> module that was requested.</returns>
+        public T GetModule<T>()
+            where T : StatBase
+            => ReferenceHub.playerStats.GetModule<T>();
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether the given <see cref="PlayerEffect">status effect</see> is currently enabled.
@@ -2247,6 +2234,20 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
+
+        /// <summary>
+        /// Gives a new <see cref="AhpStat">to the player</see>.
+        /// </summary>
+        /// <param name="amount">The amount to give the player.</param>
+        /// <param name="limit">The maximum AHP for this stat.</param>
+        /// <param name="decay">How much value is lost per second.</param>
+        /// <param name="efficacy">Percent of incoming damage absorbed by this stat.</param>
+        /// <param name="sustain">The number of seconds to delay the start of the decay.</param>
+        /// <param name="persistant">Whether or not the process is removed when the value hits 0.</param>
+        public void AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
+        {
+            ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
