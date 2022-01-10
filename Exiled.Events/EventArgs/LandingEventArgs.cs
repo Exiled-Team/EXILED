@@ -18,7 +18,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="LandingEventArgs"/> class.
         /// </summary>
-        /// <param name="player"><inheritdoc cred="Player"/></param>
+        /// <param name="player"><inheritdoc cref="Player"/></param>
         public LandingEventArgs(Player player) => Player = player;
 
         /// <summary>
