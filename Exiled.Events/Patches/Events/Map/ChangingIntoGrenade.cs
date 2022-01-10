@@ -9,10 +9,8 @@ namespace Exiled.Events.Patches.Events.Map
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
@@ -22,21 +20,15 @@ namespace Exiled.Events.Patches.Events.Map
     using InventorySystem.Items;
     using InventorySystem.Items.ThrowableProjectiles;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
 
-    using UnityEngine;
-
     using static HarmonyLib.AccessTools;
-
-    using Item = Exiled.API.Features.Items.Item;
 
     /// <summary>
     /// Patches <see cref="InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup.Update"/>.
     /// Adds the <see cref="Handlers.Map.ChangingIntoGrenade"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup), nameof(InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup.Update))]
+    [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]
     internal static class ChangingIntoGrenade
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
