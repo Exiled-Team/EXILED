@@ -23,11 +23,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
         /// <param name="ragdoll"><inheritdoc cref="Ragdoll"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public StartingRecallEventArgs(Player target, Player scp049, Ragdoll ragdoll, bool isAllowed = true)
+        public StartingRecallEventArgs(Player target, Player scp049, global::Ragdoll ragdoll, bool isAllowed = true)
         {
             Target = target;
             Scp049 = scp049;
-            Ragdoll = ragdoll;
+            Ragdoll = Ragdoll.Get(ragdoll);
             IsAllowed = isAllowed;
         }
 
