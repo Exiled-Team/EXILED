@@ -58,27 +58,16 @@ namespace Exiled.API.Features.Items
         /// Adds a specific candy to the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to add.</param>
-        [System.Obsolete("Please use AddCandy(CandyKindID, out bool) instead.", true)]
-        public void AddCandy(CandyKindID type)
-        {
-            AddCandy(type, out _);
-        }
-
-        /// <summary>
-        /// Adds a specific candy to the bag.
-        /// </summary>
-        /// <param name="type">The <see cref="CandyKindID"/> to add.</param>
-        /// <param name="result">Whether or not the candy was successfully added to the bag.</param>
-        public void AddCandy(CandyKindID type, out bool result)
+        /// <returns>Whether or not the candy was successfully added to the bag.</returns>
+        public bool AddCandy(CandyKindID type)
         {
             if (Base.TryAddSpecific(type))
             {
                 Base.ServerRefreshBag();
-                result = true;
-                return;
+                return true;
             }
 
-            result = false;
+            return false;
         }
 
         /// <summary>
@@ -86,21 +75,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
         /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
-        [System.Obsolete("Please use RemoveCandy(CandyKindID, out int, bool) instead.", true)]
-        public void RemoveCandy(CandyKindID type, bool removeAll = false)
+        /// <returns>The total amount of candies that were dropped from the bag.</returns>
+        public int RemoveCandy(CandyKindID type, bool removeAll = false)
         {
-            RemoveCandy(type, out _, removeAll);
-        }
-
-        /// <summary>
-        /// Removes a specific candy from the bag.
-        /// </summary>
-        /// <param name="type">The <see cref="CandyKindID"/> to be removed.</param>
-        /// <param name="amount">The total amount of candies that were dropped from the bag.</param>
-        /// <param name="removeAll">Whether or not to only remove all matching candy. (If <see langword="true"/>, all candies of the given type are removed).</param>
-        public void RemoveCandy(CandyKindID type, out int amount, bool removeAll = false)
-        {
-            amount = 0;
+            int amount = 0;
             while (Base.Candies.Contains(type))
             {
                 Base.TryRemove(Base.Candies.IndexOf(type));
@@ -108,6 +86,8 @@ namespace Exiled.API.Features.Items
                 if (!removeAll)
                     break;
             }
+
+            return amount;
         }
 
         /// <summary>
