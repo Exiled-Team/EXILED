@@ -17,6 +17,7 @@ namespace Exiled.CustomRoles.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems;
@@ -159,13 +160,13 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(ExiledSerializable)) is null)
+                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
                     continue;
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializable), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializableAttribute), true))
                 {
                     CustomRole customRole = (CustomRole)Activator.CreateInstance(type);
-                    customRole.Role = (attribute as ExiledSerializable).RoleType;
+                    customRole.Role = ((ExiledSerializableAttribute)attribute).RoleType;
                     customRole.TryRegister();
                     registeredRoles.Add(customRole);
                 }

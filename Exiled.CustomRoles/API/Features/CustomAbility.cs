@@ -13,6 +13,8 @@ namespace Exiled.CustomRoles.API.Features
     using System.Reflection;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -75,7 +77,7 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(ExiledSerializable)) is null)
+                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
                     continue;
 
                 CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);

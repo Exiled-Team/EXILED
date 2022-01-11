@@ -15,6 +15,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems.API.EventArgs;
@@ -287,13 +288,13 @@ namespace Exiled.CustomItems.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(ExiledSerializable)) is null)
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
                     continue;
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializable), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializableAttribute), true))
                 {
                     CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
-                    customItem.Type = (attribute as ExiledSerializable).ItemType;
+                    customItem.Type = ((ExiledSerializableAttribute)attribute).ItemType;
                     customItem.TryRegister();
                     registeredItems.Add(customItem);
                 }
