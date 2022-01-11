@@ -58,7 +58,7 @@ namespace Exiled.API.Features.Items
         /// Adds a specific candy to the bag.
         /// </summary>
         /// <param name="type">The <see cref="CandyKindID"/> to add.</param>
-        /// <returns>Whether or not the candy was successfully added to the bag.</returns>
+        /// <returns><see langword="true"/> if the candy was successfully added to the bag; otherwise, <see langword="false"/>.</returns>
         public bool AddCandy(CandyKindID type)
         {
             if (Base.TryAddSpecific(type))
