@@ -2,3 +2,7 @@
   href: install.md
 - name: Contributing
   href: contributing.md
+- name: Beginner Tutorials
+  items:
+    - name: Understanding Events
+      href: tutorials/beginnerevents.md
