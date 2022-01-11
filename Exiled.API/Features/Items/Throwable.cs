@@ -40,8 +40,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
-        public Throwable(ItemType type, Player player = null)
+        internal Throwable(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }

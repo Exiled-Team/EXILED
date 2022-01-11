@@ -49,8 +49,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
-        public ExplosiveGrenade(ItemType type, Player player = null)
+        internal ExplosiveGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }

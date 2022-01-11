@@ -73,8 +73,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
-        public Firearm(ItemType type)
+        internal Firearm(ItemType type)
             : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }

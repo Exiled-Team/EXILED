@@ -36,8 +36,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.")]
-        public Keycard(ItemType type)
+        internal Keycard(ItemType type)
             : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }

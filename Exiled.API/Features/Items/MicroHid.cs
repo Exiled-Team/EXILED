@@ -29,16 +29,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MicroHid"/> class.
-        /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.", true)]
-        public MicroHid(ItemType type)
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
         internal MicroHid()

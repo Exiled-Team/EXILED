@@ -34,16 +34,6 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Scp330"/> class.
-        /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        [Obsolete("Use Exiled.API.Features.Item.Create(ItemType) instead.", true)]
-        public Scp330(ItemType type)
-            : this((Scp330Bag)Server.Host.Inventory.CreateItemInstance(type, false))
-        {
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class, as well as a new SCP-330 bag item.
         /// </summary>
         internal Scp330()

@@ -77,7 +77,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Type"/></param>
-        public Item(ItemType type)
+        internal Item(ItemType type)
             : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }

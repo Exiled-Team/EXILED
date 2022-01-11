@@ -64,7 +64,7 @@ namespace Exiled.CustomItems.API.Features
         /// <inheritdoc/>
         public override Pickup Spawn(Vector3 position)
         {
-            Item item = new Item(Type);
+            Item item = Item.Create(Type);
 
             if (item is Firearm firearm && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
