@@ -1587,6 +1587,22 @@ namespace Exiled.API.Features
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
+        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="ItemType"/>.
+        /// This method factors in the armor the player is wearing, as well as server configuration.
+        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Ammo.AmmoLimit"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the ammo to check.</param>
+        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Ammo.AmmoLimit"/>.</returns>
+        public int GetAmmoLimit(ItemType type) => InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type, referenceHub);
+
+        /// <summary>
+        /// Gets the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <returns>The maximum amount of items in the category that the player can hold.</returns>
+        public int GetCategoryLimit(ItemCategory category) => InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
+
+        /// <summary>
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
@@ -1644,13 +1660,31 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
+        [Obsolete("Please use AddItem(ItemType, int, out IEnumerable<Item>) instead.", true)]
         public void AddItem(ItemType itemType, int amount)
+        {
+            AddItem(itemType, amount, out _);
+        }
+
+        /// <summary>
+        /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="items">An <see cref="IEnumerable{T}"/> of <see cref="Item"/>s that were added to the player's inventory.</param>
+        public void AddItem(ItemType itemType, int amount, out IEnumerable<Item> items)
         {
             if (amount > 0)
             {
+                List<Item> returnItems = new List<Item>(amount);
                 for (int i = 0; i < amount; i++)
-                    AddItem(itemType);
+                    returnItems.Add(AddItem(itemType));
+
+                items = returnItems;
+                return;
             }
+
+            items = new List<Item>(0);
         }
 
         /// <summary>
@@ -1894,8 +1928,8 @@ namespace Exiled.API.Features
 
                 Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
                 foreach (CandyKindID candy in scp330.Candies)
-                    scp330.RemoveCandy(candy);
-                scp330.AddCandy(candyType);
+                    scp330.RemoveCandy(candy, out _);
+                scp330.AddCandy(candyType, out _);
 
                 return true;
             }
