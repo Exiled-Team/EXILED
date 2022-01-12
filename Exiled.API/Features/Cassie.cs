@@ -100,11 +100,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Announce the termination of a custom SCP name.
         /// </summary>
-        /// <param name="scpname">SCP Name.</param>
+        /// <param name="scpName">SCP Name.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomSCPTermination(string scpname, DamageHandlerBase info)
+        public static void CustomSCPTermination(string scpName, DamageHandlerBase info)
         {
-            string result = scpname;
+            string result = scpName;
             if (info is MicroHidDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
             else if (info is WarheadDamageHandler)
