@@ -26,10 +26,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAbility"/> class.
         /// </summary>
-        public CustomAbility()
-        {
-            AbilityType = GetType().Name;
-        }
+        public CustomAbility() => AbilityType = GetType().Name;
 
         /// <summary>
         /// Gets a list of all registered custom abilities.
