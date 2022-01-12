@@ -106,20 +106,20 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.AnnounceScpTermination(scp.ReferenceHub, info);
 
         /// <summary>
-        /// Announce the termination of a custom SCP name.
+        /// Announces the termination of a custom SCP name.
         /// </summary>
-        /// <param name="scpName">SCP Name.</param>
+        /// <param name="scpName">SCP Name. Note that for larger numbers, C.A.S.S.I.E will pronounce the place (eg. "457" -> "four hundred fifty seven"). Spaces can be used to prevent this behavior.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomSCPTermination(string scpName, DamageHandlerBase info)
+        public static void CustomScpTermination(string scpName, DamageHandler info)
         {
             string result = scpName;
-            if (info is MicroHidDamageHandler)
+            if (info.Base is MicroHidDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info is WarheadDamageHandler)
+            else if (info.Base is WarheadDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info is UniversalDamageHandler)
+            else if (info.Base is UniversalDamageHandler)
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
+            else if (info.Base is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
@@ -134,7 +134,7 @@ namespace Exiled.API.Features
         public static void Clear() => RespawnEffectsController.ClearQueue();
 
         /// <summary>
-        /// Returns whether or not the given word is a valid C.A.S.S.I.E word.
+        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
         /// </summary>
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid, <see langword="false"/> otherwise.</returns>
