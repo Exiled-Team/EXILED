@@ -29,6 +29,11 @@ namespace Exiled.API.Features
         public static bool IsSpeaking => NineTailedFoxAnnouncer.singleton.queue.Count != 0;
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
+        /// </summary>
+        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => NineTailedFoxAnnouncer.singleton.voiceLines;
+
+        /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
         /// </summary>
         /// <param name="message">The message to be reproduced.</param>
@@ -134,11 +139,5 @@ namespace Exiled.API.Features
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid, <see langword="false"/> otherwise.</returns>
         public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
-
-        /// <summary>
-        /// Returns a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
-        /// </summary>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/>.</returns>
-        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> GetVoiceLines() => NineTailedFoxAnnouncer.singleton.voiceLines;
     }
 }
