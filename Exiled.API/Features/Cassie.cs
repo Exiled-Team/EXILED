@@ -137,7 +137,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
         /// </summary>
         /// <param name="word">The word to check.</param>
-        /// <returns><see langword="true"/> if the word is valid, <see langword="false"/> otherwise.</returns>
+        /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
         public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
     }
 }
