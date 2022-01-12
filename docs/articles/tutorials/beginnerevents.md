@@ -52,7 +52,8 @@ public override void OnDisabled()
 // Some other class
 using Exiled.Events.EventArgs;
 
-public void OnEnraging(EnragingEventArgs ev)
+public void OnEnraging(EnragingEventArgs ev) // ev is the arguments for the event. Every event has a different argument class with different parameters, so make sure to check its documentation.
 {
     Log.Info(ev.Player.Nickname + " has just been enraged!");
 }
+```
