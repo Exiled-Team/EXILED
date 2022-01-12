@@ -1902,8 +1902,8 @@ namespace Exiled.API.Features
 
                 Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
                 foreach (CandyKindID candy in scp330.Candies)
-                    scp330.RemoveCandy(candy, out _);
-                scp330.AddCandy(candyType, out _);
+                    scp330.RemoveCandy(candy);
+                scp330.AddCandy(candyType);
 
                 return true;
             }
