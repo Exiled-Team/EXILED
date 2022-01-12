@@ -7,6 +7,9 @@
 
 namespace Exiled.API.Features
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using MEC;
 
     using PlayerStatsSystem;
@@ -124,5 +127,18 @@ namespace Exiled.API.Features
         /// Clears the C.A.S.S.I.E queue.
         /// </summary>
         public static void Clear() => RespawnEffectsController.ClearQueue();
+
+        /// <summary>
+        /// Returns whether or not the given word is a valid C.A.S.S.I.E word.
+        /// </summary>
+        /// <param name="word">The word to check.</param>
+        /// <returns><see langword="true"/> if the word is valid, <see langword="false"/> otherwise.</returns>
+        public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
+
+        /// <summary>
+        /// Returns a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/>.</returns>
+        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> GetVoiceLines() => NineTailedFoxAnnouncer.singleton.voiceLines;
     }
 }
