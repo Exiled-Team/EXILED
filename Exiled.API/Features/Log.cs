@@ -17,6 +17,10 @@ namespace Exiled.API.Features
     public static class Log
     {
         /// <summary>
+        /// Includes Log::Debug support
+        /// </summary>
+        public static bool IsDebugEnabled { get; set; } = false;
+        /// <summary>
         /// Sends a <see cref="LogLevel.Info"/> level messages to the game console.
         /// </summary>
         /// <param name="message">The message to be sent.</param>
@@ -28,9 +32,9 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="message">The message to be sent.</param>
         /// <param name="canBeSent">Indicates whether the log can be sent or not.</param>
-        public static void Debug(object message, bool canBeSent = true)
+        public static void Debug(object message)
         {
-            if (canBeSent)
+            if (IsDebugEnabled)
                 Send($"[{Assembly.GetCallingAssembly().GetName().Name}] {message}", LogLevel.Debug, System.ConsoleColor.Green);
         }
 
