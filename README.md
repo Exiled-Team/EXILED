@@ -80,8 +80,10 @@ However, some plugins might get their config settings from other locations on th
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
-
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.  
+  
+For more comprehensive and actively updated tutorials, see [the EXILED website](https://exiled-team.github.io/EXILED/articles/install.html).
+  
 But make sure to follow these rules when publishing your plugins:
 
  - Your plugin must contain a class that inherits from Exiled.API.Features.Plugin<>, if it does not, EXILED will not load your plugin when the server starts.
