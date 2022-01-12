@@ -2,9 +2,9 @@
   href: install.md
 - name: Contributing
   href: contributing.md
-- name: Beginner Tutorials
+- name: Tutorials
   items:
     - name: Understanding Events
-      href: tutorials/beginnerevents.md
+      href: tutorials/events.md
     - name: MEC Coroutines
-      href: tutorials/beginnermec.md
+      href: tutorials/mec.md
