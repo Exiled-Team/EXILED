@@ -9,6 +9,7 @@ namespace Exiled.CustomRoles.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -22,6 +23,14 @@ namespace Exiled.CustomRoles.API.Features
     /// </summary>
     public abstract class CustomAbility
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomAbility"/> class.
+        /// </summary>
+        public CustomAbility()
+        {
+            AbilityType = GetType().Name;
+        }
+
         /// <summary>
         /// Gets a list of all registered custom abilities.
         /// </summary>
@@ -42,6 +51,12 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         [YamlIgnore]
         public HashSet<Player> Players { get; } = new HashSet<Player>();
+
+        /// <summary>
+        /// Gets the <see cref="Type"/> for this ability.
+        /// </summary>
+        [Description("Changing this will likely break your config.")]
+        public string AbilityType { get; }
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
