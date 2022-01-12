@@ -1,7 +1,7 @@
 *Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework.*  
 
 # Events: What are they?
-**Events** play a key role in the EXILED framework and all of the plugins utilizing it. Almost every plugin created using the EXILED framework uses events. So, what are they? An event is a simple way of being informed when *something* happens. Events range from the round ending, to a player throwing an item or opening a door, to even SCP-096 being enraged! Events allow you to attach code that executes when something occurs before, during, or at the conclusion of a round.  
+**Events** play a key role in the EXILED framework and all of the plugins utilizing it. Almost every plugin created using the EXILED framework uses events in one way or another. So, what are they? An event is a simple way of being informed when *something* happens. Events range from the round ending, to a player throwing an item or opening a door, to even SCP-096 being enraged! Events allow you to attach code that executes when something occurs before, during, or at the conclusion of a round.  
 
 For example, say that you have the following method.  
 
