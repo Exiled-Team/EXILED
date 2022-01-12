@@ -54,5 +54,5 @@ using Exiled.Events.EventArgs;
 
 public void OnEnraging(EnragingEventArgs ev)
 {
-    Log.Info(Player.Nickname + " has just been enraged!");
+    Log.Info(ev.Player.Nickname + " has just been enraged!");
 }
