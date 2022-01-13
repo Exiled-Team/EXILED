@@ -26,7 +26,6 @@ namespace Exiled.Loader
     using Exiled.Loader.Features.Configs.CustomConverters;
 
     using NorthwoodLib;
-
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;
@@ -172,6 +171,7 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
+            Assembly customRolesAssembly = null;
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
@@ -180,8 +180,17 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
+                if (assembly.GetName().Name == "Exiled.CustomRoles")
+                {
+                    customRolesAssembly = assembly;
+                }
 
                 Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
+            }
+
+            if (customRolesAssembly != null)
+            {
+                customRolesAssembly.GetType("Exiled.CustomRoles.CustomRoles").GetMethod("InjectDeserializer", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
             }
 
             foreach (Assembly assembly in Locations.Keys)

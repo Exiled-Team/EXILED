@@ -12,15 +12,12 @@ namespace Exiled.CustomRoles.API.Features
     using System.Linq;
     using System.Reflection;
 
-    using Dissonance.Integrations.MirrorIgnorance;
-
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
-    using Exiled.CustomItems;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
@@ -32,8 +29,6 @@ namespace Exiled.CustomRoles.API.Features
     using UnityEngine;
 
     using YamlDotNet.Serialization;
-
-    using Ragdoll = Ragdoll;
 
     /// <summary>
     /// The custom role base class.
@@ -494,10 +489,11 @@ namespace Exiled.CustomRoles.API.Features
             if (Check(ev.Target))
             {
                 CustomRoles.Instance.StopRagdollPlayers.Add(ev.Target);
-                Role role = CharacterClassManager._staticClasses.SafeGet(Role);
 
                 // TODO: This
                 /*
+                Role role = CharacterClassManager._staticClasses.SafeGet(Role);
+
                 Ragdoll.Info info = new Ragdoll.Info
                 {
                     ClassColor = role.classColor,

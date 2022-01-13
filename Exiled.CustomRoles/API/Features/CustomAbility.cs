@@ -23,9 +23,22 @@ namespace Exiled.CustomRoles.API.Features
     public abstract class CustomAbility
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CustomAbility"/> class.
+        /// </summary>
+        protected CustomAbility()
+        {
+            AbilityType = GetType().Name;
+        }
+
+        /// <summary>
         /// Gets a list of all registered custom abilities.
         /// </summary>
         public static HashSet<CustomAbility> Registered { get; } = new HashSet<CustomAbility>();
+
+        /// <summary>
+        /// Gets a string representation of the ability's type name.
+        /// </summary>
+        public string AbilityType { get; }
 
         /// <summary>
         /// Gets or sets the name of the ability.
@@ -44,18 +57,18 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> Players { get; } = new HashSet<Player>();
 
         /// <summary>
-        /// Gets a <see cref="CustomRole"/> by name.
+        /// Gets a <see cref="CustomAbility"/> by name.
         /// </summary>
-        /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
+        /// <param name="name">The name of the ability to get.</param>
+        /// <returns>The ability, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomAbility Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
-        /// Tries to get a <see cref="CustomRole"/> by name.
+        /// Tries to get a <see cref="CustomAbility"/> by name.
         /// </summary>
-        /// <param name="name">The name of the role to get.</param>
-        /// <param name="customAbility">The custom role.</param>
-        /// <returns>True if the role exists.</returns>
+        /// <param name="name">The name of the ability to get.</param>
+        /// <param name="customAbility">The custom ability.</param>
+        /// <returns>True if the ability exists.</returns>
         /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomAbility customAbility)
         {

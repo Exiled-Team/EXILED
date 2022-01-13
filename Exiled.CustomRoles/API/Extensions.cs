@@ -14,8 +14,6 @@ namespace Exiled.CustomRoles.API
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
 
-    using UnityEngine;
-
     /// <summary>
     /// A collection of API methods.
     /// </summary>

@@ -7,10 +7,20 @@
 
 namespace Exiled.CustomRoles
 {
+    using System;
     using System.Collections.Generic;
-
+    using System.Linq;
+    using System.Reflection;
     using Exiled.API.Features;
+    using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomRoles.Deserialization;
     using Exiled.CustomRoles.Events;
+    using Exiled.Loader;
+    using Exiled.Loader.Features.Configs;
+    using Exiled.Loader.Features.Configs.CustomConverters;
+    using YamlDotNet.Serialization;
+    using YamlDotNet.Serialization.NamingConventions;
+    using YamlDotNet.Serialization.NodeDeserializers;
 
     /// <summary>
     /// Handles all custom role API functions.
@@ -29,6 +39,22 @@ namespace Exiled.CustomRoles
         /// </summary>
         internal List<Player> StopRagdollPlayers { get; } = new List<Player>();
 
+        private static CustomAbilityTypeResolver TypeResolver { get; } =
+            new CustomAbilityTypeResolver(UnderscoredNamingConvention.Instance);
+
+        private static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+            .WithTypeConverter(new VectorsConverter())
+            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+            .WithNodeDeserializer(
+                inner => new AbstractNodeNodeTypeResolver(
+                    inner,
+                    TypeResolver),
+                s => s.InsteadOf<ValidatingNodeDeserializer>())
+            .WithNamingConvention(UnderscoredNamingConvention.Instance)
+            .IgnoreFields()
+            .IgnoreUnmatchedProperties()
+            .Build();
+
         /// <inheritdoc/>
         public override void OnEnabled()
         {
@@ -46,6 +72,18 @@ namespace Exiled.CustomRoles
             playerHandlers = null;
             Instance = null;
             base.OnDisabled();
+        }
+
+        private static void InjectDeserializer()
+        {
+            foreach (Type t in Loader.Locations.Keys.SelectMany(asm => asm
+                .GetTypes()
+                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(CustomAbility)))))
+            {
+                TypeResolver.TypeLookup.Add(t.Name, t);
+            }
+
+            typeof(Loader).GetProperty("Deserializer", BindingFlags.Static)?.SetValue(null, Deserializer);
         }
     }
 }
