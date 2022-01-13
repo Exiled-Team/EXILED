@@ -1467,7 +1467,8 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") => Hurt(new UniversalDamageHandler(amount, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key, cassieAnnouncement));
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Hurt(new ExiledDamageHandler(attacker, amount, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
 
         /// <summary>
         /// Hurts the player.
