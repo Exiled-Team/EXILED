@@ -8,62 +8,36 @@
 namespace Exiled.API.Features.Toys
 {
     using AdminToys;
-    using Mirror;
+    using Exiled.API.Enums;
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.LightSourceToy"/>.
     /// </summary>
-    public class Light
+    public class Light : AdminToy
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Light"/> class.
         /// </summary>
-        public Light()
+        /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
+        public Light(LightSourceToy lightSourceToy)
+            : base(lightSourceToy, AdminToyType.LightSource)
         {
-            Base = Object.Instantiate(ToysHelper.LightBaseObject);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Light"/> class from a <see cref="AdminToys.LightSourceToy"/>.
-        /// </summary>
-        /// <param name="toy">The <see cref="AdminToys.LightSourceToy"/> to be wrapped.</param>
-        public Light(LightSourceToy toy)
-        {
-            Base = toy;
+            LightSourceBase = lightSourceToy;
         }
 
         /// <summary>
         /// Gets the base <see cref="AdminToys.LightSourceToy"/>.
         /// </summary>
-        public LightSourceToy Base { get; }
-
-        /// <summary>
-        /// Gets or sets the position of the light.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => Base.transform.position;
-            set => Base.transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of movement smoothening on the light.
-        /// <para>Higher values mean less smooth movement, and 60 is an ideal value.</para>
-        /// </summary>
-        public byte Smoothing
-        {
-            get => Base.NetworkMovementSmoothing;
-            set => Base.NetworkMovementSmoothing = value;
-        }
+        public LightSourceToy LightSourceBase { get; }
 
         /// <summary>
         /// Gets or sets the intensity of the light.
         /// </summary>
         public float Intensity
         {
-            get => Base.NetworkLightIntensity;
-            set => Base.NetworkLightIntensity = value;
+            get => LightSourceBase.NetworkLightIntensity;
+            set => LightSourceBase.NetworkLightIntensity = value;
         }
 
         /// <summary>
@@ -71,8 +45,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public float Range
         {
-            get => Base.NetworkLightRange;
-            set => Base.NetworkLightRange = value;
+            get => LightSourceBase.NetworkLightRange;
+            set => LightSourceBase.NetworkLightRange = value;
         }
 
         /// <summary>
@@ -80,8 +54,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Color Color
         {
-            get => Base.NetworkLightColor;
-            set => Base.NetworkLightColor = value;
+            get => LightSourceBase.NetworkLightColor;
+            set => LightSourceBase.NetworkLightColor = value;
         }
 
         /// <summary>
@@ -89,27 +63,14 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public bool ShadowEmission
         {
-            get => Base.NetworkLightShadows;
-            set => Base.NetworkLightShadows = value;
+            get => LightSourceBase.NetworkLightShadows;
+            set => LightSourceBase.NetworkLightShadows = value;
         }
 
         /// <summary>
-        /// Spawns the light.
+        /// Creates a new <see cref="Light"/>.
         /// </summary>
-        public void Spawn()
-        {
-            var transform = Base.transform;
-            transform.position = Position;
-
-            NetworkServer.Spawn(Base.gameObject);
-        }
-
-        /// <summary>
-        /// Removes the light from the game. Use <see cref="Spawn"/> to bring it back.
-        /// </summary>
-        public void UnSpawn()
-        {
-            NetworkServer.UnSpawn(Base.gameObject);
-        }
+        /// <returns>The new light.</returns>
+        public static Light Create() => new Light(Object.Instantiate(ToysHelper.LightBaseObject));
     }
 }

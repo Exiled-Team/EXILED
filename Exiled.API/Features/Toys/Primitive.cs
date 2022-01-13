@@ -9,49 +9,33 @@ namespace Exiled.API.Features.Toys
 {
     using System;
     using AdminToys;
-    using Mirror;
+    using Exiled.API.Enums;
     using UnityEngine;
 
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.PrimitiveObjectToy"/>.
     /// </summary>
-    public class Primitive
+    public class Primitive : AdminToy
     {
         private bool collidable = true;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Primitive"/> class.
         /// </summary>
-        public Primitive()
+        /// <param name="toyAdminToyBase">The <see cref="PrimitiveObjectToy"/> of the toy.</param>
+        public Primitive(PrimitiveObjectToy toyAdminToyBase)
+            : base(toyAdminToyBase, AdminToyType.PrimitiveObject)
         {
-            Base = UnityEngine.Object.Instantiate(ToysHelper.PrimitiveBaseObject);
+            Base = toyAdminToyBase;
+
+            Vector3 actualScale = Base.transform.localScale;
+            Collidable = actualScale.x > 0f || actualScale.y > 0f || actualScale.z > 0f;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Primitive"/> class from a <see cref="AdminToys.PrimitiveObjectToy"/>.
-        /// </summary>
-        /// <param name="toy">The <see cref="AdminToys.PrimitiveObjectToy"/> to be wrapped.</param>
-        public Primitive(PrimitiveObjectToy toy)
-        {
-            Base = toy;
-
-            var position = toy.transform.position;
-            Collidable = position.x < 0 && position.y < 0 && position.z < 0;
-        }
-
-        /// <summary>
-        /// Gets the base <see cref="AdminToys.PrimitiveObjectToy"/>.
+        /// Gets the base <see cref="PrimitiveObjectToy"/>.
         /// </summary>
         public PrimitiveObjectToy Base { get; }
-
-        /// <summary>
-        /// Gets or sets the material color of the primitive.
-        /// </summary>
-        public Color Color
-        {
-            get => Base.NetworkMaterialColor;
-            set => Base.NetworkMaterialColor = value;
-        }
 
         /// <summary>
         /// Gets or sets the type of the primitive.
@@ -63,45 +47,12 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the position of the primitive.
+        /// Gets or sets the material color of the primitive.
         /// </summary>
-        public Vector3 Position
+        public Color Color
         {
-            get => Base.transform.position;
-            set => Base.transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the rotation of the primitive.
-        /// </summary>
-        public Quaternion Rotation
-        {
-            get => Base.transform.rotation;
-            set => Base.transform.rotation = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the scale of the primitive.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get => Base.transform.localScale;
-            set
-            {
-                Base.transform.localScale = value;
-
-                RefreshCollidable();
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of movement smoothening on the primitive.
-        /// <para>Higher values mean less smooth movement, and 60 is an ideal value.</para>
-        /// </summary>
-        public byte Smoothing
-        {
-            get => Base.NetworkMovementSmoothing;
-            set => Base.NetworkMovementSmoothing = value;
+            get => Base.NetworkMaterialColor;
+            set => Base.NetworkMaterialColor = value;
         }
 
         /// <summary>
@@ -118,36 +69,35 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Spawns the primitive.
+        /// Gets or sets the scale of the primitive.
         /// </summary>
-        public void Spawn()
+        public override Vector3 Scale
         {
-            var transform = Base.transform;
-            transform.position = Position;
-            transform.rotation = Rotation;
-
-            RefreshCollidable();
-
-            NetworkServer.Spawn(Base.gameObject);
+            get => AdminToyBase.transform.localScale;
+            set
+            {
+                AdminToyBase.transform.localScale = value;
+                RefreshCollidable();
+            }
         }
 
         /// <summary>
-        /// Removes the primitive from the game. Use <see cref="Spawn"/> to bring it back.
+        /// Creates a new <see cref="Primitive"/>.
         /// </summary>
-        public void UnSpawn()
-        {
-            NetworkServer.UnSpawn(Base.gameObject);
-        }
+        /// <returns>The new primitive.</returns>
+        public static Primitive Create() => new Primitive(UnityEngine.Object.Instantiate(ToysHelper.PrimitiveBaseObject));
 
         private void RefreshCollidable()
         {
+            Vector3 actualScale = Scale;
+
             if (Collidable)
             {
-                Base.transform.localScale = new Vector3(Math.Abs(Scale.x), Math.Abs(Scale.y), Math.Abs(Scale.z));
+                Base.transform.localScale = new Vector3(Math.Abs(actualScale.x), Math.Abs(actualScale.y), Math.Abs(actualScale.z));
             }
             else
             {
-                Base.transform.localScale = new Vector3(-Math.Abs(Scale.x), -Math.Abs(Scale.y), -Math.Abs(Scale.z));
+                Base.transform.localScale = new Vector3(-Math.Abs(actualScale.x), -Math.Abs(actualScale.y), -Math.Abs(actualScale.z));
             }
         }
     }
