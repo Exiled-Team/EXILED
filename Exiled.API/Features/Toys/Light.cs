@@ -23,21 +23,21 @@ namespace Exiled.API.Features.Toys
         public Light(LightSourceToy lightSourceToy)
             : base(lightSourceToy, AdminToyType.LightSource)
         {
-            LightSourceBase = lightSourceToy;
+            Base = lightSourceToy;
         }
 
         /// <summary>
         /// Gets the base <see cref="AdminToys.LightSourceToy"/>.
         /// </summary>
-        public LightSourceToy LightSourceBase { get; }
+        public LightSourceToy Base { get; }
 
         /// <summary>
         /// Gets or sets the intensity of the light.
         /// </summary>
         public float Intensity
         {
-            get => LightSourceBase.NetworkLightIntensity;
-            set => LightSourceBase.NetworkLightIntensity = value;
+            get => Base.NetworkLightIntensity;
+            set => Base.NetworkLightIntensity = value;
         }
 
         /// <summary>
@@ -45,8 +45,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public float Range
         {
-            get => LightSourceBase.NetworkLightRange;
-            set => LightSourceBase.NetworkLightRange = value;
+            get => Base.NetworkLightRange;
+            set => Base.NetworkLightRange = value;
         }
 
         /// <summary>
@@ -54,8 +54,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public Color Color
         {
-            get => LightSourceBase.NetworkLightColor;
-            set => LightSourceBase.NetworkLightColor = value;
+            get => Base.NetworkLightColor;
+            set => Base.NetworkLightColor = value;
         }
 
         /// <summary>
@@ -63,8 +63,8 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         public bool ShadowEmission
         {
-            get => LightSourceBase.NetworkLightShadows;
-            set => LightSourceBase.NetworkLightShadows = value;
+            get => Base.NetworkLightShadows;
+            set => Base.NetworkLightShadows = value;
         }
 
         /// <summary>
