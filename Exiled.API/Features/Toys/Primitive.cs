@@ -69,19 +69,6 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets or sets the scale of the primitive.
-        /// </summary>
-        public override Vector3 Scale
-        {
-            get => AdminToyBase.transform.localScale;
-            set
-            {
-                AdminToyBase.transform.localScale = value;
-                RefreshCollidable();
-            }
-        }
-
-        /// <summary>
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
         /// <returns>The new primitive.</returns>
@@ -89,6 +76,8 @@ namespace Exiled.API.Features.Toys
 
         private void RefreshCollidable()
         {
+            UnSpawn();
+
             Vector3 actualScale = Scale;
 
             if (Collidable)
@@ -99,6 +88,8 @@ namespace Exiled.API.Features.Toys
             {
                 Base.transform.localScale = new Vector3(-Math.Abs(actualScale.x), -Math.Abs(actualScale.y), -Math.Abs(actualScale.z));
             }
+
+            Spawn();
         }
     }
 }

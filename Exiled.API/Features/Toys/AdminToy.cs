@@ -59,7 +59,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets or sets the scale of the toy.
         /// </summary>
-        public virtual Vector3 Scale
+        public Vector3 Scale
         {
             get => AdminToyBase.transform.localScale;
             set => AdminToyBase.transform.localScale = value;
