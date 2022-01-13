@@ -216,6 +216,27 @@ namespace Exiled.API.Features.Items
 
         /// <summary>
         /// Creates a new <see cref="Item"/> with the proper inherited subclass.
+        /// <para>
+        /// Based on the <paramref name="type"/>, the returned <see cref="Item"/> can be casted into a subclass to gain more control over the object.
+        /// <br />- Usable items (Adrenaline, Medkit, Painkillers, SCP-207, SCP-268, and SCP-500) should be casted to the <see cref="Usable"/> class.
+        /// <br />- All valid ammo should be casted to the <see cref="Ammo"/> class.
+        /// <br />- All valid firearms (not including the Micro HID) should be casted to the <see cref="Firearm"/> class.
+        /// <br />- All valid keycards should be casted to the <see cref="Keycard"/> class.
+        /// <br />- All valid armor should be casted to the <see cref="Armor"/> class.
+        /// <br />- Explosive grenades and SCP-018 should be casted to the <see cref="ExplosiveGrenade"/> class.
+        /// <br />- Flash grenades should be casted to the <see cref="FlashGrenade"/> class.
+        /// <br />- SCP-2176 can be casted to the <see cref="Throwable"/> class.
+        /// </para>
+        /// <para>
+        /// <br />The following have their own respective classes:
+        /// <br />- Flashlights can be casted to <see cref="Flashlight"/>.
+        /// <br />- Radios can be casted to <see cref="Radio"/>.
+        /// <br />- The Micro HID can be casted to <see cref="MicroHid"/>.
+        /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
+        /// </para>
+        /// <para>
+        /// Items that are not listed above do not have a subclass, and can only use the base <see cref="Item"/> class.
+        /// </para>
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         /// <param name="owner">The <see cref="Player"/> who owns the item by default.</param>

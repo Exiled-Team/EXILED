@@ -1902,8 +1902,8 @@ namespace Exiled.API.Features
 
                 Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
                 foreach (CandyKindID candy in scp330.Candies)
-                    scp330.RemoveCandy(candy, out _);
-                scp330.AddCandy(candyType, out _);
+                    scp330.RemoveCandy(candy);
+                scp330.AddCandy(candyType);
 
                 return true;
             }
@@ -2256,6 +2256,12 @@ namespace Exiled.API.Features
         {
             ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
         }
+
+        /// <summary>
+        /// Makes noise given a specified distance intensity.
+        /// </summary>
+        /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
+        public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
