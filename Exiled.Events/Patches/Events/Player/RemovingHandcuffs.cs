@@ -6,42 +6,99 @@
 // -----------------------------------------------------------------------
 
 namespace Exiled.Events.Patches.Events.Player
-{/*
+{
 #pragma warning disable SA1313
+#pragma warning disable SA1600 // Elements should be documented
     using System;
+
+    using Achievements;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
 
+    using InventorySystem.Disarming;
+    using InventorySystem.Items;
+
+    using Mirror;
+
+    using UnityEngine;
+
     /// <summary>
-    /// Patches <see cref="Handcuffs.ClearTarget"/>.
-    /// Adds the <see cref="Player.RemovingHandcuffs"/> event.
+    /// Patches <see cref="DisarmingHandlers.ServerProcessDisarmMessage"/>.
+    /// Adds the <see cref="Player.Handcuffing"/> and <see cref="Player.RemovingHandcuffs"/> events.
     /// </summary>
-    [HarmonyPatch(typeof(Handcuffs), nameof(Handcuffs.ClearTarget))]
+    [HarmonyPatch(typeof(DisarmingHandlers), nameof(DisarmingHandlers.ServerProcessDisarmMessage))]
     internal static class RemovingHandcuffs
     {
-        private static bool Prefix(Handcuffs __instance)
+        public static bool Prefix(NetworkConnection conn, DisarmMessage msg)
         {
             try
             {
-                foreach (API.Features.Player target in API.Features.Player.List)
+                if (!ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
                 {
-                    if (target == null)
-                        continue;
+                    return false;
+                }
 
-                    if (target.CufferId == ReferenceHub.GetHub(__instance.gameObject).queryProcessor.PlayerId)
+                if (!msg.PlayerIsNull)
+                {
+                    Vector3 vector3 = msg.PlayerToDisarm.transform.position - hub.transform.position;
+                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance != null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
                     {
-                        var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(__instance.gameObject), target);
+                        return false;
+                    }
+                }
+
+                bool flag1 = !msg.PlayerIsNull && msg.PlayerToDisarm.inventory.IsDisarmed();
+                bool flag2 = !msg.PlayerIsNull && hub.CanDisarm(msg.PlayerToDisarm);
+
+                if (flag1 && !msg.Disarm)
+                {
+                    if (!hub.inventory.IsDisarmed())
+                    {
+                        var ev = new RemovingHandcuffsEventArgs(API.Features.Player.Get(hub), API.Features.Player.Get(msg.PlayerToDisarm));
 
                         Player.OnRemovingHandcuffs(ev);
 
-                        if (ev.IsAllowed)
-                            target.CufferId = -1;
-                        break;
+                        if (!ev.IsAllowed)
+                        {
+                            return false;
+                        }
+
+                        msg.PlayerToDisarm.inventory.SetDisarmedStatus(null);
                     }
                 }
+                else if (!flag1 & flag2 && msg.Disarm)
+                {
+                    if (msg.PlayerToDisarm.inventory.CurInstance == null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
+                    {
+                        if (msg.PlayerToDisarm.characterClassManager.CurRole.team == Team.MTF && hub.characterClassManager.CurClass == RoleType.ClassD)
+                        {
+                            AchievementHandlerBase.ServerAchieve(hub.networkIdentity.connectionToClient, AchievementName.TablesHaveTurned);
+                        }
+
+                        var ev = new HandcuffingEventArgs(API.Features.Player.Get(hub), API.Features.Player.Get(msg.PlayerToDisarm));
+
+                        Player.OnHandcuffing(ev);
+
+                        if (!ev.IsAllowed)
+                        {
+                            return false;
+                        }
+
+                        msg.PlayerToDisarm.inventory.SetDisarmedStatus(hub.inventory);
+                    }
+                }
+                else
+                {
+                    hub.networkIdentity.connectionToClient.Send<DisarmedPlayersListMessage>(DisarmingHandlers.NewDisarmedList, 0);
+                    return false;
+                }
+
+                DisarmingHandlers.NewDisarmedList.SendToAuthenticated<DisarmedPlayersListMessage>();
 
                 return false;
             }
@@ -52,5 +109,5 @@ namespace Exiled.Events.Patches.Events.Player
                 return true;
             }
         }
-    }*/
+    }
 }
