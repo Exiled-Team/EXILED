@@ -11,13 +11,15 @@ namespace Exiled.CustomRoles
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+
     using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
-    using Exiled.CustomRoles.Deserialization;
+    using Exiled.CustomRoles.API.Features.Parsers;
     using Exiled.CustomRoles.Events;
     using Exiled.Loader;
     using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
+
     using YamlDotNet.Serialization;
     using YamlDotNet.Serialization.NamingConventions;
     using YamlDotNet.Serialization.NodeDeserializers;

@@ -5,11 +5,14 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Deserialization
+namespace Exiled.CustomRoles.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
+
     using Exiled.CustomRoles.API.Features;
+    using Exiled.CustomRoles.API.Features.Interfaces;
+
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;
 

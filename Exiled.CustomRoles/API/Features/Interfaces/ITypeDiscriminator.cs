@@ -5,14 +5,17 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Deserialization
+namespace Exiled.CustomRoles.API.Features.Interfaces
 {
     using System;
+
+    using Exiled.CustomRoles.API.Features.Parsers;
+
     using YamlDotNet.Core.Events;
 
     /// <summary>
-    ///     Provider interface for creating TypeDiscriminators that are capable of resolving subtypes of abstract and interface
-    ///     classes.
+    ///     Provider interface for creating <see cref="Type"/> discriminators that are capable of resolving subtypes of
+    ///     abstract and interface classes.
     /// </summary>
     public interface ITypeDiscriminator
     {
@@ -26,7 +29,7 @@ namespace Exiled.CustomRoles.Deserialization
         /// </summary>
         /// <param name="parser">An event parser containing <see cref="ParsingEvent" />s.</param>
         /// <param name="suggestedType"><see cref="Type" /> of the resolved type.</param>
-        /// <returns><see langword="true" /> if successful, <see langword="false" /> otherwise.</returns>
+        /// <returns><see langword="true" /> if resolution is successful; otherwise <see langword="false" />.</returns>
         bool TryResolve(ParsingEventBuffer parser, out Type suggestedType);
     }
 }

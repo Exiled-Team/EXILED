@@ -5,19 +5,21 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Deserialization
+namespace Exiled.CustomRoles.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Exiled.API.Features;
+
+    using Exiled.CustomRoles.API.Features.Interfaces;
+
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;
 
     /// <summary>
-    ///     Object node deserializer that is capable of resolving subclasses of abstract and interface classes, while using
-    ///     inner <see cref="INodeDeserializer" /> to deserialize them.
+    ///     Object node deserializer that is capable of resolving subclasses of abstract and interface classes, while
+    ///     using inner <see cref="INodeDeserializer" /> to deserialize them.
     /// </summary>
     public class AbstractNodeNodeTypeResolver : INodeDeserializer
     {

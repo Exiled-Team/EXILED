@@ -5,10 +5,13 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.CustomRoles.Deserialization
+namespace Exiled.CustomRoles.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
+
+    using Exiled.CustomRoles.API.Features.Interfaces;
+
     using YamlDotNet.Core;
     using YamlDotNet.Core.Events;
 
@@ -57,7 +60,7 @@ namespace Exiled.CustomRoles.Deserialization
         /// <param name="selector">Predicate to test each element for a condition.</param>
         /// <param name="key"><see cref="Scalar" /> event that matched <paramref name="selector" />.</param>
         /// <param name="value">Next <see cref="ParsingEvent" /> in the buffer.</param>
-        /// <returns><see langword="true" /> if successful, <see langword="false" /> otherwise.</returns>
+        /// <returns><see langword="true" /> if a valid mapping entry is found; otherwise <see langword="false" />.</returns>
         public bool TryFindMappingEntry(Func<Scalar, bool> selector, out Scalar key, out ParsingEvent value)
         {
             this.Consume<MappingStart>();

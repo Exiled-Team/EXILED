@@ -9,6 +9,7 @@ namespace Exiled.CustomRoles.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
     using System.Reflection;
 
@@ -25,10 +26,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomAbility"/> class.
         /// </summary>
-        protected CustomAbility()
-        {
-            AbilityType = GetType().Name;
-        }
+        public CustomAbility() => AbilityType = GetType().Name;
 
         /// <summary>
         /// Gets a list of all registered custom abilities.
@@ -38,6 +36,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets a string representation of the ability's type name.
         /// </summary>
+        [Description("Changing this will likely break your config.")]
         public string AbilityType { get; }
 
         /// <summary>
