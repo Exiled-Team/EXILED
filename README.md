@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/github/release/galaxy119/EXILED/all.svg?style=flat" alt="GitHub Releases">
 </a>
 ![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat) 
+![Github Commits](https://img.shields.io/github/commit-activity/m/Exiled-Team/EXILED/dev)
 <a href="https://discord.gg/PyUkWTg">
   <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
 </a>
