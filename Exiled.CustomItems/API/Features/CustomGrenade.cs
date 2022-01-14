@@ -86,7 +86,7 @@ namespace Exiled.CustomItems.API.Features
             if (player == null)
                 player = Server.Host;
 
-            Throwable throwable = new Throwable(grenadeType, player);
+            Throwable throwable = (Throwable)Item.Create(grenadeType, player);
 
             ThrownProjectile thrownProjectile = UnityEngine.Object.Instantiate(throwable.Base.Projectile, position, throwable.Owner.CameraTransform.rotation);
             Transform transform = thrownProjectile.transform;

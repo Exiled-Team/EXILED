@@ -21,11 +21,13 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
         /// <param name="scp049"><inheritdoc cref="Scp049"/></param>
+        /// <param name="ragdoll"><inheritdoc cref="Ragdoll"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public FinishingRecallEventArgs(Player target, Player scp049, bool isAllowed = true)
+        public FinishingRecallEventArgs(Player target, Player scp049, global::Ragdoll ragdoll, bool isAllowed = true)
         {
             Target = target;
             Scp049 = scp049;
+            Ragdoll = Ragdoll.Get(ragdoll);
             IsAllowed = isAllowed;
         }
 
@@ -38,6 +40,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who is controlling SCP-049.
         /// </summary>
         public Player Scp049 { get; }
+
+        /// <summary>
+        /// Gets the Ragdoll who's getting recalled.
+        /// </summary>
+        public Ragdoll Ragdoll { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can be recalled.

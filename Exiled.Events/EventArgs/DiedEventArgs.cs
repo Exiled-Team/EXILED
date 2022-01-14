@@ -42,12 +42,6 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="DamageHandlerBase"/>.
-        /// </summary>
-        [Obsolete("Use DiedEventArgs.Handler", true)]
-        public DamageHandlerBase DamageHandler { get => Handler.Base; set => Handler.Base = value; }
-
-        /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
         public DamageHandler Handler { get; set; }

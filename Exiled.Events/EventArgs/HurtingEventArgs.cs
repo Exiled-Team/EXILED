@@ -47,16 +47,6 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the hit informations.
-        /// </summary>
-        [Obsolete("Use HurtingEventArgs.Handler instead.", true)]
-        public DamageHandlerBase DamageHandler
-        {
-            get => Handler.Base;
-            private set => Handler.Base = value;
-        }
-
-        /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/> for the event.
         /// </summary>
         public DamageHandler Handler

@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
@@ -18,6 +19,8 @@ namespace Exiled.API.Features.Items
     using Mirror;
 
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ExplosionGrenade"/>.
@@ -46,7 +49,7 @@ namespace Exiled.API.Features.Items
         /// <param name="type"><inheritdoc cref="Throwable.Base"/></param>
         /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
         /// <remarks>The player parameter will always need to be defined if this grenade is custom using Exiled.CustomItems.</remarks>
-        public ExplosiveGrenade(ItemType type, Player player = null)
+        internal ExplosiveGrenade(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
         {
         }

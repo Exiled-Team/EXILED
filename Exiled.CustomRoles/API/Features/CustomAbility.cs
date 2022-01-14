@@ -9,9 +9,13 @@ namespace Exiled.CustomRoles.API.Features
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Reflection;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
+
     using YamlDotNet.Serialization;
 
     /// <summary>
@@ -19,6 +23,11 @@ namespace Exiled.CustomRoles.API.Features
     /// </summary>
     public abstract class CustomAbility
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomAbility"/> class.
+        /// </summary>
+        public CustomAbility() => AbilityType = GetType().Name;
+
         /// <summary>
         /// Gets a list of all registered custom abilities.
         /// </summary>
@@ -41,10 +50,16 @@ namespace Exiled.CustomRoles.API.Features
         public HashSet<Player> Players { get; } = new HashSet<Player>();
 
         /// <summary>
+        /// Gets the <see cref="Type"/> for this ability.
+        /// </summary>
+        [Description("Changing this will likely break your config.")]
+        public string AbilityType { get; }
+
+        /// <summary>
         /// Gets a <see cref="CustomRole"/> by name.
         /// </summary>
         /// <param name="name">The name of the role to get.</param>
-        /// <returns>The role, or null if it doesn't exist.</returns>
+        /// <returns>The role, or <see langword="null"/> if it doesn't exist.</returns>
         public static CustomAbility Get(string name) => Registered?.FirstOrDefault(r => r.Name == name);
 
         /// <summary>
@@ -53,7 +68,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="name">The name of the role to get.</param>
         /// <param name="customAbility">The custom role.</param>
         /// <returns>True if the role exists.</returns>
-        /// <exception cref="ArgumentNullException">If the name is a null or empty string.</exception>
+        /// <exception cref="ArgumentNullException">If the name is <see langword="null"/> or an empty string.</exception>
         public static bool TryGet(string name, out CustomAbility customAbility)
         {
             if (string.IsNullOrEmpty(name))
@@ -65,50 +80,49 @@ namespace Exiled.CustomRoles.API.Features
         }
 
         /// <summary>
+        /// Registers all the <see cref="CustomAbility"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
+        public static IEnumerable<CustomAbility> RegisterAbilities()
+        {
+            List<CustomAbility> registeredAbilities = new List<CustomAbility>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
+                    continue;
+
+                CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);
+                customAbility.TryRegister();
+                registeredAbilities.Add(customAbility);
+            }
+
+            return registeredAbilities;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomAbility"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all unregistered <see cref="CustomAbility"/>'s.</returns>
+        public static IEnumerable<CustomAbility> UnregisterAbilities()
+        {
+            List<CustomAbility> unregisteredAbilities = new List<CustomAbility>();
+
+            foreach (CustomAbility customAbility in Registered)
+            {
+                customAbility.TryUnregister();
+                unregisteredAbilities.Add(customAbility);
+            }
+
+            return unregisteredAbilities;
+        }
+
+        /// <summary>
         /// Checks to see if the specified player has this ability.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns>True if the player has this ability.</returns>
         public virtual bool Check(Player player) => Players.Contains(player);
-
-        /// <summary>
-        /// Tries to register this ability.
-        /// </summary>
-        /// <returns>True if the ability registered properly.</returns>
-        public bool TryRegister()
-        {
-            if (!Registered.Contains(this))
-            {
-                Registered.Add(this);
-                Init();
-
-                Log.Debug($"{Name} has been successfully registered.", CustomRoles.Instance.Config.Debug);
-
-                return true;
-            }
-
-            Log.Warn($"Couldn't register {Name} as it already exists.");
-
-            return false;
-        }
-
-        /// <summary>
-        /// Tries to unregister this ability.
-        /// </summary>
-        /// <returns>True if the ability is unregistered properly.</returns>
-        public bool TryUnregister()
-        {
-            Destroy();
-
-            if (!Registered.Remove(this))
-            {
-                Log.Warn($"Cannot unregister {Name}, it hasn't been registered yet.");
-
-                return false;
-            }
-
-            return true;
-        }
 
         /// <summary>
         /// Adds this ability to the player.
@@ -138,7 +152,46 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Destroys this ability.
         /// </summary>
-        public void Destroy() => UnSubscribeEvents();
+        public void Destroy() => UnsubscribeEvents();
+
+        /// <summary>
+        /// Tries to register this ability.
+        /// </summary>
+        /// <returns>True if the ability registered properly.</returns>
+        internal bool TryRegister()
+        {
+            if (!Registered.Contains(this))
+            {
+                Registered.Add(this);
+                Init();
+
+                Log.Debug($"{Name} has been successfully registered.", CustomRoles.Instance.Config.Debug);
+
+                return true;
+            }
+
+            Log.Warn($"Couldn't register {Name} as it already exists.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to unregister this ability.
+        /// </summary>
+        /// <returns>True if the ability is unregistered properly.</returns>
+        internal bool TryUnregister()
+        {
+            Destroy();
+
+            if (!Registered.Remove(this))
+            {
+                Log.Warn($"Cannot unregister {Name}, it hasn't been registered yet.");
+
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Loads the internal event handlers for the ability.
@@ -150,7 +203,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Unloads the internal event handlers for the ability.
         /// </summary>
-        protected virtual void UnSubscribeEvents()
+        protected virtual void UnsubscribeEvents()
         {
         }
 
