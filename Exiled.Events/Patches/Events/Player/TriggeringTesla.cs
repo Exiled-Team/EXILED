@@ -38,7 +38,10 @@ namespace Exiled.Events.Patches.Events.Player
             const int instructionsToRemove = 25;
             LocalBuilder referenceHub = generator.DeclareLocal(typeof(ReferenceHub));
             LocalBuilder ev = generator.DeclareLocal(typeof(TriggeringTeslaEventArgs));
+            LocalBuilder shouldIdle = generator.DeclareLocal(typeof(bool));
             Label returnLabel = generator.DefineLabel();
+            Label and = generator.DefineLabel();
+            Label jcc = generator.DefineLabel();
 
             newInstructions.RemoveRange(index, instructionsToRemove);
 
@@ -56,6 +59,21 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInIdleRange))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
+                // teslaGate.PlayerInRange(referenceHub)
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInRange))),
+                new CodeInstruction(OpCodes.Brtrue_S, and),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Stloc_S, shouldIdle.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_2).WithLabels(and),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(TeslaGate), nameof(TeslaGate.InProgress))),
+                new CodeInstruction(OpCodes.Brfalse_S, jcc),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Stloc_S, shouldIdle.LocalIndex),
+                new CodeInstruction(OpCodes.Ldc_I4_1).WithLabels(jcc),
+                new CodeInstruction(OpCodes.Stloc_S, shouldIdle.LocalIndex),
+
                 // Player.Get(referenceHub);
                 new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -68,6 +86,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInHurtRange))),
+
+                new CodeInstruction(OpCodes.Ldloc_S, shouldIdle.LocalIndex),
 
                 // var ev = new TriggeringTeslaEventArgs(player, teslaGate, bool, bool)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringTeslaEventArgs))[0]),
