@@ -56,18 +56,23 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInIdleRange))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
-                // Player.Get(referenceHub);
+                // player.Get(referenceHub);
                 new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // teslaGate
                 new CodeInstruction(OpCodes.Ldloc_2),
 
-                // teslaGate.PlayerInHurtRange(referenceHub.gameObject)
+                // teslaGate.PlayerInHurtRange()
                 new CodeInstruction(OpCodes.Ldloc_2),
                 new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInHurtRange))),
+
+                // teslaGate.PlayerInRange()
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInRange))),
 
                 // var ev = new TriggeringTeslaEventArgs(player, teslaGate, bool, bool)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringTeslaEventArgs))[0]),
