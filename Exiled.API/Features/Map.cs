@@ -14,6 +14,7 @@ namespace Exiled.API.Features
     using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
@@ -32,6 +33,7 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
+    using CameraType = Exiled.API.Enums.CameraType;
     using Object = UnityEngine.Object;
     using Random = UnityEngine.Random;
 
@@ -228,11 +230,11 @@ namespace Exiled.API.Features
             }
             else
             {
-                // Check for Scp079 if it's a player
+                // Check for SCP-079 if it's a player
                 Player ply = Player.Get(objectInRoom);
 
                 // Raycasting doesn't make sense,
-                // Scp079 position is constant,
+                // SCP-079 position is constant,
                 // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
                     room = FindParentRoom(ply.Camera.gameObject);
@@ -458,13 +460,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Given the name of a camera, returns its <see cref="CameraType"/>, or <see cref="CameraType.Unknown"/> if the camera does not exist.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <returns>The <see cref="CameraType"/>, or <see langword="null"/> if it does not exist.</returns>
+        public static CameraType GetCameraType(string cameraName)
+        {
+            Camera079 cam = GetCameraByName(cameraName);
+            if (!cam)
+                return CameraType.Unknown;
+
+            return cam.Type();
+        }
+
+        /// <summary>
         /// Gets the <see cref="Camera079">camera</see> with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns>The <see cref="Camera079"/> with the given ID.</returns>
+        /// <returns>The <see cref="Camera079"/> with the given ID, or <see langword="null"/> if not found.</returns>
         public static Camera079 GetCameraById(ushort cameraId)
         {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            foreach (Camera079 camera in Cameras)
             {
                 if (camera.cameraId == cameraId)
                     return camera;
@@ -474,18 +490,43 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Camera079">camera</see> with the given camera type.
+        /// Given the name of a camera, returns the first <see cref="Camera079"/> that matches the name, or <see langword="null"/> if it does not exist.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <returns>The <see cref="Camera079"/>, or <see langword="null"/> if it does not exist.</returns>
+        public static Camera079 GetCameraByName(string cameraName)
+        {
+            cameraName = cameraName.ToLower();
+            foreach (Camera079 cam in Cameras)
+            {
+                if (cam.cameraName.ToLower() == cameraName)
+                    return cam;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Camera079">camera</see> with the given camera type.
         /// </summary>
         /// <param name="cameraType">The <see cref="Enums.CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
-        public static Camera079 GetCameraByType(Enums.CameraType cameraType) =>
-            GetCameraById((ushort)cameraType);
+        public static Camera079 GetCameraByType(CameraType cameraType)
+        {
+            foreach (Camera079 camera in Cameras)
+            {
+                if (camera.Type() == cameraType)
+                    return camera;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Gets the <see cref="Door">door</see> with the given door name.
         /// </summary>
         /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
+        /// <returns>The <see cref="Door"/> or <see langword="null"/> if a door with this name doesn't exist.</returns>
         public static Door GetDoorByName(string doorName)
         {
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
@@ -526,13 +567,13 @@ namespace Exiled.API.Features
         public static void PlayAmbientSound(int id)
         {
             if (id >= AmbientSoundPlayer.clips.Length)
-                throw new System.IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
+                throw new IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
 
             AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
         }
 
         /// <summary>
-        /// Places a Tantrum (Scp173's ability) in the indicated position.
+        /// Places a Tantrum (SCP-173's ability) in the indicated position.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>

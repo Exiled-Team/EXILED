@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Firearms.Ammo;
@@ -30,10 +32,18 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Ammo"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Ammo(ItemType type)
+        internal Ammo(ItemType type)
             : this((AmmoItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
+
+        /// <summary>
+        /// Gets the absolute maximum amount of ammo that may be held at one time, if ammo is forcefully given to the player (regardless of worn armor or server configuration).
+        /// <para>
+        /// For accessing the maximum amount of ammo that may be held based on worn armor and server settings, see <see cref="Player.GetAmmoLimit(ItemType)"/>.
+        /// </para>
+        /// </summary>
+        public static ushort AmmoLimit => ushort.MaxValue;
 
         /// <inheritdoc cref="Item.Base"/>
         public new AmmoItem Base { get; }

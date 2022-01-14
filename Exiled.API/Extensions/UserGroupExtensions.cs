@@ -20,7 +20,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="this">The first <see cref="UserGroup"/>.</param>
         /// <param name="other">The second <see cref="UserGroup"/>.</param>
-        /// <returns><c>true</c> if they are equal; otherwise, <c>false</c>.</returns>
+        /// <returns><see langword="true"/> if they are equal; otherwise, <see langword="false"/>.</returns>
         public static bool EqualsTo(this UserGroup @this, UserGroup other)
             => @this.BadgeColor == other.BadgeColor
                && @this.BadgeText == other.BadgeText
@@ -35,7 +35,7 @@ namespace Exiled.API.Extensions
         /// Searches for a key of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
         /// </summary>
         /// <param name="this">The <see cref="UserGroup"/>.</param>
-        /// <returns>The key of that group, or null if not found.</returns>
+        /// <returns>The key of that group, or <see langword="null"/> if not found.</returns>
         public static string GetKey(this UserGroup @this) => Server.PermissionsHandler._groups
             .FirstOrDefault(pair => pair.Value.EqualsTo(@this)).Key;
 
@@ -43,7 +43,7 @@ namespace Exiled.API.Extensions
         /// Searches for a value of a group in the <see cref="PermissionsHandler">RemoteAdmin</see> config.
         /// </summary>
         /// <param name="groupName">The <see cref="string"/>.</param>
-        /// <returns>The value of that group, or null if not found.</returns>
+        /// <returns>The value of that group, or <see langword="null"/> if not found.</returns>
         public static UserGroup GetValue(string groupName)
         {
             ServerStatic.GetPermissionsHandler().GetAllGroups().TryGetValue(groupName, out UserGroup userGroup);

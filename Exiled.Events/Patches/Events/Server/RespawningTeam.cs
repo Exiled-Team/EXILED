@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Server
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
@@ -36,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.RemoveAt))) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
             Label continueLabel = generator.DefineLabel();
 

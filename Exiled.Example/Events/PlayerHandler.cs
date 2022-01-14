@@ -11,12 +11,9 @@ namespace Exiled.Example.Events
 
     using CustomPlayerEffects;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
-
-    using InventorySystem.Items.Usables;
 
     using MEC;
 
@@ -40,7 +37,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnChangingRole(ChangingRoleEventArgs)"/>
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} ({ev.Player?.Role}) is changing his role! The new role will be {ev?.NewRole}!");
+            Log.Info($"{ev.Player.Nickname} ({ev.Player.Role}) is changing his role! The new role will be {ev.NewRole}!");
             if (ev.NewRole == RoleType.Tutorial)
             {
                 ev.Items.Clear();
@@ -67,43 +64,43 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
         public void OnTeleporting(TeleportingEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is teleporting to {ev.PortalPosition} as SCP-106!");
+            Log.Info($"{ev.Player.Nickname} is teleporting to {ev.PortalPosition} as SCP-106!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnContaining(ContainingEventArgs)"/>
         public void OnContaining(ContainingEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is being contained as SCP-106!");
+            Log.Info($"{ev.Player.Nickname} is being contained as SCP-106!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnCreatingPortal(CreatingPortalEventArgs)"/>
         public void OnCreatingPortal(CreatingPortalEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is creating a portal as SCP-106, in the position: {ev.Position}");
+            Log.Info($"{ev.Player.Nickname} is creating a portal as SCP-106, in the position: {ev.Position}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnActivating(ActivatingEventArgs)"/>
         public void OnActivating(ActivatingEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is activating SCP-914!");
+            Log.Info($"{ev.Player.Nickname} is activating SCP-914!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs)"/>
         public void OnFailingEscapePocketDimension(FailingEscapePocketDimensionEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is failing to escape from the pocket dimension!");
+            Log.Info($"{ev.Player.Nickname} is failing to escape from the pocket dimension!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnEscapingPocketDimension(EscapingPocketDimensionEventArgs)"/>
         public void OnEscapingPocketDimension(EscapingPocketDimensionEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is escaping from the pocket dimension and will be teleported at {ev.TeleportPosition}");
+            Log.Info($"{ev.Player.Nickname} is escaping from the pocket dimension and will be teleported at {ev.TeleportPosition}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp914.OnChangingKnobSetting(ChangingKnobSettingEventArgs)"/>
         public void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is changing the knob setting of SCP-914 to {ev.KnobSetting}");
+            Log.Info($"{ev.Player.Nickname} is changing the knob setting of SCP-914 to {ev.KnobSetting}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnJoined(JoinedEventArgs)"/>
@@ -119,7 +116,7 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnUnlockingGenerator(UnlockingGeneratorEventArgs)"/>
         public void OnUnlockingGenerator(UnlockingGeneratorEventArgs ev)
         {
-            Log.Info($"{ev.Player?.Nickname} is trying to unlock a generator in {ev.Player?.CurrentRoom} room");
+            Log.Info($"{ev.Player.Nickname} is trying to unlock a generator in {ev.Player.CurrentRoom} room");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDestroying(DestroyingEventArgs)"/>
@@ -201,7 +198,7 @@ namespace Exiled.Example.Events
             if (ev.RoleType == RoleType.Scientist)
             {
                 ev.Position = new Vector3(53f, 1020f, -44f);
-                Timing.CallDelayed(1f, () => ev.Player.CurrentItem = new Firearm(ItemType.GunCrossvec));
+                Timing.CallDelayed(1f, () => ev.Player.CurrentItem = Item.Create(ItemType.GunCrossvec));
                 Timing.CallDelayed(1f, () => ev.Player.AddItem(ItemType.GunLogicer));
             }
         }

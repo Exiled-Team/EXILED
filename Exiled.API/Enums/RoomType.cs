@@ -266,5 +266,10 @@ namespace Exiled.API.Enums
         /// Entrance T-Shaped Room.
         /// </summary>
         EzTCross,
+
+        /// <summary>
+        /// Lower Containment SCP-330 Room.
+        /// </summary>
+        Lcz330,
     }
 }

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
 
     using InventorySystem.Items.Usables;
@@ -30,7 +32,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Usable"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Usable(ItemType type)
+        internal Usable(ItemType type)
             : this((UsableItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
