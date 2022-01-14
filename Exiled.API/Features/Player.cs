@@ -2257,12 +2257,6 @@ namespace Exiled.API.Features
             ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
         }
 
-        /// <summary>
-        /// Makes noise given a specified distance intensity.
-        /// </summary>
-        /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
-        public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
-
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }

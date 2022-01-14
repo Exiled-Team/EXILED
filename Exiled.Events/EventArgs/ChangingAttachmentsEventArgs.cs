@@ -7,6 +7,9 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
@@ -21,20 +24,20 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="firearm"><inheritdoc cref="Firearm"/></param>
-        /// <param name="oldIdentifier"><inheritdoc cref="OldAttachmentIdentifier"/></param>
-        /// <param name="newIdentifier"><inheritdoc cref="NewAttachmentIdentifier"/></param>
+        /// <param name="oldIdentifiers"><inheritdoc cref="OldAttachmentIdentifiers"/></param>
+        /// <param name="newIdentifiers"><inheritdoc cref="NewAttachmentIdentifiers"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
         public ChangingAttachmentsEventArgs(
             Player player,
             Firearm firearm,
-            AttachmentIdentifier oldIdentifier,
-            AttachmentIdentifier newIdentifier,
+            IEnumerable<AttachmentIdentifier> oldIdentifiers,
+            IEnumerable<AttachmentIdentifier> newIdentifiers,
             bool isAllowed = true)
         {
             Player = player;
             Firearm = firearm;
-            OldAttachmentIdentifier = oldIdentifier;
-            NewAttachmentIdentifier = newIdentifier;
+            OldAttachmentIdentifiers = oldIdentifiers.ToArray();
+            NewAttachmentIdentifiers = newIdentifiers.ToList();
             IsAllowed = isAllowed;
         }
 
@@ -51,12 +54,12 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the old <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public AttachmentIdentifier OldAttachmentIdentifier { get; }
+        public AttachmentIdentifier[] OldAttachmentIdentifiers { get; }
 
         /// <summary>
         /// Gets or sets the new <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public AttachmentIdentifier NewAttachmentIdentifier { get; set; }
+        public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attachments can be changed.
