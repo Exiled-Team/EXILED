@@ -37,6 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label cdcLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PickingUpItemEventArgs));
+            LocalBuilder syncInfo = generator.DeclareLocal(typeof(PickupSyncInfo));
 
             newInstructions[0].labels.Add(cdcLabel);
 
@@ -62,17 +63,31 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brtrue_S, cdcLabel),
+
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new CodeInstruction(OpCodes.Ldflda, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(PickupSyncInfo), nameof(PickupSyncInfo.InUse))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, syncInfo.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.ItemId))),
+                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(API.Features.Items.Item), new[] { typeof(ItemType) })),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(PickingUpItemEventArgs), nameof(PickingUpItemEventArgs.Pickup))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Items.Pickup), nameof(API.Features.Items.Pickup.Scale))),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Scale))),
+                new CodeInstruction(OpCodes.Ldloc_S, syncInfo.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Position))),
+                new CodeInstruction(OpCodes.Ldloca_S, syncInfo.LocalIndex),
+                new CodeInstruction(OpCodes.Ldflda, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Rotation))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(LowPrecisionQuaternion), nameof(LowPrecisionQuaternion.Value))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Items.Item), nameof(API.Features.Items.Item.Spawn))),
+                new CodeInstruction(OpCodes.Ldloc_S, syncInfo.LocalIndex),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PickupSyncInfo), nameof(PickupSyncInfo.Serial))),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Items.Pickup), nameof(API.Features.Items.Pickup.Serial))),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemSearchCompletor), nameof(ItemSearchCompletor.TargetPickup))),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(ItemPickupBase), nameof(ItemPickupBase.Info))),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(ItemPickupBase), nameof(ItemPickupBase.NetworkInfo))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ItemPickupBase), nameof(ItemPickupBase.DestroySelf))),
                 new CodeInstruction(OpCodes.Br, retLabel),
             });
 
