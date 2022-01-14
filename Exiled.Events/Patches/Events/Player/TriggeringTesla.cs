@@ -60,6 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // Player::Get(referenceHub)
                 new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
+
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // teslaGate
