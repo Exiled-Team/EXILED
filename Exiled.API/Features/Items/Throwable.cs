@@ -63,10 +63,7 @@ namespace Exiled.API.Features.Items
         /// Throws the item.
         /// </summary>
         /// <param name="fullForce">Whether to use full or half force.</param>
-        public void Throw(bool fullForce = true)
-        {
-            Base.ServerThrow(fullForce);
-        }
+        public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce);
 
         /// <inheritdoc/>
         public override string ToString()
