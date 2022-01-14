@@ -4,6 +4,8 @@
   href: contributing.md
 - name: Tutorials
   items:
+    - name: Creating A Plugin
+      href: tutorials/pluginstructure.md
     - name: Understanding Events
       href: tutorials/events.md
     - name: MEC Coroutines
