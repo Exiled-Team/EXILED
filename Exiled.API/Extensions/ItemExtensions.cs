@@ -16,7 +16,6 @@ namespace Exiled.API.Extensions
 
     using InventorySystem;
     using InventorySystem.Items;
-    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -187,7 +186,7 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
         /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
-        public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this ItemType type, uint code)
+        public static IEnumerable<AttachmentIdentifier> GetAttachments(this ItemType type, uint code)
         {
             if ((uint)type.GetBaseCode() > code)
             {
@@ -196,8 +195,8 @@ namespace Exiled.API.Extensions
 
             code -= (uint)type.GetBaseCode();
             return GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
-                identifier.Code).ToArray()).Where(items => items.Sum() == code).FirstOrDefault().Select(target =>
-                Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == target));
+            identifier.Code).ToArray()).Where(items => items.Sum() == code).FirstOrDefault().Select(target =>
+            Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == target));
         }
 
         /// <summary>
@@ -214,7 +213,7 @@ namespace Exiled.API.Extensions
             if (!type.IsWeapon())
                 return false;
 
-            identifiers = GetAttachmentIdentifiers(type, code);
+            identifiers = GetAttachments(type, code);
 
             return true;
         }
@@ -232,21 +231,6 @@ namespace Exiled.API.Extensions
                 code += identifier;
 
             return code;
-        }
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> from a specified <see cref="Firearm"/>.
-        /// </summary>
-        /// <param name="firearm">The specified <see cref="Firearm"/>.</param>
-        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
-        public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
-        {
-            List<AttachmentIdentifier> identifiers = new List<AttachmentIdentifier>();
-
-            foreach (FirearmAttachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
-                identifiers.Add(Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment));
-
-            return identifiers;
         }
 
         /// <summary>
