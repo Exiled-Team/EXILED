@@ -101,7 +101,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
                 new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ItemExtensions), nameof(ItemExtensions.GetAttachmentIdentifiers), new[] { typeof(ItemType), typeof(uint) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ItemExtensions), nameof(ItemExtensions.GetAttachments))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToArray)).MakeGenericMethod(typeof(AttachmentIdentifier))),
                 new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
 
@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.AttachmentsCode))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ItemExtensions), nameof(ItemExtensions.GetAttachmentIdentifiers), new[] { typeof(ItemType), typeof(uint) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ItemExtensions), nameof(ItemExtensions.GetAttachments))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Enumerable), nameof(Enumerable.ToList)).MakeGenericMethod(typeof(AttachmentIdentifier))),
                 new CodeInstruction(OpCodes.Stloc_S, mem_0x03.LocalIndex),
 
