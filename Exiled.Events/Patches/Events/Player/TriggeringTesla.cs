@@ -41,7 +41,6 @@ namespace Exiled.Events.Patches.Events.Player
             LocalBuilder ev = generator.DeclareLocal(typeof(TriggeringTeslaEventArgs));
 
             Label cdc = generator.DefineLabel();
-            Label jcc = generator.DefineLabel();
 
             newInstructions[index].labels.Add(cdc);
 
