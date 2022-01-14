@@ -9,9 +9,11 @@ namespace Exiled.CustomRoles.API.Features.Parsers
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.CustomRoles.API.Features;
     using Exiled.CustomRoles.API.Features.Interfaces;
+    using Exiled.Loader;
 
     using YamlDotNet.Core.Events;
     using YamlDotNet.Serialization;
@@ -31,6 +33,12 @@ namespace Exiled.CustomRoles.API.Features.Parsers
         public CustomAbilityTypeResolver(INamingConvention namingConvention)
         {
             targetKey = namingConvention.Apply(TargetKey);
+            foreach (Type t in Loader.Locations.Keys.SelectMany(asm => asm
+                .GetTypes()
+                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(CustomAbility)))))
+            {
+                TypeLookup.Add(t.Name, t);
+            }
         }
 
         /// <summary>

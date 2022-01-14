@@ -20,7 +20,7 @@ namespace Exiled.CustomRoles.API.Features.Interfaces
     public interface ITypeDiscriminator
     {
         /// <summary>
-        ///     Gets an abstract/interface type that this Type Discriminator should resolve.
+        ///     Gets an abstract/interface <see cref="Type"/> subclasses of which this discriminator should resolve.
         /// </summary>
         Type BaseType { get; }
 

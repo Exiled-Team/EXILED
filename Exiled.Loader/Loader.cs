@@ -105,9 +105,9 @@ namespace Exiled.Loader
         public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
-        /// Gets the serializer for configs and translations.
+        /// Gets or sets the serializer for configs and translations.
         /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
+        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
@@ -117,9 +117,9 @@ namespace Exiled.Loader
             .Build();
 
         /// <summary>
-        /// Gets the deserializer for configs and translations.
+        /// Gets or sets the deserializer for configs and translations.
         /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())
             .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -171,7 +171,6 @@ namespace Exiled.Loader
         /// </summary>
         public static void LoadPlugins()
         {
-            Assembly customRolesAssembly = null;
             foreach (string assemblyPath in Directory.GetFiles(Paths.Plugins, "*.dll"))
             {
                 Assembly assembly = LoadAssembly(assemblyPath);
@@ -180,17 +179,8 @@ namespace Exiled.Loader
                     continue;
 
                 Locations[assembly] = assemblyPath;
-                if (assembly.GetName().Name == "Exiled.CustomRoles")
-                {
-                    customRolesAssembly = assembly;
-                }
 
                 Log.Info($"Loaded plugin {assembly.GetName().Name}@{assembly.GetName().Version.ToString(3)}");
-            }
-
-            if (customRolesAssembly != null)
-            {
-                customRolesAssembly.GetType("Exiled.CustomRoles.CustomRoles").GetMethod("InjectDeserializer", BindingFlags.NonPublic | BindingFlags.Static)?.Invoke(null, null);
             }
 
             foreach (Assembly assembly in Locations.Keys)

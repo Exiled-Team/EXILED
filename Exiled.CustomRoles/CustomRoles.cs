@@ -7,13 +7,9 @@
 
 namespace Exiled.CustomRoles
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Reflection;
 
     using Exiled.API.Features;
-    using Exiled.CustomRoles.API.Features;
     using Exiled.CustomRoles.API.Features.Parsers;
     using Exiled.CustomRoles.Events;
     using Exiled.Loader;
@@ -29,7 +25,30 @@ namespace Exiled.CustomRoles
     /// </summary>
     public class CustomRoles : Plugin<Config>
     {
+
         private PlayerHandlers playerHandlers;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomRoles"/> class.
+        /// </summary>
+        public CustomRoles()
+        {
+            Loader.Deserializer = new DeserializerBuilder()
+                .WithTypeConverter(new VectorsConverter())
+                .WithTypeConverter(new AttachmentIdentifiersConverter())
+                .WithNodeDeserializer(
+                    inner => new ValidatingNodeDeserializer(inner),
+                    deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
+                .WithNodeDeserializer(
+                    inner => new AbstractNodeNodeTypeResolver(
+                        inner,
+                        new CustomAbilityTypeResolver(UnderscoredNamingConvention.Instance)),
+                    s => s.InsteadOf<ValidatingNodeDeserializer>())
+                .WithNamingConvention(UnderscoredNamingConvention.Instance)
+                .IgnoreFields()
+                .IgnoreUnmatchedProperties()
+                .Build();
+        }
 
         /// <summary>
         /// Gets a static reference to the plugin's instance.
@@ -40,22 +59,6 @@ namespace Exiled.CustomRoles
         /// Gets a list of players to stop spawning ragdolls for.
         /// </summary>
         internal List<Player> StopRagdollPlayers { get; } = new List<Player>();
-
-        private static CustomAbilityTypeResolver TypeResolver { get; } =
-            new CustomAbilityTypeResolver(UnderscoredNamingConvention.Instance);
-
-        private static IDeserializer Deserializer { get; } = new DeserializerBuilder()
-            .WithTypeConverter(new VectorsConverter())
-            .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
-            .WithNodeDeserializer(
-                inner => new AbstractNodeNodeTypeResolver(
-                    inner,
-                    TypeResolver),
-                s => s.InsteadOf<ValidatingNodeDeserializer>())
-            .WithNamingConvention(UnderscoredNamingConvention.Instance)
-            .IgnoreFields()
-            .IgnoreUnmatchedProperties()
-            .Build();
 
         /// <inheritdoc/>
         public override void OnEnabled()
@@ -74,18 +77,6 @@ namespace Exiled.CustomRoles
             playerHandlers = null;
             Instance = null;
             base.OnDisabled();
-        }
-
-        private static void InjectDeserializer()
-        {
-            foreach (Type t in Loader.Locations.Keys.SelectMany(asm => asm
-                .GetTypes()
-                .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(CustomAbility)))))
-            {
-                TypeResolver.TypeLookup.Add(t.Name, t);
-            }
-
-            typeof(Loader).GetProperty("Deserializer", BindingFlags.Static)?.SetValue(null, Deserializer);
         }
     }
 }
