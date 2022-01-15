@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="RoundEndedEventArgs.cs" company="Exiled Team">
+// <copyright file="SearchPickupRequestEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -27,7 +27,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
         /// <param name="searchTime"><inheritdoc cref="SearchTime"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-
         public SearchPickupRequestEventArgs(Player player, ItemPickupBase pickup, float searchTime, bool isAllowed)
         {
             Player = player;

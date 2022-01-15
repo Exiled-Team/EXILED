@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
     internal static class SearchPickupRequesting
     {
-        private static void Prefix(SearchCoordinator __instance,ref bool __result, out SearchSession? session, out SearchCompletor completor)
+        private static void Prefix(SearchCoordinator __instance, ref bool __result, out SearchSession? session, out SearchCompletor completor)
         {
             try
             {
