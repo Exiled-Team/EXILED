@@ -268,7 +268,7 @@ namespace Exiled.API.Features.Items
             {
                 IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences = AttachmentsServerHandler.PlayerPreferences.Select((KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
                 {
-                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
+                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachments(kvp.Value).ToArray()));
                 });
 
                 return playerPreferences.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -311,11 +311,6 @@ namespace Exiled.API.Features.Items
         /// Gets the <see cref="FirearmAttachment"/>s of the firearm.
         /// </summary>
         public FirearmAttachment[] Attachments => Base.Attachments;
-
-        /// <summary>
-        /// Gets the <see cref="AttachmentIdentifier"/>s of the firearm.
-        /// </summary>
-        public IEnumerable<AttachmentIdentifier> AttachmentIdentifiers => this.GetAttachmentIdentifiers();
 
         /// <summary>
         /// Gets the <see cref="Enums.BaseCode"/> of the firearm.

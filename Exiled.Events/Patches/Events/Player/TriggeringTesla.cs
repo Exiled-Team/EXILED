@@ -33,14 +33,16 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = 0;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldloc_3) + offset;
-            const int instructionsToRemove = 25;
+
+            const int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_1) + offset;
+
             LocalBuilder referenceHub = generator.DeclareLocal(typeof(ReferenceHub));
             LocalBuilder ev = generator.DeclareLocal(typeof(TriggeringTeslaEventArgs));
-            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            Label cdc = generator.DefineLabel();
+
+            newInstructions[index].labels.Add(cdc);
 
             newInstructions.InsertRange(index, new[]
             {
@@ -54,25 +56,21 @@ namespace Exiled.Events.Patches.Events.Player
                 // if (!teslaGate.PlayerInIdleRange(referenceHub))
                 //    return;
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInIdleRange))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
 
-                // player.Get(referenceHub);
-                new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
+                // Player::Get(referenceHub)
+                new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
+
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // teslaGate
                 new CodeInstruction(OpCodes.Ldloc_2),
 
-                // teslaGate.PlayerInHurtRange()
-                new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInHurtRange))),
+                // teslaGate::PlayerInIdleRange(referenceHub)
+                new CodeInstruction(OpCodes.Ldloc_3),
 
-                // teslaGate.PlayerInRange()
-                new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Ldloc, referenceHub.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInRange))),
+                // referenceHub::characterClassManager::CurClass != RoleType::Spectator && teslaGate::PlayerInRange(referenceHub) && !teslaGate::InProgress
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
 
                 // var ev = new TriggeringTeslaEventArgs(player, teslaGate, bool, bool)
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringTeslaEventArgs))[0]),
@@ -92,8 +90,6 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsTriggerable))),
                 new CodeInstruction(OpCodes.Stloc_S, 4),
             });
-
-            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
