@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="SearchPickupRequesting.cs" company="Exiled Team">
+// <copyright file="SearchingPickupEvent.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -22,28 +22,30 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="SearchCoordinator.ReceiveRequestUnsafe"/>.
-    /// Adds the <see cref="Handlers.Player.SearchPickupRequesting"/> event.
+    /// Adds the <see cref="Handlers.Player.SearchingPickup"/> event.
     /// </summary>
     [HarmonyPatch(typeof(SearchCoordinator), nameof(SearchCoordinator.ReceiveRequestUnsafe))]
-    internal static class SearchPickupRequesting
+    internal static class SearchingPickupEvent
     {
-        private static void Prefix(SearchCoordinator __instance, ref bool __result, out SearchSession? session, out SearchCompletor completor)
+        private static bool Prefix(SearchCoordinator __instance, ref bool __result, out SearchSession? session, out SearchCompletor completor)
         {
             try
             {
                 SearchRequest request = __instance.SessionPipe.Request;
-                completor = SearchCompletor.FromPickup(__instance, request.Target, __instance.ServerMaxRayDistanceSqr);
-                SearchPickupRequestEventArgs ev = new SearchPickupRequestEventArgs(Player.Get(__instance.Hub), request.Target, request.Target.SearchTime, completor.ValidateStart());
+
+                SearchingPickupEventArgs ev = new SearchingPickupEventArgs(Player.Get(__instance.Hub), request.Target, request.Body, SearchCompletor.FromPickup(__instance, request.Target, __instance.ServerMaxRayDistanceSqr), request.Target.SearchTime);
                 Handlers.Player.OnSearchPickupRequest(ev);
+
+                completor = ev.SearchCompletor;
                 if (!ev.IsAllowed)
                 {
                     session = null;
                     completor = null;
                     __result = true;
-                    return;
+                    return false;
                 }
 
-                SearchSession body = request.Body;
+                SearchSession body = ev.SearchSession;
                 if (!__instance.isLocalPlayer)
                 {
                     double num = NetworkTime.time - request.InitialTime;
@@ -62,14 +64,14 @@ namespace Exiled.Events.Patches.Events.Player
 
                 session = new SearchSession?(body);
                 __result = true;
-                return;
+                return false;
             }
             catch (Exception exception)
             {
-                Log.Error($"{typeof(SearchPickupRequesting).FullName}.{nameof(Prefix)}:\n{exception}");
+                Log.Error($"{typeof(SearchingPickupEvent).FullName}.{nameof(Prefix)}:\n{exception}");
                 session = null;
                 completor = null;
-                return;
+                return true;
             }
         }
     }

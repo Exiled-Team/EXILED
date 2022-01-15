@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="SearchPickupRequestEventArgs.cs" company="Exiled Team">
+// <copyright file="SearchingPickupEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -14,29 +14,33 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features.Items;
 
     using InventorySystem.Items.Pickups;
+    using InventorySystem.Searching;
 
     /// <summary>
-    /// Contains all information after the end of a round.
+    /// Contains all information before an player search an pickup.
     /// </summary>
-    public class SearchPickupRequestEventArgs : EventArgs
+    public class SearchingPickupEventArgs : EventArgs
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="SearchPickupRequestEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="SearchingPickupEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="pickup"><inheritdoc cref="Pickup"/></param>
+        /// <param name="searchSession"><inheritdoc cref="SearchSession"/></param>
+        /// <param name="searchCompletor"><inheritdoc cref="SearchCompletor"/></param>
         /// <param name="searchTime"><inheritdoc cref="SearchTime"/></param>
-        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public SearchPickupRequestEventArgs(Player player, ItemPickupBase pickup, float searchTime, bool isAllowed)
+        public SearchingPickupEventArgs(Player player, ItemPickupBase pickup, SearchSession searchSession, SearchCompletor searchCompletor, float searchTime)
         {
             Player = player;
             Pickup = Pickup.Get(pickup);
+            SearchSession = searchSession;
+            SearchCompletor = searchCompletor;
             SearchTime = searchTime;
-            IsAllowed = isAllowed;
+            IsAllowed = searchCompletor.ValidateStart();
         }
 
         /// <summary>
-        /// Gets the Player.
+        /// Gets the Player who's getting the Pickup.
         /// </summary>
         public Player Player { get; }
 
@@ -46,7 +50,17 @@ namespace Exiled.Events.EventArgs
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Pickup can be search.
+        /// Gets or sets the SearchSession value.
+        /// </summary>
+        public SearchSession SearchSession { get; set; }
+
+        /// <summary>
+        /// Gets or sets the SearchCompletor value.
+        /// </summary>
+        public SearchCompletor SearchCompletor { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration time for getting the Pickup.
         /// </summary>
         public float SearchTime { get; set; }
 
