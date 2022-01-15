@@ -48,7 +48,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             GenerateCache();
-            LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
             CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
         }
@@ -86,7 +85,11 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
 
-        private static void GenerateLifts() => Map.LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
+        private static void GenerateLifts()
+        {
+            foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
+                Map.LiftsValue.Add(new Lift(lift));
+        }
 
         private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
 
