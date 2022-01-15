@@ -81,11 +81,19 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Spawns the light into the game. Use <see cref="UnSpawn"/> to remove it.
         /// </summary>
-        public void Spawn() => NetworkServer.Spawn(AdminToyBase.gameObject);
+        public void Spawn()
+        {
+            NetworkServer.Spawn(AdminToyBase.gameObject);
+            Map.ToysValue.Add(this);
+        }
 
         /// <summary>
         /// Removes the light from the game. Use <see cref="Spawn"/> to bring it back.
         /// </summary>
-        public void UnSpawn() => NetworkServer.UnSpawn(AdminToyBase.gameObject);
+        public void UnSpawn()
+        {
+            NetworkServer.UnSpawn(AdminToyBase.gameObject);
+            Map.ToysValue.Remove(this);
+        }
     }
 }

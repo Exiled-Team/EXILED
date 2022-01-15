@@ -11,24 +11,16 @@ namespace Exiled.API.Features
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Text.RegularExpressions;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
-
+    using Exiled.API.Features.Toys;
     using Interactables.Interobjects.DoorUtils;
-
     using InventorySystem.Items.Pickups;
-
     using LightContainmentZoneDecontamination;
-
     using MapGeneration.Distributors;
-
     using Mirror;
-
     using PlayableScps.ScriptableObjects;
-
     using UnityEngine;
-
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -76,6 +68,11 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
 
+        /// <summary>
+        /// A list of <see cref="AdminToy"/>s on the map.
+        /// </summary>
+        internal static readonly List<AdminToy> ToysValue = new List<AdminToy>();
+
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
@@ -84,6 +81,7 @@ namespace Exiled.API.Features
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<AdminToy> ReadOnlyToysValue = ToysValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
@@ -167,6 +165,11 @@ namespace Exiled.API.Features
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
+
+        /// <summary>
+        /// Gets all <see cref="AdminToy"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
 
         /// <summary>
         /// Gets the current state of the intercom.

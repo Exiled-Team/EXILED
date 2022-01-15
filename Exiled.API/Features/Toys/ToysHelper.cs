@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Toys
 {
     using AdminToys;
     using Mirror;
+    using UnityEngine;
 
     /// <summary>
     /// A helper class for interacting with toys.
@@ -17,6 +18,9 @@ namespace Exiled.API.Features.Toys
     {
         private static PrimitiveObjectToy primitiveBaseObject;
         private static LightSourceToy lightBaseObject;
+        private static ShootingTarget sportShootingTargetObject;
+        private static ShootingTarget dboyShootingTargetObject;
+        private static ShootingTarget binaryShootingTargetObject;
 
         /// <summary>
         /// Gets the base <see cref="AdminToys.PrimitiveObjectToy"/> to instantiate when creating a new primitive.
@@ -59,6 +63,72 @@ namespace Exiled.API.Features.Toys
                 }
 
                 return lightBaseObject;
+            }
+        }
+
+        /// <summary>
+        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new sport shooting target.
+        /// </summary>
+        public static ShootingTarget SportShootingTargetObject
+        {
+            get
+            {
+                if (sportShootingTargetObject == null)
+                {
+                    foreach (GameObject gameObject in NetworkClient.prefabs.Values)
+                    {
+                        if (gameObject.name == "sportTargetPrefab")
+                        {
+                            sportShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                        }
+                    }
+                }
+
+                return sportShootingTargetObject;
+            }
+        }
+
+        /// <summary>
+        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new dboy shooting target.
+        /// </summary>
+        public static ShootingTarget DboyShootingTargetObject
+        {
+            get
+            {
+                if (dboyShootingTargetObject == null)
+                {
+                    foreach (GameObject gameObject in NetworkClient.prefabs.Values)
+                    {
+                        if (gameObject.name == "dboyTargetPrefab")
+                        {
+                            dboyShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                        }
+                    }
+                }
+
+                return dboyShootingTargetObject;
+            }
+        }
+
+        /// <summary>
+        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new binary shooting target.
+        /// </summary>
+        public static ShootingTarget BinaryShootingTargetObject
+        {
+            get
+            {
+                if (binaryShootingTargetObject == null)
+                {
+                    foreach (GameObject gameObject in NetworkClient.prefabs.Values)
+                    {
+                        if (gameObject.name == "binaryTargetPrefab")
+                        {
+                            binaryShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                        }
+                    }
+                }
+
+                return sportShootingTargetObject;
             }
         }
     }

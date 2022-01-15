@@ -21,5 +21,10 @@ namespace Exiled.API.Enums
         /// Primitive Object toy.
         /// </summary>
         PrimitiveObject,
+
+        /// <summary>
+        /// Primitive Object toy.
+        /// </summary>
+        ShootingTarget,
     }
 }
