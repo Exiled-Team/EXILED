@@ -37,7 +37,6 @@ namespace Exiled.Events.Patches.Events.Player
             Label cdcLabel = generator.DefineLabel();
 
             LocalBuilder ev = generator.DeclareLocal(typeof(PickingUpItemEventArgs));
-            LocalBuilder syncInfo = generator.DeclareLocal(typeof(PickupSyncInfo));
 
             newInstructions[0].labels.Add(cdcLabel);
 
