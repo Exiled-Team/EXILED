@@ -131,7 +131,5 @@ namespace Exiled.Events.Patches.Events.Item
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void InvokeDebug(string debug) => API.Features.Log.Debug(debug);
     }
 }
