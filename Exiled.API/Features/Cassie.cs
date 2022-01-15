@@ -7,9 +7,6 @@
 
 namespace Exiled.API.Features
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
     using MEC;
 
     using PlayerStatsSystem;
@@ -27,11 +24,6 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
         public static bool IsSpeaking => NineTailedFoxAnnouncer.singleton.queue.Count != 0;
-
-        /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
-        /// </summary>
-        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => NineTailedFoxAnnouncer.singleton.voiceLines;
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
@@ -106,20 +98,20 @@ namespace Exiled.API.Features
             => NineTailedFoxAnnouncer.AnnounceScpTermination(scp.ReferenceHub, info);
 
         /// <summary>
-        /// Announces the termination of a custom SCP name.
+        /// Announce the termination of a custom SCP name.
         /// </summary>
-        /// <param name="scpName">SCP Name. Note that for larger numbers, C.A.S.S.I.E will pronounce the place (eg. "457" -> "four hundred fifty seven"). Spaces can be used to prevent this behavior.</param>
+        /// <param name="scpname">SCP Name.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomScpTermination(string scpName, DamageHandler info)
+        public static void CustomSCPTermination(string scpname, DamageHandlerBase info)
         {
-            string result = scpName;
-            if (info.Base is MicroHidDamageHandler)
+            string result = scpname;
+            if (info is MicroHidDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Base is WarheadDamageHandler)
+            else if (info is WarheadDamageHandler)
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Base is UniversalDamageHandler)
+            else if (info is UniversalDamageHandler)
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.Base is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
+            else if (info is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
@@ -132,12 +124,5 @@ namespace Exiled.API.Features
         /// Clears the C.A.S.S.I.E queue.
         /// </summary>
         public static void Clear() => RespawnEffectsController.ClearQueue();
-
-        /// <summary>
-        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
-        /// </summary>
-        /// <param name="word">The word to check.</param>
-        /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
-        public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
     }
 }

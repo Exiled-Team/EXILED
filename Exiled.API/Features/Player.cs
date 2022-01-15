@@ -1433,7 +1433,7 @@ namespace Exiled.API.Features
         public void SendConsoleMessage(Player target, string message, string color) => ReferenceHub.characterClassManager.TargetConsolePrint(target.Connection, message, color);
 
         /// <summary>
-        /// Disconnects the player.
+        /// Disconnects a <see cref="global::ReferenceHub">player</see>.
         /// </summary>
         /// <param name="reason">The disconnection reason.</param>
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
@@ -1446,29 +1446,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        public void Hurt(DamageHandler handler)
-        {
-            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement))
-                Cassie.Message(handler.Base.CassieDeathAnnouncement);
-
-            ReferenceHub.playerStats.DealDamage(handler.Base);
-        }
-
-        /// <summary>
-        /// Hurts the player.
-        /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new DamageHandler(this, damageHandlerBase));
+        public void Hurt(DamageHandlerBase damageHandlerBase)
+        {
+            if (Health - ((StandardDamageHandler)damageHandlerBase).Damage < 1 && Side != Side.Scp && !string.IsNullOrEmpty(damageHandlerBase.CassieDeathAnnouncement))
+                Cassie.Message(damageHandlerBase.CassieDeathAnnouncement);
 
-        /// <summary>
-        /// Hurts the player.
-        /// </summary>
-        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
-        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
-        /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
-        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Hurt(new ExiledDamageHandler(attacker, amount, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
+            ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+        }
 
         /// <summary>
         /// Hurts the player.
@@ -1476,7 +1461,13 @@ namespace Exiled.API.Features
         /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="damage">The amount of damage to deal.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
+        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "")
+        {
+            if (Health - damage < 1 && Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
+        }
 
         /// <summary>
         /// Heals the player.

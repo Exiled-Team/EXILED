@@ -21,6 +21,46 @@ namespace Exiled.API.Features
     /// </summary>
     public class DamageHandler
     {
+        private readonly Dictionary<DeathTranslation, DamageType> translationConversion = new Dictionary<DeathTranslation, DamageType>
+            {
+                { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
+                { DeathTranslations.Bleeding, DamageType.Bleeding },
+                { DeathTranslations.Crushed, DamageType.Crushed },
+                { DeathTranslations.Decontamination, DamageType.Decontamination },
+                { DeathTranslations.Explosion, DamageType.Explosion },
+                { DeathTranslations.Falldown, DamageType.Falldown },
+                { DeathTranslations.Poisoned, DamageType.Poison },
+                { DeathTranslations.Recontained, DamageType.Recontainment },
+                { DeathTranslations.Scp049, DamageType.Scp049 },
+                { DeathTranslations.Scp096, DamageType.Scp096 },
+                { DeathTranslations.Scp173, DamageType.Scp173 },
+                { DeathTranslations.Scp207, DamageType.Scp207 },
+                { DeathTranslations.Scp939, DamageType.Scp939 },
+                { DeathTranslations.Tesla, DamageType.Tesla },
+                { DeathTranslations.Unknown, DamageType.Unknown },
+                { DeathTranslations.Warhead, DamageType.Warhead },
+                { DeathTranslations.Zombie, DamageType.Scp0492 },
+                { DeathTranslations.BulletWounds, DamageType.Firearm },
+                { DeathTranslations.PocketDecay, DamageType.PocketDimension },
+                { DeathTranslations.SeveredHands, DamageType.SeveredHands },
+                { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
+                { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
+                { DeathTranslations.MicroHID, DamageType.MicroHid },
+            };
+
+        private readonly Dictionary<ItemType, DamageType> itemConversion = new Dictionary<ItemType, DamageType>
+        {
+            { ItemType.GunCrossvec, DamageType.Crossvec },
+            { ItemType.GunLogicer, DamageType.Logicer },
+            { ItemType.GunRevolver, DamageType.Revolver },
+            { ItemType.GunShotgun, DamageType.Shotgun },
+            { ItemType.GunAK, DamageType.AK },
+            { ItemType.GunCOM15, DamageType.Com15 },
+            { ItemType.GunCOM18, DamageType.Com18 },
+            { ItemType.GunFSP9, DamageType.Fsp9 },
+            { ItemType.GunE11SR, DamageType.E11Sr },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DamageHandler"/> class.
         /// </summary>
@@ -81,8 +121,8 @@ namespace Exiled.API.Features
                     switch (Item)
                     {
                         case Firearm _:
-                            if (Item != null && ItemConversion.ContainsKey(Item.Type))
-                                return ItemConversion[Item.Type];
+                            if (Item != null && itemConversion.ContainsKey(Item.Type))
+                                return itemConversion[Item.Type];
 
                             return DamageType.Firearm;
                         case MicroHid _:
@@ -104,7 +144,7 @@ namespace Exiled.API.Features
                             DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
                             if (translation.Id == DeathTranslations.PocketDecay.Id)
                                 return DamageType.Scp106;
-                            return TranslationConversion.ContainsKey(translation) ? TranslationConversion[translation] : DamageType.Scp;
+                            return translationConversion.ContainsKey(translation) ? translationConversion[translation] : DamageType.Scp;
                         }
 
                         case ExplosionDamageHandler _:
@@ -117,8 +157,8 @@ namespace Exiled.API.Features
                         {
                             DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                            if (TranslationConversion.ContainsKey(translation))
-                                return TranslationConversion[translation];
+                            if (translationConversion.ContainsKey(translation))
+                                return translationConversion[translation];
                             if (translation.Id == DeathTranslations.Asphyxiated.Id)
                                 return DamageType.Asphyxiation;
                             if (translation.Id == DeathTranslations.Bleeding.Id)
@@ -156,52 +196,6 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Item"/> used to create the damage handler. CAN BE NULL!.
         /// </summary>
         public Item Item { get; }
-
-        /// <summary>
-        /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
-        /// </summary>
-        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
-            {
-                { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
-                { DeathTranslations.Bleeding, DamageType.Bleeding },
-                { DeathTranslations.Crushed, DamageType.Crushed },
-                { DeathTranslations.Decontamination, DamageType.Decontamination },
-                { DeathTranslations.Explosion, DamageType.Explosion },
-                { DeathTranslations.Falldown, DamageType.Falldown },
-                { DeathTranslations.Poisoned, DamageType.Poison },
-                { DeathTranslations.Recontained, DamageType.Recontainment },
-                { DeathTranslations.Scp049, DamageType.Scp049 },
-                { DeathTranslations.Scp096, DamageType.Scp096 },
-                { DeathTranslations.Scp173, DamageType.Scp173 },
-                { DeathTranslations.Scp207, DamageType.Scp207 },
-                { DeathTranslations.Scp939, DamageType.Scp939 },
-                { DeathTranslations.Tesla, DamageType.Tesla },
-                { DeathTranslations.Unknown, DamageType.Unknown },
-                { DeathTranslations.Warhead, DamageType.Warhead },
-                { DeathTranslations.Zombie, DamageType.Scp0492 },
-                { DeathTranslations.BulletWounds, DamageType.Firearm },
-                { DeathTranslations.PocketDecay, DamageType.PocketDimension },
-                { DeathTranslations.SeveredHands, DamageType.SeveredHands },
-                { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
-                { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
-                { DeathTranslations.MicroHID, DamageType.MicroHid },
-            };
-
-        /// <summary>
-        /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
-        /// </summary>
-        internal static Dictionary<ItemType, DamageType> ItemConversion { get; } = new Dictionary<ItemType, DamageType>
-        {
-            { ItemType.GunCrossvec, DamageType.Crossvec },
-            { ItemType.GunLogicer, DamageType.Logicer },
-            { ItemType.GunRevolver, DamageType.Revolver },
-            { ItemType.GunShotgun, DamageType.Shotgun },
-            { ItemType.GunAK, DamageType.AK },
-            { ItemType.GunCOM15, DamageType.Com15 },
-            { ItemType.GunCOM18, DamageType.Com18 },
-            { ItemType.GunFSP9, DamageType.Fsp9 },
-            { ItemType.GunE11SR, DamageType.E11Sr },
-        };
 
         /// <inheritdoc/>
         public override string ToString() => $"{Target} {Amount} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";

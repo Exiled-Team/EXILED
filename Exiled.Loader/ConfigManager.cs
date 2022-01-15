@@ -30,7 +30,6 @@ namespace Exiled.Loader
             if (!File.Exists(Paths.LoaderConfig))
             {
                 Log.Warn("The Loader doesn't have default configs, generating...");
-                Directory.CreateDirectory(Paths.Configs);
                 File.WriteAllText(Paths.LoaderConfig, Loader.Serializer.Serialize(Loader.Config));
                 return;
             }
