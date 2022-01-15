@@ -7,8 +7,6 @@
 
 namespace Exiled.Example.Events
 {
-    using System.Linq;
-
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
@@ -20,16 +18,13 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingDurability(ChangingDurabilityEventArgs)"/>
         public void OnChangingDurability(ChangingDurabilityEventArgs ev)
         {
-            Log.Info($"Durability of {ev.Firearm.Type} ({ev.OldDurability}) is changing. New durability: {ev.NewDurability}");
+            Log.Info($"Durability of {ev.Firearm.Type} {$"({ev.OldDurability})"} is changing. New durability: {ev.NewDurability}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnChangingAttachments(ChangingAttachmentsEventArgs)"/>
         public void OnChangingAttachments(ChangingAttachmentsEventArgs ev)
         {
-            string oldAttachments = ev.OldAttachmentIdentifiers.Aggregate(string.Empty, (current, attachmentIdentifier) => current + $"{attachmentIdentifier.Name}\n");
-            string newAttachments = ev.NewAttachmentIdentifiers.Aggregate(string.Empty, (current, attachmentIdentifier) => current + $"{attachmentIdentifier.Name}\n");
-
-            Log.Info($"Item {ev.Firearm.Type} attachments are changing. Old attachments:\n{oldAttachments} - New Attachments:\n{newAttachments}");
+            Log.Info($"Item {ev.Firearm.Type} attachments are changing. Old attachment: {ev.OldAttachmentIdentifier.Name} - New Attachment: {ev.NewAttachmentIdentifier.Name}");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Item.OnReceivingPreference(ReceivingPreferenceEventArgs)"/>
