@@ -36,7 +36,7 @@ namespace Exiled.API.Enums
         LightContainment,
 
         /// <summary>
-        /// An unknown zone.
+        /// An unspecified zone.
         /// </summary>
         Unspecified,
     }

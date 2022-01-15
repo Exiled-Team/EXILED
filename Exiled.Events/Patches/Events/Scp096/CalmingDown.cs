@@ -28,9 +28,9 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
             // CalmingDownEventArgs ev = new CalmingDownEventArgs(this, Player, true);
             //

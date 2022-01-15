@@ -29,11 +29,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Flashlight"/> class.
+        /// Initializes a new instance of the <see cref="Flashlight"/> class, as well as a new Flashlight item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
-        public Flashlight(ItemType type)
-            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal Flashlight()
+            : this((FlashlightItem)Server.Host.Inventory.CreateItemInstance(ItemType.Flashlight, false))
         {
         }
 
@@ -47,6 +46,12 @@ namespace Exiled.API.Features.Items
         {
             get => Base.IsEmittingLight;
             set => Base.IsEmittingLight = value;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";
         }
     }
 }

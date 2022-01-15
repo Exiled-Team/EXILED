@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.Events.Patches.Events.Player
+/*namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
 #pragma warning restore SA1313
@@ -77,4 +77,4 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
-}
+}*/

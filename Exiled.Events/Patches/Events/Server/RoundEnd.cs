@@ -21,6 +21,10 @@ namespace Exiled.Events.Patches.Events.Server
 
     using HarmonyLib;
 
+    using MEC;
+
+    using RoundRestarting;
+
     using UnityEngine;
 
     using Console = GameCore.Console;
@@ -34,59 +38,62 @@ namespace Exiled.Events.Patches.Events.Server
     {
         private static IEnumerator<float> Process(RoundSummary roundSummary)
         {
+            float time = Time.unscaledTime;
             while (roundSummary != null)
             {
-                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
-                    yield return 0.0f;
-                yield return 0.0f;
-                RoundSummary.SumInfo_ClassList newList = default;
-                foreach (GameObject player in PlayerManager.players)
-                {
-                    if (!(player == null))
-                    {
-                        CharacterClassManager component = player.GetComponent<CharacterClassManager>();
-                        if (component.Classes.CheckBounds(component.CurClass))
-                        {
-                            switch (component.Classes.SafeGet(component.CurClass).team)
-                            {
-                                case Team.SCP:
-                                    if (component.CurClass == RoleType.Scp0492)
-                                    {
-                                        ++newList.zombies;
-                                        continue;
-                                    }
+                yield return Timing.WaitForSeconds(2.5f);
 
-                                    ++newList.scps_except_zombies;
-                                    continue;
-                                case Team.MTF:
-                                    ++newList.mtf_and_guards;
-                                    continue;
-                                case Team.CHI:
-                                    ++newList.chaos_insurgents;
-                                    continue;
-                                case Team.RSC:
-                                    ++newList.scientists;
-                                    continue;
-                                case Team.CDP:
-                                    ++newList.class_ds;
-                                    continue;
-                                default:
-                                    continue;
-                            }
+                while (RoundSummary.RoundLock || !RoundSummary.RoundInProgress() || Time.unscaledTime - time < 15f || (roundSummary._keepRoundOnOne && PlayerManager.players.Count < 2))
+                    yield return Timing.WaitForOneFrame;
+
+                RoundSummary.SumInfo_ClassList newList = default;
+                foreach (KeyValuePair<GameObject, ReferenceHub> keyValuePair in ReferenceHub.GetAllHubs())
+                {
+                    if (keyValuePair.Value == null)
+                        continue;
+
+                    CharacterClassManager component = keyValuePair.Value.characterClassManager;
+                    if (component.Classes.CheckBounds(component.CurClass))
+                    {
+                        switch (component.CurRole.team)
+                        {
+                            case Team.SCP:
+                                if (component.CurClass == RoleType.Scp0492)
+                                    newList.zombies++;
+                                else
+                                    newList.scps_except_zombies++;
+                                continue;
+                            case Team.MTF:
+                                newList.mtf_and_guards++;
+                                continue;
+                            case Team.CHI:
+                                newList.chaos_insurgents++;
+                                continue;
+                            case Team.RSC:
+                                newList.scientists++;
+                                continue;
+                            case Team.CDP:
+                                newList.class_ds++;
+                                continue;
+                            default:
+                                continue;
                         }
                     }
                 }
 
+                yield return Timing.WaitForOneFrame;
                 newList.warhead_kills = AlphaWarheadController.Host.detonated ? AlphaWarheadController.Host.warheadKills : -1;
-                yield return float.NegativeInfinity;
+                yield return Timing.WaitForOneFrame;
                 newList.time = (int)Time.realtimeSinceStartup;
-                yield return float.NegativeInfinity;
+                yield return Timing.WaitForOneFrame;
                 RoundSummary.roundTime = newList.time - roundSummary.classlistStart.time;
                 int num1 = newList.mtf_and_guards + newList.scientists;
                 int num2 = newList.chaos_insurgents + newList.class_ds;
                 int num3 = newList.scps_except_zombies + newList.zombies;
-                float num4 = roundSummary.classlistStart.class_ds == 0 ? 0.0f : (RoundSummary.escaped_ds + newList.class_ds) / roundSummary.classlistStart.class_ds;
-                float num5 = roundSummary.classlistStart.scientists == 0 ? 1f : (RoundSummary.escaped_scientists + newList.scientists) / roundSummary.classlistStart.scientists;
+                int num4 = newList.class_ds + RoundSummary.EscapedClassD;
+                int num5 = newList.scientists + RoundSummary.EscapedScientists;
+                float num6 = (roundSummary.classlistStart.class_ds == 0) ? 0f : (num4 / roundSummary.classlistStart.class_ds);
+                float num7 = (roundSummary.classlistStart.scientists == 0) ? 1f : (num5 / roundSummary.classlistStart.scientists);
 
                 if (newList.class_ds == 0 && num1 == 0)
                 {
@@ -94,29 +101,31 @@ namespace Exiled.Events.Patches.Events.Server
                 }
                 else
                 {
-                    int num6 = 0;
+                    int num8 = 0;
                     if (num1 > 0)
-                        ++num6;
+                        num8++;
                     if (num2 > 0)
-                        ++num6;
+                        num8++;
                     if (num3 > 0)
-                        ++num6;
-                    if (num6 <= 1)
-                    {
+                        num8++;
+                    if (num8 <= 1)
                         roundSummary.RoundEnded = true;
-                    }
                 }
 
                 EndingRoundEventArgs endingRoundEventArgs = new EndingRoundEventArgs(LeadingTeam.Draw, newList, roundSummary.RoundEnded);
 
                 if (num1 > 0)
                 {
-                    if (RoundSummary.escaped_ds == 0 && RoundSummary.escaped_scientists != 0)
+                    if (num5 > 0)
                         endingRoundEventArgs.LeadingTeam = LeadingTeam.FacilityForces;
                 }
-                else
+                else if (num4 > 0)
                 {
-                    endingRoundEventArgs.LeadingTeam = RoundSummary.escaped_ds != 0 ? LeadingTeam.ChaosInsurgency : LeadingTeam.Anomalies;
+                    endingRoundEventArgs.LeadingTeam = LeadingTeam.ChaosInsurgency;
+                }
+                else if (num3 > 0)
+                {
+                    endingRoundEventArgs.LeadingTeam = LeadingTeam.Anomalies;
                 }
 
                 Server.OnEndingRound(endingRoundEventArgs);
@@ -126,31 +135,25 @@ namespace Exiled.Events.Patches.Events.Server
                 if (roundSummary.RoundEnded)
                 {
                     FriendlyFireConfig.PauseDetector = true;
-                    string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num4 + " | S escaped percentage: : " + num5;
+                    string str = "Round finished! Anomalies: " + num3 + " | Chaos: " + num2 + " | Facility Forces: " + num1 + " | D escaped percentage: " + num6 + " | S escaped percentage: : " + num7;
                     Console.AddLog(str, Color.gray, false);
                     ServerLogs.AddLog(ServerLogs.Modules.Logger, str, ServerLogs.ServerLogType.GameEvent);
-                    byte i1;
-                    for (i1 = 0; i1 < 75; ++i1)
-                        yield return 0.0f;
+                    yield return Timing.WaitForSeconds(1.5f);
                     int timeToRoundRestart = Mathf.Clamp(ConfigFile.ServerConfig.GetInt("auto_round_restart_time", 10), 5, 1000);
 
                     if (roundSummary != null)
                     {
-                        newList.scps_except_zombies -= newList.zombies;
-
                         RoundEndedEventArgs roundEndedEventArgs = new RoundEndedEventArgs(endingRoundEventArgs.LeadingTeam, newList, timeToRoundRestart);
 
                         Server.OnRoundEnded(roundEndedEventArgs);
 
-                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.escaped_ds, RoundSummary.escaped_scientists, RoundSummary.kills_by_scp, roundEndedEventArgs.TimeToRestart);
+                        roundSummary.RpcShowRoundSummary(roundSummary.classlistStart, roundEndedEventArgs.ClassList, (RoundSummary.LeadingTeam)roundEndedEventArgs.LeadingTeam, RoundSummary.EscapedClassD, RoundSummary.EscapedScientists, RoundSummary.KilledBySCPs, roundEndedEventArgs.TimeToRestart);
                     }
 
-                    for (int i2 = 0; i2 < 50 * (timeToRoundRestart - 1); ++i2)
-                        yield return 0.0f;
+                    yield return Timing.WaitForSeconds(timeToRoundRestart - 1);
                     roundSummary.RpcDimScreen();
-                    for (i1 = 0; i1 < 50; ++i1)
-                        yield return 0.0f;
-                    PlayerManager.localPlayer.GetComponent<PlayerStats>().Roundrestart();
+                    yield return Timing.WaitForSeconds(1f);
+                    RoundRestart.InitiateRoundRestart();
                     yield break;
                 }
             }

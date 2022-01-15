@@ -30,19 +30,19 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var offset = 4;
+            int offset = 4;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Dup) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Dup) + offset;
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var ev = generator.DeclareLocal(typeof(ThrowingItemEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(ThrowingItemEventArgs));
 
-            var moveOffset = -2;
+            int moveOffset = -2;
 
-            var moveIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + moveOffset;
+            int moveIndex = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + moveOffset;
 
             newInstructions.InsertRange(index, new[]
             {

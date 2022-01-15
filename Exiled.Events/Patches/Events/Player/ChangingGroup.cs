@@ -30,13 +30,13 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var offset = 1;
+            int offset = 1;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
 
             // var ev = new ChangingGroupEventArgs(Player, UserGroup, true);
             //
@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Player
             //     return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(ServerRoles), nameof(ServerRoles.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(GameObject) })),
                 new CodeInstruction(OpCodes.Ldarg_1),

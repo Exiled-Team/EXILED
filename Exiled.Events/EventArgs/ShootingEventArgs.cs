@@ -64,7 +64,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets the nedId of the target of the shot.
+        /// Gets or sets the netId of the target of the shot.
         /// </summary>
         public uint TargetNetId
         {

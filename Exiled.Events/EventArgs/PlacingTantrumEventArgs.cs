@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the tantrum <see cref="GameObject"/>.
+        /// Gets the tantrum <see cref="UnityEngine.GameObject"/>.
         /// </summary>
         public GameObject GameObject { get; }
 
@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs
         public float Cooldown { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tantrum can be placed or not.
+        /// Gets or sets a value indicating whether or not the tantrum can be placed.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

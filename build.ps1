@@ -13,7 +13,8 @@ $Projects = @(
     'Exiled.Updater',
     'Exiled.CreditTags',
     'Exiled.Example',
-    'Exiled.CustomItems'
+    'Exiled.CustomItems',
+    'Exiled.CustomRoles'
 )
 
 function Execute {

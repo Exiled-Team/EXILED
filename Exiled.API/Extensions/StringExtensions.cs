@@ -101,7 +101,7 @@ namespace Exiled.API.Extensions
 
             stringBuilder.AppendLine(string.Empty);
 
-            foreach (var enumerator in enumerable)
+            foreach (T enumerator in enumerable)
             {
                 if (showIndex)
                 {
@@ -126,7 +126,7 @@ namespace Exiled.API.Extensions
         /// <returns>Name without brackets.</returns>
         public static string RemoveBracketsOnEndOfName(this string name)
         {
-            var bracketStart = name.IndexOf('(') - 1;
+            int bracketStart = name.IndexOf('(') - 1;
 
             if (bracketStart > 0)
                 name = name.Remove(bracketStart, name.Length - bracketStart);
@@ -142,7 +142,7 @@ namespace Exiled.API.Extensions
         /// <returns>Substring before the symbol.</returns>
         public static string GetBefore(this string input, char symbol)
         {
-            var start = input.IndexOf(symbol);
+            int start = input.IndexOf(symbol);
             if (start != 0)
                 input = input.Substring(0, start);
 

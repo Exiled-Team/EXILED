@@ -8,6 +8,7 @@
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
@@ -25,7 +26,7 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="lift">The <see cref="Lift"/> to check.</param>
         /// <returns>The <see cref="ElevatorType"/>.</returns>
-        public static ElevatorType Type(this Lift lift) => OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out var elevatorType) ? elevatorType : ElevatorType.Unknown;
+        public static ElevatorType Type(this Lift lift) => OrderedElevatorTypes.TryGetValue(lift.GetInstanceID(), out ElevatorType elevatorType) ? elevatorType : ElevatorType.Unknown;
 
         /// <summary>
         /// Gets all the <see cref="ElevatorType"/> values for the <see cref="Lift"/> instances using <see cref="Lift.elevatorName"/> and <see cref="UnityEngine.GameObject"/> name.
@@ -34,15 +35,15 @@ namespace Exiled.API.Extensions
         {
             OrderedElevatorTypes.Clear();
 
-            var lifts = Map.Lifts;
+            ReadOnlyCollection<Lift> lifts = Map.Lifts;
 
-            var liftCount = lifts.Count;
+            int liftCount = lifts.Count;
             for (int i = 0; i < liftCount; i++)
             {
-                var lift = lifts[i];
-                var liftID = lift.GetInstanceID();
+                Lift lift = lifts[i];
+                int liftID = lift.GetInstanceID();
 
-                var liftName = string.IsNullOrWhiteSpace(lift.elevatorName) ? lift.elevatorName.RemoveBracketsOnEndOfName() : lift.elevatorName;
+                string liftName = string.IsNullOrWhiteSpace(lift.elevatorName) ? lift.elevatorName.RemoveBracketsOnEndOfName() : lift.elevatorName;
 
                 OrderedElevatorTypes[liftID] = GetElevatorType(liftName);
             }

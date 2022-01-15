@@ -86,7 +86,6 @@ namespace Exiled.Events
             MapGeneration.SeedSynchronizer.OnMapGenerated += Handlers.Map.OnGenerated;
 
             ServerConsole.ReloadServerName();
-            Scp096.MaxShield = Config.Scp096MaxShieldAmount;
         }
 
         /// <inheritdoc/>

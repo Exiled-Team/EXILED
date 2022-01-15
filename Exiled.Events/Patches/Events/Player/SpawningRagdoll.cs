@@ -7,65 +7,101 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
+    using PlayerStatsSystem;
+
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
     /// <summary>
-    /// Patches <see cref="RagdollManager.SpawnRagdoll(Vector3, Quaternion, Vector3, int, PlayerStats.HitInfo, bool, string, string, int, bool)"/>.
-    /// Adds the <see cref="Player.SpawningRagdoll"/> event.
+    /// Patches <see cref="Ragdoll.ServerSpawnRagdoll(ReferenceHub, DamageHandlerBase)"/>.
+    /// Adds the <see cref="Handlers.Player.SpawningRagdoll"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(RagdollManager), nameof(RagdollManager.SpawnRagdoll))]
+    [HarmonyPatch(typeof(Ragdoll), nameof(Ragdoll.ServerSpawnRagdoll))]
     internal static class SpawningRagdoll
     {
-        private static bool Prefix(RagdollManager __instance, ref Vector3 pos, ref Quaternion rot, ref Vector3 velocity, ref int classId, ref PlayerStats.HitInfo ragdollInfo, ref bool allowRecall, ref string ownerID, ref string ownerNick, ref int playerId, ref bool _096Death)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
+
+            LocalBuilder mem_0x01 = generator.DeclareLocal(typeof(SpawningRagdollEventArgs));
+            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(API.Features.Ragdoll));
+
+            Label ret = generator.DefineLabel();
+
+            newInstructions.RemoveRange(index, 9);
+
+            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
+
+            newInstructions.InsertRange(index, new[]
             {
-                var ev = new SpawningRagdollEventArgs(
-                    ragdollInfo.PlayerId == 0 ? null : API.Features.Player.Get(ragdollInfo.PlayerId), API.Features.Player.Get(playerId), pos, rot, velocity, (RoleType)classId, ragdollInfo, allowRecall, ownerID, ownerNick, playerId);
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localPosition))),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GameObject), nameof(GameObject.transform))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Transform), nameof(Transform.localRotation))),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RagdollInfo))[0]),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(SpawningRagdollEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnSpawningRagdoll))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse_S, ret),
+            });
 
-                Player.OnSpawningRagdoll(ev);
+            offset = -1;
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
-                pos = ev.Position;
-                rot = ev.Rotation;
-                velocity = ev.Velocity;
-                classId = (int)ev.RoleType;
-                ragdollInfo = ev.HitInformations;
-                allowRecall = ev.IsRecallAllowed;
-                ownerID = ev.DissonanceId;
-                ownerNick = ev.PlayerNickname;
-                playerId = ev.PlayerId;
-
-                if (!ev.IsAllowed)
-                    return false;
-
-                Role role = __instance.hub.characterClassManager.Classes.SafeGet(classId);
-                if (role.model_ragdoll == null)
-                    return false;
-                GameObject gameObject = UnityEngine.Object.Instantiate(role.model_ragdoll, pos + role.ragdoll_offset.position, Quaternion.Euler(rot.eulerAngles + role.ragdoll_offset.rotation));
-                Ragdoll component = gameObject.GetComponent<Ragdoll>();
-                component.Networkowner = new Ragdoll.Info(ownerID, ownerNick, ragdollInfo, role, playerId);
-                component.NetworkallowRecall = allowRecall;
-                component.NetworkPlayerVelo = velocity;
-                Exiled.API.Features.Ragdoll ragdoll = new Exiled.API.Features.Ragdoll(component);
-                Mirror.NetworkServer.Spawn(ragdoll.GameObject);
-                API.Features.Map.RagdollsValue.Add(ragdoll);
-
-                return false;
-            }
-            catch (Exception e)
+            newInstructions.InsertRange(index, new[]
             {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.SpawningRagdoll: {e}\n{e.StackTrace}");
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SpawningRagdollEventArgs), nameof(SpawningRagdollEventArgs.Info))),
+            });
 
-                return true;
-            }
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
+
+            newInstructions.RemoveRange(index, 4);
+
+            newInstructions.InsertRange(newInstructions.Count - 1, new[]
+            {
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(API.Features.Ragdoll))[2]),
+                new CodeInstruction(OpCodes.Stloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_1, mem_0x01.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Ragdoll), nameof(Ragdoll.gameObject))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Mirror.NetworkServer), nameof(Mirror.NetworkServer.Spawn), new[] { typeof(GameObject), typeof(Mirror.NetworkConnection) })),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(API.Features.Map), nameof(API.Features.Map.RagdollsValue))),
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<API.Features.Ragdoll>), nameof(List<API.Features.Ragdoll>.Add))),
+            });
+
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

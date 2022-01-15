@@ -33,16 +33,16 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-            var ev = generator.DeclareLocal(typeof(PlacingTantrumEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(PlacingTantrumEventArgs));
 
-            var offset = 1;
+            int offset = 1;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
-            (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call &&
+                                                                 (MethodInfo)instruction.operand == Method(typeof(NetworkServer), nameof(NetworkServer.Spawn), new[] { typeof(GameObject), typeof(NetworkConnection) })) + offset;
 
             newInstructions.RemoveRange(index, 3);
 

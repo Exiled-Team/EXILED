@@ -9,6 +9,8 @@ namespace Exiled.Events.EventArgs
     using System;
     using System.Collections.Generic;
 
+    using Exiled.API.Enums;
+
     using Exiled.API.Features;
 
     using InventorySystem.Items.ThrowableProjectiles;
@@ -22,6 +24,13 @@ namespace Exiled.Events.EventArgs
     /// </summary>
     public class ExplodingGrenadeEventArgs : EventArgs
     {
+        private static Dictionary<Type, GrenadeType> grenadeDictionary = new Dictionary<Type, GrenadeType>()
+        {
+            { typeof(FlashbangGrenade), GrenadeType.Flashbang },
+            { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
+            { typeof(Scp018Projectile), GrenadeType.Scp018 },
+        };
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ExplodingGrenadeEventArgs"/> class.
         /// </summary>
@@ -31,7 +40,7 @@ namespace Exiled.Events.EventArgs
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, Collider[] targets)
         {
             Thrower = thrower ?? Server.Host;
-            IsFrag = grenade is ExplosionGrenade;
+            GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             foreach (Collider collider in targets)
@@ -57,7 +66,7 @@ namespace Exiled.Events.EventArgs
         public ExplodingGrenadeEventArgs(Player thrower, EffectGrenade grenade, List<Player> players)
         {
             Thrower = thrower ?? Server.Host;
-            IsFrag = grenade is ExplosionGrenade;
+            GrenadeType = grenadeDictionary[grenade.GetType()];
             Grenade = grenade;
             TargetsToAffect = ListPool<Player>.Shared.Rent();
             TargetsToAffect.AddRange(players);
@@ -79,9 +88,9 @@ namespace Exiled.Events.EventArgs
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the grenade is a frag or flash grenade.
+        /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
-        public bool IsFrag { get; }
+        public GrenadeType GrenadeType { get; }
 
         /// <summary>
         /// Gets the grenade that is exploding.

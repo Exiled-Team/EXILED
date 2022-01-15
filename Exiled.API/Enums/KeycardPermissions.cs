@@ -7,9 +7,12 @@
 
 namespace Exiled.API.Enums
 {
+    using System;
+
     /// <summary>
     /// The types of permissions assigned to keycards.
     /// </summary>
+    [Flags]
     public enum KeycardPermissions
     {
         /// <summary>
@@ -23,12 +26,12 @@ namespace Exiled.API.Enums
         Checkpoints = 1,
 
         /// <summary>
-        /// Opens Exit Gates.
+        /// Opens <see cref="DoorType.GateA">Gate A</see> and <see cref="DoorType.GateB">Gate B</see>.
         /// </summary>
         ExitGates = 2,
 
         /// <summary>
-        /// Opens the Intercom door.
+        /// Opens <see cref="DoorType.Intercom">the Intercom door</see>.
         /// </summary>
         Intercom = 4,
 
@@ -38,7 +41,7 @@ namespace Exiled.API.Enums
         AlphaWarhead = 8,
 
         /// <summary>
-        /// Opens 914.
+        /// Opens <see cref="DoorType.Scp914"/>.
         /// </summary>
         ContainmentLevelOne = 16, // 0x0010
 

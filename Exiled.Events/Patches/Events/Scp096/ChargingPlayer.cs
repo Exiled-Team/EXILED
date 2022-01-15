@@ -20,6 +20,8 @@ namespace Exiled.Events.Patches.Events.Scp096
 
     using static HarmonyLib.AccessTools;
 
+    using Scp096 = PlayableScps.Scp096;
+
     /// <summary>
     /// Patches <see cref="PlayableScps.Scp096.ChargePlayer"/>.
     /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
@@ -46,43 +48,50 @@ namespace Exiled.Events.Patches.Events.Scp096
             // Get the return label from the last instruction.
             Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
-            // Create the damage labels.
-            Label targetDamageLabel = generator.DefineLabel();
-            Label nonTargetDamageLabel = generator.DefineLabel();
+            // Declare a local variable of type ChargingPlayerEventArgs.
+            LocalBuilder ev = generator.DeclareLocal(typeof(ChargingPlayerEventArgs));
+            LocalBuilder contains = generator.DeclareLocal(typeof(bool));
 
-            // if (!ChargedPlayers.Add(ReferenceHub)
-            //   return;
-            //
-            // var ev = new ChargingPlayerEventArgs(Scp096, Player player, Player victim, isTarget, isTarget ? 9696f, 35f, bool endCharge, true);
-            //
-            // Handlers.Scp096.OnChargingPlayer(ev);
-            // if (!ev.IsAllowed)
-            //   return;
             newInstructions.InsertRange(index, new[]
             {
+                // if (!ChargedPlayers.Add(target))
+                //    return;
+                new CodeInstruction(OpCodes.Stloc, contains.LocalIndex),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(ChargingPlayer), nameof(ChargedPlayers))).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(ChargedPlayers.Add))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+
+                // var ev = new ChargingPlayerEventArgs(this, Player.Get(this.Hub), target, this._targets.Contains(target), damage)
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp096), nameof(Scp096._targets))),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(HashSet<ReferenceHub>), nameof(HashSet<ReferenceHub>.Contains))),
                 new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Ldloc_0),
-                new CodeInstruction(OpCodes.Brtrue_S, targetDamageLabel),
-                new CodeInstruction(OpCodes.Ldc_R4, 35f),
-                new CodeInstruction(OpCodes.Br_S, nonTargetDamageLabel),
-                new CodeInstruction(OpCodes.Ldc_R4, 9696f).WithLabels(targetDamageLabel),
-                new CodeInstruction(OpCodes.Ldloc_0).WithLabels(nonTargetDamageLabel),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChargingPlayerEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+
+                // Handlers.Scp096.OnChargingPlayer(ev);
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp096), nameof(Handlers.Scp096.OnChargingPlayer))),
+
+                // if (!ev.IsAllowed)
+                //    return;
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+
+                // damage = ev.Damage
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChargingPlayerEventArgs), nameof(ChargingPlayerEventArgs.Damage))),
+                new CodeInstruction(OpCodes.Stloc_0),
+                new CodeInstruction(OpCodes.Ldloc, contains.LocalIndex),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

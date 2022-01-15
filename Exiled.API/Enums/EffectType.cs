@@ -33,17 +33,17 @@ namespace Exiled.API.Enums
         Blinded,
 
         /// <summary>
-        /// Increases damage the player gets.
+        /// Increases damage the player receives. Does not apply any standalone damage.
         /// </summary>
         Burned,
 
         /// <summary>
-        /// Blurs the player's screen when rotating.
+        /// Blurs the player's screen while rotating.
         /// </summary>
         Concussed,
 
         /// <summary>
-        /// Teleports the player to the pocket dimension and drains health.
+        /// Teleports the player to the pocket dimension and drains health until the player escapes or is killed.
         /// </summary>
         Corroding,
 
@@ -63,7 +63,7 @@ namespace Exiled.API.Enums
         Disabled,
 
         /// <summary>
-        /// Stops the player's movement.
+        /// Prevents the player from moving.
         /// </summary>
         Ensnared,
 
@@ -88,33 +88,68 @@ namespace Exiled.API.Enums
         Invigorated,
 
         /// <summary>
-        /// Increases the player's stamina consumption.
+        /// Reduces damage taken by body shots.
         /// </summary>
-        Panic,
+        BodyshotReduction,
 
         /// <summary>
-        /// Damages the player every 5 seconds, starting low and ramping hight.
+        /// Damages the player every 5 seconds, starting low and increasing over time.
         /// </summary>
         Poisoned,
 
         /// <summary>
-        /// Makes the player faster but also drains health.
+        /// Increases the speed of the player while also draining health.
         /// </summary>
         Scp207,
 
         /// <summary>
-        /// Makes the player invisibility.
+        /// Makes the player invisible.
         /// </summary>
         Invisible,
 
         /// <summary>
-        /// Slows down the player's movement with SCP-106 effect.
+        /// Slows down the player's movement with the SCP-106 sinkhole effect.
         /// </summary>
         SinkHole,
 
         /// <summary>
-        /// Gives the player the sound vision of SCP-939.
+        /// Gives the player the SCP-939 sound vision.
         /// </summary>
         Visuals939,
+
+        /// <summary>
+        /// Reduces overall damage taken.
+        /// </summary>
+        DamageReduction,
+
+        /// <summary>
+        /// Increases movement speed.
+        /// </summary>
+        MovementBoost,
+
+        /// <summary>
+        /// Severely reduces damage taken.
+        /// </summary>
+        RainbowTaste,
+
+        /// <summary>
+        /// Drops the player's current item and deals damage while effect is active.
+        /// </summary>
+        SeveredHands,
+
+        /// <summary>
+        /// Prevents the player from sprinting and reduces movement speed by 20%.
+        /// </summary>
+        Stained,
+
+        /// <summary>
+        /// Causes the player to blink.
+        /// </summary>
+        Visual173Blink,
+
+        /// <summary>
+        /// Causes the player to slowly regenerate health.
+        /// </summary>
+        Vitality,
     }
 }

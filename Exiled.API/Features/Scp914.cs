@@ -21,7 +21,7 @@ namespace Exiled.API.Features
         private static Scp914Controller scp914Controller;
 
         /// <summary>
-        /// Gets the cached <see cref="Scp914Controller"/>.
+        /// Gets the cached <see cref="global::Scp914.Scp914Controller"/>.
         /// </summary>
         public static Scp914Controller Scp914Controller
         {
@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets SCP-914 <see cref="Scp914KnobSetting"/>.
+        /// Gets or sets SCP-914's <see cref="Scp914KnobSetting"/>.
         /// </summary>
         public static Scp914KnobSetting KnobStatus
         {
@@ -44,7 +44,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets SCP-914 config mode.
+        /// Gets or sets SCP-914's config mode.
         /// </summary>
         public static ConfigEntry<Scp914Mode> ConfigMode
         {
@@ -53,7 +53,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the SCP-914 was activated and is currently processing items.
+        /// Gets a value indicating whether SCP-914 was activated and is currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Controller._isUpgrading;
 
@@ -68,7 +68,16 @@ namespace Exiled.API.Features
         public static Transform OutputBooth => Scp914Controller._outputChamber;
 
         /// <summary>
-        /// Starts the SCP-914.
+        /// Plays the SCP-914's sound.
+        /// </summary>
+        /// <param name="soundId">The soundId to play.</param>
+        /// <remarks>There are two sounds only.
+        /// The values to identify them are <c>0</c>, which stands for the soundId played when SCP-914 is being activated,
+        /// and <c>1</c>, which stands for the soundId played when SCP-914's knob state is being changed.</remarks>
+        public static void PlaySound(byte soundId) => scp914Controller.RpcPlaySound(soundId);
+
+        /// <summary>
+        /// Starts SCP-914.
         /// </summary>
         public static void Start() => Scp914Controller.ServerInteract(Server.Host.ReferenceHub, (byte)Scp914InteractCode.Activate);
     }

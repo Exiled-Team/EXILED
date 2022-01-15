@@ -41,7 +41,7 @@ jobs:
       - name: Run DocFX
         env:
           EXILED_REFERENCES: ${{ env.EXILED_REFERENCES_PATH }}
-        run: docfx docfx.json
+        run: docfx docfx.json; docfx docfx.json
         
       - name: Deploy to GitHub Pages
         if: github.event_name == 'push' && success() #Only publishes on push to master to avoid docs mishaps

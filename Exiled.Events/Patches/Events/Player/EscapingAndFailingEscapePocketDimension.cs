@@ -41,12 +41,12 @@ namespace Exiled.Events.Patches.Events.Player
             // if we don't, we'll get a NullReferenceException which is also thrown when we try to call the event.
 
             // Find the first null check of the NetworkIdentity component
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Brfalse && instruction.operand is Label);
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Call);
 
             // Get the return label from the instruction at the index.
-            object returnLabel = newInstructions[index].operand;
+            Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index + 1, new[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
@@ -58,42 +58,22 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brtrue, returnLabel),
             });
 
-            // --------- FailingEscapePocketDimension ---------
-
-            // The index offset.
+            // ----------- FailingEscapePocketDimension-------------
             int offset = 2;
+            index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ldsfld && (FieldInfo)i.operand ==
+                Field(typeof(PocketDimensionTeleport), nameof(PocketDimensionTeleport.DebugBool))) + offset;
 
-            // Find the starting index by searching for "ldfld" of "BlastDoor.isClosed".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            instruction.operand is FieldInfo finfo && finfo == Field(typeof(BlastDoor), nameof(BlastDoor.isClosed))) + offset;
-
-            // Get the count to find the previous index
-            int oldCount = newInstructions.Count;
-
-            // Get the return label from the last instruction.
-            returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
-
-            // var ev = new FailingEscapePocketDimensionEventArgs(Player.Get(other.gameObject), this);
-            //
-            // Handlers.Player.OnFailingEscapePocketDimension(ev);
-            //
-            // if (!ev.IsAllowed)
-            //   return;
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(FailingEscapePocketDimensionEventArgs), new[] { typeof(Player), typeof(PocketDimensionTeleport), typeof(bool) })),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(FailingEscapePocketDimensionEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnFailingEscapePocketDimension))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FailingEscapePocketDimensionEventArgs), nameof(FailingEscapePocketDimensionEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
+                new CodeInstruction(OpCodes.Brfalse, returnLabel),
             });
-
-            // Add the starting labels to the first injected instruction.
-            // Calculate the difference and get the valid index - is better and easy than using a list
-            newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
 
             // --------- EscapingPocketDimension ---------
 
@@ -101,8 +81,9 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -1;
 
             // Find the starting index by searching for "callvirt" of "Component.GetComponent<PlayerMovementSync>()".
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-            (MethodInfo)instruction.operand == Method(typeof(Component), nameof(Component.GetComponent), generics: new[] { typeof(PlayerMovementSync) })) + offset;
+            index = newInstructions.FindLastIndex(i =>
+                i.opcode == OpCodes.Ldfld && (FieldInfo)i.operand ==
+                Field(typeof(ReferenceHub), nameof(ReferenceHub.playerMovementSync))) + offset;
 
             // Declare EscapingPocketDimensionEventArgs local variable.
             LocalBuilder ev = generator.DeclareLocal(typeof(EscapingPocketDimensionEventArgs));
@@ -118,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, 4),
+                new CodeInstruction(OpCodes.Ldloc_S, 9),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, Constructor(typeof(EscapingPocketDimensionEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(bool) })),
                 new CodeInstruction(OpCodes.Dup),
@@ -129,8 +110,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new CodeInstruction(OpCodes.Stloc_S, 4),
+                new CodeInstruction(OpCodes.Stloc_S, 9),
             });
+
+            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -29,14 +29,14 @@ namespace Exiled.Events.Patches.Events.Scp096
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            var returnLabel = generator.DefineLabel();
+            Label returnLabel = generator.DefineLabel();
 
-            var offset = -1;
+            int offset = -1;
 
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-            (FieldInfo)instruction.operand == Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
+                                                                 (FieldInfo)instruction.operand == Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))) + offset;
 
             // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(this, Player, Gate, true);
             //
