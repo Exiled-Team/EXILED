@@ -29,6 +29,8 @@ namespace Exiled.Example.Events
         /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnDied(DiedEventArgs)"/>
         public void OnDied(DiedEventArgs ev)
         {
+            if (ev.Killer == null)
+                return;
             Log.Info($"{ev.Target.Nickname} ({ev.Target.Role}) died from {ev.Killer.CurrentItem}! {ev.Killer.Nickname} ({ev.Killer.Role}) killed him!");
         }
 
@@ -50,13 +52,13 @@ namespace Exiled.Example.Events
         {
             Timing.CallDelayed(2f, () =>
             {
-                if (ev.Player.CurrentItem is Firearm firearm)
+                if (ev.Player?.CurrentItem is Firearm firearm)
                 {
                     Log.Info($"{ev.Player.Nickname} has a firearm!");
                     firearm.Recoil = new RecoilSettings(0, 0, 0, 0, 0, 0);
                 }
             });
-            Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player.CurrentItem == null ? "NONE" : ev.Player.CurrentItem.Type.ToString())} item to {(ev.NewItem == null ? "NONE" : ev.NewItem.Type.ToString())}!");
+            Log.Info($"{ev.Player.Nickname} is changing his {(ev.Player?.CurrentItem == null ? "NONE" : ev.Player?.CurrentItem?.Type.ToString())} item to {(ev.NewItem == null ? "NONE" : ev.NewItem.Type.ToString())}!");
         }
 
         /// <inheritdoc cref="Exiled.Events.Handlers.Scp106.OnTeleporting(TeleportingEventArgs)"/>
