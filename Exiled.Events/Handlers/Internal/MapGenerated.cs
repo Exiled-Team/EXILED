@@ -61,7 +61,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
-            Timing.CallDelayed(0.15f, GenerateLockers);
+            Timing.CallDelayed(1f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
