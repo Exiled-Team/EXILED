@@ -31,7 +31,7 @@ namespace Exiled.CreditTags.Commands
         /// <inheritdoc/>
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var cmdSender = (CommandSender)sender;
+            CommandSender cmdSender = (CommandSender)sender;
 
             if (!(Player.Get(cmdSender.SenderId) is Player player))
             {

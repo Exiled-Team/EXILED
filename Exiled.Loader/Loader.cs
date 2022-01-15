@@ -55,20 +55,19 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
 
-            if (!Directory.Exists(Paths.Configs))
-                Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Plugins);
+            Directory.CreateDirectory(Paths.Dependencies);
 
-            if (!Directory.Exists(Paths.Plugins))
-                Directory.CreateDirectory(Paths.Plugins);
-
-            if (!Directory.Exists(Paths.Dependencies))
-                Directory.CreateDirectory(Paths.Dependencies);
+            if (Config.ConfigType == ConfigType.Separated)
+                Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
         /// <summary>
@@ -107,10 +106,11 @@ namespace Exiled.Loader
         public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
-        /// Gets the serializer for configs and translations.
+        /// Gets or sets the serializer for configs and translations.
         /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
+        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -118,10 +118,11 @@ namespace Exiled.Loader
             .Build();
 
         /// <summary>
-        /// Gets the deserializer for configs and translations.
+        /// Gets or sets the deserializer for configs and translations.
         /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
@@ -143,6 +144,12 @@ namespace Exiled.Loader
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
 
+            if (!Config.IsEnabled)
+            {
+                Log.Warn("Exiled Loader is disabled. No plugins will be loaded.");
+                return;
+            }
+
             LoadDependencies();
             LoadPlugins();
 
@@ -156,17 +163,8 @@ namespace Exiled.Loader
                 AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
-            ServerConsole.AddLog(
-                @"Welcome to
-   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
- ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
-  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                  ▀                                 ", ConsoleColor.Green);
+
+            ServerConsole.AddLog($"Welcome to {LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -204,7 +202,7 @@ namespace Exiled.Loader
         /// Loads an assembly.
         /// </summary>
         /// <param name="path">The path to load the assembly from.</param>
-        /// <returns>Returns the loaded assembly or null.</returns>
+        /// <returns>Returns the loaded assembly or <see langword="null"/>.</returns>
         public static Assembly LoadAssembly(string path)
         {
             try
@@ -223,7 +221,7 @@ namespace Exiled.Loader
         /// Create a plugin instance.
         /// </summary>
         /// <param name="assembly">The plugin assembly.</param>
-        /// <returns>Returns the created plugin instance or null.</returns>
+        /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
             try
@@ -246,7 +244,7 @@ namespace Exiled.Loader
 
                     IPlugin<IConfig> plugin = null;
 
-                    var constructor = type.GetConstructor(Type.EmptyTypes);
+                    ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor != null)
                     {
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
@@ -257,7 +255,7 @@ namespace Exiled.Loader
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
 
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        object value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -379,10 +377,17 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets a plugin with its prefix or name.
+        /// </summary>
+        /// <param name="args">The name or prefix of the plugin (Using the prefix is recommended).</param>
+        /// <returns>The desired plugin, null if not found.</returns>
+        public static IPlugin<IConfig> GetPlugin(string args) => Plugins.FirstOrDefault(x => x.Name == args || x.Prefix == args);
+
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
-            var requiredVersion = plugin.RequiredExiledVersion;
-            var actualVersion = Version;
+            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version actualVersion = Version;
 
             // Check Major version
             // It's increased when an incompatible API change was made
@@ -496,10 +501,6 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
-
-                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
-                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
-                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
 
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {

@@ -88,15 +88,6 @@ namespace Exiled.Events.EventArgs
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        /// Gets a value indicating whether the grenade is a frag or flash grenade.
-        /// </summary>
-        [Obsolete("Use GrenadeType instead.", true)]
-        public bool IsFrag
-        {
-            get => GrenadeType == GrenadeType.FragGrenade;
-        }
-
-        /// <summary>
         /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
         public GrenadeType GrenadeType { get; }

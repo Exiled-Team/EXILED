@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
 
     using InventorySystem.Items.MicroHID;
@@ -27,11 +29,10 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MicroHid"/> class.
+        /// Initializes a new instance of the <see cref="MicroHid"/> class, as well as a new Micro HID item.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        public MicroHid(ItemType type)
-            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(type, false))
+        internal MicroHid()
+            : this((MicroHIDItem)Server.Host.Inventory.CreateItemInstance(ItemType.MicroHID, false))
         {
         }
 

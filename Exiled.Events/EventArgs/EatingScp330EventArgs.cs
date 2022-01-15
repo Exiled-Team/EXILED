@@ -4,8 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-// TODO: Re-implement
-/*
+
 namespace Exiled.Events.EventArgs
 {
     using System;
@@ -15,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Items.Usables.Scp330;
 
     /// <summary>
-    /// Contains all informations before a player eats Scp330.
+    /// Contains all informations before a player eats SCP-330.
     /// </summary>
     public class EatingScp330EventArgs : EventArgs
     {
@@ -33,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's eating Scp330.
+        /// Gets the player who's eating SCP-330.
         /// </summary>
         public Player Player { get; }
 
@@ -43,8 +42,8 @@ namespace Exiled.Events.EventArgs
         public ICandy Candy { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the player can eat Scp330.
+        /// Gets or sets a value indicating whether or not the player can eat SCP-330.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
-}*/
+}

@@ -33,12 +33,12 @@ namespace Exiled.API.Enums
         LczStraight,
 
         /// <summary>
-        /// Lower Containment SCP 012 Room.
+        /// Lower Containment SCP-012 Room.
         /// </summary>
         Lcz012,
 
         /// <summary>
-        /// Lower Containment SCP 914 Room.
+        /// Lower Containment SCP-914 Room.
         /// </summary>
         Lcz914,
 
@@ -73,12 +73,12 @@ namespace Exiled.API.Enums
         LczAirlock,
 
         /// <summary>
-        /// Lower Containment SCP 173 Room.
+        /// Lower Containment SCP-173 Room.
         /// </summary>
         Lcz173,
 
         /// <summary>
-        /// Lower Containment Class D Spawn Room.
+        /// Lower Containment Class-D Spawn Room.
         /// </summary>
         LczClassDSpawn,
 
@@ -98,7 +98,7 @@ namespace Exiled.API.Enums
         LczChkpA,
 
         /// <summary>
-        /// Heavy Containment SCP 079 Room.
+        /// Heavy Containment SCP-079 Room.
         /// </summary>
         Hcz079,
 
@@ -113,7 +113,7 @@ namespace Exiled.API.Enums
         HczArmory,
 
         /// <summary>
-        /// Heavy Containment SCP 939 Room.
+        /// Heavy Containment SCP-939 Room.
         /// </summary>
         Hcz939,
 
@@ -123,7 +123,7 @@ namespace Exiled.API.Enums
         HczHid,
 
         /// <summary>
-        /// Heavy Containment SCP 049 Room.
+        /// Heavy Containment SCP-049 Room.
         /// </summary>
         Hcz049,
 
@@ -138,7 +138,7 @@ namespace Exiled.API.Enums
         HczCrossing,
 
         /// <summary>
-        /// Heavy Containment SCP 106 Room.
+        /// Heavy Containment SCP-106 Room.
         /// </summary>
         Hcz106,
 
@@ -173,7 +173,7 @@ namespace Exiled.API.Enums
         HczCurve,
 
         /// <summary>
-        /// Heavy Containment SCP 096 Room.
+        /// Heavy Containment SCP-096 Room.
         /// </summary>
         Hcz096,
 
@@ -266,5 +266,10 @@ namespace Exiled.API.Enums
         /// Entrance T-Shaped Room.
         /// </summary>
         EzTCross,
+
+        /// <summary>
+        /// Lower Containment SCP-330 Room.
+        /// </summary>
+        Lcz330,
     }
 }

@@ -7,16 +7,21 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System;
     using System.Collections.Generic;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
     using HarmonyLib;
 
+    using NorthwoodLib.Pools;
+
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="TeslaGateController.FixedUpdate"/>.
@@ -25,58 +30,71 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(TeslaGateController), nameof(TeslaGateController.FixedUpdate))]
     internal static class TriggeringTesla
     {
-        private static bool Prefix(TeslaGateController __instance)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 2;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldc_I4_1) + offset;
+
+            LocalBuilder referenceHub = generator.DeclareLocal(typeof(ReferenceHub));
+            LocalBuilder ev = generator.DeclareLocal(typeof(TriggeringTeslaEventArgs));
+
+            Label cdc = generator.DefineLabel();
+
+            newInstructions[index].labels.Add(cdc);
+
+            newInstructions.InsertRange(index, new[]
             {
-                foreach (TeslaGate teslaGate in __instance.TeslaGates)
-                {
-                    if (!teslaGate.isActiveAndEnabled || teslaGate.InProgress)
-                        continue;
+                // referenceHub = allKey.Value
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldloca_S, 6),
+                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(KeyValuePair<GameObject, ReferenceHub>), nameof(KeyValuePair<GameObject, ReferenceHub>.Value))),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, referenceHub.LocalIndex),
 
-                    // TODO: Re-implement
-                    /*
-                    if (teslaGate.NetworkInactiveTime > 0f)
-                    {
-                        teslaGate.NetworkInactiveTime = Mathf.Max(0f, teslaGate.InactiveTime - Time.fixedDeltaTime);
-                        continue;
-                    }*/
+                // if (!teslaGate.PlayerInIdleRange(referenceHub))
+                //    return;
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInIdleRange))),
+                new CodeInstruction(OpCodes.Brfalse_S, cdc),
 
-                    bool inIdleRange = false;
-                    bool isTriggerable = false;
-                    foreach (KeyValuePair<GameObject, ReferenceHub> allHub in ReferenceHub.GetAllHubs())
-                    {
-                        if (allHub.Value.isDedicatedServer || allHub.Value.characterClassManager.CurClass == RoleType.Spectator)
-                            continue;
+                // Player::Get(referenceHub)
+                new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
 
-                        if (!inIdleRange)
-                            inIdleRange = teslaGate.PlayerInIdleRange(allHub.Value);
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                        if (teslaGate.PlayerInRange(allHub.Value))
-                        {
-                            TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(API.Features.Player.Get(allHub.Key), teslaGate.PlayerInHurtRange(allHub.Key));
-                            Player.OnTriggeringTesla(ev);
+                // teslaGate
+                new CodeInstruction(OpCodes.Ldloc_2),
 
-                            if (ev.IsTriggerable && !isTriggerable)
-                                isTriggerable = ev.IsTriggerable;
-                        }
-                    }
+                // teslaGate::PlayerInIdleRange(referenceHub)
+                new CodeInstruction(OpCodes.Ldloc_3),
 
-                    if (isTriggerable)
-                        teslaGate.ServerSideCode();
+                // referenceHub::characterClassManager::CurClass != RoleType::Spectator && teslaGate::PlayerInRange(referenceHub) && !teslaGate::InProgress
+                new CodeInstruction(OpCodes.Ldloc_S, 4),
 
-                    if (inIdleRange != teslaGate.isIdling)
-                        teslaGate.ServerSideIdle(inIdleRange);
-                }
+                // var ev = new TriggeringTeslaEventArgs(player, teslaGate, bool, bool)
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(TriggeringTeslaEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
 
-                return false;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.TriggeringTesla: {e}\n{e.StackTrace}");
+                // Handlers.Player.OnTriggeringTesla(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.OnTriggeringTesla))),
 
-                return true;
-            }
+                // shouldIdle = ev.IsInIdleRange;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsInIdleRange))),
+                new CodeInstruction(OpCodes.Stloc_3),
+
+                // flag = ev.IsTriggerable;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(TriggeringTeslaEventArgs), nameof(TriggeringTeslaEventArgs.IsTriggerable))),
+                new CodeInstruction(OpCodes.Stloc_S, 4),
+            });
+
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
+
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

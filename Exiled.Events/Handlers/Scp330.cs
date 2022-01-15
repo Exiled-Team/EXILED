@@ -4,8 +4,7 @@
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
-// TODO: Re-implement
-/*
+
 namespace Exiled.Events.Handlers
 {
     using Exiled.Events.EventArgs;
@@ -19,25 +18,25 @@ namespace Exiled.Events.Handlers
     public static class Scp330
     {
         /// <summary>
-        /// Invoked before a player eats Scp330.
+        /// Invoked before a player eats a candy from SCP-330.
         /// </summary>
         public static event CustomEventHandler<EatingScp330EventArgs> EatingScp330;
 
         /// <summary>
-        /// Invoked after the player has eaten Scp330.
+        /// Invoked after the player has eaten a candy from SCP-330.
         /// </summary>
         public static event CustomEventHandler<EatenScp330EventArgs> EatenScp330;
 
         /// <summary>
-        /// Called before a player eats Scp330.
+        /// Called before a player eats a candy from SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="EatingScp330EventArgs"/> instance.</param>
         public static void OnEatingScp330(EatingScp330EventArgs ev) => EatingScp330.InvokeSafely(ev);
 
         /// <summary>
-        /// Called after the player has eaten Scp330.
+        /// Called after the player has eaten a candy from SCP-330.
         /// </summary>
         /// <param name="ev">The <see cref="EatenScp330EventArgs"/> instance.</param>
         public static void OnEatenScp330(EatenScp330EventArgs ev) => EatenScp330.InvokeSafely(ev);
     }
-}*/
+}

@@ -105,6 +105,11 @@ namespace Exiled.API.Features
         public bool IsBreakable => Base is IDamageableDoor dDoor && !dDoor.IsDestroyed;
 
         /// <summary>
+        /// Gets a value indicating whether or not this door is broken.
+        /// </summary>
+        public bool IsBroken => Base is IDamageableDoor dDoor && dDoor.IsDestroyed;
+
+        /// <summary>
         /// Gets the door's Instance ID.
         /// </summary>
         public int InstanceId => Base.GetInstanceID();
@@ -124,7 +129,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the max health of the door, if it is breakable.
+        /// Gets or sets the max health of the door. No effect if the door cannot be broken.
         /// </summary>
         public float MaxHealth
         {
@@ -137,7 +142,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the door's remaining health, if it is breakable.
+        /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
         /// </summary>
         public float Health
         {
@@ -202,9 +207,9 @@ namespace Exiled.API.Features
             : new Door(doorVariant);
 
         /// <summary>
-        /// Breaks the specified door, if it is not already broken.
+        /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
-        /// <returns>True if the door was broken, false if it was unable to be broken, or was already broken before.</returns>
+        /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
         public bool BreakDoor()
         {
             if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
@@ -217,17 +222,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Damages the door, if it's breakable.
+        /// Damages the door. No effect if the door cannot be broken.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The damage type to use.</param>
-        /// <returns>True if the door was damaged.</returns>
+        /// <returns><see langword="true"/> if the door was damaged.</returns>
         public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
 
         /// <summary>
-        /// Tries to pry the door open.
+        /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
-        /// <returns>True if the door was able to be pried open.</returns>
+        /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
         public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
 
         /// <summary>
@@ -272,9 +277,27 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Unlocks the door.
+        /// Unlocks and clears all active locks on the door.
         /// </summary>
         public void Unlock() => ChangeLock(DoorLockType.None);
+
+        /// <summary>
+        /// Unlocks and clears all active locks on the door after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Lock(float time, DoorLockType flagsToUnlock)
+        {
+            ChangeLock(flagsToUnlock);
+            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+        }
 
         /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
@@ -341,8 +364,6 @@ namespace Exiled.API.Features
                     return DoorType.NukeArmory;
                 case "LCZ_ARMORY":
                     return DoorType.LczArmory;
-                case "012":
-                    return DoorType.Scp012;
                 case "SURFACE_NUKE":
                     return DoorType.NukeSurface;
                 case "HID":
@@ -363,8 +384,6 @@ namespace Exiled.API.Features
                     return DoorType.GateB;
                 case "079_SECOND":
                     return DoorType.Scp079Second;
-                case "012_LOCKER":
-                    return DoorType.Scp012Locker;
                 case "SERVERS_BOTTOM":
                     return DoorType.ServersBottom;
                 case "173_CONNECTOR":
@@ -373,8 +392,6 @@ namespace Exiled.API.Features
                     return DoorType.LczWc;
                 case "HID_RIGHT":
                     return DoorType.HIDRight;
-                case "012_BOTTOM":
-                    return DoorType.Scp012Bottom;
                 case "HID_LEFT":
                     return DoorType.HIDLeft;
                 case "173_ARMORY":
@@ -385,6 +402,10 @@ namespace Exiled.API.Features
                     return DoorType.GR18;
                 case "SURFACE_GATE":
                     return DoorType.SurfaceGate;
+                case "330":
+                    return DoorType.Scp330;
+                case "330_CHAMBER":
+                    return DoorType.Scp330Chamber;
 
                 // Doors spawned by the DoorSpawnPoint component
                 case "LCZ_CAFE":

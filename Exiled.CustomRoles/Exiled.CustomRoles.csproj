@@ -35,6 +35,7 @@
     <Reference Include="UnityEngine.AnimationModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.AnimationModule.dll" Private="false" />
     <Reference Include="UnityEngine.CoreModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.CoreModule.dll" Private="false" />
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
+    <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(OS)' == 'Unix'">

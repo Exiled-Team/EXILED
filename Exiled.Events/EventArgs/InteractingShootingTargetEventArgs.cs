@@ -56,7 +56,7 @@ namespace Exiled.Events.EventArgs
         public ShootingTargetButton TargetButton { get; }
 
         /// <summary>
-        /// Gets or sets the new max hp of the target.
+        /// Gets or sets the new max HP of the target.
         /// </summary>
         public int NewMaxHp
         {

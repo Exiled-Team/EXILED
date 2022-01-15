@@ -73,9 +73,11 @@ namespace Exiled.CustomRoles.Commands
                 }
             }
 
+            response = "Could not find an ability that was able to be used.";
+
             foreach (CustomRole customRole in roles)
             {
-                if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out _))
+                if (customRole.CustomAbilities.Count < abilityNumber + 1 || !(customRole.CustomAbilities[abilityNumber] is ActiveAbility activeAbility) || !activeAbility.CanUseAbility(player, out response))
                     continue;
 
                 activeAbility.UseAbility(player);
@@ -83,7 +85,6 @@ namespace Exiled.CustomRoles.Commands
                 return true;
             }
 
-            response = "Could not find an ability that was able to be used.";
             return false;
         }
     }
