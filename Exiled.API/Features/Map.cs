@@ -16,6 +16,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Toys;
 
     using Interactables.Interobjects.DoorUtils;
 
