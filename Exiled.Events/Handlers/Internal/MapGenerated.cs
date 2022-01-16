@@ -88,7 +88,11 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateLifts() => Map.LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
 
-        private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
+        private static void GenerateTeslaGates()
+        {
+            foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
+                Map.TeslasValue.Add(new TeslaGate(teslaGate));
+        }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
