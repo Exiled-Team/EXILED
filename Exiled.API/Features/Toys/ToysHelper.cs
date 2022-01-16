@@ -14,7 +14,7 @@ namespace Exiled.API.Features.Toys
     /// <summary>
     /// A helper class for interacting with toys.
     /// </summary>
-    public class ToysHelper
+    public static class ToysHelper
     {
         private static PrimitiveObjectToy primitiveBaseObject;
         private static LightSourceToy lightBaseObject;
@@ -23,7 +23,7 @@ namespace Exiled.API.Features.Toys
         private static ShootingTarget binaryShootingTargetObject;
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.PrimitiveObjectToy"/> to instantiate when creating a new primitive.
+        /// Gets the base <see cref="PrimitiveObjectToy"/> to instantiate when creating a new primitive.
         /// </summary>
         public static PrimitiveObjectToy PrimitiveBaseObject
         {
@@ -31,11 +31,12 @@ namespace Exiled.API.Features.Toys
             {
                 if (primitiveBaseObject == null)
                 {
-                    foreach (var gameObject in NetworkClient.prefabs.Values)
+                    foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.TryGetComponent<PrimitiveObjectToy>(out var component))
+                        if (gameObject.TryGetComponent(out PrimitiveObjectToy component))
                         {
                             primitiveBaseObject = component;
+                            break;
                         }
                     }
                 }
@@ -45,7 +46,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.LightSourceToy"/> to instantiate when creating a new light.
+        /// Gets the base <see cref="LightSourceToy"/> to instantiate when creating a new light.
         /// </summary>
         public static LightSourceToy LightBaseObject
         {
@@ -53,11 +54,12 @@ namespace Exiled.API.Features.Toys
             {
                 if (lightBaseObject == null)
                 {
-                    foreach (var gameObject in NetworkClient.prefabs.Values)
+                    foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.TryGetComponent<LightSourceToy>(out var component))
+                        if (gameObject.TryGetComponent(out LightSourceToy component))
                         {
                             lightBaseObject = component;
+                            break;
                         }
                     }
                 }
@@ -67,7 +69,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new sport shooting target.
+        /// Gets the base <see cref="ShootingTarget"/> to instantiate when creating a new sport shooting target.
         /// </summary>
         public static ShootingTarget SportShootingTargetObject
         {
@@ -77,9 +79,10 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "sportTargetPrefab")
+                        if (gameObject.name == "sportTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
-                            sportShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                            sportShootingTargetObject = shootingTarget;
+                            break;
                         }
                     }
                 }
@@ -89,7 +92,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new dboy shooting target.
+        /// Gets the base <see cref="ShootingTarget"/> to instantiate when creating a new dboy shooting target.
         /// </summary>
         public static ShootingTarget DboyShootingTargetObject
         {
@@ -99,9 +102,10 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "dboyTargetPrefab")
+                        if (gameObject.name == "dboyTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
-                            dboyShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                            dboyShootingTargetObject = shootingTarget;
+                            break;
                         }
                     }
                 }
@@ -111,7 +115,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.ShootingTarget"/> to instantiate when creating a new binary shooting target.
+        /// Gets the base <see cref="ShootingTarget"/> to instantiate when creating a new binary shooting target.
         /// </summary>
         public static ShootingTarget BinaryShootingTargetObject
         {
@@ -121,9 +125,10 @@ namespace Exiled.API.Features.Toys
                 {
                     foreach (GameObject gameObject in NetworkClient.prefabs.Values)
                     {
-                        if (gameObject.name == "binaryTargetPrefab")
+                        if (gameObject.name == "binaryTargetPrefab" && gameObject.TryGetComponent(out ShootingTarget shootingTarget))
                         {
-                            binaryShootingTargetObject = gameObject.GetComponent<ShootingTarget>();
+                            binaryShootingTargetObject = shootingTarget;
+                            break;
                         }
                     }
                 }

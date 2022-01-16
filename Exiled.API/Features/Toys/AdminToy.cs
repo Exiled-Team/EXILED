@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AdminToy.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Toys
 {
+    using System.Linq;
+
     using AdminToys;
     using Exiled.API.Enums;
     using Mirror;
@@ -22,10 +24,12 @@ namespace Exiled.API.Features.Toys
         /// </summary>
         /// <param name="toyAdminToyBase">The <see cref="AdminToys.AdminToyBase"/> to be wrapped.</param>
         /// <param name="type">The <see cref="AdminToyType"/> of the object.</param>
-        public AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
+        internal AdminToy(AdminToyBase toyAdminToyBase, AdminToyType type)
         {
             AdminToyBase = toyAdminToyBase;
             ToyType = type;
+
+            Map.ToysValue.Add(this);
         }
 
         /// <summary>
@@ -79,21 +83,29 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
+        /// Gets the <see cref="AdminToy"/> belonging to the <see cref="AdminToys.AdminToyBase"/>.
+        /// </summary>
+        /// <param name="adminToyBase">The <see cref="AdminToys.AdminToyBase"/> instance.</param>
+        /// <returns>The corresponding <see cref="AdminToy"/> instance.</returns>
+        public static AdminToy Get(AdminToyBase adminToyBase) => Map.Toys.FirstOrDefault(x => x.AdminToyBase == adminToyBase);
+
+        /// <summary>
         /// Spawns the toy into the game. Use <see cref="UnSpawn"/> to remove it.
         /// </summary>
-        public void Spawn()
-        {
-            NetworkServer.Spawn(AdminToyBase.gameObject);
-            Map.ToysValue.Add(this);
-        }
+        public void Spawn() => NetworkServer.Spawn(AdminToyBase.gameObject);
 
         /// <summary>
         /// Removes the toy from the game. Use <see cref="Spawn"/> to bring it back.
         /// </summary>
-        public void UnSpawn()
+        public void UnSpawn() => NetworkServer.UnSpawn(AdminToyBase.gameObject);
+
+        /// <summary>
+        /// Destroys the toy.
+        /// </summary>
+        public void Destroy()
         {
-            NetworkServer.UnSpawn(AdminToyBase.gameObject);
             Map.ToysValue.Remove(this);
+            NetworkServer.Destroy(AdminToyBase.gameObject);
         }
     }
 }

@@ -7,12 +7,16 @@
 
 namespace Exiled.API.Features.Toys
 {
+    using System.Linq;
+
     using AdminToys;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
-    /// A wrapper class for <see cref="AdminToys.LightSourceToy"/>.
+    /// A wrapper class for <see cref="LightSourceToy"/>.
     /// </summary>
     public class Light : AdminToy
     {
@@ -20,11 +24,11 @@ namespace Exiled.API.Features.Toys
         /// Initializes a new instance of the <see cref="Light"/> class.
         /// </summary>
         /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> of the toy.</param>
-        public Light(LightSourceToy lightSourceToy)
+        internal Light(LightSourceToy lightSourceToy)
             : base(lightSourceToy, AdminToyType.LightSource) => Base = lightSourceToy;
 
         /// <summary>
-        /// Gets the base <see cref="AdminToys.LightSourceToy"/>.
+        /// Gets the base <see cref="LightSourceToy"/>.
         /// </summary>
         public LightSourceToy Base { get; }
 
@@ -67,7 +71,34 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Creates a new <see cref="Light"/>.
         /// </summary>
-        /// <returns>The new light.</returns>
-        public static Light Create() => new Light(Object.Instantiate(ToysHelper.LightBaseObject));
+        /// <param name="position">The position of the <see cref="Light"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Light"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Light"/>.</param>
+        /// <param name="spawn">Whether the <see cref="Light"/> should be initially spawned.</param>
+        /// <returns>The new <see cref="Light"/>.</returns>
+        public static Light Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
+        {
+            Light light = new Light(Object.Instantiate(ToysHelper.LightBaseObject));
+
+            light.AdminToyBase.transform.position = position ?? Vector3.zero;
+            light.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            light.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                light.Spawn();
+
+            return light;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Light"/> belonging to the <see cref="LightSourceToy"/>.
+        /// </summary>
+        /// <param name="lightSourceToy">The <see cref="LightSourceToy"/> instance.</param>
+        /// <returns>The corresponding <see cref="LightSourceToy"/> instance.</returns>
+        public static Light Get(LightSourceToy lightSourceToy)
+        {
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == lightSourceToy);
+            return adminToy != null ? adminToy as Light : new Light(lightSourceToy);
+        }
     }
 }
