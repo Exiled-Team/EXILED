@@ -75,11 +75,15 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
 
-                // teslaGate
-                new CodeInstruction(OpCodes.Ldloc_2),
+                // internalTeslaGate
+                new CodeInstruction(OpCodes.Ldloc_S, internalTeslaGate.LocalIndex),
 
-                // teslaGate::PlayerInIdleRange(referenceHub)
-                new CodeInstruction(OpCodes.Ldloc_3),
+                // teslaGate::PlayerInHurtRange(referenceHub)
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.TeslaGate), nameof(API.Features.TeslaGate.Base))),
+                new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, Property(typeof(ReferenceHub), nameof(ReferenceHub.gameObject))),
+                new CodeInstruction(OpCodes.Callvirt, Method(typeof(TeslaGate), nameof(TeslaGate.PlayerInHurtRange))),
 
                 // referenceHub::characterClassManager::CurClass != RoleType::Spectator && teslaGate::PlayerInRange(referenceHub) && !teslaGate::InProgress
                 new CodeInstruction(OpCodes.Ldloc_S, 4),

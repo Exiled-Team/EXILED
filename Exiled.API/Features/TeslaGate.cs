@@ -145,10 +145,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tesla gate is using instant bursts.
+        /// Gets or sets a value indicating whether the tesla gate's next burst should be treated as instant burst.
         /// <para>The instant burst ignores the standard cooldown time, reducing it to the cooldown time used for bursts triggered by SCP-079.</para>
         /// </summary>
-        public bool IsUsingInstantBursts
+        public bool UseInstantBurst
         {
             get => Base.next079burst;
             set => Base.next079burst = value;
