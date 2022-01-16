@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Searching;
 
     /// <summary>
-    /// Contains all information before an player search an pickup.
+    /// Contains all information before a player search a pickup.
     /// </summary>
     public class SearchingPickupEventArgs : EventArgs
     {
@@ -40,7 +40,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the Player who's getting the Pickup.
+        /// Gets the Player who's searching the Pickup.
         /// </summary>
         public Player Player { get; }
 

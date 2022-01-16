@@ -909,7 +909,7 @@ namespace Exiled.Events.Handlers
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with an Pickup.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with a Pickup.
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
