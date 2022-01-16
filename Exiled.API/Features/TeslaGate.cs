@@ -23,7 +23,7 @@ namespace Exiled.API.Features
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
-        public TeslaGate(BaseTeslaGate baseTeslaGate) => Base = baseTeslaGate;
+        internal TeslaGate(BaseTeslaGate baseTeslaGate) => Base = baseTeslaGate;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
