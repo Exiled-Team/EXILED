@@ -21,8 +21,6 @@ namespace Exiled.Events.Handlers.Internal
 
     using MEC;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
     using Object = UnityEngine.Object;

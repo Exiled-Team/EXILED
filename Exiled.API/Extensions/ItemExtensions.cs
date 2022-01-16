@@ -5,10 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using System;
-
-using Exiled.API.Features;
-
 namespace Exiled.API.Extensions
 {
     using System.Collections.Generic;
@@ -193,19 +189,23 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this ItemType type, uint code)
         {
-            Log.Debug($"Getting identifiers at {DateTime.Now.Millisecond}");
             if ((uint)type.GetBaseCode() > code)
             {
                 throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
             }
 
-            AttachmentIdentifier[] attachmentIdentifiers = Firearm.AvailableAttachments[type];
+            IEnumerable<AttachmentIdentifier> attachmentIdentifiers = Firearm.AvailableAttachments[type];
+            IEnumerable<uint> sources = attachmentIdentifiers.Select(attId => attId.Code);
+
             code -= (uint)type.GetBaseCode();
-            IEnumerable<AttachmentIdentifier> identifiers = (GetCombinations(attachmentIdentifiers.Select(identifier =>
-                identifier.Code)).FirstOrDefault(items => items.Sum() == code) ?? Array.Empty<uint>()).Select(target =>
-                attachmentIdentifiers.FirstOrDefault(attId => attId.Code == target));
-            Log.Debug($"Found identifiers at {DateTime.Now}.{DateTime.Now.Millisecond}");
-            return identifiers;
+            for (int i = 0; i < sources.Count(); i++)
+            {
+                if (code < sources.ElementAt(i))
+                    continue;
+
+                yield return attachmentIdentifiers.ElementAt(i);
+                code -= sources.ElementAt(i);
+            }
         }
 
         /// <summary>
@@ -255,27 +255,5 @@ namespace Exiled.API.Extensions
         /// <param name="type">The <see cref="ItemType"/> to check.</param>
         /// <returns>The corresponding <see cref="BaseCode"/>.</returns>
         public static BaseCode GetBaseCode(this ItemType type) => !type.IsWeapon() ? 0 : Firearm.FirearmPairs[type];
-
-        // This is an extension for IEnumerable to sum uint values.
-        // Credit: "TheGeneral" on StackOverflow
-        private static uint Sum(this IEnumerable<uint> source)
-        {
-            uint sum = 0;
-            checked
-            {
-                return source.Aggregate(sum, (current, v) => current + v);
-            }
-        }
-
-        // This determines what attachment codes can be added together
-        // to give us the combined code we have, so that we can determine
-        // which attachments are present for any given value.
-        // Credits: "TheGeneral" on StackOverflow
-        // https://stackoverflow.com/questions/69762657/how-to-find-a-given-number-by-adding-up-numbers-from-list-of-numbers-and-return
-        private static IEnumerable<IEnumerable<T>> GetCombinations<T>(IEnumerable<T> source)
-        {
-            for (int i = 0; i < 1 << source.Count(); i++)
-                yield return source.Where((t, j) => (i & (1 << j)) != 0);
-        }
     }
 }

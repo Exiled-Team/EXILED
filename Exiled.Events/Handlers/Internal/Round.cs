@@ -14,7 +14,6 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader.Features;
 
     using InventorySystem;
-    using InventorySystem.Items.ThrowableProjectiles;
 
     using Item = Exiled.API.Features.Items.Item;
 

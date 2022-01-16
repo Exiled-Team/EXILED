@@ -41,7 +41,6 @@ namespace Exiled.API.Features
     using NorthwoodLib.Pools;
 
     using PlayableScps;
-    using PlayableScps.ScriptableObjects;
 
     using PlayerStatsSystem;
 

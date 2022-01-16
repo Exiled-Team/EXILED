@@ -29,7 +29,6 @@ namespace Exiled.Events.Patches.Generic
 
     using static HarmonyLib.AccessTools;
 
-    using Events = Exiled.Events.Events;
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>

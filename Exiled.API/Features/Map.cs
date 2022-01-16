@@ -27,8 +27,6 @@ namespace Exiled.API.Features
 
     using Mirror;
 
-    using NorthwoodLib.Pools;
-
     using PlayableScps.ScriptableObjects;
 
     using UnityEngine;

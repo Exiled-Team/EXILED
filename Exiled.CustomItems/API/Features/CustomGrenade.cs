@@ -9,7 +9,6 @@ namespace Exiled.CustomItems.API.Features
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -106,7 +105,7 @@ namespace Exiled.CustomItems.API.Features
             NetworkServer.Spawn(thrownProjectile.gameObject);
             thrownProjectile.InfoReceived(default, newInfo);
             if (thrownProjectile.TryGetComponent(out Rigidbody component))
-                //throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, force, throwable.Base.FullThrowSettings.UpwardsFactor);
+                throwable.Base.PropelBody(component, throwable.Base.FullThrowSettings.StartTorque, force, throwable.Base.FullThrowSettings.UpwardsFactor);
             thrownProjectile.ServerActivate();
             Tracked.Add(thrownProjectile);
 
