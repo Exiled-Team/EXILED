@@ -79,7 +79,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Spawns the light into the game. Use <see cref="UnSpawn"/> to remove it.
+        /// Spawns the toy into the game. Use <see cref="UnSpawn"/> to remove it.
         /// </summary>
         public void Spawn()
         {
@@ -88,7 +88,7 @@ namespace Exiled.API.Features.Toys
         }
 
         /// <summary>
-        /// Removes the light from the game. Use <see cref="Spawn"/> to bring it back.
+        /// Removes the toy from the game. Use <see cref="Spawn"/> to bring it back.
         /// </summary>
         public void UnSpawn()
         {
