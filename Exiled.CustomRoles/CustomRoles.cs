@@ -25,7 +25,6 @@ namespace Exiled.CustomRoles
     /// </summary>
     public class CustomRoles : Plugin<Config>
     {
-
         private PlayerHandlers playerHandlers;
 
         /// <summary>
