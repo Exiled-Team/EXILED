@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // internalTeslaGate
                 new CodeInstruction(OpCodes.Ldloc_S, internalTeslaGate.LocalIndex),
 
-                // teslaGate::PlayerInHurtRange(referenceHub)
+                // internalTeslaGate::PlayerInHurtRange(referenceHub)
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.TeslaGate), nameof(API.Features.TeslaGate.Base))),
                 new CodeInstruction(OpCodes.Ldloc_S, referenceHub.LocalIndex),
