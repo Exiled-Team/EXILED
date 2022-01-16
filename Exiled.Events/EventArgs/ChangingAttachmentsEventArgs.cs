@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using InventorySystem.Items.Firearms.Attachments;
+
 namespace Exiled.Events.EventArgs
 {
     using System.Collections.Generic;
@@ -37,8 +39,8 @@ namespace Exiled.Events.EventArgs
             Firearm = firearm;
             CurrentAttachmentIdentifiers = firearm.AttachmentIdentifiers;
             NewAttachmentIdentifiers = firearm.Type.GetAttachmentIdentifiers(code).ToList();
-            CurrentCode = CurrentAttachmentIdentifiers.GetAttachmentsCode() - (uint)firearm.BaseCode;
-            NewCode = NewAttachmentIdentifiers.GetAttachmentsCode();
+            CurrentCode = firearm.Base.GetCurrentAttachmentsCode();
+            NewCode = code;
             IsAllowed = isAllowed;
         }
 
