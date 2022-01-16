@@ -10,12 +10,14 @@ namespace Exiled.CustomRoles.API.Features
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     using Dissonance.Integrations.MirrorIgnorance;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
     using Exiled.CustomItems;
@@ -69,6 +71,11 @@ namespace Exiled.CustomRoles.API.Features
         public abstract string Description { get; set; }
 
         /// <summary>
+        /// Gets or sets the CustomInfo of this role.
+        /// </summary>
+        public abstract string CustomInfo { get; set; }
+
+        /// <summary>
         /// Gets all of the players currently set to this role.
         /// </summary>
         [YamlIgnore]
@@ -82,27 +89,32 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets or sets the starting inventory for the role.
         /// </summary>
-        protected virtual List<string> Inventory { get; set; } = new List<string>();
+        public virtual List<string> Inventory { get; set; } = new List<string>();
 
         /// <summary>
         /// Gets or sets the possible spawn locations for this role.
         /// </summary>
-        protected virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
+        public virtual SpawnProperties SpawnProperties { get; set; } = new SpawnProperties();
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep their current inventory when gaining this role.
         /// </summary>
-        protected virtual bool KeepInventoryOnSpawn { get; set; }
+        public virtual bool KeepInventoryOnSpawn { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether players die when this role is removed.
         /// </summary>
-        protected virtual bool RemovalKillsPlayer { get; set; } = true;
+        public virtual bool RemovalKillsPlayer { get; set; } = true;
 
         /// <summary>
         /// Gets or sets a value indicating whether players keep this role when they die.
         /// </summary>
-        protected virtual bool KeepRoleOnDeath { get; set; }
+        public virtual bool KeepRoleOnDeath { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating the <see cref="Player"/>'s size.
+        /// </summary>
+        public virtual Vector3 Scale { get; set; } = Vector3.one;
 
         /// <summary>
         /// Gets a <see cref="CustomRole"/> by ID.
@@ -136,6 +148,48 @@ namespace Exiled.CustomRoles.API.Features
             customRole = Get(id);
 
             return customRole != null;
+        }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles()
+        {
+            List<CustomRole> registeredRoles = new List<CustomRole>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializableAttribute), true))
+                {
+                    CustomRole customRole = (CustomRole)Activator.CreateInstance(type);
+                    customRole.Role = ((ExiledSerializableAttribute)attribute).RoleType;
+                    customRole.TryRegister();
+                    registeredRoles.Add(customRole);
+                }
+            }
+
+            return registeredRoles;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles()
+        {
+            List<CustomRole> unregisteredRoles = new List<CustomRole>();
+
+            foreach (CustomRole customRole in Registered)
+            {
+                customRole.TryUnregister();
+                unregisteredRoles.Add(customRole);
+            }
+
+            return unregisteredRoles;
         }
 
         /// <summary>
@@ -184,52 +238,6 @@ namespace Exiled.CustomRoles.API.Features
         public virtual bool Check(Player player) => TrackedPlayers.Contains(player);
 
         /// <summary>
-        /// Tries to register this role.
-        /// </summary>
-        /// <returns>True if the role registered properly.</returns>
-        public bool TryRegister()
-        {
-            if (!Registered.Contains(this))
-            {
-                if (Registered.Any(r => r.Id == Id))
-                {
-                    Log.Warn($"{Name} has tried to register with the same Role ID as another role: {Id}. It will not be registered!");
-
-                    return false;
-                }
-
-                Registered.Add(this);
-                Init();
-
-                Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
-
-                return true;
-            }
-
-            Log.Warn($"Couldn't register {Name} ({Id}) [{Role}] as it already exists.");
-
-            return false;
-        }
-
-        /// <summary>
-        /// Tries to unregister this role.
-        /// </summary>
-        /// <returns>True if the role is unregistered properly.</returns>
-        public bool TryUnregister()
-        {
-            Destroy();
-
-            if (!Registered.Remove(this))
-            {
-                Log.Warn($"Cannot unregister {Name} ({Id}) [{Role}], it hasn't been registered yet.");
-
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Initializes this role manager.
         /// </summary>
         public virtual void Init() => SubscribeEvents();
@@ -237,7 +245,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Destroys this role manager.
         /// </summary>
-        public virtual void Destroy() => UnSubscribeEvents();
+        public virtual void Destroy() => UnsubscribeEvents();
 
         /// <summary>
         /// Handles setup of the role, including spawn location, inventory and registering event handlers.
@@ -274,12 +282,18 @@ namespace Exiled.CustomRoles.API.Features
                 Log.Debug($"{Name}: Setting health values.", CustomRoles.Instance.Config.Debug);
                 player.Health = MaxHealth;
                 player.MaxHealth = MaxHealth;
+                player.Scale = Scale;
             });
 
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
-            player.CustomInfo = $"{Name} (Custom Role)";
-            foreach (CustomAbility ability in CustomAbilities)
-                ability.AddAbility(player);
+            player.CustomInfo = CustomInfo;
+            player.InfoArea &= ~PlayerInfoArea.Role;
+            if (CustomAbilities != null)
+            {
+                foreach (CustomAbility ability in CustomAbilities)
+                    ability.AddAbility(player);
+            }
+
             ShowMessage(player);
             RoleAdded(player);
             TrackedPlayers.Add(player);
@@ -291,7 +305,11 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove the role from.</param>
         public virtual void RemoveRole(Player player)
         {
+            Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
+            player.CustomInfo = string.Empty;
+            player.InfoArea |= ~PlayerInfoArea.Role;
+            player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.Role = RoleType.Spectator;
             foreach (CustomAbility ability in CustomAbilities)
@@ -300,6 +318,52 @@ namespace Exiled.CustomRoles.API.Features
             }
 
             RoleRemoved(player);
+        }
+
+        /// <summary>
+        /// Tries to register this role.
+        /// </summary>
+        /// <returns>True if the role registered properly.</returns>
+        internal bool TryRegister()
+        {
+            if (!Registered.Contains(this))
+            {
+                if (Registered.Any(r => r.Id == Id))
+                {
+                    Log.Warn($"{Name} has tried to register with the same Role ID as another role: {Id}. It will not be registered!");
+
+                    return false;
+                }
+
+                Registered.Add(this);
+                Init();
+
+                Log.Debug($"{Name} ({Id}) has been successfully registered.", CustomRoles.Instance.Config.Debug);
+
+                return true;
+            }
+
+            Log.Warn($"Couldn't register {Name} ({Id}) [{Role}] as it already exists.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to unregister this role.
+        /// </summary>
+        /// <returns>True if the role is unregistered properly.</returns>
+        internal bool TryUnregister()
+        {
+            Destroy();
+
+            if (!Registered.Remove(this))
+            {
+                Log.Warn($"Cannot unregister {Name} ({Id}) [{Role}], it hasn't been registered yet.");
+
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -387,7 +451,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Called when the role is destroyed to unsubscribe internal event handlers.
         /// </summary>
-        protected virtual void UnSubscribeEvents()
+        protected virtual void UnsubscribeEvents()
         {
             foreach (Player player in TrackedPlayers)
                 RemoveRole(player);

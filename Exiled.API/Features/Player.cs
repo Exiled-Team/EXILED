@@ -18,6 +18,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using Footprinting;
 
@@ -29,6 +30,7 @@ namespace Exiled.API.Features
     using InventorySystem.Items.Firearms;
     using InventorySystem.Items.Firearms.Attachments;
     using InventorySystem.Items.Firearms.BasicMessages;
+    using InventorySystem.Items.Usables.Scp330;
 
     using MEC;
 
@@ -57,6 +59,7 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
+#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -120,10 +123,7 @@ namespace Exiled.API.Features
             get => referenceHub;
             private set
             {
-                if (value == null)
-                    throw new NullReferenceException("Player's ReferenceHub cannot be null!");
-
-                referenceHub = value;
+                referenceHub = value ?? throw new NullReferenceException("Player's ReferenceHub cannot be null!");
                 GameObject = value.gameObject;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
@@ -701,7 +701,7 @@ namespace Exiled.API.Features
                 if (value > MaxArtificialHealth)
                     MaxArtificialHealth = Mathf.CeilToInt(value);
 
-                ReferenceHub.playerStats.StatModules[1].CurValue = value;
+                ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
         }
 
@@ -710,8 +710,14 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar;
-            set => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._maxSoFar = value;
+            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            set
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+
+                ActiveArtificialHealthProcesses.First().Limit = value;
+            }
         }
 
         /// <summary>
@@ -1001,6 +1007,11 @@ namespace Exiled.API.Features
         public IReadOnlyCollection<Item> Items => readOnlyItems;
 
         /// <summary>
+        /// Gets a value indicating whether the player inventory is full.
+        /// </summary>
+        public bool IsInventoryFull => Items.Count >= 8;
+
+        /// <summary>
         /// Gets or sets a value indicating whether or not the player can send inputs.
         /// </summary>
         public bool CanSendInputs
@@ -1050,6 +1061,11 @@ namespace Exiled.API.Features
                 ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
+
+        /// <summary>
+        /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all player's preferences.
+        /// </summary>
+        public Dictionary<ItemType, AttachmentIdentifier[]> Preferences => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
 
         /// <summary>
         /// Gets the player's <see cref="Footprinting.Footprint"/>.
@@ -1417,7 +1433,7 @@ namespace Exiled.API.Features
         public void SendConsoleMessage(Player target, string message, string color) => ReferenceHub.characterClassManager.TargetConsolePrint(target.Connection, message, color);
 
         /// <summary>
-        /// Disconnects a <see cref="global::ReferenceHub">player</see>.
+        /// Disconnects the player.
         /// </summary>
         /// <param name="reason">The disconnection reason.</param>
         public void Disconnect(string reason = null) => ServerConsole.Disconnect(GameObject, string.IsNullOrEmpty(reason) ? string.Empty : reason);
@@ -1430,8 +1446,29 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
+        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
+        public void Hurt(DamageHandler handler)
+        {
+            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement))
+                Cassie.Message(handler.Base.CassieDeathAnnouncement);
+
+            ReferenceHub.playerStats.DealDamage(handler.Base);
+        }
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
+        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new DamageHandler(this, damageHandlerBase));
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
+        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
+        /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Hurt(new ExiledDamageHandler(attacker, amount, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
 
         /// <summary>
         /// Hurts the player.
@@ -1439,7 +1476,7 @@ namespace Exiled.API.Features
         /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="damage">The amount of damage to deal.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
+        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>
         /// Heals the player.
@@ -1459,7 +1496,13 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, string cassieAnnouncement = "") => ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+        public void Kill(string deathReason, string cassieAnnouncement = "")
+        {
+            if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+        }
 
         /// <summary>
         /// Bans the player.
@@ -1553,19 +1596,39 @@ namespace Exiled.API.Features
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
+        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="ItemType"/>.
+        /// This method factors in the armor the player is wearing, as well as server configuration.
+        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Features.Items.Ammo.AmmoLimit"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> of the ammo to check.</param>
+        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Features.Items.Ammo.AmmoLimit"/>.</returns>
+        public int GetAmmoLimit(ItemType type) => InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type, referenceHub);
+
+        /// <summary>
+        /// Gets the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
+        /// </summary>
+        /// <param name="category">The <see cref="ItemCategory"/> to check.</param>
+        /// <returns>The maximum amount of items in the category that the player can hold.</returns>
+        public int GetCategoryLimit(ItemCategory category) => InventorySystem.Configs.InventoryLimits.GetCategoryLimit(category, referenceHub);
+
+        /// <summary>
         /// Add an item of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
-        /// <returns>The <see cref="ItemBase"/> given to the player.</returns>
-        public Item AddItem(ItemType itemType)
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>The <see cref="Item"/> given to the player.</returns>
+        public Item AddItem(ItemType itemType, IEnumerable<AttachmentIdentifier> identifiers = null)
         {
             Item item = Item.Get(Inventory.ServerAddItem(itemType));
             if (item is Firearm firearm)
             {
-                if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
-                    dict.TryGetValue(itemType, out uint code))
+                if (identifiers != null)
                 {
-                    firearm.Base.ApplyAttachmentsCode(code, true);
+                    firearm.AddAttachment(identifiers);
+                }
+                else if (Preferences.TryGetValue(itemType, out AttachmentIdentifier[] attachments))
+                {
+                    firearm.Base.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                 }
 
                 FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -1582,26 +1645,70 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="itemType">The item to be added.</param>
         /// <param name="amount">The amount of items to be added.</param>
-        public void AddItem(ItemType itemType, int amount)
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(ItemType itemType, int amount)
         {
+            List<Item> items = new List<Item>(amount > 0 ? amount : 0);
             if (amount > 0)
             {
                 for (int i = 0; i < amount; i++)
-                    AddItem(itemType);
+                    items.Add(AddItem(itemType));
             }
+
+            return items;
+        }
+
+        /// <summary>
+        /// Add the amount of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="itemType">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(ItemType itemType, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            List<Item> items = new List<Item>(amount > 0 ? amount : 0);
+            if (amount > 0)
+            {
+                IEnumerable<AttachmentIdentifier> attachmentIdentifiers = identifiers.ToList();
+                for (int i = 0; i < amount; i++)
+                {
+                    items.Add(AddItem(itemType, attachmentIdentifiers));
+                }
+            }
+
+            return items;
         }
 
         /// <summary>
         /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
         /// </summary>
         /// <param name="items">The list of items to be added.</param>
-        public void AddItem(List<ItemType> items)
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(IEnumerable<ItemType> items)
         {
-            if (items.Count > 0)
-            {
-                for (int i = 0; i < items.Count; i++)
-                    AddItem(items[i]);
-            }
+            List<ItemType> enumeratedItems = new List<ItemType>(items);
+            List<Item> returnedItems = new List<Item>(enumeratedItems.Count);
+
+            foreach (ItemType type in enumeratedItems)
+                returnedItems.Add(AddItem(type));
+
+            return returnedItems;
+        }
+
+        /// <summary>
+        /// Add the list of items of the specified type with default durability(ammo/charge) and no mods to the player's inventory.
+        /// </summary>
+        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        /// <returns>An <see cref="IEnumerable{Item}"/> containing the items given.</returns>
+        public IEnumerable<Item> AddItem(Dictionary<ItemType, IEnumerable<AttachmentIdentifier>> items)
+        {
+            List<Item> returnedItems = new List<Item>(items.Count);
+
+            foreach (KeyValuePair<ItemType, IEnumerable<AttachmentIdentifier>> item in items)
+                returnedItems.Add(AddItem(item.Key, item.Value));
+
+            return returnedItems;
         }
 
         /// <summary>
@@ -1613,9 +1720,30 @@ namespace Exiled.API.Features
             try
             {
                 if (item.Base == null)
-                {
                     item = new Item(item.Type);
-                }
+
+                AddItem(item.Base, item);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Player)}.{nameof(AddItem)}(Item): {e}");
+            }
+        }
+
+        /// <summary>
+        /// Add an item to the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        public void AddItem(Item item, IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            try
+            {
+                if (item.Base == null)
+                    item = new Item(item.Type);
+
+                if (item is Firearm firearm && identifiers != null)
+                    firearm.AddAttachment(identifiers);
 
                 AddItem(item.Base, item);
             }
@@ -1631,6 +1759,22 @@ namespace Exiled.API.Features
         /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
         /// <returns>The <see cref="Item"/> that was added.</returns>
         public Item AddItem(Pickup pickup) => Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+
+        /// <summary>
+        /// Adds an item to the player's inventory.
+        /// </summary>
+        /// <param name="pickup">The <see cref="Pickup"/> of the item to be added.</param>
+        /// <param name="identifiers">The attachments to be added to <see cref="Pickup"/> of the item.</param>
+        /// <returns>The <see cref="Item"/> that was added.</returns>
+        public Item AddItem(Pickup pickup, IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
+
+            if (item is Firearm firearm)
+                firearm.AddAttachment(identifiers);
+
+            return item;
+        }
 
         /// <summary>
         /// Add an item to the player's inventory.
@@ -1660,10 +1804,9 @@ namespace Exiled.API.Features
 
                 if (itemBase is InventorySystem.Items.Firearms.Firearm firearm)
                 {
-                    if (AttachmentsServerHandler.PlayerPreferences.TryGetValue(ReferenceHub, out Dictionary<ItemType, uint> dict) &&
-                        dict.TryGetValue(item.Type, out uint code))
+                    if (Preferences.TryGetValue(firearm.ItemTypeId, out AttachmentIdentifier[] attachments))
                     {
-                        firearm.ApplyAttachmentsCode(code, true);
+                        firearm.ApplyAttachmentsCode(attachments.GetAttachmentsCode(), true);
                     }
 
                     FirearmStatusFlags flags = FirearmStatusFlags.MagazineInserted;
@@ -1706,15 +1849,72 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Add the amount of items to the player's inventory.
+        /// </summary>
+        /// <param name="item">The item to be added.</param>
+        /// <param name="amount">The amount of items to be added.</param>
+        /// <param name="identifiers">The attachments to be added to the item.</param>
+        public void AddItem(Item item, int amount, IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            if (amount > 0)
+            {
+                for (int i = 0; i < amount; i++)
+                    AddItem(item, identifiers);
+            }
+        }
+
+        /// <summary>
         /// Add the list of items to the player's inventory.
         /// </summary>
         /// <param name="items">The list of items to be added.</param>
-        public void AddItem(List<Item> items)
+        public void AddItem(IEnumerable<Item> items)
+        {
+            if (items.Count() > 0)
+            {
+                for (int i = 0; i < items.Count(); i++)
+                    AddItem(items.ElementAt(i));
+            }
+        }
+
+        /// <summary>
+        /// Add the list of items to the player's inventory.
+        /// </summary>
+        /// <param name="items">The <see cref="Dictionary{TKey, TValue}"/> of <see cref="Item"/> and <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to be added.</param>
+        public void AddItem(Dictionary<Item, IEnumerable<AttachmentIdentifier>> items)
         {
             if (items.Count > 0)
             {
-                for (int i = 0; i < items.Count; i++)
-                    AddItem(items[i]);
+                foreach (KeyValuePair<Item, IEnumerable<AttachmentIdentifier>> item in items)
+                    AddItem(item.Key, item.Value);
+            }
+        }
+
+        /// <summary>
+        /// Gives the player a specific candy. Will give the player a bag if they do not already have one.
+        /// </summary>
+        /// <param name="candyType">The <see cref="CandyKindID"/> to give.</param>
+        /// <returns><see langword="true"/> if a candy was given.</returns>
+        public bool TryAddCandy(CandyKindID candyType)
+        {
+            bool flag = false;
+            if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
+            {
+                flag = bag.TryAddSpecific(candyType);
+                if (flag)
+                    bag.ServerRefreshBag();
+                return flag;
+            }
+            else
+            {
+                if (Items.Count > 7)
+                    return false;
+
+                Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
+                foreach (CandyKindID candy in scp330.Candies)
+                    scp330.RemoveCandy(candy);
+                scp330.AddCandy(candyType);
+
+                return true;
             }
         }
 
@@ -1722,13 +1922,13 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        public void ResetInventory(List<ItemType> newItems)
+        public void ResetInventory(IEnumerable<ItemType> newItems)
         {
             ClearInventory();
 
             Timing.CallDelayed(0.5f, () =>
             {
-                if (newItems.Count > 0)
+                if (newItems.Count() > 0)
                 {
                     foreach (ItemType item in newItems)
                         AddItem(item);
@@ -1740,11 +1940,11 @@ namespace Exiled.API.Features
         /// Resets the player's inventory to the provided list of items, clearing any items it already possess.
         /// </summary>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
-        public void ResetInventory(List<Item> newItems)
+        public void ResetInventory(IEnumerable<Item> newItems)
         {
             ClearInventory();
 
-            if (newItems.Count > 0)
+            if (newItems.Any())
             {
                 foreach (Item item in newItems)
                 {
@@ -1780,10 +1980,10 @@ namespace Exiled.API.Features
             switch (type)
             {
                 case GrenadeType.Flashbang:
-                    throwable = new FlashGrenade(ItemType.GrenadeFlash);
+                    throwable = new FlashGrenade();
                     break;
                 default:
-                    throwable = new ExplosiveGrenade(type == GrenadeType.Scp018 ? ItemType.SCP018 : ItemType.GrenadeHE);
+                    throwable = new ExplosiveGrenade(type.GetItemType());
                     break;
             }
 
@@ -1820,12 +2020,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Sends a HitMarker to the player.
         /// </summary>
-        [Obsolete("Use Player::ShowHitMarker(float) instead.", true)]
-        public void ShowHitMarker() => ShowHitMarker(1f);
-
-        /// <summary>
-        /// Sends a HitMarker to the player.
-        /// </summary>
         /// <param name="size">The size of the hitmarker (Do not exceed <see cref="Hitmarker.MaxSize"/>).</param>
         public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
@@ -1847,6 +2041,15 @@ namespace Exiled.API.Features
             result = default;
             return false;
         }
+
+        /// <summary>
+        /// Gets a <see cref="StatBase"/> module from the player's <see cref="PlayerStats"/> component.
+        /// </summary>
+        /// <typeparam name="T">The returned object type.</typeparam>
+        /// <returns>The <typeparamref name="T"/> module that was requested.</returns>
+        public T GetModule<T>()
+            where T : StatBase
+            => ReferenceHub.playerStats.GetModule<T>();
 
         /// <summary>
         /// Gets a <see cref="bool"/> describing whether the given <see cref="PlayerEffect">status effect</see> is currently enabled.
@@ -2048,6 +2251,26 @@ namespace Exiled.API.Features
         /// </summary>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
         public GameObject PlaceTantrum() => Map.PlaceTantrum(Position);
+
+        /// <summary>
+        /// Gives a new <see cref="AhpStat">to the player</see>.
+        /// </summary>
+        /// <param name="amount">The amount to give the player.</param>
+        /// <param name="limit">The maximum AHP for this stat.</param>
+        /// <param name="decay">How much value is lost per second.</param>
+        /// <param name="efficacy">Percent of incoming damage absorbed by this stat.</param>
+        /// <param name="sustain">The number of seconds to delay the start of the decay.</param>
+        /// <param name="persistant">Whether or not the process is removed when the value hits 0.</param>
+        public void AddAhp(float amount, float limit = 75f, float decay = 1.2f, float efficacy = 0.7f, float sustain = 0f, bool persistant = false)
+        {
+            ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(amount, limit, decay, efficacy, sustain, persistant);
+        }
+
+        /// <summary>
+        /// Makes noise given a specified distance intensity.
+        /// </summary>
+        /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
+        public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";

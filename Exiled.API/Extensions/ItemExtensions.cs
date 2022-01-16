@@ -12,9 +12,11 @@ namespace Exiled.API.Extensions
 
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using InventorySystem;
     using InventorySystem.Items;
+    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// A set of extensions for <see cref="ItemType"/>.
@@ -177,6 +179,109 @@ namespace Exiled.API.Extensions
             List<ItemType> itemTypes = new List<ItemType>();
             itemTypes.AddRange(items.Select(item => item.Type));
             return itemTypes;
+        }
+
+        /// <summary>
+        /// Gets all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
+        /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> value which represents all the attachments present on the specified <see cref="ItemType"/>.</returns>
+        public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this ItemType type, uint code)
+        {
+            if ((uint)type.GetBaseCode() > code)
+            {
+                throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
+            }
+
+            code -= (uint)type.GetBaseCode();
+            return GetCombinations(Firearm.AvailableAttachments[type].Select(identifier =>
+                identifier.Code).ToArray()).Where(items => items.Sum() == code).FirstOrDefault().Select(target =>
+                Firearm.AvailableAttachments[type].FirstOrDefault(attId => attId.Code == target));
+        }
+
+        /// <summary>
+        /// Tries to get all <see cref="AttachmentIdentifier"/>s present on an <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to iterate over.</param>
+        /// <param name="code">The <see cref="uint"/> value which represents the attachments code to check.</param>
+        /// <param name="identifiers">The attachments present on the specified <see cref="ItemType"/>.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="ItemType"/> is a weapon.</returns>
+        public static bool TryGetAttachments(this ItemType type, uint code, out IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            identifiers = default;
+
+            if (!type.IsWeapon())
+                return false;
+
+            identifiers = GetAttachmentIdentifiers(type, code);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the value resulting from the sum of all elements within a specific <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/>.
+        /// </summary>
+        /// <param name="identifiers">The <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> to compute.</param>
+        /// <returns>A <see cref="uint"/> value that represents the attachments code.</returns>
+        public static uint GetAttachmentsCode(this IEnumerable<AttachmentIdentifier> identifiers)
+        {
+            uint code = 0;
+
+            foreach (AttachmentIdentifier identifier in identifiers)
+                code += identifier;
+
+            return code;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> from a specified <see cref="Firearm"/>.
+        /// </summary>
+        /// <param name="firearm">The specified <see cref="Firearm"/>.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
+        public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
+        {
+            List<AttachmentIdentifier> identifiers = new List<AttachmentIdentifier>();
+
+            foreach (FirearmAttachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
+                identifiers.Add(Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment));
+
+            return identifiers;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="BaseCode"/> of the specified <see cref="ItemType"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to check.</param>
+        /// <returns>The corresponding <see cref="BaseCode"/>.</returns>
+        public static BaseCode GetBaseCode(this ItemType type)
+        {
+            if (!type.IsWeapon())
+                return 0;
+
+            return Firearm.FirearmPairs[type];
+        }
+
+        // This is an extension for IEnumerable to sum uint values.
+        // Credit: "TheGeneral" on StackOverflow
+        private static uint Sum(this IEnumerable<uint> source)
+        {
+            uint sum = 0;
+            checked
+            {
+                return source.Aggregate(sum, (current, v) => current + v);
+            }
+        }
+
+        // This determines what attachment codes can be added together
+        // to give us the combined code we have, so that we can determine
+        // which attachments are present for any given value.
+        // Credits: "TheGeneral" on StackOverflow
+        // https://stackoverflow.com/questions/69762657/how-to-find-a-given-number-by-adding-up-numbers-from-list-of-numbers-and-return
+        private static IEnumerable<T[]> GetCombinations<T>(T[] source)
+        {
+            for (int i = 0; i < (1 << source.Length); i++)
+                yield return source.Where((t, j) => (i & (1 << j)) != 0).ToArray();
         }
     }
 }

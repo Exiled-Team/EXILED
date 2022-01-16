@@ -282,6 +282,24 @@ namespace Exiled.API.Features
         public void Unlock() => ChangeLock(DoorLockType.None);
 
         /// <summary>
+        /// Unlocks and clears all active locks on the door after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Unlock(float time, DoorLockType flagsToUnlock) => DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+
+        /// <summary>
+        /// Locks all active locks on the door, and then reverts back any changes after a specified length of time.
+        /// </summary>
+        /// <param name="time">The amount of time that must pass before unlocking the door.</param>
+        /// <param name="flagsToUnlock">The door.</param>
+        public void Lock(float time, DoorLockType flagsToUnlock)
+        {
+            ChangeLock(flagsToUnlock);
+            DoorScheduledUnlocker.UnlockLater(Base, time, (DoorLockReason)flagsToUnlock);
+        }
+
+        /// <summary>
         /// Gets all the <see cref="DoorType"/> values for the <see cref="Door"/> instances using <see cref="Door"/> and <see cref="UnityEngine.GameObject"/> name.
         /// </summary>
         internal static void RegisterDoorTypesOnLevelLoad()
@@ -346,8 +364,6 @@ namespace Exiled.API.Features
                     return DoorType.NukeArmory;
                 case "LCZ_ARMORY":
                     return DoorType.LczArmory;
-                case "012":
-                    return DoorType.Scp012;
                 case "SURFACE_NUKE":
                     return DoorType.NukeSurface;
                 case "HID":
@@ -368,8 +384,6 @@ namespace Exiled.API.Features
                     return DoorType.GateB;
                 case "079_SECOND":
                     return DoorType.Scp079Second;
-                case "012_LOCKER":
-                    return DoorType.Scp012Locker;
                 case "SERVERS_BOTTOM":
                     return DoorType.ServersBottom;
                 case "173_CONNECTOR":
@@ -378,8 +392,6 @@ namespace Exiled.API.Features
                     return DoorType.LczWc;
                 case "HID_RIGHT":
                     return DoorType.HIDRight;
-                case "012_BOTTOM":
-                    return DoorType.Scp012Bottom;
                 case "HID_LEFT":
                     return DoorType.HIDLeft;
                 case "173_ARMORY":
@@ -390,6 +402,10 @@ namespace Exiled.API.Features
                     return DoorType.GR18;
                 case "SURFACE_GATE":
                     return DoorType.SurfaceGate;
+                case "330":
+                    return DoorType.Scp330;
+                case "330_CHAMBER":
+                    return DoorType.Scp330Chamber;
 
                 // Doors spawned by the DoorSpawnPoint component
                 case "LCZ_CAFE":
