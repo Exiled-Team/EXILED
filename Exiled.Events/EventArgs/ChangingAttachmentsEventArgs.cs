@@ -5,8 +5,6 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using InventorySystem.Items.Firearms.Attachments;
-
 namespace Exiled.Events.EventArgs
 {
     using System.Collections.Generic;
@@ -16,6 +14,8 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
     using Exiled.API.Structs;
+
+    using InventorySystem.Items.Firearms.Attachments;
 
     /// <summary>
     /// Contains all informations before changing item attachments.
