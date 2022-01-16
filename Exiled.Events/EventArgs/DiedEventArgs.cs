@@ -44,7 +44,7 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the old <see cref="RoleType"/> from the killer player.
+        /// Gets the old <see cref="RoleType"/> from the killed player.
         /// </summary>
         public RoleType TargetOldRole { get; }
 
