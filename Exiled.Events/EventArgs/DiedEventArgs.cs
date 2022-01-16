@@ -44,13 +44,13 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets the old <see cref="RoleType"/> from the killed player.
-        /// </summary>
-        public RoleType TargetOldRole { get; }
-
-        /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
         public DamageHandler Handler { get; set; }
+
+        /// <summary>
+        /// Gets the old <see cref="RoleType"/> from the killed player.
+        /// </summary>
+        public RoleType TargetOldRole { get; }
     }
 }
