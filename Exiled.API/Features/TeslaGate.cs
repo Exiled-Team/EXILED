@@ -71,7 +71,7 @@ namespace Exiled.API.Features
         public Room Room => Map.FindParentRoom(GameObject);
 
         /// <summary>
-        /// Gets a value indicating whether the tesla gate' shock is in progess.
+        /// Gets a value indicating whether the tesla gate' shock burst is in progess.
         /// </summary>
         public bool IsShocking => Base.InProgress;
 
@@ -145,6 +145,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the tesla gate is using instant bursts.
+        /// <para>The instant burst ignores the standard cooldown time, reducing it to the cooldown time used for bursts triggered by SCP-079.</para>
+        /// </summary>
+        public bool IsUsingInstantBursts
+        {
+            get => Base.next079burst;
+            set => Base.next079burst = value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="UnityEngine.GameObject"/> which contains all the tantrums to destroy.
         /// </summary>
         public List<GameObject> TantrumsToDestroy => Base.TantrumsToBeDestroyed;
@@ -165,14 +175,11 @@ namespace Exiled.API.Features
         public IEnumerable<Player> PlayersInTriggerRange => Player.List.Where(player => Base.PlayerInRange(player.ReferenceHub));
 
         /// <summary>
-        /// Gets or sets a value indicating whether the tesla gate is using instant bursts.
-        /// <para>The instant burst ignores the standard cooldown time, reducing it to the cooldown time used for bursts triggered by SCP-079.</para>
+        /// Gets the <see cref="TeslaGate"/> belonging to the <see cref="BaseTeslaGate"/>.
         /// </summary>
-        public bool IsUsingInstantBursts
-        {
-            get => Base.next079burst;
-            set => Base.next079burst = value;
-        }
+        /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
+        /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
+        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => Map.TeslaGates.FirstOrDefault(teslaGate => teslaGate.Base == baseTeslaGate);
 
         /// <summary>
         /// Triggers the tesla gate.
@@ -191,6 +198,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can trigger the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool CanBeTriggered(Player player) => PlayersInTriggerRange.Contains(player);
+        public bool CanBeTriggered(Player player) => !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
+                                                     !IgnoredTeams.Contains(player.Team) && PlayersInTriggerRange.Contains(player);
     }
 }

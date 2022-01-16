@@ -20,13 +20,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TriggeringTeslaEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
+        /// <param name="teslaGate"><inheritdoc cref="Tesla"/></param>
         /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
         /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        public TriggeringTeslaEventArgs(Player player, TeslaGate tesla, bool isInHurtingRange, bool isTriggerable)
+        public TriggeringTeslaEventArgs(Player player, global::TeslaGate teslaGate, bool isInHurtingRange, bool isTriggerable)
         {
             Player = player;
-            Tesla = tesla;
+            Tesla = TeslaGate.Get(teslaGate);
             IsInHurtingRange = isInHurtingRange;
             IsTriggerable = isTriggerable;
         }
