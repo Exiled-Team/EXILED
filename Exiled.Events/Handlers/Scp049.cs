@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -31,12 +33,28 @@ namespace Exiled.Events.Handlers
         /// Called before SCP-049 finishes recalling a player.
         /// </summary>
         /// <param name="ev">The <see cref="FinishingRecallEventArgs"/> instance.</param>
-        public static void OnFinishingRecall(FinishingRecallEventArgs ev) => FinishingRecall.InvokeSafely(ev);
+        public static void OnFinishingRecall(FinishingRecallEventArgs ev) => EventManager.Instance.Invoke<FinishingRecallEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnFinishingRecall(FinishingRecallEventArgs ev) => FinishingRecall.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before SCP-049 starts to recall a player.
         /// </summary>
         /// <param name="ev">The <see cref="StartingRecallEventArgs"/> instance.</param>
-        public static void OnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
+        public static void OnStartingRecall(StartingRecallEventArgs ev) => EventManager.Instance.Invoke<StartingRecallEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnStartingRecall(StartingRecallEventArgs ev) => StartingRecall.InvokeSafely(ev);
+
     }
 }

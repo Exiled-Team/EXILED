@@ -7,13 +7,17 @@
 
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Features.Items;
-    using Exiled.Events.EventArgs;
-    using Exiled.Events.Extensions;
+    using API.Features.Items;
+
+    using Exiled.API.Utils;
+
+    using EventArgs;
+
+    using Extensions;
 
     using MapGeneration.Distributors;
 
-    using static Exiled.Events.Events;
+    using static Events;
 
     /// <summary>
     /// Map related events.
@@ -84,71 +88,227 @@ namespace Exiled.Events.Handlers
         /// Called before placing a decal.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
-        public static void OnPlacingBulletHole(PlacingBulletHole ev) => PlacingBulletHole.InvokeSafely(ev);
+        public static void OnPlacingBulletHole(PlacingBulletHole ev)
+        {
+            EventManager.Instance.Invoke<PlacingBulletHole>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnPlacingBulletHole(PlacingBulletHole ev)
+        {
+            PlacingBulletHole.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before placing bloods.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
-        public static void OnPlacingBlood(PlacingBloodEventArgs ev) => PlacingBlood.InvokeSafely(ev);
+        public static void OnPlacingBlood(PlacingBloodEventArgs ev)
+        {
+            EventManager.Instance.Invoke<PlacingBloodEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnPlacingBlood(PlacingBloodEventArgs ev)
+        {
+            PlacingBlood.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before announcing the light containment zone decontamination.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
-        public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev) => AnnouncingDecontamination.InvokeSafely(ev);
+        public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev)
+        {
+            EventManager.Instance.Invoke<AnnouncingDecontaminationEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev)
+        {
+            AnnouncingDecontamination.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before announcing an SCP termination.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
-        public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev) => AnnouncingScpTermination.InvokeSafely(ev);
+        public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
+        {
+            EventManager.Instance.Invoke<AnnouncingScpTerminationEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev)
+        {
+            AnnouncingScpTermination.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before announcing the NTF entrance.
         /// </summary>
         /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
-        public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
+        public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
+        {
+            EventManager.Instance.Invoke<AnnouncingNtfEntranceEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
+        {
+            AnnouncingNtfEntrance.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called after a <see cref="Scp079Generator"/> has been activated.
         /// </summary>
         /// <param name="ev">The <see cref="GeneratorActivatedEventArgs"/> instance.</param>
-        public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev) => GeneratorActivated.InvokeSafely(ev);
+        public static void OnGeneratorActivated(GeneratorActivatedEventArgs ev)
+        {
+            EventManager.Instance.Invoke<GeneratorActivatedEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnGeneratorActivated(GeneratorActivatedEventArgs ev)
+        {
+            GeneratorActivated.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before decontaminating the light containment zone.
         /// </summary>
         /// <param name="ev">The <see cref="DecontaminatingEventArgs"/> instance.</param>
-        public static void OnDecontaminating(DecontaminatingEventArgs ev) => Decontaminating.InvokeSafely(ev);
+        public static void OnDecontaminating(DecontaminatingEventArgs ev)
+        {
+            EventManager.Instance.Invoke<DecontaminatingEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnDecontaminating(DecontaminatingEventArgs ev)
+        {
+            Decontaminating.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before damaging a window.
         /// </summary>
         /// <param name="ev">The <see cref="DamagingWindowEventArgs"/> instance.</param>
-        public static void OnDamagingWindow(DamagingWindowEventArgs ev) => DamagingWindow.InvokeSafely(ev);
+        public static void OnDamagingWindow(DamagingWindowEventArgs ev)
+        {
+            EventManager.Instance.Invoke<DamagingWindowEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnDamagingWindow(DamagingWindowEventArgs ev)
+        {
+            DamagingWindow.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before a grenade explodes.
         /// </summary>
         /// <param name="ev">The <see cref="ExplodingGrenadeEventArgs"/> instance.</param>
-        public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev) => ExplodingGrenade.InvokeSafely(ev);
+        public static void OnExplodingGrenade(ExplodingGrenadeEventArgs ev)
+        {
+            EventManager.Instance.Invoke<ExplodingGrenadeEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnExplodingGrenade(ExplodingGrenadeEventArgs ev)
+        {
+            ExplodingGrenade.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called before an item is spawned.
         /// </summary>
         /// <param name="ev">The <see cref="SpawningItemEventArgs"/> instance.</param>
-        public static void OnSpawningItem(SpawningItemEventArgs ev) => SpawningItem.InvokeSafely(ev);
+        public static void OnSpawningItem(SpawningItemEventArgs ev)
+        {
+            EventManager.Instance.Invoke<SpawningItemEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnSpawningItem(SpawningItemEventArgs ev)
+        {
+            SpawningItem.InvokeSafely(ev);
+        }
+
 
         /// <summary>
         /// Called after the map is generated.
         /// </summary>
-        public static void OnGenerated() => Generated.InvokeSafely();
+        public static void OnGenerated()
+        {
+            Generated.InvokeSafely();
+        }
 
         /// <summary>
         /// Called before the server changes a <see cref="Pickup"/> into a live Grenade when hit by an explosion.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingIntoGrenadeEventArgs"/> instance.</param>
-        public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev) => ChangingIntoGrenade.InvokeSafely(ev);
+        public static void OnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
+        {
+            EventManager.Instance.Invoke<ChangingIntoGrenadeEventArgs>(ev);
+        }
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnChangingIntoGrenade(ChangingIntoGrenadeEventArgs ev)
+        {
+            ChangingIntoGrenade.InvokeSafely(ev);
+        }
     }
 }

@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.Events.EventArgs;
 
     using Exiled.Events.Extensions;
@@ -37,18 +39,42 @@ namespace Exiled.Events.Handlers
         /// Called before the durability of an item is changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingDurabilityEventArgs"/> instance.</param>
-        public static void OnChangingDurability(ChangingDurabilityEventArgs ev) => ChangingDurability.InvokeSafely(ev);
+        public static void OnChangingDurability(ChangingDurabilityEventArgs ev) => EventManager.Instance.Invoke<ChangingDurabilityEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnChangingDurability(ChangingDurabilityEventArgs ev) => ChangingDurability.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before item attachments are changed.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingAttachmentsEventArgs"/> instance.</param>
-        public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
+        public static void OnChangingAttachments(ChangingAttachmentsEventArgs ev) => EventManager.Instance.Invoke<ChangingAttachmentsEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnChangingAttachments(ChangingAttachmentsEventArgs ev) => ChangingAttachments.InvokeSafely(ev);
 
         /// <summary>
         /// Called before receiving a preference.
         /// </summary>
         /// <param name="ev">The <see cref="ReceivingPreferenceEventArgs"/> instance.</param>
-        public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
+        public static void OnReceivingPreference(ReceivingPreferenceEventArgs ev) => EventManager.Instance.Invoke<ReceivingPreferenceEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnReceivingPreference(ReceivingPreferenceEventArgs ev) => ReceivingPreference.InvokeSafely(ev);
+
+
     }
 }

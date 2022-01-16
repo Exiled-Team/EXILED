@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -31,12 +33,28 @@ namespace Exiled.Events.Handlers
         /// Called before players near SCP-173 blink.
         /// </summary>
         /// <param name="ev">The <see cref="BlinkingEventArgs"/> instance.</param>
-        public static void OnBlinking(BlinkingEventArgs ev) => Blinking.InvokeSafely(ev);
+        public static void OnBlinking(BlinkingEventArgs ev) => EventManager.Instance.Invoke<BlinkingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnBlinking(BlinkingEventArgs ev) => Blinking.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before a tantrum is placed.
         /// </summary>
         /// <param name="ev">The <see cref="PlacingTantrumEventArgs"/> instance.</param>
-        public static void OnPlacingTantrum(PlacingTantrumEventArgs ev) => PlacingTantrum.InvokeSafely(ev);
+        public static void OnPlacingTantrum(PlacingTantrumEventArgs ev) => EventManager.Instance.Invoke<PlacingTantrumEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnPlacingTantrum(PlacingTantrumEventArgs ev) => PlacingTantrum.InvokeSafely(ev);
+
     }
 }

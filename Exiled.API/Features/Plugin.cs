@@ -5,6 +5,8 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using Exiled.API.Utils;
+
 namespace Exiled.API.Features
 {
 #pragma warning disable SA1402
@@ -84,11 +86,17 @@ namespace Exiled.API.Features
         public virtual void OnEnabled()
         {
             AssemblyInformationalVersionAttribute attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-            Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
+            var events = EventManager.Instance.Build(Assembly.GetAssembly(this.GetType()));
+            Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled with {events} events!");
+
         }
 
         /// <inheritdoc/>
-        public virtual void OnDisabled() => Log.Info($"{Name} has been disabled!");
+        public virtual void OnDisabled()
+        {
+            EventManager.Instance.Destroy(Assembly.GetAssembly(this.GetType()));
+            Log.Info($"{Name} has been disabled!");
+        }
 
         /// <inheritdoc/>
         public virtual void OnReloaded() => Log.Info($"{Name} has been reloaded!");

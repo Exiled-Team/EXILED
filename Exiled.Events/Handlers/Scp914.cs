@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -46,30 +48,70 @@ namespace Exiled.Events.Handlers
         /// Called before SCP-914 upgrades a item.
         /// </summary>
         /// <param name="ev">The <see cref="UpgradingItemEventArgs"/> instance.</param>
-        public static void OnUpgradingItem(UpgradingItemEventArgs ev) => UpgradingItem.InvokeSafely(ev);
+        public static void OnUpgradingItem(UpgradingItemEventArgs ev) => EventManager.Instance.Invoke<UpgradingItemEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnUpgradingItem(UpgradingItemEventArgs ev) => UpgradingItem.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before SCP-914 upgrades an item in a player's inventory.
         /// </summary>
         /// <param name="ev">The <see cref="UpgradingInventoryItemEventArgs"/> instance.</param>
-        public static void OnUpgradingInventoryItem(UpgradingInventoryItemEventArgs ev) => UpgradingInventoryItem.InvokeSafely(ev);
+        public static void OnUpgradingInventoryItem(UpgradingInventoryItemEventArgs ev) => EventManager.Instance.Invoke<UpgradingInventoryItemEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnUpgradingInventoryItem(UpgradingInventoryItemEventArgs ev) => UpgradingInventoryItem.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before SCP-914 upgrades a player.
         /// </summary>
         /// <param name="ev">The <see cref="UpgradingPlayerEventArgs"/> instance.</param>
-        public static void OnUpgradingPlayer(UpgradingPlayerEventArgs ev) => UpgradingPlayer.InvokeSafely(ev);
+        public static void OnUpgradingPlayer(UpgradingPlayerEventArgs ev) => EventManager.Instance.Invoke<UpgradingPlayerEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnUpgradingPlayer(UpgradingPlayerEventArgs ev) => UpgradingPlayer.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before activating the SCP-914 machine.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingEventArgs"/> instance.</param>
-        public static void OnActivating(ActivatingEventArgs ev) => Activating.InvokeSafely(ev);
+        public static void OnActivating(ActivatingEventArgs ev) => EventManager.Instance.Invoke<ActivatingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnActivating(ActivatingEventArgs ev) => Activating.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before changing the SCP-914 machine knob setting.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingKnobSettingEventArgs"/> instance.</param>
-        public static void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev) => ChangingKnobSetting.InvokeSafely(ev);
+        public static void OnChangingKnobSetting(ChangingKnobSettingEventArgs ev) => EventManager.Instance.Invoke<ChangingKnobSettingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnChangingKnobSetting(ChangingKnobSettingEventArgs ev) => ChangingKnobSetting.InvokeSafely(ev);
+
     }
 }

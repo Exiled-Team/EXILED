@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
@@ -92,13 +94,29 @@ namespace Exiled.Events.Handlers
         /// Called before ending a round.
         /// </summary>
         /// <param name="ev">The <see cref="EndingRoundEventArgs"/> instance.</param>
-        public static void OnEndingRound(EndingRoundEventArgs ev) => EndingRound.InvokeSafely(ev);
+        public static void OnEndingRound(EndingRoundEventArgs ev) => EventManager.Instance.Invoke<EndingRoundEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnEndingRound(EndingRoundEventArgs ev) => EndingRound.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called after the end of a round.
         /// </summary>
         /// <param name="ev">The <see cref="RoundEndedEventArgs"/> instance.</param>
-        public static void OnRoundEnded(RoundEndedEventArgs ev) => RoundEnded.InvokeSafely(ev);
+        public static void OnRoundEnded(RoundEndedEventArgs ev) => EventManager.Instance.Invoke<RoundEndedEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnRoundEnded(RoundEndedEventArgs ev) => RoundEnded.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before restarting a round.
@@ -109,19 +127,43 @@ namespace Exiled.Events.Handlers
         /// Called when a player reports a cheater.
         /// </summary>
         /// <param name="ev">The <see cref="ReportingCheaterEventArgs"/> instance.</param>
-        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+        public static void OnReportingCheater(ReportingCheaterEventArgs ev) => EventManager.Instance.Invoke<ReportingCheaterEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnReportingCheater(ReportingCheaterEventArgs ev) => ReportingCheater.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before respawning a wave of Chaos Insurgency or NTF.
         /// </summary>
         /// <param name="ev">The <see cref="RespawningTeamEventArgs"/> instance.</param>
-        public static void OnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+        public static void OnRespawningTeam(RespawningTeamEventArgs ev) => EventManager.Instance.Invoke<RespawningTeamEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnRespawningTeam(RespawningTeamEventArgs ev) => RespawningTeam.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called when sending a complaint about a player to the local server administrators.
         /// </summary>
         /// <param name="ev">The <see cref="LocalReportingEventArgs"/> instance.</param>
-        public static void OnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+        public static void OnLocalReporting(LocalReportingEventArgs ev) => EventManager.Instance.Invoke<LocalReportingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnLocalReporting(LocalReportingEventArgs ev) => LocalReporting.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called after the "reload configs" command is ran.

@@ -5,8 +5,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+
 namespace Exiled.Events.Handlers
 {
+    using Exiled.API.Utils;
+
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
@@ -36,18 +39,42 @@ namespace Exiled.Events.Handlers
         /// Called before SCP-106 creates a portal.
         /// </summary>
         /// <param name="ev">The <see cref="CreatingPortalEventArgs"/> instance.</param>
-        public static void OnCreatingPortal(CreatingPortalEventArgs ev) => CreatingPortal.InvokeSafely(ev);
+        public static void OnCreatingPortal(CreatingPortalEventArgs ev) => EventManager.Instance.Invoke<CreatingPortalEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnCreatingPortal(CreatingPortalEventArgs ev) => CreatingPortal.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before SCP-106 teleports using a portal.
         /// </summary>
         /// <param name="ev">The <see cref="TeleportingEventArgs"/> instance.</param>
-        public static void OnTeleporting(TeleportingEventArgs ev) => Teleporting.InvokeSafely(ev);
+        public static void OnTeleporting(TeleportingEventArgs ev) => EventManager.Instance.Invoke<TeleportingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnTeleporting(TeleportingEventArgs ev) => Teleporting.InvokeSafely(ev);
+
 
         /// <summary>
         /// Called before containing SCP-106.
         /// </summary>
         /// <param name="ev">The <see cref="ContainingEventArgs"/> instance.</param>
-        public static void OnContaining(ContainingEventArgs ev) => Containing.InvokeSafely(ev);
+        public static void OnContaining(ContainingEventArgs ev) => EventManager.Instance.Invoke<ContainingEventArgs>(ev);
+
+        /// <summary>
+        /// Automatically generated for backwards compatibility.
+        /// </summary>
+        /// <param name="ev">Input from the event system.</param>
+        [Subscribe]
+        public static void BackwardsCompatOnContaining(ContainingEventArgs ev) => Containing.InvokeSafely(ev);
+
     }
 }
