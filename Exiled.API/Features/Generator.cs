@@ -196,7 +196,7 @@ namespace Exiled.API.Features
         public void DenyUnlock() => Base.RpcDenied();
 
         /// <summary>
-        /// Sets <see cref="KeycardPermissions"/> flag.
+        /// Sets the specified <see cref="KeycardPermissions"/> flag.
         /// </summary>
         /// <param name="flag">The flag to set.</param>
         /// <param name="isEnabled">A value indicating whether the flag is enabled.</param>
