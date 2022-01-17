@@ -281,6 +281,19 @@ namespace Exiled.API.Features
         /// <summary>
         /// Displays a subtitle to all <see cref="Player">players</see>.
         /// </summary>
+        /// <param name="type">The subtitle type.</param>
+        /// <param name="optionalArguments">The optional arguments for the subtitle.</param>
+        public static void ShowSubtitle(SubtitleType type, string[] optionalArguments = null)
+        {
+            new SubtitleMessage(new SubtitlePart[]
+            {
+                new SubtitlePart(SubtitleType.Custom, optionalArguments ?? Array.Empty<string>()),
+            }).SendToAuthenticated();
+        }
+
+        /// <summary>
+        /// Displays a subtitle to all <see cref="Player">players</see>.
+        /// </summary>
         /// <param name="message">The message to show.</param>
         public static void ShowSubtitle(string message)
         {
