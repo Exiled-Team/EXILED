@@ -51,10 +51,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDying))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DyingEventArgs), nameof(DyingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, ret),
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
                 new CodeInstruction(OpCodes.Stloc, oldRole.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, ret),
             });
 
             int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
