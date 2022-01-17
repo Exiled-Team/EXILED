@@ -49,7 +49,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             GenerateCache();
-            CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
