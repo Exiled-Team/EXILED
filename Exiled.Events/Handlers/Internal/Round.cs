@@ -14,7 +14,6 @@ namespace Exiled.Events.Handlers.Internal
     using Exiled.Loader.Features;
 
     using InventorySystem;
-    using InventorySystem.Items.ThrowableProjectiles;
 
     using Item = Exiled.API.Features.Items.Item;
 
@@ -52,6 +51,9 @@ namespace Exiled.Events.Handlers.Internal
 
             API.Features.Scp173.TurnedPlayers.Clear();
             API.Features.Scp096.TurnedPlayers.Clear();
+            API.Features.TeslaGate.IgnoredPlayers.Clear();
+            API.Features.TeslaGate.IgnoredRoles.Clear();
+            API.Features.TeslaGate.IgnoredTeams.Clear();
         }
 
         /// <inheritdoc cref="Server.OnRoundStarted"/>

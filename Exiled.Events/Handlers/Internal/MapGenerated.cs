@@ -21,10 +21,9 @@ namespace Exiled.Events.Handlers.Internal
 
     using MEC;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
+    using Camera = Exiled.API.Features.Camera;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -48,8 +47,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             GenerateCache();
-            LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
-            CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
@@ -61,7 +58,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
-            Timing.CallDelayed(0.15f, GenerateLockers);
+            Timing.CallDelayed(1f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
@@ -84,11 +81,23 @@ namespace Exiled.Events.Handlers.Internal
                 Map.DoorsValue.Add(Door.Get(doorVariant));
         }
 
-        private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
+        private static void GenerateCameras()
+        {
+            foreach (Camera079 camera079 in Object.FindObjectsOfType<Camera079>())
+                Map.CamerasValue.Add(new Camera(camera079));
+        }
 
-        private static void GenerateLifts() => Map.LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
+        private static void GenerateLifts()
+        {
+            foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
+                Map.LiftsValue.Add(new Lift(lift));
+        }
 
-        private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
+        private static void GenerateTeslaGates()
+        {
+            foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
+                Map.TeslasValue.Add(new TeslaGate(teslaGate));
+        }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 

@@ -20,12 +20,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="InteractingTeslaEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="tesla"><inheritdoc cref="Tesla"/></param>
+        /// <param name="teslaGate"><inheritdoc cref="Tesla"/></param>
         /// <param name="auxiliaryPowerCost"><inheritdoc cref="AuxiliaryPowerCost"/></param>
-        public InteractingTeslaEventArgs(Player player, TeslaGate tesla, float auxiliaryPowerCost)
+        public InteractingTeslaEventArgs(Player player, global::TeslaGate teslaGate, float auxiliaryPowerCost)
         {
             Player = player;
-            Tesla = tesla;
+            Tesla = TeslaGate.Get(teslaGate);
             AuxiliaryPowerCost = auxiliaryPowerCost;
             IsAllowed = auxiliaryPowerCost <= player.Energy;
         }

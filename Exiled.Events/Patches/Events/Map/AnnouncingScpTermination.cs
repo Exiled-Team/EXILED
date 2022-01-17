@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Map
             Label jcc = generator.DefineLabel();
             Label jmp = generator.DefineLabel();
 
-            newInstructions.RemoveRange(0, 18);
+            newInstructions.RemoveRange(0, 19);
 
             newInstructions.InsertRange(0, new[]
             {

@@ -8,7 +8,6 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-    using System.Runtime.Remoting.Messaging;
 
     using Exiled.API.Features;
 

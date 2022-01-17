@@ -9,8 +9,6 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
 
-    using Dissonance;
-
     using Exiled.API.Enums;
     using Exiled.API.Features.Items;
 
