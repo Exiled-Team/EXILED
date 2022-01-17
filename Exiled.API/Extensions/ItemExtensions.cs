@@ -203,7 +203,7 @@ namespace Exiled.API.Extensions
                 if (code < sources[i])
                     continue;
 
-                yield return attachmentIdentifiers.ElementAt(i);
+                yield return attachmentIdentifiers[i];
                 code -= sources[i];
             }
         }
