@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="RecontainerInstancesAdd.cs" company="Exiled Team">
+// <copyright file="InitRecontainerInstance.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118 // Parameter should not span multiple lines
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Generic
     /// Patches <see cref="Recontainer079.Start"/>.
     /// </summary>
     [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.Start))]
-    internal class RecontainerInstancesAdd
+    internal class InitRecontainerInstance
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -31,10 +31,8 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(0, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Recontainer), nameof(Recontainer.Instances))),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(Recontainer))[0]),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<Recontainer>), nameof(List<Recontainer>.Add))),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -42,5 +40,7 @@ namespace Exiled.Events.Patches.Generic
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
+
+        private static void Alert() => Log.Error("Instance found!");
     }
 }

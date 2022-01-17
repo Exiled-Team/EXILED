@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="RecontainerInstancesRemove.cs" company="Exiled Team">
+// <copyright file="DestroyRecontainerInstance.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -7,7 +7,7 @@
 
 namespace Exiled.Events.Patches.Generic
 {
-#pragma warning disable SA1118 // Parameter should not span multiple lines
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -20,10 +20,10 @@ namespace Exiled.Events.Patches.Generic
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Recontainer079.Start"/>.
+    /// Patches <see cref="Recontainer079.OnDestroy"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.Start))]
-    internal class RecontainerInstancesRemove
+    [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.OnDestroy))]
+    internal class DestroyRecontainerInstance
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
@@ -31,10 +31,8 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(0, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Recontainer), nameof(Recontainer.Instances))),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Recontainer), nameof(Recontainer.Get))),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<Recontainer>), nameof(List<Recontainer>.Add))),
+                new CodeInstruction(OpCodes.Ldnull),
+                new CodeInstruction(OpCodes.Call, PropertySetter(typeof(Recontainer), nameof(Recontainer.Base))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
