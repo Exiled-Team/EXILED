@@ -285,10 +285,8 @@ namespace Exiled.API.Features
         /// <param name="optionalArguments">The optional arguments for the subtitle.</param>
         public static void ShowSubtitle(SubtitleType type, string[] optionalArguments = null)
         {
-            new SubtitleMessage(new SubtitlePart[]
-            {
-                new SubtitlePart(type, optionalArguments ?? Array.Empty<string>()),
-            }).SendToAuthenticated();
+            foreach (Player player in Player.List)
+                player.ShowSubtitle(type, optionalArguments);
         }
 
         /// <summary>
@@ -297,10 +295,8 @@ namespace Exiled.API.Features
         /// <param name="message">The message to show.</param>
         public static void ShowSubtitle(string message)
         {
-            new SubtitleMessage(new SubtitlePart[]
-            {
-                new SubtitlePart(SubtitleType.Custom, new string[] { message }),
-            }).SendToAuthenticated();
+            foreach (Player player in Player.List)
+                player.ShowSubtitle(message);
         }
 
         /// <summary>

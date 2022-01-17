@@ -46,6 +46,8 @@ namespace Exiled.API.Features
 
     using RemoteAdmin;
 
+    using Subtitles;
+
     using UnityEngine;
 
     using Utils.Networking;
@@ -2021,6 +2023,35 @@ namespace Exiled.API.Features
             };
 
             HintDisplay.Show(new TextHint(message, parameters, null, duration));
+        }
+
+        /// <summary>
+        /// Shows a subtitle to the player, with the provided SubtitleType and optional arguments.
+        /// </summary>
+        /// <param name="type">The type of subtitle to show.</param>
+        /// <param name="optionalArguments">The optional arguments of the subtitle.</param>
+        public void ShowSubtitle(SubtitleType type, string[] optionalArguments = null)
+        {
+            SubtitleMessage msg = new SubtitleMessage(new SubtitlePart[]
+            {
+                new SubtitlePart(type, optionalArguments ?? Array.Empty<string>()),
+            });
+
+            Connection.Send(msg);
+        }
+
+        /// <summary>
+        /// Shows a subtitle to the player, with a SubtitleType of <see cref="SubtitleType.Custom"/>.
+        /// </summary>
+        /// <param name="message">The subtitle to show.</param>
+        public void ShowSubtitle(string message)
+        {
+            SubtitleMessage msg = new SubtitleMessage(new SubtitlePart[]
+            {
+                new SubtitlePart(SubtitleType.Custom, new string[] { message }),
+            });
+
+            Connection.Send(msg);
         }
 
         /// <summary>
