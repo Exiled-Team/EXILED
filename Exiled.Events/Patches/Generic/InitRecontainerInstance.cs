@@ -40,7 +40,5 @@ namespace Exiled.Events.Patches.Generic
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void Alert() => Log.Error("Instance found!");
     }
 }
