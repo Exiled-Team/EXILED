@@ -539,12 +539,12 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
-        /// Only applies if the player is SCP-079.
+        /// <br>Only applies if the player is SCP-079.</br>
         /// </summary>
-        public Camera079 Camera
+        public Camera Camera
         {
-            get => ReferenceHub.scp079PlayerScript.currentCamera;
-            set => SetCamera(value.cameraId);
+            get => Camera.Get(ReferenceHub.scp079PlayerScript.currentCamera);
+            set => SetCamera(value);
         }
 
         /// <summary>
@@ -1231,17 +1231,24 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Sets the camera the player is currently located at.
-        /// Only applies if the player is SCP-079.
+        /// <br>Only applies if the player is SCP-079.</br>
         /// </summary>
         /// <param name="cameraId">Camera ID.</param>
         public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
         /// Sets the camera the player is currently located at.
-        /// Only applies if the player is SCP-079.
+        /// <br>Only applies if the player is SCP-079.</br>
         /// </summary>
-        /// <param name="camera">The <see cref="Camera079"/> object to switch to.</param>
-        public void SetCamera(Camera079 camera) => SetCamera(camera.cameraId);
+        /// <param name="cameraType">The <see cref="Enums.CameraType"/>.</param>
+        public void SetCamera(Enums.CameraType cameraType) => SetCamera(API.Features.Camera.Get(cameraType));
+
+        /// <summary>
+        /// Sets the camera the player is currently located at.
+        /// <br>Only applies if the player is SCP-079.</br>
+        /// </summary>
+        /// <param name="camera">The <see cref="Camera"/> object to switch to.</param>
+        public void SetCamera(Camera camera) => SetCamera(camera.Id);
 
         /// <summary>
         /// Forces the player to reload their current weapon.
