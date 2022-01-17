@@ -23,11 +23,13 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="DiedEventArgs"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Target"/></param>
+        /// <param name="targetOldRole">Target's old <see cref="RoleType"/>.</param>
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        public DiedEventArgs(Player target, DamageHandlerBase damageHandler)
+        public DiedEventArgs(Player target, RoleType targetOldRole, DamageHandlerBase damageHandler)
         {
             Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
+            TargetOldRole = targetOldRole;
             Handler = new DamageHandler(target, damageHandler);
         }
 
@@ -45,5 +47,10 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
         public DamageHandler Handler { get; set; }
+
+        /// <summary>
+        /// Gets the old <see cref="RoleType"/> from the killed player.
+        /// </summary>
+        public RoleType TargetOldRole { get; }
     }
 }
