@@ -101,24 +101,6 @@ namespace Exiled.API.Features
         public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
 
         /// <summary>
-        /// Gets the number of activated generators.
-        /// </summary>
-        public static int ActivatedGenerators
-        {
-            get
-            {
-                int i = 0;
-                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
-                {
-                    if (gen.Engaged)
-                        i++;
-                }
-
-                return i;
-            }
-        }
-
-        /// <summary>
         /// Gets all <see cref="Room"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Room> Rooms => ReadOnlyRoomsValue;
