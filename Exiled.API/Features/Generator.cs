@@ -163,6 +163,15 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets the required permissions to interact with the generator.
+        /// </summary>
+        public KeycardPermissions KeycardPermissions
+        {
+            get => (KeycardPermissions)Base._requiredPermission;
+            set => Base._requiredPermission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
+        }
+
+        /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="Generator"/> which contains all the <see cref="Generator"/> instances.
         /// </summary>
         internal static List<Generator> GeneratorValues { get; } = new List<Generator>();
@@ -185,5 +194,20 @@ namespace Exiled.API.Features
         /// Denies the unlock.
         /// </summary>
         public void DenyUnlock() => Base.RpcDenied();
+
+        /// <summary>
+        /// Sets <see cref="KeycardPermissions"/> flag.
+        /// </summary>
+        /// <param name="flag">The flag to set.</param>
+        /// <param name="isEnabled">A value indicating whether the flag is enabled.</param>
+        public void SetPermissionFlag(KeycardPermissions flag, bool isEnabled)
+        {
+            Interactables.Interobjects.DoorUtils.KeycardPermissions permission = (Interactables.Interobjects.DoorUtils.KeycardPermissions)flag;
+
+            if (isEnabled)
+                Base._requiredPermission |= permission;
+            else
+                Base._requiredPermission &= ~permission;
+        }
     }
 }
