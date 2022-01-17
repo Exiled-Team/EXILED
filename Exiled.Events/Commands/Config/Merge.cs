@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="Merge.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -13,7 +13,6 @@ namespace Exiled.Events.Commands.Config
     using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.Loader;
-    using Exiled.Permissions.Extensions;
 
     /// <summary>
     /// The config merge command.

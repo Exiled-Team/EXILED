@@ -7,9 +7,6 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
-
-    using Exiled.API.Enums;
     using InventorySystem.Items;
     using InventorySystem.Items.Flashlight;
 

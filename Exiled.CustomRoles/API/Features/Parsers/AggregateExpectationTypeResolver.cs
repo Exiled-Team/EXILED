@@ -12,7 +12,6 @@ namespace Exiled.CustomRoles.API.Features.Parsers
     using System.Linq;
     using System.Reflection;
 
-    using Exiled.API.Features;
     using Exiled.CustomRoles.API.Features;
     using Exiled.CustomRoles.API.Features.Extensions;
     using Exiled.CustomRoles.API.Features.Interfaces;
