@@ -29,7 +29,11 @@ namespace Exiled.API.Features
 
     using PlayableScps.ScriptableObjects;
 
+    using Subtitles;
+
     using UnityEngine;
+
+    using Utils.Networking;
 
     using CameraType = Exiled.API.Enums.CameraType;
     using Object = UnityEngine.Object;
@@ -272,6 +276,18 @@ namespace Exiled.API.Features
         {
             foreach (Player player in Player.List)
                 player.ShowHint(message, duration);
+        }
+
+        /// <summary>
+        /// Displays a caption to all <see cref="Player">players</see>.
+        /// </summary>
+        /// <param name="message">The message to show.</param>
+        public static void ShowCaption(string message)
+        {
+            new SubtitleMessage(new SubtitlePart[]
+            {
+                new SubtitlePart(SubtitleType.Custom, new string[] { message }),
+            }).SendToAuthenticated();
         }
 
         /// <summary>
