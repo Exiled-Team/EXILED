@@ -279,10 +279,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Displays a caption to all <see cref="Player">players</see>.
+        /// Displays a subtitle to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="message">The message to show.</param>
-        public static void ShowCaption(string message)
+        public static void ShowSubtitle(string message)
         {
             new SubtitleMessage(new SubtitlePart[]
             {
