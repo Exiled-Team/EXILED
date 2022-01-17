@@ -7,17 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
-
-    using Exiled.API.Enums;
-
-    using Footprinting;
-
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
-
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for throwable items.
