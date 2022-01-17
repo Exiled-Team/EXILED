@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Events.Cassie
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Respawning.RespawnEffectsController.PlayCassieAnnouncement(string, bool, bool)"/>.
+    /// Patches <see cref="Respawning.RespawnEffectsController.PlayCassieAnnouncement(string, bool, bool, bool)"/>.
     /// Adds the <see cref="Handlers.Cassie.SendingCassieMessage"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Respawning.RespawnEffectsController), nameof(Respawning.RespawnEffectsController.PlayCassieAnnouncement))]

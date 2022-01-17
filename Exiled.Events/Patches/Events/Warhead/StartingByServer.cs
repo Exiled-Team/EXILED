@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Events.Warhead
             int oldCount = newInstructions.Count;
 
             // Get the return label from the last instruction.
-            object returnLabel = newInstructions[index - 1].operand;
+            Label returnLabel = generator.DefineLabel();
 
             // var ev = new StartingEventArgs(Server.Host, true);
             //
@@ -62,6 +62,8 @@ namespace Exiled.Events.Patches.Events.Warhead
             // Add the starting labels to the first injected instruction.
             // Calculate the difference and get the valid index - is better and easy than using a list
             newInstructions[index].MoveLabelsFrom(newInstructions[newInstructions.Count - oldCount + index]);
+
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
