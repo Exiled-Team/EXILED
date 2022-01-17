@@ -1455,8 +1455,8 @@ namespace Exiled.API.Features
         /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
         public void Hurt(DamageHandler handler)
         {
-            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement))
-                Cassie.Message(handler.Base.CassieDeathAnnouncement);
+            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
+                Cassie.Message(handler.Base.CassieDeathAnnouncement.Announcement);
 
             ReferenceHub.playerStats.DealDamage(handler.Base);
         }
