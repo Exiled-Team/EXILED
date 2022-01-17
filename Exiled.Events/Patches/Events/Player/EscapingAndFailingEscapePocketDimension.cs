@@ -99,7 +99,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, exiledPlayerLocal.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, 9),
+                new CodeInstruction(OpCodes.Ldloc_S, 10),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, Constructor(typeof(EscapingPocketDimensionEventArgs), new[] { typeof(Player), typeof(Vector3), typeof(bool) })),
                 new CodeInstruction(OpCodes.Dup),
@@ -110,7 +110,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EscapingPocketDimensionEventArgs), nameof(EscapingPocketDimensionEventArgs.TeleportPosition))),
-                new CodeInstruction(OpCodes.Stloc_S, 9),
+                new CodeInstruction(OpCodes.Stloc_S, 10),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

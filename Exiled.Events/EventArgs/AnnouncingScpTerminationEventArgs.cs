@@ -31,7 +31,7 @@ namespace Exiled.Events.EventArgs
             Role = scp.ReferenceHub.characterClassManager.CurRole;
             Handler = new DamageHandler(scp, damageHandlerBase);
             Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
-            TerminationCause = damageHandlerBase.CassieDeathAnnouncement;
+            TerminationCause = damageHandlerBase.CassieDeathAnnouncement.Announcement;
             IsAllowed = isAllowed;
         }
 
