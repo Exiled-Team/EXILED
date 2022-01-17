@@ -7,16 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System.Collections.Generic;
-
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.Usables.Scp244;
-
-    using Mirror;
-
-    using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for SCP-244.
