@@ -1,15 +1,15 @@
-*Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework.*  
+*Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework.*
 
-# MEC
-If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started. **MEC Coroutines** are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread. MEC coroutines are safe to use with Unity, unlike traditional threading, which *will* crash the server.  
+# MEC (More Effective Coroutines)
+If you are unfamiliar with MEC, this will be a very brief and simple primer to get you started. **MEC Coroutines** are basically timed methods, that support waiting periods of time before continuing execution, without interrupting/sleeping the main game thread. MEC coroutines are safe to use with Unity, unlike traditional threading, which *will* crash the server.
 
-MEC is useful for plugins which require a pre-defined timeout between execution. As an example, an automatic nuke plugin would want to pause for a certain amount of seconds before activating the warhead. A supply drop plugin would want to wait in certain intervals before executing a supply drop. Both of these are possible with MEC.  
+MEC is useful for plugins which require a pre-defined timeout between execution. As an example, an automatic nuke plugin would want to pause for a certain amount of seconds before activating the warhead. A supply drop plugin would want to wait in certain intervals before executing a supply drop. Both of these are possible with MEC.
 
 ## Setup
-Unlike other API provided by SCP:SL, MEC requires a reference to the `Assembly-CSharp-firstpass` DLL file. After referencing this file, a `using MEC;` statement allows MEC to be used.  
+Unlike other API provided by SCP:SL, MEC requires a reference to the `Assembly-CSharp-firstpass` DLL file. After referencing this file, a `using MEC;` statement allows MEC to be used.
 
 ## Coroutine
-MEC offers [tons of features](http://trinary.tech/category/mec/free/) for controlling threads. For this tutorial, we are going to look at two of them: coroutines, and delayed calls. A coroutine is a method that is executed by MEC and supports delays. These methods must return type `IEnumerator<float>` and must be called by `Timing.RunCoroutine(Method())`. An example can be seen below, using an infinite loop with a 5 second delay.  
+MEC offers [tons of features](http://trinary.tech/category/mec/free/) for controlling threads. For this tutorial, we are going to look at two of them: coroutines, and delayed calls. A coroutine is a method that is executed by MEC and supports delays. These methods must return type `IEnumerator<float>` and must be called by `Timing.RunCoroutine(Method())`. An example can be seen below, using an infinite loop with a 5 second delay.
 
 ```cs
 using MEC;
@@ -29,7 +29,7 @@ public IEnumerator<float> MyCoroutine()
     }
 }
 ```
-This example prints, "Hey, I'm an infinite loop!" every 5 seconds infinitely. Coroutines can have multiple `yield return` statements.  
+This example prints, "Hey, I'm an infinite loop!" every 5 seconds infinitely. Coroutines can have multiple `yield return` statements.
 
 ## Delayed Calls
 A simpler method of running an action after a delay is using `Timing.CallDelayed(float, Action)`, which executes code after a given number of seconds passes. This method does not require a coroutine to be created, hence why it's useful. An example can be seen below, logging a message 5 seconds after the method is called.
