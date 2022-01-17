@@ -122,7 +122,7 @@ namespace Exiled.API.Features
         public static void Start()
         {
             Controller.InstantPrepare();
-            Controller.StartDetonation();
+            Controller.StartDetonation(false);
         }
 
         /// <summary>
