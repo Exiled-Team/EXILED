@@ -287,7 +287,7 @@ namespace Exiled.API.Features
         {
             new SubtitleMessage(new SubtitlePart[]
             {
-                new SubtitlePart(SubtitleType.Custom, optionalArguments ?? Array.Empty<string>()),
+                new SubtitlePart(type, optionalArguments ?? Array.Empty<string>()),
             }).SendToAuthenticated();
         }
 
