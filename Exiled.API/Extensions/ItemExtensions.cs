@@ -194,17 +194,17 @@ namespace Exiled.API.Extensions
                 throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
             }
 
-            IEnumerable<AttachmentIdentifier> attachmentIdentifiers = Firearm.AvailableAttachments[type];
-            IEnumerable<uint> sources = attachmentIdentifiers.Select(attId => attId.Code);
+            AttachmentIdentifier[] attachmentIdentifiers = Firearm.AvailableAttachments[type].ToArray();
+            uint[] sources = attachmentIdentifiers.Select(attId => attId.Code).ToArray();
 
             code -= (uint)type.GetBaseCode();
-            for (int i = 0; i < sources.Count(); i++)
+            for (int i = 0; i < sources.Length; i++)
             {
-                if (code < sources.ElementAt(i))
+                if (code < sources[i])
                     continue;
 
                 yield return attachmentIdentifiers.ElementAt(i);
-                code -= sources.ElementAt(i);
+                code -= sources[i];
             }
         }
 
