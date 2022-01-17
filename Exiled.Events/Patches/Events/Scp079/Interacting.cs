@@ -25,6 +25,8 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
+    using TeslaGate = global::TeslaGate;
+
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.
     /// Adds the <see cref="InteractingTeslaEventArgs"/>, <see cref="InteractingDoorEventArgs"/>, <see cref="Handlers.Scp079.StartingSpeaker"/> and <see cref="Handlers.Scp079.StoppingSpeaker"/> event for SCP-079.
@@ -41,7 +43,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Index offset.
             int offset = -1;
 
-            // Find first "ldstr Tesla Gate Burst", then add the offset to get "ldloc.3".
+            // Find "TeslaGate::RpcInstantBurst", then add the offset to get "ldloc.s".
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(TeslaGate), nameof(TeslaGate.RpcInstantBurst))) + offset;
 
             // Get the return label.
@@ -50,7 +52,7 @@ namespace Exiled.Events.Patches.Events.Scp079
             // Declare a local variable of the type "InteractingTeslaEventArgs";
             LocalBuilder interactingTeslaEv = generator.DeclareLocal(typeof(InteractingTeslaEventArgs));
 
-            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel, manaFromLabel <= this.curMana);
+            // var ev = new InteractingTeslaEventArgs(Player.Get(this.gameObject), teslaGameObject.GetComponent<TeslaGate>(), manaFromLabel);
             //
             // Handlers.Map.OnInteractingTesla(ev);
             //
@@ -59,12 +61,12 @@ namespace Exiled.Events.Patches.Events.Scp079
             CodeInstruction[] instructionsToInsert = new[]
             {
                 // Player.Get(this.gameObject)
-                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Component), nameof(Component.gameObject))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(GameObject) })),
 
                 // teslaGameObject.GetComponent<TeslaGate>();
-                new CodeInstruction(OpCodes.Ldloc_S, 32),
+                new CodeInstruction(OpCodes.Ldloc_S, 33),
 
                 // manaFromLabel
                 new CodeInstruction(OpCodes.Ldloc_2),

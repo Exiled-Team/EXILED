@@ -34,6 +34,8 @@ namespace Exiled.Events.EventArgs
             {
                 foreach (ItemType itemType in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Items)
                     Items.Add(itemType);
+                foreach (KeyValuePair<ItemType, ushort> ammoPair in InventorySystem.Configs.StartingInventories.DefinedInventories[newRole].Ammo)
+                    Ammo.Add(ammoPair.Key, ammoPair.Value);
             }
 
             Lite = shouldPreservePosition;
@@ -54,6 +56,11 @@ namespace Exiled.Events.EventArgs
         /// Gets base items that the player will receive. (Changing this will overwrite their current inventory if Lite is true!).
         /// </summary>
         public List<ItemType> Items { get; } = new List<ItemType>();
+
+        /// <summary>
+        /// Gets the base ammo values for the new role. (Changing this will overwrite their current inventory if Lite is true!).
+        /// </summary>
+        public Dictionary<ItemType, ushort> Ammo { get; } = new Dictionary<ItemType, ushort>();
 
         /// <summary>
         /// Gets or sets the reason for their class change.

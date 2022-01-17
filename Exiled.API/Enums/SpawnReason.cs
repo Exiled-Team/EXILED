@@ -43,7 +43,7 @@ namespace Exiled.API.Enums
         Escaped,
 
         /// <summary>
-        /// The player was revived by 049.
+        /// The player was revived by SCP-049.
         /// </summary>
         Revived,
 

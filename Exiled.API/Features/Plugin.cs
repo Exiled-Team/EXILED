@@ -75,9 +75,15 @@ namespace Exiled.API.Features
         public ITranslation InternalTranslation { get; protected set; }
 
         /// <inheritdoc/>
+        public string ConfigPath => Paths.GetConfigPath(Prefix);
+
+        /// <inheritdoc/>
+        public string TranslationPath => Paths.GetTranslationPath(Prefix);
+
+        /// <inheritdoc/>
         public virtual void OnEnabled()
         {
-            var attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            AssemblyInformationalVersionAttribute attribute = Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
             Log.Info($"{Name} v{(attribute == null ? $"{Version.Major}.{Version.Minor}.{Version.Build}" : attribute.InformationalVersion)} by {Author} has been enabled!");
         }
 

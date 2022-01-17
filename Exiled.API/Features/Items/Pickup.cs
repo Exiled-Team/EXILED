@@ -128,8 +128,9 @@ namespace Exiled.API.Features.Items
             get => Base.NetworkInfo.Locked;
             set
             {
-                Base.Info.Locked = value;
-                Base.NetworkInfo = Base.Info;
+                PickupSyncInfo info = Base.Info;
+                info.Locked = value;
+                Base.NetworkInfo = info;
             }
         }
 
@@ -141,8 +142,9 @@ namespace Exiled.API.Features.Items
             get => Base.NetworkInfo.InUse;
             set
             {
-                Base.Info.InUse = value;
-                Base.NetworkInfo = Base.Info;
+                PickupSyncInfo info = Base.Info;
+                info.InUse = value;
+                Base.NetworkInfo = info;
             }
         }
 
@@ -199,5 +201,11 @@ namespace Exiled.API.Features.Items
         /// Destroys the pickup.
         /// </summary>
         public void Destroy() => Base.DestroySelf();
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";
+        }
     }
 }

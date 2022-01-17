@@ -76,6 +76,7 @@ namespace Exiled.Example
             Exiled.Events.Handlers.Player.Destroying += playerHandler.OnDestroying;
             Exiled.Events.Handlers.Player.Spawning += playerHandler.OnSpawning;
             Exiled.Events.Handlers.Player.Escaping += playerHandler.OnEscaping;
+            Exiled.Events.Handlers.Player.Hurting += playerHandler.OnHurting;
             Exiled.Events.Handlers.Player.Dying += playerHandler.OnDying;
             Exiled.Events.Handlers.Player.Died += playerHandler.OnDied;
             Exiled.Events.Handlers.Player.ChangingRole += playerHandler.OnChangingRole;
@@ -108,6 +109,7 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
+            Exiled.Events.Handlers.Item.ReceivingPreference += itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem += scp914Handler.OnUpgradingItem;
 
@@ -149,6 +151,7 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Item.ChangingDurability -= itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments -= itemHandler.OnChangingAttachments;
+            Exiled.Events.Handlers.Item.ReceivingPreference -= itemHandler.OnReceivingPreference;
 
             Exiled.Events.Handlers.Scp914.UpgradingItem -= scp914Handler.OnUpgradingItem;
 

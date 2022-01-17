@@ -213,5 +213,15 @@ namespace Exiled.API.Enums
         /// Represents the SURFACE_GATE door.
         /// </summary>
         SurfaceGate,
+
+        /// <summary>
+        /// Represents the 330 door.
+        /// </summary>
+        Scp330,
+
+        /// <summary>
+        /// Represents the 330_CHAMBER door.
+        /// </summary>
+        Scp330Chamber,
     }
 }

@@ -13,6 +13,7 @@ namespace Exiled.Events.Patches.Generic
 #pragma warning disable SA1313
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.API.Extensions;
@@ -25,6 +26,8 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem.Items.ThrowableProjectiles;
 
     using NorthwoodLib.Pools;
+
+    using PlayerStatsSystem;
 
     using UnityEngine;
 
@@ -46,6 +49,8 @@ namespace Exiled.Events.Patches.Generic
         {
             if (Server.FriendlyFire)
                 return true;
+            return false;
+            /*
             if (attackerHub == null || victimHub == null)
                 return true;
             Player attacker = Player.Get(attackerHub);
@@ -53,7 +58,7 @@ namespace Exiled.Events.Patches.Generic
             if (attacker == null || victim == null)
                 return true;
 
-            return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();
+            return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();*/
         }
     }
 
@@ -80,7 +85,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="HitboxIdentity.Damage(float, InventorySystem.Items.IDamageDealer, Footprinting.Footprint, UnityEngine.Vector3)"/>.
+    /// Patches <see cref="HitboxIdentity.Damage(float, DamageHandlerBase, UnityEngine.Vector3)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.Damage))]
     internal static class HitboxIdentityDamagePatch
@@ -89,13 +94,11 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            const int instructionsToRemove = 6;
-            int index = newInstructions.FindIndex(code => code.opcode == OpCodes.Ldloc_3);
-
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            LocalBuilder attackerDamageHandler = generator.DeclareLocal(typeof(AttackerDamageHandler));
+            Label jcc = generator.DefineLabel();
 
             // HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, false)
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new[]
             {
                 // AttackerFootprint.Hub
                 new CodeInstruction(OpCodes.Ldarg_3),
@@ -108,6 +111,16 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Ldarg_3),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprint), nameof(Footprint.Role))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(IndividualFriendlyFire), nameof(IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly))),
+                new CodeInstruction(OpCodes.Brfalse, jcc),
+                new CodeInstruction(OpCodes.Ldarg_2),
+                new CodeInstruction(OpCodes.Isinst, typeof(AttackerDamageHandler)),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, attackerDamageHandler.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse, jcc),
+                new CodeInstruction(OpCodes.Ldloc, attackerDamageHandler.LocalIndex),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.ForceFullFriendlyFire))),
+                new CodeInstruction(OpCodes.Nop).WithLabels(jcc),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
@@ -118,9 +131,10 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="ExplosionGrenade.ExplodeDestructible(IDestructible)"/>.
+    /// Patches <see cref="ExplosionGrenade.ExplodeDestructible(IDestructible, Footprint, Vector3, ExplosionGrenade)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.ExplodeDestructible))]
+    // TODO: Re-do this
+    // [HarmonyPatch(typeof(ExplosionGrenade), nameof(ExplosionGrenade.ExplodeDestructible))]
     internal static class ExplosionGrenadeExplodeDestructiblePatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
@@ -204,7 +218,8 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="Scp018Projectile.DetectPlayers()"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Scp018Projectile), nameof(Scp018Projectile.DetectPlayers))]
+    // TODO: Re-do this
+    // [HarmonyPatch(typeof(Scp018Projectile), nameof(Scp018Projectile.DetectPlayers))]
     internal static class Scp018ProjectileDetectPlayersPatch
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

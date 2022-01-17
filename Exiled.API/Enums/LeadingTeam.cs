@@ -13,17 +13,17 @@ namespace Exiled.API.Enums
     public enum LeadingTeam : byte
     {
         /// <summary>
-        /// Represents Scientists, Guards, and NTF.
+        /// Represents the Scientists, Guards, and NTF team.
         /// </summary>
         FacilityForces,
 
         /// <summary>
-        /// Represents Class-D and Chaos Insurgency.
+        /// Represents the Class-D and Chaos Insurgency team.
         /// </summary>
         ChaosInsurgency,
 
         /// <summary>
-        /// Represents SCPs.
+        /// Represents the SCP team.
         /// </summary>
         Anomalies,
 

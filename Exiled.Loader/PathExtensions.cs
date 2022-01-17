@@ -21,14 +21,14 @@ namespace Exiled.Loader
         /// Gets a path of an assembly.
         /// </summary>
         /// <param name="assembly">The <see cref="Assembly"/>.</param>
-        /// <exception cref="ArgumentNullException">The provided assembly is null.</exception>
-        /// <returns>The path of the assembly or null.</returns>
+        /// <exception cref="ArgumentNullException">The provided assembly is <see langword="null"/>.</exception>
+        /// <returns>The path of the assembly or <see langword="null"/>.</returns>
         public static string GetPath(this Assembly assembly)
         {
             if (assembly == null)
                 throw new ArgumentNullException(nameof(assembly));
 
-            Loader.Locations.TryGetValue(assembly, out var path);
+            Loader.Locations.TryGetValue(assembly, out string path);
             return path;
         }
 
@@ -36,8 +36,8 @@ namespace Exiled.Loader
         /// Gets a path of a plugin.
         /// </summary>
         /// <param name="plugin">The <see cref="IPlugin{IConfig}"/>.</param>
-        /// <exception cref="ArgumentNullException">The provided plugin is null.</exception>
-        /// <returns>The path of the plugin or null.</returns>
+        /// <exception cref="ArgumentNullException">The provided plugin is <see langword="null"/>.</exception>
+        /// <returns>The path of the plugin or <see langword="null"/>.</returns>
         public static string GetPath(this IPlugin<IConfig> plugin)
         {
             if (plugin == null)

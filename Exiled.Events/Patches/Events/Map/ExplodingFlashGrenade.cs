@@ -15,6 +15,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
+    using Exiled.Events.Patches.Generic;
 
     using Footprinting;
 
@@ -121,7 +122,12 @@ namespace Exiled.Events.Patches.Events.Map
         private static void ProcessPlayers(FlashbangGrenade grenade, List<Player> players)
         {
             foreach (Player player in players)
-                grenade.ProcessPlayer(player.ReferenceHub);
+            {
+                if (HitboxIdentity.CheckFriendlyFire(grenade.PreviousOwner.Role, player.ReferenceHub.characterClassManager.CurClass))
+                {
+                    grenade.ProcessPlayer(player.ReferenceHub);
+                }
+            }
         }
     }
 }

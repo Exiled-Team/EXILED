@@ -7,12 +7,19 @@
 
 namespace Exiled.API.Features
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using MEC;
+
+    using PlayerStatsSystem;
 
     using Respawning;
 
+    using static PlayerStatsSystem.PlayerStats;
+
     /// <summary>
-    /// A set of tools to use in-game C.A.S.S.I.E more easily.
+    /// A set of tools to use in-game C.A.S.S.I.E.
     /// </summary>
     public static class Cassie
     {
@@ -20,6 +27,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
         public static bool IsSpeaking => NineTailedFoxAnnouncer.singleton.queue.Count != 0;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
+        /// </summary>
+        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => NineTailedFoxAnnouncer.singleton.voiceLines;
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
@@ -67,5 +79,65 @@ namespace Exiled.API.Features
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false)
             => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
+
+        /// <summary>
+        /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
+        /// </summary>
+        /// <param name="team"><see cref="Team"/>.</param>
+        /// <param name="unitName">Unit Name.</param>
+        /// <returns><see cref="string"/> Containment Unit text.</returns>
+        public static string ConvertTeam(Team team, string unitName)
+            => NineTailedFoxAnnouncer.ConvertTeam(team, unitName);
+
+        /// <summary>
+        /// Converts Number into Cassie-Readable String.
+        /// </summary>
+        /// <param name="num">Number to convert.</param>
+        /// <returns>A CASSIE-readable <see cref="string"/> representing the number.</returns>
+        public static string ConvertNumber(int num)
+            => NineTailedFoxAnnouncer.ConvertNumber(num);
+
+        /// <summary>
+        /// Announce a SCP Termination.
+        /// </summary>
+        /// <param name="scp">SCP to announce termination of.</param>
+        /// <param name="info">HitInformation.</param>
+        public static void SCPTermination(Player scp, DamageHandlerBase info)
+            => NineTailedFoxAnnouncer.AnnounceScpTermination(scp.ReferenceHub, info);
+
+        /// <summary>
+        /// Announces the termination of a custom SCP name.
+        /// </summary>
+        /// <param name="scpName">SCP Name. Note that for larger numbers, C.A.S.S.I.E will pronounce the place (eg. "457" -> "four hundred fifty seven"). Spaces can be used to prevent this behavior.</param>
+        /// <param name="info">Hit Information.</param>
+        public static void CustomScpTermination(string scpName, DamageHandler info)
+        {
+            string result = scpName;
+            if (info.Base is MicroHidDamageHandler)
+                result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
+            else if (info.Base is WarheadDamageHandler)
+                result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
+            else if (info.Base is UniversalDamageHandler)
+                result += " LOST IN DECONTAMINATION SEQUENCE";
+            else if (info.Base is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
+                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
+            else
+                result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
+
+            float num = (AlphaWarheadController.Host.timeToDetonation <= 0f) ? 3.5f : 1f;
+            GlitchyMessage(result, UnityEngine.Random.Range(0.1f, 0.14f) * num, UnityEngine.Random.Range(0.07f, 0.08f) * num);
+        }
+
+        /// <summary>
+        /// Clears the C.A.S.S.I.E queue.
+        /// </summary>
+        public static void Clear() => RespawnEffectsController.ClearQueue();
+
+        /// <summary>
+        /// Gets a value indicating whether or not the given word is a valid C.A.S.S.I.E word.
+        /// </summary>
+        /// <param name="word">The word to check.</param>
+        /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
+        public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
     }
 }

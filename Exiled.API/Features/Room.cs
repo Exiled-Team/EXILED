@@ -15,7 +15,9 @@ namespace Exiled.API.Features
 
     using Interactables.Interobjects.DoorUtils;
 
-    using NorthwoodLib.Pools;
+    using MapGeneration;
+
+    using Mirror;
 
     using UnityEngine;
 
@@ -50,9 +52,19 @@ namespace Exiled.API.Features
         public RoomType Type { get; private set; }
 
         /// <summary>
+        /// Gets a reference to the room's <see cref="MapGeneration.RoomIdentifier"/>.
+        /// </summary>
+        public RoomIdentifier RoomIdentifier { get; private set; }
+
+        /// <summary>
+        /// Gets a reference to the <see cref="global::TeslaGate"/> in the room, or <see langword="null"/> if this room does not contain one.
+        /// </summary>
+        public TeslaGate TeslaGate { get; private set; }
+
+        /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Player> Players => Player.List.Where(player => player.CurrentRoom.Transform == Transform);
+        public IEnumerable<Player> Players => Player.List.Where(player => player.IsAlive && player.CurrentRoom.Transform == Transform);
 
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> in the <see cref="Room"/>.
@@ -73,7 +85,7 @@ namespace Exiled.API.Features
         /// </summary>
         public Color Color
         {
-            get => (Color)FlickerableLightController.WarheadLightColor;
+            get => FlickerableLightController.WarheadLightColor;
             set
             {
                 FlickerableLightController.WarheadLightColor = value;
@@ -91,7 +103,15 @@ namespace Exiled.API.Features
         /// </summary>
         public bool LightsOff => FlickerableLightController && FlickerableLightController.IsEnabled();
 
-        private FlickerableLightController FlickerableLightController { get; set; }
+        /// <summary>
+        /// Gets the FlickerableLightController's NetworkIdentity.
+        /// </summary>
+        public NetworkIdentity FlickerableLightControllerNetIdentity => FlickerableLightController.netIdentity;
+
+        /// <summary>
+        /// Gets the room's FlickerableLightController.
+        /// </summary>
+        public FlickerableLightController FlickerableLightController { get; private set; }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.
@@ -106,7 +126,7 @@ namespace Exiled.API.Features
         /// <param name="lockType">DoorLockType of the lockdown.</param>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
-            foreach (Door door in this.Doors)
+            foreach (Door door in Doors)
             {
                 door.ChangeLock(lockType);
                 door.IsOpen = false;
@@ -118,14 +138,23 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Locks all the doors and turns off all lights in the room.
+        /// </summary>
+        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="lockType">DoorLockType of the blackout.</param>
+        public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            LockDown(duration, lockType);
+            TurnOffLights(duration);
+        }
+
+        /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
         public void UnlockAll()
         {
-            foreach (Door door in this.Doors)
-            {
+            foreach (Door door in Doors)
                 door.Unlock();
-            }
         }
 
         /// <summary>
@@ -158,8 +187,8 @@ namespace Exiled.API.Features
                     return RoomType.LczCurve;
                 case "LCZ_Straight":
                     return RoomType.LczStraight;
-                case "LCZ_012":
-                    return RoomType.Lcz012;
+                case "LCZ_330":
+                    return RoomType.Lcz330;
                 case "LCZ_914":
                     return RoomType.Lcz914;
                 case "LCZ_Crossing":
@@ -216,6 +245,8 @@ namespace Exiled.API.Features
                     return RoomType.Hcz096;
                 case "HCZ_Curve":
                     return RoomType.HczCurve;
+                case "HCZ_Straight":
+                    return RoomType.HczStraight;
                 case "EZ_Endoof":
                     return RoomType.EzVent;
                 case "EZ_Intercom":
@@ -244,6 +275,8 @@ namespace Exiled.API.Features
                     return RoomType.EzGateB;
                 case "EZ_Shelter":
                     return RoomType.EzShelter;
+                case "EZ_ThreeWay":
+                    return RoomType.EzTCross;
                 case "PocketWorld":
                     return RoomType.Pocket;
                 case "Outside":
@@ -255,10 +288,10 @@ namespace Exiled.API.Features
 
         private static ZoneType FindZone(GameObject gameObject)
         {
-            var transform = gameObject.transform;
+            Transform transform = gameObject.transform;
 
             if (transform.parent == null)
-                return ZoneType.Unspecified;
+                return ZoneType.Surface;
 
             switch (transform.parent.name)
             {
@@ -273,35 +306,59 @@ namespace Exiled.API.Features
             }
         }
 
-        private static IEnumerable<Door> FindDoors(GameObject gameObject)
+        private static void FindObjectsInRoom(GameObject gameObject, out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
         {
-            List<Door> doors = new List<Door>();
-            foreach (DoorVariant doorVariant in gameObject.GetComponentsInChildren<DoorVariant>())
-                doors.Add(Door.Get(doorVariant));
-            return doors;
-        }
+            cameraList = new List<Camera079>();
+            doors = new List<Door>();
+            flickerableLightController = null;
 
-        private static List<Camera079> FindCameras(GameObject gameObject)
-        {
-            List<Camera079> cameraList = new List<Camera079>();
-            foreach (Camera079 camera in Map.Cameras)
+            foreach (var scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
             {
-                if (camera.Room().gameObject == gameObject)
+                if (scp079Interactable != null)
                 {
-                    cameraList.Add(camera);
+                    switch (scp079Interactable.type)
+                    {
+                        case Scp079Interactable.InteractableType.Door:
+                            {
+                                if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
+                                    doors.Add(Door.Get(doorVariant));
+                                break;
+                            }
+
+                        case Scp079Interactable.InteractableType.Camera:
+                            {
+                                if (scp079Interactable.TryGetComponent(out Camera079 camera))
+                                    cameraList.Add(camera);
+                                break;
+                            }
+
+                        case Scp079Interactable.InteractableType.LightController:
+                            {
+                                if (scp079Interactable.TryGetComponent(out FlickerableLightController lightController))
+                                    flickerableLightController = lightController;
+                                break;
+                            }
+                    }
                 }
             }
 
-            return cameraList;
+            if (flickerableLightController == null && gameObject.transform.position.y > 900)
+            {
+                flickerableLightController = FlickerableLightController.Instances.Single(x => x.transform.position.y > 900);
+            }
         }
 
         private void Start()
         {
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
-            Doors = FindDoors(gameObject);
-            Cameras = FindCameras(gameObject);
-            FlickerableLightController = GetComponentInChildren<FlickerableLightController>();
+            RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
+            TeslaGate = gameObject.GetComponentInChildren<TeslaGate>();
+
+            FindObjectsInRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
+            Doors = doors;
+            Cameras = cameras;
+            FlickerableLightController = flickerableLightController;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Exiled.Updater.Commands
     {
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            var result = Updater.Instance.CheckUpdate(true);
+            bool result = Updater.Instance.CheckUpdate(true);
             response = result ? "The update proccess has started" : "The update process has already started";
             return result;
         }

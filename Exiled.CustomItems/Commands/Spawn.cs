@@ -11,6 +11,7 @@ namespace Exiled.CustomItems.Commands
 
     using CommandSystem;
 
+    using Exiled.API.Extensions;
     using Exiled.API.Features;
     using Exiled.CustomItems.API;
     using Exiled.CustomItems.API.Features;

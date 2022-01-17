@@ -55,20 +55,19 @@ namespace Exiled.Loader
 
             CustomNetworkManager.Modded = true;
 
-            // "Useless" check for now, since configs will be loaded after loading all plugins.
+            ConfigManager.LoadLoaderConfigs();
+
             if (Config.Environment != EnvironmentType.Production)
                 Paths.Reload($"EXILED-{Config.Environment.ToString().ToUpper()}");
             if (Environment.CurrentDirectory.Contains("testing", StringComparison.OrdinalIgnoreCase))
                 Paths.Reload($"EXILED-Testing");
 
-            if (!Directory.Exists(Paths.Configs))
-                Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Configs);
+            Directory.CreateDirectory(Paths.Plugins);
+            Directory.CreateDirectory(Paths.Dependencies);
 
-            if (!Directory.Exists(Paths.Plugins))
-                Directory.CreateDirectory(Paths.Plugins);
-
-            if (!Directory.Exists(Paths.Dependencies))
-                Directory.CreateDirectory(Paths.Dependencies);
+            if (Config.ConfigType == ConfigType.Separated)
+                Directory.CreateDirectory(Paths.IndividualConfigs);
         }
 
         /// <summary>
@@ -107,10 +106,11 @@ namespace Exiled.Loader
         public static List<Assembly> Dependencies { get; } = new List<Assembly>();
 
         /// <summary>
-        /// Gets the serializer for configs and translations.
+        /// Gets or sets the serializer for configs and translations.
         /// </summary>
-        public static ISerializer Serializer { get; } = new SerializerBuilder()
+        public static ISerializer Serializer { get; set; } = new SerializerBuilder()
             .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithTypeInspector(inner => new CommentGatheringTypeInspector(inner))
             .WithEmissionPhaseObjectGraphVisitor(args => new CommentsObjectGraphVisitor(args.InnerVisitor))
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
@@ -118,10 +118,11 @@ namespace Exiled.Loader
             .Build();
 
         /// <summary>
-        /// Gets the deserializer for configs and translations.
+        /// Gets or sets the deserializer for configs and translations.
         /// </summary>
-        public static IDeserializer Deserializer { get; } = new DeserializerBuilder()
+        public static IDeserializer Deserializer { get; set; } = new DeserializerBuilder()
             .WithTypeConverter(new VectorsConverter())
+            .WithTypeConverter(new AttachmentIdentifiersConverter())
             .WithNamingConvention(UnderscoredNamingConvention.Instance)
             .WithNodeDeserializer(inner => new ValidatingNodeDeserializer(inner), deserializer => deserializer.InsteadOf<ObjectNodeDeserializer>())
             .IgnoreFields()
@@ -134,7 +135,7 @@ namespace Exiled.Loader
         /// <param name="dependencies">The dependencies that could have been loaded by Exiled.Bootstrap.</param>
         public static void Run(Assembly[] dependencies = null)
         {
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator) : geteuid() == 0)
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? CheckUAC() : geteuid() == 0)
             {
                 ServerConsole.AddLog("YOU ARE RUNNING THE SERVER AS ROOT / ADMINISTRATOR. THIS IS HIGHLY UNRECOMMENDED. PLEASE INSTALL YOUR SERVER AS A NON-ROOT/ADMIN USER.", ConsoleColor.Red);
                 Thread.Sleep(5000);
@@ -142,6 +143,12 @@ namespace Exiled.Loader
 
             if (dependencies?.Length > 0)
                 Dependencies.AddRange(dependencies);
+
+            if (!Config.IsEnabled)
+            {
+                Log.Warn("Exiled Loader is disabled. No plugins will be loaded.");
+                return;
+            }
 
             LoadDependencies();
             LoadPlugins();
@@ -156,17 +163,8 @@ namespace Exiled.Loader
                 AppDomain.CurrentDomain.GetAssemblies()
                     .Where(a => a.FullName.StartsWith("Exiled.", StringComparison.OrdinalIgnoreCase))
                     .Select(a => $"{a.GetName().Name} - Version {a.GetName().Version.ToString(3)}"));
-            ServerConsole.AddLog(
-                @"Welcome to
-   ▄████████ ▀████    ▐████▀  ▄█   ▄█          ▄████████ ████████▄
-  ███    ███   ███▌   ████▀  ███  ███         ███    ███ ███   ▀███
-  ███    █▀     ███  ▐███    ███▌ ███         ███    █▀  ███    ███
- ▄███▄▄▄        ▀███▄███▀    ███▌ ███        ▄███▄▄▄     ███    ███
-▀▀███▀▀▀        ████▀██▄     ███▌ ███       ▀▀███▀▀▀     ███    ███
-  ███    █▄    ▐███  ▀███    ███  ███         ███    █▄  ███    ███
-  ███    ███  ▄███     ███▄  ███  ███▌    ▄   ███    ███ ███   ▄███
-  ██████████ ████       ███▄ █▀   █████▄▄██   ██████████ ████████▀
-                                  ▀                                 ", ConsoleColor.Green);
+
+            ServerConsole.AddLog($"Welcome to {LoaderMessages.GetMessage()}", ConsoleColor.Green);
         }
 
         /// <summary>
@@ -204,7 +202,7 @@ namespace Exiled.Loader
         /// Loads an assembly.
         /// </summary>
         /// <param name="path">The path to load the assembly from.</param>
-        /// <returns>Returns the loaded assembly or null.</returns>
+        /// <returns>Returns the loaded assembly or <see langword="null"/>.</returns>
         public static Assembly LoadAssembly(string path)
         {
             try
@@ -223,13 +221,19 @@ namespace Exiled.Loader
         /// Create a plugin instance.
         /// </summary>
         /// <param name="assembly">The plugin assembly.</param>
-        /// <returns>Returns the created plugin instance or null.</returns>
+        /// <returns>Returns the created plugin instance or <see langword="null"/>.</returns>
         public static IPlugin<IConfig> CreatePlugin(Assembly assembly)
         {
             try
             {
-                foreach (Type type in assembly.GetTypes().Where(type => !type.IsAbstract && !type.IsInterface))
+                foreach (Type type in assembly.GetTypes())
                 {
+                    if (type.IsAbstract || type.IsInterface)
+                    {
+                        Log.Debug($"\"{type.FullName}\" is an interface or abstract class, skipping.", ShouldDebugBeShown);
+                        continue;
+                    }
+
                     if (!type.BaseType.IsGenericType || (type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<>) && type.BaseType.GetGenericTypeDefinition() != typeof(Plugin<,>)))
                     {
                         Log.Debug($"\"{type.FullName}\" does not inherit from Plugin<TConfig>, skipping.", ShouldDebugBeShown);
@@ -240,7 +244,7 @@ namespace Exiled.Loader
 
                     IPlugin<IConfig> plugin = null;
 
-                    var constructor = type.GetConstructor(Type.EmptyTypes);
+                    ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
                     if (constructor != null)
                     {
                         Log.Debug("Public default constructor found, creating instance...", ShouldDebugBeShown);
@@ -251,7 +255,7 @@ namespace Exiled.Loader
                     {
                         Log.Debug($"Constructor wasn't found, searching for a property with the {type.FullName} type...", ShouldDebugBeShown);
 
-                        var value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
+                        object value = Array.Find(type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public), property => property.PropertyType == type)?.GetValue(null);
 
                         if (value != null)
                             plugin = value as IPlugin<IConfig>;
@@ -285,7 +289,26 @@ namespace Exiled.Loader
         /// </summary>
         public static void EnablePlugins()
         {
-            foreach (IPlugin<IConfig> plugin in Plugins)
+            List<IPlugin<IConfig>> toLoad = Plugins.ToList();
+
+            foreach (IPlugin<IConfig> plugin in toLoad.ToList())
+            {
+                try
+                {
+                    if (plugin.Name.StartsWith("Exiled") && plugin.Config.IsEnabled)
+                    {
+                        plugin.OnEnabled();
+                        plugin.OnRegisteringCommands();
+                        toLoad.Remove(plugin);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"Plugin \"{plugin.Name}\" thew an exeption while enabling: {e}");
+                }
+            }
+
+            foreach (IPlugin<IConfig> plugin in toLoad)
             {
                 try
                 {
@@ -354,10 +377,17 @@ namespace Exiled.Loader
             }
         }
 
+        /// <summary>
+        /// Gets a plugin with its prefix or name.
+        /// </summary>
+        /// <param name="args">The name or prefix of the plugin (Using the prefix is recommended).</param>
+        /// <returns>The desired plugin, null if not found.</returns>
+        public static IPlugin<IConfig> GetPlugin(string args) => Plugins.FirstOrDefault(x => x.Name == args || x.Prefix == args);
+
         private static bool CheckPluginRequiredExiledVersion(IPlugin<IConfig> plugin)
         {
-            var requiredVersion = plugin.RequiredExiledVersion;
-            var actualVersion = Version;
+            Version requiredVersion = plugin.RequiredExiledVersion;
+            Version actualVersion = Version;
 
             // Check Major version
             // It's increased when an incompatible API change was made
@@ -372,9 +402,8 @@ namespace Exiled.Loader
 
                     return true;
                 }
-                else if (requiredVersion.Major < actualVersion.Major)
+                else if (requiredVersion.Major < actualVersion.Major && !Config.ShouldLoadOutdatedPlugins)
                 {
-                    // TODO: Re-add outdated plugin loading.
                     Log.Error($"You're running an older version of {plugin.Name} ({plugin.Version.ToString(3)})! " +
                               $"Its Required Major version is {requiredVersion.Major}, but the actual version is: {actualVersion.Major}. This plugin will not be loaded!");
 
@@ -385,10 +414,85 @@ namespace Exiled.Loader
             return false;
         }
 
+#pragma warning disable SA1201
 #pragma warning disable SA1300
+#pragma warning disable SA1313
+#pragma warning disable SA1600
+#pragma warning disable SA1602
+#pragma warning disable CS1591
         [DllImport("libc")]
         private static extern uint geteuid();
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        private static extern bool GetTokenInformation(
+            IntPtr TokenHandle,
+            TOKEN_INFORMATION_CLASS TokenInformationClass,
+            IntPtr TokenInformation,
+            uint TokenInformationLength,
+            out uint ReturnLength);
+
+        public enum TOKEN_INFORMATION_CLASS
+        {
+            TokenUser = 1,
+            TokenGroups,
+            TokenPrivileges,
+            TokenOwner,
+            TokenPrimaryGroup,
+            TokenDefaultDacl,
+            TokenSource,
+            TokenType,
+            TokenImpersonationLevel,
+            TokenStatistics,
+            TokenRestrictedSids,
+            TokenSessionId,
+            TokenGroupsAndPrivileges,
+            TokenSessionReference,
+            TokenSandBoxInert,
+            TokenAuditPolicy,
+            TokenOrigin,
+            TokenElevationType,
+            TokenLinkedToken,
+            TokenElevation,
+            TokenHasRestrictions,
+            TokenAccessInformation,
+            TokenVirtualizationAllowed,
+            TokenVirtualizationEnabled,
+            TokenIntegrityLevel,
+            TokenUIAccess,
+            TokenMandatoryPolicy,
+            TokenLogonSid,
+            MaxTokenInfoClass,
+        }
+
+        public enum TOKEN_ELEVATION_TYPE
+        {
+            TokenElevationTypeDefault = 1,
+            TokenElevationTypeFull,
+            TokenElevationTypeLimited,
+        }
 #pragma warning restore
+
+        /// <summary>
+        /// Check UAC elevated (for Windows).
+        /// </summary>
+        private static bool CheckUAC()
+        {
+            TOKEN_ELEVATION_TYPE tet = TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
+            uint tetSize = (uint)Marshal.SizeOf((int)tet);
+            IntPtr tetPtr = Marshal.AllocHGlobal((int)tetSize);
+            try
+            {
+                if (GetTokenInformation(WindowsIdentity.GetCurrent().Token, TOKEN_INFORMATION_CLASS.TokenElevationType, tetPtr, tetSize, out _))
+                    tet = (TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tetPtr);
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(tetPtr);
+            }
+
+            return tet == TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+        }
+
         /// <summary>
         /// Loads all dependencies.
         /// </summary>
@@ -397,10 +501,6 @@ namespace Exiled.Loader
             try
             {
                 Log.Info($"Loading dependencies at {Paths.Dependencies}");
-
-                // Quick dirty patch to fix rebbok putting Exiled.CustomItems in the wrong place
-                if (File.Exists(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll")))
-                    File.Delete(Path.Combine(Paths.Dependencies, "Exiled.CustomItems.dll"));
 
                 foreach (string dependency in Directory.GetFiles(Paths.Dependencies, "*.dll"))
                 {

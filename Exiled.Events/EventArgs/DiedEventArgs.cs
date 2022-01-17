@@ -7,9 +7,12 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
+
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all informations after a player dies.
@@ -19,14 +22,13 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="DiedEventArgs"/> class.
         /// </summary>
-        /// <param name="killer"><inheritdoc cref="Killer"/></param>
         /// <param name="target"><inheritdoc cref="Target"/></param>
-        /// <param name="hitInformations"><inheritdoc cref="HitInformations"/></param>
-        public DiedEventArgs(Player killer, Player target, PlayerStats.HitInfo hitInformations)
+        /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
+        public DiedEventArgs(Player target, DamageHandlerBase damageHandler)
         {
-            Killer = killer;
+            Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
             Target = target;
-            HitInformations = hitInformations;
+            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -40,8 +42,8 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the hit informations.
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
-        public PlayerStats.HitInfo HitInformations { get; set; }
+        public DamageHandler Handler { get; set; }
     }
 }

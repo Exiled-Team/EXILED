@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using System;
+
     using Exiled.API.Enums;
 
     using Interactables.Interobjects.DoorUtils;
@@ -34,7 +36,7 @@ namespace Exiled.API.Features.Items
         /// Initializes a new instance of the <see cref="Keycard"/> class.
         /// </summary>
         /// <param name="type"><inheritdoc cref="Item.Type"/></param>
-        public Keycard(ItemType type)
+        internal Keycard(ItemType type)
             : this((KeycardItem)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
@@ -49,6 +51,12 @@ namespace Exiled.API.Features.Items
         {
             get => (Enums.KeycardPermissions)Base.Permissions;
             set => Base.Permissions = (Interactables.Interobjects.DoorUtils.KeycardPermissions)value;
+        }
+
+        /// <inheritdoc/>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Permissions}|";
         }
     }
 }

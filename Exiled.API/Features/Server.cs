@@ -8,7 +8,14 @@
 namespace Exiled.API.Features
 {
     using System.Reflection;
+
+    using MEC;
+
     using Mirror;
+
+    using PlayerStatsSystem;
+
+    using RoundRestarting;
 
     /// <summary>
     /// A set of tools to easily work with the server.
@@ -22,7 +29,7 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Gets the player's host of the server.
-        /// Might be null when called when the server isn't loaded.
+        /// Might be <see langword="null"/> when called when the server isn't loaded.
         /// </summary>
         public static Player Host
         {
@@ -137,8 +144,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Restart()
         {
-            // Used here fastRestart: true, don't know if it makes sense other than no delays in the call to change the scene
-            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
+            Round.Restart(false, true, ServerStatic.NextRoundAction.Restart);
         }
 
         /// <summary>
@@ -146,31 +152,19 @@ namespace Exiled.API.Features
         /// </summary>
         public static void Shutdown()
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            // To avoid delays between reconnecting players, just kick them
-            if (playerStats != null)
-                playerStats.RpcRoundrestart(0f, false);
-
-            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
+            global::Shutdown.Quit();
         }
 
         /// <summary>
         /// Redirects players to a server on another port, restarts the current server.
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
-        /// <returns>true, if redirection was successful; otherwise, false.</returns>
-        /// <remarks>If the returned value is false, the server won't restart.</remarks>
+        /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>If the returned value is <see langword="false"/>, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            if (playerStats == null)
-                return false;
-
-            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
-
-            Round.Restart(true, true, ServerStatic.NextRoundAction.Restart);
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            Timing.CallDelayed(0.5f, Restart);
 
             return true;
         }
@@ -179,18 +173,12 @@ namespace Exiled.API.Features
         /// Redirects players to a server on another port, shutdowns the current server.
         /// </summary>
         /// <param name="redirectPort">The port to redirect players to.</param>
-        /// <returns>true, if redirection was successful; otherwise, false.</returns>
-        /// <remarks>If the returned value is false, the server won't shutdown.</remarks>
+        /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
+        /// <remarks>If the returned value is <see langword="false"/>, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
-            PlayerStats playerStats = Host.ReferenceHub != null ? Host.ReferenceHub.playerStats : null;
-
-            if (playerStats == null)
-                return false;
-
-            playerStats.RpcRoundrestartRedirect(.35f, redirectPort);
-
-            Round.Restart(false, true, ServerStatic.NextRoundAction.Shutdown);
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            Timing.CallDelayed(0.5f, Shutdown);
             return true;
         }
 

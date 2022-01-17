@@ -7,9 +7,12 @@
 
 namespace Exiled.Events.EventArgs
 {
+#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
+
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all informations before C.A.S.S.I.E announces an SCP termination.
@@ -19,19 +22,23 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Initializes a new instance of the <see cref="AnnouncingScpTerminationEventArgs"/> class.
         /// </summary>
-        /// <param name="killer"><inheritdoc cref="Killer"/></param>
-        /// <param name="role"><inheritdoc cref="Role"/></param>
-        /// <param name="hitInfo"><inheritdoc cref="HitInfo"/></param>
-        /// <param name="terminationCause"><inheritdoc cref="TerminationCause"/></param>
+        /// <param name="scp"><inheritdoc cref="Player"/></param>
+        /// <param name="damageHandlerBase"><inheritdoc cref="DamageHandler"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public AnnouncingScpTerminationEventArgs(Player killer, Role role, PlayerStats.HitInfo hitInfo, string terminationCause, bool isAllowed = true)
+        public AnnouncingScpTerminationEventArgs(Player scp, DamageHandlerBase damageHandlerBase, bool isAllowed = true)
         {
-            Killer = killer;
-            Role = role;
-            HitInfo = hitInfo;
-            TerminationCause = terminationCause;
+            Player = scp;
+            Role = scp.ReferenceHub.characterClassManager.CurRole;
+            Handler = new DamageHandler(scp, damageHandlerBase);
+            Killer = damageHandlerBase is AttackerDamageHandler attackerDamageHandler ? API.Features.Player.Get(attackerDamageHandler.Attacker.Hub) : null;
+            TerminationCause = damageHandlerBase.CassieDeathAnnouncement;
             IsAllowed = isAllowed;
         }
+
+        /// <summary>
+        /// Gets the player the announcement is being played for.
+        /// </summary>
+        public Player Player { get; }
 
         /// <summary>
         /// Gets the player who killed the SCP.
@@ -44,9 +51,9 @@ namespace Exiled.Events.EventArgs
         public Role Role { get; }
 
         /// <summary>
-        /// Gets or sets the hit info.
+        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
         /// </summary>
-        public PlayerStats.HitInfo HitInfo { get; set; }
+        public DamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets the termination cause.
@@ -56,6 +63,6 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets a value indicating whether or not the SCP termination will be announced by C.A.S.S.I.E.
         /// </summary>
-        public bool IsAllowed { get; set; }
+        public bool IsAllowed { get; set; } = true;
     }
 }

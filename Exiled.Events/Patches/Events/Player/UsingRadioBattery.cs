@@ -31,19 +31,19 @@ namespace Exiled.Events.Patches.Events.Player
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            var newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            var offset = -4;
+            int offset = -4;
 
             // Search for the first "ldloc.0".
-            var index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_0) + offset;
 
             // Get the return label of the last "ret".
-            var returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
+            Label returnLabel = newInstructions[newInstructions.Count - 1].labels[0];
 
             // Declare an "UsingRadioBatteryEventArgs" local variable.
-            var ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
+            LocalBuilder ev = generator.DeclareLocal(typeof(UsingRadioBatteryEventArgs));
 
             // var ev = new UsingRadioBatteryEventArgs(this, Player.Get(base.Owner), num);
             //

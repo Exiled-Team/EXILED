@@ -7,12 +7,14 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Text.RegularExpressions;
 
     using Exiled.API.Enums;
+    using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
 
     using Interactables.Interobjects.DoorUtils;
@@ -25,9 +27,15 @@ namespace Exiled.API.Features
 
     using Mirror;
 
+    using NorthwoodLib.Pools;
+
+    using PlayableScps.ScriptableObjects;
+
     using UnityEngine;
 
+    using CameraType = Exiled.API.Enums.CameraType;
     using Object = UnityEngine.Object;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// A set of tools to easily handle the in-game map.
@@ -85,10 +93,12 @@ namespace Exiled.API.Features
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
+        private static System.Random random = new System.Random();
+
         /// <summary>
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
-        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating;
+        public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
 
         /// <summary>
         /// Gets the number of activated generators.
@@ -190,9 +200,14 @@ namespace Exiled.API.Features
         public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
 
         /// <summary>
-        /// Gets the <see cref="Player"/> that is using the intercom. Will be null if <see cref="IntercomInUse"/> is false.
+        /// Gets the <see cref="Player"/> that is using the intercom. Will be <see langword="null"/> if <see cref="IntercomInUse"/> is <see langword="false"/>.
         /// </summary>
         public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
+
+        /// <summary>
+        /// Gets the <see cref="global::AmbientSoundPlayer"/>.
+        /// </summary>
+        public static AmbientSoundPlayer AmbientSoundPlayer { get; internal set; }
 
         /// <summary>
         /// Tries to find the room that a <see cref="GameObject"/> is inside, first using the <see cref="Transform"/>'s parents, then using a Raycast if no room was found.
@@ -202,7 +217,7 @@ namespace Exiled.API.Features
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
-            var rooms = Rooms;
+            ReadOnlyCollection<Room> rooms = Rooms;
 
             Room room = null;
 
@@ -215,14 +230,14 @@ namespace Exiled.API.Features
             }
             else
             {
-                // Check for Scp079 if it's a player
-                var ply = Player.Get(objectInRoom);
+                // Check for SCP-079 if it's a player
+                Player ply = Player.Get(objectInRoom);
 
                 // Raycasting doesn't make sense,
-                // Scp079 position is constant,
+                // SCP-079 position is constant,
                 // let it be 'Outside' instead
                 if (ply.Role == RoleType.Scp079)
-                    room = FindParentRoom(ply.ReferenceHub.scp079PlayerScript.currentCamera.gameObject);
+                    room = FindParentRoom(ply.Camera.gameObject);
             }
 
             if (room == null)
@@ -231,19 +246,19 @@ namespace Exiled.API.Features
                 Ray ray = new Ray(objectInRoom.transform.position, Vector3.down);
 
                 if (Physics.RaycastNonAlloc(ray, CachedFindParentRoomRaycast, 10, 1 << 0, QueryTriggerInteraction.Ignore) == 1)
-                    room = CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
-            }
+                    return CachedFindParentRoomRaycast[0].collider.gameObject.GetComponentInParent<Room>();
 
-            // Always default to surface transform, since it's static.
-            // The current index of the 'Outsise' room is the last one
-            if (room == null && rooms.Count != 0)
-                room = rooms[rooms.Count - 1];
+                // Always default to surface transform, since it's static.
+                // The current index of the 'Outside' room is the last one
+                if (rooms.Count != 0)
+                    return rooms.FirstOrDefault(r => r.gameObject.name == "Outside");
+            }
 
             return room;
         }
 
         /// <summary>
-        /// Broadcasts a message to all players.
+        /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
@@ -254,7 +269,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Broadcasts a message to all players.
+        /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="duration">The duration in seconds.</param>
         /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
@@ -269,7 +284,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Shows a hint to all players.
+        /// Shows a hint to all <see cref="Player">players</see>.
         /// </summary>
         /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
@@ -280,7 +295,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Clears all players' broadcasts.
+        /// Clears all <see cref="Player">players</see>' broadcasts.
         /// </summary>
         public static void ClearBroadcasts() => Server.Broadcast.RpcClearElements();
 
@@ -294,7 +309,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Turns off all lights of the facility.
+        /// Turns off all lights in the facility.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
@@ -309,13 +324,163 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the camera with the given ID.
+        /// Turns off all lights in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the blackout.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void TurnOffAllLights(float duration, IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                TurnOffAllLights(duration, zone);
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
+        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.IsOpen = false;
+                        door.ChangeLock(lockType);
+                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="duration">The duration of the lockdown.</param>
+        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
+        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                LockAllDoors(duration, zone, lockType);
+        }
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
+        public static void UnlockAllDoors(ZoneType zoneType)
+        {
+            foreach (Room room in Rooms)
+            {
+                if (room != null && room.Zone == zoneType)
+                {
+                    foreach (Door door in room.Doors)
+                    {
+                        door.ChangeLock(DoorLockType.None);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes)
+        {
+            foreach (ZoneType zone in zoneTypes)
+                UnlockAllDoors(zone);
+        }
+
+        /// <summary>
+        /// Unlocks all <see cref="Door">doors</see> in the facility.
+        /// </summary>
+        public static void UnlockAllDoors()
+        {
+            foreach (Door door in Doors)
+                door.ChangeLock(DoorLockType.None);
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Room"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <returns><see cref="Room"/> object.</returns>
+        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
+        {
+            List<Room> rooms = type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList() : RoomsValue;
+            return rooms[random.Next(Math.Max(0, rooms.Count - 1))];
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Camera079"/>.
+        /// </summary>
+        /// <returns><see cref="Camera079"/> object.</returns>
+        public static Camera079 GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Door"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
+        /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
+        /// <returns><see cref="Door"/> object.</returns>
+        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
+        {
+            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
+            return doors[random.Next(Math.Max(0, doors.Count - 1))];
+        }
+
+        /// <summary>
+        /// Gets an random <see cref="Lift"/>.
+        /// </summary>
+        /// <returns><see cref="Lift"/> object.</returns>
+        public static Lift GetRandomLift() => Lifts[Random.Range(0, Lifts.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Locker"/>.
+        /// </summary>
+        /// <returns><see cref="Locker"/> object.</returns>
+        public static Locker GetRandomLocker() => Lockers[Random.Range(0, Lockers.Count)];
+
+        /// <summary>
+        /// Gets an random <see cref="Pickup"/>.
+        /// </summary>
+        /// <param name="type">Filters by <see cref="ItemType"/>.</param>
+        /// <returns><see cref="Pickup"/> object.</returns>
+        public static Pickup GetRandomPickup(ItemType type = ItemType.None)
+        {
+            List<Pickup> pickups = type != ItemType.None
+                ? Pickups.Where(p => p.Type == type).ToList()
+                : Pickups.ToList();
+            return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
+        }
+
+        /// <summary>
+        /// Given the name of a camera, returns its <see cref="CameraType"/>, or <see cref="CameraType.Unknown"/> if the camera does not exist.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <returns>The <see cref="CameraType"/>, or <see langword="null"/> if it does not exist.</returns>
+        public static CameraType GetCameraType(string cameraName)
+        {
+            Camera079 cam = GetCameraByName(cameraName);
+            if (!cam)
+                return CameraType.Unknown;
+
+            return cam.Type();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Camera079">camera</see> with the given ID.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns>The <see cref="Camera079"/> with the given ID.</returns>
+        /// <returns>The <see cref="Camera079"/> with the given ID, or <see langword="null"/> if not found.</returns>
         public static Camera079 GetCameraById(ushort cameraId)
         {
-            foreach (Camera079 camera in Scp079PlayerScript.allCameras)
+            foreach (Camera079 camera in Cameras)
             {
                 if (camera.cameraId == cameraId)
                     return camera;
@@ -325,18 +490,43 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the camera with the given camera type.
+        /// Given the name of a camera, returns the first <see cref="Camera079"/> that matches the name, or <see langword="null"/> if it does not exist.
+        /// </summary>
+        /// <param name="cameraName">The name of the camera.</param>
+        /// <returns>The <see cref="Camera079"/>, or <see langword="null"/> if it does not exist.</returns>
+        public static Camera079 GetCameraByName(string cameraName)
+        {
+            cameraName = cameraName.ToLower();
+            foreach (Camera079 cam in Cameras)
+            {
+                if (cam.cameraName.ToLower() == cameraName)
+                    return cam;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Camera079">camera</see> with the given camera type.
         /// </summary>
         /// <param name="cameraType">The <see cref="Enums.CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
-        public static Camera079 GetCameraByType(Enums.CameraType cameraType) =>
-            GetCameraById((ushort)cameraType);
+        public static Camera079 GetCameraByType(CameraType cameraType)
+        {
+            foreach (Camera079 camera in Cameras)
+            {
+                if (camera.Type() == cameraType)
+                    return camera;
+            }
+
+            return null;
+        }
 
         /// <summary>
-        /// Gets the door with the given door name.
+        /// Gets the <see cref="Door">door</see> with the given door name.
         /// </summary>
         /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="Door"/> or null if a door with this name doesn't exist.</returns>
+        /// <returns>The <see cref="Door"/> or <see langword="null"/> if a door with this name doesn't exist.</returns>
         public static Door GetDoorByName(string doorName)
         {
             DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
@@ -350,20 +540,59 @@ namespace Exiled.API.Features
         /// <param name="color">The new color of the Unit.</param>
         public static void ChangeUnitColor(int index, string color)
         {
-            var unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
+            string unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
 
             Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames.Remove(Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index]);
             Respawning.NamingRules.UnitNamingRules.AllNamingRules[Respawning.SpawnableTeamType.NineTailedFox].AddCombination($"<color={color}>{unit}</color>", Respawning.SpawnableTeamType.NineTailedFox);
 
-            foreach (var ply in Player.List.Where(x => x.ReferenceHub.characterClassManager.CurUnitName == unit))
+            foreach (Player ply in Player.List.Where(x => x.UnitName == unit))
             {
-                var modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
+                string modifiedUnit = Regex.Replace(unit, "<[^>]*?>", string.Empty);
                 if (!string.IsNullOrEmpty(color))
                     modifiedUnit = $"<color={color}>{modifiedUnit}</color>";
 
-                ply.ReferenceHub.characterClassManager.NetworkCurUnitName = modifiedUnit;
+                ply.UnitName = modifiedUnit;
             }
         }
+
+        /// <summary>
+        /// Plays a random ambient sound.
+        /// </summary>
+        public static void PlayAmbientSound() => AmbientSoundPlayer.GenerateRandom();
+
+        /// <summary>
+        /// Plays an ambient sound.
+        /// </summary>
+        /// <param name="id">The id of the sound to play.</param>
+        public static void PlayAmbientSound(int id)
+        {
+            if (id >= AmbientSoundPlayer.clips.Length)
+                throw new IndexOutOfRangeException($"There are only {AmbientSoundPlayer.clips.Length} sounds available.");
+
+            AmbientSoundPlayer.RpcPlaySound(AmbientSoundPlayer.clips[id].index);
+        }
+
+        /// <summary>
+        /// Places a Tantrum (SCP-173's ability) in the indicated position.
+        /// </summary>
+        /// <param name="position">The position where you want to spawn the Tantrum.</param>
+        /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
+        public static GameObject PlaceTantrum(Vector3 position)
+        {
+            GameObject gameObject =
+                Object.Instantiate(ScpScriptableObjects.Instance.Scp173Data.TantrumPrefab);
+            gameObject.transform.position = position;
+            NetworkServer.Spawn(gameObject);
+
+            return gameObject;
+        }
+
+        /// <summary>
+        /// Plays the intercom's sound.
+        /// </summary>
+        /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
+        /// <param name="transmitterId">Sets the transmitterId.</param>
+        public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
         /// Clears the lazy loading game object cache.

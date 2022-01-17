@@ -7,75 +7,101 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
-    using System;
+#pragma warning disable SA1118
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
+    using global::Utils.Networking;
+
     using HarmonyLib;
+
+    using InventorySystem.Disarming;
+
+    using NorthwoodLib.Pools;
+
+    using PlayerStatsSystem;
 
     using UnityEngine;
 
+    using static HarmonyLib.AccessTools;
+
+    using Player = Exiled.API.Features.Player;
+
     /// <summary>
-    /// Patches <see cref="PlayerStats.HurtPlayer(PlayerStats.HitInfo, GameObject, bool, bool)"/>.
-    /// Adds the <see cref="Player.Hurting"/> event.
+    /// Patches <see cref="PlayerStats.DealDamage(DamageHandlerBase)"/>.
+    /// Adds the <see cref="Handlers.Player.Hurting"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.HurtPlayer))]
+    [HarmonyPatch(typeof(PlayerStats), nameof(PlayerStats.DealDamage))]
     internal static class Hurting
     {
-        private static bool Prefix(PlayerStats __instance, ref PlayerStats.HitInfo info, GameObject go)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 1;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
+
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
+            LocalBuilder hurtingEv = generator.DeclareLocal(typeof(HurtingEventArgs));
+
+            Label notRecontainment = generator.DefineLabel();
+            Label ret = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (go == null)
-                    return true;
+                // Player = Player.Get(this._hub)
+                new CodeInstruction(OpCodes.Ldarg_0).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerStats), nameof(PlayerStats._hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
 
-                API.Features.Player attacker = API.Features.Player.Get(info.IsPlayer ? info.RHub.gameObject : __instance.gameObject);
-                API.Features.Player target = API.Features.Player.Get(go);
+                // if (handler is RecontainmentDamageHandler)
+                // {
+                //    if (player.Role == RoleType.Scp079)
+                //    {
+                //        Handlers.Scp079.OnRecontained(new RecontainedEventArgs(player));
+                //        return;
+                //    }
+                // }
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Isinst, typeof(RecontainmentDamageHandler)),
+                new CodeInstruction(OpCodes.Brfalse, notRecontainment),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Ldc_I4_7),
+                new CodeInstruction(OpCodes.Ceq),
+                new CodeInstruction(OpCodes.Brfalse, notRecontainment),
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(RecontainedEventArgs))[0]),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp079), nameof(Scp079.OnRecontained))),
 
-                if (target == null || target.IsHost || target.Role == RoleType.Spectator)
-                    return true;
+                // var ev = new HurtingEventArgs(player, handler)
+                new CodeInstruction(OpCodes.Ldloc, player.LocalIndex).WithLabels(notRecontainment),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(HurtingEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc, hurtingEv.LocalIndex),
 
-                if (info.Tool.Equals(DamageTypes.Recontainment) && target.Role == RoleType.Scp079)
-                {
-                    Scp079.OnRecontained(new RecontainedEventArgs(target));
-                    DiedEventArgs eventArgs = new DiedEventArgs(null, target, info);
-                    Player.OnDied(eventArgs);
-                }
+                // Handlers.Player.OnHurting(ev);
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnHurting))),
 
-                if (attacker == null || attacker.IsHost)
-                    return true;
+                // if (!ev.IsAllowed)
+                //    return;
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(HurtingEventArgs), nameof(HurtingEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brfalse, ret),
+            });
 
-                HurtingEventArgs ev = new HurtingEventArgs(attacker, target, info);
+            newInstructions[newInstructions.Count - 1].labels.Add(ret);
 
-                if (ev.Target.IsHost)
-                    return true;
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                Player.OnHurting(ev);
-
-                info = ev.HitInformation;
-
-                if (!ev.IsAllowed)
-                    return false;
-
-                if (!ev.Target.IsGodModeEnabled && (ev.Amount == -1 || ev.Amount >= ev.Target.Health + ev.Target.ArtificialHealth))
-                {
-                    DyingEventArgs dyingEventArgs = new DyingEventArgs(ev.Attacker, ev.Target, ev.HitInformation);
-
-                    Player.OnDying(dyingEventArgs);
-
-                    if (!dyingEventArgs.IsAllowed)
-                        return false;
-                }
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                API.Features.Log.Error($"Exiled.Events.Patches.Events.Player.Hurting: {e}\n{e.StackTrace}");
-                return true;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

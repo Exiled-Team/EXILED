@@ -18,24 +18,19 @@ namespace Exiled.CustomItems
     /// </summary>
     public class CustomItems : Plugin<Config>
     {
-        private static readonly CustomItems Singleton = new CustomItems();
-
         private RoundHandler roundHandler;
         private PlayerHandler playerHandler;
         private Harmony harmony;
 
-        private CustomItems()
-        {
-        }
-
         /// <summary>
         /// Gets the static reference to this <see cref="CustomItems"/> class.
         /// </summary>
-        public static CustomItems Instance => Singleton;
+        public static CustomItems Instance { get; private set; }
 
         /// <inheritdoc />
         public override void OnEnabled()
         {
+            Instance = this;
             roundHandler = new RoundHandler();
             playerHandler = new PlayerHandler();
 

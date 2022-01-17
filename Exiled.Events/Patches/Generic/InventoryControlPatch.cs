@@ -23,6 +23,8 @@ namespace Exiled.Events.Patches.Generic
     using InventorySystem;
     using InventorySystem.Items;
 
+    using MEC;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
@@ -96,18 +98,48 @@ namespace Exiled.Events.Patches.Generic
 
         private static void RemoveItem(Player player, ushort serial)
         {
+#if DEBUG
+            Log.Debug($"Removing item ({serial}) from a player (before null check)");
+#endif
             if (player == null)
             {
+#if DEBUG
+                Log.Debug("Attempted to remove item from null player, returning.");
+#endif
                 return;
             }
 
             if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
             {
+#if DEBUG
+                Log.Debug("Attempted to remove an item the player doesn't own, returning.");
+#endif
                 return;
             }
-
+#if DEBUG
+            Log.Debug($"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+            foreach (Item item in player.Items)
+                Log.Debug($"{item.Type} ({item.Serial})");
+#endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
+            Timing.CallDelayed(0.15f, () =>
+            {
+                if (player.Inventory.UserInventory.Items.ContainsKey(serial))
+                {
+                    player.Inventory.UserInventory.Items.Remove(serial);
+                    player.Inventory.SendItemsNextFrame = true;
+#if DEBUG
+                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
+#endif
+                }
+#if DEBUG
+                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                foreach (Item item in player.Items)
+                    Log.Debug($"{item.Type} ({item.Serial})");
+#endif
+            });
         }
     }
 }
