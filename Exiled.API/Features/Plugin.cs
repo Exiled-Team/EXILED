@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-using Exiled.API.Utils;
-
 namespace Exiled.API.Features
 {
+    using Exiled.API.Events;
+
 #pragma warning disable SA1402
     using System;
     using System.Collections.Generic;

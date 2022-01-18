@@ -9,7 +9,7 @@ namespace Exiled.Events.Handlers
 {
     using API.Features.Items;
 
-    using Exiled.API.Utils;
+    using Exiled.API.Events;
 
     using EventArgs;
 

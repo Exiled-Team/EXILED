@@ -5,7 +5,7 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Utils
+namespace Exiled.API.Events
 {
     using System;
 

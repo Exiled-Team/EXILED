@@ -5,10 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+
 namespace Exiled.Events.Handlers
 {
-    using Exiled.API.Utils;
-
+    using Exiled.API.Events;
     using Exiled.Events.EventArgs;
     using Exiled.Events.Extensions;
 
