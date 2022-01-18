@@ -36,6 +36,11 @@ namespace Exiled.API.Features
         public Scp079Generator Base { get; }
 
         /// <summary>
+        /// Gets the generator's <see cref="Room"/>.
+        /// </summary>
+        public Room Room => Map.FindParentRoom(Base.gameObject);
+
+        /// <summary>
         /// Gets or sets the generator' state.
         /// </summary>
         public GeneratorState State
