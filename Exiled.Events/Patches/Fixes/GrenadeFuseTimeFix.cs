@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
     using HarmonyLib;
@@ -27,7 +26,7 @@ namespace Exiled.Events.Patches.Fixes
     /// <summary>
     /// Patches <see cref="InventorySystem.Items.ThrowableProjectiles.ThrowableItem"/> to fix fuse times being unchangeable.
     /// </summary>
-    [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3))]
+    [HarmonyPatch(typeof(ThrowableItem), nameof(ThrowableItem.ServerThrow), typeof(float), typeof(float), typeof(Vector3), typeof(Vector3))]
     internal static class GrenadeFuseTimeFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

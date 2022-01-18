@@ -21,10 +21,9 @@ namespace Exiled.Events.Handlers.Internal
 
     using MEC;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
+    using Camera = Exiled.API.Features.Camera;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -48,7 +47,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             GenerateCache();
-            CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
@@ -83,7 +81,11 @@ namespace Exiled.Events.Handlers.Internal
                 Map.DoorsValue.Add(Door.Get(doorVariant));
         }
 
-        private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
+        private static void GenerateCameras()
+        {
+            foreach (Camera079 camera079 in Object.FindObjectsOfType<Camera079>())
+                Map.CamerasValue.Add(new Camera(camera079));
+        }
 
         private static void GenerateLifts()
         {

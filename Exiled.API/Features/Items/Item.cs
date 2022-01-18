@@ -8,11 +8,9 @@
 namespace Exiled.API.Features.Items
 {
 #pragma warning disable CS0618
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
 

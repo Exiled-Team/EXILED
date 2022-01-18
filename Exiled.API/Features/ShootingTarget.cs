@@ -12,8 +12,6 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
 
-    using InventorySystem.Items;
-
     using Mirror;
 
     using PlayerStatsSystem;

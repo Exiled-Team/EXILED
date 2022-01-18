@@ -16,10 +16,7 @@ namespace Exiled.Events.Patches.Events.Scp330
 
     using HarmonyLib;
 
-    using Interactables.Interobjects;
-
     using InventorySystem.Items.Usables.Scp330;
-    using InventorySystem.Searching;
 
     using NorthwoodLib.Pools;
 
