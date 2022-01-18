@@ -29,5 +29,10 @@ namespace Exiled.API.Enums
         /// Used by <see cref="ItemType.SCP018"/>.
         /// </summary>
         Scp018,
+        
+        /// <summary>
+        /// Scp-2176 lightbulb
+        /// Used by <see cref="ItemType.SCP2176"/>.
+        Scp2176,
     }
 }
