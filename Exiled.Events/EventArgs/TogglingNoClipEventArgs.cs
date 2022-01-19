@@ -18,12 +18,11 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TogglingNoClipEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        /// <param name="isEnabled"><inheritdoc cref="IsEnabled"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TogglingNoClipEventArgs(Player player, bool isEnabled, bool isAllowed = true)
+        public TogglingNoClipEventArgs(Player player, bool isAllowed = true)
         {
             Player = player;
-            IsEnabled = isEnabled;
+            IsEnabled = player.ReferenceHub.characterClassManager.NoclipEnabled;
             IsAllowed = isAllowed;
         }
 
