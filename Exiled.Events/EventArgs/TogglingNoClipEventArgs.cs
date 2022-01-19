@@ -18,10 +18,12 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="TogglingNoClipEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
+        /// <param name="isEnabled"><inheritdoc cref="IsEnabled"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public TogglingNoClipEventArgs(Player player, bool isAllowed = true)
+        public TogglingNoClipEventArgs(Player player, bool isEnabled, bool isAllowed = true)
         {
             Player = player;
+            IsEnabled = isEnabled;
             IsAllowed = isAllowed;
         }
 
@@ -29,6 +31,11 @@ namespace Exiled.Events.EventArgs
         /// Gets the player who's toggling the NoClip mode.
         /// </summary>
         public Player Player { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether or not the NoClip mode is enabled.
+        /// </summary>
+        public bool IsEnabled { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player can toggle the NoClip mode.
