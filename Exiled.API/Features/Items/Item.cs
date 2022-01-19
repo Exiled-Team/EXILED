@@ -25,6 +25,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
@@ -183,6 +184,8 @@ namespace Exiled.API.Features.Items
                 {
                     if (usable is Scp330Bag scp330Bag)
                         return new Scp330(scp330Bag);
+                    else if (usable is Scp244Item scp244Item)
+                        return new Scp244(scp244Item);
                     return new Usable(usable);
                 }
 
@@ -230,6 +233,7 @@ namespace Exiled.API.Features.Items
         /// <br />- Flashlights can be casted to <see cref="Flashlight"/>.
         /// <br />- Radios can be casted to <see cref="Radio"/>.
         /// <br />- The Micro HID can be casted to <see cref="MicroHid"/>.
+        /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// </para>
         /// <para>
@@ -250,6 +254,9 @@ namespace Exiled.API.Features.Items
                 case ItemType.SCP207:
                 case ItemType.SCP268:
                     return new Usable(type);
+                case ItemType.SCP244a:
+                case ItemType.SCP244b:
+                    return new Scp244(type);
                 case ItemType.Ammo9x19:
                 case ItemType.Ammo12gauge:
                 case ItemType.Ammo44cal:

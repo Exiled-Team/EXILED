@@ -7,6 +7,8 @@
 
 namespace Exiled.Events.EventArgs
 {
+    using System.Reflection;
+
     using Exiled.API.Features;
 
     /// <summary>
@@ -43,7 +45,7 @@ namespace Exiled.Events.EventArgs
                     return;
 
                 if (Events.Instance.Config.ShouldLogBans)
-                    LogBanChange($" changed Ban duration: {duration} to {value} for ID: {Target.UserId}");
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed Ban duration: {duration} to {value} for ID: {Target.UserId}");
 
                 duration = value;
             }
