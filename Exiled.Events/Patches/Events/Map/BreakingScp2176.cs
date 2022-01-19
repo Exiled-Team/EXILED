@@ -5,9 +5,10 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
-#pragma warning disable SA1118 // The parameter spans multiple lines
 namespace Exiled.Events.Patches.Events.Map
 {
+#pragma warning disable SA1118 // The parameter spans multiple lines
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -45,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldc_I4_0),
                 new CodeInstruction(OpCodes.Newarr, typeof(UnityEngine.Collider)),
-                new CodeInstruction(OpCodes.Newobj, Constructor(typeof(ExplodingGrenadeEventArgs), new[] { typeof(API.Features.Player), typeof(EffectGrenade), typeof(UnityEngine.Collider[]) })),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ExplodingGrenadeEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
 
                 // Handlers.Map.OnExplodingGrenade(ev);
