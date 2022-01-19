@@ -1500,15 +1500,35 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
+        /// <param name="handler">The <see cref="DamageHandler"/> used to kill.</param>
+        public void Kill(DamageHandler handler)
+        {
+            if (Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
+                Cassie.Message(handler.Base.CassieDeathAnnouncement.Announcement);
+
+            ReferenceHub.playerStats.KillPlayer(handler.Base);
+        }
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to kill.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase) => Kill(new DamageHandler(this, damageHandlerBase));
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="damageType">The <see cref="DamageType">damage type</see> the player has been killed with.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        /// <param name="attacker">The <see cref="Player"/> who killed player.</param>
+        public void Kill(DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Kill(new ExiledDamageHandler(attacker, float.MaxValue, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, string cassieAnnouncement = "")
-        {
-            if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
-
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
-        }
+        public void Kill(string deathReason, string cassieAnnouncement = "") => Kill(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
 
         /// <summary>
         /// Bans the player.
