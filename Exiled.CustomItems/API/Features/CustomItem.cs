@@ -100,7 +100,7 @@ namespace Exiled.CustomItems.API.Features
         public HashSet<int> TrackedSerials { get; } = new HashSet<int>();
 
         /// <summary>
-        /// Gets a value indicating whether whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
+        /// Gets a value indicating whether or not this item causes things to happen that may be considered hacks, and thus be shown to global moderators as being present in a player's inventory when they gban them.
         /// </summary>
         [YamlIgnore]
         public virtual bool ShouldMessageOnGban { get; } = false;

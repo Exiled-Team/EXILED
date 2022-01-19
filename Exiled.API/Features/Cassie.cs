@@ -16,8 +16,6 @@ namespace Exiled.API.Features
 
     using Respawning;
 
-    using static PlayerStatsSystem.PlayerStats;
-
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
     /// </summary>

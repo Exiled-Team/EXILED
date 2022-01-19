@@ -15,15 +15,12 @@ namespace Exiled.Events.Patches.Events.Map
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Patches.Generic;
 
     using Footprinting;
 
     using HarmonyLib;
 
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
 
     using NorthwoodLib.Pools;
 

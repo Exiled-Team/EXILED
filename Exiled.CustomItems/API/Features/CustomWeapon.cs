@@ -21,8 +21,6 @@ namespace Exiled.CustomItems.API.Features
 
     using MEC;
 
-    using PlayerStatsSystem;
-
     using UnityEngine;
 
     using static CustomItems;
