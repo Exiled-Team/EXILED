@@ -33,7 +33,7 @@ namespace Exiled.Events.EventArgs
         public InteractingShootingTargetEventArgs(Player player, AdminToys.ShootingTarget shootingTarget, ShootingTargetButton targetButton, int maxHp, int autoResetTime, bool isAllowed = true)
         {
             Player = player;
-            ShootingTarget = new ShootingTargetToy(shootingTarget);
+            ShootingTarget = ShootingTargetToy.Get(shootingTarget);
             TargetButton = targetButton;
             IsAllowed = isAllowed;
             this.maxHp = maxHp;
