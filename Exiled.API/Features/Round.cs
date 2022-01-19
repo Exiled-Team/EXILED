@@ -11,8 +11,6 @@ namespace Exiled.API.Features
 
     using GameCore;
 
-    using PlayerStatsSystem;
-
     using RoundRestarting;
 
     /// <summary>

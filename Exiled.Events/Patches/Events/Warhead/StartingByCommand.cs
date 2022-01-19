@@ -21,8 +21,6 @@ namespace Exiled.Events.Patches.Events.Warhead
 
     using NorthwoodLib.Pools;
 
-    using RemoteAdmin;
-
     using static HarmonyLib.AccessTools;
 
     /// <summary>

@@ -7,23 +7,15 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-
-    using Exiled.API.Enums;
 
     using InventorySystem;
     using InventorySystem.Items;
     using InventorySystem.Items.Pickups;
 
-    using MapGeneration.Distributors;
-
     using Mirror;
 
     using UnityEngine;
-
-    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="ItemPickupBase"/>.

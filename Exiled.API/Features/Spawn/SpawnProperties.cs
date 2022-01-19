@@ -9,10 +9,6 @@ namespace Exiled.API.Features.Spawn
 {
     using System.Collections.Generic;
 
-    using NorthwoodLib.Pools;
-
-    using UnityEngine;
-
     /// <summary>
     /// Handles special properties of spawning an item.
     /// </summary>

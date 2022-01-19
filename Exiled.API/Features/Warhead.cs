@@ -7,8 +7,6 @@
 
 namespace Exiled.API.Features
 {
-    using System;
-
     /// <summary>
     /// A set of tools to easily work with the alpha warhead.
     /// </summary>

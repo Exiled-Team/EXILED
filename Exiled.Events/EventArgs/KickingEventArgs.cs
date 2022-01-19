@@ -51,10 +51,7 @@ namespace Exiled.Events.EventArgs
                     return;
 
                 if (Events.Instance.Config.ShouldLogBans && target != null)
-                {
-                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name
-                    + $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
-                }
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed the banned player from user {target.Nickname} ({target.UserId}) to {value.Nickname} ({value.UserId})");
 
                 target = value;
             }
@@ -72,10 +69,7 @@ namespace Exiled.Events.EventArgs
                     return;
 
                 if (Events.Instance.Config.ShouldLogBans && issuer != null)
-                {
-                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name
-                                   + $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
-                }
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" changed the ban issuer from user {issuer.Nickname} ({issuer.UserId}) to {value.Nickname} ({value.UserId})");
 
                 issuer = value;
             }
@@ -103,7 +97,7 @@ namespace Exiled.Events.EventArgs
                     return;
 
                 if (Events.Instance.Config.ShouldLogBans)
-                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name + $" {(value ? "allowed" : "denied")} banning user with ID: {Target.UserId}");
+                    LogBanChange(Assembly.GetCallingAssembly().GetName().Name, $" {(value ? "allowed" : "denied")} banning user with ID: {Target.UserId}");
 
                 isAllowed = value;
             }
@@ -112,12 +106,14 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Logs the kick, anti-backdoor protection from malicious plugins.
         /// </summary>
+        /// <param name="assemblyName">The name of the calling assembly.</param>
         /// <param name="message">The message to be logged.</param>
-        protected void LogBanChange(string message)
+        protected void LogBanChange(string assemblyName, string message)
         {
-            lock (ServerLogs.LockObject)
+            if (assemblyName != "Exiled.Events")
             {
-                Log.Warn($"[ANTI-BACKDOOR]: {message} - {TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz")}");
+                lock (ServerLogs.LockObject)
+                    Log.Warn($"[ANTI-BACKDOOR]: {assemblyName} {message} - {TimeBehaviour.FormatTime("yyyy-MM-dd HH:mm:ss.fff zzz")}");
             }
 
             ServerLogs._state = ServerLogs.LoggingState.Write;

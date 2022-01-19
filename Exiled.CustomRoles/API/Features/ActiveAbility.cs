@@ -14,8 +14,6 @@ namespace Exiled.CustomRoles.API.Features
 
     using MEC;
 
-    using UnityEngine;
-
     using YamlDotNet.Serialization;
 
     /// <summary>

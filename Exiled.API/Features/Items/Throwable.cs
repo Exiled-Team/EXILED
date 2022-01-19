@@ -7,17 +7,7 @@
 
 namespace Exiled.API.Features.Items
 {
-    using System;
-
-    using Exiled.API.Enums;
-
-    using Footprinting;
-
     using InventorySystem.Items.ThrowableProjectiles;
-
-    using Mirror;
-
-    using UnityEngine;
 
     /// <summary>
     /// A wrapper class for throwable items.
@@ -63,7 +53,7 @@ namespace Exiled.API.Features.Items
         /// Throws the item.
         /// </summary>
         /// <param name="fullForce">Whether to use full or half force.</param>
-        public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce);
+        public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner.playerMovementSync.PlayerVelocity));
 
         /// <inheritdoc/>
         public override string ToString()

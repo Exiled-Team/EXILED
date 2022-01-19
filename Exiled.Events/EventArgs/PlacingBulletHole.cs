@@ -10,10 +10,7 @@ namespace Exiled.Events.EventArgs
 #pragma warning disable SA1401
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-
-    using InventorySystem.Items.Firearms.Modules;
 
     using UnityEngine;
 
