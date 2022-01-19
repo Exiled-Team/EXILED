@@ -8,9 +8,15 @@
 namespace Exiled.API.Features.Toys
 {
     using System;
+    using System.Linq;
+
     using AdminToys;
+
     using Exiled.API.Enums;
+
     using UnityEngine;
+
+    using Object = UnityEngine.Object;
 
     /// <summary>
     /// A wrapper class for <see cref="AdminToys.PrimitiveObjectToy"/>.
@@ -23,7 +29,7 @@ namespace Exiled.API.Features.Toys
         /// Initializes a new instance of the <see cref="Primitive"/> class.
         /// </summary>
         /// <param name="toyAdminToyBase">The <see cref="PrimitiveObjectToy"/> of the toy.</param>
-        public Primitive(PrimitiveObjectToy toyAdminToyBase)
+        internal Primitive(PrimitiveObjectToy toyAdminToyBase)
             : base(toyAdminToyBase, AdminToyType.PrimitiveObject)
         {
             Base = toyAdminToyBase;
@@ -71,8 +77,35 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Creates a new <see cref="Primitive"/>.
         /// </summary>
-        /// <returns>The new primitive.</returns>
-        public static Primitive Create() => new Primitive(UnityEngine.Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+        /// <param name="position">The position of the <see cref="Primitive"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="Primitive"/>.</param>
+        /// <param name="scale">The scale of the <see cref="Primitive"/>.</param>
+        /// <param name="spawn">Whether the <see cref="Primitive"/> should be initially spawned.</param>
+        /// <returns>The new <see cref="Primitive"/>.</returns>
+        public static Primitive Create(Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
+        {
+            Primitive primitve = new Primitive(Object.Instantiate(ToysHelper.PrimitiveBaseObject));
+
+            primitve.AdminToyBase.transform.position = position ?? Vector3.zero;
+            primitve.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            primitve.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                primitve.Spawn();
+
+            return primitve;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Primitive"/> belonging to the <see cref="PrimitiveObjectToy"/>.
+        /// </summary>
+        /// <param name="primitveObjectToy">The <see cref="PrimitiveObjectToy"/> instance.</param>
+        /// <returns>The corresponding <see cref="Primitive"/> instance.</returns>
+        public static Primitive Get(PrimitiveObjectToy primitveObjectToy)
+        {
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == primitveObjectToy);
+            return adminToy != null ? adminToy as Primitive : new Primitive(primitveObjectToy);
+        }
 
         private void RefreshCollidable()
         {

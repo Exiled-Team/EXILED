@@ -9,13 +9,17 @@ namespace Exiled.API.Features.Toys
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Enums;
+
+    using Mirror;
 
     using PlayerStatsSystem;
 
     using UnityEngine;
 
+    using Object = UnityEngine.Object;
     using ShootingTarget = AdminToys.ShootingTarget;
 
     /// <summary>
@@ -34,13 +38,17 @@ namespace Exiled.API.Features.Toys
         /// Initializes a new instance of the <see cref="ShootingTargetToy"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Base"/></param>
-        public ShootingTargetToy(ShootingTarget target)
-            : base(target, AdminToyType.ShootingTarget) => Base = target;
+        internal ShootingTargetToy(ShootingTarget target)
+            : base(target, AdminToyType.ShootingTarget)
+        {
+            Base = target;
+            Type = TypeLookup.TryGetValue(Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7), out ShootingTargetType type) ? type : ShootingTargetType.Unknown;
+        }
 
         /// <summary>
         /// Gets the base-game <see cref="ShootingTarget"/> for this target.
         /// </summary>
-        public ShootingTarget Base { get; }
+        public ShootingTarget Base { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.
@@ -119,24 +127,61 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the type of the target.
         /// </summary>
-        public ShootingTargetType Type => TypeLookup.TryGetValue(Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7), out ShootingTargetType type) ? type : ShootingTargetType.Unknown;
+        public ShootingTargetType Type { get; }
 
         /// <summary>
         /// Creates a new <see cref="ShootingTargetToy"/>.
         /// </summary>
-        /// <param name="type">The <see cref="ShootingTargetType"/> of the target.</param>
+        /// <param name="type">The <see cref="ShootingTargetType"/> of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="position">The position of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="scale">The scale of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="spawn">Whether the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
         /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
-        public static ShootingTargetToy Create(ShootingTargetType type)
+        public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
+            ShootingTargetToy shootingTargetToy;
+
             switch (type)
             {
                 case ShootingTargetType.ClassD:
-                    return new ShootingTargetToy(UnityEngine.Object.Instantiate(ToysHelper.DboyShootingTargetObject));
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.DboyShootingTargetObject));
+                        break;
+                    }
+
                 case ShootingTargetType.Binary:
-                    return new ShootingTargetToy(UnityEngine.Object.Instantiate(ToysHelper.BinaryShootingTargetObject));
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.BinaryShootingTargetObject));
+                        break;
+                    }
+
                 default:
-                    return new ShootingTargetToy(UnityEngine.Object.Instantiate(ToysHelper.SportShootingTargetObject));
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.SportShootingTargetObject));
+                        break;
+                    }
             }
+
+            shootingTargetToy.AdminToyBase.transform.position = position ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                shootingTargetToy.Spawn();
+
+            return shootingTargetToy;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ShootingTargetToy"/> belonging to the <see cref="ShootingTarget"/>.
+        /// </summary>
+        /// <param name="shootingTarget">The <see cref="ShootingTarget"/> instance.</param>
+        /// <returns>The corresponding <see cref="ShootingTargetToy"/> instance.</returns>
+        public static ShootingTargetToy Get(ShootingTarget shootingTarget)
+        {
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == shootingTarget);
+            return adminToy != null ? adminToy as ShootingTargetToy : new ShootingTargetToy(shootingTarget);
         }
 
         /// <summary>

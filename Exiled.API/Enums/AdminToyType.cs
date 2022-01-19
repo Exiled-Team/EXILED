@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="AdminToyType.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -13,14 +13,14 @@ namespace Exiled.API.Enums
     public enum AdminToyType
     {
         /// <summary>
-        /// Light source toy.
-        /// </summary>
-        LightSource,
-
-        /// <summary>
         /// Primitive Object toy.
         /// </summary>
         PrimitiveObject,
+
+        /// <summary>
+        /// Light source toy.
+        /// </summary>
+        LightSource,
 
         /// <summary>
         /// Primitive Object toy.
