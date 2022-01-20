@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Item = itemType;
             CurrentAttachmentIdentifiers = Item.GetAttachmentIdentifiers(currentCode);
-            NewAttachmentIdentifiers = Item.GetAttachmentIdentifiers(newCode).ToList();
+            NewAttachmentIdentifiers = itemType.GetAttachmentIdentifiers(newCode).ToList();
             CurrentCode = currentCode;
             IsAllowed = isAllowed;
         }
@@ -70,7 +70,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the new attachments code.
         /// </summary>
-        public uint NewCode => NewAttachmentIdentifiers.GetAttachmentsCode() - (uint)Item.GetBaseCode();
+        public uint NewCode => NewAttachmentIdentifiers.GetAttachmentsCode() + (uint)Item.GetBaseCode();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attachments preference can be executed.
