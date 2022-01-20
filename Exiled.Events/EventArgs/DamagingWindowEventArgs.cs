@@ -38,7 +38,7 @@ namespace Exiled.Events.EventArgs
         public float Damage { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the window can be broke.
+        /// Gets or sets a value indicating whether the window can be broken.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
