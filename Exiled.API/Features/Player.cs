@@ -18,6 +18,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
+    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Footprinting;
@@ -68,6 +70,7 @@ namespace Exiled.API.Features
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
+        private Role storedRole;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -397,7 +400,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player's <see cref="global::Team"/>.
         /// </summary>
-        public Team Team => Role.GetTeam();
+        [Obsolete("Use Role.Team instead.")]
+        public Team Team => Role.Team;
 
         /// <summary>
         /// Gets the player's <see cref="Enums.LeadingTeam"/>.
@@ -407,16 +411,52 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
         /// </summary>
-        public RoleType Role
+        public RoleType RoleType
         {
-            get => ReferenceHub.characterClassManager.NetworkCurClass;
+            get => Role.RoleType;
             set => SetRole(value);
         }
 
         /// <summary>
-        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>.
+        /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
+        /// <para>
+        /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
+        /// <br /><see cref="global::RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
+        /// <br /><see cref="global::RoleType.Scp049"/> = <see cref="Scp049Role"/>.
+        /// <br /><see cref="global::RoleType.Scp079"/> = <see cref="Scp079Role"/>.
+        /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
+        /// </para>
+        /// <para>
+        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded.
+        /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
+        /// </para>
         /// </summary>
-        public Color RoleColor => Role.GetColor();
+        public Role Role
+        {
+            get
+            {
+                if (storedRole == null || storedRole.RoleType != referenceHub.characterClassManager.NetworkCurClass)
+                {
+                    switch (RoleType)
+                    {
+                        case RoleType.Scp079:
+                            storedRole = new Scp079Role(this);
+                            break;
+                        case RoleType.Scp049:
+                            storedRole = new Scp049Role(this);
+                            break;
+                        case RoleType.Spectator:
+                            storedRole = new SpectatorRole(this);
+                            break;
+                        default:
+                            storedRole = new HumanRole(this);
+                            break;
+                    }
+                }
+
+                return storedRole;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed.
@@ -511,44 +551,35 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Team == Team.RIP;
+        public bool IsDead => Role is SpectatorRole;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Team == Team.MTF;
+        public bool IsNTF => Role.Team == Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Team == Team.CHI;
+        public bool IsCHI => Role.Team == Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Team == Team.SCP;
+        public bool IsScp => Role.Team == Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.RSC;
-
-        /// <summary>
-        /// Gets or sets the camera SCP-079 is currently controlling.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        public Camera Camera
-        {
-            get => Camera.Get(ReferenceHub.scp079PlayerScript.currentCamera);
-            set => SetCamera(value);
-        }
+        public bool IsHuman => Role is HumanRole;
 
         /// <summary>
         /// Gets the player's <see cref="Enums.Side"/>.
         /// </summary>
+        [Obsolete("Use Role.Side instead")]
         public Side Side => Team.GetSide();
 
         /// <summary>
@@ -762,131 +793,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public Scp079PlayerScript.Ability079[] Abilities
-        {
-            get => ReferenceHub.scp079PlayerScript?.abilities;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.abilities = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets SCP-079's levels. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public Scp079PlayerScript.Level079[] Levels
-        {
-            get => ReferenceHub.scp079PlayerScript?.levels;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.levels = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the speaker this player is currently using. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public string Speaker
-        {
-            get => ReferenceHub.scp079PlayerScript?.Speaker;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.Speaker = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the doors this player has locked. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public SyncList<uint> LockedDoors
-        {
-            get => ReferenceHub.scp079PlayerScript?.lockedDoors;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.lockedDoors = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of experience this player has.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float Experience
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Exp : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.Exp = value;
-                ReferenceHub.scp079PlayerScript.OnExpChange();
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="global::Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
-
-        /// <summary>
-        /// Gets or sets this player's level.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public byte Level
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets this player's max energy.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float MaxEnergy
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
-                ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets this player's energy.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float Energy
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Mana : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.Mana = value;
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether the staff bypass is enabled.
@@ -1037,31 +946,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
-        /// </summary>
-        public Player SpectatedPlayer
-        {
-            get
-            {
-                Player spectatedPlayer = Get(ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
-
-                if (spectatedPlayer == this)
-                    return null;
-
-                return spectatedPlayer;
-            }
-
-            set
-            {
-                if (IsAlive)
-                    throw new InvalidOperationException("You cannot set Spectated Player when you are alive!");
-
-                ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
-                ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
-            }
-        }
-
-        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all player's preferences.
         /// </summary>
         public Dictionary<ItemType, AttachmentIdentifier[]> Preferences => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
@@ -1095,7 +979,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
+        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role.RoleType == role);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
@@ -1227,27 +1111,6 @@ namespace Exiled.API.Features
                 return null;
             }
         }
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="cameraId">Camera ID.</param>
-        public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="cameraType">The <see cref="Enums.CameraType"/>.</param>
-        public void SetCamera(Enums.CameraType cameraType) => SetCamera(API.Features.Camera.Get(cameraType));
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="camera">The <see cref="Camera"/> object to switch to.</param>
-        public void SetCamera(Camera camera) => SetCamera(camera.Id);
 
         /// <summary>
         /// Forces the player to reload their current weapon.
