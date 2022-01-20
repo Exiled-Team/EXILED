@@ -200,7 +200,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="state">The given <see cref="GeneratorState"/>.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/>.</returns>
-        public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag((byte)state, (Scp079Generator.GeneratorFlags)generator.Base.Network_flags));
+        public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
 
         /// <summary>
         /// Denies the unlock.
