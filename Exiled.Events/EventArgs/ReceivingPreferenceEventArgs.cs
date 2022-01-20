@@ -37,7 +37,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Item = itemType;
             CurrentAttachmentIdentifiers = Item.GetAttachmentIdentifiers(currentCode);
-            NewAttachmentIdentifiers = itemType.GetAttachmentIdentifiers(newCode).ToList();
+            NewAttachmentIdentifiers = Item.GetAttachmentIdentifiers(newCode).ToList();
             CurrentCode = currentCode;
             IsAllowed = isAllowed;
         }
