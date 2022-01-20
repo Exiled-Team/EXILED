@@ -46,6 +46,8 @@ namespace Exiled.API.Features
 
     using RemoteAdmin;
 
+    using RoundRestarting;
+
     using UnityEngine;
 
     using Utils.Networking;
@@ -2277,6 +2279,18 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
+
+        /// <summary>
+        /// Reconnects player to another server port on the same IP.
+        /// </summary>
+        /// <param name="newPort">New port.</param>
+        /// <param name="offset">Player reconnection offset.</param>
+        /// <param name="reconnect">Whether or not player should be reconnected.</param>
+        /// <param name="roundRestartType">Type of round restart.</param>
+        public void Reconnect(ushort newPort, float offset, bool reconnect = true, RoundRestartType roundRestartType = RoundRestartType.RedirectRestart)
+        {
+            Connection.Send(new RoundRestartMessage(roundRestartType, offset, newPort, reconnect));
+        }
 
         /// <inheritdoc/>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
