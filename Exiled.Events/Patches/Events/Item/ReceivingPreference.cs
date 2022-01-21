@@ -66,6 +66,13 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
 
+                // currentCode
+                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+
+                // AttachmentsSetupPreference::AttachmentsCode
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.AttachmentsCode))),
+
                 // true
                 new CodeInstruction(OpCodes.Ldc_I4_1),
 
