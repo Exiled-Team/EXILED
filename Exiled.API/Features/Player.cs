@@ -2281,15 +2281,23 @@ namespace Exiled.API.Features
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
         /// <summary>
-        /// Reconnects player to another server port on the same IP.
+        /// Reconnects player to the server. Can be used to redirect them to another server on a different port but same IP.
         /// </summary>
         /// <param name="newPort">New port.</param>
-        /// <param name="offset">Player reconnection offset.</param>
+        /// <param name="delay">Player reconnection delay.</param>
         /// <param name="reconnect">Whether or not player should be reconnected.</param>
         /// <param name="roundRestartType">Type of round restart.</param>
-        public void Reconnect(ushort newPort, float offset, bool reconnect = true, RoundRestartType roundRestartType = RoundRestartType.RedirectRestart)
+        public void Reconnect(ushort newPort = 0, float delay = 5, bool reconnect = true, RoundRestartType roundRestartType = RoundRestartType.FullRestart)
         {
-            Connection.Send(new RoundRestartMessage(roundRestartType, offset, newPort, reconnect));
+            if (newPort != 0)
+            {
+                if (newPort == Server.Port && roundRestartType == RoundRestartType.RedirectRestart)
+                    roundRestartType = RoundRestartType.FullRestart;
+                else
+                    roundRestartType = RoundRestartType.RedirectRestart;
+            }
+
+            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
         }
 
         /// <inheritdoc/>
