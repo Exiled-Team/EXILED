@@ -398,15 +398,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="global::Team"/>.
-        /// </summary>
-        [Obsolete("Use Role.Team instead.")]
-        public Team Team => Role.Team;
-
-        /// <summary>
         /// Gets the player's <see cref="Enums.LeadingTeam"/>.
         /// </summary>
-        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
+        public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
         /// Gets or sets the player's <see cref="RoleType"/>.
@@ -575,12 +569,6 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
         public bool IsHuman => Role is HumanRole;
-
-        /// <summary>
-        /// Gets the player's <see cref="Enums.Side"/>.
-        /// </summary>
-        [Obsolete("Use Role.Side instead")]
-        public Side Side => Team.GetSide();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.
@@ -965,14 +953,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="side">The players' side.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
+        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Role.Side == side);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Role.Team == team);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
@@ -1318,7 +1306,7 @@ namespace Exiled.API.Features
         /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
         public void Hurt(DamageHandler handler)
         {
-            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
+            if (Health - handler.Amount < 1 && Role.Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
                 Cassie.Message(handler.Base.CassieDeathAnnouncement.Announcement);
 
             ReferenceHub.playerStats.DealDamage(handler.Base);
@@ -1367,7 +1355,7 @@ namespace Exiled.API.Features
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
         public void Kill(string deathReason, string cassieAnnouncement = "")
         {
-            if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
             ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
@@ -2142,6 +2130,6 @@ namespace Exiled.API.Features
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
         /// <inheritdoc/>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Role.Team}";
     }
 }
