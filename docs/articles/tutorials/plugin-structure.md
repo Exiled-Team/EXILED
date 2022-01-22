@@ -5,7 +5,7 @@ uid: plugin_structure
 > This tutorial assumes that you are familiar with C#.
 
 # Plugin Structure
-In order to be loaded onto the framework, *every* plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not start. This tutorial will explain the proper setup for a plugin on the EXILED framework.
+In order to be loaded onto the framework, *every* plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not execute. This tutorial will explain the proper setup for a plugin on the EXILED framework.
 
 ## Plugin Core
 Every plugin must have a .cs file that consists of the plugin class itself. This file (and the class itself) are typically simply named "Plugin"; however, any name is appropriate for the main plugin class. This example will use "Plugin" as the name of the class.
@@ -119,7 +119,7 @@ namespace MyPluginNamespace
         public bool IsEnabled { get; set; }
         public bool MyBoolConfig { get; set; }
         public string MyStringConfig { get; set; }
-        public int MyIntConfig { get; set; }
+        public int MyIntConfig { get; set; } = 5; // Set to 5 by default.
     }
 }
 ```
@@ -141,8 +141,8 @@ namespace MyPluginNamespace
         [Description("Config that must be a string!")]
         public string MyStringConfig { get; set; }
 
-        [Description("Config that must be a number!")]
-        public int MyIntConfig { get; set; }
+        [Description("Config that must be a number! Defaults to 5.")]
+        public int MyIntConfig { get; set; } = 5;
     }
 }
 ```
@@ -186,8 +186,8 @@ namespace MyPluginNamespace
         [Description("Config that must be a string!")]
         public string MyStringConfig { get; set; }
 
-        [Description("Config that must be a number!")]
-        public int MyIntConfig { get; set; }
+        [Description("Config that must be a number! Defaults to 5.")]
+        public int MyIntConfig { get; set; } = 5;
     }
 }
 ```
