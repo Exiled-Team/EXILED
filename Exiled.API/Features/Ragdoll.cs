@@ -97,7 +97,7 @@ namespace Exiled.API.Features
         public RagDoll Base => ragdoll;
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
 
