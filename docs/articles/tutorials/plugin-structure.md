@@ -1,14 +1,17 @@
-*Note: This tutorial assumes that you are familiar with C#.*  
-
+---
+uid: plugin_structure
+---
+> [!NOTE]
+> <This tutorial assumes that you are familiar with C#.>
 
 # Plugin Structure
 In order to be loaded onto the framework, *every* plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not start. This tutorial will explain the proper setup for a plugin on the EXILED framework.
 
 ## Plugin Core
-Every plugin must have a .cs file that consists of the plugin class itself. This file (and the class itself) are typically simply named "Plugin"; however, any name is appropriate for the main plugin class. This example will use "Plugin" as the name of the class.  
-  
-After the main file is created, the Plugin class must be declared as a plugin, so that the EXILED framework loads it. This can be done by inheriting the `Plugin<IConfig>` class, provided in the `Exiled.API.Features` namespace.  
-  
+Every plugin must have a .cs file that consists of the plugin class itself. This file (and the class itself) are typically simply named "Plugin"; however, any name is appropriate for the main plugin class. This example will use "Plugin" as the name of the class.
+
+After the main file is created, the Plugin class must be declared as a plugin, so that the EXILED framework loads it. This can be done by inheriting the `Plugin<IConfig>` class, provided in the `Exiled.API.Features` namespace.
+
 The following example shows how to properly inherit the class. However, notice the `Config` class inside of the angled brackets. This class must be created and must inherit from `IConfig`, which is part of the `Exiled.API.Interfaces` namespace. Upon the creation of the Config class, the interface will require you to add an `IsEnabled` property.
 ```cs
 namespace MyPluginNamespace
@@ -32,8 +35,8 @@ namespace MyPluginNamespace
 By creating the `Config` class and including it in the angled brackets, the rest of the plugin's code, as well as the EXILED framework, will recognize that the class resembles configuration for server owners. For more information about setting up configuration, see the Configuration section below.
 
 ## OnEnabled and OnDisabled
-The plugin is now successfully loaded onto the framework. However, it doesn't actually do anything; no functionality has been assigned. The `Plugin<IConfig>` class provides two overridable methods in order to give the plugin functionality: `OnEnabled` and `OnDisabled`. These two methods do exactly as they sound: Execute when the plugin is enabled/loaded, and when it is disabled.  
-  
+The plugin is now successfully loaded onto the framework. However, it doesn't actually do anything; no functionality has been assigned. The `Plugin<IConfig>` class provides two overridable methods in order to give the plugin functionality: `OnEnabled` and `OnDisabled`. These two methods do exactly as they sound: Execute when the plugin is enabled/loaded, and when it is disabled.
+
 The following example shows how to utilize these methods to send a message to the console.
 ```cs
 namespace MyPluginNamespace
@@ -42,7 +45,7 @@ namespace MyPluginNamespace
 
     public class Plugin : Plugin<Config>
     {
-        public override void OnEnabled() 
+        public override void OnEnabled()
         {
             Log.Info("My plugin has been enabled!");
         }
@@ -65,8 +68,8 @@ namespace MyPluginNamespace
 All of the code for the plugin *must* be enabled in the OnEnabled method, and *must* be disabled on the OnDisabled method. It is important that these two methods execute as expected, because server hosts can enable and disable plugins as much as they'd like, and the plugin *must* be able to respond to these changes appropriately.
 
 ## Plugin Data
-In order for a plugin to be submitted for public use, the plugin must override three properties: `Name`, `Author`, and `Version`. The first two are strings, whereas the last one is a `Version` class (`using System;` is required).  
-  
+In order for a plugin to be submitted for public use, the plugin must override three properties: `Name`, `Author`, and `Version`. The first two are strings, whereas the last one is a `Version` class (`using System;` is required).
+
 The following example shows how to properly override this data.
 ```cs
 namespace MyPluginNamespace
@@ -86,11 +89,11 @@ namespace MyPluginNamespace
 ```
 
 ## Configuration
-This section is related to creating and reading the value of configuration.  
+This section is related to creating and reading the value of configuration.
 
 ### Creating Configs
-A lot of plugins provide configuration to allow the server hosts to change various features of the plugin. Luckily, creating configuration is very simple.  
-  
+A lot of plugins provide configuration to allow the server hosts to change various features of the plugin. Luckily, creating configuration is very simple.
+
 To start, take a look at your Config.cs file.
 ```cs
 namespace MyPluginNamespace
@@ -103,8 +106,8 @@ namespace MyPluginNamespace
     }
 }
 ```
-There is currently one config, called `IsEnabled`. As stated above, this config is required and cannot be removed. However, more config can be added. The YAML serialization allows almost any type to be added and still work, including bools, ints, arrays of anything, enums, and even whole classes!  
-  
+There is currently one config, called `IsEnabled`. As stated above, this config is required and cannot be removed. However, more config can be added. The YAML serialization allows almost any type to be added and still work, including bools, ints, arrays of anything, enums, and even whole classes!
+
 In the following example, a config file with three configs is created.
 ```cs
 namespace MyPluginNamespace
@@ -145,8 +148,8 @@ namespace MyPluginNamespace
 ```
 
 ### Reading Configs
-Reading configuration is more simple than creating it. The base `Plugin<IConfig>` class provides a property, called `Config`, which can be used to access these values.  
-  
+Reading configuration is more simple than creating it. The base `Plugin<IConfig>` class provides a property, called `Config`, which can be used to access these values.
+
 In the following example, our config from the previous class is displayed when the plugin starts.
 ```cs
 namespace MyPluginNamespace
@@ -155,7 +158,7 @@ namespace MyPluginNamespace
 
     public class Plugin : Plugin<Config>
     {
-        public override void OnEnabled() 
+        public override void OnEnabled()
         {
             Log.Info("Boolean config: " + Config.MyBoolConfig);
             Log.Info("String config: " + Config.MyStringConfig);

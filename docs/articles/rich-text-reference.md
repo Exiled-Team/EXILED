@@ -1,3 +1,6 @@
+---
+uid: rich_text_reference
+---
 # Rich Text Reference
 This page contains a rich text reference for broadcasts and hints that can be used in EXILED plugins.
 
