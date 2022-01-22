@@ -207,7 +207,9 @@ namespace Exiled.API.Features
         /// </summary>
         public string AuthenticationToken => ReferenceHub.characterClassManager.AuthToken;
 
-        /// <inheritdoc cref="Enums.AuthenticationType"/>
+        /// <summary>
+        /// Gets the player's authentication type.
+        /// </summary>
         public AuthenticationType AuthenticationType
         {
             get
@@ -2278,7 +2280,10 @@ namespace Exiled.API.Features
         /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the player in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Player-related data.</returns>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
 }

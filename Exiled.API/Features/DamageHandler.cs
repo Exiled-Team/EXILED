@@ -201,7 +201,10 @@ namespace Exiled.API.Features
             { ItemType.GunE11SR, DamageType.E11Sr },
         };
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the DamageHandler in a human readable format.
+        /// </summary>
+        /// <returns>A string containing DamageHandler-related data.</returns>
         public override string ToString() => $"{Target} {Amount} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";
     }
 }
