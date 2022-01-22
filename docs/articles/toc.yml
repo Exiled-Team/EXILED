@@ -5,8 +5,10 @@
 - name: Tutorials
   items:
     - name: Creating A Plugin
-      href: tutorials/pluginstructure.md
+      href: tutorials/plugin-structure.md
     - name: Understanding Events
       href: tutorials/events.md
     - name: MEC Coroutines
       href: tutorials/mec.md
+- name: Rich Text Reference
+  href: rich-text-reference.md
