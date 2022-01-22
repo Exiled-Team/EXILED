@@ -50,6 +50,16 @@ namespace Exiled.API.Features
         public BaseTarget Base { get; }
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the target.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the bullseye.
+        /// </summary>
+        public GameObject Bullseye => Base._bullsEye.gameObject;
+
+        /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.
         /// </summary>
         public Interactables.Verification.IVerificationRule VerificationRule => Base.VerificationRule;
@@ -127,13 +137,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 

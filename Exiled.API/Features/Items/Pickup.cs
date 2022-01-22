@@ -55,6 +55,11 @@ namespace Exiled.API.Features.Items
         }
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the Pickup.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
         /// Gets the unique serial number for the item.
         /// </summary>
         public ushort Serial
@@ -79,13 +84,12 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -150,8 +154,8 @@ namespace Exiled.API.Features.Items
             {
                 Base.Rb.position = value;
                 Base.transform.position = value;
-                NetworkServer.UnSpawn(Base.gameObject);
-                NetworkServer.Spawn(Base.gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                NetworkServer.Spawn(GameObject);
 
                 Base.RefreshPositionAndRotation();
             }
@@ -167,8 +171,8 @@ namespace Exiled.API.Features.Items
             {
                 Base.Rb.rotation = value;
                 Base.transform.rotation = value;
-                NetworkServer.UnSpawn(Base.gameObject);
-                NetworkServer.Spawn(Base.gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                NetworkServer.Spawn(GameObject);
 
                 Base.RefreshPositionAndRotation();
             }

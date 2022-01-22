@@ -45,6 +45,11 @@ namespace Exiled.API.Features
         public DoorVariant Base { get; }
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
         /// Gets the <see cref="DoorType"/>.
         /// </summary>
         public DoorType Type => OrderedDoorTypes.TryGetValue(Base.GetInstanceID(), out DoorType doorType)
@@ -70,13 +75,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Position
         {
-            get => Base.gameObject.transform.position;
+            get => GameObject.transform.position;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.position = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.position = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -172,13 +176,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Quaternion Rotation
         {
-            get => Base.gameObject.transform.rotation;
+            get => GameObject.transform.rotation;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.rotation = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.rotation = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -187,13 +190,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -323,7 +325,7 @@ namespace Exiled.API.Features
         {
             if (Nametag == null)
             {
-                string doorName = Base.gameObject.name.GetBefore(' ');
+                string doorName = GameObject.name.GetBefore(' ');
                 switch (doorName)
                 {
                     case "LCZ":
