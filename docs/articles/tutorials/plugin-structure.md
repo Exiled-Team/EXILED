@@ -2,7 +2,7 @@
 uid: plugin_structure
 ---
 > [!NOTE]
-> <This tutorial assumes that you are familiar with C#.>
+> This tutorial assumes that you are familiar with C#.
 
 # Plugin Structure
 In order to be loaded onto the framework, *every* plugin must follow a certain structure and inherit from certain members. If this is not achieved, the plugin will not start. This tutorial will explain the proper setup for a plugin on the EXILED framework.
@@ -148,6 +148,11 @@ namespace MyPluginNamespace
 ```
 
 ### Reading Configs
+> [!NOTE]
+> You do not need to read the value of the `IsEnabled` config; EXILED will automatically prevent your plugin from executing if its `IsEnabled` config is set to false.
+
+
+
 Reading configuration is more simple than creating it. The base `Plugin<IConfig>` class provides a property, called `Config`, which can be used to access these values.
 
 In the following example, our config from the previous class is displayed when the plugin starts.
@@ -186,4 +191,3 @@ namespace MyPluginNamespace
     }
 }
 ```
-You do not need to read the value of the `IsEnabled` config; EXILED will automatically prevent your plugin from executing if its `IsEnabled` config is set to false.

@@ -2,7 +2,7 @@
 uid: events
 ---
 > [!NOTE]
-> <Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.>
+> Note: This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.
 
 # Events: What are they?
 **Events** play a key role in the EXILED framework and all of the plugins utilizing it. Almost every plugin created using the EXILED framework uses events in one way or another. So, what are they? An event is a simple way of being informed when *something* happens. Events range from the round ending, to a player throwing an item or opening a door, to even SCP-096 being enraged! Events allow you to attach code that executes when something occurs before, during, or at the conclusion of a round.

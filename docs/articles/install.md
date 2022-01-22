@@ -1,10 +1,13 @@
+---
+uid: install
+---
 # Installing EXILED
 
 **This guide assumes you have already installed the SCP: SL dedicated server. If you have not done this, please follow the guide [here.](https://en.scpslgame.com/index.php?title=Guide:Hosting_a_server)**
 
 ## Windows installation
 
-Download `Exiled.Installer-Win.exe` from [here](https://github.com/galaxy119/EXILED/releases).
+Download `Exiled.Installer-Win.exe` from [here](https://github.com/Exiled-Team/EXILED/releases).
 
 Move it into your server directory and double click the .exe.
 

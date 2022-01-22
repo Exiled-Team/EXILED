@@ -9,4 +9,4 @@
 
 EXILED is a low-level plugin framework for SCP: Secret Laboratory servers.
 
-Our documentation is still a work in progress, help us out by following the instructions [here!](articles/contributing.html)
+Our documentation is still a work in progress, help us out by following the instructions [here!](xref:contributing)
