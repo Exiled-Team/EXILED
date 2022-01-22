@@ -1,14 +1,15 @@
 // -----------------------------------------------------------------------
-// <copyright file="ShootingTarget.cs" company="Exiled Team">
+// <copyright file="ShootingTargetToy.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
 // -----------------------------------------------------------------------
 
-namespace Exiled.API.Features
+namespace Exiled.API.Features.Toys
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Enums;
 
@@ -18,12 +19,13 @@ namespace Exiled.API.Features
 
     using UnityEngine;
 
-    using BaseTarget = AdminToys.ShootingTarget;
+    using Object = UnityEngine.Object;
+    using ShootingTarget = AdminToys.ShootingTarget;
 
     /// <summary>
-    /// A wrapper class for <see cref="BaseTarget"/>.
+    /// A wrapper class for <see cref="ShootingTarget"/>.
     /// </summary>
-    public class ShootingTarget
+    public class ShootingTargetToy : AdminToy
     {
         private static readonly Dictionary<string, ShootingTargetType> TypeLookup = new Dictionary<string, ShootingTargetType>()
         {
@@ -32,35 +34,26 @@ namespace Exiled.API.Features
             { "binaryTargetPrefab", ShootingTargetType.Binary },
         };
 
-        private static readonly Dictionary<BaseTarget, ShootingTarget> BaseToShootingTarget = new Dictionary<BaseTarget, ShootingTarget>();
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShootingTarget"/> class.
+        /// Initializes a new instance of the <see cref="ShootingTargetToy"/> class.
         /// </summary>
         /// <param name="target"><inheritdoc cref="Base"/></param>
-        public ShootingTarget(BaseTarget target)
+        internal ShootingTargetToy(ShootingTarget target)
+            : base(target, AdminToyType.ShootingTarget)
         {
             Base = target;
-            BaseToShootingTarget.Add(Base, this);
+            Type = TypeLookup.TryGetValue(Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7), out ShootingTargetType type) ? type : ShootingTargetType.Unknown;
         }
 
         /// <summary>
-        /// Gets the base-game <see cref="BaseTarget"/> for this target.
+        /// Gets the base-game <see cref="ShootingTarget"/> for this target.
         /// </summary>
-        public BaseTarget Base { get; }
+        public ShootingTarget Base { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.
         /// </summary>
         public Interactables.Verification.IVerificationRule VerificationRule => Base.VerificationRule;
-
-        /// <summary>
-        /// Gets the position of the target.
-        /// </summary>
-        public Vector3 Position
-        {
-            get => Base.transform.position;
-        }
 
         /// <summary>
         /// Gets the bullseye location of the target.
@@ -123,21 +116,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the size scale of the target.
-        /// </summary>
-        public Vector3 Scale
-        {
-            get => Base.gameObject.transform.localScale;
-            set
-            {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
-            }
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether or not the target is in sync mode.
         /// </summary>
         public bool IsSynced
@@ -149,44 +127,61 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the type of the target.
         /// </summary>
-        public ShootingTargetType Type
+        public ShootingTargetType Type { get; }
+
+        /// <summary>
+        /// Creates a new <see cref="ShootingTargetToy"/>.
+        /// </summary>
+        /// <param name="type">The <see cref="ShootingTargetType"/> of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="position">The position of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="rotation">The rotation of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="scale">The scale of the <see cref="ShootingTargetToy"/>.</param>
+        /// <param name="spawn">Whether the <see cref="ShootingTargetToy"/> should be initially spawned.</param>
+        /// <returns>The new <see cref="ShootingTargetToy"/>.</returns>
+        public static ShootingTargetToy Create(ShootingTargetType type, Vector3? position = null, Vector3? rotation = null, Vector3? scale = null, bool spawn = true)
         {
-            get
+            ShootingTargetToy shootingTargetToy;
+
+            switch (type)
             {
-                return TypeLookup.TryGetValue(Base.gameObject.name.Substring(0, Base.gameObject.name.Length - 7), out ShootingTargetType type) ? type : ShootingTargetType.Unknown;
+                case ShootingTargetType.ClassD:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.DboyShootingTargetObject));
+                        break;
+                    }
+
+                case ShootingTargetType.Binary:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.BinaryShootingTargetObject));
+                        break;
+                    }
+
+                default:
+                    {
+                        shootingTargetToy = new ShootingTargetToy(Object.Instantiate(ToysHelper.SportShootingTargetObject));
+                        break;
+                    }
             }
+
+            shootingTargetToy.AdminToyBase.transform.position = position ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.eulerAngles = rotation ?? Vector3.zero;
+            shootingTargetToy.AdminToyBase.transform.localScale = scale ?? Vector3.one;
+
+            if (spawn)
+                shootingTargetToy.Spawn();
+
+            return shootingTargetToy;
         }
 
         /// <summary>
-        /// Gets the ShootingTarget object associated with a specific <see cref="BaseTarget"/>, or creates a new one if there isn't one.
+        /// Gets the <see cref="ShootingTargetToy"/> belonging to the <see cref="ShootingTarget"/>.
         /// </summary>
-        /// <param name="shootingTarget"><inheritdoc cref="Base"/></param>
-        /// <returns><inheritdoc cref="ShootingTarget"/></returns>
-        public static ShootingTarget Get(BaseTarget shootingTarget) => BaseToShootingTarget.ContainsKey(shootingTarget)
-            ? BaseToShootingTarget[shootingTarget]
-            : new ShootingTarget(shootingTarget);
-
-        /// <summary>
-        /// Spawns a new shooting target of the given type at the given position and rotation.
-        /// </summary>
-        /// <param name="type">The <see cref="ShootingTargetType"/> of the target.</param>
-        /// <param name="position">The position of the target.</param>
-        /// <param name="rotation">The rotation of the target.</param>
-        /// <returns>The <see cref="ShootingTarget"/> object associated with the <see cref="BaseTarget"/>.</returns>
-        public static ShootingTarget Spawn(ShootingTargetType type, Vector3 position, Quaternion rotation = default)
+        /// <param name="shootingTarget">The <see cref="ShootingTarget"/> instance.</param>
+        /// <returns>The corresponding <see cref="ShootingTargetToy"/> instance.</returns>
+        public static ShootingTargetToy Get(ShootingTarget shootingTarget)
         {
-            foreach (GameObject gameObject in NetworkClient.prefabs.Values)
-            {
-                if (TypeLookup.TryGetValue(gameObject.name, out ShootingTargetType targetType) && targetType == type)
-                {
-                    BaseTarget target = gameObject.GetComponent<BaseTarget>();
-                    GameObject targetGo = UnityEngine.Object.Instantiate(target.gameObject, position, rotation);
-                    NetworkServer.Spawn(targetGo, ownerConnection: null);
-                    return Get(target);
-                }
-            }
-
-            return null;
+            AdminToy adminToy = Map.Toys.FirstOrDefault(x => x.AdminToyBase == shootingTarget);
+            return adminToy != null ? adminToy as ShootingTargetToy : new ShootingTargetToy(shootingTarget);
         }
 
         /// <summary>
@@ -201,7 +196,6 @@ namespace Exiled.API.Features
         /// <param name="damageHandler">The <see cref="DamageHandlerBase"/> dealing the damage.</param>
         /// <param name="exactHit">The exact location of the hit.</param>
         /// <returns>Whether or not the damage was sent.</returns>
-        public bool Damage(float damage, DamageHandlerBase damageHandler, Vector3 exactHit) =>
-            Base.Damage(damage, damageHandler, exactHit);
+        public bool Damage(float damage, DamageHandlerBase damageHandler, Vector3 exactHit) => Base.Damage(damage, damageHandler, exactHit);
     }
 }

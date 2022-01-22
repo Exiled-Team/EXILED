@@ -14,6 +14,8 @@ namespace Exiled.API.Features
 
     using MapGeneration.Distributors;
 
+    using UnityEngine;
+
     /// <summary>
     /// The in-game Scp079Generator.
     /// </summary>
@@ -34,6 +36,16 @@ namespace Exiled.API.Features
         /// Gets the base <see cref="Scp079Generator"/>.
         /// </summary>
         public Scp079Generator Base { get; }
+
+        /// <summary>
+        /// Gets the generator's <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the generator's <see cref="Room"/>.
+        /// </summary>
+        public Room Room => Map.FindParentRoom(GameObject);
 
         /// <summary>
         /// Gets or sets the generator' state.
@@ -188,7 +200,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="state">The given <see cref="GeneratorState"/>.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Generator"/>.</returns>
-        public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag((byte)state, (Scp079Generator.GeneratorFlags)generator.Base.Network_flags));
+        public static IEnumerable<Generator> Get(GeneratorState state) => List.Where(generator => generator.Base.HasFlag(generator.Base.Network_flags, (Scp079Generator.GeneratorFlags)state));
 
         /// <summary>
         /// Denies the unlock.
