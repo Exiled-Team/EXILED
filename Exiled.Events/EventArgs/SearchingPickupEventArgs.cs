@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs
     using InventorySystem.Searching;
 
     /// <summary>
-    /// Contains all information before a player search a pickup.
+    /// Contains all information before a player searches a Pickup.
     /// </summary>
     public class SearchingPickupEventArgs : EventArgs
     {
@@ -45,27 +45,27 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the searching Pickup.
+        /// Gets the Pickup that is being searched.
         /// </summary>
         public Pickup Pickup { get; }
 
         /// <summary>
-        /// Gets or sets the SearchSession value.
+        /// Gets or sets the SearchSession.
         /// </summary>
         public SearchSession SearchSession { get; set; }
 
         /// <summary>
-        /// Gets or sets the SearchCompletor value.
+        /// Gets or sets the SearchCompletor.
         /// </summary>
         public SearchCompletor SearchCompletor { get; set; }
 
         /// <summary>
-        /// Gets or sets the duration time for getting the Pickup.
+        /// Gets or sets the Pickup search duration.
         /// </summary>
         public float SearchTime { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the Pickup can be search.
+        /// Gets or sets a value indicating whether the Pickup can be searched.
         /// </summary>
         public bool IsAllowed { get; set; }
     }
