@@ -423,7 +423,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> Search a Pickup.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> searches a Pickup.
         /// </summary>
         public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
 
