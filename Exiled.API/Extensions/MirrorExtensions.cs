@@ -212,8 +212,8 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="player">Target to send.</param>
         /// <param name="words">Announcement words.</param>
-        /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool)"/>'s isHeld.</param>
-        /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise);
 
         /// <summary>
