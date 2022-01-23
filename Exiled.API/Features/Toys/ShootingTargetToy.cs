@@ -37,7 +37,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Initializes a new instance of the <see cref="ShootingTargetToy"/> class.
         /// </summary>
-        /// <param name="target"><inheritdoc cref="Base"/></param>
+        /// <param name="target">The base <see cref="ShootingTarget"/> class.</param>
         internal ShootingTargetToy(ShootingTarget target)
             : base(target, AdminToyType.ShootingTarget)
         {
@@ -48,7 +48,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets the base-game <see cref="ShootingTarget"/> for this target.
         /// </summary>
-        public ShootingTarget Base { get; private set; }
+        public ShootingTarget Base { get; }
 
         /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.

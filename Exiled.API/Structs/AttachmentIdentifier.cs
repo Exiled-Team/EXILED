@@ -21,7 +21,7 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
-        /// <param name="name"><inheritdoc cref="Name"/></param>
+        /// <param name="name">The name of the attachment.</param>
         public AttachmentIdentifier(AttachmentNameTranslation name)
         {
             Code = 0;
@@ -32,8 +32,8 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
-        /// <param name="name"><inheritdoc cref="Name"/></param>
-        /// <param name="slot"><inheritdoc cref="Slot"/></param>
+        /// <param name="name">The name of the attachment.</param>
+        /// <param name="slot">The slot of the attachment.</param>
         public AttachmentIdentifier(AttachmentNameTranslation name, AttachmentSlot slot)
         {
             Code = 0;
@@ -44,9 +44,9 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="AttachmentIdentifier"/> struct.
         /// </summary>
-        /// <param name="code"><inheritdoc cref="Code"/></param>
-        /// <param name="name"><inheritdoc cref="Name"/></param>
-        /// <param name="slot"><inheritdoc cref="Slot"/></param>
+        /// <param name="code">The code of the attachment.</param>
+        /// <param name="name">The name of the attachment.</param>
+        /// <param name="slot">The slot of the attachment.</param>
         internal AttachmentIdentifier(uint code, AttachmentNameTranslation name, AttachmentSlot slot)
         {
             Code = code;
