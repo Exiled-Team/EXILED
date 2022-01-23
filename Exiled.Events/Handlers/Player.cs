@@ -418,6 +418,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> searches a Pickup.
+        /// </summary>
+        public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="Exiled.API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -891,5 +896,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with a Pickup.
+        /// </summary>
+        /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
+        public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
     }
 }
