@@ -36,14 +36,22 @@ namespace Exiled.API.Features
         public static bool IsSpawning => RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.PlayingEntryAnimations || RespawnManager.Singleton._curSequence == RespawnManager.RespawnSequencePhase.SpawningSelectedTeam;
 
         /// <summary>
-        /// Gets the amount of spawn tickets belonging to the NTF.
+        /// Gets or sets the amount of spawn tickets belonging to the NTF.
         /// </summary>
-        public static int NtfTickets => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
+        public static int NtfTickets
+        {
+            get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.NineTailedFox);
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.NineTailedFox] = Mathf.Clamp(value, 0, int.MaxValue);
+        }
 
         /// <summary>
-        /// Gets the amount of spawn tickets belonging to the Chaos Insurgency.
+        /// Gets or sets the amount of spawn tickets belonging to the Chaos Insurgency.
         /// </summary>
-        public static int ChaosTickets => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
+        public static int ChaosTickets
+        {
+            get => RespawnTickets.Singleton.GetAvailableTickets(SpawnableTeamType.ChaosInsurgency);
+            set => RespawnTickets.Singleton._tickets[SpawnableTeamType.ChaosInsurgency] = Mathf.Clamp(value, 0, int.MaxValue);
+        }
 
         /// <summary>
         /// Gets the actual <see cref="RespawnEffectsController"/>.
