@@ -293,7 +293,7 @@ namespace Exiled.API.Features.Items
         public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
 
         /// <summary>
-        /// Gets the <see cref="AmmoType"/> of the firearm.
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
         public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
 
