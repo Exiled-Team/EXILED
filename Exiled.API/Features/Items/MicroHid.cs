@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="MicroHid"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="MicroHIDItem"/> class.</param>
         public MicroHid(MicroHIDItem itemBase)
             : base(itemBase)
         {
@@ -64,7 +64,10 @@ namespace Exiled.API.Features.Items
             State = HidState.Firing;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the MicroHid in a human readable format.
+        /// </summary>
+        /// <returns>A string containing MicroHid-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Energy}| -{State}-";
