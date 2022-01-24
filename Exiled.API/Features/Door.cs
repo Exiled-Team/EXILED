@@ -129,11 +129,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the max health of the door. No effect if the door cannot be broken.
+        /// Gets or sets the max health of the door. Returns <c>-1</c> if the door cannot be broken.
         /// </summary>
         public float MaxHealth
         {
-            get => Base is BreakableDoor breakable ? breakable._maxHealth : float.NaN;
+            get => Base is BreakableDoor breakable ? breakable._maxHealth : -1f;
             set
             {
                 if (Base is BreakableDoor breakable)
@@ -142,11 +142,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the door's remaining health. No effect if the door cannot be broken.
+        /// Gets or sets the door's remaining health. Returns <c>-1</c> if the door cannot be broken.
         /// </summary>
         public float Health
         {
-            get => Base is BreakableDoor breakable ? breakable._remainingHealth : float.NaN;
+            get => Base is BreakableDoor breakable ? breakable._remainingHealth : -1f;
             set
             {
                 if (Base is BreakableDoor breakable)
@@ -210,6 +210,8 @@ namespace Exiled.API.Features
         /// Breaks the specified door. No effect if the door cannot be broken, or if it is already broken.
         /// </summary>
         /// <returns><see langword="true"/> if the door was broken, <see langword="false"/> if it was unable to be broken, or was already broken before.</returns>
+        /// <seealso cref="DamageDoor(float, DoorDamageType)"/>
+        /// <seealso cref="TryPryOpen"/>
         public bool BreakDoor()
         {
             if (Base is IDamageableDoor dmg && !dmg.IsDestroyed)
@@ -227,12 +229,16 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="type">The damage type to use.</param>
         /// <returns><see langword="true"/> if the door was damaged.</returns>
+        /// <seealso cref="BreakDoor"/>
+        /// <seealso cref="TryPryOpen"/>
         public bool DamageDoor(float amount, DoorDamageType type = DoorDamageType.ServerCommand) => Base is BreakableDoor breakable && breakable.ServerDamage(amount, type);
 
         /// <summary>
         /// Tries to pry the door open. No effect if the door cannot be pried.
         /// </summary>
         /// <returns><see langword="true"/> if the door was able to be pried open.</returns>
+        /// <seealso cref="BreakDoor"/>
+        /// <seealso cref="DamageDoor(float, DoorDamageType)"/>
         public bool TryPryOpen() => Base is PryableDoor pryable && pryable.TryPryGate();
 
         /// <summary>

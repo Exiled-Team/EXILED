@@ -52,6 +52,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets the broadcast type.
         /// </summary>
+        /// <example>
+        /// <code language="cs">
+        /// // Broadcast is monospaced and admin-only.
+        /// someBroadcast.Type = global::Broadcast.BroadcastFlags.Monospaced | global::Broadcast.BroadcastFlags.AdminChat
+        /// </code>
+        /// </example>
         [Description("The broadcast type")]
         public global::Broadcast.BroadcastFlags Type { get; set; }
 
