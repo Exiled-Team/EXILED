@@ -29,7 +29,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="FlashGrenade"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Throwable.Base"/></param>
+        /// <param name="itemBase">The base <see cref="ThrowableItem"/> class.</param>
         public FlashGrenade(ThrowableItem itemBase)
             : base(itemBase)
         {
@@ -95,7 +95,10 @@ namespace Exiled.API.Features.Items
             grenade.ServerActivate();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the FlashGrenade in a human readable format.
+        /// </summary>
+        /// <returns>A string containing FlashGrenade-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{FuseTime}|";
