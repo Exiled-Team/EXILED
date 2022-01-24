@@ -18,11 +18,11 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Flashlight"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
-        public Flashlight(ItemBase itemBase)
+        /// <param name="itemBase">The base <see cref="FlashlightItem"/> class.</param>
+        public Flashlight(FlashlightItem itemBase)
             : base(itemBase)
         {
-            Base = (FlashlightItem)itemBase;
+            Base = itemBase;
         }
 
         /// <summary>
@@ -33,7 +33,9 @@ namespace Exiled.API.Features.Items
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="FlashlightItem"/> that this class is encapsulating.
+        /// </summary>
         public new FlashlightItem Base { get; }
 
         /// <summary>
@@ -45,7 +47,10 @@ namespace Exiled.API.Features.Items
             set => Base.IsEmittingLight = value;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Flashlight in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Flashlight-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Active}|";

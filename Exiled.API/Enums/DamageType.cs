@@ -78,7 +78,7 @@ namespace Exiled.API.Enums
         Scp018,
 
         /// <summary>
-        /// Damage dealt by SCP-207.
+        /// <see cref="EffectType.Scp207"/>.
         /// </summary>
         Scp207,
 
@@ -191,5 +191,10 @@ namespace Exiled.API.Enums
         /// Damage caused by <see cref="ItemType.GunE11SR"/>.
         /// </summary>
         E11Sr,
+
+        /// <summary>
+        /// <see cref="EffectType.Hypothermia"/>.
+        /// </summary>
+        Hypothermia,
     }
 }

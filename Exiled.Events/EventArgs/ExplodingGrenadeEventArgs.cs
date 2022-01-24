@@ -29,6 +29,7 @@ namespace Exiled.Events.EventArgs
             { typeof(FlashbangGrenade), GrenadeType.Flashbang },
             { typeof(ExplosionGrenade), GrenadeType.FragGrenade },
             { typeof(Scp018Projectile), GrenadeType.Scp018 },
+            { typeof(Scp2176Projectile), GrenadeType.Scp2176 },
         };
 
         /// <summary>

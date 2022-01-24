@@ -139,6 +139,8 @@ namespace Exiled.API.Features
                                 return DamageType.FriendlyFireDetector;
                             if (translation.Id == DeathTranslations.SeveredHands.Id)
                                 return DamageType.SeveredHands;
+                            if (translation.Id == DeathTranslations.Hypothermia.Id)
+                                return DamageType.Hypothermia;
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
@@ -183,6 +185,7 @@ namespace Exiled.API.Features
                 { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
                 { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
                 { DeathTranslations.MicroHID, DamageType.MicroHid },
+                { DeathTranslations.Hypothermia, DamageType.Hypothermia },
             };
 
         /// <summary>
@@ -201,7 +204,10 @@ namespace Exiled.API.Features
             { ItemType.GunE11SR, DamageType.E11Sr },
         };
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the DamageHandler in a human readable format.
+        /// </summary>
+        /// <returns>A string containing DamageHandler-related data.</returns>
         public override string ToString() => $"{Target} {Amount} ({Type}) {(Attacker != null ? Attacker.Nickname : "No one")} {(Item != null ? Item.ToString() : "No item")}";
     }
 }

@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp330"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="Scp330Bag"/> class.</param>
         public Scp330(Scp330Bag itemBase)
             : base(itemBase)
         {
@@ -40,7 +40,9 @@ namespace Exiled.API.Features.Items
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="Scp330Bag"/> that this class is encapsulating.
+        /// </summary>
         public new Scp330Bag Base { get; }
 
         /// <summary>
@@ -168,6 +170,15 @@ namespace Exiled.API.Features.Items
             Pickup pickup = Pickup.Get(ipb);
             pickup.Scale = Scale;
             return pickup;
+        }
+
+        /// <summary>
+        /// Returns the SCP-330 in a human readable format.
+        /// </summary>
+        /// <returns>A string containing SCP-330 related data.</returns>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Candies}|";
         }
     }
 }

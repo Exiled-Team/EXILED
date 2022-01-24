@@ -32,7 +32,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <param name="pickupBase"><inheritdoc cref="Base"/></param>
+        /// <param name="pickupBase">The base <see cref="ItemPickupBase"/> class.</param>
         public Pickup(ItemPickupBase pickupBase)
         {
             Base = pickupBase;
@@ -43,7 +43,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Pickup"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the pickup.</param>
         public Pickup(ItemType type)
         {
             if (!InventoryItemLoader.AvailableItems.TryGetValue(type, out ItemBase itemBase))
@@ -194,7 +194,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public void Destroy() => Base.DestroySelf();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Pickup in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Pickup-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Position}| -{Locked}- ={InUse}=";

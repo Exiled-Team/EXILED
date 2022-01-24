@@ -8,12 +8,10 @@
 namespace Exiled.Events.EventArgs
 {
     using System;
-
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
-
+    using Exiled.API.Features.Toys;
     using PlayerStatsSystem;
-
     using UnityEngine;
 
     /// <summary>
@@ -36,7 +34,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Amount = damage;
             Distance = distance;
-            ShootingTarget = ShootingTarget.Get(shootingTarget);
+            ShootingTarget = ShootingTargetToy.Get(shootingTarget);
             Item = player.CurrentItem;
             DamageHandler = (AttackerDamageHandler)damageHandler;
             HitLocation = hitLocation;
@@ -61,7 +59,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the shooting target which is being damaged.
         /// </summary>
-        public ShootingTarget ShootingTarget { get; }
+        public ShootingTargetToy ShootingTarget { get; }
 
         /// <summary>
         /// Gets the item which is being used to deal the damage.

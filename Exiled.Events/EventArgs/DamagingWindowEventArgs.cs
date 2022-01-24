@@ -19,10 +19,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="window"><inheritdoc cref="Window"/></param>
         /// <param name="damage"><inheritdoc cref="Damage"/></param>
-        public DamagingWindowEventArgs(BreakableWindow window, float damage)
+        /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
+        public DamagingWindowEventArgs(BreakableWindow window, float damage, bool isAllowed = true)
         {
             Window = window;
             Damage = damage;
+            IsAllowed = isAllowed;
         }
 
         /// <summary>
@@ -34,5 +36,10 @@ namespace Exiled.Events.EventArgs
         /// Gets or sets the damage the window will receive.
         /// </summary>
         public float Damage { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the window can be broken.
+        /// </summary>
+        public bool IsAllowed { get; set; }
     }
 }
