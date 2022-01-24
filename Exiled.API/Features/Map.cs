@@ -469,7 +469,7 @@ namespace Exiled.API.Features
         /// <param name="index">The index of the unit color you want to change.</param>
         /// <param name="color">The new color of the Unit.</param>
         /// <example>
-        /// <code>
+        /// <code language="cs">
         /// foreach (Player player in Player.List)
         /// {
         ///     player.ChangeUnitColor(0, "cyan");

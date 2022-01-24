@@ -17,6 +17,22 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a list of player ids who will be turned away from SCP-173.
         /// </summary>
+        /// <example>
+        /// The following example prevents Class-D at the start of the round from triggering SCP-173.
+        /// <code language="cs">
+        /// // Executes at the start of a round.
+        /// public void OnStartingRound()
+        /// {
+        ///     foreach (Player player in Player.List)
+        ///     {
+        ///         if (player.Role == RoleType.ClassD)
+        ///         {
+        ///             Scp173.TurnedPlayers.Add(player)
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public static HashSet<Player> TurnedPlayers { get; } = new HashSet<Player>(20);
     }
 }

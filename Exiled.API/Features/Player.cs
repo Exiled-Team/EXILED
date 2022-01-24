@@ -305,7 +305,7 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
         /// <example>
-        /// <code>
+        /// <code language="cs">
         /// if (!somePlayer.DoNotTrack)
         /// {
         ///     // Store data.

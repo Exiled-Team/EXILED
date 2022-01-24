@@ -55,7 +55,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the cached <see cref="BanPlayer"/> component.
+        /// Gets the cached <see cref="global::BanPlayer"/> component.
         /// </summary>
         public static BanPlayer BanPlayer
         {
@@ -159,6 +159,11 @@ namespace Exiled.API.Features
         /// <param name="redirectPort">The port to redirect players to.</param>
         /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
         /// <remarks>If the returned value is <see langword="false"/>, the server won't restart.</remarks>
+        /// <example>
+        /// <code language="cs">
+        /// Server.RestartRedirect(7778); // Redirects all connected players to port 7778, and restarts the server.
+        /// </code>
+        /// </example>
         public static bool RestartRedirect(ushort redirectPort)
         {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
@@ -173,6 +178,11 @@ namespace Exiled.API.Features
         /// <param name="redirectPort">The port to redirect players to.</param>
         /// <returns><see langword="true"/> if redirection was successful; otherwise, <see langword="false"/>.</returns>
         /// <remarks>If the returned value is <see langword="false"/>, the server won't shutdown.</remarks>
+        /// <example>
+        /// <code language="cs">
+        /// Server.ShutdownRedirect(7778); // Redirects all connected players to port 7778, and shuts down the server.
+        /// </code>
+        /// </example>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
             NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));

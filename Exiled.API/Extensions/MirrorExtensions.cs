@@ -311,7 +311,7 @@ namespace Exiled.API.Extensions
         /// <param name="customAction">Custom writing action.</param>
         /// <example>
         /// EffectOnlySCP207.
-        /// <code>
+        /// <code language="cs">
         ///  MirrorExtensions.SendCustomSync(player, player.ReferenceHub.networkIdentity, typeof(PlayerEffectsController), (writer) => {
         ///   writer.WriteUInt64(1ul);                                           // DirtyObjectsBit
         ///   writer.WriteUInt32(1);                                             // DirtyIndexCount

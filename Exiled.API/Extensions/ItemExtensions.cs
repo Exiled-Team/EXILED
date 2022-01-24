@@ -28,6 +28,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="item">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an ammo or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.Ammo9x19.IsAmmo()); // true
+        /// Log.Info(ItemType.MicroHID.IsAmmo()); // false
+        /// </code>
+        /// </example>
         public static bool IsAmmo(this ItemType item) => item == ItemType.Ammo9x19 || item == ItemType.Ammo12gauge || item == ItemType.Ammo44cal || item == ItemType.Ammo556x45 || item == ItemType.Ammo762x39;
 
         /// <summary>
@@ -36,6 +42,13 @@ namespace Exiled.API.Extensions
         /// <param name="type">The item to be checked.</param>
         /// <param name="checkMicro">Indicates whether the MicroHID item should be taken into account or not.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a weapon or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.GunAK.IsWeapon()); // true
+        /// Log.Info(ItemType.MicroHID.IsWeapon()); // true
+        /// Log.Info(ItemType.MicroHID.IsWeapon(false)); // false
+        /// </code>
+        /// </example>
         public static bool IsWeapon(this ItemType type, bool checkMicro = true) => type == ItemType.GunCrossvec ||
             type == ItemType.GunLogicer || type == ItemType.GunRevolver || type == ItemType.GunShotgun ||
             type == ItemType.GunAK || type == ItemType.GunCOM15 || type == ItemType.GunCOM18 ||
@@ -46,6 +59,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an SCP or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.SCP018.IsScp()); // true
+        /// Log.Info(ItemType.SCP500.IsScp()); // true
+        /// </code>
+        /// </example>
         public static bool IsScp(this ItemType type) => type == ItemType.SCP018 || type == ItemType.SCP500 || type == ItemType.SCP268 || type == ItemType.SCP207
             || type == ItemType.SCP244a || type == ItemType.SCP244b || type == ItemType.SCP2176;
 
@@ -54,6 +73,13 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a throwable item or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.GrenadeHE.IsThrowable()); // true
+        /// Log.Info(ItemType.SCP018.IsThrowable()); // true
+        /// Log.Info(ItemType.SCP500.IsThrowable()); // false
+        /// </code>
+        /// </example>
         public static bool IsThrowable(this ItemType type) => type == ItemType.SCP018 || type == ItemType.GrenadeHE || type == ItemType.GrenadeFlash || type == ItemType.SCP2176;
 
         /// <summary>
@@ -61,6 +87,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a medical item or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.Medkit.IsMedical()); // true
+        /// Log.Info(ItemType.SCP500.IsMedical()); // true
+        /// </code>
+        /// </example>
         public static bool IsMedical(this ItemType type) => type == ItemType.Painkillers || type == ItemType.Medkit || type == ItemType.SCP500 || type == ItemType.Adrenaline;
 
         /// <summary>
@@ -68,6 +100,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an utilty item or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.Flashlight.IsUtility()); // true
+        /// Log.Info(ItemType.SCP500.IsUtility()); // false
+        /// </code>
+        /// </example>
         public static bool IsUtility(this ItemType type) => /*type == ItemType.Disarmer ||*/ type == ItemType.Flashlight || type == ItemType.Radio;
 
         /// <summary>
@@ -75,6 +113,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is an armor or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.ArmorCombat.IsArmor()); // true
+        /// Log.Info(ItemType.ArmorLight.IsArmor()); // true
+        /// </code>
+        /// </example>
         public static bool IsArmor(this ItemType type) => type == ItemType.ArmorCombat || type == ItemType.ArmorHeavy ||
                                                           type == ItemType.ArmorLight;
 
@@ -83,6 +127,12 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The item to be checked.</param>
         /// <returns>Returns whether the <see cref="ItemType"/> is a keycard or not.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// Log.Info(ItemType.KeycardO5.IsKeycard()); // true
+        /// Log.Info(ItemType.KeycardChaosInsurgency.IsKeycard()); // true
+        /// </code>
+        /// </example>
         public static bool IsKeycard(this ItemType type) =>
             type == ItemType.KeycardChaosInsurgency || type == ItemType.KeycardContainmentEngineer || type == ItemType.KeycardFacilityManager ||
             type == ItemType.KeycardGuard || type == ItemType.KeycardJanitor || type == ItemType.KeycardNTFCommander ||
@@ -107,6 +157,11 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
         /// <returns>The ammo type of the given item type.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// AmmoType ammoType = ItemType.Ammo44cal.GetAmmoType() // Returns AmmoType.Ammo44Cal.
+        /// </code>
+        /// </example>
         public static AmmoType GetAmmoType(this ItemType type)
         {
             switch (type)
@@ -131,6 +186,11 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="AmmoType"/> to convert.</param>
         /// <returns>The Item type of the specified ammo.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// ItemType itemType = AmmoType.Ammo44Cal.GetItemType() // Returns ItemType.Ammo44cal.
+        /// </code>
+        /// </example>
         public static ItemType GetItemType(this AmmoType type)
         {
             switch (type)
@@ -155,6 +215,11 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>
         /// <returns>The Item type of the specified grenade.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// ItemType itemType = GrenadeType.FragGrenade.GetItemType(); // Returns ItemType.GrenadeHE.
+        /// </code>
+        /// </example>
         public static ItemType GetItemType(this GrenadeType type)
         {
             switch (type)
@@ -175,6 +240,17 @@ namespace Exiled.API.Extensions
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
+        /// <example>
+        /// <code language="cs">
+        /// List&lt;Item&gt; itemList = new[] { Item.Create(ItemType.MicroHID), Item.Create(ItemType.Radio), Item.Create(ItemType.SCP330) };
+        /// List&lt;ItemType&gt; types = itemList.GetItemTypes();
+        /// foreach (ItemType itemType in types)
+        /// {
+        ///     Log.Info(itemType);
+        /// }
+        /// </code>
+        /// The code above would output "ItemType.MicroHID", "ItemType.Radio", and "ItemType.SCP330".
+        /// </example>
         public static List<ItemType> GetItemTypes(this IEnumerable<Item> items)
         {
             List<ItemType> itemTypes = new List<ItemType>();
