@@ -16,6 +16,10 @@ namespace Exiled.API.Features
 
     using Respawning;
 
+    using CustomFirearmHandler = Exiled.API.Features.DamageHandlers.FirearmDamageHandler;
+
+    using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+
     /// <summary>
     /// A set of tools to use in-game C.A.S.S.I.E.
     /// </summary>
@@ -100,7 +104,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scp">SCP to announce termination of.</param>
         /// <param name="info">HitInformation.</param>
-        public static void SCPTermination(Player scp, DamageHandlerBase info)
+        public static void ScpTermination(Player scp, DamageHandlerBase info)
             => NineTailedFoxAnnouncer.AnnounceScpTermination(scp.ReferenceHub, info);
 
         /// <summary>
@@ -108,16 +112,16 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="scpName">SCP Name. Note that for larger numbers, C.A.S.S.I.E will pronounce the place (eg. "457" -> "four hundred fifty seven"). Spaces can be used to prevent this behavior.</param>
         /// <param name="info">Hit Information.</param>
-        public static void CustomScpTermination(string scpName, DamageHandler info)
+        public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
-            if (info.Base is MicroHidDamageHandler)
+            if (info.SafeCast(out MicroHidDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.Base is WarheadDamageHandler)
+            else if (info.SafeCast(out WarheadDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.Base is UniversalDamageHandler)
+            else if (info.SafeCast(out UniversalDamageHandler _))
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.Base is FirearmDamageHandler firearmDamageHandler && Player.Get(firearmDamageHandler.Attacker.Hub) is Player attacker)
+            else if (info.SafeBaseCast(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
