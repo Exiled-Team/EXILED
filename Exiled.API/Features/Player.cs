@@ -117,12 +117,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the encapsulated <see cref="global::ReferenceHub"/>.
         /// </summary>
+        /// <exception cref="ArgumentNullException">Player's ReferenceHub cannot be null.</exception>
         public ReferenceHub ReferenceHub
         {
             get => referenceHub;
             private set
             {
-                referenceHub = value ?? throw new NullReferenceException("Player's ReferenceHub cannot be null!");
+                referenceHub = value ?? throw new ArgumentNullException("Player's ReferenceHub cannot be null!");
                 GameObject = value.gameObject;
                 HintDisplay = value.hints;
                 Inventory = value.inventory;
@@ -303,6 +304,14 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether or not the player has Do Not Track (DNT) enabled. If this value is <see langword="true"/>, data about the player unrelated to server security shouldn't be stored.
         /// </summary>
+        /// <example>
+        /// <code>
+        /// if (!somePlayer.DoNotTrack)
+        /// {
+        ///     // Store data.
+        /// }
+        /// </code>
+        /// </example>
         public bool DoNotTrack => ReferenceHub.serverRoles.DoNotTrack;
 
         /// <summary>
@@ -377,9 +386,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's rotations.
+        /// Gets or sets the player's rotation.
         /// </summary>
-        /// <returns>Returns a <see cref="Vector2"/> representing the rotation of the player.</returns>
         public Vector2 Rotations
         {
             get => ReferenceHub.playerMovementSync.RotationSync;
@@ -387,9 +395,8 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets the player's rotation.
+        /// Gets or sets the player's forward rotation.
         /// </summary>
-        /// <returns>Returns the direction he's looking at, useful for Raycasts.</returns>
         public Vector3 Rotation
         {
             get => ReferenceHub.PlayerCameraReference.forward;
@@ -437,7 +444,7 @@ namespace Exiled.API.Features
         public bool IsAimingDownWeapon => CurrentItem is Firearm firearm && firearm.Aiming;
 
         /// <summary>
-        /// Gets a value indicating whether the player has enabled weapon's flashlight module.
+        /// Gets a value indicating whether the player has enabled a weapon's flashlight module.
         /// </summary>
         public bool HasFlashlightModuleEnabled => CurrentItem is Firearm firearm && firearm.FlashlightEnabled;
 
@@ -478,7 +485,6 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether the <see cref="Player"/> has No-clip enabled.
         /// </summary>
-        /// <returns><see cref="bool"/> indicating status.</returns>
         public bool NoClipEnabled
         {
             get => ReferenceHub.serverRoles.NoclipReady;

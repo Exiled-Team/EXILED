@@ -254,6 +254,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
+        /// <seealso cref="Player.Broadcast(Features.Broadcast, bool)">Hmm.</seealso>
         public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
             if (broadcast.Show)
@@ -301,10 +302,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Turns off all lights in the facility.
+        /// Turns off all lights in the facility for the given <paramref name="duration"/>.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
-        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect. Set to <see cref="ZoneType.Unspecified"/> to affect all zones.</param>
         public static void TurnOffAllLights(float duration, ZoneType zoneTypes = ZoneType.Unspecified)
         {
             foreach (FlickerableLightController controller in FlickerableLightController.Instances)
@@ -316,7 +317,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Turns off all lights in the facility.
+        /// Turns off all lights in the facility for the given <paramref name="duration"/>.
         /// </summary>
         /// <param name="duration">The duration of the blackout.</param>
         /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
@@ -327,7 +328,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// Locks all <see cref="Door">doors</see> in the facility for the given <paramref name="duration"/>.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
         /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
@@ -349,11 +350,11 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
+        /// Locks all <see cref="Door">doors</see> in the facility for the given <paramref name="duration"/>.
         /// </summary>
         /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
-        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
+        /// <param name="lockType">DoorLockType of the lockdown.</param>
         public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (ZoneType zone in zoneTypes)
@@ -398,7 +399,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an random <see cref="Room"/>.
+        /// Gets a random <see cref="Room"/>.
         /// </summary>
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <returns><see cref="Room"/> object.</returns>
@@ -409,13 +410,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an random <see cref="Camera"/>.
+        /// Gets a random <see cref="Camera"/>.
         /// </summary>
         /// <returns><see cref="Camera"/> object.</returns>
         public static Camera GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
 
         /// <summary>
-        /// Gets an random <see cref="Door"/>.
+        /// Gets a random <see cref="Door"/>.
         /// </summary>
         /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
         /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
@@ -427,19 +428,19 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an random <see cref="Lift"/>.
+        /// Gets a random <see cref="Lift"/>.
         /// </summary>
         /// <returns><see cref="Lift"/> object.</returns>
         public static Lift GetRandomLift() => Lifts[Random.Range(0, Lifts.Count)];
 
         /// <summary>
-        /// Gets an random <see cref="Locker"/>.
+        /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
         public static Locker GetRandomLocker() => Lockers[Random.Range(0, Lockers.Count)];
 
         /// <summary>
-        /// Gets an random <see cref="Pickup"/>.
+        /// Gets a random <see cref="Pickup"/>.
         /// </summary>
         /// <param name="type">Filters by <see cref="ItemType"/>.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
@@ -452,7 +453,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the <see cref="Door">door</see> with the given door name.
+        /// Gets the <see cref="Door">door</see> with the given <paramref name="doorName"/>.
         /// </summary>
         /// <param name="doorName">The door name.</param>
         /// <returns>The <see cref="Door"/> or <see langword="null"/> if a door with this name doesn't exist.</returns>
@@ -467,6 +468,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="index">The index of the unit color you want to change.</param>
         /// <param name="color">The new color of the Unit.</param>
+        /// <example>
+        /// <code>
+        /// foreach (Player player in Player.List)
+        /// {
+        ///     player.ChangeUnitColor(0, "cyan");
+        /// }
+        /// </code>
+        /// </example>
         public static void ChangeUnitColor(int index, string color)
         {
             string unit = Respawning.RespawnManager.Singleton.NamingManager.AllUnitNames[index].UnitName;
@@ -502,7 +511,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Places a Tantrum (SCP-173's ability) in the indicated position.
+        /// Places a Tantrum (SCP-173's ability) at the indicated <paramref name="position"/>.
         /// </summary>
         /// <param name="position">The position where you want to spawn the Tantrum.</param>
         /// <returns>The tantrum's <see cref="GameObject"/>.</returns>
