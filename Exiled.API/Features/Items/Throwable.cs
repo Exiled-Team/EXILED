@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Throwable"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="ThrowableItem"/> class.</param>
         public Throwable(ThrowableItem itemBase)
             : base(itemBase)
         {
@@ -27,8 +27,8 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Throwable"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Base"/></param>
-        /// <param name="player"><inheritdoc cref="Item.Owner"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the throwable item.</param>
+        /// <param name="player">The owner of the throwable item. Leave <see langword="null"/> for no owner.</param>
         /// <remarks>The player parameter will always need to be defined if this throwable is custom using Exiled.CustomItems.</remarks>
         internal Throwable(ItemType type, Player player = null)
             : this(player == null ? (ThrowableItem)Server.Host.Inventory.CreateItemInstance(type, false) : (ThrowableItem)player.Inventory.CreateItemInstance(type, true))
@@ -55,7 +55,10 @@ namespace Exiled.API.Features.Items
         /// <param name="fullForce">Whether to use full or half force.</param>
         public void Throw(bool fullForce = true) => Base.ServerThrow(fullForce, ThrowableNetworkHandler.GetLimitedVelocity(Base.Owner.playerMovementSync.PlayerVelocity));
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Throwable in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Throwable-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{PinPullTime}|";

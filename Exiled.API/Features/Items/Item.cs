@@ -52,7 +52,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         internal Item(ItemType type)
             : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
@@ -434,7 +434,10 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Item in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Item-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
