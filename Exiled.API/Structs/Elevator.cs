@@ -17,7 +17,7 @@ namespace Exiled.API.Structs
         /// <summary>
         /// Initializes a new instance of the <see cref="Elevator"/> struct.
         /// </summary>
-        /// <param name="elevator"><inheritdoc cref="Base"/></param>
+        /// <param name="elevator">The base <see cref="Lift.Elevator"/> class.</param>
         public Elevator(Lift.Elevator elevator) => Base = elevator;
 
         /// <summary>

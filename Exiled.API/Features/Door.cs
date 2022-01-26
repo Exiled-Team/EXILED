@@ -31,7 +31,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
-        /// <param name="door"><inheritdoc cref="Base"/></param>
+        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         public Door(DoorVariant door)
         {
             DoorVariantToDoor.Add(door, this);
@@ -202,8 +202,8 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
         /// </summary>
-        /// <param name="doorVariant"><inheritdoc cref="Base"/></param>
-        /// <returns><inheritdoc cref="Door"/></returns>
+        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
+        /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
             ? DoorVariantToDoor[doorVariant]
             : new Door(doorVariant);
@@ -257,7 +257,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks the door with the given lock type.
         /// </summary>
-        /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
             if (lockType == DoorLockType.None)
