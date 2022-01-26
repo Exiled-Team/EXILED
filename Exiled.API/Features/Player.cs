@@ -405,15 +405,6 @@ namespace Exiled.API.Features
         public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
-        /// Gets or sets the player's <see cref="RoleType"/>.
-        /// </summary>
-        public RoleType RoleType
-        {
-            get => Role.RoleType;
-            set => SetRole(value);
-        }
-
-        /// <summary>
         /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
@@ -423,7 +414,7 @@ namespace Exiled.API.Features
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
         /// <para>
-        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded.
+        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
         /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
         /// </para>
         /// </summary>
@@ -431,23 +422,9 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (storedRole == null || storedRole.RoleType != referenceHub.characterClassManager.NetworkCurClass)
+                if (storedRole == null || !storedRole.IsValid)
                 {
-                    switch (RoleType)
-                    {
-                        case RoleType.Scp079:
-                            storedRole = new Scp079Role(this);
-                            break;
-                        case RoleType.Scp049:
-                            storedRole = new Scp049Role(this);
-                            break;
-                        case RoleType.Spectator:
-                            storedRole = new SpectatorRole(this);
-                            break;
-                        default:
-                            storedRole = new HumanRole(this);
-                            break;
-                    }
+                    storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
                 }
 
                 return storedRole;
