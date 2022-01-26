@@ -313,7 +313,7 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
-        /// Invoked before dropping a ammo.
+        /// Invoked before dropping ammo.
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
