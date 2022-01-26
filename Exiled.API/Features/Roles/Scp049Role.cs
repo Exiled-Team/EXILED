@@ -22,15 +22,15 @@ namespace Exiled.API.Features.Roles
         /// <param name="player">The encapsulated player.</param>
         internal Scp049Role(Player player)
         {
-            Player = player;
+            Owner = player;
             script = player.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp049;
         }
 
         /// <inheritdoc/>
-        public override Player Player { get; }
+        public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType RoleType => RoleType.Scp049;
+        public override RoleType Type => RoleType.Scp049;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
@@ -59,6 +59,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool InRecallingDistance(Ragdoll ragdoll) => Vector3.Distance(Player.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
+        public bool InRecallingDistance(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
     }
 }

@@ -20,19 +20,19 @@ namespace Exiled.API.Features.Roles
         /// <param name="player">The encapsulated player.</param>
         internal SpectatorRole(Player player)
         {
-            Player = player;
+            Owner = player;
         }
 
         /// <inheritdoc/>
-        public override Player Player { get; }
+        public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType RoleType => RoleType.Spectator;
+        public override RoleType Type => RoleType.Spectator;
 
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.
         /// </summary>
-        public DateTime DeathTime => new DateTime(Player.ReferenceHub.characterClassManager.DeathTime);
+        public DateTime DeathTime => new DateTime(Owner.ReferenceHub.characterClassManager.DeathTime);
 
         /// <summary>
         /// Gets the total amount of time the player has been dead.
@@ -46,9 +46,9 @@ namespace Exiled.API.Features.Roles
         {
             get
             {
-                Player spectatedPlayer = Player.Get(Player.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
+                Player spectatedPlayer = Player.Get(Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
 
-                if (spectatedPlayer == Player)
+                if (spectatedPlayer == Owner)
                     return null;
 
                 return spectatedPlayer;
@@ -56,11 +56,11 @@ namespace Exiled.API.Features.Roles
 
             set
             {
-                if (Player.IsAlive)
+                if (Owner.IsAlive)
                     throw new System.InvalidOperationException("The spectated player cannot be set on an alive player.");
 
-                Player.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
-                Player.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
+                Owner.ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
+                Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
     }

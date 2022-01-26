@@ -18,20 +18,20 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp079Role(Player player) => Player = player;
+        internal Scp079Role(Player player) => Owner = player;
 
         /// <inheritdoc/>
-        public override Player Player { get; }
+        public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType RoleType => RoleType.Scp079;
+        public override RoleType Type => RoleType.Scp079;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
         /// </summary>
         public Camera Camera
         {
-            get => Camera.Get(Player.ReferenceHub.scp079PlayerScript.currentCamera);
+            get => Camera.Get(Owner.ReferenceHub.scp079PlayerScript.currentCamera);
             set => SetCamera(value);
         }
 
@@ -40,11 +40,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Scp079PlayerScript.Ability079[] Abilities
         {
-            get => Player.ReferenceHub.scp079PlayerScript?.abilities;
+            get => Owner.ReferenceHub.scp079PlayerScript?.abilities;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript != null)
-                    Player.ReferenceHub.scp079PlayerScript.abilities = value;
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
+                    Owner.ReferenceHub.scp079PlayerScript.abilities = value;
             }
         }
 
@@ -53,11 +53,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public Scp079PlayerScript.Level079[] Levels
         {
-            get => Player.ReferenceHub.scp079PlayerScript?.levels;
+            get => Owner.ReferenceHub.scp079PlayerScript?.levels;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript != null)
-                    Player.ReferenceHub.scp079PlayerScript.levels = value;
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
+                    Owner.ReferenceHub.scp079PlayerScript.levels = value;
             }
         }
 
@@ -66,11 +66,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public string Speaker
         {
-            get => Player.ReferenceHub.scp079PlayerScript?.Speaker;
+            get => Owner.ReferenceHub.scp079PlayerScript?.Speaker;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript != null)
-                    Player.ReferenceHub.scp079PlayerScript.Speaker = value;
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
+                    Owner.ReferenceHub.scp079PlayerScript.Speaker = value;
             }
         }
 
@@ -79,11 +79,11 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public SyncList<uint> LockedDoors
         {
-            get => Player.ReferenceHub.scp079PlayerScript?.lockedDoors;
+            get => Owner.ReferenceHub.scp079PlayerScript?.lockedDoors;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript != null)
-                    Player.ReferenceHub.scp079PlayerScript.lockedDoors = value;
+                if (Owner.ReferenceHub.scp079PlayerScript != null)
+                    Owner.ReferenceHub.scp079PlayerScript.lockedDoors = value;
             }
         }
 
@@ -92,14 +92,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Experience
         {
-            get => Player.ReferenceHub.scp079PlayerScript != null ? Player.ReferenceHub.scp079PlayerScript.Exp : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Exp : float.NaN;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript == null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
-                Player.ReferenceHub.scp079PlayerScript.Exp = value;
-                Player.ReferenceHub.scp079PlayerScript.OnExpChange();
+                Owner.ReferenceHub.scp079PlayerScript.Exp = value;
+                Owner.ReferenceHub.scp079PlayerScript.OnExpChange();
             }
         }
 
@@ -108,13 +108,13 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public byte Level
         {
-            get => Player.ReferenceHub.scp079PlayerScript != null ? Player.ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript == null || Player.ReferenceHub.scp079PlayerScript.Lvl == value)
+                if (Owner.ReferenceHub.scp079PlayerScript == null || Owner.ReferenceHub.scp079PlayerScript.Lvl == value)
                     return;
 
-                Player.ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
+                Owner.ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
             }
         }
 
@@ -123,14 +123,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float MaxEnergy
         {
-            get => Player.ReferenceHub.scp079PlayerScript != null ? Player.ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript == null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
-                Player.ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
-                Player.ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
+                Owner.ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
+                Owner.ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
             }
         }
 
@@ -139,13 +139,13 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float Energy
         {
-            get => Player.ReferenceHub.scp079PlayerScript != null ? Player.ReferenceHub.scp079PlayerScript.Mana : float.NaN;
+            get => Owner.ReferenceHub.scp079PlayerScript != null ? Owner.ReferenceHub.scp079PlayerScript.Mana : float.NaN;
             set
             {
-                if (Player.ReferenceHub.scp079PlayerScript == null)
+                if (Owner.ReferenceHub.scp079PlayerScript == null)
                     return;
 
-                Player.ReferenceHub.scp079PlayerScript.Mana = value;
+                Owner.ReferenceHub.scp079PlayerScript.Mana = value;
             }
         }
 
@@ -153,7 +153,7 @@ namespace Exiled.API.Features.Roles
         /// Sets the camera SCP-079 is currently located at.
         /// </summary>
         /// <param name="cameraId">Camera ID.</param>
-        public void SetCamera(ushort cameraId) => Player.ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
+        public void SetCamera(ushort cameraId) => Owner.ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
 
         /// <summary>
         /// Sets the camera SCP-079 is currently located at.
@@ -170,6 +170,6 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Unlocks all doors that SCP-079 has locked.
         /// </summary>
-        public void UnlockDoors() => Player.ReferenceHub.scp079PlayerScript.UnlockDoors();
+        public void UnlockDoors() => Owner.ReferenceHub.scp079PlayerScript.UnlockDoors();
     }
 }

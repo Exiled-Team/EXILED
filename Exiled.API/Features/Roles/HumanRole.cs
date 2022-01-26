@@ -19,14 +19,14 @@ namespace Exiled.API.Features.Roles
         /// <param name="player">The encapsulated player.</param>
         internal HumanRole(Player player)
         {
-            Player = player;
-            this.RoleType = player.RoleType;
+            Owner = player;
+            Type = player.ReferenceHub.characterClassManager.NetworkCurClass;
         }
 
         /// <inheritdoc/>
-        public override Player Player { get; }
+        public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType RoleType { get; }
+        public override RoleType Type { get; }
     }
 }

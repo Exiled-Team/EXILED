@@ -17,38 +17,38 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the player this role is referring to.
         /// </summary>
-        public abstract Player Player { get; }
+        public abstract Player Owner { get; }
 
         /// <summary>
-        /// Gets the <see cref="global::RoleType"/> of this role.
+        /// Gets the <see cref="RoleType"/> of this role.
         /// </summary>
-        public abstract RoleType RoleType { get; }
+        public abstract RoleType Type { get; }
 
         /// <summary>
         /// Gets the <see cref="global::Team"/> of this role.
         /// </summary>
-        public Team Team => RoleType.GetTeam();
+        public Team Team => Type.GetTeam();
 
         /// <summary>
         /// Gets the <see cref="Enums.Side"/> of this role.
         /// </summary>
-        public Enums.Side Side => RoleType.GetSide();
+        public Enums.Side Side => Type.GetSide();
 
         /// <summary>
         /// Gets the <see cref="UnityEngine.Color"/> of this role.
         /// </summary>
-        public UnityEngine.Color Color => RoleType.GetColor();
+        public UnityEngine.Color Color => Type.GetColor();
 
         /// <summary>
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
-        public bool IsValid => RoleType == Player.ReferenceHub.characterClassManager.NetworkCurClass;
+        public bool IsValid => Type == Owner.ReferenceHub.characterClassManager.NetworkCurClass;
 
         /// <summary>
         /// Converts a role to its appropriate <see cref="global::RoleType"/>.
         /// </summary>
         /// <param name="role">The role.</param>
-        public static implicit operator RoleType(Role role) => role.RoleType;
+        public static implicit operator RoleType(Role role) => role.Type;
 
         /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
@@ -57,7 +57,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The <see cref="global::RoleType"/>.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(Role role, RoleType type)
-            => role.RoleType == type;
+            => role.Type == type;
 
         /// <summary>
         /// Returns whether or not the role has a different RoleType as the given <paramref name="type"/>.
@@ -66,7 +66,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The <see cref="global::RoleType"/>.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(Role role, RoleType type)
-            => role.RoleType != type;
+            => role.Type != type;
 
         /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
@@ -75,7 +75,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The role.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(RoleType type, Role role)
-            => role.RoleType == type;
+            => role.Type == type;
 
         /// <summary>
         /// Returns whether or not the role has a different RoleType as the given <paramref name="type"/>.
@@ -84,7 +84,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The role.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleType type, Role role)
-            => role.RoleType != type;
+            => role.Type != type;
 
         /// <summary>
         /// Casts the role to the specified role class.
@@ -99,7 +99,7 @@ namespace Exiled.API.Features.Roles
         public override bool Equals(object obj) => base.Equals(obj);
 
         /// <inheritdoc/>
-        public override string ToString() => RoleType.ToString();
+        public override string ToString() => Type.ToString();
 
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();
