@@ -308,12 +308,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<UsingMicroHIDEnergyEventArgs> UsingMicroHIDEnergy;
 
         /// <summary>
-        /// Called before processing a <see cref="Exiled.API.Features.Player"/> hotkey.
+        /// Called before processing a hotkey.
         /// </summary>
         public static event CustomEventHandler<ProcessingHotkeyEventArgs> ProcessingHotkey;
 
         /// <summary>
-        /// Invoked before <see cref="Exiled.API.Features.Player"/> dropps a ammo.
+        /// Invoked before dropping a ammo.
         /// </summary>
         public static event CustomEventHandler<DroppingAmmoEventArgs> DroppingAmmo;
 
