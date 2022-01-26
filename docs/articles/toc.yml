@@ -2,6 +2,8 @@
   href: install.md
 - name: Contributing
   href: contributing.md
+- name: Frequently Asked Questions
+  href: faq.md
 - name: Dev Tutorials
   items:
     - name: Creating A Plugin
