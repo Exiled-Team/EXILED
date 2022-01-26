@@ -153,8 +153,8 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
-        /// <returns><inheritdoc cref="ItemType"/></returns>
+        /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>
+        /// <returns>The Item type of the specified grenade.</returns>
         public static ItemType GetItemType(this GrenadeType type)
         {
             switch (type)
