@@ -263,12 +263,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ClosingGeneratorEventArgs> ClosingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> tries to turn on the generator by switching lever.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<ActivatingGeneratorEventArgs> ActivatingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> tries to turn off the generator by switching lever.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<StoppingGeneratorEventArgs> StoppingGenerator;
 
