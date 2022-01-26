@@ -45,6 +45,6 @@ namespace Exiled.API.Extensions
         /// <returns>Returns whether the <see cref="DamageType"/> is caused by status effect or not.</returns>
         public static bool IsStatusEffect(this DamageType type)
             => type == DamageType.Asphyxiation || type == DamageType.Poison ||
-               type == DamageType.Bleeding || type == DamageType.Scp207;
+               type == DamageType.Bleeding || type == DamageType.Scp207 || type == DamageType.Hypothermia;
     }
 }

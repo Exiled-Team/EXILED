@@ -25,13 +25,13 @@ namespace Exiled.API.Features.Attributes
         /// <summary>
         /// Initializes a new instance of the <see cref="ExiledSerializableAttribute"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="ItemType"/></param>
+        /// <param name="type">The <see cref="global::ItemType"/> to serialize.</param>
         public ExiledSerializableAttribute(ItemType type) => ItemType = type;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ExiledSerializableAttribute"/> class.
         /// </summary>
-        /// <param name="role"><inheritdoc cref="RoleType"/></param>
+        /// <param name="role">The <see cref="global::RoleType"/> to serialize.</param>
         public ExiledSerializableAttribute(RoleType role) => RoleType = role;
 
         /// <summary>

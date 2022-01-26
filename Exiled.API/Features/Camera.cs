@@ -110,7 +110,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Camera"/> class.
         /// </summary>
-        /// <param name="camera079"><inheritdoc cref="Base"/></param>
+        /// <param name="camera079">The base camera.</param>
         internal Camera(Camera079 camera079) => Base = camera079;
 
         /// <summary>

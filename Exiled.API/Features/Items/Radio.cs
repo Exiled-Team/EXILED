@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Radio"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="RadioItem"/> class.</param>
         public Radio(RadioItem itemBase)
             : base(itemBase)
         {
@@ -35,7 +35,9 @@ namespace Exiled.API.Features.Items
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="RadioItem"/> that this class is encapsulating.
+        /// </summary>
         public new RadioItem Base { get; }
 
         /// <summary>
@@ -82,7 +84,10 @@ namespace Exiled.API.Features.Items
         /// </summary>
         public void Disable() => Base._radio.ForceDisableRadio();
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Radio in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Radio-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}* |{Range}| -{BatteryLevel}-";
