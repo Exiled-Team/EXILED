@@ -2,7 +2,7 @@
   href: install.md
 - name: Contributing
   href: contributing.md
-- name: Tutorials
+- name: Dev Tutorials
   items:
     - name: Creating A Plugin
       href: tutorials/plugin-structure.md
@@ -10,5 +10,7 @@
       href: tutorials/events.md
     - name: MEC Coroutines
       href: tutorials/mec.md
-- name: Rich Text Reference
-  href: rich-text-reference.md
+- name: Dev Resources
+  items:
+    - name: Rich Text Reference
+      href: rich-text-reference.md

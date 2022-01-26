@@ -1,9 +1,11 @@
 ---
 uid: install
 ---
-# Installing EXILED
+> [!NOTE]
+> This tutorial assumes that you are familiar with C# and with setting up a plugin in the EXILED framework. See the [](xref:plugin_structure) tutorial if you are unfamiliar with setting up a plugin using EXILED.
 
-**This guide assumes you have already installed the SCP: SL dedicated server. If you have not done this, please follow the guide [here.](https://en.scpslgame.com/index.php?title=Guide:Hosting_a_server)**
+
+# Installing EXILED
 
 ## Windows installation
 
