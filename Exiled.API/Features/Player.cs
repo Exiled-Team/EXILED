@@ -722,9 +722,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a list of all active Artificial Health processes on the player.
+        /// Gets a <see cref="IEnumerable{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
+        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
         {
             get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
         }

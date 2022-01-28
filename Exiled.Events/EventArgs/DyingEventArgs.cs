@@ -48,7 +48,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the list of items to be dropped.
         /// </summary>
-        public List<Item> ItemsToDrop { get; set; }
+        public IEnumerable<Item> ItemsToDrop { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="API.Features.DamageHandler"/>.

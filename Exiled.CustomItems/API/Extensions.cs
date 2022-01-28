@@ -25,7 +25,7 @@ namespace Exiled.CustomItems.API
         /// <param name="player">The player to which items will be given.</param>
         /// <param name="newItems">The new items that have to be added to the inventory.</param>
         /// <param name="displayMessage">Indicates a value whether <see cref="CustomItem.ShowPickedUpMessage"/> will be called when the player receives the <see cref="CustomItem"/> or not.</param>
-        public static void ResetInventory(this Player player, List<string> newItems, bool displayMessage = false)
+        public static void ResetInventory(this Player player, IEnumerable<string> newItems, bool displayMessage = false)
         {
             foreach (Item item in player.Items)
             {
