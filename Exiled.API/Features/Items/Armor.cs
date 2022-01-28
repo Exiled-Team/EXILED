@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="BodyArmor"/> class.</param>
         public Armor(BodyArmor itemBase)
             : base(itemBase)
         {
@@ -35,13 +35,15 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Armor"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Item.Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the armor.</param>
         internal Armor(ItemType type)
             : this((BodyArmor)Server.Host.Inventory.CreateItemInstance(type, false))
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="BodyArmor"/> that this class is encapsulating.
+        /// </summary>
         public new BodyArmor Base { get; }
 
         /// <summary>
