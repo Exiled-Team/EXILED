@@ -117,6 +117,12 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override int GetHashCode() => base.GetHashCode();
 
+        /// <summary>
+        /// Creates a role from RoleType and Player.
+        /// </summary>
+        /// <param name="type">The RoleType.</param>
+        /// <param name="player">The Player.</param>
+        /// <returns>A role.</returns>
         internal static Role Create(RoleType type, Player player)
         {
             switch (type)
@@ -125,6 +131,8 @@ namespace Exiled.API.Features.Roles
                     return new Scp079Role(player);
                 case RoleType.Scp049:
                     return new Scp049Role(player);
+                case RoleType.Scp173:
+                    return new Scp173Role(player);
                 case RoleType.Spectator:
                     return new SpectatorRole(player);
                 default:
