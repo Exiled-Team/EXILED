@@ -127,16 +127,27 @@ namespace Exiled.API.Features.Roles
         {
             switch (type)
             {
-                case RoleType.Scp079:
-                    return new Scp079Role(player);
                 case RoleType.Scp049:
                     return new Scp049Role(player);
+                case RoleType.Scp0492:
+                    return new Scp0492Role(player);
+                case RoleType.Scp079:
+                    return new Scp079Role(player);
+                case RoleType.Scp096:
+                    return new Scp096Role(player);
+                case RoleType.Scp106:
+                    return new Scp106Role(player);
                 case RoleType.Scp173:
                     return new Scp173Role(player);
+                case RoleType.Scp93953:
+                case RoleType.Scp93989:
+                    return new Scp939Role(player, type);
                 case RoleType.Spectator:
                     return new SpectatorRole(player);
+                case RoleType.Tutorial:
+                    return new TutorialRole(player);
                 default:
-                    return new HumanRole(player);
+                    return new HumanRole(player, type);
             }
         }
     }

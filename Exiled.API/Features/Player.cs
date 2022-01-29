@@ -417,7 +417,11 @@ namespace Exiled.API.Features
         /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
         /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
         /// </para>
+        /// <para>
+        /// Roles and RoleTypes can be compared directly. <c>Player.Role == RoleType.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Player.SetRole(RoleType, SpawnReason, bool)"/>.
+        /// </para>
         /// </summary>
+        /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
         public Role Role
         {
             get
@@ -548,6 +552,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
         public bool IsHuman => Role.Is<HumanRole>(out _);
+
+        /// <summary>
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
+        /// </summary>
+        public bool IsTutorial => Role.Is<TutorialRole>(out _);
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.

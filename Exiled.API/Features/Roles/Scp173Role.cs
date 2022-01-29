@@ -10,8 +10,6 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
-    using UnityEngine;
-
     /// <summary>
     /// Defines a role that represents SCP-173.
     /// </summary>
@@ -41,11 +39,11 @@ namespace Exiled.API.Features.Roles
         public bool IsObserved => script._isObserved;
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of players that are currently viewing SCP-173. Can be empty.
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of players that are currently viewing SCP-173. Can be empty.
         /// </summary>
-        public IEnumerable<Player> ObservingPlayers
+        public IReadOnlyCollection<Player> ObservingPlayers
         {
-            get => script._observingPlayers.Select(hub => Player.Get(hub));
+            get => script._observingPlayers.Select(hub => Player.Get(hub)).ToList().AsReadOnly();
         }
 
         /// <summary>
