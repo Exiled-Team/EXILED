@@ -524,7 +524,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role is SpectatorRole;
+        public bool IsDead => Role.Is<SpectatorRole>();
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
@@ -547,7 +547,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Role is HumanRole;
+        public bool IsHuman => Role.Is<HumanRole>();
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.
@@ -946,7 +946,7 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="role">The players' role.</param>
         /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role.RoleType == role);
+        public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.

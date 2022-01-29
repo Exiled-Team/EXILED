@@ -87,13 +87,22 @@ namespace Exiled.API.Features.Roles
             => role.Type != type;
 
         /// <summary>
-        /// Casts the role to the specified role class.
+        /// Casts the role to the specified role type.
         /// </summary>
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <returns>The casted class, if possible.</returns>
         public T As<T>()
             where T : Role
             => this as T;
+
+        /// <summary>
+        /// Returns a value indicating whether or not this role can be casted to the specified role type.
+        /// </summary>
+        /// <typeparam name="T">The type to check.</typeparam>
+        /// <returns><see langword="true"/> if the cast is valid; otherwise, <see langword="false"/>.</returns>
+        public bool Is<T>()
+            where T : Role
+            => this is T;
 
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
