@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Items
 {
+    using Exiled.API.Enums;
+
     using InventorySystem.Items.Firearms.Ammo;
 
     /// <summary>
