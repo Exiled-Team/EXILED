@@ -129,7 +129,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
+                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat() { Hub = value };
                 if (!value.playerStats._dictionarizedTypes.ContainsKey(typeof(HealthStat)))
                     value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
@@ -1515,7 +1515,7 @@ namespace Exiled.API.Features
             if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(deathReason));
         }
 
         /// <summary>
