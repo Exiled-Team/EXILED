@@ -528,7 +528,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role.Is<SpectatorRole>(out _);
+        public bool IsDead => Role.As<SpectatorRole>() != null;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
@@ -551,12 +551,12 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Role.Is<HumanRole>(out _);
+        public bool IsHuman => Role.As<HumanRole>() != null;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role.Is<TutorialRole>(out _);
+        public bool IsTutorial => Role.As<TutorialRole>() != null;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.

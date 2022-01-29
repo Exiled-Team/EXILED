@@ -95,19 +95,6 @@ namespace Exiled.API.Features.Roles
             where T : Role
             => this as T;
 
-        /// <summary>
-        /// Returns a value indicating whether or not this role can be casted to the specified role type.
-        /// </summary>
-        /// <param name="role">If the return value is <see langword="true"/>, this parameter will be the type of the role when casted. If the return value is <see langword="false"/>, this will be <see langword="null"/>.</param>
-        /// <typeparam name="T">The type to check.</typeparam>
-        /// <returns><see langword="true"/> if the cast is valid; otherwise, <see langword="false"/>.</returns>
-        public bool Is<T>(out T role)
-            where T : Role
-        {
-            role = As<T>();
-            return role != null;
-        }
-
         /// <inheritdoc/>
         public override bool Equals(object obj) => base.Equals(obj);
 
