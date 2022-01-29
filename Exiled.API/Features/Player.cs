@@ -1509,7 +1509,7 @@ namespace Exiled.API.Features
             if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
                 Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.DealDamage(new CustomReasonDamageHandler(deathReason));
         }
 
         /// <summary>
