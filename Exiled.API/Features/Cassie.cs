@@ -22,14 +22,19 @@ namespace Exiled.API.Features
     public static class Cassie
     {
         /// <summary>
-        /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
+        /// Gets the <see cref="NineTailedFoxAnnouncer"/> singleton.
         /// </summary>
-        public static bool IsSpeaking => NineTailedFoxAnnouncer.singleton.queue.Count != 0;
+        public static NineTailedFoxAnnouncer Announcer => NineTailedFoxAnnouncer.singleton;
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
+        /// Gets a value indicating whether or not C.A.S.S.I.E is currently announcing. Does not include decontamination messages.
         /// </summary>
-        public static IEnumerable<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => NineTailedFoxAnnouncer.singleton.voiceLines;
+        public static bool IsSpeaking => Announcer.queue.Count != 0;
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="NineTailedFoxAnnouncer.VoiceLine"/> objects that C.A.S.S.I.E recognizes.
+        /// </summary>
+        public static IReadOnlyCollection<NineTailedFoxAnnouncer.VoiceLine> VoiceLines => Announcer.voiceLines.ToList().AsReadOnly();
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message.
@@ -37,8 +42,9 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be reproduced.</param>
         /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
         /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
-        public static void Message(string message, bool isHeld = false, bool isNoisy = true) =>
-            RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy);
+        /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
+        public static void Message(string message, bool isHeld = false, bool isNoisy = true, bool isSubtitles = false) =>
+            RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy, isSubtitles);
 
         /// <summary>
         /// Reproduce a glitchy C.A.S.S.I.E announcement.
@@ -47,7 +53,7 @@ namespace Exiled.API.Features
         /// <param name="glitchChance">The chance of placing a glitch between each word.</param>
         /// <param name="jamChance">The chance of jamming each word.</param>
         public static void GlitchyMessage(string message, float glitchChance, float jamChance) =>
-            NineTailedFoxAnnouncer.singleton.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance);
+            Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance);
 
         /// <summary>
         /// Reproduce a non-glitched C.A.S.S.I.E message after a certain amount of seconds.
@@ -56,8 +62,9 @@ namespace Exiled.API.Features
         /// <param name="delay">The seconds that have to pass before reproducing the message.</param>
         /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
         /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
-        public static void DelayedMessage(string message, float delay, bool isHeld = false, bool isNoisy = true) =>
-            Timing.CallDelayed(delay, () => RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy));
+        /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
+        public static void DelayedMessage(string message, float delay, bool isHeld = false, bool isNoisy = true, bool isSubtitles = false) =>
+            Timing.CallDelayed(delay, () => RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy, isSubtitles));
 
         /// <summary>
         /// Reproduce a glitchy C.A.S.S.I.E announcement after a certain period of seconds.
@@ -67,7 +74,7 @@ namespace Exiled.API.Features
         /// <param name="glitchChance">The chance of placing a glitch between each word.</param>
         /// <param name="jamChance">The chance of jamming each word.</param>
         public static void DelayedGlitchyMessage(string message, float delay, float glitchChance, float jamChance) =>
-            Timing.CallDelayed(delay, () => NineTailedFoxAnnouncer.singleton.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
+            Timing.CallDelayed(delay, () => Announcer.ServerOnlyAddGlitchyPhrase(message, glitchChance, jamChance));
 
         /// <summary>
         /// Calculates duration of a C.A.S.S.I.E message.
@@ -76,7 +83,7 @@ namespace Exiled.API.Features
         /// <param name="rawNumber">Determines if a number won't be converted to its full pronunciation.</param>
         /// <returns>Duration (in seconds) of specified message.</returns>
         public static float CalculateDuration(string message, bool rawNumber = false)
-            => NineTailedFoxAnnouncer.singleton.CalculateDuration(message, rawNumber);
+            => Announcer.CalculateDuration(message, rawNumber);
 
         /// <summary>
         /// Converts a Team into a Cassie-Readable <c>CONTAINMENTUNIT</c>.
@@ -136,6 +143,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="word">The word to check.</param>
         /// <returns><see langword="true"/> if the word is valid; otherwise, <see langword="false"/>.</returns>
-        public static bool IsValid(string word) => NineTailedFoxAnnouncer.singleton.voiceLines.Any(line => line.apiName == word.ToUpper());
+        public static bool IsValid(string word) => Announcer.voiceLines.Any(line => line.apiName.ToUpper() == word.ToUpper());
     }
 }

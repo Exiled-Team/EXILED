@@ -128,7 +128,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
+                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat() { Hub = value };
                 if (!value.playerStats._dictionarizedTypes.ContainsKey(typeof(HealthStat)))
                     value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
@@ -722,9 +722,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a list of all active Artificial Health processes on the player.
+        /// Gets a <see cref="IEnumerable{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
+        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
         {
             get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
         }
