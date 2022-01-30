@@ -128,7 +128,7 @@ namespace Exiled.API.Features.Toys
         /// <summary>
         /// Gets or sets the size scale of the target.
         /// </summary>
-        public Vector3 Scale
+        public new Vector3 Scale
         {
             get => GameObject.transform.localScale;
             set
