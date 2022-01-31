@@ -495,7 +495,7 @@ namespace Exiled.Events.Handlers
         public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before using a medical item.
+        /// Called before using a usable item.
         /// </summary>
         /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
         public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
