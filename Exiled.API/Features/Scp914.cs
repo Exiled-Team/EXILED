@@ -53,6 +53,16 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets the position of SCP-914's intake chamber.
+        /// </summary>
+        public static Vector3 IntakePosition => Scp914Controller._intakeChamber.localPosition;
+
+        /// <summary>
+        /// Gets the position of SCP-914's output chamber.
+        /// </summary>
+        public static Vector3 OutputPosition => Scp914Controller._outputChamber.localPosition;
+
+        /// <summary>
         /// Gets a value indicating whether SCP-914 was activated and is currently processing items.
         /// </summary>
         public static bool IsWorking => Scp914Controller._isUpgrading;

@@ -41,7 +41,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets the list of players that are going to be respawned.
         /// </summary>
-        public List<Player> Players { get; }
+        public IEnumerable<Player> Players { get; }
 
         /// <summary>
         /// Gets or sets the maximum amount of respawnable players.
