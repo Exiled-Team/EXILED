@@ -263,12 +263,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ClosingGeneratorEventArgs> ClosingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> inserts a workstation tablet into a generator.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<ActivatingGeneratorEventArgs> ActivatingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> ejects the workstation tablet out of a generator.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<StoppingGeneratorEventArgs> StoppingGenerator;
 
@@ -712,13 +712,13 @@ namespace Exiled.Events.Handlers
         public static void OnClosingGenerator(ClosingGeneratorEventArgs ev) => ClosingGenerator.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> inserts a workstation tablet into a generator.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance.</param>
         public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> ejects the workstation tablet out of a generator.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
         /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance.</param>
         public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
