@@ -29,9 +29,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        internal override RoleType RoleType => RoleType.Scp106;
-
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
         /// </summary>
@@ -67,6 +64,9 @@ namespace Exiled.API.Features.Roles
             get => script.captureCooldown;
             set => script.captureCooldown = value;
         }
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp106;
 
         /// <summary>
         /// Forces SCP-106 to use its portal, if one is placed.

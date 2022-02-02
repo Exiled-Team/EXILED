@@ -16,6 +16,7 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
     using Exiled.API.Features.Toys;
 
     using Interactables.Interobjects.DoorUtils;
@@ -228,8 +229,8 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role == RoleType.Scp079)
-                    room = FindParentRoom(ply.Camera.GameObject);
+                if (ply.Role is Scp079Role role)
+                    room = FindParentRoom(role.Camera.GameObject);
             }
 
             if (room == null)
