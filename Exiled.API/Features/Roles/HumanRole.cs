@@ -28,6 +28,6 @@ namespace Exiled.API.Features.Roles
         public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType Type { get; }
+        internal override RoleType RoleType { get; }
     }
 }

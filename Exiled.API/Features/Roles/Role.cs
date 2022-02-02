@@ -20,9 +20,13 @@ namespace Exiled.API.Features.Roles
         public abstract Player Owner { get; }
 
         /// <summary>
-        /// Gets the <see cref="RoleType"/> of this role.
+        /// Gets or sets the <see cref="RoleType"/> of this player.
         /// </summary>
-        public abstract RoleType Type { get; }
+        public RoleType Type
+        {
+            get => RoleType;
+            set => Owner?.SetRole(value);
+        }
 
         /// <summary>
         /// Gets the <see cref="global::Team"/> of this role.
@@ -43,6 +47,11 @@ namespace Exiled.API.Features.Roles
         /// Gets a value indicating whether or not this role is still valid. This will only ever be <see langword="false"/> if the Role is stored and accessed at a later date.
         /// </summary>
         public bool IsValid => Type == Owner.ReferenceHub.characterClassManager.NetworkCurClass;
+
+        /// <summary>
+        /// Gets the RoleType belonging to this role.
+        /// </summary>
+        internal abstract RoleType RoleType { get; }
 
         /// <summary>
         /// Converts a role to its appropriate <see cref="global::RoleType"/>.

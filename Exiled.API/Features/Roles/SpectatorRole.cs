@@ -26,9 +26,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Spectator;
-
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.
         /// </summary>
@@ -63,5 +60,8 @@ namespace Exiled.API.Features.Roles
                 Owner.ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
             }
         }
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Spectator;
     }
 }

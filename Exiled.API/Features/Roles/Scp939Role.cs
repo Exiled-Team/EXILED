@@ -24,15 +24,12 @@ namespace Exiled.API.Features.Roles
         internal Scp939Role(Player player, RoleType scp939Type)
         {
             Owner = player;
-            Type = scp939Type;
+            RoleType = scp939Type;
             script = player.ReferenceHub.scpsController.CurrentScp as Scp939;
         }
 
         /// <inheritdoc/>
         public override Player Owner { get; }
-
-        /// <inheritdoc/>
-        public override RoleType Type { get; }
 
         /// <summary>
         /// Gets or sets the amount of time before SCP-939 can attack again.
@@ -47,5 +44,8 @@ namespace Exiled.API.Features.Roles
         /// Gets SCP-939's move speed.
         /// </summary>
         public float MoveSpeed => script.GetMovementSpeed();
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType { get; }
     }
 }

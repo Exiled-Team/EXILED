@@ -29,9 +29,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp049;
-
         /// <summary>
         /// Gets a value indicating whether or not SCP-049 is currently recalling a player.
         /// </summary>
@@ -51,6 +48,9 @@ namespace Exiled.API.Features.Roles
             }
         }
 
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp049;
+
         /// <summary>
         /// Returns a boolean describing whether or not SCP-049 is close enough to a ragdoll to revive it.
         /// <para>
@@ -59,6 +59,6 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool InRecallingDistance(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
+        public bool InRecallDistance(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
     }
 }

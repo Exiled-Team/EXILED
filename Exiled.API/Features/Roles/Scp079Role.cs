@@ -23,9 +23,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp079;
-
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
         /// </summary>
@@ -148,6 +145,9 @@ namespace Exiled.API.Features.Roles
                 Owner.ReferenceHub.scp079PlayerScript.Mana = value;
             }
         }
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp079;
 
         /// <summary>
         /// Sets the camera SCP-079 is currently located at.

@@ -30,9 +30,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp173;
-
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
         /// </summary>
@@ -66,7 +63,7 @@ namespace Exiled.API.Features.Roles
         public float BlinkCooldown
         {
             get => script._blinkCooldownRemaining;
-            set = script._blinkCooldownRemaining = value;
+            set => script._blinkCooldownRemaining = value;
         }
 
         /// <summary>
@@ -100,6 +97,9 @@ namespace Exiled.API.Features.Roles
             get => script._tantrumCooldownRemaining;
             set => script._tantrumCooldownRemaining = value;
         }
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp173;
 
         /// <summary>
         /// Force places a tantrum.

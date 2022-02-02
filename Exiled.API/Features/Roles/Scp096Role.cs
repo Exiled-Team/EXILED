@@ -32,9 +32,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp096;
-
         /// <summary>
         /// Gets a value indicating SCP-096's state.
         /// </summary>
@@ -92,5 +89,8 @@ namespace Exiled.API.Features.Roles
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of Players that are currently targeted by SCP-096.
         /// </summary>
         public IReadOnlyCollection<Player> Targets => script._targets.Select(hub => Player.Get(hub)).ToList().AsReadOnly();
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp096;
     }
 }

@@ -29,9 +29,6 @@ namespace Exiled.API.Features.Roles
         /// <inheritdoc/>
         public override Player Owner { get; }
 
-        /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp0492;
-
         /// <summary>
         /// Gets or sets the SCP-049-2 attack distance.
         /// </summary>
@@ -58,5 +55,8 @@ namespace Exiled.API.Features.Roles
             get => script.attackCooldown;
             set => script.attackCooldown = value;
         }
+
+        /// <inheritdoc/>
+        internal override RoleType RoleType => RoleType.Scp0492;
     }
 }

@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Roles
         public override Player Owner { get; }
 
         /// <inheritdoc/>
-        public override RoleType Type => RoleType.Scp106;
+        internal override RoleType RoleType => RoleType.Scp106;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
