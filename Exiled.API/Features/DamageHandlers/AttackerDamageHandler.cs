@@ -20,11 +20,8 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="target">The target to be set.</param>
         /// <param name="attacker">The attacker to be set.</param>
         protected AttackerDamageHandler(Player target, Player attacker)
+            : base(target, attacker)
         {
-            Target = target;
-            Attacker = attacker;
-            TargetFootprint = target.Footprint;
-            AttackerFootprint = attacker.Footprint;
         }
 
         /// <summary>
@@ -87,7 +84,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <param name="player">The <see cref="Player"/> to damage.</param>
         public override void ProcessDamage(Player player)
         {
-            if (!SafeCast(out PlayerStatsSystem.AttackerDamageHandler damageHandler))
+            if (!SafeCast(out PlayerStatsSystem.AttackerDamageHandler _))
                 return;
 
             if ((player.IsSpawnProtected && player != Attacker) ||

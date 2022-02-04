@@ -61,7 +61,6 @@ namespace Exiled.API.Features
     public class Player
     {
 #pragma warning disable SA1401
-#pragma warning disable CS0618
         /// <summary>
         /// A list of the player's items.
         /// </summary>
@@ -1472,7 +1471,10 @@ namespace Exiled.API.Features
             if (Health - handler.Damage < 1f && Side != Side.Scp && !string.IsNullOrEmpty(handler.CassieDeathAnnouncement.Announcement))
                 Cassie.Message(handler.CassieDeathAnnouncement.Announcement);
 
-            ReferenceHub.playerStats.DealDamage(handler.Base);
+            if (handler.SafeBaseCast(out CustomDamageHandler customDamageHandler))
+                ReferenceHub.playerStats.DealDamage(customDamageHandler.CustomBase.Base);
+            else
+                referenceHub.playerStats.DealDamage(handler.Base);
         }
 
         /// <summary>

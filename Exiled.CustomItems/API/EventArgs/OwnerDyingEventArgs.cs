@@ -29,7 +29,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : this(item, ev.Target, ev.Handler.Base)
+            : this(item, ev.Target, ev.Handler.CustomBase)
         {
         }
 
