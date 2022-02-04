@@ -71,17 +71,17 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the activator button's <see cref="Transform"/>.
+        /// Gets the activator button's <see cref="GameObject"/>.
         /// </summary>
-        public static Transform ActivatorButton => Base._activatorButton;
+        public static GameObject ActivatorButton => Base._activatorButton.gameObject;
 
         /// <summary>
         /// Gets or sets the <see cref="ActivatorButton"/>'s position.
         /// </summary>
         public static Vector3 ActivatorButtonPosition
         {
-            get => ActivatorButton.localPosition;
-            set => ActivatorButton.localPosition = value;
+            get => ActivatorButton.transform.localPosition;
+            set => ActivatorButton.transform.localPosition = value;
         }
 
         /// <summary>

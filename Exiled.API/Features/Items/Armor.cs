@@ -9,6 +9,7 @@ namespace Exiled.API.Features.Items
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
@@ -153,7 +154,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets or sets the ammo limit of the wearer when using this armor.
         /// </summary>
-        public List<ArmorAmmoLimit> AmmoLimits
+        public IEnumerable<ArmorAmmoLimit> AmmoLimits
         {
             get
             {
@@ -169,9 +170,9 @@ namespace Exiled.API.Features.Items
             set
             {
                 List<BodyArmor.ArmorAmmoLimit> limits = ListPool<BodyArmor.ArmorAmmoLimit>.Shared.Rent();
-                for (int i = 0; i < value.Count; i++)
+                for (int i = 0; i < value.Count(); i++)
                 {
-                    ArmorAmmoLimit limit = value[i];
+                    ArmorAmmoLimit limit = value.ElementAt(i);
                     limits.Add(new BodyArmor.ArmorAmmoLimit
                     {
                         AmmoType = limit.AmmoType.GetItemType(),
