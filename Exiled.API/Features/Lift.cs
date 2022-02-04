@@ -47,7 +47,7 @@ namespace Exiled.API.Features
         public string Name => Base.elevatorName;
 
         /// <summary>
-        /// Gets the lift's <see cref="UnityEngine.GameObject"/>.
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the lift.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
 
@@ -104,6 +104,11 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether the lift is operative.
         /// </summary>
         public bool IsOperative => Base.operative;
+
+        /// <summary>
+        /// Gets a value indicating whether the lift is currently moving.
+        /// </summary>
+        public bool IsMoving => Base.status == BaseLift.Status.Moving;
 
         /// <summary>
         /// Gets or sets a value indicating whether the lift is locked.

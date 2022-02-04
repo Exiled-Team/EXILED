@@ -49,9 +49,9 @@ namespace Exiled.Events.EventArgs
         public float BlinkCooldown { get; set; }
 
         /// <summary>
-        /// Gets a list of players who have triggered SCP-173.
+        /// Gets a <see cref="IEnumerable{T}"/> of players who have triggered SCP-173.
         /// </summary>
-        public List<Player> Targets { get; }
+        public IEnumerable<Player> Targets { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is allowed to blink.

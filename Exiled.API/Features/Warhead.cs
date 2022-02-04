@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using UnityEngine;
+
     /// <summary>
     /// A set of tools to easily work with the alpha warhead.
     /// </summary>
@@ -57,6 +59,11 @@ namespace Exiled.API.Features
                 return outsitePanel;
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="GameObject"/> of the warhead lever.
+        /// </summary>
+        public static GameObject Lever => sitePanel.lever.gameObject;
 
         /// <summary>
         /// Gets or sets a value indicating whether the warhead lever is enabled or not.
@@ -120,7 +127,7 @@ namespace Exiled.API.Features
         public static void Start()
         {
             Controller.InstantPrepare();
-            Controller.StartDetonation();
+            Controller.StartDetonation(false);
         }
 
         /// <summary>

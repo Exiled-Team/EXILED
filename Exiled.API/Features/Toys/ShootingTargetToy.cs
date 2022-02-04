@@ -51,6 +51,16 @@ namespace Exiled.API.Features.Toys
         public ShootingTarget Base { get; }
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the target.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the bullseye.
+        /// </summary>
+        public GameObject Bullseye => Base._bullsEye.gameObject;
+
+        /// <summary>
         /// Gets the <see cref="Interactables.Verification.IVerificationRule"/> for this target.
         /// </summary>
         public Interactables.Verification.IVerificationRule VerificationRule => Base.VerificationRule;
@@ -112,6 +122,20 @@ namespace Exiled.API.Features.Toys
                     throw new InvalidOperationException("Attempted to set AutoResetTime while target was not in sync mode.");
                 Base._autoDestroyTime = Mathf.Max(0, value);
                 Base.RpcSendInfo(MaxHealth, AutoResetTime);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the size scale of the target.
+        /// </summary>
+        public new Vector3 Scale
+        {
+            get => GameObject.transform.localScale;
+            set
+            {
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
