@@ -82,7 +82,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the base <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public new DamageHandlerBase CustomBase { get; }
+        public DamageHandlerBase CustomBase { get; }
 
         /// <inheritdoc/>
         public override Action ApplyDamage(Player player)
