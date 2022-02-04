@@ -102,15 +102,16 @@ namespace Exiled.API.Features.Roles
         internal override RoleType RoleType => RoleType.Scp173;
 
         /// <summary>
-        /// Force places a tantrum.
+        /// Places a Tantrum (SCP-173's ability) under the player.
         /// </summary>
         /// <param name="failIfObserved">Whether or not to place the tantrum if SCP-173 is currently being viewed.</param>
-        public void Tantrum(bool failIfObserved = false)
+        /// <returns>The tantrum's <see cref="UnityEngine.GameObject"/>, or <see langword="null"/> if it cannot be placed.</returns>
+        public UnityEngine.GameObject Tantrum(bool failIfObserved = false)
         {
             if (failIfObserved && IsObserved)
-                return;
+                return null;
 
-            Owner.PlaceTantrum();
+            return Owner.PlaceTantrum();
         }
     }
 }

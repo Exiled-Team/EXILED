@@ -556,7 +556,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role.As<TutorialRole>() != null;
+        public bool IsTutorial => Role.Type == RoleType.Tutorial;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.

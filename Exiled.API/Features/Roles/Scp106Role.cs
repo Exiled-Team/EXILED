@@ -71,7 +71,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Forces SCP-106 to use its portal, if one is placed.
         /// </summary>
-        public void Teleport() => script.UserCode_CmdUsePortal();
+        public void UsePortal() => script.UserCode_CmdUsePortal();
 
         /// <summary>
         /// Contains SCP-106.

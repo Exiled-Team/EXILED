@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-
     /// <summary>
     /// Defines a role that represents a human class.
     /// </summary>

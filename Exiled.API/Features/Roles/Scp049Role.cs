@@ -52,13 +52,13 @@ namespace Exiled.API.Features.Roles
         internal override RoleType RoleType => RoleType.Scp049;
 
         /// <summary>
-        /// Returns a boolean describing whether or not SCP-049 is close enough to a ragdoll to revive it.
+        /// Gets a boolean indicating whether or not SCP-049 is close enough to a ragdoll to revive it.
         /// <para>
         /// This method only returns whether or not SCP-049 is close enough to the body to revive it; the body may have expired. Make sure to check <see cref="Ragdoll.AllowRecall"/> to ensure the body can be revived.
         /// </para>
         /// </summary>
         /// <param name="ragdoll">The ragdoll to check.</param>
         /// <returns><see langword="true"/> if close enough to revive the body; otherwise, <see langword="false"/>.</returns>
-        public bool InRecallDistance(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
+        public bool InRecallRange(Ragdoll ragdoll) => Vector3.Distance(Owner.ReferenceHub.transform.position, ragdoll.Position) <= PlayableScps.Scp049.ReviveDistance * 1.3f;
     }
 }
