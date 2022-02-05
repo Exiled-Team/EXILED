@@ -696,11 +696,17 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ReferenceHub.playerStats.StatModules[1].CurValue;
+            get
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    return 0;
+                return ActiveArtificialHealthProcesses.First().CurrentAmount;
+            }
+
             set
             {
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = Mathf.CeilToInt(value);
+                    MaxArtificialHealth = value;
 
                 ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
@@ -711,11 +717,17 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            get
+            {
+                if (!ActiveArtificialHealthProcesses.Any())
+                    return 0;
+                return ActiveArtificialHealthProcesses.First().Limit;
+            }
+
             set
             {
                 if (!ActiveArtificialHealthProcesses.Any())
-                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+                    AddAhp(value);
 
                 ActiveArtificialHealthProcesses.First().Limit = value;
             }
