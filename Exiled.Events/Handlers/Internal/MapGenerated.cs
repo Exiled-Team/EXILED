@@ -121,7 +121,6 @@ namespace Exiled.Events.Handlers.Internal
 
                 uint code = 1;
                 List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
-
                 foreach (FirearmAttachment att in firearm.Attachments)
                 {
                     attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
