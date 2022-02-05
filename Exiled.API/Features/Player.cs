@@ -696,12 +696,7 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get
-            {
-                if (!ActiveArtificialHealthProcesses.Any())
-                    return 0;
-                return ActiveArtificialHealthProcesses.First().CurrentAmount;
-            }
+            get => ActiveArtificialHealthProcesses.Any() ? ActiveArtificialHealthProcesses.First().CurrentAmount : 0;
 
             set
             {
@@ -717,12 +712,7 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get
-            {
-                if (!ActiveArtificialHealthProcesses.Any())
-                    return 0;
-                return ActiveArtificialHealthProcesses.First().Limit;
-            }
+            get => ActiveArtificialHealthProcesses.Any() ? ActiveArtificialHealthProcesses.First().Limit : 0;
 
             set
             {
