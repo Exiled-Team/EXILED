@@ -110,29 +110,25 @@ namespace Exiled.Events.Handlers.Internal
 
         private static void GenerateAttachments()
         {
-            using (IEnumerator<ItemType> typeEnumerator = Enum.GetValues(typeof(ItemType)).GetEnumerator() as IEnumerator<ItemType>)
+            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
             {
-                while (typeEnumerator.MoveNext())
+                if (!type.IsWeapon(false))
+                    continue;
+
+                Item item = Item.Create(type);
+                if (!(item is Firearm firearm))
+                    continue;
+
+                uint code = 1;
+                List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
+
+                foreach (FirearmAttachment att in firearm.Attachments)
                 {
-                    ItemType type = typeEnumerator.Current;
-
-                    if (!type.IsWeapon())
-                        continue;
-
-                    uint code = 1;
-                    List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
-                    using (IEnumerator<FirearmAttachment> attachmentEnumerator = (IEnumerator<FirearmAttachment>)new Firearm(type).Attachments.GetEnumerator())
-                    {
-                        while (attachmentEnumerator.MoveNext())
-                        {
-                            FirearmAttachment curAtt = attachmentEnumerator.Current;
-                            attachmentIdentifiers.Add(new AttachmentIdentifier(code, curAtt.Name, curAtt.Slot));
-                            code *= 2U;
-                        }
-                    }
-
-                    Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
+                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
+                    code *= 2U;
                 }
+
+                Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
             }
         }
     }
