@@ -13,8 +13,12 @@ namespace Exiled.Events.Handlers.Internal
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using Interactables.Interobjects.DoorUtils;
+
+    using InventorySystem.Items.Firearms.Attachments;
 
     using MapGeneration;
     using MapGeneration.Distributors;
@@ -58,6 +62,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
+            GenerateAttachments();
             Timing.CallDelayed(1f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
@@ -102,5 +107,33 @@ namespace Exiled.Events.Handlers.Internal
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
         private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
+
+        private static void GenerateAttachments()
+        {
+            using (IEnumerator<ItemType> typeEnumerator = Enum.GetValues(typeof(ItemType)).GetEnumerator() as IEnumerator<ItemType>)
+            {
+                while (typeEnumerator.MoveNext())
+                {
+                    ItemType type = typeEnumerator.Current;
+
+                    if (!type.IsWeapon())
+                        continue;
+
+                    uint code = 1;
+                    List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
+                    using (IEnumerator<FirearmAttachment> attachmentEnumerator = (IEnumerator<FirearmAttachment>)new Firearm(type).Attachments.GetEnumerator())
+                    {
+                        while (attachmentEnumerator.MoveNext())
+                        {
+                            FirearmAttachment curAtt = attachmentEnumerator.Current;
+                            attachmentIdentifiers.Add(new AttachmentIdentifier(code, curAtt.Name, curAtt.Slot));
+                            code *= 2U;
+                        }
+                    }
+
+                    Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
+                }
+            }
+        }
     }
 }
