@@ -17,7 +17,7 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
 
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
-    <Version>3.2.1</Version>
+    <Version>3.2.2</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
