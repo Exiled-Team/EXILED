@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp244"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="Scp244Item"/> class.</param>
         public Scp244(Scp244Item itemBase)
             : base(itemBase)
         {
@@ -33,7 +33,9 @@ namespace Exiled.API.Features.Items
         {
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="Scp244Item"/> that this class is encapsulating.
+        /// </summary>
         public new Scp244Item Base { get; }
 
         /// <summary>
@@ -43,6 +45,15 @@ namespace Exiled.API.Features.Items
         {
             get => Base._primed;
             set => Base._primed = value;
+        }
+
+        /// <summary>
+        /// Returns the SCP-244 in a human readable format.
+        /// </summary>
+        /// <returns>A string containing SCP-244 related data.</returns>
+        public override string ToString()
+        {
+            return $"{Type} ({Serial}) [{Weight}] *{Scale}* -{Primed}-";
         }
     }
 }

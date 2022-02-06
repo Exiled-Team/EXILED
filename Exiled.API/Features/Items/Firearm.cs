@@ -46,7 +46,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The base <see cref="InventorySystem.Items.Firearms.Firearm"/> class.</param>
         public Firearm(InventorySystem.Items.Firearms.Firearm itemBase)
             : base(itemBase)
         {
@@ -72,7 +72,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Firearm"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Item.Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the firearm.</param>
         internal Firearm(ItemType type)
             : this((InventorySystem.Items.Firearms.Firearm)Server.Host.Inventory.CreateItemInstance(type, false))
         {
@@ -97,7 +97,9 @@ namespace Exiled.API.Features.Items
             }
         }
 
-        /// <inheritdoc cref="Item.Base"/>
+        /// <summary>
+        /// Gets the <see cref="InventorySystem.Items.Firearms.Firearm"/> that this class is encapsulating.
+        /// </summary>
         public new InventorySystem.Items.Firearms.Firearm Base { get; }
 
         /// <summary>
@@ -115,7 +117,7 @@ namespace Exiled.API.Features.Items
         public byte MaxAmmo => Base.AmmoManagerModule.MaxAmmo;
 
         /// <summary>
-        /// Gets the <see cref="AmmoType"/> of the firearm.
+        /// Gets the <see cref="Enums.AmmoType"/> of the firearm.
         /// </summary>
         public AmmoType AmmoType => Base.AmmoType.GetAmmoType();
 

@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         public Scp079Generator Base { get; }
 
         /// <summary>
-        /// Gets the generator's <see cref="UnityEngine.GameObject"/>.
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the generator.
         /// </summary>
         public GameObject GameObject => Base.gameObject;
 

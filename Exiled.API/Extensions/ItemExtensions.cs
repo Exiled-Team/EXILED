@@ -153,8 +153,8 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Converts a <see cref="GrenadeType"/> into the corresponding <see cref="ItemType"/>.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="GrenadeType"/></param>
-        /// <returns><inheritdoc cref="ItemType"/></returns>
+        /// <param name="type">The <see cref="GrenadeType"/> to convert.</param>
+        /// <returns>The Item type of the specified grenade.</returns>
         public static ItemType GetItemType(this GrenadeType type)
         {
             switch (type)
@@ -171,11 +171,11 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="Item"/>s into the corresponding <see cref="List{T}"/> of <see cref="ItemType"/>s.
+        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="Item"/>s into the corresponding <see cref="IEnumerable{T}"/> of <see cref="ItemType"/>s.
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
-        public static List<ItemType> GetItemTypes(this IEnumerable<Item> items)
+        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items)
         {
             List<ItemType> itemTypes = new List<ItemType>();
             itemTypes.AddRange(items.Select(item => item.Type));
