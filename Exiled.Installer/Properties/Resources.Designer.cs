@@ -160,5 +160,29 @@ namespace Exiled.Installer.Properties {
                 return ResourceManager.GetString("Program_TryFindRelease_Trying_to_find_release__", resourceCulture);
             }
         }
+        
+        internal static string Program_MainSafe_____AVAILABLE_VERSIONS____ {
+            get {
+                return ResourceManager.GetString("Program_MainSafe_____AVAILABLE_VERSIONS____", resourceCulture);
+            }
+        }
+        
+        internal static string Program_MainSafe_AppData_folder___0_ {
+            get {
+                return ResourceManager.GetString("Program_MainSafe_AppData_folder___0_", resourceCulture);
+            }
+        }
+        
+        internal static string Program_MainSafe_Couldn_t_find___0___in___1__ {
+            get {
+                return ResourceManager.GetString("Program_MainSafe_Couldn_t_find___0___in___1__", resourceCulture);
+            }
+        }
+        
+        internal static string Program_MainSafe_Token_detected__Using_the_token___ {
+            get {
+                return ResourceManager.GetString("Program_MainSafe_Token_detected__Using_the_token___", resourceCulture);
+            }
+        }
     }
 }

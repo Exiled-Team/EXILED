@@ -19,8 +19,6 @@ namespace Exiled.Installer
     using Exiled.Installer.Properties;
     using Exiled.Installer.Properties;
     using Exiled.Installer.Properties;
-    using Exiled.Installer.Properties;
-    using Exiled.Installer.Properties;
 
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
@@ -31,22 +29,22 @@ namespace Exiled.Installer
 
     internal enum PathResolution
     {
-        UNDEFINED,
+        Undefined,
         /// <summary>
         ///     Absolute path that is routed to AppData.
         /// </summary>
-        ABSOLUTE,
+        Absolute,
         /// <summary>
         ///     The path that goes through the path of the game passing through the subfolders.
         /// </summary>
-        GAME
+        Game
     }
 
     internal static class Program
     {
-        private const long REPO_ID = 231269519;
-        private const string EXILED_ASSET_NAME = "exiled.tar.gz";
-        internal const string TARGET_FILE_NAME = "Assembly-CSharp.dll";
+        private const long RepoID = 231269519;
+        private const string ExiledAssetName = "exiled.tar.gz";
+        internal const string TargetFileName = "Assembly-CSharp.dll";
 
         private static readonly string[] TargetSubfolders = { "SCPSL_Data", "Managed" };
         private static readonly string LinkedSubfolders = string.Join(Path.DirectorySeparatorChar.ToString(), TargetSubfolders);
@@ -75,7 +73,7 @@ namespace Exiled.Installer
                 if (args.GetVersions)
                 {
                     var releases1 = await GetReleases().ConfigureAwait(false);
-                    Console.WriteLine("--- AVAILABLE VERSIONS ---");
+                    Console.WriteLine(Resources.Program_MainSafe_____AVAILABLE_VERSIONS____);
                     foreach (var r in releases1)
                         Console.WriteLine(FormatRelease(r, true));
 
@@ -83,17 +81,17 @@ namespace Exiled.Installer
                         Environment.Exit(0);
                 }
 
-                Console.WriteLine($"AppData folder: {args.AppData.FullName}");
+                Console.WriteLine(Resources.Program_MainSafe_AppData_folder___0_, args.AppData.FullName);
 
                 if (!ValidateServerPath(args.Path.FullName, out var targetFilePath))
                 {
-                    Console.WriteLine($"Couldn't find '{TARGET_FILE_NAME}' in '{targetFilePath}'");
+                    Console.WriteLine(Resources.Program_MainSafe_Couldn_t_find___0___in___1__, TargetFileName, targetFilePath);
                     throw new FileNotFoundException("Check the validation of the path parameter");
                 }
 
                 if (!(args.GitHubToken is null))
                 {
-                    Console.WriteLine("Token detected! Using the token...");
+                    Console.WriteLine(Resources.Program_MainSafe_Token_detected__Using_the_token___);
                     GitHubClient.Credentials = new Credentials(args.GitHubToken, AuthenticationType.Bearer);
                 }
 
@@ -114,7 +112,7 @@ namespace Exiled.Installer
                 Console.WriteLine(Resources.Program_MainSafe_Release_found_);
                 Console.WriteLine(FormatRelease(targetRelease!));
 
-                var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
+                var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(ExiledAssetName, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
                     Console.WriteLine(Resources.Program_MainSafe_____ASSETS____);
@@ -160,7 +158,7 @@ namespace Exiled.Installer
 
         private static async Task<IEnumerable<Release>> GetReleases()
         {
-            var releases = (await GitHubClient.Repository.Release.GetAll(REPO_ID).ConfigureAwait(false))
+            var releases = (await GitHubClient.Repository.Release.GetAll(RepoID).ConfigureAwait(false))
                 .Where(r => Version.TryParse(r.TagName, out Version version)
                     && (version > VersionLimit));
 
@@ -215,11 +213,11 @@ namespace Exiled.Installer
 
                 switch (ResolveEntry(entry))
                 {
-                    case PathResolution.ABSOLUTE:
+                    case PathResolution.Absolute:
                         ResolvePath(args, entry.Name, out var path);
                         ExtractEntry(tarInputStream, entry, path);
                         break;
-                    case PathResolution.GAME:
+                    case PathResolution.Game:
                         ExtractEntry(tarInputStream, entry, targetFilePath);
                         break;
                     default:
@@ -254,7 +252,7 @@ namespace Exiled.Installer
 
         internal static bool ValidateServerPath(string serverPath, out string targetFilePath)
         {
-            targetFilePath = Path.Combine(serverPath, LinkedSubfolders, TARGET_FILE_NAME);
+            targetFilePath = Path.Combine(serverPath, LinkedSubfolders, TargetFileName);
             return File.Exists(targetFilePath);
         }
 
@@ -294,7 +292,7 @@ namespace Exiled.Installer
                 }
             }
 
-            return PathResolution.UNDEFINED;
+            return PathResolution.Undefined;
         }
 
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
