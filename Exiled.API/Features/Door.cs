@@ -31,7 +31,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Door"/> class.
         /// </summary>
-        /// <param name="door"><inheritdoc cref="Base"/></param>
+        /// <param name="door">The base <see cref="DoorVariant"/> for this door.</param>
         public Door(DoorVariant door)
         {
             DoorVariantToDoor.Add(door, this);
@@ -43,6 +43,11 @@ namespace Exiled.API.Features
         /// Gets the base-game <see cref="DoorVariant"/> for this door.
         /// </summary>
         public DoorVariant Base { get; }
+
+        /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the door.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
 
         /// <summary>
         /// Gets the <see cref="DoorType"/>.
@@ -70,13 +75,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Position
         {
-            get => Base.gameObject.transform.position;
+            get => GameObject.transform.position;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.position = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.position = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -172,13 +176,12 @@ namespace Exiled.API.Features
         /// </summary>
         public Quaternion Rotation
         {
-            get => Base.gameObject.transform.rotation;
+            get => GameObject.transform.rotation;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.rotation = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.rotation = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -187,21 +190,20 @@ namespace Exiled.API.Features
         /// </summary>
         public Vector3 Scale
         {
-            get => Base.gameObject.transform.localScale;
+            get => GameObject.transform.localScale;
             set
             {
-                GameObject gameObject = Base.gameObject;
-                NetworkServer.UnSpawn(gameObject);
-                gameObject.transform.localScale = value;
-                NetworkServer.Spawn(gameObject);
+                NetworkServer.UnSpawn(GameObject);
+                GameObject.transform.localScale = value;
+                NetworkServer.Spawn(GameObject);
             }
         }
 
         /// <summary>
         /// Gets the door object associated with a specific <see cref="DoorVariant"/>, or creates a new one if there isn't one.
         /// </summary>
-        /// <param name="doorVariant"><inheritdoc cref="Base"/></param>
-        /// <returns><inheritdoc cref="Door"/></returns>
+        /// <param name="doorVariant">The base-game <see cref="DoorVariant"/>.</param>
+        /// <returns>A <see cref="Door"/> wrapper object.</returns>
         public static Door Get(DoorVariant doorVariant) => DoorVariantToDoor.ContainsKey(doorVariant)
             ? DoorVariantToDoor[doorVariant]
             : new Door(doorVariant);
@@ -255,7 +257,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks the door with the given lock type.
         /// </summary>
-        /// <param name="lockType"><inheritdoc cref="DoorLockType"/></param>
+        /// <param name="lockType">The <see cref="Enums.DoorLockType"/> to use.</param>
         public void ChangeLock(DoorLockType lockType)
         {
             if (lockType == DoorLockType.None)
@@ -323,7 +325,7 @@ namespace Exiled.API.Features
         {
             if (Nametag == null)
             {
-                string doorName = Base.gameObject.name.GetBefore(' ');
+                string doorName = GameObject.name.GetBefore(' ');
                 switch (doorName)
                 {
                     case "LCZ":

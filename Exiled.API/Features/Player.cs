@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -45,6 +46,8 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     using RemoteAdmin;
+
+    using RoundRestarting;
 
     using UnityEngine;
 
@@ -128,7 +131,7 @@ namespace Exiled.API.Features
                 Inventory = value.inventory;
                 CameraTransform = value.PlayerCameraReference;
 
-                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat();
+                value.playerStats.StatModules[0] = healthStat = new CustomHealthStat() { Hub = value };
                 if (!value.playerStats._dictionarizedTypes.ContainsKey(typeof(HealthStat)))
                     value.playerStats._dictionarizedTypes.Add(typeof(HealthStat), healthStat);
             }
@@ -207,7 +210,9 @@ namespace Exiled.API.Features
         /// </summary>
         public string AuthenticationToken => ReferenceHub.characterClassManager.AuthToken;
 
-        /// <inheritdoc cref="Enums.AuthenticationType"/>
+        /// <summary>
+        /// Gets the player's authentication type.
+        /// </summary>
         public AuthenticationType AuthenticationType
         {
             get
@@ -694,11 +699,12 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ReferenceHub.playerStats.StatModules[1].CurValue;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
+
             set
             {
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = Mathf.CeilToInt(value);
+                    MaxArtificialHealth = value;
 
                 ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
@@ -709,20 +715,21 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
+
             set
             {
                 if (!ActiveArtificialHealthProcesses.Any())
-                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+                    AddAhp(value);
 
                 ActiveArtificialHealthProcesses.First().Limit = value;
             }
         }
 
         /// <summary>
-        /// Gets a list of all active Artificial Health processes on the player.
+        /// Gets a <see cref="IEnumerable{T}"/> of all active Artificial Health processes on the player.
         /// </summary>
-        public List<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
+        public IEnumerable<AhpStat.AhpProcess> ActiveArtificialHealthProcesses
         {
             get => ((AhpStat)ReferenceHub.playerStats.StatModules[1])._activeProcesses;
         }
@@ -1500,15 +1507,38 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="deathReason">The reason the player has been killed.</param>
-        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, string cassieAnnouncement = "")
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to kill.</param>
+        public void Kill(DamageHandlerBase damageHandlerBase)
         {
-            if (Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
-                Cassie.Message(cassieAnnouncement);
+            if (Side != Side.Scp && !string.IsNullOrEmpty(damageHandlerBase.CassieDeathAnnouncement.Announcement))
+                Cassie.Message(damageHandlerBase.CassieDeathAnnouncement.Announcement);
 
-            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+            ReferenceHub.playerStats.DealDamage(damageHandlerBase is ExiledDamageHandler
+                ? new CustomReasonDamageHandler(damageHandlerBase.ServerLogsText)
+                : damageHandlerBase);
         }
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="handler">The <see cref="DamageHandler"/> used to kill.</param>
+        public void Kill(DamageHandler handler) => Kill(handler.Base);
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="damageType">The <see cref="DamageType">damage type</see> the player has been killed with.</param>
+        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(DamageType damageType = DamageType.Unknown, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
+
+        /// <summary>
+        /// Kills the player.
+        /// </summary>
+        /// <param name="deathReason">The reason the player has been killed.</param>
+        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(string deathReason, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, deathReason));
 
         /// <summary>
         /// Bans the player.
@@ -1602,13 +1632,13 @@ namespace Exiled.API.Features
         public bool DropAmmo(AmmoType ammoType, ushort amount, bool checkMinimals = false) => Inventory.ServerDropAmmo(ammoType.GetItemType(), amount, checkMinimals);
 
         /// <summary>
-        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="ItemType"/>.
+        /// Gets the maximum amount of ammo the player can hold, given the ammo <see cref="AmmoType"/>.
         /// This method factors in the armor the player is wearing, as well as server configuration.
-        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Features.Items.Ammo.AmmoLimit"/>.
+        /// For the maximum amount of ammo that can be given regardless of worn armor and server configuration, see <see cref="Ammo.AmmoLimit"/>.
         /// </summary>
-        /// <param name="type">The <see cref="ItemType"/> of the ammo to check.</param>
-        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Features.Items.Ammo.AmmoLimit"/>.</returns>
-        public int GetAmmoLimit(ItemType type) => InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type, referenceHub);
+        /// <param name="type">The <see cref="AmmoType"/> of the ammo to check.</param>
+        /// <returns>The maximum amount of ammo this player can carry. Guaranteed to be between <c>0</c> and <see cref="Ammo.AmmoLimit"/>.</returns>
+        public int GetAmmoLimit(AmmoType type) => InventorySystem.Configs.InventoryLimits.GetAmmoLimit(type.GetItemType(), referenceHub);
 
         /// <summary>
         /// Gets the maximum amount of an <see cref="ItemCategory"/> the player can hold, based on the armor the player is wearing, as well as server configuration.
@@ -2278,7 +2308,30 @@ namespace Exiled.API.Features
         /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Reconnects player to the server. Can be used to redirect them to another server on a different port but same IP.
+        /// </summary>
+        /// <param name="newPort">New port.</param>
+        /// <param name="delay">Player reconnection delay.</param>
+        /// <param name="reconnect">Whether or not player should be reconnected.</param>
+        /// <param name="roundRestartType">Type of round restart.</param>
+        public void Reconnect(ushort newPort = 0, float delay = 5, bool reconnect = true, RoundRestartType roundRestartType = RoundRestartType.FullRestart)
+        {
+            if (newPort != 0)
+            {
+                if (newPort == Server.Port && roundRestartType == RoundRestartType.RedirectRestart)
+                    roundRestartType = RoundRestartType.FullRestart;
+                else
+                    roundRestartType = RoundRestartType.RedirectRestart;
+            }
+
+            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
+        }
+
+        /// <summary>
+        /// Returns the player in a human-readable format.
+        /// </summary>
+        /// <returns>A string containing Player-related data.</returns>
         public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
     }
 }

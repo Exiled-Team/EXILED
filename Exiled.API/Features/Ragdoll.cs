@@ -97,6 +97,11 @@ namespace Exiled.API.Features
         public RagDoll Base => ragdoll;
 
         /// <summary>
+        /// Gets the <see cref="UnityEngine.GameObject"/> of the ragdoll.
+        /// </summary>
+        public GameObject GameObject => Base.gameObject;
+
+        /// <summary>
         /// Gets or sets the ragdoll's <see cref="RagdollInfo">NetworkInfo</see>.
         /// </summary>
         public RagdollInfo NetworkInfo
@@ -165,11 +170,6 @@ namespace Exiled.API.Features
         public string Name => ragdoll.name;
 
         /// <summary>
-        /// Gets the ragdoll's GameObject.
-        /// </summary>
-        public GameObject GameObject => ragdoll.gameObject;
-
-        /// <summary>
         /// Gets the owner <see cref="Player"/>. Can be <see langword="null"/> if the ragdoll does not have an owner.
         /// </summary>
         public Player Owner => Player.Get(ragdoll.Info.OwnerHub);
@@ -185,7 +185,7 @@ namespace Exiled.API.Features
         public bool AllowRecall => NetworkInfo.ExistenceTime > Scp049.ReviveEligibilityDuration;
 
         /// <summary>
-        /// Gets the <see cref="Room"/> the ragdoll is located in.
+        /// Gets the <see cref="Features.Room"/> the ragdoll is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
 
@@ -197,9 +197,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.position;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.position = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -211,9 +211,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.rotation;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.rotation = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 
@@ -225,9 +225,9 @@ namespace Exiled.API.Features
             get => ragdoll.transform.localScale;
             set
             {
-                Mirror.NetworkServer.UnSpawn(GameObject);
+                NetworkServer.UnSpawn(GameObject);
                 ragdoll.transform.localScale = value;
-                Mirror.NetworkServer.Spawn(GameObject);
+                NetworkServer.Spawn(GameObject);
             }
         }
 

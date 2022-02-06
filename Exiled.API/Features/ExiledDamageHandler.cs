@@ -26,14 +26,20 @@ namespace Exiled.API.Features
         /// <param name="amount">The amount of damage to deal.</param>
         /// <param name="cassieAnnouncement">The announcement cassie will make if this damage kills the victim.</param>
         /// <param name="logText">The text to appear in server logs.</param>
-        /// <param name="allowSelfDamage"><see langword="true"/> if the damage can be dealt to the attacker. Otherwise <see langwod="false"/>.</param>
-        public ExiledDamageHandler(Player player, float amount, string cassieAnnouncement = "default", string logText = "default", bool allowSelfDamage = true)
+        /// <param name="allowSelfDamage"><see langword="true"/> if the damage can be dealt to the attacker. Otherwise <see langword="false"/>.</param>
+        public ExiledDamageHandler(Player player, float amount, string cassieAnnouncement = "", string logText = "default", bool allowSelfDamage = true)
         {
             attacker = player?.Footprint ?? Server.Host.Footprint;
             damage = amount;
             AllowSelfDamage = allowSelfDamage;
             ServerLogsText = logText;
+            CassieDeathAnnouncement = new CassieAnnouncement { Announcement = cassieAnnouncement };
         }
+
+        /// <summary>
+        /// Gets the <see cref="DamageHandlerBase.CassieAnnouncement">announcement</see> what cassie will make if this damage kills the victim.
+        /// </summary>
+        public override CassieAnnouncement CassieDeathAnnouncement { get; }
 
         /// <summary>
         /// Gets or sets the <see cref="Footprint"/> of the attacker.
