@@ -17,8 +17,6 @@ namespace Exiled.Installer
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
-    using Exiled.Installer.Properties;
-    using Exiled.Installer.Properties;
 
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
