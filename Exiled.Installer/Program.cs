@@ -17,6 +17,10 @@ namespace Exiled.Installer
     using System.Threading.Tasks;
 
     using Exiled.Installer.Properties;
+    using Exiled.Installer.Properties;
+    using Exiled.Installer.Properties;
+    using Exiled.Installer.Properties;
+    using Exiled.Installer.Properties;
 
     using ICSharpCode.SharpZipLib.GZip;
     using ICSharpCode.SharpZipLib.Tar;
@@ -93,32 +97,32 @@ namespace Exiled.Installer
                     GitHubClient.Credentials = new Credentials(args.GitHubToken, AuthenticationType.Bearer);
                 }
 
-                Console.WriteLine("Receiving releases...");
-                Console.WriteLine($"Prereleases included - {args.PreReleases}");
-                Console.WriteLine($"Target release version - {(string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion)}");
+                Console.WriteLine(Resources.Program_MainSafe_Receiving_releases___);
+                Console.WriteLine(Resources.Program_MainSafe_Prereleases_included____0_, args.PreReleases);
+                Console.WriteLine(Resources.Program_MainSafe_Target_release_version____0_, (string.IsNullOrEmpty(args.TargetVersion) ? "(null)" : args.TargetVersion));
 
                 var releases = await GetReleases().ConfigureAwait(false);
-                Console.WriteLine("Searching for the latest release that matches the parameters...");
+                Console.WriteLine(Resources.Program_MainSafe_Searching_for_the_latest_release_that_matches_the_parameters___);
 
                 if (!TryFindRelease(args, releases, out var targetRelease))
                 {
-                    Console.WriteLine("--- RELEASES ---");
+                    Console.WriteLine(Resources.Program_MainSafe_____RELEASES____);
                     Console.WriteLine(string.Join(Environment.NewLine, releases.Select(FormatRelease)));
                     throw new InvalidOperationException("Couldn't find release");
                 }
 
-                Console.WriteLine("Release found!");
+                Console.WriteLine(Resources.Program_MainSafe_Release_found_);
                 Console.WriteLine(FormatRelease(targetRelease!));
 
                 var exiledAsset = targetRelease!.Assets.FirstOrDefault(a => a.Name.Equals(EXILED_ASSET_NAME, StringComparison.OrdinalIgnoreCase));
                 if (exiledAsset is null)
                 {
-                    Console.WriteLine("--- ASSETS ---");
+                    Console.WriteLine(Resources.Program_MainSafe_____ASSETS____);
                     Console.WriteLine(string.Join(Environment.NewLine, targetRelease.Assets.Select(FormatAsset)));
                     throw new InvalidOperationException("Couldn't find asset");
                 }
 
-                Console.WriteLine("Asset found!");
+                Console.WriteLine(Resources.Program_MainSafe_Asset_found_);
                 Console.WriteLine(FormatAsset(exiledAsset));
 
                 using var httpClient = new HttpClient
@@ -131,7 +135,7 @@ namespace Exiled.Installer
                 using var downloadArchiveStream = await downloadResult.Content.ReadAsStreamAsync().ConfigureAwait(false);
 
                 using var gzInputStream = new GZipInputStream(downloadArchiveStream);
-                using var tarInputStream = new TarInputStream(gzInputStream);
+                using var tarInputStream = new TarInputStream(gzInputStream, null);
 
                 TarEntry entry;
                 while (!((entry = tarInputStream.GetNextEntry()) is null))
@@ -140,12 +144,12 @@ namespace Exiled.Installer
                     ProcessTarEntry(args, targetFilePath, tarInputStream, entry);
                 }
 
-                Console.WriteLine("Installation complete");
+                Console.WriteLine(Resources.Program_MainSafe_Installation_complete);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                Console.WriteLine("Read the exception message, read the readme, and if you still don't understand what to do, then contact #support in our discord server with the attached screenshot of the full exception");
+                Console.WriteLine(Resources.Program_MainSafe_Read_the_exception_message__read_the_readme__and_if_you_still_don_t_understand_what_to_do__then_contact__support_in_our_discord_server_with_the_attached_screenshot_of_the_full_exception);
                 if (!args.Exit)
                     Console.Read();
             }
@@ -201,11 +205,11 @@ namespace Exiled.Installer
             }
             else
             {
-                Console.WriteLine($"Processing '{entry.Name}'");
+                Console.WriteLine(Resources.Program_ProcessTarEntry_Processing___0__, entry.Name);
 
                 if (entry.Name.Contains("example", StringComparison.OrdinalIgnoreCase))
                 {
-                    Console.WriteLine($"Extract for {entry.Name} is disabled");
+                    Console.WriteLine(Resources.Program_ProcessTarEntry_Extract_for__0__is_disabled, entry.Name);
                     return;
                 }
 
@@ -219,7 +223,7 @@ namespace Exiled.Installer
                         ExtractEntry(tarInputStream, entry, targetFilePath);
                         break;
                     default:
-                        Console.WriteLine($"Couldn't resolve path for '{entry.Name}', update installer");
+                        Console.WriteLine(Resources.Program_ProcessTarEntry_Couldn_t_resolve_path_for___0____update_installer, entry.Name);
                         break;
                 }
             }
@@ -227,7 +231,7 @@ namespace Exiled.Installer
 
         private static void ExtractEntry(TarInputStream tarInputStream, TarEntry entry, string path)
         {
-            Console.WriteLine($"Extracting '{Path.GetFileName(entry.Name)}' into '{path}'...");
+            Console.WriteLine(Resources.Program_ExtractEntry_Extracting___0___into___1_____, Path.GetFileName(entry.Name), path);
 
             EnsureDirExists(Path.GetDirectoryName(path)!);
 
@@ -239,7 +243,7 @@ namespace Exiled.Installer
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An exception occurred while trying to extract a file");
+                Console.WriteLine(Resources.Program_ExtractEntry_An_exception_occurred_while_trying_to_extract_a_file);
                 Console.WriteLine(ex);
             }
             finally
@@ -257,8 +261,8 @@ namespace Exiled.Installer
         private static void EnsureDirExists(string pathToDir)
         {
 #if DEBUG
-            Console.WriteLine($"Ensuring directory path: {pathToDir}");
-            Console.WriteLine($"Does it exist? - {Directory.Exists(pathToDir)}");
+            Console.WriteLine(Resources.Program_EnsureDirExists_Ensuring_directory_path___0_, pathToDir);
+            Console.WriteLine(Resources.Program_EnsureDirExists_Does_it_exist_____0_, Directory.Exists(pathToDir));
 #endif
             if (!Directory.Exists(pathToDir))
                 Directory.CreateDirectory(pathToDir);
@@ -295,7 +299,7 @@ namespace Exiled.Installer
 
         private static bool TryFindRelease(CommandSettings args, IEnumerable<Release> releases, out Release? release)
         {
-            Console.WriteLine("Trying to find release..");
+            Console.WriteLine(Resources.Program_TryFindRelease_Trying_to_find_release__);
             Version targetVersion = args.TargetVersion != null ? new Version(args.TargetVersion) : VersionLimit;
 
             foreach (var r in releases)
