@@ -535,6 +535,7 @@ namespace Exiled.API.Features
             CamerasValue.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            Firearm.AvailableAttachmentsValue.Clear();
         }
     }
 }
