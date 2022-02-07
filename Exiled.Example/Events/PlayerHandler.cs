@@ -221,5 +221,14 @@ namespace Exiled.Example.Events
                 ev.Amount = 1f;
             }
         }
+
+        /// <inheritdoc cref="Exiled.Events.Handlers.Player.OnTriggeringTesla(TriggeringTeslaEventArgs)"/>
+        public void OnTriggeringTesla(TriggeringTeslaEventArgs ev)
+        {
+            if (Instance.Config.RoleList.Contains(ev.Player.Role))
+            {
+                ev.IsTriggerable = false;
+            }
+        }
     }
 }
