@@ -106,6 +106,12 @@ namespace Exiled.Example
 
             Exiled.Events.Handlers.Map.ExplodingGrenade += mapHandler.OnExplodingGrenade;
             Exiled.Events.Handlers.Map.GeneratorActivated += mapHandler.OnGeneratorActivated;
+            Exiled.Events.Handlers.Map.AnnouncingDecontamination += mapHandler.OnAnnouncingDecontamination;
+            Exiled.Events.Handlers.Map.AnnouncingNtfEntrance += mapHandler.OnAnnouncingNtfEntrance;
+            Exiled.Events.Handlers.Map.AnnouncingScpTermination += mapHandler.OnAnnouncingScpTermination;
+            Exiled.Events.Handlers.Map.DamagingWindow += mapHandler.OnDamagingWindow;
+            Exiled.Events.Handlers.Map.PlacingBlood += mapHandler.OnPlacingBlood;
+            Exiled.Events.Handlers.Map.PlacingBulletHole += mapHandler.OnPlacingBulletHole;
 
             Exiled.Events.Handlers.Item.ChangingDurability += itemHandler.OnChangingDurability;
             Exiled.Events.Handlers.Item.ChangingAttachments += itemHandler.OnChangingAttachments;
