@@ -55,6 +55,12 @@ namespace Exiled.Example
         public List<int> IntsList { get; private set; } = new List<int>() { 1, 2, 3 };
 
         /// <summary>
+        /// Gets the list of roles config.
+        /// </summary>
+        [Description("This is a list of roles config")]
+        public List<RoleType> RoleList { get; private set; } = new List<RoleType>() { RoleType.NtfCaptain };
+
+        /// <summary>
         /// Gets the dictionary of string as key and int as value config.
         /// </summary>
         [Description("This is a dictionary of strings as key and int as value config")]
