@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Structs
 {
+    using System;
     using System.Linq;
 
     using Exiled.API.Enums;
@@ -212,9 +213,12 @@ namespace Exiled.API.Structs
         {
             name = default;
 
-            foreach (AttachmentIdentifier attId in Features.Items.Firearm.AvailableAttachments.Values.SelectMany(kvp => kvp.Where(kvp2 => kvp2.Name.ToString() == s)))
+            foreach (AttachmentNameTranslation attachmentNameTranslation in Enum.GetValues(typeof(AttachmentNameTranslation)))
             {
-                name = attId.Name;
+                if (attachmentNameTranslation.ToString() != s)
+                    continue;
+
+                name = attachmentNameTranslation;
                 return true;
             }
 

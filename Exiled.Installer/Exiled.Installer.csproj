@@ -17,7 +17,7 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
 
     <AssemblyTitle>Exiled online installer</AssemblyTitle>
-    <Version>3.2.1</Version>
+    <Version>3.2.2</Version>
     <ApplicationIcon>..\assets\Exiled_Icon.ico</ApplicationIcon>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
@@ -36,7 +36,7 @@
 
   <ItemGroup>
     <PackageReference Include="Octokit" Version="0.48.0" />
-    <PackageReference Include="SharpZipLib" Version="1.2.0" />
+    <PackageReference Include="SharpZipLib" Version="1.3.3" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20371.2" />
     <PackageReference Include="SemanticVersioning" Version="$(SemanticVersioningVersion)" />
   </ItemGroup>
