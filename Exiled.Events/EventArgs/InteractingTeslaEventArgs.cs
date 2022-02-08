@@ -10,6 +10,7 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
 
     /// <summary>
     /// Contains all informations before SCP-079 triggers a tesla gate.
@@ -27,7 +28,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             Tesla = TeslaGate.Get(teslaGate);
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Energy;
+            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
         }
 
         /// <summary>
