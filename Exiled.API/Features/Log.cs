@@ -148,7 +148,6 @@ namespace Exiled.API.Features
         /// <param name="condition">The conditional expression to evaluate. If the condition is true it will continue.</param>
         /// <param name="message">The information message. The error and exception will show this message.</param>
         /// <exception cref="System.Exception">If the condition is false. It throws an exception stopping the execution.</exception>
-        [System.Diagnostics.Conditional("DEBUG")]
         public static void Assert(bool condition, object message)
         {
             if (condition)
