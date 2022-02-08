@@ -134,9 +134,6 @@ namespace Exiled.API.Features
 
         /// <summary>
         /// Sends an <see cref="Error(object)"/> with the provided message if the condition is false and stops the execution.
-        /// <para>
-        /// Only works if the assembly calling the method is a debug build.
-        /// </para>
         /// <example> For example:
         /// <code>
         ///     Player ply = Player.Get(2);
