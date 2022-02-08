@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -536,6 +537,7 @@ namespace Exiled.API.Features
             CamerasValue.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            Firearm.AvailableAttachmentsValue.Clear();
         }
     }
 }

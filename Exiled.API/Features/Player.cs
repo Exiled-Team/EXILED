@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -47,6 +48,8 @@ namespace Exiled.API.Features
     using PlayerStatsSystem;
 
     using RemoteAdmin;
+
+    using RoundRestarting;
 
     using UnityEngine;
 
@@ -701,11 +704,12 @@ namespace Exiled.API.Features
         /// </summary>
         public float ArtificialHealth
         {
-            get => ReferenceHub.playerStats.StatModules[1].CurValue;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.CurrentAmount ?? 0f;
+
             set
             {
                 if (value > MaxArtificialHealth)
-                    MaxArtificialHealth = Mathf.CeilToInt(value);
+                    MaxArtificialHealth = value;
 
                 ActiveArtificialHealthProcesses.First().CurrentAmount = value;
             }
@@ -716,11 +720,12 @@ namespace Exiled.API.Features
         /// </summary>
         public float MaxArtificialHealth
         {
-            get => ActiveArtificialHealthProcesses?.First().Limit ?? 0;
+            get => ActiveArtificialHealthProcesses.FirstOrDefault()?.Limit ?? 0f;
+
             set
             {
                 if (!ActiveArtificialHealthProcesses.Any())
-                    ReferenceHub.playerStats.GetModule<AhpStat>().ServerAddProcess(value);
+                    AddAhp(value);
 
                 ActiveArtificialHealthProcesses.First().Limit = value;
             }
@@ -2139,6 +2144,26 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="distanceIntensity">The distance from which is able to hear the noise.</param>
         public void MakeNoise(float distanceIntensity) => ReferenceHub.footstepSync._visionController.MakeNoise(distanceIntensity);
+
+        /// <summary>
+        /// Reconnects player to the server. Can be used to redirect them to another server on a different port but same IP.
+        /// </summary>
+        /// <param name="newPort">New port.</param>
+        /// <param name="delay">Player reconnection delay.</param>
+        /// <param name="reconnect">Whether or not player should be reconnected.</param>
+        /// <param name="roundRestartType">Type of round restart.</param>
+        public void Reconnect(ushort newPort = 0, float delay = 5, bool reconnect = true, RoundRestartType roundRestartType = RoundRestartType.FullRestart)
+        {
+            if (newPort != 0)
+            {
+                if (newPort == Server.Port && roundRestartType == RoundRestartType.RedirectRestart)
+                    roundRestartType = RoundRestartType.FullRestart;
+                else
+                    roundRestartType = RoundRestartType.RedirectRestart;
+            }
+
+            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
+        }
 
         /// <summary>
         /// Returns the player in a human-readable format.

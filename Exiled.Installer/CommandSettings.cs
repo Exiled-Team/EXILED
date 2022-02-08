@@ -37,7 +37,7 @@ namespace Exiled.Installer
                     else if (!Directory.Exists(path))
                         parsed.ErrorMessage = "Directory doesn't exist!";
                     else if (!Program.ValidateServerPath(path, out var targetFilePath))
-                        parsed.ErrorMessage = $"Couldn't find '{Program.TARGET_FILE_NAME}' in '{targetFilePath}'";
+                        parsed.ErrorMessage = $"Couldn't find '{Program.TargetFileName}' in '{targetFilePath}'";
 
                     return new DirectoryInfo(path); // return for default value
                 },
