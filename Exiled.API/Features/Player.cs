@@ -957,56 +957,70 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Role.Side == side);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Role.Team == team);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
         /// </summary>
         /// <param name="role">The players' role.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
-        /// Gets the Player belonging to the <see cref="global::ReferenceHub"/>, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>, if any.
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
-        /// Gets the Player belonging to a specific netId, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
-        /// <returns>The player owning the netId, or <see langword="null"/> if not found.</returns>
+        /// <returns>The <see cref="Player"/> owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
         /// <summary>
-        /// Gets the Player belonging to the <see cref="UnityEngine.GameObject"/>, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="Mirror.NetworkIdentity"/>, if any.
+        /// </summary>
+        /// <param name="netIdentity">The player's <see cref="Mirror.NetworkIdentity"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="Mirror.NetworkIdentity"/>, or <see langword="null"/> if not found.</returns>
+        public static Player Get(NetworkIdentity netIdentity) => Get(netIdentity.netId);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="Mirror.NetworkConnection"/>, if any.
+        /// </summary>
+        /// <param name="conn">The player's <see cref="Mirror.NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if not found.</returns>
+        public static Player Get(NetworkConnection conn) => Get(conn.identity);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
         /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
             if (gameObject == null)

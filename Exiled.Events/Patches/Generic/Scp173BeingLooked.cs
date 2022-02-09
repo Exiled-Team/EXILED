@@ -56,16 +56,17 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Ldloc_3),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, player.LocalIndex),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
+                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.RoleType))),
                 new CodeInstruction(OpCodes.Ldc_I4_S, (int)RoleType.Tutorial),
                 new CodeInstruction(OpCodes.Ceq),
-                new CodeInstruction(OpCodes.Brtrue, continueLabel),
+                new CodeInstruction(OpCodes.Brtrue_S, continueLabel),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Exiled.Events.Events), nameof(Instance))),
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
-                new CodeInstruction(OpCodes.Brfalse, continueLabel),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Config), nameof(Config.CanTutorialBlockScp173))),
+                new CodeInstruction(OpCodes.Brfalse_S, continueLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
