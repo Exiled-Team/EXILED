@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Events.Map
     {
         private static bool Prefix(ref string regular)
         {
-            int scpsLeft = Player.List.Count(player => player.Team == Team.SCP && player.Role != RoleType.Scp0492);
+            int scpsLeft = Player.List.Count(player => player.Role.Team == Team.SCP && player.Role != RoleType.Scp0492);
             string[] unitInformation = regular.Split('-');
 
             AnnouncingNtfEntranceEventArgs ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));

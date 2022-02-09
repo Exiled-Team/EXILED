@@ -77,7 +77,7 @@ namespace Exiled.Events.Patches.Generic
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
-                    if (player.Role.Is939())
+                    if (player.Role.RoleType.Is939())
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -146,7 +146,7 @@ namespace Exiled.Events.Patches.Generic
                                 if (scp096 != null
                                     && scp096.EnragedOrEnraging
                                     && !scp096.HasTarget(currentTarget.ReferenceHub)
-                                    && currentTarget.Team != Team.SCP)
+                                    && currentTarget.Role.Team != Team.SCP)
                                 {
 #if DEBUG
                                     Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");

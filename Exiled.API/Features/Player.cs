@@ -18,7 +18,10 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
+    using Exiled.API.Interfaces;
     using Exiled.API.Structs;
 
     using Footprinting;
@@ -53,6 +56,8 @@ namespace Exiled.API.Features
 
     using Utils.Networking;
 
+    using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
@@ -71,6 +76,7 @@ namespace Exiled.API.Features
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
+        private Role storedRole;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -400,28 +406,40 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the player's <see cref="global::Team"/>.
-        /// </summary>
-        public Team Team => Role.GetTeam();
-
-        /// <summary>
         /// Gets the player's <see cref="Enums.LeadingTeam"/>.
         /// </summary>
-        public LeadingTeam LeadingTeam => Team.GetLeadingTeam();
+        public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
-        /// Gets or sets the player's <see cref="RoleType"/>.
+        /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
+        /// <para>
+        /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
+        /// <br /><see cref="global::RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
+        /// <br /><see cref="global::RoleType.Scp049"/> = <see cref="Scp049Role"/>.
+        /// <br /><see cref="global::RoleType.Scp079"/> = <see cref="Scp079Role"/>.
+        /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
+        /// </para>
+        /// <para>
+        /// If the role object is stored, it may become invalid if the player changes roles. Thus, the <see cref="Role.IsValid"/> property can be checked. If this property is <see langword="false"/>, the role should be discarded and this property should be used again to get the new Role.
+        /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
+        /// </para>
+        /// <para>
+        /// Roles and RoleTypes can be compared directly. <c>Player.Role == RoleType.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Player.SetRole(RoleType, SpawnReason, bool)"/>.
+        /// </para>
         /// </summary>
-        public RoleType Role
+        /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
+        public Role Role
         {
-            get => ReferenceHub.characterClassManager.NetworkCurClass;
-            set => SetRole(value);
-        }
+            get
+            {
+                if (storedRole == null || !storedRole.IsValid)
+                {
+                    storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
+                }
 
-        /// <summary>
-        /// Gets the <see cref="Color"/> of the player's <see cref="RoleType">role</see>.
-        /// </summary>
-        public Color RoleColor => Role.GetColor();
+                return storedRole;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed.
@@ -516,45 +534,35 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Team == Team.RIP;
+        public bool IsDead => Role.As<SpectatorRole>() != null;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Team == Team.MTF;
+        public bool IsNTF => Role.Team == Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Team == Team.CHI;
+        public bool IsCHI => Role.Team == Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Team == Team.SCP;
+        public bool IsScp => Role.Team == Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Team == Team.MTF || Team == Team.CDP || Team == Team.CHI || Team == Team.RSC;
+        public bool IsHuman => Role.As<HumanRole>() != null;
 
         /// <summary>
-        /// Gets or sets the camera SCP-079 is currently controlling.
-        /// <br>Only applies if the player is SCP-079.</br>
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public Camera Camera
-        {
-            get => Camera.Get(ReferenceHub.scp079PlayerScript.currentCamera);
-            set => SetCamera(value);
-        }
-
-        /// <summary>
-        /// Gets the player's <see cref="Enums.Side"/>.
-        /// </summary>
-        public Side Side => Team.GetSide();
+        public bool IsTutorial => Role.Type == RoleType.Tutorial;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.
@@ -769,131 +777,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets SCP-079's abilities. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public Scp079PlayerScript.Ability079[] Abilities
-        {
-            get => ReferenceHub.scp079PlayerScript?.abilities;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.abilities = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets SCP-079's levels. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public Scp079PlayerScript.Level079[] Levels
-        {
-            get => ReferenceHub.scp079PlayerScript?.levels;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.levels = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the speaker this player is currently using. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public string Speaker
-        {
-            get => ReferenceHub.scp079PlayerScript?.Speaker;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.Speaker = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the doors this player has locked. Can be <see langword="null"/>.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public SyncList<uint> LockedDoors
-        {
-            get => ReferenceHub.scp079PlayerScript?.lockedDoors;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript != null)
-                    ReferenceHub.scp079PlayerScript.lockedDoors = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the amount of experience this player has.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float Experience
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Exp : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.Exp = value;
-                ReferenceHub.scp079PlayerScript.OnExpChange();
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="global::Stamina"/> class.
         /// </summary>
         public Stamina Stamina => ReferenceHub.fpc.staminaController;
-
-        /// <summary>
-        /// Gets or sets this player's level.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public byte Level
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Lvl : byte.MinValue;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null || ReferenceHub.scp079PlayerScript.Lvl == value)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.ForceLevel(value, true);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets this player's max energy.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float MaxEnergy
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.NetworkmaxMana : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.NetworkmaxMana = value;
-                ReferenceHub.scp079PlayerScript.levels[Level].maxMana = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets this player's energy.
-        /// Only applies if the player is SCP-079.
-        /// </summary>
-        public float Energy
-        {
-            get => ReferenceHub.scp079PlayerScript != null ? ReferenceHub.scp079PlayerScript.Mana : float.NaN;
-            set
-            {
-                if (ReferenceHub.scp079PlayerScript == null)
-                    return;
-
-                ReferenceHub.scp079PlayerScript.Mana = value;
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether the staff bypass is enabled.
@@ -1044,31 +930,6 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets currently spectated player by this <see cref="Player"/>. May be <see langword="null"/>.
-        /// </summary>
-        public Player SpectatedPlayer
-        {
-            get
-            {
-                Player spectatedPlayer = Get(ReferenceHub.spectatorManager.CurrentSpectatedPlayer);
-
-                if (spectatedPlayer == this)
-                    return null;
-
-                return spectatedPlayer;
-            }
-
-            set
-            {
-                if (IsAlive)
-                    throw new InvalidOperationException("You cannot set Spectated Player when you are alive!");
-
-                ReferenceHub.spectatorManager.CurrentSpectatedPlayer = value.ReferenceHub;
-                ReferenceHub.spectatorManager.CmdSendPlayer(value.Id);
-            }
-        }
-
-        /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> which contains all player's preferences.
         /// </summary>
         public Dictionary<ItemType, AttachmentIdentifier[]> Preferences => Firearm.PlayerPreferences.FirstOrDefault(kvp => kvp.Key == this).Value;
@@ -1079,6 +940,15 @@ namespace Exiled.API.Features
         public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player is spawn protected.
+        /// </summary>
+        public bool IsSpawnProtected
+        {
+            get => ReferenceHub.characterClassManager.SpawnProtected;
+            set => ReferenceHub.characterClassManager.SpawnProtected = value;
+        }
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
@@ -1087,56 +957,70 @@ namespace Exiled.API.Features
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by side. Can be empty.
         /// </summary>
         /// <param name="side">The players' side.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Side == side);
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Side side) => List.Where(player => player.Role.Side == side);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by team. Can be empty.
         /// </summary>
         /// <param name="team">The players' team.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
-        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Team == team);
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
+        public static IEnumerable<Player> Get(Team team) => List.Where(player => player.Role.Team == team);
 
         /// <summary>
         /// Gets a <see cref="Player"/> <see cref="IEnumerable{T}"/> filtered by role. Can be empty.
         /// </summary>
         /// <param name="role">The players' role.</param>
-        /// <returns>Returns the filtered <see cref="IEnumerable{T}"/>.</returns>
+        /// <returns>The filtered <see cref="IEnumerable{T}"/>.</returns>
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSystem.ICommandSender sender) => Get(sender as CommandSender);
 
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(CommandSender sender) => Get(sender.SenderId);
 
         /// <summary>
-        /// Gets the Player belonging to the <see cref="global::ReferenceHub"/>, if any.
+        /// Gets the <see cref="Player"/> belonging to the <see cref="global::ReferenceHub"/>, if any.
         /// </summary>
         /// <param name="referenceHub">The player's <see cref="global::ReferenceHub"/>.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(ReferenceHub referenceHub) => referenceHub == null ? null : Get(referenceHub.gameObject);
 
         /// <summary>
-        /// Gets the Player belonging to a specific netId, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
         /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
-        /// <returns>The player owning the netId, or <see langword="null"/> if not found.</returns>
+        /// <returns>The <see cref="Player"/> owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
         /// <summary>
-        /// Gets the Player belonging to the <see cref="UnityEngine.GameObject"/>, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="Mirror.NetworkIdentity"/>, if any.
+        /// </summary>
+        /// <param name="netIdentity">The player's <see cref="Mirror.NetworkIdentity"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="Mirror.NetworkIdentity"/>, or <see langword="null"/> if not found.</returns>
+        public static Player Get(NetworkIdentity netIdentity) => Get(netIdentity.netId);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="Mirror.NetworkConnection"/>, if any.
+        /// </summary>
+        /// <param name="conn">The player's <see cref="Mirror.NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if not found.</returns>
+        public static Player Get(NetworkConnection conn) => Get(conn.identity);
+
+        /// <summary>
+        /// Gets the <see cref="Player"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
         /// <param name="gameObject">The player's <see cref="UnityEngine.GameObject"/>.</param>
-        /// <returns>Returns a player or <see langword="null"/> if not found.</returns>
+        /// <returns>A <see cref="Player"/> or <see langword="null"/> if not found.</returns>
         public static Player Get(GameObject gameObject)
         {
             if (gameObject == null)
@@ -1234,27 +1118,6 @@ namespace Exiled.API.Features
                 return null;
             }
         }
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="cameraId">Camera ID.</param>
-        public void SetCamera(ushort cameraId) => ReferenceHub.scp079PlayerScript?.RpcSwitchCamera(cameraId, false);
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="cameraType">The <see cref="Enums.CameraType"/>.</param>
-        public void SetCamera(Enums.CameraType cameraType) => SetCamera(API.Features.Camera.Get(cameraType));
-
-        /// <summary>
-        /// Sets the camera the player is currently located at.
-        /// <br>Only applies if the player is SCP-079.</br>
-        /// </summary>
-        /// <param name="camera">The <see cref="Camera"/> object to switch to.</param>
-        public void SetCamera(Camera camera) => SetCamera(camera.Id);
 
         /// <summary>
         /// Forces the player to reload their current weapon.
@@ -1459,20 +1322,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        public void Hurt(DamageHandler handler)
-        {
-            if (Health - handler.Amount < 1 && Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
-                Cassie.Message(handler.Base.CassieDeathAnnouncement.Announcement);
-
-            ReferenceHub.playerStats.DealDamage(handler.Base);
-        }
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new CustomDamageHandler(this, damageHandlerBase));
 
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new DamageHandler(this, damageHandlerBase));
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
+        /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CustomHandlerBase.CassieAnnouncement cassieAnnouncement = null) =>
+            Hurt(new CustomDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
 
         /// <summary>
         /// Hurts the player.
@@ -1480,8 +1341,8 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
-        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Hurt(new ExiledDamageHandler(attacker, amount, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
+        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
+            Hurt(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
 
         /// <summary>
         /// Hurts the player.
@@ -1507,38 +1368,28 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to kill.</param>
-        public void Kill(DamageHandlerBase damageHandlerBase)
+        /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(DamageType damageType, string cassieAnnouncement = "")
         {
-            if (Side != Side.Scp && !string.IsNullOrEmpty(damageHandlerBase.CassieDeathAnnouncement.Announcement))
-                Cassie.Message(damageHandlerBase.CassieDeathAnnouncement.Announcement);
+            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.DealDamage(damageHandlerBase is ExiledDamageHandler
-                ? new CustomReasonDamageHandler(damageHandlerBase.ServerLogsText)
-                : damageHandlerBase);
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
         }
 
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to kill.</param>
-        public void Kill(DamageHandler handler) => Kill(handler.Base);
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
-        /// <param name="damageType">The <see cref="DamageType">damage type</see> the player has been killed with.</param>
-        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
-        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType = DamageType.Unknown, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
-        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, deathReason));
+        public void Kill(string deathReason, string cassieAnnouncement = "")
+        {
+            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+        }
 
         /// <summary>
         /// Bans the player.
@@ -2332,6 +2183,6 @@ namespace Exiled.API.Features
         /// Returns the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Team}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Role.Team}";
     }
 }
