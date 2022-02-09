@@ -8,11 +8,13 @@
 namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
     using PlayerStatsSystem;
 
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
 
@@ -27,7 +29,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : this(item, ev.Target, ev.Handler.Base)
+            : this(item, ev.Target, ev.Handler.CustomBase)
         {
         }
 
@@ -36,7 +38,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// </summary>
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
-        /// <param name="damageHandler"><inheritdoc cref="DamageHandler.Base"/></param>
+        /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
         public OwnerDyingEventArgs(Item item, Player target, DamageHandlerBase damageHandler)
             : base(target, damageHandler)
         {

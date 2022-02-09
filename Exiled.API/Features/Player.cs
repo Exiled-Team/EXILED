@@ -18,6 +18,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
     using Exiled.API.Interfaces;
@@ -55,6 +56,8 @@ namespace Exiled.API.Features
 
     using Utils.Networking;
 
+    using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
 
     /// <summary>
@@ -937,6 +940,15 @@ namespace Exiled.API.Features
         public Footprint Footprint => new Footprint(ReferenceHub);
 
         /// <summary>
+        /// Gets or sets a value indicating whether the player is spawn protected.
+        /// </summary>
+        public bool IsSpawnProtected
+        {
+            get => ReferenceHub.characterClassManager.SpawnProtected;
+            set => ReferenceHub.characterClassManager.SpawnProtected = value;
+        }
+
+        /// <summary>
         /// Gets a dictionary for storing player objects of connected but not yet verified players.
         /// </summary>
         internal static ConditionalWeakTable<ReferenceHub, Player> UnverifiedPlayers { get; } = new ConditionalWeakTable<ReferenceHub, Player>();
@@ -1296,20 +1308,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to deal damage.</param>
-        public void Hurt(DamageHandler handler)
-        {
-            if (Health - handler.Amount < 1 && Role.Side != Side.Scp && !string.IsNullOrEmpty(handler.Base.CassieDeathAnnouncement.Announcement))
-                Cassie.Message(handler.Base.CassieDeathAnnouncement.Announcement);
-
-            ReferenceHub.playerStats.DealDamage(handler.Base);
-        }
+        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
+        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new CustomDamageHandler(this, damageHandlerBase));
 
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new DamageHandler(this, damageHandlerBase));
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
+        /// <param name="cassieAnnouncement">The <see cref="CustomHandlerBase.CassieAnnouncement"/> cassie announcement to make if the damage kills the player.</param>
+        public void Hurt(Player attacker, float amount, DamageType damageType = DamageType.Unknown, CustomHandlerBase.CassieAnnouncement cassieAnnouncement = null) =>
+            Hurt(new CustomDamageHandler(this, attacker, amount, damageType, cassieAnnouncement));
 
         /// <summary>
         /// Hurts the player.
@@ -1317,8 +1327,8 @@ namespace Exiled.API.Features
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
-        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
-        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "", Player attacker = null) => Hurt(new ExiledDamageHandler(attacker, amount, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
+        public void Hurt(float amount, DamageType damageType = DamageType.Unknown, string cassieAnnouncement = "") =>
+            Hurt(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, amount, cassieAnnouncement));
 
         /// <summary>
         /// Hurts the player.
@@ -1344,38 +1354,28 @@ namespace Exiled.API.Features
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to kill.</param>
-        public void Kill(DamageHandlerBase damageHandlerBase)
+        /// <param name="damageType">The <see cref="DamageType"/> the player has been killed.</param>
+        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
+        public void Kill(DamageType damageType, string cassieAnnouncement = "")
         {
-            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(damageHandlerBase.CassieDeathAnnouncement.Announcement))
-                Cassie.Message(damageHandlerBase.CassieDeathAnnouncement.Announcement);
+            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
 
-            ReferenceHub.playerStats.DealDamage(damageHandlerBase is ExiledDamageHandler
-                ? new CustomReasonDamageHandler(damageHandlerBase.ServerLogsText)
-                : damageHandlerBase);
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(CustomHandlerBase.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel, float.MaxValue, cassieAnnouncement));
         }
 
         /// <summary>
         /// Kills the player.
         /// </summary>
-        /// <param name="handler">The <see cref="DamageHandler"/> used to kill.</param>
-        public void Kill(DamageHandler handler) => Kill(handler.Base);
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
-        /// <param name="damageType">The <see cref="DamageType">damage type</see> the player has been killed with.</param>
-        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
-        /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(DamageType damageType = DamageType.Unknown, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, DamageHandler.TranslationConversion.FirstOrDefault(k => k.Value == damageType).Key.LogLabel));
-
-        /// <summary>
-        /// Kills the player.
-        /// </summary>
         /// <param name="deathReason">The reason the player has been killed.</param>
-        /// <param name="killer">The <see cref="Player"/> who killed player.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make upon death.</param>
-        public void Kill(string deathReason, Player killer = null, string cassieAnnouncement = "") => Kill(new ExiledDamageHandler(killer, -1, cassieAnnouncement, deathReason));
+        public void Kill(string deathReason, string cassieAnnouncement = "")
+        {
+            if (Role.Side != Side.Scp && !string.IsNullOrEmpty(cassieAnnouncement))
+                Cassie.Message(cassieAnnouncement);
+
+            ReferenceHub.playerStats.KillPlayer(new CustomReasonDamageHandler(deathReason, float.MaxValue, cassieAnnouncement));
+        }
 
         /// <summary>
         /// Bans the player.
