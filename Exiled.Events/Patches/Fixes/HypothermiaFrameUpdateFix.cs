@@ -31,34 +31,28 @@ namespace Exiled.Events.Patches.Fixes
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldloc_1);
-            CodeInstruction m_ins = newInstructions[index];
+            const int offset = 1;
+            int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldloc_1) + offset;
 
             LocalBuilder cachedIntensity = generator.DeclareLocal(typeof(byte));
 
             Label retLabel = generator.DefineLabel();
 
+            newInstructions.Insert(index, new CodeInstruction(OpCodes.Pop));
+
+            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Conv_U1) + offset;
+
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Ldc_R4, 10),
-                new CodeInstruction(OpCodes.Mul),
-                new CodeInstruction(OpCodes.Call, Method(typeof(UnityEngine.Mathf), nameof(UnityEngine.Mathf.RoundToInt))),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Ldc_I4, 255),
-                new CodeInstruction(OpCodes.Call, Method(typeof(UnityEngine.Mathf), nameof(UnityEngine.Mathf.Clamp), new[] { typeof(int), typeof(int), typeof(int) })),
-                new CodeInstruction(OpCodes.Conv_U1),
                 new CodeInstruction(OpCodes.Stloc_S, cachedIntensity.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Conv_U1),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Brtrue_S, retLabel),
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(CustomPlayerEffects.Hypothermia), nameof(CustomPlayerEffects.Hypothermia.Intensity))),
             });
-
-            newInstructions.RemoveRange(newInstructions.IndexOf(m_ins), 10);
 
             newInstructions[newInstructions.Count - 1].labels.Add(retLabel);
 
