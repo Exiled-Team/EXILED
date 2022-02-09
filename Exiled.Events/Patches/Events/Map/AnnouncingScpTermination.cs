@@ -12,6 +12,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Reflection.Emit;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -22,6 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     using static HarmonyLib.AccessTools;
 
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Map = Exiled.Events.Handlers.Map;
 
     /// <summary>
@@ -58,6 +60,7 @@ namespace Exiled.Events.Patches.Events.Map
                 new CodeInstruction(OpCodes.Brfalse_S, ret),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AnnouncingScpTerminationEventArgs), nameof(AnnouncingScpTerminationEventArgs.Handler))),
+                new CodeInstruction(OpCodes.Isinst, typeof(DamageHandler)),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamageHandler), nameof(DamageHandler.Base))),
                 new CodeInstruction(OpCodes.Starg, 1),
                 new CodeInstruction(OpCodes.Ldsfld, Field(typeof(NineTailedFoxAnnouncer), nameof(NineTailedFoxAnnouncer.singleton))),
