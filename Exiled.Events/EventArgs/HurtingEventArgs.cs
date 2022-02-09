@@ -10,17 +10,16 @@ namespace Exiled.Events.EventArgs
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
 
-    using PlayerStatsSystem;
+    using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Contains all information before a player gets damaged.
     /// </summary>
     public class HurtingEventArgs : EventArgs
     {
-        private DamageHandlerBase damageHandler;
-        private DamageHandler handler;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="HurtingEventArgs"/> class.
         /// </summary>
@@ -28,11 +27,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
         public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
-            Attacker = damageHandler is AttackerDamageHandler attackerDamageHandler
-                ? Player.Get(attackerDamageHandler.Attacker.Hub)
+            Handler = new CustomDamageHandler(target, damageHandler);
+            Attacker = Handler.SafeBaseCast(out CustomAttackerHandler attackerDamageHandler)
+                ? attackerDamageHandler.Attacker
                 : null;
             Target = target;
-            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -46,25 +45,17 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="API.Features.DamageHandler"/> for the event.
+        /// Gets or sets the <see cref="CustomDamageHandler"/> for the event.
         /// </summary>
-        public DamageHandler Handler
-        {
-            get => handler;
-            set
-            {
-                handler = value;
-                damageHandler = value.Base;
-            }
-        }
+        public CustomDamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of inflicted damage.
         /// </summary>
         public float Amount
         {
-            get => Handler.Amount;
-            set => Handler.Amount = value;
+            get => Handler.Damage;
+            set => Handler.Damage = value;
         }
 
         /// <summary>

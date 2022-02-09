@@ -7,12 +7,14 @@
 
 namespace Exiled.Events.EventArgs
 {
-#pragma warning disable CS0618
     using System;
 
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
 
-    using PlayerStatsSystem;
+    using AttackerDamageHandler = PlayerStatsSystem.AttackerDamageHandler;
+    using CustomAttackerHandler = Exiled.API.Features.DamageHandlers.AttackerDamageHandler;
+    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
 
     /// <summary>
     /// Contains all informations after a player dies.
@@ -27,10 +29,10 @@ namespace Exiled.Events.EventArgs
         /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
         public DiedEventArgs(Player target, RoleType targetOldRole, DamageHandlerBase damageHandler)
         {
-            Killer = damageHandler is AttackerDamageHandler attackerDamageHandler ? Player.Get(attackerDamageHandler.Attacker.Hub) : null;
+            Handler = new CustomDamageHandler(target, damageHandler);
+            Killer = Handler.SafeBaseCast(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Target = target;
             TargetOldRole = targetOldRole;
-            Handler = new DamageHandler(target, damageHandler);
         }
 
         /// <summary>
@@ -44,9 +46,9 @@ namespace Exiled.Events.EventArgs
         public Player Target { get; }
 
         /// <summary>
-        /// Gets or sets the <see cref="API.Features.DamageHandler"/>.
+        /// Gets or sets the <see cref="DamageHandler"/>.
         /// </summary>
-        public DamageHandler Handler { get; set; }
+        public CustomDamageHandler Handler { get; set; }
 
         /// <summary>
         /// Gets the old <see cref="RoleType"/> from the killed player.
