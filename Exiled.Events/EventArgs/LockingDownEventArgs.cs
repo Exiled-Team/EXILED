@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 // <copyright file="LockingDownEventArgs.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
@@ -9,6 +9,7 @@ namespace Exiled.Events.EventArgs
 {
     using System;
     using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
 
     using MapGeneration;
 
@@ -28,7 +29,7 @@ namespace Exiled.Events.EventArgs
             Player = player;
             RoomGameObject = roomIdentifier;
             AuxiliaryPowerCost = auxiliaryPowerCost;
-            IsAllowed = auxiliaryPowerCost <= player.Energy;
+            IsAllowed = auxiliaryPowerCost <= player.Role.As<Scp079Role>().Energy;
         }
 
         /// <summary>
