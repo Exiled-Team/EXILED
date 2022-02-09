@@ -42,11 +42,13 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder ev = generator.DeclareLocal(typeof(DamagingShootingTargetEventArgs));
 
+            Label jccLabel = generator.DefineLabel();
+
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
-                new CodeInstruction(OpCodes.Ldfld, PropertyGetter(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldloc_2),
@@ -60,9 +62,10 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, jccLabel),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Ret),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jccLabel),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
                 new CodeInstruction(OpCodes.Starg_S, 1),
