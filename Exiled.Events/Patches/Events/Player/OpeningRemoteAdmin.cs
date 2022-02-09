@@ -30,8 +30,6 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(QueryProcessor), nameof(QueryProcessor.TargetReplyEncrypted))]
     internal static class OpeningRemoteAdmin
     {
-        private static readonly Dictionary<API.Features.Player, bool> TrackedReplies = new Dictionary<API.Features.Player, bool>();
-
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
