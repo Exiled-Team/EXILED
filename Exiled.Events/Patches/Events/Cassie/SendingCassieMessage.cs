@@ -65,8 +65,8 @@ namespace Exiled.Events.Patches.Events.Cassie
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
