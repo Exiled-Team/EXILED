@@ -24,12 +24,10 @@ namespace Exiled.Events.Patches.Events.Player
     /// Patches <see cref="FootstepSync.RpcPlayLandingFootstep(bool)"/>
     /// Adds the <see cref="Player.Landing"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(FootstepSync))]
+    [HarmonyPatch(typeof(FootstepSync), nameof(FootstepSync.RpcPlayLandingFootstep))]
     internal static class Landing
     {
-        [HarmonyPatch(nameof(FootstepSync.RpcPlayLandingFootstep))]
-        [HarmonyTranspiler]
-        private static IEnumerable<CodeInstruction> LandingTranspiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
