@@ -73,8 +73,10 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         BanningEventArgs ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
                         Handlers.Player.OnBanning(ev);
+
                         if (!ev.IsAllowed)
                             return false;
+
                         duration = ev.Duration;
                         reason = ev.Reason;
                         message = ev.FullMessage;
@@ -146,8 +148,10 @@ namespace Exiled.Events.Patches.Events.Player
                     {
                         KickingEventArgs ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
                         Handlers.Player.OnKicking(ev);
+
                         if (!ev.IsAllowed)
                             return false;
+
                         reason = ev.Reason;
                         message = ev.FullMessage;
                     }
