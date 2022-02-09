@@ -8,10 +8,9 @@
 namespace Exiled.Events.EventArgs
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.Items;
 
     /// <summary>
-    /// Contains all informations before changing item durability.
+    /// Contains all informations before opening the remote admin.
     /// </summary>
     public class OpeningRemoteAdminEventArgs : System.EventArgs
     {
@@ -27,7 +26,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="API.Features.Player"/> who's changing the <see cref="Firearm"/>'s durability.
+        /// Gets the <see cref="API.Features.Player"/> who's trying to open the remote admin.
         /// </summary>
         public Player Player { get; }
 
