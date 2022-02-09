@@ -7,7 +7,6 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
 #pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection;
@@ -34,11 +33,10 @@ namespace Exiled.Events.Patches.Events.Player
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            int offset = 0;
-            int index = 0 + offset;
+
             LocalBuilder issuingPlayer = generator.DeclareLocal(typeof(Player));
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(BanDetails), nameof(BanDetails.Issuer))),
@@ -46,8 +44,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Stloc, issuingPlayer.LocalIndex),
             });
 
-            offset = -6;
-            index = newInstructions.FindIndex(i =>
+            int offset = -6;
+            int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Call && (MethodInfo)i.operand ==
                 Method(typeof(FileManager), nameof(FileManager.AppendFile))) + offset;
 
