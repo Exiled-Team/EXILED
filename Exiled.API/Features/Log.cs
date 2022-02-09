@@ -131,5 +131,27 @@ namespace Exiled.API.Features
         /// <param name="message">The message to be sent.</param>
         /// <param name="color">The <see cref="System.ConsoleColor"/> of the message.</param>
         public static void SendRaw(string message, System.ConsoleColor color) => ServerConsole.AddLog(message, color);
+
+        /// <summary>
+        /// Sends an <see cref="Error(object)"/> with the provided message if the condition is false and stops the execution.
+        /// <example> For example:
+        /// <code>
+        ///     Player ply = Player.Get(2);
+        ///     Log.Assert(ply != null, "The player with the id 2 is null");
+        /// </code>
+        /// results in it logging an error if the player is null and not continuing.
+        /// </example>
+        /// </summary>
+        /// <param name="condition">The conditional expression to evaluate. If the condition is true it will continue.</param>
+        /// <param name="message">The information message. The error and exception will show this message.</param>
+        /// <exception cref="System.Exception">If the condition is false. It throws an exception stopping the execution.</exception>
+        public static void Assert(bool condition, object message)
+        {
+            if (condition)
+                return;
+
+            Error(message);
+            throw new System.Exception(message.ToString());
+        }
     }
 }
