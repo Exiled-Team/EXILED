@@ -48,12 +48,12 @@ namespace Exiled.API.Enums
         Bleeding,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
+        /// Damage dealt by a <see cref="Features.Items.Firearm"/> when the <see cref="ItemType"/> used is not available.
         /// </summary>
         Firearm,
 
         /// <summary>
-        /// Damage dealt by a <see cref="API.Features.Items.MicroHid"/>.
+        /// Damage dealt by a <see cref="Features.Items.MicroHid"/>.
         /// </summary>
         MicroHid,
 

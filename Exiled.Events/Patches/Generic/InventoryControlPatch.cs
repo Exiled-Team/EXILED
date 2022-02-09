@@ -32,7 +32,7 @@ namespace Exiled.Events.Patches.Generic
     using Inventory = InventorySystem.Inventory;
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="API.Features.Player.Items"/>.
+    /// Patches <see cref="InventoryExtensions.ServerAddItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
     internal static class InventoryControlAddPatch
@@ -69,7 +69,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="API.Features.Player.Items"/>.
+    /// Patches <see cref="InventoryExtensions.ServerDropItem"/> to help manage <see cref="Player.Items"/>.
     /// </summary>
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     internal static class InventoryControlRemovePatch

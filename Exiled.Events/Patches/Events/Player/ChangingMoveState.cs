@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnChangingMoveState))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnChangingMoveState))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingMoveStateEventArgs), nameof(ChangingMoveStateEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, retLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),

@@ -19,7 +19,7 @@ namespace Exiled.API.Features.Toys
     using Object = UnityEngine.Object;
 
     /// <summary>
-    /// A wrapper class for <see cref="AdminToys.PrimitiveObjectToy"/>.
+    /// A wrapper class for <see cref="PrimitiveObjectToy"/>.
     /// </summary>
     public class Primitive : AdminToy
     {

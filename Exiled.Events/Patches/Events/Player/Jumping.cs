@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(Mirror.NetworkConnection, PositionMessage2DJump)"/> and
+    /// Patches <see cref="PlayerMovementSync.ReceivePosition2DJump(NetworkConnection, PositionMessage2DJump)"/> and
     /// <see cref="PlayerMovementSync.ReceivePositionJump(NetworkConnection, PositionMessageJump)"/>.
     /// Adds the <see cref="Player.Jumping"/> event.
     /// </summary>
@@ -60,7 +60,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnJumping))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, retLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
@@ -107,7 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnJumping))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnJumping))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(JumpingEventArgs), nameof(JumpingEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, retLabel),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),

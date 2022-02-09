@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdSwitchCamera(ushort, bool)"/>.
-    /// Adds the <see cref="Scp079.ChangingCamera"/> event.
+    /// Adds the <see cref="ChangingCamera"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp079PlayerScript), nameof(Scp079PlayerScript.UserCode_CmdSwitchCamera))]
     internal static class ChangingCamera

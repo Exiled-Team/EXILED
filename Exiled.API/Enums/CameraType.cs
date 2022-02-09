@@ -149,7 +149,7 @@ namespace Exiled.API.Enums
         Hcz049Hall,
 
         /// <summary>
-        /// Represents the camera that faces toward the <c>049_ARMORY</c> <see cref="Exiled.API.Features.Door"/>.
+        /// Represents the camera that faces toward the <c>049_ARMORY</c> <see cref="Features.Door"/>.
         /// </summary>
         Hcz049Armory,
 

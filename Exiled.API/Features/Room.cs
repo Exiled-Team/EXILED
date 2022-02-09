@@ -163,7 +163,7 @@ namespace Exiled.API.Features
         /// </summary>
         public void ResetColor()
         {
-            FlickerableLightController.WarheadLightColor = global::FlickerableLightController.DefaultWarheadColor;
+            FlickerableLightController.WarheadLightColor = FlickerableLightController.DefaultWarheadColor;
             FlickerableLightController.WarheadLightOverride = false;
         }
 

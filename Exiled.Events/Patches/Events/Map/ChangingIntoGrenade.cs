@@ -25,8 +25,8 @@ namespace Exiled.Events.Patches.Events.Map
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Items.ThrowableProjectiles.TimedGrenadePickup.Update"/>.
-    /// Adds the <see cref="Handlers.Map.ChangingIntoGrenade"/> event.
+    /// Patches <see cref="TimedGrenadePickup.Update"/>.
+    /// Adds the <see cref="Map.ChangingIntoGrenade"/> event.
     /// </summary>
     [HarmonyPatch(typeof(TimedGrenadePickup), nameof(TimedGrenadePickup.Update))]
     internal static class ChangingIntoGrenade

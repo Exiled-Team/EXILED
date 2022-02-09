@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Firearm"/> being held.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> being held.
         /// </summary>
         public Firearm Firearm { get; }
 

@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="DecontaminationController.FinishDecontamination"/>.
-    /// Adds the <see cref="Map.Decontaminating"/> event.
+    /// Adds the <see cref="Decontaminating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(DecontaminationController), nameof(DecontaminationController.FinishDecontamination))]
     internal static class Decontaminating

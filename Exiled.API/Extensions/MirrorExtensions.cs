@@ -246,11 +246,11 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Send fake values to client's <see cref="Mirror.SyncVarAttribute"/>.
+        /// Send fake values to client's <see cref="SyncVarAttribute"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
-        /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
-        /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
+        /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
+        /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
         /// <param name="value">Value of send to target.</param>
         public static void SendFakeSyncVar(this Player target, NetworkIdentity behaviorOwner, Type targetType, string propertyName, object value)
@@ -270,19 +270,19 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Force resync to client's <see cref="Mirror.SyncVarAttribute"/>.
+        /// Force resync to client's <see cref="SyncVarAttribute"/>.
         /// </summary>
-        /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
-        /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
+        /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
+        /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="propertyName">Property name starting with Network.</param>
         public static void ResyncSyncVar(NetworkIdentity behaviorOwner, Type targetType, string propertyName) => SetDirtyBitsMethodInfo.Invoke(behaviorOwner.gameObject.GetComponent(targetType), new object[] { SyncVarDirtyBits[$"{propertyName}"] });
 
         /// <summary>
-        /// Send fake values to client's <see cref="Mirror.ClientRpcAttribute"/>.
+        /// Send fake values to client's <see cref="ClientRpcAttribute"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
-        /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
-        /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
+        /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
+        /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="rpcName">Property name starting with Rpc.</param>
         /// <param name="values">Values of send to target.</param>
         public static void SendFakeTargetRpc(Player target, NetworkIdentity behaviorOwner, Type targetType, string rpcName, params object[] values)
@@ -304,11 +304,11 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Send fake values to client's <see cref="Mirror.SyncObject"/>.
+        /// Send fake values to client's <see cref="SyncObject"/>.
         /// </summary>
         /// <param name="target">Target to send.</param>
-        /// <param name="behaviorOwner"><see cref="Mirror.NetworkIdentity"/> of object that owns <see cref="Mirror.NetworkBehaviour"/>.</param>
-        /// <param name="targetType"><see cref="Mirror.NetworkBehaviour"/>'s type.</param>
+        /// <param name="behaviorOwner"><see cref="NetworkIdentity"/> of object that owns <see cref="NetworkBehaviour"/>.</param>
+        /// <param name="targetType"><see cref="NetworkBehaviour"/>'s type.</param>
         /// <param name="customAction">Custom writing action.</param>
         /// <example>
         /// EffectOnlySCP207.

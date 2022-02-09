@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Firearm"/> being reloaded.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> being reloaded.
         /// </summary>
         public Firearm Firearm { get; }
 

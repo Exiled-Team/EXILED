@@ -17,7 +17,7 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp096Role : Role
     {
-        private PlayableScps.Scp096 script;
+        private Scp096 script;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp096Role"/> class.
@@ -26,7 +26,7 @@ namespace Exiled.API.Features.Roles
         internal Scp096Role(Player player)
         {
             Owner = player;
-            script = player.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp096;
+            script = player.ReferenceHub.scpsController.CurrentScp as Scp096;
         }
 
         /// <inheritdoc/>

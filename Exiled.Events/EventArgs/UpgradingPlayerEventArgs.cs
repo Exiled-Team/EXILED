@@ -11,7 +11,7 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features;
 
-    using global::Scp914;
+    using Scp914;
 
     using UnityEngine;
 

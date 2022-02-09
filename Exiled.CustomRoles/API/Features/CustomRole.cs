@@ -50,7 +50,7 @@ namespace Exiled.CustomRoles.API.Features
         public abstract RoleType Role { get; set; }
 
         /// <summary>
-        /// Gets or sets the max <see cref="Exiled.API.Features.Player.Health"/> for the role.
+        /// Gets or sets the max <see cref="Player.Health"/> for the role.
         /// </summary>
         public abstract int MaxHealth { get; set; }
 

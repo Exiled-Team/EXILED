@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkConnection), nameof(NetworkConnection.identity))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(NetworkIdentity), nameof(NetworkIdentity.netId))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(API.Features.Player.Get), new[] { typeof(uint) })),
 
                 // Item::Get(firearm)
                 new CodeInstruction(OpCodes.Ldloc_1),

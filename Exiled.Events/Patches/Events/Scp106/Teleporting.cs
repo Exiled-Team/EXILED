@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp106
 
     /// <summary>
     /// Patches <see cref="Scp106PlayerScript.UserCode_CmdUsePortal"/>.
-    /// Adds the <see cref="Scp106.Teleporting"/> event.
+    /// Adds the <see cref="Teleporting"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp106PlayerScript), nameof(Scp106PlayerScript.UserCode_CmdUsePortal))]
     internal static class Teleporting

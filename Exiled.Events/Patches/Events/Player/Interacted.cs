@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="PlayerInteract.OnInteract"/>.
-    /// Adds the <see cref="Player.Interacted"/> event.
+    /// Adds the <see cref="Interacted"/> event.
     /// </summary>
     [HarmonyPatch(typeof(PlayerInteract), nameof(PlayerInteract.OnInteract))]
     internal static class Interacted

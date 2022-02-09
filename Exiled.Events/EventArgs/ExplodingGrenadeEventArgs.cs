@@ -89,7 +89,7 @@ namespace Exiled.Events.EventArgs
         public List<Player> TargetsToAffect { get; }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Enums.GrenadeType"/> of the grenade.
+        /// Gets the <see cref="API.Enums.GrenadeType"/> of the grenade.
         /// </summary>
         public GrenadeType GrenadeType { get; }
 

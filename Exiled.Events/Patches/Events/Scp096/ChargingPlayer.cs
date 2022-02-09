@@ -23,10 +23,10 @@ namespace Exiled.Events.Patches.Events.Scp096
     using Scp096 = PlayableScps.Scp096;
 
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp096.ChargePlayer"/>.
+    /// Patches <see cref="Scp096.ChargePlayer"/>.
     /// Adds the <see cref="Handlers.Scp096.ChargingPlayer"/> event.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.ChargePlayer))]
+    [HarmonyPatch(typeof(Scp096), nameof(PlayableScps.Scp096.ChargePlayer))]
     internal static class ChargingPlayer
     {
         /// <summary>
@@ -102,10 +102,10 @@ namespace Exiled.Events.Patches.Events.Scp096
     }
 
     /// <summary>
-    /// Patches <see cref="PlayableScps.Scp096.EndCharge"/>.
+    /// Patches <see cref="Scp096.EndCharge"/>.
     /// Serves to clear the ChargedPlayers.
     /// </summary>
-    [HarmonyPatch(typeof(PlayableScps.Scp096), nameof(PlayableScps.Scp096.EndCharge))]
+    [HarmonyPatch(typeof(Scp096), nameof(PlayableScps.Scp096.EndCharge))]
     internal static class ChargeEnded
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

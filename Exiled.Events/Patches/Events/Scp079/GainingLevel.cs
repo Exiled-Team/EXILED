@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Events.Scp079
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(GainingLevelEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Scp079), nameof(Handlers.Scp079.OnGainingLevel))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Scp079), nameof(Handlers.Scp079.OnGainingLevel))),
                 new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.NewLevel))),
                 new CodeInstruction(OpCodes.Starg_S, 1),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(GainingLevelEventArgs), nameof(GainingLevelEventArgs.IsAllowed))),

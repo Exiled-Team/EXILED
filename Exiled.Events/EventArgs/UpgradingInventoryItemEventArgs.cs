@@ -12,9 +12,9 @@ namespace Exiled.Events.EventArgs
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
-    using global::Scp914;
-
     using InventorySystem.Items;
+
+    using Scp914;
 
     /// <summary>
     /// Contains all information before SCP-914 upgrades an item.

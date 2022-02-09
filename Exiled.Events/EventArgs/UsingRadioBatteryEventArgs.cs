@@ -35,7 +35,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Radio"/> which is being used.
+        /// Gets the <see cref="API.Features.Items.Radio"/> which is being used.
         /// </summary>
         public Radio Radio { get; }
 

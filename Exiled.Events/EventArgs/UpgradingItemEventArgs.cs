@@ -11,9 +11,9 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Features.Items;
 
-    using global::Scp914;
-
     using InventorySystem.Items.Pickups;
+
+    using Scp914;
 
     using UnityEngine;
 

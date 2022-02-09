@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="CharacterClassManager.RunDefaultClassPicker(bool, out int[], out System.Collections.Generic.Dictionary{UnityEngine.GameObject, RoleType})"/>.
+    /// Patches <see cref="CharacterClassManager.RunDefaultClassPicker(bool, out int[], out Dictionary{GameObject, RoleType})"/>.
     /// Fixes overwatch players not spawning correctly.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RunDefaultClassPicker))]

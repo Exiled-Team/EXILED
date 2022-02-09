@@ -17,7 +17,7 @@ namespace Exiled.Events.EventArgs
     /// <summary>
     /// Contains all information before a player's held item changes.
     /// </summary>
-    public class ChangingItemEventArgs : System.EventArgs
+    public class ChangingItemEventArgs : EventArgs
     {
         private Item newItem;
 
