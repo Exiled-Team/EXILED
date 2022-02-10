@@ -34,10 +34,12 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Log.Error("Creating new player object");
-                player = new PlayerAPI(hub);
-                Log.Error($"Object exists {player != null}");
 #if DEBUG
+                Log.Error("Creating new player object");
+#endif
+                player = new PlayerAPI(hub);
+#if DEBUG
+                Log.Error($"Object exists {player != null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
                 Player.UnverifiedPlayers.Add(hub, player);
@@ -48,7 +50,6 @@ namespace Exiled.Events.Patches.Events.Player
                         p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
                 });
 
-                Timing.RunCoroutine(CheckNull(player));
                 PlayerEvents.OnJoined(new JoinedEventArgs(player));
             }
             catch (Exception e)
@@ -62,8 +63,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Log.Info("Doing thing");
-
                 // ReferenceHub is a component that is loaded first
                 if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;
@@ -76,17 +75,6 @@ namespace Exiled.Events.Patches.Events.Player
             catch (Exception exception)
             {
                 Log.Error($"{typeof(Joined).FullName}:\n{exception}");
-            }
-        }
-
-        private static IEnumerator<float> CheckNull(Player player)
-        {
-            int time = 0;
-            while (true)
-            {
-                yield return Timing.WaitForSeconds(1f);
-                time++;
-                Log.Debug($"Player is null: {player is null}");
             }
         }
     }
