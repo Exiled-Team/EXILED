@@ -58,7 +58,7 @@ namespace Exiled.API.Features.Roles
         /// Converts a role to its appropriate <see cref="global::RoleType"/>.
         /// </summary>
         /// <param name="role">The role.</param>
-        public static implicit operator RoleType(Role role) => role.Type;
+        public static implicit operator RoleType(Role role) => role?.Type ?? RoleType.None;
 
         /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
@@ -67,7 +67,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The <see cref="global::RoleType"/>.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(Role role, RoleType type)
-            => role.Type == type;
+            => role?.Type == type;
 
         /// <summary>
         /// Returns whether or not the role has a different RoleType as the given <paramref name="type"/>.
@@ -76,7 +76,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="type">The <see cref="global::RoleType"/>.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(Role role, RoleType type)
-            => role.Type != type;
+            => role?.Type != type;
 
         /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
@@ -85,7 +85,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The role.</param>
         /// <returns><see langword="true"/> if the values are equal.</returns>
         public static bool operator ==(RoleType type, Role role)
-            => role.Type == type;
+            => role?.Type == type;
 
         /// <summary>
         /// Returns whether or not the role has a different RoleType as the given <paramref name="type"/>.
@@ -94,7 +94,7 @@ namespace Exiled.API.Features.Roles
         /// <param name="role">The role.</param>
         /// <returns><see langword="true"/> if the values are not equal.</returns>
         public static bool operator !=(RoleType type, Role role)
-            => role.Type != type;
+            => role?.Type != type;
 
         /// <summary>
         /// Casts the role to the specified role type.

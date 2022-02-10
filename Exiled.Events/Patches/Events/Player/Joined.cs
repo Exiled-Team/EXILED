@@ -33,7 +33,9 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                Log.Error("Creating new player object");
                 player = new PlayerAPI(hub);
+                Log.Error($"Object exists {player != null}");
 #if DEBUG
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
@@ -58,6 +60,8 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                Log.Info("Doing thing");
+
                 // ReferenceHub is a component that is loaded first
                 if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;

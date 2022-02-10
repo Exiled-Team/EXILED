@@ -46,6 +46,9 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
+                if (!Round.IsStarted)
+                    return true;
+
                 if (++__instance._frame != __instance._syncFrequency)
                     return false;
 
