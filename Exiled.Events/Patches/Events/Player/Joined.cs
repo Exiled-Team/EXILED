@@ -40,6 +40,13 @@ namespace Exiled.Events.Patches.Events.Player
                 player = new API.Features.Player(hub);
 #if DEBUG
                 API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
+#if DEBUG
+                Log.Error("Creating new player object");
+#endif
+                player = new PlayerAPI(hub);
+#if DEBUG
+                Log.Error($"Object exists {player != null}");
+                Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
                 API.Features.Player.UnverifiedPlayers.Add(hub, player);
                 API.Features.Player p = player;

@@ -7,6 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
+#pragma warning disable SA1600
     using System;
     using System.Collections.Generic;
     using System.Reflection;
@@ -21,8 +22,6 @@ namespace Exiled.Events.Patches.Events.Player
 
     using PlayerAPI = Exiled.API.Features.Player;
     using PlayerEvents = Exiled.Events.Handlers.Player;
-
-#pragma warning disable SA1600 // Elements should be documented
 
     [HarmonyPatch(typeof(ServerRoles), nameof(ServerRoles.UserCode_CmdServerSignatureComplete))]
     internal static class Verified
