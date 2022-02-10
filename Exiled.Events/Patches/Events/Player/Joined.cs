@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
 #pragma warning disable SA1600 // Elements should be documented
     using System;
+    using System.Collections.Generic;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -33,10 +34,12 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Log.Error("Creating new player object");
-                player = new PlayerAPI(hub);
-                Log.Error($"Object exists {player != null}");
 #if DEBUG
+                Log.Error("Creating new player object");
+#endif
+                player = new PlayerAPI(hub);
+#if DEBUG
+                Log.Error($"Object exists {player != null}");
                 Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
                 Player.UnverifiedPlayers.Add(hub, player);
@@ -60,8 +63,6 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                Log.Info("Doing thing");
-
                 // ReferenceHub is a component that is loaded first
                 if (__instance.isDedicatedServer || ReferenceHub.HostHub == null || PlayerManager.localPlayer == null)
                     return;

@@ -7,7 +7,6 @@
 
 namespace Exiled.API.Features.Roles
 {
-#pragma warning disable 1584
     using Exiled.API.Extensions;
 
     /// <summary>
