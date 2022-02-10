@@ -526,6 +526,22 @@ namespace Exiled.API.Features
         public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
+        /// Places a blood decal.
+        /// </summary>
+        /// <param name="position">The position of the blood decal.</param>
+        /// <param name="type">The <see cref="BloodType"/> to place.</param>
+        /// <param name="multiplier">A value which determines the spread of the blood decal.</param>
+        public static void PlaceBlood(Vector3 position, BloodType type, float multiplier = 1f) => PlayerManager.hostHub.characterClassManager.RpcPlaceBlood(position, (int)type, multiplier);
+
+        /// <summary>
+        /// Gets all the near cameras.
+        /// </summary>
+        /// <param name="position">The position from which starting to search cameras.</param>
+        /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
+        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Cameras.Where(cam => Vector3.Distance(position, cam.Position) <= toleration);
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()

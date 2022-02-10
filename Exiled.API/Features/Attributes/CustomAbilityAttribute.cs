@@ -10,7 +10,7 @@ namespace Exiled.API.Features.Attributes
     using System;
 
     /// <summary>
-    /// An attribute to easily manage Exiled features' behavior.
+    /// An attribute to easily manage CustomAbility initialization.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public sealed class CustomAbilityAttribute : Attribute

@@ -2183,6 +2183,15 @@ namespace Exiled.API.Features
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
         }
 
+        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
+        public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) => MirrorExtensions.PlayGunSound(this, Position, type, volume, audioClipId);
+
+        /// <inheritdoc cref="Map.PlaceBlood(Vector3, BloodType, float)"/>
+        public void PlaceBlood(BloodType type, float multiplier = 1f) => Map.PlaceBlood(Position, type, multiplier);
+
+        /// <inheritdoc cref="Map.GetNearCameras(Vector3, float)"/>
+        public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
+
         /// <summary>
         /// Returns the player in a human-readable format.
         /// </summary>
