@@ -106,7 +106,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
         /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
-        public static IEnumerable<CustomAbility> RegisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false)
         {
             List<CustomAbility> registeredAbilities = new List<CustomAbility>();
 
