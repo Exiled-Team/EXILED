@@ -129,7 +129,7 @@ namespace Exiled.API.Features
             else if (info.SafeCast(out UniversalDamageHandler _))
                 result += " LOST IN DECONTAMINATION SEQUENCE";
             else if (info.SafeBaseCast(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
-                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Team, attacker.UnitName);
+                result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
 

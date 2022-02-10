@@ -199,6 +199,6 @@ namespace Exiled.API.Features
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can trigger the tesla gate; otherwise, <see langword="false"/>.</returns>
         public bool CanBeTriggered(Player player) => !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
-                                                     !IgnoredTeams.Contains(player.Team) && PlayersInTriggerRange.Contains(player);
+                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayersInTriggerRange.Contains(player);
     }
 }

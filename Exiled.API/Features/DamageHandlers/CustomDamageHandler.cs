@@ -54,7 +54,7 @@ namespace Exiled.API.Features.DamageHandlers
                     Owner = attacker.ReferenceHub,
                 },
             };
-            Base = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
+            CustomBase = new FirearmDamageHandler(firearm, target, new BaseFirearmHandler(firearm.Base, damage));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the base <see cref="DamageHandlerBase"/>.
         /// </summary>
-        public new DamageHandlerBase Base { get; }
+        public DamageHandlerBase CustomBase { get; }
 
         /// <inheritdoc/>
         public override Action ApplyDamage(Player player)
@@ -96,20 +96,20 @@ namespace Exiled.API.Features.DamageHandlers
             HealthStat healthModule = player.GetModule<HealthStat>();
 
             if (Damage <= -1f)
-                return KillPlayer(player, Base);
+                return KillPlayer(player, CustomBase);
 
             ProcessDamage(player);
 
             foreach (PlayerEffect effect in player.ActiveEffects)
             {
                 if (effect is IDamageModifierEffect damageModifierEffect)
-                    Damage *= damageModifierEffect.GetDamageModifier(Damage, Base, Cast<BaseFirearmHandler>().Hitbox);
+                    Damage *= damageModifierEffect.GetDamageModifier(Damage, CustomBase, Cast<BaseFirearmHandler>().Hitbox);
             }
 
             DealtHealthDamage = ahpModule.ServerProcessDamage(Damage);
             AbsorbedAhpDamage = Damage - DealtHealthDamage;
 
-            return healthModule.CurValue - DealtHealthDamage > 0f ? Action.Damage : KillPlayer(player, Base);
+            return healthModule.CurValue - DealtHealthDamage > 0f ? Action.Damage : KillPlayer(player, CustomBase);
         }
 
         private static Action KillPlayer(Player player, DamageHandlerBase damageHandlerBase)

@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new <see cref="List{T}"/> of <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public IEnumerable<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
+        public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
         /// Gets the current attachments code.
@@ -68,9 +68,13 @@ namespace Exiled.Events.EventArgs
         public uint CurrentCode { get; }
 
         /// <summary>
-        /// Gets the new attachments code.
+        /// Gets or sets the new attachments code.
         /// </summary>
-        public uint NewCode => NewAttachmentIdentifiers.GetAttachmentsCode() + (uint)Item.GetBaseCode();
+        public uint NewCode
+        {
+            get => NewAttachmentIdentifiers.GetAttachmentsCode();
+            set => NewAttachmentIdentifiers = Item.GetAttachmentIdentifiers(value).ToList();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attachments preference can be executed.

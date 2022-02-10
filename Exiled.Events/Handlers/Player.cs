@@ -46,10 +46,10 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="Exiled.API.Features.Player"/> uses an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="ItemUsed"/>, if a player's class has
+        /// Invoked after <see cref="UsedItem"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
-        public static event CustomEventHandler<UsedItemEventArgs> ItemUsed;
+        public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
 
         /// <summary>
         /// Invoked after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a <see cref="Exiled.API.Features.Items.Usable"/>.
@@ -423,6 +423,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
 
         /// <summary>
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> opens the remote admin.
+        /// </summary>
+        public static event CustomEventHandler<OpeningRemoteAdminEventArgs> OpeningRemoteAdmin;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="Exiled.API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -456,7 +461,7 @@ namespace Exiled.Events.Handlers
         /// Called after a <see cref="Exiled.API.Features.Player"/> used a medical item.
         /// </summary>
         /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
-        public static void OnItemUsed(UsedItemEventArgs ev) => ItemUsed.InvokeSafely(ev);
+        public static void OnUsedItem(UsedItemEventArgs ev) => UsedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a medical item.
@@ -902,5 +907,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Exiled.API.Features.Player"/> opens the remote admin.
+        /// </summary>
+        /// <param name="ev">The <see cref="OpeningRemoteAdminEventArgs"/> instance.</param>
+        public static void OnOpeningRemoteAdmin(OpeningRemoteAdminEventArgs ev) => OpeningRemoteAdmin.InvokeSafely(ev);
     }
 }

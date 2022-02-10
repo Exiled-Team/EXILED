@@ -305,7 +305,7 @@ namespace Exiled.CustomRoles.API.Features
             player.InfoArea |= ~PlayerInfoArea.Role;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
-                player.Role = RoleType.Spectator;
+                player.SetRole(RoleType.Spectator);
             foreach (CustomAbility ability in CustomAbilities)
             {
                 ability.RemoveAbility(player);
