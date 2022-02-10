@@ -10,6 +10,7 @@ namespace Exiled.Events.Patches.Events.Player
 #pragma warning disable SA1313
 #pragma warning disable SA1600 // Elements should be documented
     using System;
+    using System.Collections.Generic;
 
     using Exiled.API.Features;
     using Exiled.Events.EventArgs;
@@ -47,6 +48,7 @@ namespace Exiled.Events.Patches.Events.Player
                         p.ReferenceHub.characterClassManager.SetDirtyBit(2UL);
                 });
 
+                Timing.RunCoroutine(CheckNull(player));
                 PlayerEvents.OnJoined(new JoinedEventArgs(player));
             }
             catch (Exception e)
@@ -74,6 +76,17 @@ namespace Exiled.Events.Patches.Events.Player
             catch (Exception exception)
             {
                 Log.Error($"{typeof(Joined).FullName}:\n{exception}");
+            }
+        }
+
+        private static IEnumerator<float> CheckNull(Player player)
+        {
+            int time = 0;
+            while (true)
+            {
+                yield return Timing.WaitForSeconds(1f);
+                time++;
+                Log.Debug($"Player is null: {player is null}");
             }
         }
     }

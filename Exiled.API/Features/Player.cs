@@ -86,6 +86,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
+            storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
         }
 
         /// <summary>
@@ -96,6 +97,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
+            storedRole = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this);
         }
 
         /// <summary>
@@ -430,15 +432,8 @@ namespace Exiled.API.Features
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
         public Role Role
         {
-            get
-            {
-                if (storedRole == null || !storedRole.IsValid)
-                {
-                    storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
-                }
-
-                return storedRole;
-            }
+            get => storedRole;
+            internal set => storedRole = value;
         }
 
         /// <summary>
