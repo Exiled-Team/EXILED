@@ -423,11 +423,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> opens the remote admin.
-        /// </summary>
-        public static event CustomEventHandler<OpeningRemoteAdminEventArgs> OpeningRemoteAdmin;
-
-        /// <summary>
         /// Called before pre-authenticating a <see cref="Exiled.API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -907,11 +902,5 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
         public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
-
-        /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> opens the remote admin.
-        /// </summary>
-        /// <param name="ev">The <see cref="OpeningRemoteAdminEventArgs"/> instance.</param>
-        public static void OnOpeningRemoteAdmin(OpeningRemoteAdminEventArgs ev) => OpeningRemoteAdmin.InvokeSafely(ev);
     }
 }
