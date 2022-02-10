@@ -37,6 +37,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
+                player = new API.Features.Player(hub);
 #if DEBUG
                 API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
