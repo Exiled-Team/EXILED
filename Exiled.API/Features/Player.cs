@@ -1333,6 +1333,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="damage">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="force">The throw force.</param>
+        /// <param name="armorPenetration">The armor penetration amount.</param>
+        public void Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) => Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration));
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
@@ -1342,10 +1351,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="damage">The amount of damage to deal.</param>
+        /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
+        public void Hurt(float damage, string damageReason, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>
         /// Heals the player.
