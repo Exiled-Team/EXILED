@@ -20,7 +20,7 @@ namespace Exiled.API.Features.Roles
         internal HumanRole(Player player, RoleType type)
         {
             Owner = player;
-            Type = type;
+            RoleType = type;
         }
 
         /// <inheritdoc/>

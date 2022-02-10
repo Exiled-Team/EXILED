@@ -60,7 +60,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets or sets the new <see cref="List{T}"/> of <see cref="AttachmentIdentifier"/>.
         /// </summary>
-        public IEnumerable<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
+        public List<AttachmentIdentifier> NewAttachmentIdentifiers { get; set; }
 
         /// <summary>
         /// Gets the current attachments code.

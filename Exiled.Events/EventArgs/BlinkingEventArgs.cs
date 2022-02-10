@@ -51,7 +51,7 @@ namespace Exiled.Events.EventArgs
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of players who have triggered SCP-173.
         /// </summary>
-        public IEnumerable<Player> Targets { get; }
+        public List<Player> Targets { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is allowed to blink.
