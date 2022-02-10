@@ -68,9 +68,13 @@ namespace Exiled.Events.EventArgs
         public uint CurrentCode { get; }
 
         /// <summary>
-        /// Gets the new attachments code.
+        /// Gets or sets the new attachments code.
         /// </summary>
-        public uint NewCode => NewAttachmentIdentifiers.GetAttachmentsCode() + (uint)Item.GetBaseCode();
+        public uint NewCode
+        {
+            get => NewAttachmentIdentifiers.GetAttachmentsCode();
+            set => NewAttachmentIdentifiers = Item.GetAttachmentIdentifiers(value).ToList();
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the attachments preference can be executed.

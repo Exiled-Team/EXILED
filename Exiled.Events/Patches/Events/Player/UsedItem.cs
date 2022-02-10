@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="Consumable.ServerOnUsingCompleted"/>
-    /// Adds the <see cref="Handlers.Player.ItemUsed"/> event.
+    /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Consumable), nameof(Consumable.ServerOnUsingCompleted))]
     internal static class UsedItem
@@ -55,14 +55,14 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(UsedItemEventArgs))[0]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnItemUsed))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnUsedItem))),
             };
         }
     }
 
     /// <summary>
     /// Patches <see cref="Scp268.ServerOnUsingCompleted"/>
-    /// Adds the <see cref="Handlers.Player.ItemUsed"/> event.
+    /// Adds the <see cref="Handlers.Player.UsedItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp268), nameof(Scp268.ServerOnUsingCompleted))]
     internal static class UsedItem268

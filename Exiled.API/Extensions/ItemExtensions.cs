@@ -171,11 +171,11 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
-        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="Item"/>s into the corresponding <see cref="List{T}"/> of <see cref="ItemType"/>s.
+        /// Converts a <see cref="IEnumerable{T}"/> of <see cref="Item"/>s into the corresponding <see cref="IEnumerable{T}"/> of <see cref="ItemType"/>s.
         /// </summary>
         /// <param name="items">The items to convert.</param>
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
-        public static List<ItemType> GetItemTypes(this IEnumerable<Item> items)
+        public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items)
         {
             List<ItemType> itemTypes = new List<ItemType>();
             itemTypes.AddRange(items.Select(item => item.Type));
@@ -191,22 +191,17 @@ namespace Exiled.API.Extensions
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this ItemType type, uint code)
         {
             if ((uint)type.GetBaseCode() > code)
-            {
                 throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
-            }
 
-            AttachmentIdentifier[] attachmentIdentifiers = Firearm.AvailableAttachments[type].ToArray();
-            uint[] sources = attachmentIdentifiers.Select(attId => attId.Code).ToArray();
+            Item item = Item.Create(type);
 
-            code -= (uint)type.GetBaseCode();
-            for (int i = 0; i < sources.Length; i++)
+            if (item is Firearm firearm)
             {
-                if (code < sources[i])
-                    continue;
-
-                yield return attachmentIdentifiers[i];
-                code -= sources[i];
+                firearm.Base.ApplyAttachmentsCode(code, true);
+                return firearm.GetAttachmentIdentifiers();
             }
+
+            return null;
         }
 
         /// <summary>

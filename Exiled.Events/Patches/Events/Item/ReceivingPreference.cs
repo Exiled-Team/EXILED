@@ -11,7 +11,6 @@ namespace Exiled.Events.Patches.Events.Item
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
-    using Exiled.API.Extensions;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -39,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Item
 
             LocalBuilder ev = generator.DeclareLocal(typeof(ReceivingPreferenceEventArgs));
 
-            LocalBuilder mem_0x02 = generator.DeclareLocal(typeof(uint));
+            LocalBuilder curCode = generator.DeclareLocal(typeof(uint));
 
             Label cdc = generator.DefineLabel();
             Label ret = generator.DefineLabel();
@@ -54,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
-                new CodeInstruction(OpCodes.Ldloca_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloca_S, curCode.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<ItemType, uint>), nameof(Dictionary<ItemType, uint>.TryGetValue))),
                 new CodeInstruction(OpCodes.Brfalse_S, cdc),
 
@@ -67,7 +66,7 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
 
                 // currentCode
-                new CodeInstruction(OpCodes.Ldloc_S, mem_0x02.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, curCode.LocalIndex),
 
                 // AttachmentsSetupPreference::AttachmentsCode
                 new CodeInstruction(OpCodes.Ldarg_1),
@@ -93,10 +92,6 @@ namespace Exiled.Events.Patches.Events.Item
                 new CodeInstruction(OpCodes.Ldarga_S, 1),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ReceivingPreferenceEventArgs), nameof(ReceivingPreferenceEventArgs.NewCode))),
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.Weapon))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ItemExtensions), nameof(ItemExtensions.GetBaseCode))),
-                new CodeInstruction(OpCodes.Add),
                 new CodeInstruction(OpCodes.Stfld, Field(typeof(AttachmentsSetupPreference), nameof(AttachmentsSetupPreference.AttachmentsCode))),
             });
 

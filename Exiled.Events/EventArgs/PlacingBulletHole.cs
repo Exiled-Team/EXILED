@@ -15,7 +15,7 @@ namespace Exiled.Events.EventArgs
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before placing a decal.
+    /// Contains all informations before placing a bullet hole decal.
     /// </summary>
     public class PlacingBulletHole : EventArgs
     {

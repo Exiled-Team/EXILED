@@ -37,8 +37,4 @@
     <Reference Include="UnityEngine.PhysicsModule" HintPath="$(EXILED_REFERENCES)\UnityEngine.PhysicsModule.dll" Private="false" />
     <Reference Include="System.ComponentModel.DataAnnotations" Private="false" />
   </ItemGroup>
-
-  <PropertyGroup Condition="'$(OS)' == 'Unix'">
-    <PostBuildEvent>cleandir</PostBuildEvent>
-  </PropertyGroup>
 </Project>
