@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System.Collections.Generic;
     using System.Linq;
 
@@ -94,9 +95,9 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera079"/> in the <see cref="Room"/>.
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> in the <see cref="Room"/>.
         /// </summary>
-        public IEnumerable<Camera079> Cameras { get; private set; }
+        public IEnumerable<Camera> Cameras { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether or not the lights in this room are currently flickered off.
@@ -312,7 +313,7 @@ namespace Exiled.API.Features
             doors = new List<Door>();
             flickerableLightController = null;
 
-            foreach (var scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
+            foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
             {
                 if (scp079Interactable != null)
                 {
@@ -357,7 +358,7 @@ namespace Exiled.API.Features
 
             FindObjectsInRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
-            Cameras = cameras;
+            Cameras = Camera.Get(cameras);
             FlickerableLightController = flickerableLightController;
         }
     }

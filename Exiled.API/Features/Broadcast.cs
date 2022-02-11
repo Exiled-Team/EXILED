@@ -25,10 +25,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Initializes a new instance of the <see cref="Broadcast"/> class.
         /// </summary>
-        /// <param name="content"><inheritdoc cref="Content"/></param>
-        /// <param name="duration"><inheritdoc cref="Duration"/></param>
-        /// <param name="show"><inheritdoc cref="Show"/></param>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
+        /// <param name="content">The content of the broadcast>.</param>
+        /// <param name="duration">The duration of the broadcast, in seconds.</param>
+        /// <param name="show">Whether or not the broadcast should be shown.</param>
+        /// <param name="type">The type of the broadcast.</param>
         public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
         {
             Content = content;

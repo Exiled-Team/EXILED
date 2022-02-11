@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+#pragma warning disable 1584
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -16,6 +17,8 @@ namespace Exiled.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features.Items;
+    using Exiled.API.Features.Roles;
+    using Exiled.API.Features.Toys;
 
     using Interactables.Interobjects.DoorUtils;
 
@@ -26,8 +29,6 @@ namespace Exiled.API.Features
     using MapGeneration.Distributors;
 
     using Mirror;
-
-    using NorthwoodLib.Pools;
 
     using PlayableScps.ScriptableObjects;
 
@@ -53,9 +54,9 @@ namespace Exiled.API.Features
         internal static readonly List<Door> DoorsValue = new List<Door>(250);
 
         /// <summary>
-        /// A list of <see cref="Camera079"/>s on the map.
+        /// A list of <see cref="Camera"/>s on the map.
         /// </summary>
-        internal static readonly List<Camera079> CamerasValue = new List<Camera079>(250);
+        internal static readonly List<Camera> CamerasValue = new List<Camera>(250);
 
         /// <summary>
         /// A list of <see cref="Lift"/>s on the map.
@@ -82,14 +83,20 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<Ragdoll> RagdollsValue = new List<Ragdoll>();
 
+        /// <summary>
+        /// A list of <see cref="AdminToy"/>s on the map.
+        /// </summary>
+        internal static readonly List<AdminToy> ToysValue = new List<AdminToy>();
+
         private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Camera079> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<Camera> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
+        private static readonly ReadOnlyCollection<AdminToy> ReadOnlyToysValue = ToysValue.AsReadOnly();
 
         private static readonly RaycastHit[] CachedFindParentRoomRaycast = new RaycastHit[1];
 
@@ -99,24 +106,6 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
         public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
-
-        /// <summary>
-        /// Gets the number of activated generators.
-        /// </summary>
-        public static int ActivatedGenerators
-        {
-            get
-            {
-                int i = 0;
-                foreach (Scp079Generator gen in Recontainer079.AllGenerators)
-                {
-                    if (gen.Engaged)
-                        i++;
-                }
-
-                return i;
-            }
-        }
 
         /// <summary>
         /// Gets all <see cref="Room"/> objects.
@@ -131,7 +120,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets all <see cref="Camera079"/> objects.
         /// </summary>
-        public static ReadOnlyCollection<Camera079> Cameras => ReadOnlyCamerasValue;
+        public static ReadOnlyCollection<Camera> Cameras => ReadOnlyCamerasValue;
 
         /// <summary>
         /// Gets all <see cref="Lift"/> objects.
@@ -175,6 +164,11 @@ namespace Exiled.API.Features
         /// Gets all <see cref="Ragdoll"/> objects.
         /// </summary>
         public static ReadOnlyCollection<Ragdoll> Ragdolls => ReadOnlyRagdollsValue;
+
+        /// <summary>
+        /// Gets all <see cref="AdminToy"/> objects.
+        /// </summary>
+        public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
 
         /// <summary>
         /// Gets the current state of the intercom.
@@ -236,8 +230,8 @@ namespace Exiled.API.Features
                 // Raycasting doesn't make sense,
                 // SCP-079 position is constant,
                 // let it be 'Outside' instead
-                if (ply.Role == RoleType.Scp079)
-                    room = FindParentRoom(ply.Camera.gameObject);
+                if (ply.Role is Scp079Role role)
+                    room = FindParentRoom(role.Camera.GameObject);
             }
 
             if (room == null)
@@ -417,10 +411,10 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets an random <see cref="Camera079"/>.
+        /// Gets an random <see cref="Camera"/>.
         /// </summary>
-        /// <returns><see cref="Camera079"/> object.</returns>
-        public static Camera079 GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
+        /// <returns><see cref="Camera"/> object.</returns>
+        public static Camera GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
 
         /// <summary>
         /// Gets an random <see cref="Door"/>.
@@ -457,69 +451,6 @@ namespace Exiled.API.Features
                 ? Pickups.Where(p => p.Type == type).ToList()
                 : Pickups.ToList();
             return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
-        }
-
-        /// <summary>
-        /// Given the name of a camera, returns its <see cref="CameraType"/>, or <see cref="CameraType.Unknown"/> if the camera does not exist.
-        /// </summary>
-        /// <param name="cameraName">The name of the camera.</param>
-        /// <returns>The <see cref="CameraType"/>, or <see langword="null"/> if it does not exist.</returns>
-        public static CameraType GetCameraType(string cameraName)
-        {
-            Camera079 cam = GetCameraByName(cameraName);
-            if (!cam)
-                return CameraType.Unknown;
-
-            return cam.Type();
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Camera079">camera</see> with the given ID.
-        /// </summary>
-        /// <param name="cameraId">The camera id to be searched for.</param>
-        /// <returns>The <see cref="Camera079"/> with the given ID, or <see langword="null"/> if not found.</returns>
-        public static Camera079 GetCameraById(ushort cameraId)
-        {
-            foreach (Camera079 camera in Cameras)
-            {
-                if (camera.cameraId == cameraId)
-                    return camera;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Given the name of a camera, returns the first <see cref="Camera079"/> that matches the name, or <see langword="null"/> if it does not exist.
-        /// </summary>
-        /// <param name="cameraName">The name of the camera.</param>
-        /// <returns>The <see cref="Camera079"/>, or <see langword="null"/> if it does not exist.</returns>
-        public static Camera079 GetCameraByName(string cameraName)
-        {
-            cameraName = cameraName.ToLower();
-            foreach (Camera079 cam in Cameras)
-            {
-                if (cam.cameraName.ToLower() == cameraName)
-                    return cam;
-            }
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Camera079">camera</see> with the given camera type.
-        /// </summary>
-        /// <param name="cameraType">The <see cref="Enums.CameraType"/> to search for.</param>
-        /// <returns>The <see cref="Camera079"/> with the given camera type.</returns>
-        public static Camera079 GetCameraByType(CameraType cameraType)
-        {
-            foreach (Camera079 camera in Cameras)
-            {
-                if (camera.Type() == cameraType)
-                    return camera;
-            }
-
-            return null;
         }
 
         /// <summary>
@@ -595,6 +526,22 @@ namespace Exiled.API.Features
         public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
+        /// Places a blood decal.
+        /// </summary>
+        /// <param name="position">The position of the blood decal.</param>
+        /// <param name="type">The <see cref="BloodType"/> to place.</param>
+        /// <param name="multiplier">A value which determines the spread of the blood decal.</param>
+        public static void PlaceBlood(Vector3 position, BloodType type, float multiplier = 1f) => PlayerManager.hostHub.characterClassManager.RpcPlaceBlood(position, (int)type, multiplier);
+
+        /// <summary>
+        /// Gets all the near cameras.
+        /// </summary>
+        /// <param name="position">The position from which starting to search cameras.</param>
+        /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
+        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Cameras.Where(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+
+        /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
@@ -606,6 +553,7 @@ namespace Exiled.API.Features
             CamerasValue.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
+            Firearm.AvailableAttachmentsValue.Clear();
         }
     }
 }

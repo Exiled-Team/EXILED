@@ -27,7 +27,7 @@ namespace Exiled.Events.EventArgs
         public ActivatingGeneratorEventArgs(Player player, Scp079Generator generator, bool isAllowed = true)
         {
             Player = player;
-            Generator = generator;
+            Generator = Generator.Get(generator);
             IsAllowed = isAllowed;
         }
 
@@ -37,9 +37,9 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Scp079Generator"/> instance.
+        /// Gets the <see cref="Generator"/> instance.
         /// </summary>
-        public Scp079Generator Generator { get; }
+        public Generator Generator { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the tablet can be inserted.

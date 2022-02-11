@@ -10,15 +10,12 @@ namespace Exiled.Events.EventArgs
 #pragma warning disable SA1401
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
-
-    using InventorySystem.Items.Firearms.Modules;
 
     using UnityEngine;
 
     /// <summary>
-    /// Contains all informations before placing a decal.
+    /// Contains all informations before placing a bullet hole decal.
     /// </summary>
     public class PlacingBulletHole : EventArgs
     {

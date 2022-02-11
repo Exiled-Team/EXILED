@@ -13,8 +13,6 @@ namespace Exiled.API.Features
 
     using Mirror;
 
-    using PlayerStatsSystem;
-
     using RoundRestarting;
 
     /// <summary>

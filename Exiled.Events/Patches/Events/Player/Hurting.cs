@@ -9,23 +9,16 @@ namespace Exiled.Events.Patches.Events.Player
 {
 #pragma warning disable SA1118
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Reflection.Emit;
 
     using Exiled.Events.EventArgs;
     using Exiled.Events.Handlers;
 
-    using global::Utils.Networking;
-
     using HarmonyLib;
-
-    using InventorySystem.Disarming;
 
     using NorthwoodLib.Pools;
 
     using PlayerStatsSystem;
-
-    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
@@ -72,6 +65,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse, notRecontainment),
                 new CodeInstruction(OpCodes.Ldloc, player.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(Player), nameof(Player.Role))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Type))),
                 new CodeInstruction(OpCodes.Ldc_I4_7),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Brfalse, notRecontainment),

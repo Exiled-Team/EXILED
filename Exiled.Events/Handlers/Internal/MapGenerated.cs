@@ -13,18 +13,21 @@ namespace Exiled.Events.Handlers.Internal
 
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.Items;
+    using Exiled.API.Structs;
 
     using Interactables.Interobjects.DoorUtils;
+
+    using InventorySystem.Items.Firearms.Attachments;
 
     using MapGeneration;
     using MapGeneration.Distributors;
 
     using MEC;
 
-    using NorthwoodLib.Pools;
-
     using UnityEngine;
 
+    using Camera = Exiled.API.Features.Camera;
     using Object = UnityEngine.Object;
 
     /// <summary>
@@ -48,8 +51,6 @@ namespace Exiled.Events.Handlers.Internal
         {
             Map.ClearCache();
             GenerateCache();
-            LiftTypeExtension.RegisterElevatorTypesOnLevelLoad();
-            CameraExtensions.RegisterCameraInfoOnLevelLoad();
             Door.RegisterDoorTypesOnLevelLoad();
         }
 
@@ -61,7 +62,8 @@ namespace Exiled.Events.Handlers.Internal
             GenerateTeslaGates();
             GenerateLifts();
             GeneratePocketTeleports();
-            Timing.CallDelayed(0.15f, GenerateLockers);
+            GenerateAttachments();
+            Timing.CallDelayed(1f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
@@ -84,14 +86,49 @@ namespace Exiled.Events.Handlers.Internal
                 Map.DoorsValue.Add(Door.Get(doorVariant));
         }
 
-        private static void GenerateCameras() => Map.CamerasValue.AddRange(Object.FindObjectsOfType<Camera079>());
+        private static void GenerateCameras()
+        {
+            foreach (Camera079 camera079 in Object.FindObjectsOfType<Camera079>())
+                Map.CamerasValue.Add(new Camera(camera079));
+        }
 
-        private static void GenerateLifts() => Map.LiftsValue.AddRange(Object.FindObjectsOfType<Lift>());
+        private static void GenerateLifts()
+        {
+            foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
+                Map.LiftsValue.Add(new Lift(lift));
+        }
 
-        private static void GenerateTeslaGates() => Map.TeslasValue.AddRange(Object.FindObjectsOfType<TeslaGate>());
+        private static void GenerateTeslaGates()
+        {
+            foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
+                Map.TeslasValue.Add(new TeslaGate(teslaGate));
+        }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
 
         private static void GenerateLockers() => Map.LockersValue.AddRange(Object.FindObjectsOfType<Locker>());
+
+        private static void GenerateAttachments()
+        {
+            foreach (ItemType type in Enum.GetValues(typeof(ItemType)))
+            {
+                if (!type.IsWeapon(false))
+                    continue;
+
+                Item item = Item.Create(type);
+                if (!(item is Firearm firearm))
+                    continue;
+
+                uint code = 1;
+                List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
+                foreach (FirearmAttachment att in firearm.Attachments)
+                {
+                    attachmentIdentifiers.Add(new AttachmentIdentifier(code, att.Name, att.Slot));
+                    code *= 2U;
+                }
+
+                Firearm.AvailableAttachmentsValue.Add(type, attachmentIdentifiers.ToArray());
+            }
+        }
     }
 }

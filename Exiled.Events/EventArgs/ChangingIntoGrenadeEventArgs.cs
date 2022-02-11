@@ -9,11 +9,9 @@ namespace Exiled.Events.EventArgs
 {
     using System;
 
-    using Exiled.API.Enums;
     using Exiled.API.Features;
     using Exiled.API.Features.Items;
 
-    using InventorySystem.Items.Pickups;
     using InventorySystem.Items.ThrowableProjectiles;
 
     /// <summary>

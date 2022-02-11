@@ -8,6 +8,9 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1313
+#pragma warning disable SA1515
+#pragma warning disable SA1513
+#pragma warning disable SA1512
     using System;
     using System.Collections.Generic;
 
@@ -22,11 +25,6 @@ namespace Exiled.Events.Patches.Generic
     using UnityEngine;
 
     using Scp096 = PlayableScps.Scp096;
-
-#pragma warning disable SA1028 // Code should not contain trailing whitespace
-#pragma warning disable SA1515 // Single-line comment should be preceded by blank line
-#pragma warning disable SA1513 // Closing brace should be followed by blank line
-#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
 
     /// <summary>
     /// Patches <see cref="PlayerPositionManager.TransmitData"/>.
@@ -46,6 +44,9 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
+                if (!Round.IsStarted)
+                    return true;
+
                 if (++__instance._frame != __instance._syncFrequency)
                     return false;
 
@@ -77,7 +78,7 @@ namespace Exiled.Events.Patches.Generic
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
-                    if (player.Role.Is939())
+                    if (player.Role.RoleType.Is939())
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -146,7 +147,7 @@ namespace Exiled.Events.Patches.Generic
                                 if (scp096 != null
                                     && scp096.EnragedOrEnraging
                                     && !scp096.HasTarget(currentTarget.ReferenceHub)
-                                    && currentTarget.Team != Team.SCP)
+                                    && currentTarget.Role.Team != Team.SCP)
                                 {
 #if DEBUG
                                     Log.Debug($"[Scp096@GhostModePatch] {player.UserId} can't see {currentTarget.UserId}");

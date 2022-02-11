@@ -30,10 +30,10 @@ namespace Exiled.Loader.Features.Configs.CustomConverters
         /// <inheritdoc/>
         public object ReadYaml(IParser parser, Type type)
         {
-            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentNameTranslation attId))
-                throw new InvalidDataException($"Invalid AttachmentNameTranslation value.");
+            if (!parser.TryConsume(out Scalar scalar) || !AttachmentIdentifier.TryParse(scalar.Value, out AttachmentNameTranslation name))
+                throw new InvalidDataException($"Invalid AttachmentNameTranslation value: {scalar.Value}.");
 
-            return Activator.CreateInstance(type, attId);
+            return Enum.Parse(type, name.ToString());
         }
 
         /// <inheritdoc/>

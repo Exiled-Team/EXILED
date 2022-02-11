@@ -20,7 +20,10 @@ namespace Exiled.Events.EventArgs
         /// Initializes a new instance of the <see cref="JoinedEventArgs"/> class.
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
-        public JoinedEventArgs(Player player) => Player = player;
+        public JoinedEventArgs(Player player)
+        {
+            Player = player;
+        }
 
         /// <summary>
         /// Gets the joined player.

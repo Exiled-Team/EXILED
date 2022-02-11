@@ -12,6 +12,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Features;
+    using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.Events.EventArgs;
 
@@ -20,8 +21,6 @@ namespace Exiled.CustomItems.API.Features
     using InventorySystem.Items.Firearms.BasicMessages;
 
     using MEC;
-
-    using PlayerStatsSystem;
 
     using UnityEngine;
 
@@ -247,7 +246,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler.Item != null && ev.Handler.Item.Type != Type))
+            if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler != null && ev.Handler.BaseCast<FirearmDamageHandler>().Item.Type != Type))
                 return;
 
             OnHurting(ev);

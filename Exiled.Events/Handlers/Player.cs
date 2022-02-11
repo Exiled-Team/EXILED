@@ -46,10 +46,10 @@ namespace Exiled.Events.Handlers
         /// Invoked after a <see cref="Exiled.API.Features.Player"/> uses an <see cref="Exiled.API.Features.Items.Item"/>.
         /// </summary>
         /// <remarks>
-        /// Invoked after <see cref="ItemUsed"/>, if a player's class has
+        /// Invoked after <see cref="UsedItem"/>, if a player's class has
         /// changed during their health increase, won't fire.
         /// </remarks>
-        public static event CustomEventHandler<UsedItemEventArgs> ItemUsed;
+        public static event CustomEventHandler<UsedItemEventArgs> UsedItem;
 
         /// <summary>
         /// Invoked after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a <see cref="Exiled.API.Features.Items.Usable"/>.
@@ -218,11 +218,6 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<EnteringFemurBreakerEventArgs> EnteringFemurBreaker;
 
         /// <summary>
-        /// Invoked before syncing <see cref="Exiled.API.Features.Player"/> data.
-        /// </summary>
-        public static event CustomEventHandler<SyncingDataEventArgs> SyncingData;
-
-        /// <summary>
         /// Invoked before a <see cref="Exiled.API.Features.Player"/> held <see cref="Exiled.API.Features.Items.Item"/> changes.
         /// </summary>
         public static event CustomEventHandler<ChangingItemEventArgs> ChangingItem;
@@ -268,12 +263,12 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<ClosingGeneratorEventArgs> ClosingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> inserts a workstation tablet into a generator.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<ActivatingGeneratorEventArgs> ActivatingGenerator;
 
         /// <summary>
-        /// Invoked before a <see cref="Exiled.API.Features.Player"/> ejects the workstation tablet out of a generator.
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
         public static event CustomEventHandler<StoppingGeneratorEventArgs> StoppingGenerator;
 
@@ -423,6 +418,11 @@ namespace Exiled.Events.Handlers
         public static event CustomEventHandler<InteractingScp330EventArgs> InteractingScp330;
 
         /// <summary>
+        /// Invoked before a <see cref="Exiled.API.Features.Player"/> searches a Pickup.
+        /// </summary>
+        public static event CustomEventHandler<SearchingPickupEventArgs> SearchingPickup;
+
+        /// <summary>
         /// Called before pre-authenticating a <see cref="Exiled.API.Features.Player"/>.
         /// </summary>
         /// <param name="ev">The <see cref="PreAuthenticatingEventArgs"/> instance.</param>
@@ -456,7 +456,7 @@ namespace Exiled.Events.Handlers
         /// Called after a <see cref="Exiled.API.Features.Player"/> used a medical item.
         /// </summary>
         /// <param name="ev">The <see cref="UsedItemEventArgs"/> instance.</param>
-        public static void OnItemUsed(UsedItemEventArgs ev) => ItemUsed.InvokeSafely(ev);
+        public static void OnUsedItem(UsedItemEventArgs ev) => UsedItem.InvokeSafely(ev);
 
         /// <summary>
         /// Called after a <see cref="Exiled.API.Features.Player"/> has stopped the use of a medical item.
@@ -495,7 +495,7 @@ namespace Exiled.Events.Handlers
         public static void OnDeactivatingWorkstation(DeactivatingWorkstationEventArgs ev) => DeactivatingWorkstation.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before using a medical item.
+        /// Called before using a usable item.
         /// </summary>
         /// <param name="ev">The <see cref="UsingItemEventArgs"/> instance.</param>
         public static void OnUsingItem(UsingItemEventArgs ev) => UsingItem.InvokeSafely(ev);
@@ -658,12 +658,6 @@ namespace Exiled.Events.Handlers
         public static void OnEnteringFemurBreaker(EnteringFemurBreakerEventArgs ev) => EnteringFemurBreaker.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before syncing <see cref="Exiled.API.Features.Player"/> data.
-        /// </summary>
-        /// <param name="ev">The <see cref="SyncingDataEventArgs"/> instance.</param>
-        public static void OnSyncingData(SyncingDataEventArgs ev) => SyncingData.InvokeSafely(ev);
-
-        /// <summary>
         /// Called before a <see cref="Exiled.API.Features.Player"/> held item changes.
         /// </summary>
         /// <param name="ev">The <see cref="ChangingItemEventArgs"/> instance.</param>
@@ -718,13 +712,13 @@ namespace Exiled.Events.Handlers
         public static void OnClosingGenerator(ClosingGeneratorEventArgs ev) => ClosingGenerator.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> inserts a workstation tablet into a generator.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> turns on the generator by switching lever.
         /// </summary>
         /// <param name="ev">The <see cref="ActivatingGeneratorEventArgs"/> instance.</param>
         public static void OnActivatingGenerator(ActivatingGeneratorEventArgs ev) => ActivatingGenerator.InvokeSafely(ev);
 
         /// <summary>
-        /// Called before a <see cref="Exiled.API.Features.Player"/> ejects the workstation tablet out of a generator.
+        /// Called before a <see cref="Exiled.API.Features.Player"/> turns off the generator by switching lever.
         /// </summary>
         /// <param name="ev">The <see cref="StoppingGeneratorEventArgs"/> instance.</param>
         public static void OnStoppingGenerator(StoppingGeneratorEventArgs ev) => StoppingGenerator.InvokeSafely(ev);
@@ -902,5 +896,11 @@ namespace Exiled.Events.Handlers
         /// </summary>
         /// <param name="ev">The <see cref="InteractingScp330EventArgs"/> instance.</param>
         public static void OnInteractingScp330(InteractingScp330EventArgs ev) => InteractingScp330.InvokeSafely(ev);
+
+        /// <summary>
+        /// Called before a <see cref="Exiled.API.Features.Player"/> interacts with a Pickup.
+        /// </summary>
+        /// <param name="ev">The <see cref="SearchingPickupEventArgs"/> instance.</param>
+        public static void OnSearchPickupRequest(SearchingPickupEventArgs ev) => SearchingPickup.InvokeSafely(ev);
     }
 }

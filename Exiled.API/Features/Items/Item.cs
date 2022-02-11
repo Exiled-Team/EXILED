@@ -8,11 +8,9 @@
 namespace Exiled.API.Features.Items
 {
 #pragma warning disable CS0618
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using Exiled.API.Enums;
     using Exiled.API.Extensions;
     using Exiled.API.Structs;
 
@@ -27,6 +25,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
     using InventorySystem.Items.ThrowableProjectiles;
     using InventorySystem.Items.Usables;
+    using InventorySystem.Items.Usables.Scp244;
     using InventorySystem.Items.Usables.Scp330;
 
     using Mirror;
@@ -53,7 +52,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
-        /// <param name="itemBase"><inheritdoc cref="Base"/></param>
+        /// <param name="itemBase">The <see cref="ItemBase"/> to encapsulate.</param>
         public Item(ItemBase itemBase)
         {
             Base = itemBase;
@@ -76,7 +75,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
         /// </summary>
-        /// <param name="type"><inheritdoc cref="Type"/></param>
+        /// <param name="type">The <see cref="ItemType"/> of the item to create.</param>
         internal Item(ItemType type)
             : this(Server.Host.Inventory.CreateItemInstance(type, false))
         {
@@ -185,6 +184,8 @@ namespace Exiled.API.Features.Items
                 {
                     if (usable is Scp330Bag scp330Bag)
                         return new Scp330(scp330Bag);
+                    else if (usable is Scp244Item scp244Item)
+                        return new Scp244(scp244Item);
                     return new Usable(usable);
                 }
 
@@ -232,6 +233,7 @@ namespace Exiled.API.Features.Items
         /// <br />- Flashlights can be casted to <see cref="Flashlight"/>.
         /// <br />- Radios can be casted to <see cref="Radio"/>.
         /// <br />- The Micro HID can be casted to <see cref="MicroHid"/>.
+        /// <br />- SCP-244 A and B variants can be casted to <see cref="Scp244"/>.
         /// <br />- SCP-330 can be casted to <see cref="Scp330"/>.
         /// </para>
         /// <para>
@@ -252,6 +254,9 @@ namespace Exiled.API.Features.Items
                 case ItemType.SCP207:
                 case ItemType.SCP268:
                     return new Usable(type);
+                case ItemType.SCP244a:
+                case ItemType.SCP244b:
+                    return new Scp244(type);
                 case ItemType.Ammo9x19:
                 case ItemType.Ammo12gauge:
                 case ItemType.Ammo44cal:
@@ -347,8 +352,8 @@ namespace Exiled.API.Features.Items
                         case Shotgun shotgun:
                             ammo = shotgun._ammoCapacity;
                             break;
-                        case Revolver _:
-                            ammo = 6;
+                        case Revolver revolver:
+                            ammo = revolver.AmmoManagerModule.MaxAmmo;
                             break;
                         default:
                             ammo = 0;
@@ -429,7 +434,10 @@ namespace Exiled.API.Features.Items
         /// <returns>The <see cref="Pickup"/> created by spawning this item.</returns>
         public virtual Pickup Spawn(Vector3 position) => Spawn(position, default);
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the Item in a human readable format.
+        /// </summary>
+        /// <returns>A string containing Item-related data.</returns>
         public override string ToString()
         {
             return $"{Type} ({Serial}) [{Weight}] *{Scale}*";
