@@ -57,6 +57,12 @@ namespace Exiled.CustomRoles.API
         public static void Register(this CustomRole role) => role.TryRegister();
 
         /// <summary>
+        /// Registers a <see cref="CustomAbility"/>.
+        /// </summary>
+        /// <param name="ability">The <see cref="CustomAbility"/> to be registered.</param>
+        public static void Register(this CustomAbility ability) => ability.TryRegister();
+
+        /// <summary>
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
         /// </summary>
         /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
@@ -74,5 +80,11 @@ namespace Exiled.CustomRoles.API
         /// </summary>
         /// <param name="role"><see cref="CustomRole"/> to be unregistered.</param>
         public static void Unregister(this CustomRole role) => role.TryUnregister();
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomAbility"/>.
+        /// </summary>
+        /// <param name="ability">The <see cref="CustomAbility"/> to be unregistered.</param>
+        public static void Unregister(this CustomAbility ability) => ability.TryUnregister();
     }
 }
