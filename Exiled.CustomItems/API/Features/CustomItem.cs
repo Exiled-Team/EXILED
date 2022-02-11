@@ -288,13 +288,41 @@ namespace Exiled.CustomItems.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
                     continue;
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializableAttribute), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
                 {
                     CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
-                    customItem.Type = ((ExiledSerializableAttribute)attribute).ItemType;
+                    customItem.Type = ((CustomItemAttribute)attribute).ItemType;
+                    customItem.TryRegister();
+                    registeredItems.Add(customItem);
+                }
+            }
+
+            return registeredItems;
+        }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="System.Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> RegisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomItem> registeredItems = new List<CustomItem>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
+                {
+                    CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
+                    customItem.Type = ((CustomItemAttribute)attribute).ItemType;
                     customItem.TryRegister();
                     registeredItems.Add(customItem);
                 }
@@ -319,6 +347,36 @@ namespace Exiled.CustomItems.API.Features
 
             return unregisteredItems;
         }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="System.Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomItem> unregisteredItems = new List<CustomItem>();
+
+            foreach (CustomItem customItem in Registered)
+            {
+                if ((targetTypes.Contains(customItem.GetType()) && isIgnored) || (!targetTypes.Contains(customItem.GetType()) && !isIgnored))
+                    continue;
+
+                customItem.TryUnregister();
+                unregisteredItems.Add(customItem);
+            }
+
+            return unregisteredItems;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomItem"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetItems">The <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> containing the target items.</param>
+        /// <param name="isIgnored">A value indicating whether the target items should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all unregistered <see cref="CustomItem"/>'s.</returns>
+        public static IEnumerable<CustomItem> UnregisterItems(IEnumerable<CustomItem> targetItems, bool isIgnored = false) => UnregisterItems(targetItems.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
         /// Spawns the <see cref="CustomItem"/> in a specific location.

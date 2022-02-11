@@ -154,13 +154,41 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
+                if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null)
                     continue;
 
-                foreach (Attribute attribute in type.GetCustomAttributes(typeof(ExiledSerializableAttribute), true))
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
                 {
                     CustomRole customRole = (CustomRole)Activator.CreateInstance(type);
-                    customRole.Role = ((ExiledSerializableAttribute)attribute).RoleType;
+                    customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
+                    customRole.TryRegister();
+                    registeredRoles.Add(customRole);
+                }
+            }
+
+            return registeredRoles;
+        }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all registered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> RegisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomRole> registeredRoles = new List<CustomRole>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
+                    continue;
+
+                foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomRoleAttribute), true))
+                {
+                    CustomRole customRole = (CustomRole)Activator.CreateInstance(type);
+                    customRole.Role = ((CustomRoleAttribute)attribute).RoleType;
                     customRole.TryRegister();
                     registeredRoles.Add(customRole);
                 }
@@ -185,6 +213,36 @@ namespace Exiled.CustomRoles.API.Features
 
             return unregisteredRoles;
         }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomRole> unregisteredRoles = new List<CustomRole>();
+
+            foreach (CustomRole customRole in Registered)
+            {
+                if ((targetTypes.Contains(customRole.GetType()) && isIgnored) || (!targetTypes.Contains(customRole.GetType()) && !isIgnored))
+                    continue;
+
+                customRole.TryUnregister();
+                unregisteredRoles.Add(customRole);
+            }
+
+            return unregisteredRoles;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomRole"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetRoles">The <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> containing the target roles.</param>
+        /// <param name="isIgnored">A value indicating whether the target roles should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/> which contains all unregistered <see cref="CustomRole"/>'s.</returns>
+        public static IEnumerable<CustomRole> UnregisterRoles(IEnumerable<CustomRole> targetRoles, bool isIgnored = false) => UnregisterRoles(targetRoles.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
         /// Tries to get a <see cref="CustomRole"/> by name.
