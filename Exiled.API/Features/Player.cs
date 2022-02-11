@@ -76,7 +76,6 @@ namespace Exiled.API.Features
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
-        private Role storedRole;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -86,7 +85,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
-            storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
+            Role = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
-            storedRole = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this);
+            Role = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this);
         }
 
         /// <summary>
@@ -413,7 +412,7 @@ namespace Exiled.API.Features
         public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
-        /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
+        /// Gets or sets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
         /// <br /><see cref="global::RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
@@ -430,11 +429,7 @@ namespace Exiled.API.Features
         /// </para>
         /// </summary>
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
-        public Role Role
-        {
-            get => storedRole;
-            internal set => storedRole = value;
-        }
+        public Role Role { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed.
