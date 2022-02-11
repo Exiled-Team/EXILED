@@ -539,7 +539,7 @@ namespace Exiled.API.Features
         /// <param name="position">The position from which starting to search cameras.</param>
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
-        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Cameras.Where(cam => Vector3.Distance(position, cam.Position) <= toleration);
+        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Cameras.Where(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
 
         /// <summary>
         /// Clears the lazy loading game object cache.
