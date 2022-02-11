@@ -286,7 +286,7 @@ namespace Exiled.CustomItems.API.Features
         {
             List<CustomItem> registeredItems = new List<CustomItem>();
 
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
                     continue;

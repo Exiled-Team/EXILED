@@ -51,6 +51,12 @@ namespace Exiled.CustomRoles.API
         }
 
         /// <summary>
+        /// Registers a <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="role"><see cref="CustomRole"/> to be registered.</param>
+        public static void Register(this CustomRole role) => role.TryRegister();
+
+        /// <summary>
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomRole"/>s.
         /// </summary>
         /// <param name="customRoles"><see cref="CustomRole"/>s to be unregistered.</param>
@@ -62,5 +68,11 @@ namespace Exiled.CustomRoles.API
             foreach (CustomRole customItem in customRoles)
                 customItem.TryUnregister();
         }
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomRole"/>.
+        /// </summary>
+        /// <param name="role"><see cref="CustomRole"/> to be unregistered.</param>
+        public static void Unregister(this CustomRole role) => role.TryUnregister();
     }
 }
