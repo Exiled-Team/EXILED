@@ -13,6 +13,7 @@ namespace Exiled.CustomRoles
     using Exiled.CustomRoles.API.Features.Parsers;
     using Exiled.CustomRoles.Events;
     using Exiled.Loader;
+    using Exiled.Loader.Features.Configs;
     using Exiled.Loader.Features.Configs.CustomConverters;
 
     using YamlDotNet.Serialization;
