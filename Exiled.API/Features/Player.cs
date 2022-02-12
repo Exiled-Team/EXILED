@@ -524,7 +524,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role.Is(out SpectatorRole _);
+        public bool IsDead => Role.Is(out SpectatorRole _) || Role.Is(out NoneRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
