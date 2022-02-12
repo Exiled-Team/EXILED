@@ -122,11 +122,11 @@ namespace Exiled.API.Features
         public static void CustomScpTermination(string scpName, CustomHandlerBase info)
         {
             string result = scpName;
-            if (info.SafeCast(out MicroHidDamageHandler _))
+            if (info.Is(out MicroHidDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY AUTOMATIC SECURITY SYSTEM";
-            else if (info.SafeCast(out WarheadDamageHandler _))
+            else if (info.Is(out WarheadDamageHandler _))
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
-            else if (info.SafeCast(out UniversalDamageHandler _))
+            else if (info.Is(out UniversalDamageHandler _))
                 result += " LOST IN DECONTAMINATION SEQUENCE";
             else if (info.SafeBaseCast(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);

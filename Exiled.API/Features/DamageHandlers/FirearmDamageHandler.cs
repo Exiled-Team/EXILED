@@ -91,9 +91,9 @@ namespace Exiled.API.Features.DamageHandlers
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)
         {
-            if (SafeCast(out BaseFirearmHandler firearmHandler))
+            if (Is(out BaseFirearmHandler firearmHandler))
                 firearmHandler.ProcessDamage(player.ReferenceHub);
-            else if (SafeCast(out MicroHidDamageHandler microHidHandler))
+            else if (Is(out MicroHidDamageHandler microHidHandler))
                 microHidHandler.ProcessDamage(player.ReferenceHub);
         }
 

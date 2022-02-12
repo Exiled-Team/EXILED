@@ -116,8 +116,8 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Ragdoll.Spawn(player, damageHandlerBase.Base);
 
-            if (damageHandlerBase.SafeCast(out BaseAttackerHandler handler) && damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker != null)
-                player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker.Role);
+            if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.As<FirearmDamageHandler>().Attacker != null)
+                player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.As<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.As<FirearmDamageHandler>().Attacker.Role);
             else
                 player.ReferenceHub.playerStats.TargetReceiveSpecificDeathReason(handler);
 

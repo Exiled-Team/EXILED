@@ -106,17 +106,7 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <returns>The casted class, if possible.</returns>
         public T As<T>()
-            where T : Role
-        {
-            try
-            {
-                return (T)this;
-            }
-            catch (Exception)
-            {
-                return null;
-            }
-        }
+            where T : Role => this as T;
 
         /// <summary>
         /// Safely casts the role to the specified role type.
@@ -124,11 +114,11 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <param name="role">The casted class, if possible.</param>
         /// <returns><see langword="true"/> if the cast was successful; otherwise, <see langword="false"/>.</returns>
-        public bool As<T>(out T role)
+        public bool Is<T>(out T role)
             where T : Role
         {
-            role = As<T>();
-            return role != null;
+            role = this is T t ? t : null;
+            return this is T;
         }
 
         /// <inheritdoc/>
