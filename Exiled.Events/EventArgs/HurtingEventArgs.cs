@@ -28,7 +28,7 @@ namespace Exiled.Events.EventArgs
         public HurtingEventArgs(Player target, DamageHandlerBase damageHandler)
         {
             Handler = new CustomDamageHandler(target, damageHandler);
-            Attacker = Handler.SafeBaseCast(out CustomAttackerHandler attackerDamageHandler)
+            Attacker = Handler.BaseIs(out CustomAttackerHandler attackerDamageHandler)
                 ? attackerDamageHandler.Attacker
                 : null;
             Target = target;

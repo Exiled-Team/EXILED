@@ -244,7 +244,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public bool SafeBaseCast<T>(out T param)
+        public bool BaseIs<T>(out T param)
             where T : DamageHandlerBase
         {
             param = default;

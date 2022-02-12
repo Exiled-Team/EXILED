@@ -128,7 +128,7 @@ namespace Exiled.API.Features
                 result += " SUCCESSFULLY TERMINATED BY ALPHA WARHEAD";
             else if (info.Is(out UniversalDamageHandler _))
                 result += " LOST IN DECONTAMINATION SEQUENCE";
-            else if (info.SafeBaseCast(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
+            else if (info.BaseIs(out CustomFirearmHandler firearmDamageHandler) && firearmDamageHandler.Attacker is Player attacker)
                 result += " CONTAINEDSUCCESSFULLY " + ConvertTeam(attacker.Role.Team, attacker.UnitName);
             else
                 result += " SUCCESSFULLY TERMINATED . TERMINATION CAUSE UNSPECIFIED";
