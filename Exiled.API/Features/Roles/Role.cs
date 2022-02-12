@@ -157,6 +157,8 @@ namespace Exiled.API.Features.Roles
                     return new Scp939Role(player, type);
                 case RoleType.Spectator:
                     return new SpectatorRole(player);
+                case RoleType.None:
+                    return new NoneRole(player);
                 default:
                     return new HumanRole(player, type);
             }
