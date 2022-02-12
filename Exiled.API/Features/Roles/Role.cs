@@ -7,7 +7,11 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System;
+
     using Exiled.API.Extensions;
+
+    using MEC;
 
     /// <summary>
     /// Defines the class for role-related classes.
@@ -103,7 +107,16 @@ namespace Exiled.API.Features.Roles
         /// <returns>The casted class, if possible.</returns>
         public T As<T>()
             where T : Role
-            => this as T;
+        {
+            try
+            {
+                return (T)this;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         /// <summary>
         /// Safely casts the role to the specified role type.

@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
-            Role = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
+            Timing.CallDelayed(0.05f, () => Role = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
-            Role = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this);
+            Timing.CallDelayed(0.05f, () => Role = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this));
         }
 
         /// <summary>
