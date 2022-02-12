@@ -524,7 +524,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role.As<SpectatorRole>() != null;
+        public bool IsDead => Role.Is(out SpectatorRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
@@ -547,7 +547,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Role.As<HumanRole>() != null;
+        public bool IsHuman => Role.Is(out HumanRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
