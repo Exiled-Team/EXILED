@@ -138,7 +138,7 @@ namespace Exiled.API.Features.DamageHandlers
                 return Action.None;
 
             StartVelocity = player.ReferenceHub.playerMovementSync.PlayerVelocity;
-            Cast<StandardDamageHandler>().StartVelocity.y = Mathf.Max(damageHandler.StartVelocity.y, 0f);
+            As<StandardDamageHandler>().StartVelocity.y = Mathf.Max(damageHandler.StartVelocity.y, 0f);
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
 

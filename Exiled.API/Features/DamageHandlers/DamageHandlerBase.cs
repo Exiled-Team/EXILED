@@ -209,7 +209,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public T Cast<T>()
+        public T As<T>()
             where T : BaseHandler => Base as T;
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public T As<T>()
+        public T BaseAs<T>()
             where T : DamageHandlerBase => this as T;
 
         /// <summary>
