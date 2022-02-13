@@ -65,7 +65,7 @@ namespace Exiled.API.Features
             string[] cassies = message.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Count(); i++)
-                annoucement.Append($"<alpha=#00> {cassies[i]} </alpha>{translations[i].Replace(' ', ' ')}<split>");
+                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
 
             RespawnEffectsController.PlayCassieAnnouncement(annoucement.ToString(), isHeld, isNoisy, isSubtitles);
         }
