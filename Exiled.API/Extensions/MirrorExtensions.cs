@@ -234,7 +234,7 @@ namespace Exiled.API.Extensions
             string[] cassies = words.Split('\n');
             string[] translations = translation.Split('\n');
             for (int i = 0; i < cassies.Count(); i++)
-                annoucement.Append($"{cassies[i]}<alpha=#00> {translations[i].Replace(' ', ' ')} </alpha><split>");
+                annoucement.Append($"<alpha=#00> {cassies[i]} </alpha>{translations[i].Replace(' ', ' ')}<split>");
 
             SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
         }
