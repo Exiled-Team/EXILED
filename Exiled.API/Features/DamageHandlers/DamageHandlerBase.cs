@@ -209,7 +209,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public T Cast<T>()
+        public T As<T>()
             where T : BaseHandler => Base as T;
 
         /// <summary>
@@ -217,7 +217,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public T BaseCast<T>()
+        public T BaseAs<T>()
             where T : DamageHandlerBase => this as T;
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <typeparam name="T">The specified <see cref="BaseHandler"/> type.</typeparam>
         /// <param name="param">The casted <see cref="BaseHandler"/>.</param>
         /// <returns>A <see cref="BaseHandler"/> object.</returns>
-        public bool SafeCast<T>(out T param)
+        public bool Is<T>(out T param)
             where T : BaseHandler
         {
             param = default;
@@ -244,7 +244,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <typeparam name="T">The specified <see cref="DamageHandlerBase"/> type.</typeparam>
         /// <param name="param">The casted <see cref="DamageHandlerBase"/>.</param>
         /// <returns>A <see cref="DamageHandlerBase"/> object.</returns>
-        public bool SafeBaseCast<T>(out T param)
+        public bool BaseIs<T>(out T param)
             where T : DamageHandlerBase
         {
             param = default;

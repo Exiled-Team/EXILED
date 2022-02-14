@@ -58,19 +58,19 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public HitboxType Hitbox
         {
-            get => Cast<BaseFirearmHandler>().Hitbox;
-            set => Cast<BaseFirearmHandler>().Hitbox = value;
+            get => As<BaseFirearmHandler>().Hitbox;
+            set => As<BaseFirearmHandler>().Hitbox = value;
         }
 
         /// <summary>
         /// Gets the penetration.
         /// </summary>
-        public float Penetration => Cast<BaseFirearmHandler>()._penetration;
+        public float Penetration => As<BaseFirearmHandler>()._penetration;
 
         /// <summary>
         /// Gets a value indicating whether the human hitboxes should be used.
         /// </summary>
-        public bool UseHumanHitboxes => Cast<BaseFirearmHandler>()._useHumanHitboxes;
+        public bool UseHumanHitboxes => As<BaseFirearmHandler>()._useHumanHitboxes;
 
         /// <summary>
         /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
@@ -91,9 +91,9 @@ namespace Exiled.API.Features.DamageHandlers
         /// <inheritdoc/>
         public override void ProcessDamage(Player player)
         {
-            if (SafeCast(out BaseFirearmHandler firearmHandler))
+            if (Is(out BaseFirearmHandler firearmHandler))
                 firearmHandler.ProcessDamage(player.ReferenceHub);
-            else if (SafeCast(out MicroHidDamageHandler microHidHandler))
+            else if (Is(out MicroHidDamageHandler microHidHandler))
                 microHidHandler.ProcessDamage(player.ReferenceHub);
         }
 

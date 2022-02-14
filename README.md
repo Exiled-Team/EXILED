@@ -1,8 +1,11 @@
 # EXILED - EXtended In-runtime Library for External Development
 
 ![EXILED CI](https://github.com/galaxy119/EXILED/workflows/EXILED%20CI/badge.svg?branch=2.0.0)
-![GitHub Release](https://img.shields.io/github/release/galaxy119/EXILED/all.svg?style=flat)
-![Github All Releases](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat) 
+<a href="https://github.com/Exiled-Team/EXILED/releases">
+  <img src="https://img.shields.io/github/release/Exiled-Team/EXILED/all.svg?style=flat" alt="GitHub Releases">
+</a>
+![Github All Downloads](https://img.shields.io/github/downloads/galaxy119/EXILED/total.svg?style=flat)
+![Github Commits](https://img.shields.io/github/commit-activity/w/Exiled-Team/EXILED/dev)
 <a href="https://discord.gg/PyUkWTg">
   <img src="https://img.shields.io/discord/656673194693885975?logo=discord" alt="Chat on Discord">
 </a>
@@ -80,7 +83,9 @@ However, some plugins might get their config settings from other locations on th
 
 # For Developers
 
-If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md), or you can just watch a [video tutorial](https://www.youtube.com/watch?v=gx67ziYldvk) on YouTube.
+If you wish to make a Plugin for EXILED, it's quite simple to do so. If you would like more of a tutorial please visit our [Getting Started Page.](https://github.com/galaxy119/EXILED/blob/master/GettingStarted.md).
+
+For more comprehensive and actively updated tutorials, see [the EXILED website](https://exiled-team.github.io/EXILED/articles/install.html).
 
 But make sure to follow these rules when publishing your plugins:
 

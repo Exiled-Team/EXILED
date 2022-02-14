@@ -352,8 +352,8 @@ namespace Exiled.API.Features.Items
                         case Shotgun shotgun:
                             ammo = shotgun._ammoCapacity;
                             break;
-                        case Revolver _:
-                            ammo = 6;
+                        case Revolver revolver:
+                            ammo = revolver.AmmoManagerModule.MaxAmmo;
                             break;
                         default:
                             ammo = 0;

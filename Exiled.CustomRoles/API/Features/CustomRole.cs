@@ -152,7 +152,7 @@ namespace Exiled.CustomRoles.API.Features
         {
             List<CustomRole> registeredRoles = new List<CustomRole>();
 
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
                 if (type.BaseType != typeof(CustomRole) || type.GetCustomAttribute(typeof(CustomRoleAttribute)) is null)
                     continue;
