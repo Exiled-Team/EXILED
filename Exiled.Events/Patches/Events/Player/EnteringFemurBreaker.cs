@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldc_I4_1),
                 new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(EnteringFemurBreakerEventArgs))[0]),
                 new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnEnteringFemurBreaker))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Handlers.Player.OnEnteringFemurBreaker))),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringFemurBreakerEventArgs), nameof(EnteringFemurBreakerEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });

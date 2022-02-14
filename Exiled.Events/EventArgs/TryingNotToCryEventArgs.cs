@@ -46,7 +46,7 @@ namespace Exiled.Events.EventArgs
         public Player Player { get; }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Door"/> to be cried on.
+        /// Gets the <see cref="API.Features.Door"/> to be cried on.
         /// </summary>
         public Door Door { get; }
 

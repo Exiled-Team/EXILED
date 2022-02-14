@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Events.Player
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="InventorySystem.Inventory.CurInstance"/>.
+    /// Patches <see cref="Inventory.CurInstance"/>.
     /// Adds the <see cref="Handlers.Player.ChangingItem"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Inventory), nameof(Inventory.ServerSelectItem))]

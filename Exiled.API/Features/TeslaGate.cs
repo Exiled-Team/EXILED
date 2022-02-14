@@ -77,7 +77,7 @@ namespace Exiled.API.Features
         public Quaternion Rotation => Quaternion.Euler(Base.localRotation);
 
         /// <summary>
-        /// Gets the tesla gate's <see cref="API.Features.Room"/> which is located in.
+        /// Gets the tesla gate's <see cref="Features.Room"/> which is located in.
         /// </summary>
         public Room Room => Map.FindParentRoom(GameObject);
 

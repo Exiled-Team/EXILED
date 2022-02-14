@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="FlashlightNetworkHandler.ServerProcessMessage"/>.
-    /// Adds the <see cref="Player.TogglingFlashlight"/> event.
+    /// Adds the <see cref="TogglingFlashlight"/> event.
     /// </summary>
     [HarmonyPatch(typeof(FlashlightNetworkHandler), nameof(FlashlightNetworkHandler.ServerProcessMessage))]
     internal static class TogglingFlashlight

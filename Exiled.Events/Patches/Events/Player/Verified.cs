@@ -57,7 +57,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                PlayerAPI.UnverifiedPlayers.TryGetValue(instance._hub, out Player player);
+                PlayerAPI.UnverifiedPlayers.TryGetValue(instance._hub, out PlayerAPI player);
 
                 // Means the player connected before WaitingForPlayers event is fired
                 // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls

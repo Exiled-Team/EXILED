@@ -7,8 +7,7 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-    using System;
-#pragma warning disable SA1313
+#pragma warning disable SA1118
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -19,13 +18,13 @@ namespace Exiled.Events.Patches.Events.Player
 
     using HarmonyLib;
 
-    using Mirror;
-
     using NorthwoodLib.Pools;
 
     using PlayerStatsSystem;
 
     using UnityEngine;
+
+    using static HarmonyLib.AccessTools;
 
     /// <summary>
     /// Patches <see cref="ShootingTarget.Damage(float, DamageHandlerBase, Vector3)"/>.
@@ -34,53 +33,50 @@ namespace Exiled.Events.Patches.Events.Player
     [HarmonyPatch(typeof(ShootingTarget), nameof(ShootingTarget.Damage))]
     internal static class DamagingShootingTarget
     {
-        private static bool Prefix(ShootingTarget __instance, ref bool __result, float damage, DamageHandlerBase handler, Vector3 exactHit)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            try
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
+
+            const int offset = 1;
+            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_2) + offset;
+
+            LocalBuilder ev = generator.DeclareLocal(typeof(DamagingShootingTargetEventArgs));
+
+            Label jccLabel = generator.DefineLabel();
+
+            newInstructions.InsertRange(index, new[]
             {
-                if (!(handler is AttackerDamageHandler attackerDamageHandler))
-                {
-                    __result = false;
-                    return false;
-                }
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(AttackerDamageHandler), nameof(AttackerDamageHandler.Attacker))),
+                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Footprinting.Footprint), nameof(Footprinting.Footprint.Hub))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new CodeInstruction(OpCodes.Ldarg_1),
+                new CodeInstruction(OpCodes.Ldloc_2),
+                new CodeInstruction(OpCodes.Ldarg_3),
+                new CodeInstruction(OpCodes.Ldarg_0),
+                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldc_I4_0),
+                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(DamagingShootingTargetEventArgs))[0]),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnDamagingShootingTarget))),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.IsAllowed))),
+                new CodeInstruction(OpCodes.Brtrue_S, jccLabel),
+                new CodeInstruction(OpCodes.Ldc_I4_1),
+                new CodeInstruction(OpCodes.Ret),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex).WithLabels(jccLabel),
+                new CodeInstruction(OpCodes.Dup),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Starg_S, 1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(DamagingShootingTargetEventArgs), nameof(DamagingShootingTargetEventArgs.Amount))),
+                new CodeInstruction(OpCodes.Stloc_2),
+            });
 
-                if (attackerDamageHandler.Attacker.Hub == null)
-                {
-                    __result = false;
-                    return false;
-                }
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
-                DamagingShootingTargetEventArgs ev = new DamagingShootingTargetEventArgs(
-                    Player.Get(attackerDamageHandler.Attacker.Hub),
-                    damage,
-                    Vector3.Distance(attackerDamageHandler.Attacker.Hub.transform.position, __instance._bullsEye.position),
-                    exactHit,
-                    __instance,
-                    handler);
-                Handlers.Player.OnDamagingShootingTarget(ev);
-
-                if (!ev.IsAllowed)
-                {
-                    __result = false;
-                    return false;
-                }
-
-                foreach (ReferenceHub referenceHub in ReferenceHub.GetAllHubs().Values)
-                {
-                    if (__instance._syncMode || referenceHub == attackerDamageHandler.Attacker.Hub)
-                    {
-                        __instance.TargetRpcReceiveData(referenceHub.characterClassManager.connectionToClient, ev.Amount, ev.Distance, exactHit, handler);
-                    }
-                }
-
-                __result = true;
-                return false;
-            }
-            catch (Exception exception)
-            {
-                Log.Error($"{typeof(DamagingShootingTarget).FullName}.{nameof(Prefix)}:\n{exception}");
-                return false;
-            }
+            ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
     }
 }

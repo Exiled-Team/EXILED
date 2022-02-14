@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the <see cref="Exiled.API.Features.Items.Firearm"/> used to trigger the aim action.
+        /// Gets the <see cref="API.Features.Items.Firearm"/> used to trigger the aim action.
         /// </summary>
         public Firearm Firearm { get; }
 

@@ -31,7 +31,7 @@ namespace Exiled.Events.Handlers.Internal
     using Object = UnityEngine.Object;
 
     /// <summary>
-    /// Handles <see cref="Exiled.Events.Handlers.Map.Generated"/> event.
+    /// Handles <see cref="Handlers.Map.Generated"/> event.
     /// </summary>
     internal static class MapGenerated
     {

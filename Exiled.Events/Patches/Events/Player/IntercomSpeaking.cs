@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="Intercom.UserCode_CmdSetTransmit(bool)"/>.
-    /// Adds the <see cref="Player.IntercomSpeaking"/> event.
+    /// Adds the <see cref="IntercomSpeaking"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Intercom), nameof(Intercom.RequestTransmission))]
     internal static class IntercomSpeaking
@@ -55,8 +55,8 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            for (int i = 0; i < newInstructions.Count; i++)
-                yield return newInstructions[i];
+            for (int z = 0; z < newInstructions.Count; z++)
+                yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }

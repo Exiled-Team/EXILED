@@ -151,9 +151,9 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Tries to get the player's current <see cref="CustomItem"/> in their hand.
         /// </summary>
-        /// <param name="player">The <see cref="Exiled.API.Features.Player"/> to check.</param>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <param name="customItem">The <see cref="CustomItem"/> in their hand.</param>
-        /// <returns>Returns a value indicating whether the <see cref="Exiled.API.Features.Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
+        /// <returns>Returns a value indicating whether the <see cref="Player"/> has a <see cref="CustomItem"/> in their hand or not.</returns>
         public static bool TryGet(Player player, out CustomItem customItem)
         {
             if (player == null)
@@ -729,8 +729,8 @@ namespace Exiled.CustomItems.API.Features
         {
         }
 
-        /// <inheritdoc cref="OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingEventArgs)"/>
-        protected virtual void OnUpgrading(Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs ev)
+        /// <inheritdoc cref="OnUpgrading(UpgradingEventArgs)"/>
+        protected virtual void OnUpgrading(API.EventArgs.UpgradingItemEventArgs ev)
         {
         }
 
@@ -949,10 +949,10 @@ namespace Exiled.CustomItems.API.Features
                 return;
 
             ev.IsAllowed = false;
-            OnUpgrading(new Exiled.CustomItems.API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
+            OnUpgrading(new API.EventArgs.UpgradingItemEventArgs(ev.Player, ev.Item.Base, ev.KnobSetting));
         }
 
-        private void OnInternalUpgradingItem(Exiled.Events.EventArgs.UpgradingItemEventArgs ev)
+        private void OnInternalUpgradingItem(Events.EventArgs.UpgradingItemEventArgs ev)
         {
             if (!Check(ev.Item))
                 return;

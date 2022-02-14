@@ -23,7 +23,7 @@ namespace Exiled.Events.Patches.Events.Map
 
     /// <summary>
     /// Patches <see cref="CharacterClassManager.RpcPlaceBlood(Vector3, int, float)"/>.
-    /// Adds the <see cref="Map.PlacingBlood"/> event.
+    /// Adds the <see cref="PlacingBlood"/> event.
     /// </summary>
     [HarmonyPatch(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))]
     internal static class PlacingBlood

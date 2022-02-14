@@ -26,7 +26,7 @@ namespace Exiled.Events.Patches.Generic
     using Events = Exiled.Events.Events;
 
     /// <summary>
-    /// Patches <see cref="RemoteAdmin.CommandProcessor.ProcessQuery"/> for command logging.
+    /// Patches <see cref="CommandProcessor.ProcessQuery"/> for command logging.
     /// </summary>
     [HarmonyPatch(typeof(CommandProcessor), nameof(CommandProcessor.ProcessQuery))]
     internal class CommandLogging

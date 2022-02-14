@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Events.Scp079
 
     using static HarmonyLib.AccessTools;
 
-    using TeslaGate = global::TeslaGate;
+    using TeslaGate = TeslaGate;
 
     /// <summary>
     /// Patches <see cref="Scp079PlayerScript.UserCode_CmdInteract(Command079, string, GameObject)"/>.

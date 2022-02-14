@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Generic
 
                     Array.Copy(__instance.ReceivedData, __instance._transmitBuffer, __instance._usedData);
 
-                    if (player.Role.RoleType.Is939())
+                    if (player.Role.Type.Is939())
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -97,7 +97,7 @@ namespace Exiled.Events.Patches.Generic
                             }
                         }
                     }
-                    else if (player.Role != RoleType.Spectator && player.Role != RoleType.Scp079)
+                    else if (player.Role.Type != RoleType.Spectator && player.Role.Type != RoleType.Scp079)
                     {
                         for (int index = 0; index < __instance._usedData; ++index)
                         {
@@ -160,8 +160,8 @@ namespace Exiled.Events.Patches.Generic
                                     if (scp096 != null)
                                         flag2 = scp096.HasTarget(currentTarget.ReferenceHub);
 
-                                    if (currentTarget != player && player.Role != RoleType.Scp079
-                                        && player.Role != RoleType.Spectator
+                                    if (currentTarget != player && player.Role.Type != RoleType.Scp079
+                                        && player.Role.Type != RoleType.Spectator
                                         && !flag2)
                                     {
                                         MakeGhost(index, __instance._transmitBuffer);
@@ -209,9 +209,9 @@ namespace Exiled.Events.Patches.Generic
                         // Rotate the player because
                         // those movement checks are
                         // in client-side
-                        else if (player.Role == RoleType.Scp173
+                        else if (player.Role.Type == RoleType.Scp173
                             && ((!Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173
-                                    && target.Role == RoleType.Tutorial)
+                                    && target.Role.Type == RoleType.Tutorial)
                                 || Scp173.TurnedPlayers.Contains(target)))
                         {
                             RotatePlayer(z, __instance._transmitBuffer, FindLookRotation(player.Position, target.Position));
@@ -227,17 +227,17 @@ namespace Exiled.Events.Patches.Generic
 
                         if (__instance._usedData <= 20)
                         {
-                            networkConnection.Send<PositionPPMMessage>(
+                            networkConnection.Send(
                                 new PositionPPMMessage(__instance._transmitBuffer, (byte)__instance._usedData, 0), 1);
                         }
                         else
                         {
                             byte part;
                             for (part = 0; part < __instance._usedData / 20; ++part)
-                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
+                                networkConnection.Send(new PositionPPMMessage(__instance._transmitBuffer, 20, part), 1);
                             byte count = (byte)(__instance._usedData % (part * 20));
                             if (count > 0)
-                                networkConnection.Send<PositionPPMMessage>(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
+                                networkConnection.Send(new PositionPPMMessage(__instance._transmitBuffer, count, part), 1);
                         }
                     }
                 }

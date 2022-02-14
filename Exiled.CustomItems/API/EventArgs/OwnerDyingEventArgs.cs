@@ -19,7 +19,7 @@ namespace Exiled.CustomItems.API.EventArgs
     using Player = Exiled.API.Features.Player;
 
     /// <summary>
-    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Exiled.API.Features.Player"/> dies.
+    /// Contains all information of a <see cref="CustomItem"/> before a <see cref="Player"/> dies.
     /// </summary>
     public class OwnerDyingEventArgs : DyingEventArgs
     {

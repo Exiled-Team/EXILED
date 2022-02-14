@@ -415,9 +415,9 @@ namespace Exiled.API.Features
         /// Gets or sets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
-        /// <br /><see cref="global::RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
-        /// <br /><see cref="global::RoleType.Scp049"/> = <see cref="Scp049Role"/>.
-        /// <br /><see cref="global::RoleType.Scp079"/> = <see cref="Scp079Role"/>.
+        /// <br /><see cref="RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
+        /// <br /><see cref="RoleType.Scp049"/> = <see cref="Scp049Role"/>.
+        /// <br /><see cref="RoleType.Scp079"/> = <see cref="Scp079Role"/>.
         /// <br />If not listed above, the type of Role will be <see cref="HumanRole"/>.
         /// </para>
         /// <para>
@@ -425,7 +425,7 @@ namespace Exiled.API.Features
         /// This role is automatically cached until it changes, and it is recommended to use this propertly directly rather than storing the property yourself.
         /// </para>
         /// <para>
-        /// Roles and RoleTypes can be compared directly. <c>Player.Role == RoleType.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="Player.SetRole(RoleType, SpawnReason, bool)"/>.
+        /// Roles and RoleTypes can be compared directly. <c>Player.Role == RoleType.Scp079</c> is valid and will return <see langword="true"/> if the player is SCP-079. To set the player's role, see <see cref="SetRole(RoleType, SpawnReason, bool)"/>.
         /// </para>
         /// </summary>
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
@@ -995,7 +995,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Player"/> belonging to a specific netId, if any.
         /// </summary>
-        /// <param name="netId">The player's <see cref="Mirror.NetworkIdentity.netId"/>.</param>
+        /// <param name="netId">The player's <see cref="NetworkIdentity.netId"/>.</param>
         /// <returns>The <see cref="Player"/> owning the netId, or <see langword="null"/> if not found.</returns>
         public static Player Get(uint netId) => ReferenceHub.TryGetHubNetID(netId, out ReferenceHub hub) ? Get(hub) : null;
 
@@ -1007,10 +1007,10 @@ namespace Exiled.API.Features
         public static Player Get(NetworkIdentity netIdentity) => Get(netIdentity.netId);
 
         /// <summary>
-        /// Gets the <see cref="Player"/> belonging to a specific <see cref="Mirror.NetworkConnection"/>, if any.
+        /// Gets the <see cref="Player"/> belonging to a specific <see cref="NetworkConnection"/>, if any.
         /// </summary>
-        /// <param name="conn">The player's <see cref="Mirror.NetworkConnection"/>.</param>
-        /// <returns>The <see cref="Player"/> owning the <see cref="Mirror.NetworkConnection"/>, or <see langword="null"/> if not found.</returns>
+        /// <param name="conn">The player's <see cref="NetworkConnection"/>.</param>
+        /// <returns>The <see cref="Player"/> owning the <see cref="NetworkConnection"/>, or <see langword="null"/> if not found.</returns>
         public static Player Get(NetworkConnection conn) => Get(conn.identity);
 
         /// <summary>
@@ -1917,7 +1917,7 @@ namespace Exiled.API.Features
         public void ShowHitMarker(float size = 1f) => Hitmarker.SendHitmarker(Connection, size > Hitmarker.MaxSize ? Hitmarker.MaxSize : size);
 
         /// <summary>
-        /// Safely gets an <see cref="object"/> from <see cref="Player.SessionVariables"/>, then casts it to <typeparamref name="T"/>.
+        /// Safely gets an <see cref="object"/> from <see cref="SessionVariables"/>, then casts it to <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The returned object type.</typeparam>
         /// <param name="key">The key of the object to get.</param>

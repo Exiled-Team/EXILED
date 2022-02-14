@@ -101,7 +101,7 @@ namespace Exiled.CreditTags
 
             void SuccessHandler(string result)
             {
-                if (Enum.TryParse<RankType>(result, out RankType kind))
+                if (Enum.TryParse(result, out RankType kind))
                 {
                     RankCache[player.UserId] = kind;
                     ShowRank(kind);

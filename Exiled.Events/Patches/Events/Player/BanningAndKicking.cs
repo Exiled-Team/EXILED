@@ -7,11 +7,8 @@
 
 namespace Exiled.Events.Patches.Events.Player
 {
-#pragma warning disable SA1313
     using System;
-
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using GameCore;
 
@@ -25,7 +22,7 @@ namespace Exiled.Events.Patches.Events.Player
 
     /// <summary>
     /// Patches <see cref="BanPlayer.BanUser(GameObject, long, string, string, bool)"/>.
-    /// Adds the <see cref="Player.Banning"/> and <see cref="Player.Kicking"/>events.
+    /// Adds the <see cref="Handlers.Player.Banning"/> and <see cref="Handlers.Player.Kicking"/>events.
     /// </summary>
     [HarmonyPatch(typeof(BanPlayer), nameof(BanPlayer.BanUser), new[] { typeof(GameObject), typeof(long), typeof(string), typeof(string), typeof(bool) })]
     internal static class BanningAndKicking
@@ -75,15 +72,14 @@ namespace Exiled.Events.Patches.Events.Player
                     if (duration > 0)
                     {
                         BanningEventArgs ev = new BanningEventArgs(targetPlayer, issuerPlayer, duration, reason, message);
+                        Handlers.Player.OnBanning(ev);
 
-                        Player.OnBanning(ev);
+                        if (!ev.IsAllowed)
+                            return false;
 
                         duration = ev.Duration;
                         reason = ev.Reason;
                         message = ev.FullMessage;
-
-                        if (!ev.IsAllowed)
-                            return false;
 
                         string originalName = string.IsNullOrEmpty(targetPlayer.Nickname)
                             ? "(no nick)"
@@ -151,14 +147,13 @@ namespace Exiled.Events.Patches.Events.Player
                     else if (duration == 0)
                     {
                         KickingEventArgs ev = new KickingEventArgs(targetPlayer, issuerPlayer, reason, message);
-
-                        Player.OnKicking(ev);
-
-                        reason = ev.Reason;
-                        message = ev.FullMessage;
+                        Handlers.Player.OnKicking(ev);
 
                         if (!ev.IsAllowed)
                             return false;
+
+                        reason = ev.Reason;
+                        message = ev.FullMessage;
                     }
                 }
 

@@ -28,7 +28,7 @@ namespace Exiled.Events.Patches.Events.Server
 
     /// <summary>
     /// Patch the <see cref="RespawnManager.Spawn"/>.
-    /// Adds the <see cref="Handlers.Server.RespawningTeam"/> event.
+    /// Adds the <see cref="Server.RespawningTeam"/> event.
     /// </summary>
     [HarmonyPatch(typeof(RespawnManager), nameof(RespawnManager.Spawn))]
     internal static class RespawningTeam

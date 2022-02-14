@@ -13,7 +13,7 @@ namespace Exiled.API.Features.Items
     using InventorySystem.Items.Radio;
 
     /// <summary>
-    /// A wrapper class for <see cref="InventorySystem.Items.Radio.RadioItem"/>.
+    /// A wrapper class for <see cref="RadioItem"/>.
     /// </summary>
     public class Radio : Item
     {

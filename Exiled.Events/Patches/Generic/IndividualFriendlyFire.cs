@@ -83,7 +83,7 @@ namespace Exiled.Events.Patches.Generic
     }
 
     /// <summary>
-    /// Patches <see cref="HitboxIdentity.Damage(float, DamageHandlerBase, UnityEngine.Vector3)"/>.
+    /// Patches <see cref="HitboxIdentity.Damage(float, DamageHandlerBase, Vector3)"/>.
     /// </summary>
     [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.Damage))]
     internal static class HitboxIdentityDamagePatch
