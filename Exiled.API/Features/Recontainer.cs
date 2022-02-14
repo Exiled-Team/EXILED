@@ -27,7 +27,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances used for the containment zone.
         /// </summary>
-        public static IEnumerable<Door> ContainmentGates => Map.Doors.Where(door => Base._containmentGates.Contains(door.Base));
+        public static IEnumerable<Door> ContainmentGates => Door.Get(door => Base._containmentGates.Contains(door.Base));
 
         /// <summary>
         /// Gets a value indicating whether the C.A.S.S.I.E is currently busy.
@@ -169,7 +169,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances locked during the overcharge procedure.
         /// </summary>
-        public static IEnumerable<Door> LockedDoors => Map.Doors.Where(door => Base._lockedDoors.Contains(door.Base));
+        public static IEnumerable<Door> LockedDoors => Door.Get(door => Base._lockedDoors.Contains(door.Base));
 
         /// <summary>
         /// Tries to kill SCP-079.

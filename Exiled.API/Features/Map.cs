@@ -44,26 +44,6 @@ namespace Exiled.API.Features
     public static class Map
     {
         /// <summary>
-        /// A list of <see cref="Room"/>s on the map.
-        /// </summary>
-        internal static readonly List<Room> RoomsValue = new List<Room>(250);
-
-        /// <summary>
-        /// A list of <see cref="Door"/>s on the map.
-        /// </summary>
-        internal static readonly List<Door> DoorsValue = new List<Door>(250);
-
-        /// <summary>
-        /// A list of <see cref="Camera"/>s on the map.
-        /// </summary>
-        internal static readonly List<Camera> CamerasValue = new List<Camera>(250);
-
-        /// <summary>
-        /// A list of <see cref="Lift"/>s on the map.
-        /// </summary>
-        internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
-
-        /// <summary>
         /// A list of <see cref="Locker"/>s on the map.
         /// </summary>
         internal static readonly List<Locker> LockersValue = new List<Locker>(250);
@@ -72,11 +52,6 @@ namespace Exiled.API.Features
         /// A list of <see cref="PocketDimensionTeleport"/>s on the map.
         /// </summary>
         internal static readonly List<PocketDimensionTeleport> TeleportsValue = new List<PocketDimensionTeleport>(8);
-
-        /// <summary>
-        /// A list of <see cref="TeslaGate"/>s on the map.
-        /// </summary>
-        internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
 
         /// <summary>
         /// A list of <see cref="Ragdoll"/>s on the map.
@@ -88,11 +63,6 @@ namespace Exiled.API.Features
         /// </summary>
         internal static readonly List<AdminToy> ToysValue = new List<AdminToy>();
 
-        private static readonly ReadOnlyCollection<Room> ReadOnlyRoomsValue = RoomsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Door> ReadOnlyDoorsValue = DoorsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Lift> ReadOnlyLiftsValue = LiftsValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<Camera> ReadOnlyCamerasValue = CamerasValue.AsReadOnly();
-        private static readonly ReadOnlyCollection<TeslaGate> ReadOnlyTeslasValue = TeslasValue.AsReadOnly();
         private static readonly ReadOnlyCollection<PocketDimensionTeleport> ReadOnlyTeleportsValue = TeleportsValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Locker> ReadOnlyLockersValue = LockersValue.AsReadOnly();
         private static readonly ReadOnlyCollection<Ragdoll> ReadOnlyRagdollsValue = RagdollsValue.AsReadOnly();
@@ -106,31 +76,6 @@ namespace Exiled.API.Features
         /// Gets a value indicating whether decontamination has begun in the light containment zone.
         /// </summary>
         public static bool IsLczDecontaminated => DecontaminationController.Singleton._stopUpdating && !DecontaminationController.Singleton.disableDecontamination;
-
-        /// <summary>
-        /// Gets all <see cref="Room"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Room> Rooms => ReadOnlyRoomsValue;
-
-        /// <summary>
-        /// Gets all <see cref="Door"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Door> Doors => ReadOnlyDoorsValue;
-
-        /// <summary>
-        /// Gets all <see cref="Camera079"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Camera> Cameras => ReadOnlyCamerasValue;
-
-        /// <summary>
-        /// Gets all <see cref="Lift"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<Lift> Lifts => ReadOnlyLiftsValue;
-
-        /// <summary>
-        /// Gets all <see cref="TeslaGate"/> objects.
-        /// </summary>
-        public static ReadOnlyCollection<TeslaGate> TeslaGates => ReadOnlyTeslasValue;
 
         /// <summary>
         /// Gets all <see cref="PocketDimensionTeleport"/> objects.
@@ -176,6 +121,15 @@ namespace Exiled.API.Features
         public static Intercom.State IntercomState => Intercom.host.IntercomState;
 
         /// <summary>
+        /// Gets or sets the content of the intercom.
+        /// </summary>
+        public static string IntercomContent
+        {
+            get => Intercom.host.CustomContent;
+            set => Intercom.host.CustomContent = value;
+        }
+
+        /// <summary>
         /// Gets or sets the current seed of the map.
         /// </summary>
         public static int Seed
@@ -211,7 +165,7 @@ namespace Exiled.API.Features
         public static Room FindParentRoom(GameObject objectInRoom)
         {
             // Avoid errors by forcing Map.Rooms to populate when this is called.
-            ReadOnlyCollection<Room> rooms = Rooms;
+            IEnumerable<Room> rooms = Room.List;
 
             Room room = null;
 
@@ -244,7 +198,7 @@ namespace Exiled.API.Features
 
                 // Always default to surface transform, since it's static.
                 // The current index of the 'Outside' room is the last one
-                if (rooms.Count != 0)
+                if (rooms.Count() != 0)
                     return rooms.FirstOrDefault(r => r.gameObject.name == "Outside");
             }
 
@@ -329,119 +283,13 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        /// <param name="lockType">DoorLockType of the lockdown.</param>
-        public static void LockAllDoors(float duration, ZoneType zoneType = ZoneType.Unspecified, DoorLockType lockType = DoorLockType.Regular079)
-        {
-            foreach (Room room in Rooms)
-            {
-                if (room != null && room.Zone == zoneType)
-                {
-                    foreach (Door door in room.Doors)
-                    {
-                        door.IsOpen = false;
-                        door.ChangeLock(lockType);
-                        MEC.Timing.CallDelayed(duration, () => door.ChangeLock(DoorLockType.None));
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Locks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="duration">The duration of the lockdown.</param>
-        /// <param name="zoneTypes">DoorLockType of the lockdown.</param>
-        /// <param name="lockType">The <see cref="ZoneType"/>s to affect.</param>
-        public static void LockAllDoors(float duration, IEnumerable<ZoneType> zoneTypes, DoorLockType lockType = DoorLockType.Regular079)
-        {
-            foreach (ZoneType zone in zoneTypes)
-                LockAllDoors(duration, zone, lockType);
-        }
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="zoneType">The <see cref="ZoneType"/> to affect.</param>
-        public static void UnlockAllDoors(ZoneType zoneType)
-        {
-            foreach (Room room in Rooms)
-            {
-                if (room != null && room.Zone == zoneType)
-                {
-                    foreach (Door door in room.Doors)
-                    {
-                        door.ChangeLock(DoorLockType.None);
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        /// <param name="zoneTypes">The <see cref="ZoneType"/>s to affect.</param>
-        public static void UnlockAllDoors(IEnumerable<ZoneType> zoneTypes)
-        {
-            foreach (ZoneType zone in zoneTypes)
-                UnlockAllDoors(zone);
-        }
-
-        /// <summary>
-        /// Unlocks all <see cref="Door">doors</see> in the facility.
-        /// </summary>
-        public static void UnlockAllDoors()
-        {
-            foreach (Door door in Doors)
-                door.ChangeLock(DoorLockType.None);
-        }
-
-        /// <summary>
-        /// Gets an random <see cref="Room"/>.
-        /// </summary>
-        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
-        /// <returns><see cref="Room"/> object.</returns>
-        public static Room GetRandomRoom(ZoneType type = ZoneType.Unspecified)
-        {
-            List<Room> rooms = type != ZoneType.Unspecified ? RoomsValue.Where(r => r.Zone == type).ToList() : RoomsValue;
-            return rooms[random.Next(Math.Max(0, rooms.Count - 1))];
-        }
-
-        /// <summary>
-        /// Gets an random <see cref="Camera"/>.
-        /// </summary>
-        /// <returns><see cref="Camera"/> object.</returns>
-        public static Camera GetRandomCamera() => Cameras[Random.Range(0, Cameras.Count)];
-
-        /// <summary>
-        /// Gets an random <see cref="Door"/>.
-        /// </summary>
-        /// <param name="type">Filters by <see cref="ZoneType"/>.</param>
-        /// <param name="onlyUnbroken">Whether or not it filters broken doors.</param>
-        /// <returns><see cref="Door"/> object.</returns>
-        public static Door GetRandomDoor(ZoneType type = ZoneType.Unspecified, bool onlyUnbroken = false)
-        {
-            List<Door> doors = onlyUnbroken || type != ZoneType.Unspecified ? DoorsValue.Where(x => (x.Room == null || x.Room.Zone == type || type == ZoneType.Unspecified) && (!x.IsBroken || !onlyUnbroken)).ToList() : DoorsValue;
-            return doors[random.Next(Math.Max(0, doors.Count - 1))];
-        }
-
-        /// <summary>
-        /// Gets an random <see cref="Lift"/>.
-        /// </summary>
-        /// <returns><see cref="Lift"/> object.</returns>
-        public static Lift GetRandomLift() => Lifts[Random.Range(0, Lifts.Count)];
-
-        /// <summary>
-        /// Gets an random <see cref="Locker"/>.
+        /// Gets a random <see cref="Locker"/>.
         /// </summary>
         /// <returns><see cref="Locker"/> object.</returns>
         public static Locker GetRandomLocker() => Lockers[Random.Range(0, Lockers.Count)];
 
         /// <summary>
-        /// Gets an random <see cref="Pickup"/>.
+        /// Gets a random <see cref="Pickup"/>.
         /// </summary>
         /// <param name="type">Filters by <see cref="ItemType"/>.</param>
         /// <returns><see cref="Pickup"/> object.</returns>
@@ -451,17 +299,6 @@ namespace Exiled.API.Features
                 ? Pickups.Where(p => p.Type == type).ToList()
                 : Pickups.ToList();
             return pickups[Math.Max(0, random.Next(pickups.Count - 1))];
-        }
-
-        /// <summary>
-        /// Gets the <see cref="Door">door</see> with the given door name.
-        /// </summary>
-        /// <param name="doorName">The door name.</param>
-        /// <returns>The <see cref="Door"/> or <see langword="null"/> if a door with this name doesn't exist.</returns>
-        public static Door GetDoorByName(string doorName)
-        {
-            DoorNametagExtension.NamedDoors.TryGetValue(doorName, out DoorNametagExtension nameExtension);
-            return nameExtension == null ? null : Door.Get(nameExtension.TargetDoor);
         }
 
         /// <summary>
@@ -539,18 +376,19 @@ namespace Exiled.API.Features
         /// <param name="position">The position from which starting to search cameras.</param>
         /// <param name="toleration">The maximum toleration to define the radius from which get the cameras.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the found cameras.</returns>
-        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Cameras.Where(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
+        public static IEnumerable<Camera> GetNearCameras(Vector3 position, float toleration = 15f) => Camera.Get(cam => (position - cam.Position).sqrMagnitude <= toleration * toleration);
 
         /// <summary>
         /// Clears the lazy loading game object cache.
         /// </summary>
         internal static void ClearCache()
         {
-            RoomsValue.Clear();
-            DoorsValue.Clear();
-            LiftsValue.Clear();
-            TeslasValue.Clear();
-            CamerasValue.Clear();
+            Room.RoomsValue.Clear();
+            Door.DoorsValue.Clear();
+            Camera.CamerasValue.Clear();
+            Lift.LiftsValue.Clear();
+            TeslaGate.TeslasValue.Clear();
+            Generator.GeneratorValues.Clear();
             TeleportsValue.Clear();
             LockersValue.Clear();
             Firearm.AvailableAttachmentsValue.Clear();

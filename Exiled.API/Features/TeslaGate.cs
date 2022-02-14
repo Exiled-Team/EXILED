@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -20,10 +21,20 @@ namespace Exiled.API.Features
     public class TeslaGate
     {
         /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="TeslaGate"/> on the map.
+        /// </summary>
+        internal static readonly List<TeslaGate> TeslasValue = new List<TeslaGate>(10);
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TeslaGate"/> class.
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         internal TeslaGate(BaseTeslaGate baseTeslaGate) => Base = baseTeslaGate;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains all the <see cref="TeslaGate"/> instances.
+        /// </summary>
+        public static IEnumerable<TeslaGate> List => TeslasValue;
 
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="Player"/> which contains all the players ignored by tesla gates.
@@ -179,7 +190,14 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="baseTeslaGate">The <see cref="BaseTeslaGate"/> instance.</param>
         /// <returns>The corresponding <see cref="TeslaGate"/> instance.</returns>
-        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => Map.TeslaGates.FirstOrDefault(teslaGate => teslaGate.Base == baseTeslaGate);
+        public static TeslaGate Get(BaseTeslaGate baseTeslaGate) => List.FirstOrDefault(teslaGate => teslaGate.Base == baseTeslaGate);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="TeslaGate"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<TeslaGate> Get(Func<TeslaGate, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Triggers the tesla gate.

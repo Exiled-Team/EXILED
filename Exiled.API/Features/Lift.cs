@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -22,6 +23,11 @@ namespace Exiled.API.Features
     /// </summary>
     public class Lift
     {
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Lift"/>s on the map.
+        /// </summary>
+        internal static readonly List<Lift> LiftsValue = new List<Lift>(10);
+
         private readonly List<Elevator> elevators = new List<Elevator>();
 
         /// <summary>
@@ -35,6 +41,17 @@ namespace Exiled.API.Features
             foreach (BaseLift.Elevator elevator in baseLift.elevators)
                 elevators.Add(new Elevator(elevator));
         }
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains all the <see cref="Lift"/> instances.
+        /// </summary>
+        public static IEnumerable<Lift> List => LiftsValue;
+
+        /// <summary>
+        /// Gets a random <see cref="Lift"/>.
+        /// </summary>
+        /// <returns><see cref="Lift"/> object.</returns>
+        public static Lift Random => LiftsValue[UnityEngine.Random.Range(0, LiftsValue.Count)];
 
         /// <summary>
         /// Gets the base <see cref="BaseLift"/>.
@@ -167,35 +184,42 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="status">The specified <see cref="BaseLift.Status"/>.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static IEnumerable<Lift> Get(BaseLift.Status status) => Map.Lifts.Where(lift => lift.Status == status);
+        public static IEnumerable<Lift> Get(BaseLift.Status status) => Get(lift => lift.Status == status);
 
         /// <summary>
         /// Gets the <see cref="Lift"/> belonging to the <see cref="BaseLift"/>, if any.
         /// </summary>
         /// <param name="baseLift">The <see cref="BaseLift"/> instance.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(BaseLift baseLift) => Map.Lifts.FirstOrDefault(lift => lift.Base == baseLift);
+        public static Lift Get(BaseLift baseLift) => Get(lift => lift.Base == baseLift).FirstOrDefault();
 
         /// <summary>
         /// Gets the <see cref="Lift"/> corresponding to the specified <see cref="ElevatorType"/>, if any.
         /// </summary>
         /// <param name="type">The <see cref="ElevatorType"/>.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(ElevatorType type) => Map.Lifts.FirstOrDefault(lift => lift.Type == type);
+        public static Lift Get(ElevatorType type) => Get(lift => lift.Type == type).FirstOrDefault();
 
         /// <summary>
         /// Gets the <see cref="Lift"/> corresponding to the specified name, if any.
         /// </summary>
         /// <param name="name">The lift's name.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(string name) => Map.Lifts.FirstOrDefault(lift => lift.Name == name);
+        public static Lift Get(string name) => Get(lift => lift.Name == name).FirstOrDefault();
 
         /// <summary>
         /// Gets the <see cref="Lift"/> belonging to the <see cref="UnityEngine.GameObject"/>, if any.
         /// </summary>
         /// <param name="gameObject">The <see cref="UnityEngine.GameObject"/>.</param>
         /// <returns>A <see cref="Lift"/> or <see langword="null"/> if not found.</returns>
-        public static Lift Get(GameObject gameObject) => Map.Lifts.FirstOrDefault(lift => lift.GameObject == gameObject);
+        public static Lift Get(GameObject gameObject) => Get(lift => lift.GameObject == gameObject).FirstOrDefault();
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Lift"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Lift"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Lift> Get(Func<Lift, bool> predicate) => List.Where(predicate);
 
         /// <summary>
         /// Tries to melt a <see cref="Player"/>.
