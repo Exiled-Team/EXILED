@@ -65,6 +65,32 @@ namespace Exiled.API.Features.Roles
         public static implicit operator RoleType(Role role) => role?.Type ?? RoleType.None;
 
         /// <summary>
+        /// Returns whether or not 2 roles are the same.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return role2 is null;
+            return role1.Equals(role2);
+        }
+
+        /// <summary>
+        /// Returns whether or not the two roles are different.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return !(role2 is null);
+            return !role1.Equals(role2);
+        }
+
+        /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
         /// </summary>
         /// <param name="role">The role.</param>
