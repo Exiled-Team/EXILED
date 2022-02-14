@@ -11,7 +11,12 @@ namespace Exiled.Events.Patches.Fixes
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
+    using Exiled.API.Features.Roles;
+
     using HarmonyLib;
+
+    using MEC;
 
     using NorthwoodLib.Pools;
 
@@ -38,17 +43,23 @@ namespace Exiled.Events.Patches.Fixes
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(CharacterClassManager), nameof(CharacterClassManager._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Stloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Ldloc_S, player.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Roles.Role), nameof(API.Features.Roles.Role.Create))),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.Role))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(NetworkCurClassSync), nameof(UpdatePlayerRole))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static void UpdatePlayerRole(RoleType type, Player player)
+        {
+            Timing.CallDelayed(0.05f, () =>
+            {
+                player.Role = Role.Create(type, player);
+            });
         }
     }
 }

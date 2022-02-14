@@ -7,13 +7,18 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using System;
+
     using Exiled.API.Extensions;
+
+    using MEC;
 
     /// <summary>
     /// Defines the class for role-related classes.
     /// </summary>
     public abstract class Role
     {
+#pragma warning disable 1584
         /// <summary>
         /// Gets the player this role is referring to.
         /// </summary>
@@ -60,6 +65,32 @@ namespace Exiled.API.Features.Roles
         public static implicit operator RoleType(Role role) => role?.Type ?? RoleType.None;
 
         /// <summary>
+        /// Returns whether or not 2 roles are the same.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are equal.</returns>
+        public static bool operator ==(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return role2 is null;
+            return role1.Equals(role2);
+        }
+
+        /// <summary>
+        /// Returns whether or not the two roles are different.
+        /// </summary>
+        /// <param name="role1">The role.</param>
+        /// <param name="role2">The other role.</param>
+        /// <returns><see langword="true"/> if the values are not equal.</returns>
+        public static bool operator !=(Role role1, Role role2)
+        {
+            if (role1 is null)
+                return !(role2 is null);
+            return !role1.Equals(role2);
+        }
+
+        /// <summary>
         /// Returns whether or not the role has the same RoleType as the given <paramref name="type"/>.
         /// </summary>
         /// <param name="role">The role.</param>
@@ -101,8 +132,7 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <returns>The casted class, if possible.</returns>
         public T As<T>()
-            where T : Role
-            => this as T;
+            where T : Role => this as T;
 
         /// <summary>
         /// Safely casts the role to the specified role type.
@@ -110,11 +140,11 @@ namespace Exiled.API.Features.Roles
         /// <typeparam name="T">The type of the class.</typeparam>
         /// <param name="role">The casted class, if possible.</param>
         /// <returns><see langword="true"/> if the cast was successful; otherwise, <see langword="false"/>.</returns>
-        public bool As<T>(out T role)
+        public bool Is<T>(out T role)
             where T : Role
         {
-            role = As<T>();
-            return role != null;
+            role = this is T t ? t : null;
+            return this is T;
         }
 
         /// <inheritdoc/>
@@ -153,6 +183,8 @@ namespace Exiled.API.Features.Roles
                     return new Scp939Role(player, type);
                 case RoleType.Spectator:
                     return new SpectatorRole(player);
+                case RoleType.None:
+                    return new NoneRole(player);
                 default:
                     return new HumanRole(player, type);
             }

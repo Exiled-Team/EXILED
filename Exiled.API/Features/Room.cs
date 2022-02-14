@@ -307,38 +307,42 @@ namespace Exiled.API.Features
             }
         }
 
-        private static void FindObjectsInRoom(GameObject gameObject, out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
+        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
         {
             cameraList = new List<Camera079>();
             doors = new List<Door>();
             flickerableLightController = null;
 
-            foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[gameObject.GetComponent<RoomIdentifier>().UniqueId])
+            if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
             {
-                if (scp079Interactable != null)
+                foreach (Scp079Interactable scp079Interactable in Scp079Interactable.InteractablesByRoomId[
+                    gameObject.GetComponent<RoomIdentifier>().UniqueId])
                 {
-                    switch (scp079Interactable.type)
+                    if (scp079Interactable != null)
                     {
-                        case Scp079Interactable.InteractableType.Door:
+                        switch (scp079Interactable.type)
+                        {
+                            case Scp079Interactable.InteractableType.Door:
                             {
                                 if (scp079Interactable.TryGetComponent(out DoorVariant doorVariant))
                                     doors.Add(Door.Get(doorVariant));
                                 break;
                             }
 
-                        case Scp079Interactable.InteractableType.Camera:
+                            case Scp079Interactable.InteractableType.Camera:
                             {
                                 if (scp079Interactable.TryGetComponent(out Camera079 camera))
                                     cameraList.Add(camera);
                                 break;
                             }
 
-                        case Scp079Interactable.InteractableType.LightController:
+                            case Scp079Interactable.InteractableType.LightController:
                             {
                                 if (scp079Interactable.TryGetComponent(out FlickerableLightController lightController))
                                     flickerableLightController = lightController;
                                 break;
                             }
+                        }
                     }
                 }
             }
@@ -356,7 +360,7 @@ namespace Exiled.API.Features
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
             TeslaGate = gameObject.GetComponentInChildren<TeslaGate>();
 
-            FindObjectsInRoom(gameObject, out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = Camera.Get(cameras);
             FlickerableLightController = flickerableLightController;

@@ -62,6 +62,12 @@ namespace Exiled.CustomItems.API
         }
 
         /// <summary>
+        /// Registers a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="CustomItem"/> to be registered.</param>
+        public static void Register(this CustomItem item) => item.TryRegister();
+
+        /// <summary>
         /// Unregisters an <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/>s.
         /// </summary>
         /// <param name="customItems"><see cref="CustomItem"/>s to be unregistered.</param>
@@ -73,5 +79,11 @@ namespace Exiled.CustomItems.API
             foreach (CustomItem customItem in customItems)
                 customItem.TryUnregister();
         }
+
+        /// <summary>
+        /// Unregisters a <see cref="CustomItem"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="CustomItem"/> to be unregistered.</param>
+        public static void Unregister(this CustomItem item) => item.TryUnregister();
     }
 }

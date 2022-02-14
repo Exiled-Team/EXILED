@@ -81,10 +81,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public virtual float Damage
         {
-            get => SafeCast(out StandardDamageHandler handler) ? handler.Damage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.Damage : 0f;
             set
             {
-                if (SafeCast(out StandardDamageHandler handler))
+                if (Is(out StandardDamageHandler handler))
                     handler.Damage = value;
             }
         }
@@ -94,10 +94,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public Vector3 StartVelocity
         {
-            get => SafeCast(out StandardDamageHandler handler) ? handler.StartVelocity : Vector3.zero;
+            get => Is(out StandardDamageHandler handler) ? handler.StartVelocity : Vector3.zero;
             set
             {
-                if (SafeCast(out StandardDamageHandler handler))
+                if (Is(out StandardDamageHandler handler))
                     handler.StartVelocity = value;
             }
         }
@@ -107,10 +107,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public float DealtHealthDamage
         {
-            get => SafeCast(out StandardDamageHandler handler) ? handler.DealtHealthDamage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.DealtHealthDamage : 0f;
             set
             {
-                if (SafeCast(out StandardDamageHandler handler))
+                if (Is(out StandardDamageHandler handler))
                     handler.DealtHealthDamage = value;
             }
         }
@@ -120,10 +120,10 @@ namespace Exiled.API.Features.DamageHandlers
         /// </summary>
         public float AbsorbedAhpDamage
         {
-            get => SafeCast(out StandardDamageHandler handler) ? handler.AbsorbedAhpDamage : 0f;
+            get => Is(out StandardDamageHandler handler) ? handler.AbsorbedAhpDamage : 0f;
             set
             {
-                if (SafeCast(out StandardDamageHandler handler))
+                if (Is(out StandardDamageHandler handler))
                     handler.AbsorbedAhpDamage = value;
             }
         }
@@ -131,14 +131,14 @@ namespace Exiled.API.Features.DamageHandlers
         /// <inheritdoc/>
         public override Action ApplyDamage(Player player)
         {
-            if (!SafeCast(out StandardDamageHandler damageHandler))
+            if (!Is(out StandardDamageHandler damageHandler))
                 return player.GetModule<HealthStat>().CurValue > 0f ? Action.Damage : Action.Death;
 
             if (Damage <= 0f)
                 return Action.None;
 
             StartVelocity = player.ReferenceHub.playerMovementSync.PlayerVelocity;
-            Cast<StandardDamageHandler>().StartVelocity.y = Mathf.Max(damageHandler.StartVelocity.y, 0f);
+            As<StandardDamageHandler>().StartVelocity.y = Mathf.Max(damageHandler.StartVelocity.y, 0f);
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
 

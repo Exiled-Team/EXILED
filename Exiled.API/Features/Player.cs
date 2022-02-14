@@ -76,7 +76,6 @@ namespace Exiled.API.Features
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
-        private Role storedRole;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -86,7 +85,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = referenceHub;
-            storedRole = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this);
+            Timing.CallDelayed(0.05f, () => Role = Role.Create(referenceHub.characterClassManager.NetworkCurClass, this));
         }
 
         /// <summary>
@@ -97,7 +96,7 @@ namespace Exiled.API.Features
         {
             readOnlyItems = ItemsValue.AsReadOnly();
             ReferenceHub = ReferenceHub.GetHub(gameObject);
-            storedRole = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this);
+            Timing.CallDelayed(0.05f, () => Role = Role.Create(ReferenceHub.characterClassManager.NetworkCurClass, this));
         }
 
         /// <summary>
@@ -413,7 +412,7 @@ namespace Exiled.API.Features
         public LeadingTeam LeadingTeam => Role.Team.GetLeadingTeam();
 
         /// <summary>
-        /// Gets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
+        /// Gets or sets a <see cref="Roles.Role"/> that is unique to this player and this class. This allows modification of various aspects related to the role solely.
         /// <para>
         /// The type of the Role is different based on the <see cref="RoleType"/> of the player, and casting should be used to modify the role.
         /// <br /><see cref="RoleType.Spectator"/> = <see cref="SpectatorRole"/>.
@@ -430,11 +429,7 @@ namespace Exiled.API.Features
         /// </para>
         /// </summary>
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
-        public Role Role
-        {
-            get => storedRole;
-            internal set => storedRole = value;
-        }
+        public Role Role { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed.
@@ -529,7 +524,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role.As<SpectatorRole>() != null;
+        public bool IsDead => Role.Is(out SpectatorRole _) || Role.Is(out NoneRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
@@ -552,7 +547,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
         /// </summary>
-        public bool IsHuman => Role.As<HumanRole>() != null;
+        public bool IsHuman => Role.Is(out HumanRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
@@ -970,6 +965,13 @@ namespace Exiled.API.Features
         public static IEnumerable<Player> Get(RoleType role) => List.Where(player => player.Role == role);
 
         /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Player"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Player"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Player> Get(Func<Player, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
         /// Gets the <see cref="Player"/> belonging to the <see cref="CommandSystem.ICommandSender"/>, if any.
         /// </summary>
         /// <param name="sender">The command sender.</param>
@@ -1333,6 +1335,15 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
+        /// <param name="attacker">The <see cref="Player"/> attacking player.</param>
+        /// <param name="damage">The <see langword="float"/> amount of damage to deal.</param>
+        /// <param name="force">The throw force.</param>
+        /// <param name="armorPenetration">The armor penetration amount.</param>
+        public void Hurt(Player attacker, float damage, Vector3 force = default, int armorPenetration = 0) => Hurt(new ExplosionDamageHandler(attacker.Footprint, force, damage, armorPenetration));
+
+        /// <summary>
+        /// Hurts the player.
+        /// </summary>
         /// <param name="amount">The <see langword="float"/> amount of damage to deal.</param>
         /// <param name="damageType">The <see cref="DamageType"/> of the damage dealt.</param>
         /// <param name="cassieAnnouncement">The <see langword="string"/> cassie announcement to make if the damage kills the player.</param>
@@ -1342,10 +1353,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Hurts the player.
         /// </summary>
-        /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="damage">The amount of damage to deal.</param>
+        /// <param name="damageReason"> The reason for the damage being dealt.</param>
         /// <param name="cassieAnnouncement">The cassie announcement to make.</param>
-        public void Hurt(string damageReason, float damage, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
+        public void Hurt(float damage, string damageReason, string cassieAnnouncement = "") => Hurt(new CustomReasonDamageHandler(damageReason, damage, cassieAnnouncement));
 
         /// <summary>
         /// Heals the player.
@@ -2173,6 +2184,15 @@ namespace Exiled.API.Features
 
             Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
         }
+
+        /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
+        public void PlayGunSound(ItemType type, byte volume, byte audioClipId = 0) => MirrorExtensions.PlayGunSound(this, Position, type, volume, audioClipId);
+
+        /// <inheritdoc cref="Map.PlaceBlood(Vector3, BloodType, float)"/>
+        public void PlaceBlood(BloodType type, float multiplier = 1f) => Map.PlaceBlood(Position, type, multiplier);
+
+        /// <inheritdoc cref="Map.GetNearCameras(Vector3, float)"/>
+        public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
 
         /// <summary>
         /// Returns the player in a human-readable format.

@@ -144,7 +144,7 @@ namespace Exiled.API.Extensions
         public static void SetPlayerInfoForTargetOnly(this Player player, Player target, string info) => player.SendFakeSyncVar(target.ReferenceHub.networkIdentity, typeof(NicknameSync), nameof(NicknameSync.Network_customPlayerInfoString), info);
 
         /// <summary>
-        /// Play gun sound to <see cref="Player"/>.
+        /// Plays gun sound.
         /// </summary>
         /// <param name="player">Target to play.</param>
         /// <param name="position">Position to play on.</param>

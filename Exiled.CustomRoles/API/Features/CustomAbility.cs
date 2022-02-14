@@ -89,7 +89,31 @@ namespace Exiled.CustomRoles.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(ExiledSerializableAttribute)) is null)
+                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null)
+                    continue;
+
+                CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);
+                customAbility.TryRegister();
+                registeredAbilities.Add(customAbility);
+            }
+
+            return registeredAbilities;
+        }
+
+        /// <summary>
+        /// Registers all the <see cref="CustomAbility"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
+        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomAbility> registeredAbilities = new List<CustomAbility>();
+
+            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            {
+                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
+                    (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
                 CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);
@@ -116,6 +140,36 @@ namespace Exiled.CustomRoles.API.Features
 
             return unregisteredAbilities;
         }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomAbility"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
+        /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all unregistered <see cref="CustomAbility"/>'s.</returns>
+        public static IEnumerable<CustomAbility> UnregisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        {
+            List<CustomAbility> unregisteredAbilities = new List<CustomAbility>();
+
+            foreach (CustomAbility customAbility in Registered)
+            {
+                if ((targetTypes.Contains(customAbility.GetType()) && isIgnored) || (!targetTypes.Contains(customAbility.GetType()) && !isIgnored))
+                    continue;
+
+                customAbility.TryUnregister();
+                unregisteredAbilities.Add(customAbility);
+            }
+
+            return unregisteredAbilities;
+        }
+
+        /// <summary>
+        /// Unregisters all the <see cref="CustomAbility"/>'s present in the current assembly.
+        /// </summary>
+        /// <param name="targetAbilities">The <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> containing the target roles.</param>
+        /// <param name="isIgnored">A value indicating whether the target abilities should be ignored.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all unregistered <see cref="CustomAbility"/>'s.</returns>
+        public static IEnumerable<CustomAbility> UnregisterAbilities(IEnumerable<CustomAbility> targetAbilities, bool isIgnored = false) => UnregisterAbilities(targetAbilities.Select(x => x.GetType()), isIgnored);
 
         /// <summary>
         /// Checks to see if the specified player has this ability.

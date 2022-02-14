@@ -91,7 +91,7 @@ namespace Exiled.API.Features.DamageHandlers
                 return Action.None;
 
             StartVelocity = player.ReferenceHub.playerMovementSync.PlayerVelocity;
-            Cast<BaseFirearmHandler>().StartVelocity.y = Mathf.Max(Cast<BaseFirearmHandler>().StartVelocity.y, 0f);
+            As<BaseFirearmHandler>().StartVelocity.y = Mathf.Max(As<BaseFirearmHandler>().StartVelocity.y, 0f);
             AhpStat ahpModule = player.GetModule<AhpStat>();
             HealthStat healthModule = player.GetModule<HealthStat>();
 
@@ -103,7 +103,7 @@ namespace Exiled.API.Features.DamageHandlers
             foreach (PlayerEffect effect in player.ActiveEffects)
             {
                 if (effect is IDamageModifierEffect damageModifierEffect)
-                    Damage *= damageModifierEffect.GetDamageModifier(Damage, CustomBase, Cast<BaseFirearmHandler>().Hitbox);
+                    Damage *= damageModifierEffect.GetDamageModifier(Damage, CustomBase, As<BaseFirearmHandler>().Hitbox);
             }
 
             DealtHealthDamage = ahpModule.ServerProcessDamage(Damage);
@@ -116,8 +116,8 @@ namespace Exiled.API.Features.DamageHandlers
         {
             Ragdoll.Spawn(player, damageHandlerBase.Base);
 
-            if (damageHandlerBase.SafeCast(out BaseAttackerHandler handler) && damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker != null)
-                player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseCast<FirearmDamageHandler>().Attacker.Role);
+            if (damageHandlerBase.Is(out BaseAttackerHandler handler) && damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker != null)
+                player.ReferenceHub.playerStats.TargetReceiveAttackerDeathReason(damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Nickname, damageHandlerBase.BaseAs<FirearmDamageHandler>().Attacker.Role);
             else
                 player.ReferenceHub.playerStats.TargetReceiveSpecificDeathReason(handler);
 

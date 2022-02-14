@@ -30,7 +30,7 @@ namespace Exiled.Events.EventArgs
         public DiedEventArgs(Player target, RoleType targetOldRole, DamageHandlerBase damageHandler)
         {
             Handler = new CustomDamageHandler(target, damageHandler);
-            Killer = Handler.SafeBaseCast(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
+            Killer = Handler.BaseIs(out CustomAttackerHandler attackerDamageHandler) ? attackerDamageHandler.Attacker : null;
             Target = target;
             TargetOldRole = targetOldRole;
         }

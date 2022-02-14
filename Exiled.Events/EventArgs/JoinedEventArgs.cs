@@ -22,7 +22,6 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         public JoinedEventArgs(Player player)
         {
-            Log.Error($"{nameof(JoinedEventArgs)}: {player != null}");
             Player = player;
         }
 
