@@ -13,6 +13,7 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
+    using System.Text;
 
     using Exiled.API.Features;
 
@@ -216,6 +217,27 @@ namespace Exiled.API.Extensions
         /// <param name="makeNoise">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isNoisy.</param>
         /// <param name="isSubtitles">Same on <see cref="Cassie.Message(string, bool, bool, bool)"/>'s isSubtitles.</param>
         public static void PlayCassieAnnouncement(this Player player, string words, bool makeHold = false, bool makeNoise = true, bool isSubtitles = false) => SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), words, makeHold, makeNoise, isSubtitles);
+
+        /// <summary>
+        /// Send CASSIE announcement with custom subtitles for translation that only <see cref="Player"/> can hear and see it.
+        /// It will continue until <see cref="Player"/>'s <see cref="RoleType"/> changes.
+        /// </summary>
+        /// <param name="player">Target to send.</param>
+        /// <param name="words">The message to be reproduced.</param>
+        /// <param name="translation">The translation should be show in the subtitles.</param>
+        /// <param name="makeHold">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isHeld.</param>
+        /// <param name="makeNoise">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isNoisy.</param>
+        /// <param name="isSubtitles">Same on <see cref="Cassie.MessageTranslated(string, string, bool, bool, bool)"/>'s isSubtitles.</param>
+        public static void MessageTranslated(this Player player, string words, string translation, bool makeHold = false, bool makeNoise = true, bool isSubtitles = true)
+        {
+            StringBuilder annoucement = new StringBuilder();
+            string[] cassies = words.Split('\n');
+            string[] translations = translation.Split('\n');
+            for (int i = 0; i < cassies.Count(); i++)
+                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+
+            SendFakeTargetRpc(player, RespawnEffectsController.AllControllers.Last().netIdentity, typeof(RespawnEffectsController), nameof(RespawnEffectsController.RpcCassieAnnouncement), annoucement, makeHold, makeNoise, isSubtitles);
+        }
 
         /// <summary>
         /// Changes the <see cref="Player"/>'s walking speed. Negative values will invert the player's controls.

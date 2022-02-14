@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
 #pragma warning disable 1584
     using System.Collections.Generic;
     using System.Linq;
@@ -27,6 +28,16 @@ namespace Exiled.API.Features
     /// </summary>
     public class Room : MonoBehaviour
     {
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Room"/>s on the map.
+        /// </summary>
+        internal static readonly List<Room> RoomsValue = new List<Room>(250);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains all the <see cref="Room"/> instances.
+        /// </summary>
+        public static IEnumerable<Room> List => RoomsValue;
+
         /// <summary>
         /// Gets the <see cref="Room"/> name.
         /// </summary>
@@ -113,6 +124,38 @@ namespace Exiled.API.Features
         /// Gets the room's FlickerableLightController.
         /// </summary>
         public FlickerableLightController FlickerableLightController { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="Room"/> given the specified <see cref="RoomType"/>.
+        /// </summary>
+        /// <param name="roomType">The <see cref="RoomType"/> to search for.</param>
+        /// <returns>The <see cref="Room"/> with the given <see cref="RoomType"/> or <see langword="null"/> if not found.</returns>
+        public static Room Get(RoomType roomType) => Get(room => room.Type == roomType).FirstOrDefault();
+
+        /// <summary>
+        /// Gets a <see cref="Room"/> given the specified <see cref="ZoneType"/>.
+        /// </summary>
+        /// <param name="zoneType">The <see cref="ZoneType"/> to search for.</param>
+        /// <returns>The <see cref="Room"/> with the given <see cref="ZoneType"/> or <see langword="null"/> if not found.</returns>
+        public static IEnumerable<Room> Get(ZoneType zoneType) => Get(room => room.Zone == zoneType);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Room"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Room"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Room> Get(Func<Room, bool> predicate) => List.Where(predicate);
+
+        /// <summary>
+        /// Gets a random <see cref="Room"/>.
+        /// </summary>
+        /// <param name="zoneType">Filters by <see cref="ZoneType"/>.</param>
+        /// <returns><see cref="Room"/> object.</returns>
+        public static Room Random(ZoneType zoneType = ZoneType.Unspecified)
+        {
+            List<Room> rooms = zoneType != ZoneType.Unspecified ? Room.Get(r => r.Zone == zoneType).ToList() : Room.RoomsValue;
+            return rooms[UnityEngine.Random.Range(0, rooms.Count)];
+        }
 
         /// <summary>
         /// Flickers the room's lights off for a duration.

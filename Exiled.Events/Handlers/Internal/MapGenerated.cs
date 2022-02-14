@@ -77,31 +77,31 @@ namespace Exiled.Events.Handlers.Internal
                 throw new InvalidOperationException("Plugin is trying to access Rooms before they are created.");
 
             foreach (GameObject roomObject in roomObjects)
-                Map.RoomsValue.Add(Room.CreateComponent(roomObject));
+                Room.RoomsValue.Add(Room.CreateComponent(roomObject));
         }
 
         private static void GenerateDoors()
         {
             foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
-                Map.DoorsValue.Add(Door.Get(doorVariant));
+                Door.DoorsValue.Add(Door.Get(doorVariant));
         }
 
         private static void GenerateCameras()
         {
             foreach (Camera079 camera079 in Object.FindObjectsOfType<Camera079>())
-                Map.CamerasValue.Add(new Camera(camera079));
+                Camera.CamerasValue.Add(new Camera(camera079));
         }
 
         private static void GenerateLifts()
         {
             foreach (global::Lift lift in Object.FindObjectsOfType<global::Lift>())
-                Map.LiftsValue.Add(new Lift(lift));
+                Lift.LiftsValue.Add(new Lift(lift));
         }
 
         private static void GenerateTeslaGates()
         {
             foreach (global::TeslaGate teslaGate in Object.FindObjectsOfType<global::TeslaGate>())
-                Map.TeslasValue.Add(new TeslaGate(teslaGate));
+                TeslaGate.TeslasValue.Add(new TeslaGate(teslaGate));
         }
 
         private static void GeneratePocketTeleports() => Map.TeleportsValue.AddRange(Object.FindObjectsOfType<PocketDimensionTeleport>());
