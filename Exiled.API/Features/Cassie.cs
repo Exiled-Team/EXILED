@@ -9,6 +9,7 @@ namespace Exiled.API.Features
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     using MEC;
 
@@ -49,6 +50,25 @@ namespace Exiled.API.Features
         /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
         public static void Message(string message, bool isHeld = false, bool isNoisy = true, bool isSubtitles = false) =>
             RespawnEffectsController.PlayCassieAnnouncement(message, isHeld, isNoisy, isSubtitles);
+
+        /// <summary>
+        /// Reproduce a non-glitched C.A.S.S.I.E message with a possibility to custom the subtitles.
+        /// </summary>
+        /// <param name="message">The message to be reproduced.</param>
+        /// <param name="translation">The translation should be show in the subtitles.</param>
+        /// <param name="isHeld">Indicates whether C.A.S.S.I.E has to hold the message.</param>
+        /// <param name="isNoisy">Indicates whether C.A.S.S.I.E has to make noises or not during the message.</param>
+        /// <param name="isSubtitles">Indicates whether C.A.S.S.I.E has to make subtitles.</param>
+        public static void MessageTranslated(string message, string translation, bool isHeld = false, bool isNoisy = true, bool isSubtitles = true)
+        {
+            StringBuilder annoucement = new StringBuilder();
+            string[] cassies = message.Split('\n');
+            string[] translations = translation.Split('\n');
+            for (int i = 0; i < cassies.Count(); i++)
+                annoucement.Append($"{translations[i]}<alpha=#00> {cassies[i].Replace(' ', ' ')} </alpha><split>");
+
+            RespawnEffectsController.PlayCassieAnnouncement(annoucement.ToString(), isHeld, isNoisy, isSubtitles);
+        }
 
         /// <summary>
         /// Reproduce a glitchy C.A.S.S.I.E announcement.
