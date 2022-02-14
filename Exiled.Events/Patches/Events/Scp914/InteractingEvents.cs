@@ -7,106 +7,60 @@
 
 namespace Exiled.Events.Patches.Events.Scp914
 {
-    using System;
-#pragma warning disable SA1118
-    using System.Collections.Generic;
-    using System.Reflection.Emit;
+#pragma warning disable SA1313
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
-    using Exiled.Events.Handlers;
 
     using global::Scp914;
 
     using HarmonyLib;
 
-    using NorthwoodLib.Pools;
-
-    using static HarmonyLib.AccessTools;
-
     /// <summary>
     /// Patches <see cref="Scp914Controller.ServerInteract"/>.
-    /// Adds the <see cref="Scp914.Activating"/> event.
+    /// Adds the <see cref="Handlers.Scp914.Activating"/> event.
     /// </summary>
     [HarmonyPatch(typeof(Scp914Controller), nameof(Scp914Controller.ServerInteract))]
     internal static class InteractingEvents
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static bool Prefix(Scp914Controller __instance, ReferenceHub ply, byte colliderId)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-
-            int offset = -8;
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stloc_1) + offset;
-
-            LocalBuilder ev = generator.DeclareLocal(typeof(ChangingKnobSettingEventArgs));
-            LocalBuilder knobSetting = generator.DeclareLocal(typeof(Scp914KnobSetting));
-
-            Label ret = generator.DefineLabel();
-            Label jcc = generator.DefineLabel();
-
-            newInstructions.RemoveRange(index, 22);
-
-            offset = 1;
-            index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Stfld) + offset;
-
-            newInstructions.InsertRange(index, new[]
+            if (__instance._remainingCooldown > 0.0)
+                return false;
+            switch ((Scp914InteractCode)colliderId)
             {
-                new CodeInstruction(OpCodes.Ldarg_1),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(Scp914Controller), nameof(Scp914Controller._knobSetting))),
-                new CodeInstruction(OpCodes.Ldc_I4_1),
-                new CodeInstruction(OpCodes.Add),
-                new CodeInstruction(OpCodes.Conv_U1),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ChangingKnobSettingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnChangingKnobSetting))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingKnobSettingEventArgs), nameof(ChangingKnobSettingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
-                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingKnobSettingEventArgs), nameof(ChangingKnobSettingEventArgs.KnobSetting))),
-                new CodeInstruction(OpCodes.Stloc_S, knobSetting.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc_S, knobSetting.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Scp914Controller), nameof(Scp914Controller.Network_knobSetting))),
-                new CodeInstruction(OpCodes.Ldtoken, typeof(Scp914KnobSetting)),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Type), nameof(Type.GetTypeFromHandle))),
-                new CodeInstruction(OpCodes.Ldloc_S, knobSetting.LocalIndex),
-                new CodeInstruction(OpCodes.Box, typeof(Scp914KnobSetting)),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Enum), nameof(Enum.IsDefined))),
-                new CodeInstruction(OpCodes.Brtrue_S, jcc),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Scp914Controller), nameof(Scp914Controller.Network_knobSetting))),
-                new CodeInstruction(OpCodes.Ldarg_0).WithLabels(jcc),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Scp914Controller), nameof(Scp914Controller.RpcPlaySound))),
-                new CodeInstruction(OpCodes.Br_S, ret),
-            });
+                case Scp914InteractCode.ChangeMode:
+                    Scp914KnobSetting scp914KnobSetting;
+                    if (__instance._knobSetting + 1 > Scp914KnobSetting.VeryFine)
+                        scp914KnobSetting = Scp914KnobSetting.Rough;
+                    else
+                        scp914KnobSetting = __instance._knobSetting + 1;
+                    ChangingKnobSettingEventArgs ev = new ChangingKnobSettingEventArgs(Player.Get(ply), scp914KnobSetting);
 
-            offset = -2;
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
+                    Handlers.Scp914.OnChangingKnobSetting(ev);
+                    if (!ev.IsAllowed)
+                        return false;
 
-            newInstructions.InsertRange(index, new[]
-            {
-                new CodeInstruction(OpCodes.Ldarg_1).MoveLabelsFrom(newInstructions[index]),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldc_I4_0),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Scp914), nameof(Scp914.OnActivating))),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingEventArgs), nameof(ActivatingEventArgs.IsAllowed))),
-                new CodeInstruction(OpCodes.Brfalse_S, ret),
-            });
+                    __instance._remainingCooldown = __instance._knobChangeCooldown;
+                    scp914KnobSetting = ev.KnobSetting;
+                    __instance.Network_knobSetting = scp914KnobSetting;
+                    __instance.RpcPlaySound(0);
+                    break;
+                case Scp914InteractCode.Activate:
+                    ActivatingEventArgs ev2 = new ActivatingEventArgs(Player.Get(ply));
 
-            newInstructions[newInstructions.Count - 1].labels.Add(ret);
+                    Handlers.Scp914.OnActivating(ev2);
 
-            for (int z = 0; z < newInstructions.Count; z++)
-                yield return newInstructions[z];
+                    if (!ev2.IsAllowed)
+                        return false;
+                    __instance._remainingCooldown = __instance._totalSequenceTime;
+                    __instance._isUpgrading = true;
+                    __instance._itemsAlreadyUpgraded = false;
+                    __instance.RpcPlaySound(1);
+                    break;
+            }
 
-            ListPool<CodeInstruction>.Shared.Return(newInstructions);
+            return false;
         }
     }
 }
