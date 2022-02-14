@@ -45,8 +45,6 @@ namespace Exiled.Events.Patches.Events.Player
                 API.Features.Log.Error($"Object exists {player != null}");
                 API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
-                player = new PlayerAPI(hub);
-
                 API.Features.Player.UnverifiedPlayers.Add(hub, player);
                 API.Features.Player p = player;
                 Timing.CallDelayed(0.25f, () =>
