@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
 
                 // teslaGate = TeslaGate.Get(global::TeslaGate)
                 new CodeInstruction(OpCodes.Ldloc_2),
-                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.TeslaGate), nameof(API.Features.TeslaGate.Get))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(API.Features.TeslaGate), nameof(API.Features.TeslaGate.Get), new[] { typeof(TeslaGate) })),
                 new CodeInstruction(OpCodes.Stloc_S, internalTeslaGate.LocalIndex),
 
                 // if (!teslaGate.PlayerInIdleRange(referenceHub))

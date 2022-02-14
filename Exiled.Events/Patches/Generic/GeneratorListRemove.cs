@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Generic
 
             newInstructions.InsertRange(0, new[]
             {
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(Generator), nameof(Generator.GeneratorValues))),
+                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Generator), nameof(Generator.Get), new[] { typeof(Scp079Generator) })),
                 new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Remove))),
