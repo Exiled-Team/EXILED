@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -21,6 +22,11 @@ namespace Exiled.API.Features
     /// </summary>
     public class Camera
     {
+        /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Camera"/>s on the map.
+        /// </summary>
+        internal static readonly List<Camera> CamerasValue = new List<Camera>(250);
+
         private static readonly Dictionary<string, CameraType> NameToCameraType = new Dictionary<string, CameraType>
         {
             // Light Containment
@@ -112,6 +118,17 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base camera.</param>
         internal Camera(Camera079 camera079) => Base = camera079;
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains all the <see cref="Camera"/> instances.
+        /// </summary>
+        public static IEnumerable<Camera> List => CamerasValue;
+
+        /// <summary>
+        /// Gets a random <see cref="Camera"/>.
+        /// </summary>
+        /// <returns><see cref="Camera"/> object.</returns>
+        public static Camera Random => List.ElementAt(UnityEngine.Random.Range(0, List.Count()));
 
         /// <summary>
         /// Gets the base <see cref="Camera079"/>.
@@ -394,27 +411,34 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="camera079">The base <see cref="Camera079"/>.</param>
         /// <returns>A <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(Camera079 camera079) => Map.Cameras.FirstOrDefault(camera => camera.Base == camera079);
+        public static Camera Get(Camera079 camera079) => List.FirstOrDefault(camera => camera.Base == camera079);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified id.
         /// </summary>
         /// <param name="cameraId">The camera id to be searched for.</param>
         /// <returns>The <see cref="Camera"/> with the given id or <see langword="null"/> if not found.</returns>
-        public static Camera Get(uint cameraId) => Map.Cameras.FirstOrDefault(camera => camera.Id == cameraId);
+        public static Camera Get(uint cameraId) => List.FirstOrDefault(camera => camera.Id == cameraId);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified name.
         /// </summary>
         /// <param name="cameraName">The name of the camera.</param>
         /// <returns>The <see cref="Camera"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(string cameraName) => Map.Cameras.FirstOrDefault(camera => camera.Name == cameraName);
+        public static Camera Get(string cameraName) => List.FirstOrDefault(camera => camera.Name == cameraName);
 
         /// <summary>
         /// Gets a <see cref="Camera"/> given the specified <see cref="CameraType"/>.
         /// </summary>
         /// <param name="cameraType">The <see cref="CameraType"/> to search for.</param>
         /// <returns>The <see cref="Camera"/> with the given <see cref="CameraType"/> or <see langword="null"/> if not found.</returns>
-        public static Camera Get(CameraType cameraType) => Map.Cameras.FirstOrDefault(camera => camera.Type == cameraType);
+        public static Camera Get(CameraType cameraType) => List.FirstOrDefault(camera => camera.Type == cameraType);
+
+        /// <summary>
+        /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Camera"/> filtered based on a predicate.
+        /// </summary>
+        /// <param name="predicate">The condition to satify.</param>
+        /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="Camera"/> which contains elements that satify the condition.</returns>
+        public static IEnumerable<Camera> Get(Func<Camera, bool> predicate) => List.Where(predicate);
     }
 }
