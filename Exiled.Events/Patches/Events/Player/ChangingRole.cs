@@ -119,6 +119,12 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[index + 1].WithLabels(liteLabel);
             newInstructions.InsertRange(index + 1, new[]
             {
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
+
                 // if (ev.Lite)
                 //    break;
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
@@ -217,8 +223,6 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
                 foreach (ItemType item in items)
                     InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
-
-                UpdatePlayerRole(newRole, player);
             }
             catch (Exception e)
             {
