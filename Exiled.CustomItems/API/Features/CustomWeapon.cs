@@ -27,7 +27,6 @@ namespace Exiled.CustomItems.API.Features
     using static CustomItems;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
-    using FirearmDamageHandler = PlayerStatsSystem.FirearmDamageHandler;
     using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
@@ -296,17 +295,13 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (ev.Handler.Base != null)
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: {ev.Handler.Base.GetType()}");
-            if (ev.Handler.CustomBase != null)
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: {ev.Handler.CustomBase.GetType()}");
-            if (!ev.Handler.Is(out FirearmDamageHandler firearmDamageHandler))
+            if (!ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
                 return;
             }
 
-            if (firearmDamageHandler.WeaponType != Type)
+            if (firearmDamageHandler.Item.Type != Type)
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
                 return;
