@@ -8,7 +8,6 @@
 namespace Exiled.CustomItems.API.Features
 {
     using System;
-    using System.Net;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -28,6 +27,7 @@ namespace Exiled.CustomItems.API.Features
     using static CustomItems;
 
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using FirearmDamageHandler = PlayerStatsSystem.FirearmDamageHandler;
     using Player = Exiled.API.Features.Player;
 
     /// <inheritdoc />
@@ -120,7 +120,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        public override void Give(Player player, bool displayMessage)
+        public override void Give(Player player, bool displayMessage = true)
         {
             Item item = player.AddItem(Type);
 
@@ -131,6 +131,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.Ammo = ClipSize;
             }
 
+            Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.", Instance.Config.Debug);
             TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
@@ -259,8 +260,57 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || ev.Target == null || ev.Attacker.CurrentItem == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler != null && ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler) && firearmDamageHandler.Item.Type == Type))
+            if (ev.Attacker == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
+            }
+
+            if (ev.Target == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: target null", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Attacker.CurrentItem == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: CurItem null", Instance.Config.Debug);
+                return;
+            }
+
+            if (!Check(ev.Attacker.CurrentItem))
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check() {ev.Attacker.CurrentItem.Serial}", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Attacker == ev.Target)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: attacker == target", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Handler == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Handler.Base != null)
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: {ev.Handler.Base.GetType()}");
+            if (ev.Handler.CustomBase != null)
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: {ev.Handler.CustomBase.GetType()}");
+            if (!ev.Handler.Is(out FirearmDamageHandler firearmDamageHandler))
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
+                return;
+            }
+
+            if (firearmDamageHandler.WeaponType != Type)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
+                return;
+            }
 
             OnHurting(ev);
         }

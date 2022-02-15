@@ -1663,7 +1663,7 @@ namespace Exiled.API.Features
         {
             Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
-            if (item is Firearm firearm)
+            if (item is Firearm firearm && identifiers != null)
                 firearm.AddAttachment(identifiers);
 
             return item;
@@ -2198,6 +2198,6 @@ namespace Exiled.API.Features
         /// Returns the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Role.Team}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {(Role == null ? "No role" : Role.ToString())} {Role?.Team}";
     }
 }

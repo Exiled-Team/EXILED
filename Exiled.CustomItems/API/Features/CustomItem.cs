@@ -556,17 +556,25 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
-            Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
+            try
+            {
+                Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
 
-            player.AddItem(item);
+                player.AddItem(item);
 
-            if (!TrackedSerials.Contains(item.Serial))
-                TrackedSerials.Add(item.Serial);
+                Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.", Instance.Config.Debug);
+                if (!TrackedSerials.Contains(item.Serial))
+                    TrackedSerials.Add(item.Serial);
 
-            if (displayMessage)
-                ShowPickedUpMessage(player);
+                if (displayMessage)
+                    ShowPickedUpMessage(player);
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Give)}: {e}");
+            }
         }
 
         /// <summary>

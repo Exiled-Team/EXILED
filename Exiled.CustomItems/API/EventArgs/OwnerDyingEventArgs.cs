@@ -8,13 +8,9 @@
 namespace Exiled.CustomItems.API.EventArgs
 {
     using Exiled.API.Features;
-    using Exiled.API.Features.DamageHandlers;
     using Exiled.CustomItems.API.Features;
     using Exiled.Events.EventArgs;
 
-    using PlayerStatsSystem;
-
-    using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Item = Exiled.API.Features.Items.Item;
     using Player = Exiled.API.Features.Player;
 
@@ -31,6 +27,12 @@ namespace Exiled.CustomItems.API.EventArgs
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
             : base(ev.Target, ev.Handler.Base)
         {
+            if (item == null)
+                Log.Warn("Item is null");
+            if (ev.Target == null)
+                Log.Warn("Target is null");
+            if (ev.Handler.Base == null)
+                Log.Warn("handler base is null");
             Item = item;
         }
 
