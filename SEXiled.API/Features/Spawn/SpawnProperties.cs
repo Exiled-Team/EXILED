@@ -1,0 +1,43 @@
+// -----------------------------------------------------------------------
+// <copyright file="SpawnProperties.cs" company="SEXiled Team">
+// Copyright (c) SEXiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace SEXiled.API.Features.Spawn
+{
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Handles special properties of spawning an item.
+    /// </summary>
+    public class SpawnProperties
+    {
+        /// <summary>
+        /// Gets or sets a value indicating how many of the item can be spawned when the round starts.
+        /// </summary>
+        public uint Limit { get; set; }
+
+        /// <summary>
+        /// Gets or sets a <see cref="List{T}"/> of possible dynamic spawn points.
+        /// </summary>
+        public List<DynamicSpawnPoint> DynamicSpawnPoints { get; set; } = new List<DynamicSpawnPoint>();
+
+        /// <summary>
+        /// Gets or sets a <see cref="List{T}"/> of possible static spawn points.
+        /// </summary>
+        public List<StaticSpawnPoint> StaticSpawnPoints { get; set; } = new List<StaticSpawnPoint>();
+
+        /// <summary>
+        /// Gets or sets a <see cref="List{T}"/> of possible role-based spawn points.
+        /// </summary>
+        public List<RoleSpawnPoint> RoleSpawnPoints { get; set; } = new List<RoleSpawnPoint>();
+
+        /// <summary>
+        /// Counts how many spawn points are in this instance.
+        /// </summary>
+        /// <returns>How many spawn points there are.</returns>
+        public int Count() => DynamicSpawnPoints.Count + StaticSpawnPoints.Count + RoleSpawnPoints.Count;
+    }
+}

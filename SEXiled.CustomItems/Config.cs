@@ -1,0 +1,43 @@
+// -----------------------------------------------------------------------
+// <copyright file="Config.cs" company="SEXiled Team">
+// Copyright (c) SEXiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace SEXiled.CustomItems
+{
+    using System.ComponentModel;
+
+    using SEXiled.API.Features;
+    using SEXiled.API.Interfaces;
+    using SEXiled.CustomItems.API.Features;
+
+    /// <summary>
+    /// The plugin's config class.
+    /// </summary>
+    public class Config : IConfig
+    {
+        /// <inheritdoc/>
+        [Description("Indicates whether this plugin is enabled or not.")]
+        public bool IsEnabled { get; set; } = true;
+
+        /// <summary>
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// </summary>
+        [Description("The hint that is shown when someone pickups a custom item.")]
+        public Broadcast PickedUpHint { get; private set; } = new Broadcast("You have picked up a {0}\n{1}");
+
+        /// <summary>
+        /// Gets the hint that is shown when someone pickups a <see cref="CustomItem"/>.
+        /// </summary>
+        [Description("The hint that is shown when someone selects a custom item.")]
+        public Broadcast SelectedHint { get; private set; } = new Broadcast("You have selected a {0}\n{1}", 5);
+
+        /// <summary>
+        /// Gets a value indicating whether if debug mode is enabled.
+        /// </summary>
+        [Description("Whether or not debug messages should be displayed in the server console.")]
+        public bool Debug { get; private set; } = false;
+    }
+}

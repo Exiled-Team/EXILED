@@ -1,0 +1,41 @@
+// -----------------------------------------------------------------------
+// <copyright file="Group.cs" company="SEXiled Team">
+// Copyright (c) SEXiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace SEXiled.Permissions.Features
+{
+    using System.Collections.Generic;
+
+    using YamlDotNet.Serialization;
+
+    /// <summary>
+    /// Represents a player's group.
+    /// </summary>
+    public class Group
+    {
+        /// <summary>
+        /// Gets or sets a value indicating whether group is the default one or not.
+        /// </summary>
+        [YamlMember(Alias = "default")]
+        public bool IsDefault { get; set; }
+
+        /// <summary>
+        /// Gets or sets the group inheritance.
+        /// </summary>
+        public List<string> Inheritance { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Gets or sets the group permissions.
+        /// </summary>
+        public List<string> Permissions { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Gets the combined permissions of the group plus all inherited groups.
+        /// </summary>
+        [YamlIgnore]
+        public List<string> CombinedPermissions { get; internal set; } = new List<string>();
+    }
+}

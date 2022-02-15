@@ -1,0 +1,30 @@
+// -----------------------------------------------------------------------
+// <copyright file="RadioRangeSettings.cs" company="SEXiled Team">
+// Copyright (c) SEXiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace SEXiled.API.Structs
+{
+    /// <summary>
+    /// Settings for specific radio ranges.
+    /// </summary>
+    public struct RadioRangeSettings
+    {
+        /// <summary>
+        /// The amount of battery usage per minute while idle.
+        /// </summary>
+        public float IdleUsage;
+
+        /// <summary>
+        /// The amount of battery usage per minute while talking.
+        /// </summary>
+        public int TalkingUsage;
+
+        /// <summary>
+        /// The maximum range in which this radio will pickup and send voice messages.
+        /// </summary>
+        public int MaxRange;
+    }
+}

@@ -1,0 +1,64 @@
+// -----------------------------------------------------------------------
+// <copyright file="Broadcast.cs" company="SEXiled Team">
+// Copyright (c) SEXiled Team. All rights reserved.
+// Licensed under the CC BY-SA 3.0 license.
+// </copyright>
+// -----------------------------------------------------------------------
+
+namespace SEXiled.API.Features
+{
+    using System.ComponentModel;
+
+    /// <summary>
+    /// Useful class to save broadcast configs in a cleaner way.
+    /// </summary>
+    public class Broadcast
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Broadcast"/> class.
+        /// </summary>
+        public Broadcast()
+            : this(string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Broadcast"/> class.
+        /// </summary>
+        /// <param name="content">The content of the broadcast>.</param>
+        /// <param name="duration">The duration of the broadcast, in seconds.</param>
+        /// <param name="show">Whether or not the broadcast should be shown.</param>
+        /// <param name="type">The type of the broadcast.</param>
+        public Broadcast(string content, ushort duration = 10, bool show = true, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal)
+        {
+            Content = content;
+            Duration = duration;
+            Show = show;
+            Type = type;
+        }
+
+        /// <summary>
+        /// Gets or sets the broadcast content.
+        /// </summary>
+        [Description("The broadcast content")]
+        public string Content { get; set; }
+
+        /// <summary>
+        /// Gets or sets the broadcast duration.
+        /// </summary>
+        [Description("The broadcast duration")]
+        public ushort Duration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the broadcast type.
+        /// </summary>
+        [Description("The broadcast type")]
+        public global::Broadcast.BroadcastFlags Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the broadcast should be shown or not.
+        /// </summary>
+        [Description("Indicates whether the broadcast should be shown or not")]
+        public bool Show { get; set; }
+    }
+}
