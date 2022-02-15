@@ -29,18 +29,7 @@ namespace Exiled.CustomItems.API.EventArgs
         /// <param name="item"><inheritdoc cref="Item"/></param>
         /// <param name="ev">The <see cref="HandcuffingEventArgs"/> instance.</param>
         public OwnerDyingEventArgs(Item item, DyingEventArgs ev)
-            : this(item, ev.Target, ev.Handler.CustomBase)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OwnerDyingEventArgs"/> class.
-        /// </summary>
-        /// <param name="item"><inheritdoc cref="Item"/></param>
-        /// <param name="target"><inheritdoc cref="DyingEventArgs.Target"/></param>
-        /// <param name="damageHandler"><inheritdoc cref="DamageHandler"/></param>
-        public OwnerDyingEventArgs(Item item, Player target, DamageHandlerBase damageHandler)
-            : base(target, damageHandler)
+            : base(ev.Target, ev.Handler.Base)
         {
             Item = item;
         }

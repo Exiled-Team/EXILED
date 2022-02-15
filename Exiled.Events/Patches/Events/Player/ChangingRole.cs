@@ -23,6 +23,8 @@ namespace Exiled.Events.Patches.Events.Player
     using InventorySystem.Items.Armor;
     using InventorySystem.Items.Pickups;
 
+    using MEC;
+
     using NorthwoodLib.Pools;
 
     using static HarmonyLib.AccessTools;
@@ -155,6 +157,14 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
+        private static void UpdatePlayerRole(RoleType type, API.Features.Player player)
+        {
+            Timing.CallDelayed(0.05f, () =>
+            {
+                player.Role = API.Features.Roles.Role.Create(type, player);
+            });
+        }
+
         private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {
             try
@@ -207,6 +217,8 @@ namespace Exiled.Events.Patches.Events.Player
                     inventory.ServerAddAmmo(keyValuePair.Key, keyValuePair.Value);
                 foreach (ItemType item in items)
                     InventoryItemProvider.OnItemProvided?.Invoke(player.ReferenceHub, inventory.ServerAddItem(item));
+
+                UpdatePlayerRole(newRole, player);
             }
             catch (Exception e)
             {

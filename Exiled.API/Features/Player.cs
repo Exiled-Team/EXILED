@@ -1320,7 +1320,7 @@ namespace Exiled.API.Features
         /// Hurts the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new CustomDamageHandler(this, damageHandlerBase));
+        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
 
         /// <summary>
         /// Hurts the player.

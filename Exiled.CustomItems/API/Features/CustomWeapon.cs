@@ -8,6 +8,7 @@
 namespace Exiled.CustomItems.API.Features
 {
     using System;
+    using System.Net;
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
@@ -35,7 +36,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
         /// </summary>
-        public virtual AttachmentNameTranslation[] Attachments { get; set; }
+        public virtual AttachmentNameTranslation[] Attachments { get; set; } = { };
 
         /// <inheritdoc/>
         public override ItemType Type
@@ -65,10 +66,22 @@ namespace Exiled.CustomItems.API.Features
         {
             Item item = Item.Create(Type);
 
-            if (item is Firearm firearm && !Attachments.IsEmpty())
+            if (item == null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Item is null.", Instance.Config.Debug);
+                return null;
+            }
+
+            if (item is Firearm firearm && Attachments != null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
+            if (pickup == null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Pickup is null.");
+                return null;
+            }
+
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
@@ -246,7 +259,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler != null && ev.Handler.BaseAs<FirearmDamageHandler>().Item.Type != Type))
+            if (ev.Attacker == null || ev.Target == null || ev.Attacker.CurrentItem == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler != null && ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler) && firearmDamageHandler.Item.Type == Type))
                 return;
 
             OnHurting(ev);

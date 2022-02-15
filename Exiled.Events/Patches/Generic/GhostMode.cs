@@ -202,7 +202,7 @@ namespace Exiled.Events.Patches.Generic
                         if (target?.ReferenceHub == null)
                             continue;
 
-                        if (target.IsInvisible || PlayerCannotSee(player, target.Id))
+                        if (player.Role != RoleType.Spectator && (target.IsInvisible || PlayerCannotSee(player, target.Id)))
                         {
                             MakeGhost(z, __instance._transmitBuffer);
                         }
