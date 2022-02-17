@@ -36,7 +36,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the pickup being spawned. CAN BE NULL.
+        /// Gets or sets a value indicating the pickup being spawned.
         /// </summary>
         public Pickup Pickup { get; set; }
 
