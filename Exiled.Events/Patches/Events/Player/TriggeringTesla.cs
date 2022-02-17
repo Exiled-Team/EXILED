@@ -53,7 +53,7 @@ namespace Exiled.Events.Patches.Events.Player
                     bool inIdleRange = false;
                     bool isTriggerable = false;
 
-                    foreach (Player player in teslaGate.PlayersInIdleRange)
+                    foreach (Player player in Player.List)
                     {
                         if (!teslaGate.CanBeIdle(player))
                             continue;
