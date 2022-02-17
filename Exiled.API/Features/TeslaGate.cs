@@ -212,11 +212,32 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the tesla gate can be triggered by a specific <see cref="Player"/>.
+        /// Gets a value indicating whether the  <see cref="Player"/> is in the hurt range of a specific tesla gate.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
-        /// <returns><see langword="true"/> if the given <see cref="Player"/> can trigger the tesla gate; otherwise, <see langword="false"/>.</returns>
-        public bool CanBeTriggered(Player player) => !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
-                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayersInTriggerRange.Contains(player);
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the hurt range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerIsInHurtRange(Player player) => Base.PlayerInHurtRange(player.GameObject);
+
+        /// <summary>
+        /// Gets a value indicating whether the  <see cref="Player"/> is in the idle range of a specific tesla gate.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the idle range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerIsInIdleRange(Player player) => Base.PlayerInIdleRange(player.ReferenceHub);
+
+        /// <summary>
+        /// Gets a value indicating whether the  <see cref="Player"/> is in the trigger range of a specific tesla gate.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the trigger range of the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool PlayerIsInTriggerRange(Player player) => Base.PlayerInRange(player.ReferenceHub);
+
+        /// <summary>
+        /// Gets a value indicating whether the tesla gate can be idle by a specific <see cref="Player"/>.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> to check.</param>
+        /// <returns><see langword="true"/> if the given <see cref="Player"/> can idle the tesla gate; otherwise, <see langword="false"/>.</returns>
+        public bool CanBeIdle(Player player) => player.IsAlive && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) &&
+                                                     !IgnoredTeams.Contains(player.Role.Team) && PlayerIsInIdleRange(player);
     }
 }
