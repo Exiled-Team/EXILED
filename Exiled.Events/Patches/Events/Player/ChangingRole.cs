@@ -112,6 +112,12 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, Method(typeof(RoleExtensionMethods), nameof(RoleExtensionMethods.SafeGet), new[] { typeof(Role[]), typeof(RoleType) })),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(Role), nameof(Role.maxHP))),
                 new CodeInstruction(OpCodes.Call, PropertySetter(typeof(API.Features.Player), nameof(API.Features.Player.MaxHealth))),
+
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
+                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
             });
 
             offset = 0;
@@ -119,12 +125,6 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions[index + 1].WithLabels(liteLabel);
             newInstructions.InsertRange(index + 1, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.NewRole))),
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingRoleEventArgs), nameof(ChangingRoleEventArgs.Player))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(UpdatePlayerRole))),
-
                 // if (ev.Lite)
                 //    break;
                 new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
@@ -163,13 +163,7 @@ namespace Exiled.Events.Patches.Events.Player
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
 
-        private static void UpdatePlayerRole(RoleType type, API.Features.Player player)
-        {
-            Timing.CallDelayed(0.05f, () =>
-            {
-                player.Role = API.Features.Roles.Role.Create(type, player);
-            });
-        }
+        private static void UpdatePlayerRole(RoleType type, API.Features.Player player) => player.Role = API.Features.Roles.Role.Create(type, player);
 
         private static void ChangeInventory(API.Features.Player player, List<ItemType> items, Dictionary<ItemType, ushort> ammo, RoleType prevRole, RoleType newRole, CharacterClassManager.SpawnReason reason)
         {
