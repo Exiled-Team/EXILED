@@ -208,7 +208,7 @@ namespace Exiled.API.Features
             if (isInstantBurst)
                 Base.RpcInstantBurst();
             else
-                Base.RpcPlayAnimation();
+                Base.ServerSideCode();
         }
 
         /// <summary>

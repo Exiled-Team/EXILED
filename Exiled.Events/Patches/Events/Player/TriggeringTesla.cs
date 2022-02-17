@@ -50,12 +50,12 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                     TeslaGate teslaGate = TeslaGate.Get(baseTeslaGate);
-
                     bool inIdleRange = false;
                     bool isTriggerable = false;
+
                     foreach (Player player in teslaGate.PlayersInIdleRange)
                     {
-                        if (teslaGate.CanBeIdle(player))
+                        if (!teslaGate.CanBeIdle(player))
                             continue;
 
                         TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(player, teslaGate);
