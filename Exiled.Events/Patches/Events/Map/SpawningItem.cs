@@ -11,6 +11,7 @@ namespace Exiled.Events.Patches.Events.Map
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
+    using Exiled.API.Features;
     using Exiled.Events.EventArgs;
 
     using HarmonyLib;
@@ -32,15 +33,11 @@ namespace Exiled.Events.Patches.Events.Map
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = 1;
-
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ret) + offset;
-
             // var ev = new SpawningItemEventArgs(ipb, true);
             //
             // if (!ev.IsAllowed)
             //     return;
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(0, new[]
             {
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldc_I4_1),
