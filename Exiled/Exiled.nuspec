@@ -23,6 +23,7 @@
 
   <files>
     <!-- Project files -->
+    <file src="..\libs\Assembly-CSharp-Publicized.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.API.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.API.xml" target="lib\net472" />
 
