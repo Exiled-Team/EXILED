@@ -23,7 +23,7 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="target">The ban target.</param>
         /// <param name="issuer">The ban issuer.</param>
-        /// <param name="duration">The ban minutes duration.</param>
+        /// <param name="duration">The ban seconds duration.</param>
         /// <param name="reason">The ban reason.</param>
         /// <param name="fullMessage">The ban full message.</param>
         /// <param name="isAllowed">Indicates whether the event can be executed or not.</param>
