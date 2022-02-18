@@ -35,10 +35,10 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            int offset = 3;
+            int offset = -8;
 
             // Search for the last "newobj".
-            int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"gray") + offset;
+            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))) + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
             LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
@@ -87,23 +87,19 @@ namespace Exiled.Events.Patches.Events.Player
             });
 
             // The index offset.
-            offset = -5;
-
-            // The amount of instructions to remove.
-            const int instructionsToRemove = 3;
+            offset = 0;
 
             // Search for the first "OverridePosition" method.
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                                 (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
-
-            // Remove "Vector3.down * 1998.5f" instructions.
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret) + offset;
 
             // ev.Position
             newInstructions.InsertRange(index, new[]
             {
+                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Player))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Player), nameof(Player.Position))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
