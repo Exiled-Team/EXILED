@@ -48,11 +48,11 @@ namespace Exiled.CreditTags
         /// </summary>
         internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
         {
-            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "33DEFF"),
-            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "B733FF"),
-            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "E60909"),
-            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "FF96DE"),
-            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "FF1493"),
+            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "aqua"),
+            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "magenta"),
+            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "crimson"),
+            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "pink"),
+            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "deep_pink"),
         };
 
         /// <summary>
