@@ -35,10 +35,10 @@ namespace Exiled.Events.Patches.Events.Player
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             // The index offset.
-            int offset = -8;
+            int offset = 3;
 
             // Search for the last "newobj".
-            int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(CharacterClassManager), nameof(CharacterClassManager.RpcPlaceBlood))) + offset;
+            int index = newInstructions.FindLastIndex(instruction => instruction.operand == (object)"gray") + offset;
 
             // Declare a local variable of the type "EnteringPocketDimensionEventArgs"
             LocalBuilder ev = generator.DeclareLocal(typeof(EnteringPocketDimensionEventArgs));
@@ -86,16 +86,13 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            // The index offset.
-            offset = 0;
-
             // Search for the first "OverridePosition" method.
-            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret) + offset;
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
 
             // ev.Position
             newInstructions.InsertRange(index, new[]
             {
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Player))),
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
