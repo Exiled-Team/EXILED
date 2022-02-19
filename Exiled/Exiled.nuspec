@@ -23,6 +23,9 @@
 
   <files>
     <!-- Project files -->
+    <file src="..\References\Assembly-CSharp-Publicized.dll" target="lib\net472" />
+    <file src="..\References\CommandSystem.Code.dll" target="lib\net472" />
+    <file src="..\References\NorthwoodLib.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.API.dll" target="lib\net472" />
     <file src="..\bin\Release\Exiled.API.xml" target="lib\net472" />
 
