@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Generic
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = -3;
+            const int offset = -2;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
@@ -54,7 +54,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // itemInstance
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_1),
 
                 // AddItem(player, itemInstance)
                 new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
