@@ -111,9 +111,17 @@ namespace Exiled.API.Features
         public IEnumerable<Camera> Cameras { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether or not the lights in this room are currently flickered off.
+        /// Gets or sets a value indicating whether or not the lights in this room are currently flickered on.
         /// </summary>
-        public bool LightsOff => FlickerableLightController && FlickerableLightController.NetworkLightsEnabled;
+        public bool LightsOn
+        {
+            get => FlickerableLightController && FlickerableLightController.NetworkLightsEnabled;
+            set
+            {
+                if (FlickerableLightController)
+                    FlickerableLightController.NetworkLightsEnabled = value;
+            }
+        }
 
         /// <summary>
         /// Gets the FlickerableLightController's NetworkIdentity.
