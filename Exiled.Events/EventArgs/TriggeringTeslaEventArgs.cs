@@ -25,8 +25,8 @@ namespace Exiled.Events.EventArgs
         {
             Player = player;
             Tesla = teslaGate;
-            IsInHurtingRange = Tesla.PlayerIsInHurtRange(player);
-            IsTriggerable = Tesla.PlayerIsInTriggerRange(player);
+            IsInHurtingRange = Tesla.PlayerInHurtRange(player);
+            IsTriggerable = Tesla.PlayerInTriggerRange(player);
         }
 
         /// <summary>
