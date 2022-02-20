@@ -37,10 +37,12 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerAddItem))]
     internal static class InventoryControlAddPatch
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
-            const int offset = -3;
+            const int offset = -2;
             int index = newInstructions.FindIndex(i =>
                 i.opcode == OpCodes.Callvirt &&
                 (MethodInfo)i.operand == Method(typeof(ItemBase), nameof(ItemBase.OnAdded))) + offset;
@@ -53,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // itemInstance
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_1),
 
                 // AddItem(player, itemInstance)
                 new CodeInstruction(OpCodes.Call, Method(typeof(InventoryControlAddPatch), nameof(AddItem))),
@@ -74,7 +76,9 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(InventoryExtensions), nameof(InventoryExtensions.ServerRemoveItem))]
     internal static class InventoryControlRemovePatch
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(
+            IEnumerable<CodeInstruction> instructions,
+            ILGenerator generator)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
@@ -98,12 +102,12 @@ namespace Exiled.Events.Patches.Generic
         private static void RemoveItem(Player player, ushort serial)
         {
 #if DEBUG
-            Log.Debug($"Removing item ({serial}) from a player (before null check)");
+                Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
             if (player == null)
             {
 #if DEBUG
-                Log.Debug("Attempted to remove item from null player, returning.");
+                    Log.Debug("Attempted to remove item from null player, returning.");
 #endif
                 return;
             }
@@ -111,14 +115,15 @@ namespace Exiled.Events.Patches.Generic
             if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
             {
 #if DEBUG
-                Log.Debug("Attempted to remove an item the player doesn't own, returning.");
+                    Log.Debug("Attempted to remove an item the player doesn't own, returning.");
 #endif
                 return;
             }
 #if DEBUG
-            Log.Debug($"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-            foreach (Item item in player.Items)
-                Log.Debug($"{item.Type} ({item.Serial})");
+                Log.Debug(
+                    $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                foreach (Item item in player.Items)
+                    Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
             player.ItemsValue.Remove(Item.Get(itemBase));
@@ -129,14 +134,15 @@ namespace Exiled.Events.Patches.Generic
                     player.Inventory.UserInventory.Items.Remove(serial);
                     player.Inventory.SendItemsNextFrame = true;
 #if DEBUG
-                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
+                        Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
 #endif
                 }
 #if DEBUG
-                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                Log.Debug($"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                foreach (Item item in player.Items)
-                    Log.Debug($"{item.Type} ({item.Serial})");
+                    Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                    Log.Debug(
+                        $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
+                    foreach (Item item in player.Items)
+                        Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             });
         }

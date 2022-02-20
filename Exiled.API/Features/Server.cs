@@ -161,7 +161,7 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is <see langword="false"/>, the server won't restart.</remarks>
         public static bool RestartRedirect(ushort redirectPort)
         {
-            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Restart);
 
             return true;
@@ -175,7 +175,7 @@ namespace Exiled.API.Features
         /// <remarks>If the returned value is <see langword="false"/>, the server won't shutdown.</remarks>
         public static bool ShutdownRedirect(ushort redirectPort)
         {
-            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true));
+            NetworkServer.SendToAll(new RoundRestartMessage(RoundRestartType.RedirectRestart, 0.0f, redirectPort, true, false));
             Timing.CallDelayed(0.5f, Shutdown);
             return true;
         }
