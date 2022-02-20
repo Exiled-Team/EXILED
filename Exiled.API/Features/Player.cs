@@ -1821,11 +1821,11 @@ namespace Exiled.API.Features
 
             Timing.CallDelayed(0.5f, () =>
             {
-                if (newItems.Count() > 0)
-                {
-                    foreach (ItemType item in newItems)
-                        AddItem(item);
-                }
+                if (!newItems.Any())
+                    return;
+
+                foreach (ItemType item in newItems)
+                    AddItem(item);
             });
         }
 
@@ -1837,12 +1837,30 @@ namespace Exiled.API.Features
         {
             ClearInventory();
 
-            if (newItems.Any())
+            if (!newItems.Any())
+                return;
+
+            foreach (Item item in newItems)
+                AddItem(item.Base == null ? new Item(item.Type) : item);
+        }
+
+        /// <summary>
+        /// Resets the player's inventory to the provided list of items name, clearing any items it already possess.
+        /// </summary>
+        /// <param name="newItems">The new items that have to be added to the inventory.</param>
+        public void ResetInventory(IEnumerable<string> newItems)
+        {
+            ClearInventory();
+
+            if (!newItems.Any())
+                return;
+
+            foreach (string item in newItems)
             {
-                foreach (Item item in newItems)
-                {
-                    AddItem(item.Base == null ? new Item(item.Type) : item);
-                }
+                if (!Enum.TryParse(item, out ItemType itemType))
+                    continue;
+
+                AddItem(new Item(itemType));
             }
         }
 
