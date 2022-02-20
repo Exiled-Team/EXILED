@@ -545,7 +545,7 @@ namespace Exiled.API.Features
         public bool IsScp => Role.Team == Team.SCP;
 
         /// <summary>
-        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank.
         /// </summary>
         public bool IsHuman => Role.Is(out HumanRole _);
 
