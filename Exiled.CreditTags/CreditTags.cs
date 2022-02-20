@@ -48,11 +48,11 @@ namespace Exiled.CreditTags
         /// </summary>
         internal Dictionary<RankType, Rank> Ranks { get; } = new Dictionary<RankType, Rank>
         {
-            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "aqua"),
-            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "magenta"),
-            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "crimson"),
-            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "pink"),
-            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "deep_pink"),
+            [RankType.Dev] = new Rank("Exiled Developer", "aqua", "00FFFF"),
+            [RankType.Contributor] = new Rank("Exiled Contributor", "magenta", "FF0090"),
+            [RankType.PluginDev] = new Rank("Exiled Plugin Developer", "crimson", "DC143C"),
+            [RankType.TournamentParticipant] = new Rank("Exiled Tournament Participant", "pink", "FF96DE"),
+            [RankType.TournamentChampion] = new Rank("Exiled Tournament Champion", "deep_pink", "FF1493"),
         };
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Exiled.CreditTags
                         case InfoSide.Badge:
                             if (canReceiveCreditBadge)
                             {
-                              SetCreditBadge(player, value);
+                                SetCreditBadge(player, value);
                             }
 
                             break;
