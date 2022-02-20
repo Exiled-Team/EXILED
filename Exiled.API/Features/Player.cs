@@ -1860,7 +1860,7 @@ namespace Exiled.API.Features
                 if (!Enum.TryParse(item, out ItemType itemType))
                     continue;
 
-                AddItem(new Item(itemType));
+                AddItem(itemType);
             }
         }
 
