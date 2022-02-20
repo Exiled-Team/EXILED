@@ -86,7 +86,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             get
             {
-                if (!(damageType is DamageType.Unknown))
+                if (damageType != DamageType.Unknown)
                     return damageType;
 
                 switch (Base)
@@ -181,6 +181,7 @@ namespace Exiled.API.Features.DamageHandlers
             { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
             { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
         };
 
         /// <summary>

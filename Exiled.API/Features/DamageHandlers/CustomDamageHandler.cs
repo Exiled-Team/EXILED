@@ -47,6 +47,8 @@ namespace Exiled.API.Features.DamageHandlers
             {
                 CustomBase = new DamageHandler(target, baseHandler);
             }
+
+            Type = CustomBase.Type;
         }
 
         /// <summary>
