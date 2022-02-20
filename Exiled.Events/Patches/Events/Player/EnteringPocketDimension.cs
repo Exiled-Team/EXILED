@@ -86,24 +86,17 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            // The index offset.
-            offset = -5;
-
-            // The amount of instructions to remove.
-            const int instructionsToRemove = 3;
-
             // Search for the first "OverridePosition" method.
-            index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
-                                                                 (MethodInfo)instruction.operand == Method(typeof(PlayerMovementSync), nameof(PlayerMovementSync.OverridePosition))) + offset;
-
-            // Remove "Vector3.down * 1998.5f" instructions.
-            newInstructions.RemoveRange(index, instructionsToRemove);
+            index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ret);
 
             // ev.Position
             newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Player))),
+                new CodeInstruction(OpCodes.Ldloc_S, ev.LocalIndex),
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(EnteringPocketDimensionEventArgs), nameof(EnteringPocketDimensionEventArgs.Position))),
+                new CodeInstruction(OpCodes.Callvirt, PropertySetter(typeof(Player), nameof(Player.Position))),
             });
 
             newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);

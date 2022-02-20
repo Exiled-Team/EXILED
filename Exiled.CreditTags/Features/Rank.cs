@@ -17,7 +17,7 @@ namespace Exiled.CreditTags.Features
         /// </summary>
         /// <param name="name">The name of the rank.</param>
         /// <param name="color">The name of the rank's color.</param>
-        /// <param name="hexValue">The hex color value of the rank's color.</param>
+        /// <param name="hexValue">The hex color value of the rank's color (in CustomPlayerInfo).</param>
         public Rank(string name, string color, string hexValue)
         {
             Name = name;

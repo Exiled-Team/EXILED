@@ -463,16 +463,41 @@ namespace Exiled.CustomItems.API.Features
                 {
                     for (int i = 0; i < 50; i++)
                     {
+                        if (Map.Lockers == null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Locker list is null.", Instance.Config.Debug);
+                            continue;
+                        }
+
                         Locker locker =
                             Map.Lockers[
                                 Loader.Random.Next(Map.Lockers.Count)];
+
+                        if (locker == null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Selected locker is null.", Instance.Config.Debug);
+                            continue;
+                        }
+
                         if (locker.Loot == null)
                         {
                             Log.Debug($"{nameof(Spawn)}: Invalid locker location. Attempting to find a new one..", Instance.Config.Debug);
                             continue;
                         }
 
+                        if (locker.Chambers == null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: Locker chambers is null", Instance.Config.Debug);
+                            continue;
+                        }
+
                         LockerChamber chamber = locker.Chambers[Loader.Random.Next(Mathf.Max(0, locker.Chambers.Length - 1))];
+
+                        if (chamber == null)
+                        {
+                            Log.Debug($"{nameof(Spawn)}: chamber is null", Instance.Config.Debug);
+                            continue;
+                        }
 
                         Vector3 position = chamber._spawnpoint.transform.position;
                         Spawn(position);
@@ -531,17 +556,25 @@ namespace Exiled.CustomItems.API.Features
         /// <param name="displayMessage">Indicates whether or not <see cref="ShowPickedUpMessage"/> will be called when the player receives the item.</param>
         public virtual void Give(Player player, Item item, bool displayMessage = true)
         {
-            Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
+            try
+            {
+                Log.Debug($"{Name}.{nameof(Give)}: Item Serial: {item.Serial} Ammo: {(item is Firearm firearm ? firearm.Ammo : -1)}", Instance.Config.Debug);
 
-            player.AddItem(item);
+                player.AddItem(item);
 
-            if (!TrackedSerials.Contains(item.Serial))
-                TrackedSerials.Add(item.Serial);
+                Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.", Instance.Config.Debug);
+                if (!TrackedSerials.Contains(item.Serial))
+                    TrackedSerials.Add(item.Serial);
 
-            if (displayMessage)
-                ShowPickedUpMessage(player);
+                if (displayMessage)
+                    ShowPickedUpMessage(player);
 
-            Timing.CallDelayed(0.05f, () => OnAcquired(player));
+                Timing.CallDelayed(0.05f, () => OnAcquired(player));
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{nameof(Give)}: {e}");
+            }
         }
 
         /// <summary>

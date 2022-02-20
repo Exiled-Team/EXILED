@@ -1320,7 +1320,7 @@ namespace Exiled.API.Features
         /// Hurts the player.
         /// </summary>
         /// <param name="damageHandlerBase">The <see cref="DamageHandlerBase"/> used to deal damage.</param>
-        public void Hurt(DamageHandlerBase damageHandlerBase) => Hurt(new CustomDamageHandler(this, damageHandlerBase));
+        public void Hurt(DamageHandlerBase damageHandlerBase) => ReferenceHub.playerStats.DealDamage(damageHandlerBase);
 
         /// <summary>
         /// Hurts the player.
@@ -1663,7 +1663,7 @@ namespace Exiled.API.Features
         {
             Item item = Item.Get(Inventory.ServerAddItem(pickup.Type, pickup.Serial, pickup.Base));
 
-            if (item is Firearm firearm)
+            if (item is Firearm firearm && identifiers != null)
                 firearm.AddAttachment(identifiers);
 
             return item;
@@ -2182,7 +2182,7 @@ namespace Exiled.API.Features
                     roundRestartType = RoundRestartType.RedirectRestart;
             }
 
-            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect));
+            Connection.Send(new RoundRestartMessage(roundRestartType, 0.0f, newPort, reconnect, false));
         }
 
         /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
@@ -2198,6 +2198,6 @@ namespace Exiled.API.Features
         /// Returns the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
-        public override string ToString() => $"{Id} {Nickname} {UserId} {Role} {Role.Team}";
+        public override string ToString() => $"{Id} {Nickname} {UserId} {(Role == null ? "No role" : Role.ToString())} {Role?.Team}";
     }
 }

@@ -35,7 +35,7 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Gets or sets value indicating what <see cref="FirearmAttachment"/>s the weapon will have.
         /// </summary>
-        public virtual AttachmentNameTranslation[] Attachments { get; set; }
+        public virtual AttachmentNameTranslation[] Attachments { get; set; } = { };
 
         /// <inheritdoc/>
         public override ItemType Type
@@ -65,10 +65,22 @@ namespace Exiled.CustomItems.API.Features
         {
             Item item = Item.Create(Type);
 
-            if (item is Firearm firearm && !Attachments.IsEmpty())
+            if (item == null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Item is null.", Instance.Config.Debug);
+                return null;
+            }
+
+            if (item is Firearm firearm && Attachments != null && !Attachments.IsEmpty())
                 firearm.AddAttachment(Attachments);
 
             Pickup pickup = item.Spawn(position);
+            if (pickup == null)
+            {
+                Log.Debug($"{nameof(Spawn)}: Pickup is null.");
+                return null;
+            }
+
             pickup.Weight = Weight;
 
             TrackedSerials.Add(pickup.Serial);
@@ -107,7 +119,7 @@ namespace Exiled.CustomItems.API.Features
         }
 
         /// <inheritdoc/>
-        public override void Give(Player player, bool displayMessage)
+        public override void Give(Player player, bool displayMessage = true)
         {
             Item item = player.AddItem(Type);
 
@@ -118,6 +130,7 @@ namespace Exiled.CustomItems.API.Features
                 firearm.Ammo = ClipSize;
             }
 
+            Log.Debug($"{nameof(Give)}: Adding {item.Serial} to tracker.", Instance.Config.Debug);
             TrackedSerials.Add(item.Serial);
 
             if (displayMessage)
@@ -246,8 +259,53 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalHurting(HurtingEventArgs ev)
         {
-            if (ev.Attacker == null || !Check(ev.Attacker.CurrentItem) || ev.Attacker == ev.Target || (ev.Handler != null && ev.Handler.BaseAs<FirearmDamageHandler>().Item.Type != Type))
+            if (ev.Attacker == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Attacker null", Instance.Config.Debug);
                 return;
+            }
+
+            if (ev.Target == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: target null", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Attacker.CurrentItem == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: CurItem null", Instance.Config.Debug);
+                return;
+            }
+
+            if (!Check(ev.Attacker.CurrentItem))
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check() {ev.Attacker.CurrentItem.Serial}", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Attacker == ev.Target)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: attacker == target", Instance.Config.Debug);
+                return;
+            }
+
+            if (ev.Handler == null)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler null", Instance.Config.Debug);
+                return;
+            }
+
+            if (!ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler))
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
+                return;
+            }
+
+            if (firearmDamageHandler.Item.Type != Type)
+            {
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
+                return;
+            }
 
             OnHurting(ev);
         }
