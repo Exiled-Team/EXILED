@@ -79,7 +79,6 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int index = 0;
             Label continueLabel = generator.DefineLabel();
-            newInstructions[newInstructions.FindIndex(i => i.opcode == OpCodes.Ldarg_1)].WithLabels(continueLabel);
 
             newInstructions.InsertRange(index, new[]
             {
@@ -90,6 +89,7 @@ namespace Exiled.Events.Patches.Generic
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldarg_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(CommandLogging), nameof(LogCommand))),
+                new CodeInstruction(OpCodes.Nop).WithLabels(continueLabel),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
