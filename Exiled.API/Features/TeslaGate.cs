@@ -210,10 +210,16 @@ namespace Exiled.API.Features
             if (isInstantBurst)
                 Base.RpcInstantBurst();
             else
-            {
-                Timing.RunCoroutine(Base.ServerSideWaitForAnimation());
-                Base.RpcPlayAnimation();
-            }
+                Base.ServerSideCode();
+        }
+
+        /// <summary>
+        /// Force triggers the tesla gate ignoring the delay between each burst.
+        /// </summary>
+        public void ForceTrigger()
+        {
+            Timing.RunCoroutine(Base.ServerSideWaitForAnimation());
+            Base.RpcPlayAnimation();
         }
 
         /// <summary>
