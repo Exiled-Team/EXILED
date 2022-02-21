@@ -88,12 +88,19 @@ namespace Exiled.API.Features.Items
         {
             get
             {
-                IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences = AttachmentsServerHandler.PlayerPreferences.Select((KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
+                IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences =
+                    AttachmentsServerHandler.PlayerPreferences.Where(
+                        kvp => kvp.Key != null).Select(
+                        (KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
                 {
-                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(Player.Get(keyValuePair.Key), keyValuePair.Value.ToDictionary(kvp => kvp.Key, kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
+                    return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(
+                        Player.Get(keyValuePair.Key),
+                        keyValuePair.Value.ToDictionary(
+                            kvp => kvp.Key,
+                            kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
                 });
 
-                return playerPreferences.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                return playerPreferences.Where(kvp => kvp.Key != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
         }
 
