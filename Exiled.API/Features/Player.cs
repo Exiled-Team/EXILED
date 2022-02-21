@@ -887,6 +887,11 @@ namespace Exiled.API.Features
         /// Gets the player's items.
         /// </summary>
         public IReadOnlyCollection<Item> Items => readOnlyItems;
+        
+        /// <summary>
+        /// Gets a value indicating whether the player inventory is empty.
+        /// </summary>
+        public bool IsInventoryEmpty => Items.Count == 0;
 
         /// <summary>
         /// Gets a value indicating whether the player inventory is full.
