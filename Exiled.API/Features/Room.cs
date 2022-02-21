@@ -89,7 +89,11 @@ namespace Exiled.API.Features
         public float LightIntensity
         {
             get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
-            set => FlickerableLightController.Network_lightIntensityMultiplier = value;
+            set
+            {
+                if (FlickerableLightController)
+                    FlickerableLightController.Network_lightIntensityMultiplier = value;
+            }
         }
 
         /// <summary>
@@ -97,11 +101,14 @@ namespace Exiled.API.Features
         /// </summary>
         public Color Color
         {
-            get => FlickerableLightController.WarheadLightColor;
+            get => (Color)FlickerableLightController?.WarheadLightColor;
             set
             {
-                FlickerableLightController.WarheadLightColor = value;
-                FlickerableLightController.WarheadLightOverride = true;
+                if (FlickerableLightController)
+                {
+                    FlickerableLightController.WarheadLightColor = value;
+                    FlickerableLightController.WarheadLightOverride = true;
+                }
             }
         }
 
