@@ -1789,26 +1789,20 @@ namespace Exiled.API.Features
         /// <returns><see langword="true"/> if a candy was given.</returns>
         public bool TryAddCandy(CandyKindID candyType)
         {
-            bool flag = false;
-            if (Scp330Bag.TryGetBag(ReferenceHub, out Scp330Bag bag))
+            if (!Scp330Bag.TryGetBag(referenceHub, out Scp330Bag scp330Bag))
             {
-                flag = bag.TryAddSpecific(candyType);
-                if (flag)
-                    bag.ServerRefreshBag();
-                return flag;
-            }
-            else
-            {
-                if (Items.Count > 7)
+                referenceHub.inventory.ServerAddItem(ItemType.SCP330);
+                if (!Scp330Bag.TryGetBag(referenceHub, out scp330Bag))
                     return false;
-
-                Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-                foreach (CandyKindID candy in scp330.Candies)
-                    scp330.RemoveCandy(candy);
-                scp330.AddCandy(candyType);
-
-                return true;
+                scp330Bag.Candies = new List<CandyKindID> { candyType };
             }
+            else if (!scp330Bag.TryAddSpecific(candyType))
+            {
+                return false;
+            }
+
+            scp330Bag.ServerRefreshBag();
+            return true;
         }
 
         /// <summary>
