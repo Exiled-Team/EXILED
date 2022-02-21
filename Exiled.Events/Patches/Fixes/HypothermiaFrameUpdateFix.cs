@@ -46,7 +46,8 @@ namespace Exiled.Events.Patches.Fixes
             {
                 new CodeInstruction(OpCodes.Stloc_S, cachedIntensity.LocalIndex),
                 new CodeInstruction(OpCodes.Ldloc_S, cachedIntensity.LocalIndex),
-                new CodeInstruction(OpCodes.Ldloc_0),
+                new CodeInstruction(OpCodes.Ldloc_1),
+                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(CustomPlayerEffects.PlayerEffect), nameof(CustomPlayerEffects.PlayerEffect.Intensity))),
                 new CodeInstruction(OpCodes.Conv_U1),
                 new CodeInstruction(OpCodes.Ceq),
                 new CodeInstruction(OpCodes.Brtrue_S, retLabel),
