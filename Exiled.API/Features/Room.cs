@@ -421,7 +421,14 @@ namespace Exiled.API.Features
             FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = Camera.Get(cameras);
-            FlickerableLightController = flickerableLightController ? flickerableLightController : gameObject.AddComponent<FlickerableLightController>();
+            if (flickerableLightController == null)
+            {
+                flickerableLightController = gameObject.GetComponent<FlickerableLightController>();
+                if (flickerableLightController == null)
+                    flickerableLightController = gameObject.AddComponent<FlickerableLightController>();
+            }
+
+            FlickerableLightController = flickerableLightController;
         }
     }
 }
