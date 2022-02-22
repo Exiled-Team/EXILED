@@ -39,7 +39,7 @@ namespace Exiled.Events.Patches.Events.Player
             newInstructions.InsertRange(index, new[]
             {
                 // new ActivatingWarheadPanelEventArgs(_hub, isAllowed);
-                new CodeInstruction(OpCodes.Stloc, isAllowed.LocalIndex),
+                new CodeInstruction(OpCodes.Stloc_S, isAllowed.LocalIndex),
                 new CodeInstruction(OpCodes.Ldarg_0),
                 new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
                 new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
