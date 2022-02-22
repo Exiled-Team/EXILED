@@ -103,6 +103,34 @@ namespace Exiled.API.Extensions
         }
 
         /// <summary>
+        /// Returns the <see cref="AmmoType"/> of the weapon is using.
+        /// </summary>
+        /// <param name="type">The <see cref="ItemType"/> to convert.</param>
+        /// <returns>The given weapon's AmmoType.</returns>
+        public static AmmoType GetWeaponAmmoType(this ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.GunCOM15:
+                case ItemType.GunCOM18:
+                case ItemType.GunCrossvec:
+                case ItemType.GunFSP9:
+                    return AmmoType.Nato9;
+                case ItemType.GunE11SR:
+                    return AmmoType.Nato556;
+                case ItemType.GunAK:
+                case ItemType.GunLogicer:
+                    return AmmoType.Nato762;
+                case ItemType.GunRevolver:
+                    return AmmoType.Ammo44Cal;
+                case ItemType.GunShotgun:
+                    return AmmoType.Ammo12Gauge;
+                default:
+                    return AmmoType.None;
+            }
+        }
+
+        /// <summary>
         /// Converts a valid ammo <see cref="ItemType"/> into an <see cref="AmmoType"/>.
         /// </summary>
         /// <param name="type">The <see cref="ItemType"/> to convert.</param>
