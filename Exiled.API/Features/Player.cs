@@ -1803,7 +1803,7 @@ namespace Exiled.API.Features
                     return false;
 
                 Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-                foreach (CandyKindID candy in scp330.Candies)
+                foreach (CandyKindID candy in scp330.Candies.ToList())
                     scp330.RemoveCandy(candy);
                 scp330.AddCandy(candyType);
 
