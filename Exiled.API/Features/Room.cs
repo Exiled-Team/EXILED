@@ -423,8 +423,7 @@ namespace Exiled.API.Features
             Cameras = Camera.Get(cameras);
             if (flickerableLightController == null)
             {
-                flickerableLightController = gameObject.GetComponent<FlickerableLightController>();
-                if (flickerableLightController == null)
+                if (!gameObject.TryGetComponent(out flickerableLightController))
                     flickerableLightController = gameObject.AddComponent<FlickerableLightController>();
             }
 
