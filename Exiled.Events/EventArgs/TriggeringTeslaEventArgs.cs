@@ -21,14 +21,12 @@ namespace Exiled.Events.EventArgs
         /// </summary>
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="teslaGate"><inheritdoc cref="Tesla"/></param>
-        /// <param name="isInHurtingRange"><inheritdoc cref="IsInHurtingRange"/></param>
-        /// <param name="isTriggerable"><inheritdoc cref="IsTriggerable"/></param>
-        public TriggeringTeslaEventArgs(Player player, global::TeslaGate teslaGate, bool isInHurtingRange, bool isTriggerable)
+        public TriggeringTeslaEventArgs(Player player, TeslaGate teslaGate)
         {
             Player = player;
-            Tesla = TeslaGate.Get(teslaGate);
-            IsInHurtingRange = isInHurtingRange;
-            IsTriggerable = isTriggerable;
+            Tesla = teslaGate;
+            IsInHurtingRange = Tesla.PlayerInHurtRange(player);
+            IsTriggerable = Tesla.PlayerInTriggerRange(player);
         }
 
         /// <summary>

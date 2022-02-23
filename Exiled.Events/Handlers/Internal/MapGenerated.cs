@@ -50,8 +50,11 @@ namespace Exiled.Events.Handlers.Internal
         public static void OnMapGenerated()
         {
             Map.ClearCache();
-            GenerateCache();
-            Door.RegisterDoorTypesOnLevelLoad();
+            Timing.CallDelayed(0.5f, () =>
+            {
+                GenerateCache();
+                Door.RegisterDoorTypesOnLevelLoad();
+            });
         }
 
         private static void GenerateCache()
@@ -63,7 +66,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
-            Timing.CallDelayed(0.5f, GenerateLockers);
+            GenerateLockers();
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 

@@ -545,7 +545,7 @@ namespace Exiled.API.Features
         public bool IsScp => Role.Team == Team.SCP;
 
         /// <summary>
-        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank (except the tutorial role).
+        /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank.
         /// </summary>
         public bool IsHuman => Role.Is(out HumanRole _);
 
@@ -887,6 +887,11 @@ namespace Exiled.API.Features
         /// Gets the player's items.
         /// </summary>
         public IReadOnlyCollection<Item> Items => readOnlyItems;
+
+        /// <summary>
+        /// Gets a value indicating whether the player inventory is empty or not.
+        /// </summary>
+        public bool IsInventoryEmpty => Items.Count == 0;
 
         /// <summary>
         /// Gets a value indicating whether the player inventory is full.
@@ -1466,6 +1471,13 @@ namespace Exiled.API.Features
         public void AddAmmo(AmmoType ammoType, ushort amount) => Inventory.ServerAddAmmo(ammoType.GetItemType(), amount);
 
         /// <summary>
+        /// Adds the amount of a weapon's <see cref="AmmoType">ammo type</see> to the player's inventory.
+        /// </summary>
+        /// <param name="weaponType">The <see cref="ItemType"/> of the weapon.</param>
+        /// <param name="amount">The amount of ammo to be added.</param>
+        public void AddAmmo(ItemType weaponType, ushort amount) => AddAmmo(weaponType.GetWeaponAmmoType(), amount);
+
+        /// <summary>
         /// Sets the amount of a specified <see cref="AmmoType">ammo type</see> to the player's inventory.
         /// </summary>
         /// <param name="ammoType">The <see cref="AmmoType"/> to be set.</param>
@@ -1797,18 +1809,18 @@ namespace Exiled.API.Features
                     bag.ServerRefreshBag();
                 return flag;
             }
-            else
+
+            if (Items.Count > 7)
+                return false;
+
+            Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
+            Timing.CallDelayed(0.02f, () =>
             {
-                if (Items.Count > 7)
-                    return false;
-
-                Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-                foreach (CandyKindID candy in scp330.Candies)
-                    scp330.RemoveCandy(candy);
+                scp330.Base.Candies.Clear();
                 scp330.AddCandy(candyType);
+            });
 
-                return true;
-            }
+            return true;
         }
 
         /// <summary>

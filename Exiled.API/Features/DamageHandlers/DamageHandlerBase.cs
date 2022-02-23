@@ -86,7 +86,7 @@ namespace Exiled.API.Features.DamageHandlers
         {
             get
             {
-                if (!(damageType is DamageType.Unknown))
+                if (damageType != DamageType.Unknown)
                     return damageType;
 
                 switch (Base)
@@ -130,6 +130,8 @@ namespace Exiled.API.Features.DamageHandlers
                                 return DamageType.FriendlyFireDetector;
                             if (translation.Id == DeathTranslations.SeveredHands.Id)
                                 return DamageType.SeveredHands;
+                            if (translation.Id == DeathTranslations.Hypothermia.Id)
+                                return DamageType.Hypothermia;
 
                             Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                             break;
@@ -181,6 +183,7 @@ namespace Exiled.API.Features.DamageHandlers
             { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
             { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
         };
 
         /// <summary>

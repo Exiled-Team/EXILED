@@ -89,7 +89,11 @@ namespace Exiled.API.Features
         public float LightIntensity
         {
             get => (float)FlickerableLightController?.Network_lightIntensityMultiplier;
-            set => FlickerableLightController.Network_lightIntensityMultiplier = value;
+            set
+            {
+                if (FlickerableLightController)
+                    FlickerableLightController.Network_lightIntensityMultiplier = value;
+            }
         }
 
         /// <summary>
@@ -97,11 +101,14 @@ namespace Exiled.API.Features
         /// </summary>
         public Color Color
         {
-            get => FlickerableLightController.WarheadLightColor;
+            get => (Color)FlickerableLightController?.WarheadLightColor;
             set
             {
-                FlickerableLightController.WarheadLightColor = value;
-                FlickerableLightController.WarheadLightOverride = true;
+                if (FlickerableLightController)
+                {
+                    FlickerableLightController.WarheadLightColor = value;
+                    FlickerableLightController.WarheadLightOverride = true;
+                }
             }
         }
 
@@ -414,6 +421,12 @@ namespace Exiled.API.Features
             FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = Camera.Get(cameras);
+            if (flickerableLightController == null)
+            {
+                if (!gameObject.TryGetComponent(out flickerableLightController))
+                    flickerableLightController = gameObject.AddComponent<FlickerableLightController>();
+            }
+
             FlickerableLightController = flickerableLightController;
         }
     }
