@@ -1809,18 +1809,15 @@ namespace Exiled.API.Features
                     bag.ServerRefreshBag();
                 return flag;
             }
-            else
-            {
-                if (Items.Count > 7)
-                    return false;
 
-                Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-                foreach (CandyKindID candy in scp330.Candies.ToList())
-                    scp330.RemoveCandy(candy);
-                scp330.AddCandy(candyType);
+            if (Items.Count > 7)
+                return false;
 
-                return true;
-            }
+            Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
+            scp330.Base.Candies.Clear();
+            scp330.AddCandy(candyType);
+
+            return true;
         }
 
         /// <summary>
