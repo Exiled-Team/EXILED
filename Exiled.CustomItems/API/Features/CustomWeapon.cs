@@ -195,7 +195,7 @@ namespace Exiled.CustomItems.API.Features
 
         private void OnInternalReloading(ReloadingWeaponEventArgs ev)
         {
-            if (!Check(ev.Player.CurrentItem))
+            if (!Check(ev.Firearm))
                 return;
 
             Log.Debug($"{nameof(Name)}.{nameof(OnInternalReloading)}: Reloading weapon. Calling external reload event..", Instance.Config.Debug);
