@@ -48,7 +48,10 @@ namespace Exiled.Events.EventArgs
                 }
             }
         }
-
+        public EscapingEventArgs(Player player, RoleType newRole){
+            Player = player;
+            NewRole = newRole;
+        }
         /// <summary>
         /// Gets the player who's escaping.
         /// </summary>
