@@ -271,12 +271,6 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (ev.Attacker.CurrentItem == null)
-            {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: CurItem null", Instance.Config.Debug);
-                return;
-            }
-
             if (!Check(ev.Attacker.CurrentItem))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check() {ev.Attacker.CurrentItem.Serial}", Instance.Config.Debug);
@@ -301,7 +295,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (firearmDamageHandler.Item.Type != Type)
+            if (!Check(firearmDamageHandler.Item))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: type != type", Instance.Config.Debug);
                 return;
