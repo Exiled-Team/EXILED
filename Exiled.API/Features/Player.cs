@@ -1814,8 +1814,11 @@ namespace Exiled.API.Features
                 return false;
 
             Scp330 scp330 = (Scp330)AddItem(ItemType.SCP330);
-            scp330.Base.Candies.Clear();
-            scp330.AddCandy(candyType);
+            Timing.CallDelayed(0.02f, () =>
+            {
+                scp330.Base.Candies.Clear();
+                scp330.AddCandy(candyType);
+            });
 
             return true;
         }
