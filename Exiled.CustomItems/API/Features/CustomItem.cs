@@ -616,6 +616,13 @@ namespace Exiled.CustomItems.API.Features
         /// <returns>True if it is a custom item.</returns>
         public virtual bool Check(Item item) => item != null && TrackedSerials.Contains(item.Serial);
 
+        /// <summary>
+        /// Checks the specified player's current item to see if it is a custom item.
+        /// </summary>
+        /// <param name="player">The <see cref="Player"/> who's current item should be checked.</param>
+        /// <returns>True if it is a custom item.</returns>
+        public virtual bool Check(Player player) => Check(player?.CurrentItem);
+
         /// <inheritdoc/>
         public override string ToString() => $"[{Name} ({Type}) | {Id}] {Description}";
 
