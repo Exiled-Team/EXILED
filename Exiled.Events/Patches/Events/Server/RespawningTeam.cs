@@ -37,7 +37,7 @@ namespace Exiled.Events.Patches.Events.Server
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
             const int offset = 1;
-            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(List<ReferenceHub>), nameof(List<ReferenceHub>.RemoveAt))) + offset;
+            int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_3) + offset;
             LocalBuilder ev = generator.DeclareLocal(typeof(RespawningTeamEventArgs));
             Label continueLabel = generator.DefineLabel();
 
@@ -106,5 +106,7 @@ namespace Exiled.Events.Patches.Events.Server
         private static List<Player> GetPlayers(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
 
         private static List<ReferenceHub> GetHubs(List<Player> players) => players.Select(p => p.ReferenceHub).ToList();
+
+        private static void LogThing(int i) => Log.Error(i);
     }
 }
