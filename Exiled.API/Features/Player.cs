@@ -2213,6 +2213,30 @@ namespace Exiled.API.Features
         public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
 
         /// <summary>
+        /// Teleports player to <see cref="Door"/>.
+        /// </summary>
+        /// <param name="door">Door for teleport.</param>
+        public void Teleport(Door door) => Position = (door.Position + Vector3.up);
+
+        /// <summary>
+        /// Teleports player to <see cref="Room"/>.
+        /// </summary>
+        /// <param name="room">Room for teleport.</param>
+        public void Teleport(Room room) => Position = (room.Position + Vector3.up);
+
+        /// <summary>
+        /// Teleports player to <see cref="RandomObjectType"/>.
+        /// </summary>
+        /// <param name="type">Object for teleport.</param>
+        public void RandomTeleport(RandomObjectType type)
+        {
+            if (type == RandomObjectType.Door)
+                Teleport(Door.List.ElementAt(UnityEngine.Random.Range(0, Door.List.Count())));
+            else if (type == RandomObjectType.Room)
+                Teleport(Door.List.ElementAt(UnityEngine.Random.Range(0, Door.List.Count())));
+        }
+
+        /// <summary>
         /// Returns the player in a human-readable format.
         /// </summary>
         /// <returns>A string containing Player-related data.</returns>
