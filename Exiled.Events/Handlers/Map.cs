@@ -95,19 +95,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before announcing the light containment zone decontamination.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="AnnouncingDecontaminationEventArgs"/> instance.</param>
         public static void OnAnnouncingDecontamination(AnnouncingDecontaminationEventArgs ev) => AnnouncingDecontamination.InvokeSafely(ev);
 
         /// <summary>
         /// Called before announcing an SCP termination.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="AnnouncingScpTerminationEventArgs"/> instance.</param>
         public static void OnAnnouncingScpTermination(AnnouncingScpTerminationEventArgs ev) => AnnouncingScpTermination.InvokeSafely(ev);
 
         /// <summary>
         /// Called before announcing the NTF entrance.
         /// </summary>
-        /// <param name="ev">The <see cref="EventArgs.PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="AnnouncingNtfEntranceEventArgs"/> instance.</param>
         public static void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev) => AnnouncingNtfEntrance.InvokeSafely(ev);
 
         /// <summary>
