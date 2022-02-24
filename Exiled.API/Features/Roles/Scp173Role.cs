@@ -10,22 +10,25 @@ namespace Exiled.API.Features.Roles
     using System.Collections.Generic;
     using System.Linq;
 
+    using Scp173 = PlayableScps.Scp173;
+
     /// <summary>
     /// Defines a role that represents SCP-173.
     /// </summary>
     public class Scp173Role : Role
     {
-        private PlayableScps.Scp173 script;
+        private Scp173 script;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp173Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp173Role(Player player)
-        {
-            Owner = player;
-            script = player.ReferenceHub.scpsController.CurrentScp as PlayableScps.Scp173;
-        }
+        internal Scp173Role(Player player) => Owner = player;
+
+        /// <summary>
+        /// Gets the actual script of the Scp.
+        /// </summary>
+        public Scp173 Scp173 => script ?? (script = Owner.ReferenceHub.scpsController.CurrentScp as Scp173);
 
         /// <inheritdoc/>
         public override Player Owner { get; }
@@ -33,28 +36,28 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets a value indicating whether or not SCP-173 is currently being viewed by one or more players.
         /// </summary>
-        public bool IsObserved => script._isObserved;
+        public bool IsObserved => Scp173._isObserved;
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyCollection{T}"/> of players that are currently viewing SCP-173. Can be empty.
         /// </summary>
         public IReadOnlyCollection<Player> ObservingPlayers
         {
-            get => script._observingPlayers.Select(hub => Player.Get(hub)).ToList().AsReadOnly();
+            get => Scp173._observingPlayers.Select(hub => Player.Get(hub)).ToList().AsReadOnly();
         }
 
         /// <summary>
         /// Gets SCP-173's move speed.
         /// </summary>
-        public float MoveSpeed => script.GetMoveSpeed();
+        public float MoveSpeed => Scp173.GetMoveSpeed();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173 is able to blink.
         /// </summary>
         public bool BlinkReady
         {
-            get => script.BlinkReady;
-            set => script.BlinkReady = value;
+            get => Scp173.BlinkReady;
+            set => Scp173.BlinkReady = value;
         }
 
         /// <summary>
@@ -62,22 +65,22 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float BlinkCooldown
         {
-            get => script._blinkCooldownRemaining;
-            set => script._blinkCooldownRemaining = value;
+            get => Scp173._blinkCooldownRemaining;
+            set => Scp173._blinkCooldownRemaining = value;
         }
 
         /// <summary>
         /// Gets a value indicating the max distance that SCP-173 can move in a blink. Factors in <see cref="BreakneckActive"/>.
         /// </summary>
-        public float BlinkDistance => script.EffectiveBlinkDistance();
+        public float BlinkDistance => Scp173.EffectiveBlinkDistance();
 
         /// <summary>
         /// Gets or sets a value indicating whether or not SCP-173's breakneck speed is active.
         /// </summary>
         public bool BreakneckActive
         {
-            get => script.BreakneckSpeedsActive;
-            set => script.BreakneckSpeedsActive = value;
+            get => Scp173.BreakneckSpeedsActive;
+            set => Scp173.BreakneckSpeedsActive = value;
         }
 
         /// <summary>
@@ -85,8 +88,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float BreakneckCooldown
         {
-            get => script._breakneckSpeedsCooldownRemaining;
-            set => script._breakneckSpeedsCooldownRemaining = value;
+            get => Scp173._breakneckSpeedsCooldownRemaining;
+            set => Scp173._breakneckSpeedsCooldownRemaining = value;
         }
 
         /// <summary>
@@ -94,8 +97,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float TantrumCooldown
         {
-            get => script._tantrumCooldownRemaining;
-            set => script._tantrumCooldownRemaining = value;
+            get => Scp173._tantrumCooldownRemaining;
+            set => Scp173._tantrumCooldownRemaining = value;
         }
 
         /// <inheritdoc/>

@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features.Roles
 {
+    using PlayableScps;
+
     using UnityEngine;
 
     /// <summary>
@@ -20,29 +22,30 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp106Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp106Role(Player player)
-        {
-            Owner = player;
-            script = player.ReferenceHub.scp106PlayerScript;
-        }
+        internal Scp106Role(Player player) => Owner = player;
 
         /// <inheritdoc/>
         public override Player Owner { get; }
 
         /// <summary>
+        /// Gets the actual script of the Scp.
+        /// </summary>
+        public Scp106PlayerScript Scp106 => script ?? (script = Owner.ReferenceHub.scp106PlayerScript);
+
+        /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of an object.
         /// </summary>
-        public bool IsInsideObject => script.ObjectCurrentlyIn != null;
+        public bool IsInsideObject => Scp106.ObjectCurrentlyIn != null;
 
         /// <summary>
         /// Gets a value indicating whether or not SCP-106 is currently inside of a door.
         /// </summary>
-        public bool IsInsideDoor => script.DoorCurrentlyIn != null;
+        public bool IsInsideDoor => Scp106.DoorCurrentlyIn != null;
 
         /// <summary>
         /// Gets the door that SCP-106 is currently inside of.
         /// </summary>
-        public Door InsideDoor => Door.Get(script.DoorCurrentlyIn);
+        public Door InsideDoor => Door.Get(Scp106.DoorCurrentlyIn);
 
         /// <summary>
         /// Gets or sets the location of SCP-106's portal.
@@ -52,8 +55,8 @@ namespace Exiled.API.Features.Roles
         /// </remarks>
         public Vector3 PortalPosition
         {
-            get => script.portalPosition;
-            set => script.SetPortalPosition(PortalPosition, value);
+            get => Scp106.portalPosition;
+            set => Scp106.SetPortalPosition(PortalPosition, value);
         }
 
         /// <summary>
@@ -61,8 +64,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float CaptureCooldown
         {
-            get => script.captureCooldown;
-            set => script.captureCooldown = value;
+            get => Scp106.captureCooldown;
+            set => Scp106.captureCooldown = value;
         }
 
         /// <inheritdoc/>
@@ -71,12 +74,12 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Forces SCP-106 to use its portal, if one is placed.
         /// </summary>
-        public void UsePortal() => script.UserCode_CmdUsePortal();
+        public void UsePortal() => Scp106.UserCode_CmdUsePortal();
 
         /// <summary>
         /// Contains SCP-106.
         /// </summary>
         /// <param name="container">The player who recontained SCP-106.</param>
-        public void Contain(Player container) => script.Contain(container.Footprint);
+        public void Contain(Player container) => Scp106.Contain(container.Footprint);
     }
 }

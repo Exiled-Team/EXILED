@@ -20,22 +20,23 @@ namespace Exiled.API.Features.Roles
         /// Initializes a new instance of the <see cref="Scp0492Role"/> class.
         /// </summary>
         /// <param name="player">The encapsulated player.</param>
-        internal Scp0492Role(Player player)
-        {
-            Owner = player;
-            script = player.ReferenceHub.characterClassManager.Scp0492;
-        }
+        internal Scp0492Role(Player player) => Owner = player;
 
         /// <inheritdoc/>
         public override Player Owner { get; }
+
+        /// <summary>
+        /// Gets the actual script of the Scp.
+        /// </summary>
+        public Scp049_2PlayerScript Scp0492 => script ?? (script = Owner.ReferenceHub.characterClassManager.Scp0492);
 
         /// <summary>
         /// Gets or sets the SCP-049-2 attack distance.
         /// </summary>
         public float AttackDistance
         {
-            get => script.distance;
-            set => script.distance = value;
+            get => Scp0492.distance;
+            set => Scp0492.distance = value;
         }
 
         /// <summary>
@@ -43,8 +44,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackDamage
         {
-            get => script.damage;
-            set => script.damage = value;
+            get => Scp0492.damage;
+            set => Scp0492.damage = value;
         }
 
         /// <summary>
@@ -52,8 +53,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackCooldown
         {
-            get => script.attackCooldown;
-            set => script.attackCooldown = value;
+            get => Scp0492.attackCooldown;
+            set => Scp0492.attackCooldown = value;
         }
 
         /// <inheritdoc/>
