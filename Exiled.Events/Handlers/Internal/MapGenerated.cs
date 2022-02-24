@@ -63,7 +63,7 @@ namespace Exiled.Events.Handlers.Internal
             GenerateLifts();
             GeneratePocketTeleports();
             GenerateAttachments();
-            GenerateLockers();
+            Timing.CallDelayed(0.5f, GenerateLockers);
             Map.AmbientSoundPlayer = PlayerManager.localPlayer.GetComponent<AmbientSoundPlayer>();
         }
 
