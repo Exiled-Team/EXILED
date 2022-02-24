@@ -289,7 +289,7 @@ namespace Exiled.CustomItems.API.Features
                 return;
             }
 
-            if (!ev.Handler.BaseIs(out FirearmDamageHandler firearmDamageHandler))
+            if (!ev.Handler.CustomBase.BaseIs(out FirearmDamageHandler firearmDamageHandler))
             {
                 Log.Debug($"{Name}: {nameof(OnInternalHurting)}: Handler not firearm", Instance.Config.Debug);
                 return;
