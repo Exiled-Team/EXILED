@@ -1779,10 +1779,11 @@ namespace Exiled.API.Features
         /// <param name="items">The list of items to be added.</param>
         public void AddItem(IEnumerable<Item> items)
         {
-            if (items.Count() > 0)
+            IEnumerable<Item> enumerable = items.ToList();
+            if (enumerable.Any())
             {
-                for (int i = 0; i < items.Count(); i++)
-                    AddItem(items.ElementAt(i));
+                for (int i = 0; i < enumerable.Count(); i++)
+                    AddItem(enumerable.ElementAt(i));
             }
         }
 

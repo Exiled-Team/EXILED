@@ -273,7 +273,7 @@ namespace Exiled.CustomItems.API.Features
 
             if (!Check(ev.Attacker.CurrentItem))
             {
-                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check() {ev.Attacker.CurrentItem.Serial}", Instance.Config.Debug);
+                Log.Debug($"{Name}: {nameof(OnInternalHurting)}: !Check()", Instance.Config.Debug);
                 return;
             }
 
