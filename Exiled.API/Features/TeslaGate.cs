@@ -223,21 +223,21 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets a value indicating whether the  <see cref="Player"/> is in the hurt range of a specific tesla gate.
+        /// Gets a value indicating whether the <see cref="Player"/> is in the hurt range of a specific tesla gate.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the hurt range of the tesla gate; otherwise, <see langword="false"/>.</returns>
         public bool PlayerInHurtRange(Player player) => Base.PlayerInHurtRange(player.GameObject);
 
         /// <summary>
-        /// Gets a value indicating whether the  <see cref="Player"/> is in the idle range of a specific tesla gate.
+        /// Gets a value indicating whether the <see cref="Player"/> is in the idle range of a specific tesla gate.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the idle range of the tesla gate; otherwise, <see langword="false"/>.</returns>
         public bool PlayerInIdleRange(Player player) => Base.PlayerInIdleRange(player.ReferenceHub);
 
         /// <summary>
-        /// Gets a value indicating whether the  <see cref="Player"/> is in the trigger range of a specific tesla gate.
+        /// Gets a value indicating whether the <see cref="Player"/> is in the trigger range of a specific tesla gate.
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> is in the trigger range of the tesla gate; otherwise, <see langword="false"/>.</returns>
