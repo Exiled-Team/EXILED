@@ -24,7 +24,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the current state of the intercom.
         /// </summary>
-        public static global::Intercom.State IntercomState => global::Intercom.host.IntercomState;
+        public static global::Intercom.State State => global::Intercom.host.IntercomState;
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
