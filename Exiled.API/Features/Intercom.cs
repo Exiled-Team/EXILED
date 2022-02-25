@@ -13,9 +13,9 @@ namespace Exiled.API.Features
     public static class Intercom
     {
         /// <summary>
-        /// Gets or sets the content of the intercom.
+        /// Gets or sets the text displayed on the intercom screen.
         /// </summary>
-        public static string Content
+        public static string DisplayText
         {
             get => global::Intercom.host.CustomContent;
             set => global::Intercom.host.CustomContent = value;
