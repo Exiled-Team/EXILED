@@ -45,7 +45,7 @@ namespace Exiled.API.Features
         /// </summary>
         public static float SpeechRemainingTime
         {
-            get => global::Intercom.host.speechRemainingTime;
+            get => !InUse ? 0f : global::Intercom.host.speechRemainingTime;
             set => global::Intercom.host.speechRemainingTime = value;
         }
 
