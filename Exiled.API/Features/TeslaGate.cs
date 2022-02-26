@@ -71,7 +71,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the tesla gate's position.
         /// </summary>
-        public Vector3 Position => Base.gameObject.transform.position;
+        public Vector3 Position => Base.transform.position;
 
         /// <summary>
         /// Gets the tesla gate's rotation.
