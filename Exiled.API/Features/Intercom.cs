@@ -22,14 +22,18 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets the current state of the intercom.
+        /// Gets or sets the current state of the intercom.
         /// </summary>
-        public static global::Intercom.State State => global::Intercom.host.IntercomState;
+        public static global::Intercom.State State
+        {
+            get => global::Intercom.host.IntercomState;
+            set => global::Intercom.host.IntercomState = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether or not the intercom is currently being used.
         /// </summary>
-        public static bool InUse => IntercomState == global::Intercom.State.Transmitting || IntercomState == global::Intercom.State.TransmittingBypass || IntercomState == global::Intercom.State.AdminSpeaking;
+        public static bool InUse => State == global::Intercom.State.Transmitting || State == global::Intercom.State.TransmittingBypass || State == global::Intercom.State.AdminSpeaking;
 
         /// <summary>
         /// Gets the <see cref="Player"/> that is using the intercom. Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.
