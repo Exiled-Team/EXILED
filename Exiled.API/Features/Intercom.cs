@@ -38,7 +38,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="Player"/> that is using the intercom. Will be <see langword="null"/> if <see cref="InUse"/> is <see langword="false"/>.
         /// </summary>
-        public static Player Speaker => Player.Get(global::Intercom.host.speaker);
+        public static Player Speaker => !InUse ? null : Player.Get(global::Intercom.host.speaker);
 
         /// <summary>
         /// Gets or sets the remaining speech time of the intercom.
