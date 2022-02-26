@@ -2237,16 +2237,7 @@ namespace Exiled.API.Features
                     Teleport(room.Position + Vector3.up);
                     break;
                 case TeslaGate teslaGate:
-                    Vector3 pos = teslaGate.Position + Vector3.up;
-                    if (teslaGate.Room.gameObject.transform.rotation == new Quaternion(0.0f, 0.0f, 0.0f, 1.0f))
-                    {
-                        pos += Random.Range(1, 2) == 1 ? new Vector3(3, 0, 0) : new Vector3(-3, 0, 0);
-                    }
-                    else if (teslaGate.Room.gameObject.transform.rotation.ToString() == "(0.0, 0.7, 0.0, 0.7)")
-                    {
-                        pos += Random.Range(1, 2) == 1 ? new Vector3(0, 0, 3) : new Vector3(0, 0, -3);
-                    }
-                    Teleport(pos);
+                    Teleport((teslaGate.Position + Vector3.up) + (teslaGate.GameObject.transform.forward * 2.5f));
                     break;
                 case Scp914Controller scp914:
                     Teleport(scp914._knobTransform.position + Vector3.up);
