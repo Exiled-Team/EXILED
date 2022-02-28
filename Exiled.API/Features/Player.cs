@@ -1867,7 +1867,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        /// <param name="destroy">Whether ot not to fully destroy the old items.</param>
+        /// <param name="destroy">Whether or not to fully destroy the old items.</param>
         public void ClearInventory(bool destroy = true)
         {
             while (Items.Count > 0)
