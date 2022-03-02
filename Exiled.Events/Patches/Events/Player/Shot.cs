@@ -84,7 +84,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Stloc, 6),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Events.Player
                 List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
                 int offset = 1;
-                int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_S && i.operand == (object)5) + offset;
+                int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_S && i.operand is LocalBuilder localBuilder && localBuilder.LocalIndex == 5) + offset;
 
                 LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
@@ -146,7 +146,7 @@ namespace Exiled.Events.Patches.Events.Player
                     new CodeInstruction(OpCodes.Stloc, 5),
                 });
 
-                newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+                newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
                 for (int z = 0; z < newInstructions.Count; z++)
                     yield return newInstructions[z];
