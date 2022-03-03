@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Events.Player
                 List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
                 int offset = 1;
-                int index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Stloc_S && i.operand is LocalBuilder localBuilder && localBuilder.LocalIndex == 5) + offset;
+                int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Stloc_S) + offset;
 
                 LocalBuilder ev = generator.DeclareLocal(typeof(ShotEventArgs));
 
