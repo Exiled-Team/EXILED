@@ -34,6 +34,18 @@ namespace Exiled.CustomRoles.API.Features
         public static HashSet<CustomAbility> Registered { get; } = new HashSet<CustomAbility>();
 
         /// <summary>
+        /// Gets all players who have this ability.
+        /// </summary>
+        public IEnumerable<Player> Players
+        {
+            get
+            {
+                return Player.List.Where(x =>
+                    x.GetCustomRoles().Any(y => y.CustomAbilities.Any(z => z.AbilityType == AbilityType)));
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the name of the ability.
         /// </summary>
         public abstract string Name { get; set; }
@@ -42,12 +54,6 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets or sets the description of the ability.
         /// </summary>
         public abstract string Description { get; set; }
-
-        /// <summary>
-        /// Gets all players who have this ability.
-        /// </summary>
-        [YamlIgnore]
-        public HashSet<Player> Players { get; } = new HashSet<Player>();
 
         /// <summary>
         /// Gets the <see cref="Type"/> for this ability.
@@ -184,7 +190,6 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to give the ability to.</param>
         public void AddAbility(Player player)
         {
-            Players.Add(player);
             AbilityAdded(player);
         }
 
@@ -194,7 +199,6 @@ namespace Exiled.CustomRoles.API.Features
         /// <param name="player">The <see cref="Player"/> to remove this ability from.</param>
         public void RemoveAbility(Player player)
         {
-            Players.Remove(player);
             AbilityRemoved(player);
         }
 

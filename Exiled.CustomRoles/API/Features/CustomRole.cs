@@ -347,6 +347,8 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Setting player info", CustomRoles.Instance.Config.Debug);
             player.CustomInfo = CustomInfo;
             player.InfoArea &= ~PlayerInfoArea.Role;
+
+            TrackedPlayers.Add(player);
             if (CustomAbilities != null)
             {
                 foreach (CustomAbility ability in CustomAbilities)
@@ -355,7 +357,6 @@ namespace Exiled.CustomRoles.API.Features
 
             ShowMessage(player);
             RoleAdded(player);
-            TrackedPlayers.Add(player);
         }
 
         /// <summary>
