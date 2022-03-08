@@ -36,6 +36,7 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Gets all players who have this ability.
         /// </summary>
+        [YamlIgnore]
         public IEnumerable<Player> Players
         {
             get
