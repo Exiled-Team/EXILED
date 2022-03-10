@@ -529,7 +529,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role?.Type == RoleType.Spectator || Role?.Type == RoleType.None;
+        public bool IsDead => Role?.Team == Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
