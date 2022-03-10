@@ -40,7 +40,7 @@ namespace Exiled.Events.Patches.Generic
         {
             try
             {
-                if (query.ToUpperInvariant().StartsWith("REQUEST_DATA"))
+                if (query.Equals("$0 1"))
                     return;
 
                 Player player = sender is PlayerCommandSender playerCommandSender
