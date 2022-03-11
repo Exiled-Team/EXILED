@@ -122,6 +122,7 @@ namespace Exiled.Events.Handlers.Internal
                 if (!(item is Firearm firearm))
                     continue;
 
+                Firearm.FirearmInstances.Add(firearm);
                 uint code = 1;
                 List<AttachmentIdentifier> attachmentIdentifiers = new List<AttachmentIdentifier>();
                 foreach (FirearmAttachment att in firearm.Attachments)
