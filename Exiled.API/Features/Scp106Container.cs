@@ -94,9 +94,6 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="player">The <see cref="Player"/> to check.</param>
         /// <returns><see langword="true"/> if the given <see cref="Player"/> can be killed; otherwise, <see langword="false"/>.</returns>
-        public static bool CanBeKilled(Player player)
-        {
-            return !player.IsGodModeEnabled && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) && !IgnoredTeams.Contains(player.Role.Team) && InTheKillZone(player);
-        }
+        public static bool CanBeKilled(Player player) => !player.IsGodModeEnabled && !IgnoredPlayers.Contains(player) && !IgnoredRoles.Contains(player.Role) && !IgnoredTeams.Contains(player.Role.Team) && InTheKillZone(player);
     }
 }
