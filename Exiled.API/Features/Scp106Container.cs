@@ -78,8 +78,8 @@ namespace Exiled.API.Features
         /// </summary>
         public static bool AllowContain
         {
-            get => Base.allowContain;
-            set => Base.allowContain = value;
+            get => Base.NetworkallowContain;
+            set => Base.NetworkallowContain = value;
         }
 
         /// <summary>
