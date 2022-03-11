@@ -28,6 +28,11 @@ namespace Exiled.API.Features.Items
     public class Firearm : Item
     {
         /// <summary>
+        /// A <see cref="List{T}"/> of <see cref="Firearm"/> which contains all the existing firearms based on all the <see cref="ItemType"/>s.
+        /// </summary>
+        internal static readonly List<Firearm> FirearmInstances = new List<Firearm>();
+
+        /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
         /// </summary>
         internal static readonly IReadOnlyDictionary<ItemType, BaseCode> FirearmPairs = new Dictionary<ItemType, BaseCode>()

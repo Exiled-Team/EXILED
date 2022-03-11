@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Extensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -205,9 +206,9 @@ namespace Exiled.API.Extensions
         /// <returns>A new <see cref="List{T}"/> of <see cref="ItemType"/>s.</returns>
         public static IEnumerable<ItemType> GetItemTypes(this IEnumerable<Item> items)
         {
-            List<ItemType> itemTypes = new List<ItemType>();
-            itemTypes.AddRange(items.Select(item => item.Type));
-            return itemTypes;
+            Item[] arr = items.ToArray();
+            for (int i = 0; i < arr.Length; i++)
+                yield return arr[i].Type;
         }
 
         /// <summary>
@@ -219,17 +220,14 @@ namespace Exiled.API.Extensions
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this ItemType type, uint code)
         {
             if ((uint)type.GetBaseCode() > code)
-                throw new System.ArgumentException("The attachments code can't be less than the item's base code.");
+                throw new ArgumentException("The attachments code can't be less than the item's base code.");
 
-            Item item = Item.Create(type);
+            Firearm firearm = Firearm.FirearmInstances.FirstOrDefault(item => item.Type == type);
+            if (firearm is null)
+                throw new ArgumentException("Couldn't find a Firearm instance matching the ItemType value.");
 
-            if (item is Firearm firearm)
-            {
-                firearm.Base.ApplyAttachmentsCode(code, true);
-                return firearm.GetAttachmentIdentifiers();
-            }
-
-            return null;
+            firearm.Base.ApplyAttachmentsCode(code, true);
+            return firearm.GetAttachmentIdentifiers();
         }
 
         /// <summary>
@@ -265,12 +263,8 @@ namespace Exiled.API.Extensions
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="AttachmentIdentifier"/> which contains all the firearm's attachments.</returns>
         public static IEnumerable<AttachmentIdentifier> GetAttachmentIdentifiers(this Firearm firearm)
         {
-            List<AttachmentIdentifier> identifiers = new List<AttachmentIdentifier>();
-
             foreach (FirearmAttachment attachment in firearm.Attachments.Where(att => att.IsEnabled))
-                identifiers.Add(Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment));
-
-            return identifiers;
+                yield return Firearm.AvailableAttachments[firearm.Type].FirstOrDefault(att => att == attachment);
         }
 
         /// <summary>

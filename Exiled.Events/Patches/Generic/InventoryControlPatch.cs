@@ -102,12 +102,12 @@ namespace Exiled.Events.Patches.Generic
         private static void RemoveItem(Player player, ushort serial)
         {
 #if DEBUG
-                Log.Debug($"Removing item ({serial}) from a player (before null check)");
+            Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
             if (player == null)
             {
 #if DEBUG
-                    Log.Debug("Attempted to remove item from null player, returning.");
+                Log.Debug("Attempted to remove item from null player, returning.");
 #endif
                 return;
             }
@@ -115,14 +115,14 @@ namespace Exiled.Events.Patches.Generic
             if (!player.Inventory.UserInventory.Items.ContainsKey(serial))
             {
 #if DEBUG
-                    Log.Debug("Attempted to remove an item the player doesn't own, returning.");
+                Log.Debug("Attempted to remove an item the player doesn't own, returning.");
 #endif
                 return;
             }
 #if DEBUG
-                Log.Debug(
+            Log.Debug(
                     $"Inventory Info (before): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                foreach (Item item in player.Items)
+            foreach (Item item in player.Items)
                     Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             ItemBase itemBase = player.Inventory.UserInventory.Items[serial];
@@ -134,14 +134,14 @@ namespace Exiled.Events.Patches.Generic
                     player.Inventory.UserInventory.Items.Remove(serial);
                     player.Inventory.SendItemsNextFrame = true;
 #if DEBUG
-                        Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
+                    Log.Debug($"Removed orphaned item from {player.Nickname} inventory dict.");
 #endif
                 }
 #if DEBUG
-                    Log.Debug($"Item ({serial}) removed from {player.Nickname}");
-                    Log.Debug(
+                Log.Debug($"Item ({serial}) removed from {player.Nickname}");
+                Log.Debug(
                         $"Inventory Info (after): {player.Nickname} - {player.Items.Count} ({player.Inventory.UserInventory.Items.Count})");
-                    foreach (Item item in player.Items)
+                foreach (Item item in player.Items)
                         Log.Debug($"{item.Type} ({item.Serial})");
 #endif
             });
