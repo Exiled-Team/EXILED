@@ -34,14 +34,14 @@ namespace Exiled.API.Features
         public static bool IsStarted => RoundSummary.RoundInProgress();
 
         /// <summary>
-        /// Gets a value indicating whether the round is ending or not.
+        /// Gets a value indicating whether the round is ended or not.
         /// </summary>
-        public static bool IsEnding => RoundSummary.singleton.RoundEnded;
+        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
 
         /// <summary>
         /// Gets a value indicating whether the round is lobby or not.
         /// </summary>
-        public static bool IsLobby => !(IsEnding || IsStarted);
+        public static bool IsLobby => !(IsEnded || IsStarted);
 
         /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
