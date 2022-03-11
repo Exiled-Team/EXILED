@@ -37,14 +37,8 @@ namespace Exiled.CustomRoles.API.Features
         /// Gets all players who have this ability.
         /// </summary>
         [YamlIgnore]
-        public IEnumerable<Player> Players
-        {
-            get
-            {
-                return Player.List.Where(x =>
-                    x.GetCustomRoles().Any(y => y.CustomAbilities.Any(z => z.AbilityType == AbilityType)));
-            }
-        }
+        public IEnumerable<Player> Players => Player.Get(x =>
+            x.GetCustomRoles().Any(y => y.CustomAbilities.Any(z => z.AbilityType == AbilityType)));
 
         /// <summary>
         /// Gets or sets the name of the ability.
