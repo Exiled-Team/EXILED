@@ -76,6 +76,7 @@ namespace Exiled.API.Features
         private readonly IReadOnlyCollection<Item> readOnlyItems;
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
+        private Role role;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -429,7 +430,11 @@ namespace Exiled.API.Features
         /// </para>
         /// </summary>
         /// <seealso cref="SetRole(RoleType, SpawnReason, bool)"/>
-        public Role Role { get; set; }
+        public Role Role
+        {
+            get => role ?? (role = Role.Create(RoleType.None, this));
+            set => role = value;
+        }
 
         /// <summary>
         /// Gets a value indicating whether the player is cuffed.
@@ -524,35 +529,35 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a value indicating whether the player is dead.
         /// </summary>
-        public bool IsDead => Role.Is(out SpectatorRole _) || Role.Is(out NoneRole _);
+        public bool IsDead => Role?.Team == Team.RIP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any NTF rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsNTF => Role.Team == Team.MTF;
+        public bool IsNTF => Role?.Team == Team.MTF;
 
         /// <summary>
         /// Gets a value indicating whether or not the player's <see cref="RoleType"/> is any Chaos rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsCHI => Role.Team == Team.CHI;
+        public bool IsCHI => Role?.Team == Team.CHI;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any SCP rank.
         /// Equivalent to checking the player's <see cref="Team"/>.
         /// </summary>
-        public bool IsScp => Role.Team == Team.SCP;
+        public bool IsScp => Role?.Team == Team.SCP;
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is any human rank.
         /// </summary>
-        public bool IsHuman => Role.Is(out HumanRole _);
+        public bool IsHuman => Role != null && Role.Is(out HumanRole _);
 
         /// <summary>
         /// Gets a value indicating whether the player's <see cref="RoleType"/> is equal to <see cref="RoleType.Tutorial"/>.
         /// </summary>
-        public bool IsTutorial => Role.Type == RoleType.Tutorial;
+        public bool IsTutorial => Role?.Type == RoleType.Tutorial;
 
         /// <summary>
         /// Gets or sets a value indicating whether the player's friendly fire is enabled.
@@ -1774,10 +1779,11 @@ namespace Exiled.API.Features
         /// <param name="items">The list of items to be added.</param>
         public void AddItem(IEnumerable<Item> items)
         {
-            if (items.Count() > 0)
+            IEnumerable<Item> enumerable = items.ToList();
+            if (enumerable.Any())
             {
-                for (int i = 0; i < items.Count(); i++)
-                    AddItem(items.ElementAt(i));
+                for (int i = 0; i < enumerable.Count(); i++)
+                    AddItem(enumerable.ElementAt(i));
             }
         }
 
@@ -1861,7 +1867,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Clears the player's inventory, including all ammo and items.
         /// </summary>
-        /// <param name="destroy">Whether ot not to fully destroy the old items.</param>
+        /// <param name="destroy">Whether or not to fully destroy the old items.</param>
         public void ClearInventory(bool destroy = true)
         {
             while (Items.Count > 0)

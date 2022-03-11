@@ -672,19 +672,19 @@ namespace Exiled.Events.Handlers
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a door.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingDoorEventArgs"/> instance.</param>
         public static void OnInteractingDoor(InteractingDoorEventArgs ev) => InteractingDoor.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with an elevator.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingElevatorEventArgs"/> instance.</param>
         public static void OnInteractingElevator(InteractingElevatorEventArgs ev) => InteractingElevator.InvokeSafely(ev);
 
         /// <summary>
         /// Called before a <see cref="API.Features.Player"/> interacts with a locker.
         /// </summary>
-        /// <param name="ev">The <see cref="PlacingBulletHole"/> instance.</param>
+        /// <param name="ev">The <see cref="InteractingLockerEventArgs"/> instance.</param>
         public static void OnInteractingLocker(InteractingLockerEventArgs ev) => InteractingLocker.InvokeSafely(ev);
 
         /// <summary>

@@ -367,7 +367,7 @@ namespace Exiled.CustomRoles.API.Features
             Log.Debug($"{Name}: Removing role from {player.Nickname}", CustomRoles.Instance.Config.Debug);
             TrackedPlayers.Remove(player);
             player.CustomInfo = string.Empty;
-            player.InfoArea |= ~PlayerInfoArea.Role;
+            player.InfoArea |= PlayerInfoArea.Role;
             player.Scale = Vector3.one;
             if (RemovalKillsPlayer)
                 player.SetRole(RoleType.Spectator);

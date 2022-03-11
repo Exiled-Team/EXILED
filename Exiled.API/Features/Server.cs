@@ -7,6 +7,8 @@
 
 namespace Exiled.API.Features
 {
+    using System;
+
     using System.Reflection;
 
     using MEC;
@@ -14,6 +16,8 @@ namespace Exiled.API.Features
     using Mirror;
 
     using RoundRestarting;
+
+    using UnityEngine;
 
     /// <summary>
     /// A set of tools to easily work with the server.
@@ -113,6 +117,11 @@ namespace Exiled.API.Features
         /// Gets the port of the server.
         /// </summary>
         public static ushort Port => ServerStatic.ServerPort;
+
+        /// <summary>
+        /// Gets the actual ticks per second of the server.
+        /// </summary>
+        public static double Tps => Math.Round(1f / Time.smoothDeltaTime);
 
         /// <summary>
         /// Gets or sets a value indicating whether friendly fire is enabled or not.

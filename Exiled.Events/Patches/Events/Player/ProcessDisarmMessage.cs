@@ -38,7 +38,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             try
             {
-                if (!ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
+                if (!DisarmingHandlers.ServerCheckCooldown(conn) || !ReferenceHub.TryGetHub(conn.identity.gameObject, out ReferenceHub hub))
                 {
                     return false;
                 }

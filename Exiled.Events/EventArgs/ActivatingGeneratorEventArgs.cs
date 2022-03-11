@@ -14,7 +14,7 @@ namespace Exiled.Events.EventArgs
     using MapGeneration.Distributors;
 
     /// <summary>
-    /// Contains all information before a player inserts a tablet into a generator.
+    /// Contains all information before a player filps the switch of the generator.
     /// </summary>
     public class ActivatingGeneratorEventArgs : EventArgs
     {
@@ -32,7 +32,7 @@ namespace Exiled.Events.EventArgs
         }
 
         /// <summary>
-        /// Gets the player who's inserting a tablet into the generator.
+        /// Gets the player who's filpping the switch of the generator.
         /// </summary>
         public Player Player { get; }
 
@@ -42,7 +42,7 @@ namespace Exiled.Events.EventArgs
         public Generator Generator { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether or not the tablet can be inserted.
+        /// Gets or sets a value indicating whether or not the switch can be flipped.
         /// </summary>
         public bool IsAllowed { get; set; }
     }

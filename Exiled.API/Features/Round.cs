@@ -34,6 +34,16 @@ namespace Exiled.API.Features
         public static bool IsStarted => RoundSummary.RoundInProgress();
 
         /// <summary>
+        /// Gets a value indicating whether the round is ended or not.
+        /// </summary>
+        public static bool IsEnded => RoundSummary.singleton.RoundEnded;
+
+        /// <summary>
+        /// Gets a value indicating whether the round is lobby or not.
+        /// </summary>
+        public static bool IsLobby => !(IsEnded || IsStarted);
+
+        /// <summary>
         /// Gets or sets a value indicating whether the round is locked or not.
         /// </summary>
         public static bool IsLocked
@@ -124,15 +134,18 @@ namespace Exiled.API.Features
         /// <summary>
         /// Forces the round to end, regardless of which factions are alive.
         /// </summary>
+        /// <param name="forceEnd">
+        /// Indicates whether or not it'll force the restart with no check if it's lock.
+        /// </param>
         /// <returns>A <see cref="bool"/> describing whether or not the round was successfully ended.</returns>
-        public static bool ForceEnd()
+        public static bool EndRound(bool forceEnd = false)
         {
-            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2)
+            if (RoundSummary.singleton._keepRoundOnOne && Player.Dictionary.Count < 2 && !forceEnd)
             {
                 return false;
             }
 
-            if (IsStarted && !IsLocked)
+            if ((IsStarted && !IsLocked) || forceEnd)
             {
                 RoundSummary.singleton.ForceEnd();
                 return true;
