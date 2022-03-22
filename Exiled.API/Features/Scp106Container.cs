@@ -65,7 +65,7 @@ namespace Exiled.API.Features
         public static BoxCollider BoxCollider => Base.GetComponent<BoxCollider>();
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets if the 106 container are being used.
+        /// Gets or sets a value indicating whether or not the SCP-106 container has been used.
         /// </summary>
         public static bool Scp106FemurUsed
         {
@@ -74,7 +74,7 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets if the 106 container are being used.
+        /// Gets or sets a value indicating whether or not the SCP-106 container can be used.
         /// </summary>
         public static bool AllowContain
         {
