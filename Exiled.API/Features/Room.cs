@@ -181,8 +181,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks all the doors in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent lockdown.</param>
         /// <param name="lockType">DoorLockType of the lockdown.</param>
+        /// <seealso cref="Door.LockAll(float, ZoneType, DoorLockType)"/>
+        /// <seealso cref="Door.LockAll(float, IEnumerable{ZoneType}, DoorLockType)"/>
         public void LockDown(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             foreach (Door door in Doors)
@@ -199,8 +201,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Locks all the doors and turns off all lights in the room.
         /// </summary>
-        /// <param name="duration">Duration in seconds.</param>
+        /// <param name="duration">Duration in seconds, or <c>-1</c> for permanent blackout.</param>
         /// <param name="lockType">DoorLockType of the blackout.</param>
+        /// <seealso cref="Map.TurnOffAllLights(float, ZoneType)"/>
+        /// <seealso cref="Map.TurnOffAllLights(float, IEnumerable{ZoneType})"/>
         public void Blackout(float duration, DoorLockType lockType = DoorLockType.Regular079)
         {
             LockDown(duration, lockType);
@@ -210,6 +214,10 @@ namespace Exiled.API.Features
         /// <summary>
         /// Unlocks all the doors in the room.
         /// </summary>
+        /// <seealso cref="Door.UnlockAll()"/>
+        /// <seealso cref="Door.UnlockAll(ZoneType)"/>
+        /// <seealso cref="Door.UnlockAll(IEnumerable{ZoneType})"/>
+        /// <seealso cref="Door.UnlockAll(Func{Door, bool})"/>
         public void UnlockAll()
         {
             foreach (Door door in Doors)
