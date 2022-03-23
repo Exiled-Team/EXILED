@@ -604,15 +604,7 @@ namespace Exiled.API.Features
         public bool IsMuted
         {
             get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
-            set
-            {
-                ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
-
-                if (value)
-                    MuteHandler.IssuePersistentMute(UserId);
-                else
-                    MuteHandler.RevokePersistentMute(UserId);
-            }
+            set => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
         }
 
         /// <summary>
@@ -1421,6 +1413,18 @@ namespace Exiled.API.Features
         /// <param name="reason">The kick reason.</param>
         /// <param name="issuer">The kick issuer nickname.</param>
         public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
+
+        /// <summary>
+        /// Mute the player.
+        /// </summary>
+        /// <param name="intercom">The mute are for intercom.</param>
+        public void Mute(bool intercom) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
+
+        /// <summary>
+        /// Mute the player.
+        /// </summary>
+        /// <param name="intercom">The un-mute are for intercom.</param>
+        public void UnMute(bool intercom) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
         /// Blink the player's tag.
