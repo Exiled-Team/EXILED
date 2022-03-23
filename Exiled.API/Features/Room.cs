@@ -44,6 +44,11 @@ namespace Exiled.API.Features
         public string Name => name;
 
         /// <summary>
+        /// Gets the <see cref="Room"/> <see cref="UnityEngine.GameObject"/>.
+        /// </summary>
+        public GameObject GameObject => gameObject;
+
+        /// <summary>
         /// Gets the <see cref="Room"/> <see cref="UnityEngine.Transform"/>.
         /// </summary>
         public Transform Transform => transform;
