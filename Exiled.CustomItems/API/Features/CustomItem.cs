@@ -288,7 +288,7 @@ namespace Exiled.CustomItems.API.Features
 
             foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
+                if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
                     continue;
 
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
@@ -315,7 +315,7 @@ namespace Exiled.CustomItems.API.Features
 
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                if (type.BaseType != typeof(CustomItem) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
+                if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
