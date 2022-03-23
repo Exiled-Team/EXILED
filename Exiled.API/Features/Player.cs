@@ -1417,13 +1417,13 @@ namespace Exiled.API.Features
         /// <summary>
         /// Mute the player.
         /// </summary>
-        /// <param name="intercom">The mute are for intercom.</param>
+        /// <param name="intercom">Whether or not this mute is for the intercom only.</param>
         public void Mute(bool intercom) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
-        /// Mute the player.
+        /// Un-mute the player.
         /// </summary>
-        /// <param name="intercom">The un-mute are for intercom.</param>
+        /// <param name="intercom">Whether or not this un-mute is for the intercom only.</param>
         public void UnMute(bool intercom) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
