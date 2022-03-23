@@ -7,6 +7,7 @@
 
 namespace Exiled.API.Features
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -176,7 +177,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time that the ragdoll was created.
         /// </summary>
-        public System.DateTime CreationTime => new System.DateTime((long)NetworkInfo.CreationTime);
+        public DateTime CreationTime => new DateTime((long)NetworkInfo.CreationTime);
 
         /// <summary>
         /// Gets the <see cref="RoleType"/> of the ragdoll.
