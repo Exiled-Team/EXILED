@@ -15,6 +15,8 @@ namespace Exiled.CustomRoles.API.Features
 
     using Exiled.API.Features;
     using Exiled.API.Features.Attributes;
+    using Exiled.API.Interfaces;
+    using Exiled.Loader;
 
     using YamlDotNet.Serialization;
 
@@ -82,22 +84,40 @@ namespace Exiled.CustomRoles.API.Features
         /// <summary>
         /// Registers all the <see cref="CustomAbility"/>'s present in the current assembly.
         /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects)</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
-        public static IEnumerable<CustomAbility> RegisterAbilities()
+        public static IEnumerable<CustomAbility> RegisterAbilities(bool skipReflection = false, object overrideClass = null)
         {
-            List<CustomAbility> registeredAbilities = new List<CustomAbility>();
-
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
                 if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null)
                     continue;
 
-                CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);
-                customAbility.TryRegister();
-                registeredAbilities.Add(customAbility);
-            }
+                CustomAbility customAbility = null;
 
-            return registeredAbilities;
+                if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                {
+                    IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                    foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ??
+                                                      plugin.Config.GetType().GetProperties())
+                    {
+                        if (property.PropertyType != type)
+                            continue;
+
+                        customAbility = property.GetValue(overrideClass ?? plugin.Config) as CustomAbility;
+                        break;
+                    }
+                }
+
+                if (customAbility is null)
+                    customAbility = (CustomAbility)Activator.CreateInstance(type);
+
+                if (customAbility.TryRegister())
+                    yield return customAbility;
+            }
         }
 
         /// <summary>
@@ -105,23 +125,39 @@ namespace Exiled.CustomRoles.API.Features
         /// </summary>
         /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="Type"/> containing the target types.</param>
         /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects)</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomAbility"/> which contains all registered <see cref="CustomAbility"/>'s.</returns>
-        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        public static IEnumerable<CustomAbility> RegisterAbilities(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
         {
-            List<CustomAbility> registeredAbilities = new List<CustomAbility>();
-
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
                 if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
-                CustomAbility customAbility = (CustomAbility)Activator.CreateInstance(type);
-                customAbility.TryRegister();
-                registeredAbilities.Add(customAbility);
-            }
+                CustomAbility customAbility = null;
 
-            return registeredAbilities;
+                if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                {
+                    IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                    foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                    {
+                        if (property.PropertyType != type)
+                            continue;
+
+                        customAbility = property.GetValue(overrideClass ?? plugin.Config) as CustomAbility;
+                    }
+                }
+
+                if (customAbility is null)
+                    customAbility = (CustomAbility)Activator.CreateInstance(type);
+
+                if (customAbility.TryRegister())
+                    yield return customAbility;
+            }
         }
 
         /// <summary>
