@@ -1418,13 +1418,13 @@ namespace Exiled.API.Features
         /// Mute the player.
         /// </summary>
         /// <param name="intercom">Whether or not this mute is for the intercom only.</param>
-        public void Mute(bool intercom) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
+        public void Mute(bool intercom = false) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
         /// Un-mute the player.
         /// </summary>
         /// <param name="intercom">Whether or not this un-mute is for the intercom only.</param>
-        public void UnMute(bool intercom) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
+        public void UnMute(bool intercom = false) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
         /// Blink the player's tag.
