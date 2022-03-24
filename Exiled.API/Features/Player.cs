@@ -601,6 +601,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is muted.
         /// </summary>
+        /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsMuted
         {
             get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
@@ -629,6 +630,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is intercom muted.
         /// </summary>
+        /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsIntercomMuted
         {
             get => ReferenceHub.characterClassManager.NetworkIntercomMuted;
@@ -1415,13 +1417,13 @@ namespace Exiled.API.Features
         public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
 
         /// <summary>
-        /// Mute the player.
+        /// Persistently mutes the player. For temporary mutes, see <see cref="Player.IsMuted"/> and <see cref="Player.IsIntercomMuted"/>.
         /// </summary>
         /// <param name="intercom">Whether or not this mute is for the intercom only.</param>
         public void Mute(bool intercom = false) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
-        /// Un-mute the player.
+        /// Revokes a persistent mute. For temporary mutes, see <see cref="Player.IsMuted"/> and <see cref="Player.IsIntercomMuted"/>.
         /// </summary>
         /// <param name="intercom">Whether or not this un-mute is for the intercom only.</param>
         public void UnMute(bool intercom = false) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
