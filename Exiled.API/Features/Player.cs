@@ -1064,7 +1064,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player by identifier.
         /// </summary>
-        /// <param name="args">The player's nickname, steamID64 or Discord ID.</param>
+        /// <param name="args">The player's id, nickname, steamID64 or Discord ID.</param>
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
         public static Player Get(string args)
         {
