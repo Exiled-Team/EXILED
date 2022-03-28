@@ -365,10 +365,11 @@ namespace Exiled.API.Features
             }
         }
 
-        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out FlickerableLightController flickerableLightController)
+        private void FindObjectsInRoom(out List<Camera079> cameraList, out List<Door> doors, out TeslaGate teslaGate, out FlickerableLightController flickerableLightController)
         {
             cameraList = new List<Camera079>();
             doors = new List<Door>();
+            teslaGate = null;
             flickerableLightController = null;
 
             if (Scp079Interactable.InteractablesByRoomId.ContainsKey(RoomIdentifier.UniqueId))
@@ -400,6 +401,13 @@ namespace Exiled.API.Features
                                     flickerableLightController = lightController;
                                 break;
                             }
+
+                            case Scp079Interactable.InteractableType.Tesla:
+                            {
+                                if (scp079Interactable.TryGetComponent(out global::TeslaGate tesla))
+                                    teslaGate = TeslaGate.Get(tesla);
+                                break;
+                            }
                         }
                     }
                 }
@@ -416,11 +424,11 @@ namespace Exiled.API.Features
             Zone = FindZone(gameObject);
             Type = FindType(gameObject.name);
             RoomIdentifier = gameObject.GetComponent<RoomIdentifier>();
-            TeslaGate = gameObject.GetComponentInChildren<TeslaGate>();
 
-            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out FlickerableLightController flickerableLightController);
+            FindObjectsInRoom(out List<Camera079> cameras, out List<Door> doors, out TeslaGate teslagate, out FlickerableLightController flickerableLightController);
             Doors = doors;
             Cameras = Camera.Get(cameras);
+            TeslaGate = teslagate;
             if (flickerableLightController == null)
             {
                 if (!gameObject.TryGetComponent(out flickerableLightController))
