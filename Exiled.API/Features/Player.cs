@@ -10,6 +10,7 @@ namespace Exiled.API.Features
 #pragma warning disable 1584
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -25,6 +26,8 @@ namespace Exiled.API.Features
     using Exiled.API.Structs;
 
     using Footprinting;
+
+    using global::Scp914;
 
     using Hints;
 
@@ -59,6 +62,7 @@ namespace Exiled.API.Features
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
@@ -2217,6 +2221,91 @@ namespace Exiled.API.Features
 
         /// <inheritdoc cref="Map.GetNearCameras(Vector3, float)"/>
         public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
+
+        /// <summary>
+        /// Teleports the player to the given <see cref="Vector3"/> coordinates.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> coordinates to move the player to.</param>
+        public void Teleport(Vector3 position) => Position = position;
+
+        /// <summary>
+        /// Teleports the player to the given object.
+        /// </summary>
+        /// <param name="obj">The object to teleport the player to.</param>
+        public void Teleport(object obj)
+        {
+            switch (obj)
+            {
+                case Door door:
+                    Teleport(door.Position + Vector3.up);
+                    break;
+                case Room room:
+                    Teleport(room.Position + Vector3.up);
+                    break;
+                case TeslaGate teslaGate:
+                    Teleport((teslaGate.Position + Vector3.up) + (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f) ? new Vector3(3, 0, 0) : new Vector3(0, 0, 3)));
+                    break;
+                case Scp914Controller scp914:
+                    Teleport(scp914._knobTransform.position + Vector3.up);
+                    break;
+                case Player player:
+                    Teleport(player.Position);
+                    break;
+                case Pickup pickup:
+                    Teleport(pickup.Position + Vector3.up);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Teleports the player to a random object.
+        /// </summary>
+        /// <param name="types">The list of object types to choose from.</param>
+        public void RandomTeleport(IEnumerable<Type> types)
+        {
+            Type[] array = types as Type[] ?? types.ToArray();
+            if (array.Length == 0)
+                return;
+            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
+        }
+
+        /// <summary>
+        /// Teleports player to a random object of a specific type.
+        /// </summary>
+        /// <param name="type">Object for teleport.</param>
+        public void RandomTeleport(Type type)
+        {
+            object randomObject = null;
+            if (type == typeof(Door))
+            {
+                randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
+            }
+            else if (type == typeof(Room))
+            {
+                randomObject = Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)];
+            }
+            else if (type == typeof(TeslaGate))
+            {
+                randomObject = TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)];
+            }
+            else if (type == typeof(Player))
+            {
+                randomObject = Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count));
+            }
+            else if (type == typeof(Pickup))
+            {
+                ReadOnlyCollection<Pickup> pickups = Map.Pickups;
+                randomObject = pickups[Random.Range(0, pickups.Count)];
+            }
+
+            if (randomObject == null)
+            {
+                Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
+                return;
+            }
+
+            Teleport(randomObject);
+        }
 
         /// <summary>
         /// Returns the player in a human-readable format.
