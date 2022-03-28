@@ -133,7 +133,7 @@ namespace Exiled.CustomRoles.API.Features
             Assembly assembly = Assembly.GetExecutingAssembly();
             foreach (Type type in assembly.GetTypes())
             {
-                if (type.BaseType != typeof(CustomAbility) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
+                if ((type.BaseType != typeof(CustomAbility) && !type.IsSubclassOf(typeof(CustomAbility))) || type.GetCustomAttribute(typeof(CustomAbilityAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
                     continue;
 
