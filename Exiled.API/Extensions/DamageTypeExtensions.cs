@@ -10,6 +10,7 @@ namespace Exiled.API.Extensions
     using System.Collections.Generic;
 
     using Exiled.API.Enums;
+    using Exiled.API.Features;
 
     using PlayerStatsSystem;
 
@@ -47,6 +48,22 @@ namespace Exiled.API.Extensions
             { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID, DamageType.MicroHid },
             { DeathTranslations.Hypothermia, DamageType.Hypothermia },
+        };
+
+        /// <summary>
+        /// Gets conversion information between <see cref="ItemType"/>s and <see cref="DamageType"/>s.
+        /// </summary>
+        public static Dictionary<ItemType, DamageType> ItemConversion { get; } = new Dictionary<ItemType, DamageType>
+        {
+            { ItemType.GunCrossvec, DamageType.Crossvec },
+            { ItemType.GunLogicer, DamageType.Logicer },
+            { ItemType.GunRevolver, DamageType.Revolver },
+            { ItemType.GunShotgun, DamageType.Shotgun },
+            { ItemType.GunAK, DamageType.AK },
+            { ItemType.GunCOM15, DamageType.Com15 },
+            { ItemType.GunCOM18, DamageType.Com18 },
+            { ItemType.GunFSP9, DamageType.Fsp9 },
+            { ItemType.GunE11SR, DamageType.E11Sr },
         };
 
         /// <summary>
@@ -101,6 +118,17 @@ namespace Exiled.API.Extensions
                     return DamageType.Scp018;
                 case RecontainmentDamageHandler _:
                     return DamageType.Recontainment;
+                case Scp096DamageHandler _:
+                    return DamageType.Scp096;
+
+                case FirearmDamageHandler firearmDamageHandler:
+                    {
+                        if (ItemConversion.ContainsKey(firearmDamageHandler.WeaponType))
+                            return ItemConversion[firearmDamageHandler.WeaponType];
+
+                        return DamageType.Firearm;
+                    }
+
                 case ScpDamageHandler scpDamageHandler:
                     {
                         DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
@@ -119,7 +147,9 @@ namespace Exiled.API.Extensions
 
                         if (TranslationConversion.ContainsKey(translation))
                             return TranslationConversion[translation];
-                        break;
+
+                        Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                        return DamageType.Unknown;
                     }
             }
 
