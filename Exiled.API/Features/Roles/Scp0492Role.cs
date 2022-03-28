@@ -39,8 +39,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackDistance
         {
-            get => script.distance;
-            set => script.distance = value;
+            get => Script.distance;
+            set => Script.distance = value;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackDamage
         {
-            get => script.damage;
-            set => script.damage = value;
+            get => Script.damage;
+            set => Script.damage = value;
         }
 
         /// <summary>
@@ -57,8 +57,8 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackCooldown
         {
-            get => script.attackCooldown;
-            set => script.attackCooldown = value;
+            get => Script.attackCooldown;
+            set => Script.attackCooldown = value;
         }
 
         /// <inheritdoc/>

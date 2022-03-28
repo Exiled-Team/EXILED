@@ -41,14 +41,14 @@ namespace Exiled.API.Features.Roles
         /// </summary>
         public float AttackCooldown
         {
-            get => script.CurrentBiteCooldown;
-            set => script.CurrentBiteCooldown = value;
+            get => Script.CurrentBiteCooldown;
+            set => Script.CurrentBiteCooldown = value;
         }
 
         /// <summary>
         /// Gets SCP-939's move speed.
         /// </summary>
-        public float MoveSpeed => script.GetMovementSpeed();
+        public float MoveSpeed => Script.GetMovementSpeed();
 
         /// <inheritdoc/>
         internal override RoleType RoleType { get; }
