@@ -7,13 +7,48 @@
 
 namespace Exiled.API.Extensions
 {
+    using System.Collections.Generic;
+
     using Exiled.API.Enums;
+
+    using PlayerStatsSystem;
 
     /// <summary>
     /// A set of extensions for <see cref="DamageType"/>.
     /// </summary>
     public static class DamageTypeExtensions
     {
+        /// <summary>
+        /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
+        /// </summary>
+        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        {
+            { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
+            { DeathTranslations.Bleeding, DamageType.Bleeding },
+            { DeathTranslations.Crushed, DamageType.Crushed },
+            { DeathTranslations.Decontamination, DamageType.Decontamination },
+            { DeathTranslations.Explosion, DamageType.Explosion },
+            { DeathTranslations.Falldown, DamageType.Falldown },
+            { DeathTranslations.Poisoned, DamageType.Poison },
+            { DeathTranslations.Recontained, DamageType.Recontainment },
+            { DeathTranslations.Scp049, DamageType.Scp049 },
+            { DeathTranslations.Scp096, DamageType.Scp096 },
+            { DeathTranslations.Scp173, DamageType.Scp173 },
+            { DeathTranslations.Scp207, DamageType.Scp207 },
+            { DeathTranslations.Scp939, DamageType.Scp939 },
+            { DeathTranslations.Tesla, DamageType.Tesla },
+            { DeathTranslations.Unknown, DamageType.Unknown },
+            { DeathTranslations.Warhead, DamageType.Warhead },
+            { DeathTranslations.Zombie, DamageType.Scp0492 },
+            { DeathTranslations.BulletWounds, DamageType.Firearm },
+            { DeathTranslations.PocketDecay, DamageType.PocketDimension },
+            { DeathTranslations.SeveredHands, DamageType.SeveredHands },
+            { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
+            { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
+            { DeathTranslations.MicroHID, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
+        };
+
         /// <summary>
         /// Check if a <see cref="DamageType">damage type</see> is caused by weapon.
         /// </summary>
@@ -46,5 +81,49 @@ namespace Exiled.API.Extensions
         public static bool IsStatusEffect(this DamageType type)
             => type == DamageType.Asphyxiation || type == DamageType.Poison ||
                type == DamageType.Bleeding || type == DamageType.Scp207 || type == DamageType.Hypothermia;
+
+        /// <summary>
+        /// Gets the <see cref="DamageType"/> of an <see cref="DamageHandlerBase"/>s.
+        /// </summary>
+        /// <param name="damageHandlerBase">The DamageHandler you want to get the DamageType.</param>
+        /// <returns>Return the <see cref="DamageType"/> of the <see cref="DamageHandlerBase"/>.</returns>
+        public static DamageType GetDamageType(DamageHandlerBase damageHandlerBase)
+        {
+            switch (damageHandlerBase)
+            {
+                case CustomReasonDamageHandler _:
+                    return DamageType.Custom;
+                case WarheadDamageHandler _:
+                    return DamageType.Warhead;
+                case ExplosionDamageHandler _:
+                    return DamageType.Explosion;
+                case Scp018DamageHandler _:
+                    return DamageType.Scp018;
+                case RecontainmentDamageHandler _:
+                    return DamageType.Recontainment;
+                case ScpDamageHandler scpDamageHandler:
+                    {
+                        DeathTranslation translation = DeathTranslations.TranslationsById[scpDamageHandler._translationId];
+                        if (translation.Id == DeathTranslations.PocketDecay.Id)
+                            return DamageType.Scp106;
+
+                        if (TranslationConversion.ContainsKey(translation))
+                            return TranslationConversion[translation];
+
+                        return DamageType.Scp;
+                    }
+
+                case UniversalDamageHandler universal:
+                    {
+                        DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+
+                        if (TranslationConversion.ContainsKey(translation))
+                            return TranslationConversion[translation];
+                        break;
+                    }
+            }
+
+            return DamageType.Unknown;
+        }
     }
 }

@@ -27,11 +27,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="handlerBase"><inheritdoc cref="HandlerBase"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PlayerDamageWindowEventArgs(BreakableWindow window, Footprinting.Footprint? player, DamageHandlerBase handlerBase, float damage, bool isAllowed = true)
+        public PlayerDamageWindowEventArgs(BreakableWindow window, Footprinting.Footprint player, DamageHandlerBase handlerBase, float damage, bool isAllowed = true)
         {
             Window = Window.Get(window);
             Damage = damage;
-            Player = Player.Get(player?.Hub);
+            Player = Player.Get(player.Hub);
             HandlerBase = handlerBase;
             IsAllowed = isAllowed;
         }

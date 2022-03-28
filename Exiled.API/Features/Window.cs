@@ -8,6 +8,9 @@
 namespace Exiled.API.Features
 {
     using System.Collections.Generic;
+
+    using Exiled.API.Enums;
+
     using UnityEngine;
 
     /// <summary>
@@ -30,6 +33,7 @@ namespace Exiled.API.Features
             BreakableWindowToWindow.Add(window, this);
             Base = window;
             Room = window.GetComponentInParent<Room>();
+            Type = GetGlassType();
         }
 
         /// <summary>
@@ -54,6 +58,11 @@ namespace Exiled.API.Features
         /// Gets the <see cref="Room"/>.
         /// </summary>
         public Room Room { get; }
+
+        /// <summary>
+        /// Gets the window <see cref="GlassType"/>.
+        /// </summary>
+        public GlassType Type { get; }
 
         /// <summary>
         /// Gets or sets the window's position.
@@ -137,5 +146,24 @@ namespace Exiled.API.Features
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
         public void DamageDoor(float amount) => Base.ServerDamageWindow(amount);
+
+        private GlassType GetGlassType()
+        {
+            switch (Room.Type)
+            {
+                case RoomType.LczGlassBox:
+                    return GlassType.GR18;
+                case RoomType.Hcz079:
+                    return GlassType.Scp079;
+                case RoomType.HczHid:
+                    return GlassType.MicroHid;
+                case RoomType.Hcz049:
+                    return GlassType.Scp049;
+                case RoomType.Lcz330:
+                    return GlassType.Scp330;
+                default:
+                    return GlassType.Unknown;
+            }
+        }
     }
 }
