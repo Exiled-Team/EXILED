@@ -37,7 +37,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the base <see cref="LureSubjectContainer"/>.
         /// </summary>
-        public static LureSubjectContainer Base { get; }
+        public static LureSubjectContainer Base { get; internal set; }
 
         /// <summary>
         /// Gets the LureSubjectContainer <see cref="UnityEngine.GameObject"/>.
@@ -62,7 +62,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the <see cref="UnityEngine.BoxCollider"/> of the LureSubjectContainer.
         /// </summary>
-        public static BoxCollider BoxCollider => Base.GetComponent<BoxCollider>();
+        public static BoxCollider BoxCollider { get; internal set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether or not the SCP-106 container has been used.
