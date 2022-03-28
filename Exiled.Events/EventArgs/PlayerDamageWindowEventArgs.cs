@@ -11,7 +11,8 @@ namespace Exiled.Events.EventArgs
 
     using Exiled.API.Enums;
     using Exiled.API.Features;
-    using Exiled.API.Features.DamageHandlers;
+
+    using PlayerStatsSystem;
 
     /// <summary>
     /// Contains all informations before damage is dealt to a <see cref="BreakableWindow"/>.
@@ -26,11 +27,11 @@ namespace Exiled.Events.EventArgs
         /// <param name="player"><inheritdoc cref="Player"/></param>
         /// <param name="handlerBase"><inheritdoc cref="HandlerBase"/></param>
         /// <param name="isAllowed"><inheritdoc cref="IsAllowed"/></param>
-        public PlayerDamageWindowEventArgs(BreakableWindow window, Player player, DamageHandlerBase handlerBase, float damage, bool isAllowed = true)
+        public PlayerDamageWindowEventArgs(BreakableWindow window, Footprinting.Footprint? player, DamageHandlerBase handlerBase, float damage, bool isAllowed = true)
         {
             Window = Window.Get(window);
             Damage = damage;
-            Player = player;
+            Player = Player.Get(player?.Hub);
             HandlerBase = handlerBase;
             IsAllowed = isAllowed;
         }
@@ -46,9 +47,9 @@ namespace Exiled.Events.EventArgs
         public float Damage { get; set; }
 
         /// <summary>
-        /// Gets the Player who hit the window.
+        /// Gets or sets the Player who hit the window.
         /// </summary>
-        public Player Player { get; }
+        public Player Player { get; set; }
 
         /// <summary>
         /// Gets or sets the DamageHandlerBase the window will receive.
