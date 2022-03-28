@@ -14,6 +14,8 @@ namespace Exiled.API.Features.Roles
     /// </summary>
     public class Scp079Role : Role
     {
+        private Scp079PlayerScript script;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Scp079Role"/> class.
         /// </summary>
@@ -22,6 +24,11 @@ namespace Exiled.API.Features.Roles
 
         /// <inheritdoc/>
         public override Player Owner { get; }
+
+        /// <summary>
+        /// Gets the <see cref="Scp079PlayerScript"/> script for the role.
+        /// </summary>
+        public Scp079PlayerScript Script => script ? script : script = Owner.ReferenceHub.scp079PlayerScript;
 
         /// <summary>
         /// Gets or sets the camera SCP-079 is currently controlling.
