@@ -35,6 +35,26 @@ namespace Exiled.API.Features.DamageHandlers
         }
 
         /// <inheritdoc/>
-        public override DamageType Type => DamageTypeExtensions.GetDamageType(Base);
+        public override DamageType Type
+        {
+            get
+            {
+                switch (Base)
+                {
+                    case Scp096DamageHandler _:
+                        return DamageType.Scp096;
+                    case BaseScpHandler scp:
+                        {
+                            DeathTranslation translation = DeathTranslations.TranslationsById[scp._translationId];
+                            if (translation.Id == DeathTranslations.PocketDecay.Id)
+                                return DamageType.Scp106;
+                            return DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id) ? DamageTypeExtensions.TranslationIdConversion[translation.Id] : DamageType.Scp;
+                        }
+
+                    default:
+                        return base.Type;
+                }
+            }
+        }
     }
 }

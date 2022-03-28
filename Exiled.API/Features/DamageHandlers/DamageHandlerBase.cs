@@ -90,7 +90,31 @@ namespace Exiled.API.Features.DamageHandlers
                 if (damageType != DamageType.Unknown)
                     return damageType;
 
-                return damageType = DamageTypeExtensions.GetDamageType(Base);
+                switch (Base)
+                {
+                    case CustomReasonDamageHandler _:
+                        return DamageType.Custom;
+                    case WarheadDamageHandler _:
+                        return DamageType.Warhead;
+                    case ExplosionDamageHandler _:
+                        return DamageType.Explosion;
+                    case Scp018DamageHandler _:
+                        return DamageType.Scp018;
+                    case RecontainmentDamageHandler _:
+                        return DamageType.Recontainment;
+                    case UniversalDamageHandler universal:
+                        {
+                            DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
+
+                            if (DamageTypeExtensions.TranslationIdConversion.ContainsKey(translation.Id))
+                                return DamageTypeExtensions.TranslationIdConversion[translation.Id];
+
+                            Log.Warn($"{nameof(DamageHandler)}.{nameof(Type)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
+                            break;
+                        }
+                }
+
+                return DamageType.Unknown;
             }
 
             protected set
@@ -105,7 +129,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the <see cref="PlayerStatsSystem.DeathTranslation"/>.
         /// </summary>
-        public virtual DeathTranslation DeathTranslation => DamageTypeExtensions.TranslationConversion.FirstOrDefault(translation => translation.Value == Type).Key;
+        public virtual DeathTranslation DeathTranslation => DamageTypeExtensions.TranslationIdConversion.FirstOrDefault(translation => translation.Value == Type).Key;
 
         /// <summary>
         /// Implicitly converts the given <see cref="DamageHandlerBase"/> instance to a <see cref="BaseHandler"/> object.

@@ -22,32 +22,32 @@ namespace Exiled.API.Extensions
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new Dictionary<byte, DamageType>
         {
-            { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
-            { DeathTranslations.Bleeding, DamageType.Bleeding },
-            { DeathTranslations.Crushed, DamageType.Crushed },
-            { DeathTranslations.Decontamination, DamageType.Decontamination },
-            { DeathTranslations.Explosion, DamageType.Explosion },
-            { DeathTranslations.Falldown, DamageType.Falldown },
-            { DeathTranslations.Poisoned, DamageType.Poison },
-            { DeathTranslations.Recontained, DamageType.Recontainment },
-            { DeathTranslations.Scp049, DamageType.Scp049 },
-            { DeathTranslations.Scp096, DamageType.Scp096 },
-            { DeathTranslations.Scp173, DamageType.Scp173 },
-            { DeathTranslations.Scp207, DamageType.Scp207 },
-            { DeathTranslations.Scp939, DamageType.Scp939 },
-            { DeathTranslations.Tesla, DamageType.Tesla },
-            { DeathTranslations.Unknown, DamageType.Unknown },
-            { DeathTranslations.Warhead, DamageType.Warhead },
-            { DeathTranslations.Zombie, DamageType.Scp0492 },
-            { DeathTranslations.BulletWounds, DamageType.Firearm },
-            { DeathTranslations.PocketDecay, DamageType.PocketDimension },
-            { DeathTranslations.SeveredHands, DamageType.SeveredHands },
-            { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
-            { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
-            { DeathTranslations.MicroHID, DamageType.MicroHid },
-            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
+            { DeathTranslations.Asphyxiated.Id, DamageType.Asphyxiation },
+            { DeathTranslations.Bleeding.Id, DamageType.Bleeding },
+            { DeathTranslations.Crushed.Id, DamageType.Crushed },
+            { DeathTranslations.Decontamination.Id, DamageType.Decontamination },
+            { DeathTranslations.Explosion.Id, DamageType.Explosion },
+            { DeathTranslations.Falldown.Id, DamageType.Falldown },
+            { DeathTranslations.Poisoned.Id, DamageType.Poison },
+            { DeathTranslations.Recontained.Id, DamageType.Recontainment },
+            { DeathTranslations.Scp049.Id, DamageType.Scp049 },
+            { DeathTranslations.Scp096.Id, DamageType.Scp096 },
+            { DeathTranslations.Scp173.Id, DamageType.Scp173 },
+            { DeathTranslations.Scp207.Id, DamageType.Scp207 },
+            { DeathTranslations.Scp939.Id, DamageType.Scp939 },
+            { DeathTranslations.Tesla.Id, DamageType.Tesla },
+            { DeathTranslations.Unknown.Id, DamageType.Unknown },
+            { DeathTranslations.Warhead.Id, DamageType.Warhead },
+            { DeathTranslations.Zombie.Id, DamageType.Scp0492 },
+            { DeathTranslations.BulletWounds.Id, DamageType.Firearm },
+            { DeathTranslations.PocketDecay.Id, DamageType.PocketDimension },
+            { DeathTranslations.SeveredHands.Id, DamageType.SeveredHands },
+            { DeathTranslations.FriendlyFireDetector.Id, DamageType.FriendlyFireDetector },
+            { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
+            { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
         };
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace Exiled.API.Extensions
                         if (translation.Id == DeathTranslations.PocketDecay.Id)
                             return DamageType.Scp106;
 
-                        if (TranslationConversion.ContainsKey(translation))
-                            return TranslationConversion[translation];
+                        if (TranslationIdConversion.ContainsKey(translation.Id))
+                            return TranslationIdConversion[translation.Id];
 
                         return DamageType.Scp;
                     }
@@ -145,8 +145,8 @@ namespace Exiled.API.Extensions
                     {
                         DeathTranslation translation = DeathTranslations.TranslationsById[universal.TranslationId];
 
-                        if (TranslationConversion.ContainsKey(translation))
-                            return TranslationConversion[translation];
+                        if (TranslationIdConversion.ContainsKey(translation.Id))
+                            return TranslationIdConversion[translation.Id];
 
                         Log.Warn($"{nameof(DamageTypeExtensions)}.{nameof(damageHandlerBase)}: No matching {nameof(DamageType)} for {nameof(UniversalDamageHandler)} with ID {translation.Id}, type will be reported as {DamageType.Unknown}. Report this to EXILED Devs.");
                         return DamageType.Unknown;
