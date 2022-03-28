@@ -18,7 +18,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Window"/> on the map.
         /// </summary>
-        internal static readonly List<Window> Windowvalue = new List<Window>(20);
+        internal static readonly List<Window> WindowValue = new List<Window>(20);
         private static readonly Dictionary<BreakableWindow, Window> BreakableWindowToWindow = new Dictionary<BreakableWindow, Window>();
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets a <see cref="IEnumerable{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
         /// </summary>
-        public static IEnumerable<Window> List => Windowvalue.AsReadOnly();
+        public static IEnumerable<Window> List => WindowValue.AsReadOnly();
 
         /// <summary>
         /// Gets a <see cref="List{T}"/> of <see cref="Door"/> which contains all the <see cref="Door"/> instances.
@@ -94,6 +94,33 @@ namespace Exiled.API.Features
         {
             get => GameObject.transform.rotation;
             set => GameObject.transform.rotation = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this window is broken.
+        /// </summary>
+        public bool DisableScpDamage
+        {
+            get => Base._preventScpDamage;
+            set => Base._preventScpDamage = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether or not this window is broken.
+        /// </summary>
+        public BreakableWindow.BreakableWindowStatus SyncStatus
+        {
+            get => Base.NetworksyncStatus;
+            set => Base.NetworksyncStatus = value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating who is the LastAttacker.
+        /// </summary>
+        public Player LastAttacker
+        {
+            get => Player.Get(Base.LastAttacker.Hub);
+            set => Base.LastAttacker = value.Footprint;
         }
 
         /// <summary>

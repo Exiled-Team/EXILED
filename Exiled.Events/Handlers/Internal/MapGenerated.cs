@@ -61,6 +61,7 @@ namespace Exiled.Events.Handlers.Internal
         {
             GenerateRooms();
             GenerateDoors();
+            GenerateWindow();
             GenerateCameras();
             GenerateTeslaGates();
             GenerateLifts();
@@ -87,6 +88,12 @@ namespace Exiled.Events.Handlers.Internal
         {
             foreach (DoorVariant doorVariant in Object.FindObjectsOfType<DoorVariant>())
                 Door.DoorsValue.Add(Door.Get(doorVariant));
+        }
+
+        private static void GenerateWindow()
+        {
+            foreach (BreakableWindow breakableWindow in Object.FindObjectsOfType<BreakableWindow>())
+                Window.WindowValue.Add(Window.Get(breakableWindow));
         }
 
         private static void GenerateCameras()
