@@ -165,8 +165,7 @@ namespace Exiled.Events.Patches.Events.Server
             {
                 if (instruction.opcode == OpCodes.Call)
                 {
-                    if (instruction.operand != null
-                        && instruction.operand is MethodBase methodBase
+                    if (instruction.operand is MethodBase methodBase
                         && methodBase.Name != nameof(RoundSummary._ProcessServerSideCode))
                     {
                         yield return instruction;

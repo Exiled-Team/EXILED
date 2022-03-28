@@ -60,9 +60,9 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -1;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldfld) + offset;
 
-            newInstructions[index].WithLabels(valueLabel);
+            newInstructions[index].labels.Add(valueLabel);
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

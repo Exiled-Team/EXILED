@@ -122,7 +122,7 @@ namespace Exiled.Events.Patches.Events.Player
 
             offset = 0;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && i.operand is MethodInfo method && method.DeclaringType == typeof(CharacterClassManager.ClassChangedAdvanced)) + offset;
-            newInstructions[index + 1].WithLabels(liteLabel);
+            newInstructions[index + 1].labels.Add(liteLabel);
             newInstructions.InsertRange(index + 1, new[]
             {
                 // if (ev.Lite)
@@ -155,7 +155,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // ChangingRole.ChangeInventory(ev.Player, ev.Items, ev.Ammo, curClass, id, reason);
                 new CodeInstruction(OpCodes.Call, Method(typeof(ChangingRole), nameof(ChangeInventory))),
             });
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

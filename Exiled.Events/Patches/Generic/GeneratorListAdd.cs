@@ -27,7 +27,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.Start))]
     internal class GeneratorListAdd
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(codeInstructions);
 

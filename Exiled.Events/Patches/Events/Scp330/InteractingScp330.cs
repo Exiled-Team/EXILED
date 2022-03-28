@@ -76,10 +76,10 @@ namespace Exiled.Events.Patches.Events.Scp330
 
             // Find the instruction the base-code if check points to when false, and add our own label.
             index = newInstructions.FindLastIndex(i => i.opcode == OpCodes.Ldarg_0);
-            newInstructions[index].WithLabels(continueLabel);
+            newInstructions[index].labels.Add(continueLabel);
 
             // Add a return label to the end of the method.
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
