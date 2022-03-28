@@ -20,7 +20,7 @@ namespace Exiled.API.Extensions
     public static class DamageTypeExtensions
     {
         /// <summary>
-        /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
+        /// Gets conversion information between <see cref="DeathTranslation.Id"/>s and <see cref="DamageType"/>s.
         /// </summary>
         public static Dictionary<byte, DamageType> TranslationIdConversion { get; } = new Dictionary<byte, DamageType>
         {
@@ -48,6 +48,37 @@ namespace Exiled.API.Extensions
             { DeathTranslations.UsedAs106Bait.Id, DamageType.FemurBreaker },
             { DeathTranslations.MicroHID.Id, DamageType.MicroHid },
             { DeathTranslations.Hypothermia.Id, DamageType.Hypothermia },
+        };
+
+        /// <summary>
+        /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
+        /// </summary>
+        public static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        {
+            { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
+            { DeathTranslations.Bleeding, DamageType.Bleeding },
+            { DeathTranslations.Crushed, DamageType.Crushed },
+            { DeathTranslations.Decontamination, DamageType.Decontamination },
+            { DeathTranslations.Explosion, DamageType.Explosion },
+            { DeathTranslations.Falldown, DamageType.Falldown },
+            { DeathTranslations.Poisoned, DamageType.Poison },
+            { DeathTranslations.Recontained, DamageType.Recontainment },
+            { DeathTranslations.Scp049, DamageType.Scp049 },
+            { DeathTranslations.Scp096, DamageType.Scp096 },
+            { DeathTranslations.Scp173, DamageType.Scp173 },
+            { DeathTranslations.Scp207, DamageType.Scp207 },
+            { DeathTranslations.Scp939, DamageType.Scp939 },
+            { DeathTranslations.Tesla, DamageType.Tesla },
+            { DeathTranslations.Unknown, DamageType.Unknown },
+            { DeathTranslations.Warhead, DamageType.Warhead },
+            { DeathTranslations.Zombie, DamageType.Scp0492 },
+            { DeathTranslations.BulletWounds, DamageType.Firearm },
+            { DeathTranslations.PocketDecay, DamageType.PocketDimension },
+            { DeathTranslations.SeveredHands, DamageType.SeveredHands },
+            { DeathTranslations.FriendlyFireDetector, DamageType.FriendlyFireDetector },
+            { DeathTranslations.UsedAs106Bait, DamageType.FemurBreaker },
+            { DeathTranslations.MicroHID, DamageType.MicroHid },
+            { DeathTranslations.Hypothermia, DamageType.Hypothermia },
         };
 
         /// <summary>

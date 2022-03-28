@@ -129,7 +129,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets the <see cref="PlayerStatsSystem.DeathTranslation"/>.
         /// </summary>
-        public virtual DeathTranslation DeathTranslation => DamageTypeExtensions.TranslationIdConversion.FirstOrDefault(translation => translation.Value == Type).Key;
+        public virtual DeathTranslation DeathTranslation => DamageTypeExtensions.TranslationConversion.FirstOrDefault(translation => translation.Value == Type).Key;
 
         /// <summary>
         /// Implicitly converts the given <see cref="DamageHandlerBase"/> instance to a <see cref="BaseHandler"/> object.
