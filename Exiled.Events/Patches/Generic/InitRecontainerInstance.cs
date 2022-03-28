@@ -25,7 +25,7 @@ namespace Exiled.Events.Patches.Generic
     [HarmonyPatch(typeof(Recontainer079), nameof(Recontainer079.Start))]
     internal class InitRecontainerInstance
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 

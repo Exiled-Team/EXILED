@@ -34,7 +34,7 @@ namespace Exiled.Events.Patches.Events.Player
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            LocalBuilder player = generator.DeclareLocal(typeof(API.Features.Player));
+            LocalBuilder player = generator.DeclareLocal(typeof(Player));
             LocalBuilder netIdentity = generator.DeclareLocal(typeof(NetworkIdentity));
             LocalBuilder hub = generator.DeclareLocal(typeof(ReferenceHub));
 

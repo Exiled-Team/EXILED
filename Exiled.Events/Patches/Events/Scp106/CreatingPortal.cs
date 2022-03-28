@@ -85,9 +85,5 @@ namespace Exiled.Events.Patches.Events.Scp106
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
         }
-
-        private static void SetPortal(Scp106PlayerScript script, Vector3 pos, Vector3 pos2)
-        {
-        }
     }
 }

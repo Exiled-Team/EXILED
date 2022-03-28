@@ -33,11 +33,6 @@ namespace Exiled.Events.Patches.Events.Scp096
 
             Label returnLabel = generator.DefineLabel();
 
-            int offset = -1;
-
-            int index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
-                                                                 (FieldInfo)instruction.operand == Field(typeof(PlayableScps.PlayableScp), nameof(PlayableScps.PlayableScp.Hub))) + offset;
-
             // StartPryingGateEventArgs ev = new StartPryingGateEventArgs(this, Player, Gate, true);
             //
             // Handlers.Scp096.OnStartPryingGate(ev);
@@ -59,7 +54,7 @@ namespace Exiled.Events.Patches.Events.Scp096
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
