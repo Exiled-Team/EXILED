@@ -24,7 +24,7 @@ namespace Exiled.Example.Commands
         public string Command { get; } = "test";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "t" };
+        public string[] Aliases { get; } = new[] { "t" };
 
         /// <inheritdoc/>
         public string Description { get; } = "A simple test command.";

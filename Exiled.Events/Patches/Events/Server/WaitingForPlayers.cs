@@ -64,7 +64,7 @@ namespace Exiled.Events.Patches.Events.Server
                 if (!did && inst.opcode == OpCodes.Ldstr && ((string)inst.operand) == "Waiting for players...")
                 {
                     did = true;
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnWaitingForPlayers)));
+                    yield return new(OpCodes.Call, AccessTools.Method(typeof(Handlers.Server), nameof(Handlers.Server.OnWaitingForPlayers)));
                 }
 
                 yield return inst;

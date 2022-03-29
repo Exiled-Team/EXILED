@@ -48,40 +48,40 @@ namespace Exiled.Events.Patches.Events.Player
 
             Label returnLabel = generator.DefineLabel();
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // Player player = Player.Get(this.Hub)
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(SingleBulletHitreg), nameof(SingleBulletHitreg.Hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                 // distance = hitInfo.distance
-                new CodeInstruction(OpCodes.Ldloc_3),
+                new(OpCodes.Ldloc_3),
 
                 // component (IDestructible)
-                new CodeInstruction(OpCodes.Ldloc, 5),
+                new(OpCodes.Ldloc, 5),
 
                 // damage
-                new CodeInstruction(OpCodes.Ldloc, 6),
+                new(OpCodes.Ldloc, 6),
 
                 // var ev = new ShotEventArgs(player, distance, component, damage)
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Dup),
-                new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
+                new(OpCodes.Dup),
+                new(OpCodes.Dup),
+                new(OpCodes.Stloc, ev.LocalIndex),
 
                 // Handlers.Player.OnShot(ev)
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
 
                 // if (!ev.CanHurt)
                 //    return;
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
-                new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
+                new(OpCodes.Brfalse, returnLabel),
 
                 // damage = ev.Damage
-                new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
-                new CodeInstruction(OpCodes.Stloc, 6),
+                new(OpCodes.Ldloc, ev.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
+                new(OpCodes.Stloc, 6),
             });
 
             newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
@@ -110,40 +110,40 @@ namespace Exiled.Events.Patches.Events.Player
 
                 Label returnLabel = generator.DefineLabel();
 
-                newInstructions.InsertRange(index, new[]
+                newInstructions.InsertRange(index, new CodeInstruction[]
                 {
                     // Player player = Player.Get(this.Hub)
-                    new CodeInstruction(OpCodes.Ldarg_0),
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
-                    new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                    new(OpCodes.Ldarg_0),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(BuckshotHitreg), nameof(BuckshotHitreg.Hub))),
+                    new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
 
                     // distance = hitInfo.distance
-                    new CodeInstruction(OpCodes.Ldloc_2),
+                    new(OpCodes.Ldloc_2),
 
                     // component (IDestructible)
-                    new CodeInstruction(OpCodes.Ldloc, 4),
+                    new(OpCodes.Ldloc, 4),
 
                     // damage
-                    new CodeInstruction(OpCodes.Ldloc, 5),
+                    new(OpCodes.Ldloc, 5),
 
                     // var ev = new ShotEventArgs(player, distance, component, damage)
-                    new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Dup),
-                    new CodeInstruction(OpCodes.Stloc, ev.LocalIndex),
+                    new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ShotEventArgs))[0]),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Dup),
+                    new(OpCodes.Stloc, ev.LocalIndex),
 
                     // Handlers.Player.OnShot(ev)
-                    new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
+                    new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnShot))),
 
                     // if (!ev.CanHurt)
                     //    return;
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
-                    new CodeInstruction(OpCodes.Brfalse, returnLabel),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.CanHurt))),
+                    new(OpCodes.Brfalse, returnLabel),
 
                     // damage = ev.Damage
-                    new CodeInstruction(OpCodes.Ldloc, ev.LocalIndex),
-                    new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
-                    new CodeInstruction(OpCodes.Stloc, 5),
+                    new(OpCodes.Ldloc, ev.LocalIndex),
+                    new(OpCodes.Callvirt, PropertyGetter(typeof(ShotEventArgs), nameof(ShotEventArgs.Damage))),
+                    new(OpCodes.Stloc, 5),
                 });
 
                 newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);

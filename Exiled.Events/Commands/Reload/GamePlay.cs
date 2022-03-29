@@ -29,7 +29,7 @@ namespace Exiled.Events.Commands.Reload
         public string Command { get; } = "gameplay";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "gm" };
+        public string[] Aliases { get; } = new[] { "gm" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reloads gameplay configs.";

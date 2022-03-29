@@ -85,7 +85,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Summons the NTF chopper.
         /// </summary>
-        public static void SummonNtfChopper() => PlayEffects(new RespawnEffectType[] { RespawnEffectType.SummonNtfChopper });
+        public static void SummonNtfChopper() => PlayEffects(new[] { RespawnEffectType.SummonNtfChopper });
 
         /// <summary>
         /// Summons the <see cref="Side.ChaosInsurgency"/> van.
@@ -93,13 +93,13 @@ namespace Exiled.API.Features
         /// <param name="playMusic">Whether or not to play the Chaos Insurgency spawn music.</param>
         public static void SummonChaosInsurgencyVan(bool playMusic = true)
         {
-            PlayEffects(playMusic ? new RespawnEffectType[]
+            PlayEffects(playMusic ? new[]
             {
                 RespawnEffectType.PlayChaosInsurgencyMusic,
                 RespawnEffectType.SummonChaosInsurgencyVan,
             }
             :
-            new RespawnEffectType[]
+            new[]
             {
                 RespawnEffectType.SummonChaosInsurgencyVan,
             });

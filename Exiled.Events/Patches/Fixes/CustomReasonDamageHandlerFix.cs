@@ -29,7 +29,7 @@ namespace Exiled.Events.Patches.Fixes
 
             int index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Ldarg_0);
 
-            newInstructions.Insert(index, new CodeInstruction(OpCodes.Ret));
+            newInstructions.Insert(index, new(OpCodes.Ret));
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

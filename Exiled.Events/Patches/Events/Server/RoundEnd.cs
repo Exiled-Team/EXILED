@@ -172,9 +172,9 @@ namespace Exiled.Events.Patches.Events.Server
                     }
                     else
                     {
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
+                        yield return new(OpCodes.Call, AccessTools.Method(typeof(RoundEnd), nameof(Process)));
+                        yield return new(OpCodes.Ldarg_0);
+                        yield return new(OpCodes.Call, AccessTools.FirstMethod(typeof(MECExtensionMethods2), (m) =>
                         {
                             Type[] generics = m.GetGenericArguments();
                             ParameterInfo[] paramseters = m.GetParameters();

@@ -28,7 +28,7 @@ namespace Exiled.Permissions.Commands.Permissions.Group
         public override string Command { get; } = "groups";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new string[] { "grps" };
+        public override string[] Aliases { get; } = new[] { "grps" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Handles commands about permissions groups.";

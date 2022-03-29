@@ -42,8 +42,8 @@ namespace Exiled.Events.Patches.Events.Player
                         did = true;
 
                         // Think I wanna have a deal with IL?
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
+                        yield return new(OpCodes.Call, AccessTools.Method(typeof(Verified), nameof(CallEvent)));
+                        yield return new(OpCodes.Ldarg_0);
                     }
 
                     yield return nextEnumerator.Current;

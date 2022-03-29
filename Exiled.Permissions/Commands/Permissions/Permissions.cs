@@ -27,7 +27,7 @@ namespace Exiled.Permissions.Commands.Permissions
         public override string Command { get; } = "permissions";
 
         /// <inheritdoc/>
-        public override string[] Aliases { get; } = new string[] { "ep" };
+        public override string[] Aliases { get; } = new[] { "ep" };
 
         /// <inheritdoc/>
         public override string Description { get; } = "Handles commands about permissions";

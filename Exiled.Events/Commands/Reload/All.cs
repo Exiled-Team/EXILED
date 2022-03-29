@@ -25,7 +25,7 @@ namespace Exiled.Events.Commands.Reload
         public string Command { get; } = "all";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "a" };
+        public string[] Aliases { get; } = new[] { "a" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reload all configs and plugins.";

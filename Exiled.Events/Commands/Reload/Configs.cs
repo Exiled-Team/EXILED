@@ -29,7 +29,7 @@ namespace Exiled.Events.Commands.Reload
         public string Command { get; } = "configs";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "cfgs" };
+        public string[] Aliases { get; } = new[] { "cfgs" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reload plugin configs.";

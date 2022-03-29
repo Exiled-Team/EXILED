@@ -28,7 +28,7 @@ namespace Exiled.Events.Commands.Reload
         public string Command { get; } = "remoteadmin";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "ra" };
+        public string[] Aliases { get; } = new[] { "ra" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reloads remote admin configs.";

@@ -280,7 +280,7 @@ namespace Exiled.API.Extensions
             void CustomSyncVarGenerator(NetworkWriter targetWriter)
             {
                 targetWriter.WriteUInt64(SyncVarDirtyBits[$"{propertyName}"]);
-                WriterExtensions[value.GetType()]?.Invoke(null, new object[] { targetWriter, value });
+                WriterExtensions[value.GetType()]?.Invoke(null, new[] { targetWriter, value });
             }
 
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
@@ -312,7 +312,7 @@ namespace Exiled.API.Extensions
             PooledNetworkWriter writer = NetworkWriterPool.GetWriter();
 
             foreach (object value in values)
-                WriterExtensions[value.GetType()].Invoke(null, new object[] { writer, value });
+                WriterExtensions[value.GetType()].Invoke(null, new[] { writer, value });
 
             RpcMessage msg = new()
             {

@@ -32,10 +32,10 @@ namespace Exiled.Events.Patches.Generic
         {
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
-            newInstructions.InsertRange(0, new[]
+            newInstructions.InsertRange(0, new CodeInstruction[]
             {
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(InitLureContainerInstance), nameof(Start))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Call, Method(typeof(InitLureContainerInstance), nameof(Start))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

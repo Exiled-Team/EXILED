@@ -22,7 +22,7 @@ namespace Exiled.Permissions.Commands.Permissions
         public string Command { get; } = "reload";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "rld" };
+        public string[] Aliases { get; } = new[] { "rld" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reloads all permissions";
