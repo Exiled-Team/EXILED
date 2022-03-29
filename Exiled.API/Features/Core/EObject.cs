@@ -19,7 +19,8 @@ namespace Exiled.API.Features.Core
     /// </summary>
     public abstract class EObject : TypeCastObject<EObject>
     {
-        private static readonly Dictionary<Type, List<string>> RegisteredTypes = new Dictionary<Type, List<string>>();
+        private static readonly Dictionary<Type, List<string>> InternalRegisteredTypes = new Dictionary<Type, List<string>>();
+        private static readonly List<EObject> InternalObjects = new List<EObject>();
         private bool destroyedValue;
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace Exiled.API.Features.Core
             : base()
         {
             IsEditable = true;
-            Objects.Add(this);
+            InternalObjects.Add(this);
         }
 
         /// <summary>
@@ -64,9 +65,14 @@ namespace Exiled.API.Features.Core
         public string Name { get; protected set; }
 
         /// <summary>
-        /// Gets a <see cref="List{T}"/> of <see cref="EObject"/> containing all the active objects.
+        /// Gets all the registered <see cref="EObject"/> types.
         /// </summary>
-        protected static List<EObject> Objects { get; } = new List<EObject>();
+        protected static IReadOnlyDictionary<Type, List<string>> RegisteredTypes => InternalRegisteredTypes;
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EObject"/> containing all the active <see cref="EObject"/> instances.
+        /// </summary>
+        protected static IReadOnlyCollection<EObject> Objects => InternalObjects;
 
         /// <summary>
         /// Gets a <see cref="Type"/> from a given type name.
@@ -104,14 +110,14 @@ namespace Exiled.API.Features.Core
                 if (t.Name != typeof(T).Name)
                     continue;
 
-                if (RegisteredTypes[t] != null)
+                if (InternalRegisteredTypes[t] != null)
                 {
-                    RegisteredTypes[t].Add(name);
+                    InternalRegisteredTypes[t].Add(name);
                 }
                 else
                 {
                     List<string> values = new List<string> { name, };
-                    RegisteredTypes.Add(t, values);
+                    InternalRegisteredTypes.Add(t, values);
                 }
 
                 return typeof(T);
@@ -121,36 +127,64 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// Registers the specified <see cref="EObject"/> <paramref name="type"/>.
+        /// Registers the specified <see cref="EObject"/> type.
         /// </summary>
         /// <param name="type">The type to register.</param>
-        /// <param name="name">The name of the registered type.</param>
-        /// <returns>The registered <see cref="EObject"/> type.</returns>
-        public static Type RegisterEObjectType(Type type, string name)
+        /// <param name="name">The name of the type.</param>
+        /// <param name="registeredType">The registered type.</param>
+        /// <returns><see langword="true"/> if the type was registered successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool RegisterEObjectType(Type type, string name, out Type registeredType)
         {
-            Type matching = GetEObjectTypeFromRegisteredTypes(type, name);
-            if (matching != null)
-                return matching;
+            registeredType = GetEObjectTypeFromRegisteredTypes(type, name);
+            if (registeredType != null)
+                return false;
 
             foreach (Type t in Assembly.GetExecutingAssembly().GetTypes().Where(item => item.IsSubclassOf(typeof(EObject))))
             {
                 if (t.Name != type.Name)
                     continue;
 
-                if (RegisteredTypes.ContainsKey(t))
+                if (InternalRegisteredTypes.ContainsKey(t))
                 {
-                    RegisteredTypes[t].Add(name);
+                    InternalRegisteredTypes[t].Add(name);
                 }
                 else
                 {
                     List<string> values = new List<string> { name, };
-                    RegisteredTypes.Add(t, values);
+                    InternalRegisteredTypes.Add(t, values);
                 }
 
-                return t;
+                registeredType = t;
+                return true;
             }
 
             throw new NullReferenceException($"Couldn't find a defined EObject type for {name}");
+        }
+
+        /// <summary>
+        /// Registers the specified <see cref="EObject"/> type.
+        /// </summary>
+        /// <param name="type">The type to register.</param>
+        /// <returns><see langword="true"/> if the type was unregistered successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool UnregisterEObjectType(Type type) => InternalRegisteredTypes.Remove(type);
+
+        /// <summary>
+        /// Unregisters the specified <see cref="EObject"/> type.
+        /// </summary>
+        /// <param name="name">The name of the type to unregister.</param>
+        /// <returns><see langword="true"/> if the type was unregistered successfully; otherwise, <see langword="false"/>.</returns>
+        public static bool UnregisterEObjectType(string name)
+        {
+            foreach (KeyValuePair<Type, List<string>> kvp in InternalRegisteredTypes)
+            {
+                if (kvp.Value.Contains(name))
+                    continue;
+
+                InternalRegisteredTypes.Remove(kvp.Key);
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -182,7 +216,7 @@ namespace Exiled.API.Features.Core
         {
             Type t = null;
 
-            foreach (KeyValuePair<Type, List<string>> kvp in RegisteredTypes)
+            foreach (KeyValuePair<Type, List<string>> kvp in InternalRegisteredTypes)
             {
                 if (kvp.Key != typeof(T) || !kvp.Value.Contains(name))
                     continue;
@@ -205,7 +239,7 @@ namespace Exiled.API.Features.Core
         {
             Type t = null;
 
-            foreach (KeyValuePair<Type, List<string>> kvp in RegisteredTypes)
+            foreach (KeyValuePair<Type, List<string>> kvp in InternalRegisteredTypes)
             {
                 if (kvp.Key != type || !kvp.Value.Contains(name))
                     continue;
@@ -223,7 +257,29 @@ namespace Exiled.API.Features.Core
         /// <param name="name">The name of the type to look for.</param>
         /// <returns>The matching <see cref="Type"/>.</returns>
         /// <exception cref="NullReferenceException">Occurs when the requested type's name is not the same as the specified name.</exception>
-        public static Type GetEObjectTypeFromRegisteredTypesByName(string name) => RegisteredTypes.FirstOrDefault(kvp => kvp.Value.Contains(name)).Key;
+        public static Type GetEObjectTypeFromRegisteredTypes(string name)
+        {
+            Type t = null;
+
+            foreach (KeyValuePair<Type, List<string>> kvp in InternalRegisteredTypes)
+            {
+                if (kvp.Key.Name != name || !kvp.Value.Contains(name))
+                    continue;
+
+                t = kvp.Key;
+                break;
+            }
+
+            return t;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="EObject"/> type from all the registered types.
+        /// </summary>
+        /// <param name="name">The name of the type to look for.</param>
+        /// <returns>The matching <see cref="Type"/>.</returns>
+        /// <exception cref="NullReferenceException">Occurs when the requested type's name is not the same as the specified name.</exception>
+        public static Type GetEObjectTypeFromRegisteredTypesByName(string name) => InternalRegisteredTypes.FirstOrDefault(kvp => kvp.Value.Contains(name)).Key;
 
         /// <summary>
         /// Creates a new instance of the <see cref="EObject"/> class.
@@ -356,10 +412,10 @@ namespace Exiled.API.Features.Core
         /// </summary>
         public static void DestroyAllObjects()
         {
-            foreach (EObject @object in Objects)
+            foreach (EObject @object in InternalObjects)
                 @object.Destroy();
 
-            Objects.Clear();
+            InternalObjects.Clear();
         }
 
         /// <summary>
@@ -369,7 +425,7 @@ namespace Exiled.API.Features.Core
         public static void DestroyAllObjectsOfType<T>()
             where T : EObject
         {
-            foreach (EObject @object in Objects)
+            foreach (EObject @object in InternalObjects)
             {
                 if (@object.Cast(out T obj))
                     obj.Destroy();
@@ -385,7 +441,7 @@ namespace Exiled.API.Features.Core
             where T : EObject
         {
             List<T> objects = new List<T>();
-            foreach (EObject @object in Objects)
+            foreach (EObject @object in EObject.InternalObjects)
             {
                 if (@object.Cast(out T obj))
                     objects.Add(obj);
@@ -404,7 +460,7 @@ namespace Exiled.API.Features.Core
             where T : EObject
         {
             List<T> objects = new List<T>();
-            foreach (EObject @object in Objects)
+            foreach (EObject @object in EObject.InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Name == name)
                     objects.Add(obj);
@@ -424,7 +480,7 @@ namespace Exiled.API.Features.Core
         {
             List<T> objects = new List<T>();
 
-            foreach (EObject @object in Objects)
+            foreach (EObject @object in EObject.InternalObjects)
             {
                 if (@object.Cast(out T obj) && obj.Tag.ToLower().Contains(tag))
                     objects.Add(obj);
@@ -464,7 +520,7 @@ namespace Exiled.API.Features.Core
                 if (destroying)
                 {
                     OnBeginDestroy();
-                    Objects.Remove(this);
+                    InternalObjects.Remove(this);
                 }
 
                 OnDestroyed();

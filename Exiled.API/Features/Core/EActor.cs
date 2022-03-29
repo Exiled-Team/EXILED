@@ -41,38 +41,6 @@ namespace Exiled.API.Features.Core
         }
 
         /// <summary>
-        /// Gets the <see cref="UnityEngine.Transform"/>.
-        /// </summary>
-        public Transform Transform => Base.transform;
-
-        /// <summary>
-        /// Gets or sets the <see cref="Vector3">position</see>.
-        /// </summary>
-        public virtual Vector3 Position
-        {
-            get => Transform.position;
-            set => Transform.position = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Quaternion">rotation</see>.
-        /// </summary>
-        public virtual Quaternion Rotation
-        {
-            get => Transform.rotation;
-            set => Transform.rotation = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the <see cref="Vector3">scale</see>.
-        /// </summary>
-        public virtual Vector3 Scale
-        {
-            get => Transform.localScale;
-            set => Transform.localScale = value;
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating whether the <see cref="EActor"/> can tick.
         /// </summary>
         public virtual bool CanEverTick
