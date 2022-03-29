@@ -2210,7 +2210,7 @@ namespace Exiled.API.Features
                     roundRestartType = RoundRestartType.RedirectRestart;
             }
 
-            Connection.Send(new RoundRestartMessage(roundRestartType, 0.0f, newPort, reconnect, false));
+            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
         /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
