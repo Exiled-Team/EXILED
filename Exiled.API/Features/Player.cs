@@ -19,6 +19,7 @@ namespace Exiled.API.Features
 
     using Exiled.API.Enums;
     using Exiled.API.Extensions;
+    using Exiled.API.Features.Core;
     using Exiled.API.Features.DamageHandlers;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Roles;
@@ -81,6 +82,7 @@ namespace Exiled.API.Features
         private ReferenceHub referenceHub;
         private CustomHealthStat healthStat;
         private Role role;
+        private HashSet<EActor> components = new HashSet<EActor>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Player"/> class.
@@ -183,6 +185,11 @@ namespace Exiled.API.Features
         /// Gets the encapsulated <see cref="ReferenceHub"/>'s <see cref="Transform">PlayerCameraReference</see>.
         /// </summary>
         public Transform CameraTransform { get; private set; }
+
+        /// <summary>
+        /// Gets a <see cref="IReadOnlyCollection{T}"/> of <see cref="EActor"/> containing all the player's components.
+        /// </summary>
+        public IReadOnlyCollection<EActor> Components => components;
 
         /// <summary>
         /// Gets the player's <see cref="Assets._Scripts.Dissonance.DissonanceUserSetup"/>.
@@ -1216,7 +1223,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts the given <see cref="Features.Broadcast"/> to the player.
         /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcast.</param>
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
         public void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
@@ -1462,7 +1469,7 @@ namespace Exiled.API.Features
         /// Shows a broadcast to the player. Doesn't get logged to the console and can be monospaced.
         /// </summary>
         /// <param name="duration">The broadcast duration.</param>
-        /// <param name="message">The message to be broadcasted.</param>
+        /// <param name="message">The message to be broadcast.</param>
         /// <param name="type">The broadcast type.</param>
         /// <param name="shouldClearPrevious">Clears all player's broadcasts before sending the new one.</param>
         public void Broadcast(ushort duration, string message, global::Broadcast.BroadcastFlags type = global::Broadcast.BroadcastFlags.Normal, bool shouldClearPrevious = false)
@@ -2210,7 +2217,7 @@ namespace Exiled.API.Features
                     roundRestartType = RoundRestartType.RedirectRestart;
             }
 
-            Connection.Send(new RoundRestartMessage(roundRestartType, 0.0f, newPort, reconnect, false));
+            Connection.Send(new RoundRestartMessage(roundRestartType, delay, newPort, reconnect, false));
         }
 
         /// <inheritdoc cref="MirrorExtensions.PlayGunSound(Player, Vector3, ItemType, byte, byte)"/>
@@ -2306,6 +2313,96 @@ namespace Exiled.API.Features
 
             Teleport(randomObject);
         }
+
+        /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to be added.</typeparam>
+        /// <param name="name">The name of the component.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public T AddComponent<T>(string name = "")
+            where T : EActor
+        {
+            T component = EObject.CreateDefaultSubobject<T>(GameObject, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{components.Count}" : name);
+            if (component is null)
+                return null;
+
+            components.Add(component);
+            return component;
+        }
+
+        /// <summary>
+        /// Adds a component to the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to be added.</param>
+        /// <param name="name">The name of the component.</param>
+        /// <returns>The added <see cref="EActor"/> component.</returns>
+        public EActor AddComponent(Type type, string name = "")
+        {
+            EActor component = EObject.CreateDefaultSubobject(type, GameObject, string.IsNullOrEmpty(name) ? $"{GetType().Name}-Component#{components.Count}" : name).Cast<EActor>();
+            if (component is null)
+                return null;
+
+            components.Add(component);
+            return component;
+        }
+
+        /// <summary>
+        /// Gets a component to the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
+        /// <returns>The <see cref="EActor"/> component.</returns>
+        public T GetComponent<T>()
+            where T : EActor => components.FirstOrDefault(comp => typeof(T) == comp.GetType()).Cast<T>();
+
+        /// <summary>
+        /// Gets a component from the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to look for.</param>
+        /// <returns>The <see cref="EActor"/> component.</returns>
+        public EActor GetComponent(Type type) => components.FirstOrDefault(comp => type == comp.GetType());
+
+        /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <typeparam name="T">The <typeparamref name="T"/> <see cref="EActor"/> to look for.</typeparam>
+        /// <param name="component">The <typeparamref name="T"/> <see cref="EActor"/>.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent<T>(out T component)
+            where T : EActor
+        {
+            component = GetComponent<T>();
+
+            return component != null;
+        }
+
+        /// <summary>
+        /// Tries to get a component from the player.
+        /// </summary>
+        /// <param name="type">The <see cref="Type"/> of the <see cref="EActor"/> to get.</param>
+        /// <param name="component">The found component.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool TryGetComponent(Type type, out EActor component)
+        {
+            component = GetComponent(type);
+
+            return component != null;
+        }
+
+        /// <summary>
+        /// Checks if the player has an active component.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="EActor"/> to look for.</typeparam>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasComponent<T>()
+            where T : EActor => components.Any(comp => typeof(T) == comp.GetType());
+
+        /// <summary>
+        /// Checks if the player has an active component.
+        /// </summary>
+        /// <param name="type">The <see cref="EActor"/> to look for.</param>
+        /// <returns><see langword="true"/> if the component was found; otherwise, <see langword="false"/>.</returns>
+        public bool HasComponent(Type type) => components.Any(comp => type == comp.GetType());
 
         /// <summary>
         /// Returns the player in a human-readable format.

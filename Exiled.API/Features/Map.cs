@@ -184,7 +184,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Broadcasts a message to all <see cref="Player">players</see>.
         /// </summary>
-        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcasted.</param>
+        /// <param name="broadcast">The <see cref="Features.Broadcast"/> to be broadcast.</param>
         /// <param name="shouldClearPrevious">Clears all players' broadcasts before sending the new one.</param>
         public static void Broadcast(Broadcast broadcast, bool shouldClearPrevious = false)
         {
@@ -210,7 +210,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Shows a hint to all <see cref="Player">players</see>.
         /// </summary>
-        /// <param name="message">The message that will be broadcasted (supports Unity Rich Text formatting).</param>
+        /// <param name="message">The message that will be broadcast (supports Unity Rich Text formatting).</param>
         /// <param name="duration">The duration in seconds.</param>
         public static void ShowHint(string message, float duration)
         {
