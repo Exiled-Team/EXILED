@@ -145,7 +145,7 @@ namespace Exiled.API.Features
         /// Damages the window.
         /// </summary>
         /// <param name="amount">The amount of damage to deal.</param>
-        public void DamageDoor(float amount) => Base.ServerDamageWindow(amount);
+        public void DamageWindow(float amount) => Base.ServerDamageWindow(amount);
 
         private GlassType GetGlassType()
         {
