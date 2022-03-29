@@ -55,7 +55,7 @@ namespace Exiled.CustomRoles.API.Features.Extensions
                         break;
                 }
             }
-            while (parser.Current != null);
+            while (parser.Current is not null);
 
             key = null;
             value = null;

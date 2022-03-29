@@ -25,7 +25,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (controller == null)
+                if (controller is null)
                     controller = PlayerManager.localPlayer.GetComponent<AlphaWarheadController>();
 
                 return controller;
@@ -39,7 +39,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (sitePanel == null)
+                if (sitePanel is null)
                     sitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadNukesitePanel>();
 
                 return sitePanel;
@@ -53,7 +53,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                if (outsitePanel == null)
+                if (outsitePanel is null)
                     outsitePanel = UnityEngine.Object.FindObjectOfType<AlphaWarheadOutsitePanel>();
 
                 return outsitePanel;

@@ -38,7 +38,7 @@ namespace Exiled.Patcher
 
                 ModuleDefMD module = ModuleDefMD.Load(path);
 
-                if (module == null)
+                if (module is null)
                 {
                     Console.WriteLine($"File {path} not found!");
                     return;
@@ -79,7 +79,7 @@ namespace Exiled.Patcher
 
                 MethodDef call = FindMethod(modRefType, "Load");
 
-                if (call == null)
+                if (call is null)
                 {
                     Console.WriteLine($"Failed to get the \"{call.Name}\" method! Maybe you don't have permission?");
                     return;
@@ -93,7 +93,7 @@ namespace Exiled.Patcher
 
                 MethodDef start = FindMethod(typeDef, "Start");
 
-                if (start == null)
+                if (start is null)
                 {
                     start = new MethodDefUser("Start", MethodSig.CreateInstance(module.CorLibTypes.Void), MethodImplAttributes.IL | MethodImplAttributes.Managed, MethodAttributes.Private | MethodAttributes.SpecialName | MethodAttributes.RTSpecialName);
                     typeDef.Methods.Add(start);
@@ -115,7 +115,7 @@ namespace Exiled.Patcher
 
         private static MethodDef FindMethod(TypeDef type, string methodName)
         {
-            if (type != null)
+            if (type is not null)
             {
                 foreach (var method in type.Methods)
                 {

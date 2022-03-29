@@ -162,7 +162,7 @@ namespace Exiled.Events.EventArgs
         /// <param name="port">The redirection port (Redirect reason only).</param>
         public void Reject(RejectionReason rejectionReason, bool isForced, string customReason = null, long expiration = 0, byte seconds = 0, ushort port = 0)
         {
-            if (customReason != null && customReason.Length > 400)
+            if (customReason is not null && customReason.Length > 400)
                 throw new ArgumentOutOfRangeException(nameof(rejectionReason), "Reason can't be longer than 400 characters.");
 
             if (!IsAllowed)
@@ -170,7 +170,7 @@ namespace Exiled.Events.EventArgs
 
             isAllowed = false;
 
-            NetDataWriter rejectData = new NetDataWriter();
+            NetDataWriter rejectData = new();
 
             rejectData.Put((byte)rejectionReason);
 

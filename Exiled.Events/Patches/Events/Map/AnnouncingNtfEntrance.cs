@@ -30,7 +30,7 @@ namespace Exiled.Events.Patches.Events.Map
             int scpsLeft = Player.List.Count(player => player.Role.Team == Team.SCP && player.Role != RoleType.Scp0492);
             string[] unitInformation = regular.Split('-');
 
-            AnnouncingNtfEntranceEventArgs ev = new AnnouncingNtfEntranceEventArgs(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));
+            AnnouncingNtfEntranceEventArgs ev = new(scpsLeft, unitInformation[0], int.Parse(unitInformation[1]));
 
             Map.OnAnnouncingNtfEntrance(ev);
 

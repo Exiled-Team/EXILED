@@ -63,11 +63,11 @@ namespace Exiled.Permissions.Commands.Permissions.Group
 
             Permissions.Groups.TryGetValue(arguments.At(0), out Features.Group group);
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new();
 
             stringBuilder.AppendLine($"Group: {arguments.At(0)}");
 
-            if (group == null)
+            if (group is null)
             {
                 stringBuilder.AppendLine($"Group is null.");
                 response = stringBuilder.ToString();

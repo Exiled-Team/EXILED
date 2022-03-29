@@ -172,7 +172,7 @@ namespace Exiled.Events.Patches.Events.Player
                 Inventory inventory = player.Inventory;
                 if (reason == CharacterClassManager.SpawnReason.Escaped && prevRole != newRole)
                 {
-                    List<ItemPickupBase> list = new List<ItemPickupBase>();
+                    List<ItemPickupBase> list = new();
                     if (inventory.TryGetBodyArmor(out BodyArmor bodyArmor))
                         bodyArmor.DontRemoveExcessOnDrop = true;
                     while (inventory.UserInventory.Items.Count > 0)

@@ -51,7 +51,7 @@ namespace Exiled.Events.Patches.Events.Player
                         if (!teslaGate.CanBeIdle(player))
                             continue;
 
-                        TriggeringTeslaEventArgs ev = new TriggeringTeslaEventArgs(player, teslaGate);
+                        TriggeringTeslaEventArgs ev = new(player, teslaGate);
                         Handlers.Player.OnTriggeringTesla(ev);
 
                         if (ev.IsTriggerable && !isTriggerable)

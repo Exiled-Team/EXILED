@@ -42,7 +42,7 @@ namespace Exiled.Events.Patches.Events.Player
 #endif
                 player = new API.Features.Player(hub);
 #if DEBUG
-                API.Features.Log.Debug($"Object exists {player != null}");
+                API.Features.Log.Debug($"Object exists {player is not null}");
                 API.Features.Log.Debug($"Creating player object for {hub.nicknameSync.Network_displayName}", true);
 #endif
                 API.Features.Player.UnverifiedPlayers.Add(hub, player);

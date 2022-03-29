@@ -41,7 +41,7 @@ namespace Exiled.Events.Patches.Events.Map
         /// <returns>An array of colliders.</returns>
         public static Collider[] TrimColliders(ExplodingGrenadeEventArgs ev, Collider[] colliderArray)
         {
-            List<Collider> colliders = new List<Collider>();
+            List<Collider> colliders = new();
             foreach (Collider collider in colliderArray)
             {
                 if (collider.TryGetComponent(out IDestructible dest) &&

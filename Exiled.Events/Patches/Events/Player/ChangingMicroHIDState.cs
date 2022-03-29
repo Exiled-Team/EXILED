@@ -36,7 +36,7 @@ namespace Exiled.Events.Patches.Events.Player
             Label skipLabel = generator.DefineLabel();
             Label continueLabel = generator.DefineLabel();
             LocalBuilder ev = generator.DeclareLocal(typeof(ChangingMicroHIDStateEventArgs));
-            List<CodeInstruction> instructionsToAdd = new List<CodeInstruction>
+            List<CodeInstruction> instructionsToAdd = new()
             {
                 // Player.Get(this.Owner);
                 new CodeInstruction(OpCodes.Ldarg_0),

@@ -68,7 +68,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ChangingItemEventArgs), nameof(ChangingItemEventArgs.IsAllowed))),
                 new CodeInstruction(OpCodes.Brfalse, returnLabel),
 
-                // if (ev.NewItem == null)
+                // if (ev.NewItem is null)
                 // {
                 //    ip2 = null;
                 //    itermSerial = 0;

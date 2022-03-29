@@ -89,7 +89,7 @@ namespace Exiled.API.Features.DamageHandlers
 
             if ((player.IsSpawnProtected && player != Attacker) ||
                 (!PlayerStatsSystem.AttackerDamageHandler._allowSpawnProtectedDamage &&
-                 Attacker != null && Attacker.IsSpawnProtected))
+                 Attacker is not null && Attacker.IsSpawnProtected))
             {
                 Damage = 0f;
                 return;

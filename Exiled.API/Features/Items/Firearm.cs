@@ -30,7 +30,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A <see cref="List{T}"/> of <see cref="Firearm"/> which contains all the existing firearms based on all the <see cref="ItemType"/>s.
         /// </summary>
-        internal static readonly List<Firearm> FirearmInstances = new List<Firearm>();
+        internal static readonly List<Firearm> FirearmInstances = new();
 
         /// <summary>
         /// Gets a <see cref="IReadOnlyDictionary{TKey, TValue}"/> which contains all pairs for <see cref="ItemType"/> and <see cref="Enums.BaseCode"/>.
@@ -95,7 +95,7 @@ namespace Exiled.API.Features.Items
             {
                 IEnumerable<KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>> playerPreferences =
                     AttachmentsServerHandler.PlayerPreferences.Where(
-                        kvp => kvp.Key != null).Select(
+                        kvp => kvp.Key is not null).Select(
                         (KeyValuePair<ReferenceHub, Dictionary<ItemType, uint>> keyValuePair) =>
                 {
                     return new KeyValuePair<Player, Dictionary<ItemType, AttachmentIdentifier[]>>(
@@ -105,7 +105,7 @@ namespace Exiled.API.Features.Items
                             kvp => kvp.Key.GetAttachmentIdentifiers(kvp.Value).ToArray()));
                 });
 
-                return playerPreferences.Where(kvp => kvp.Key != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                return playerPreferences.Where(kvp => kvp.Key is not null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             }
         }
 
@@ -193,7 +193,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// Gets a <see cref="Dictionary{TKey, TValue}"/> of <see cref="ItemType"/> and <see cref="AttachmentIdentifier"/>[] which contains all available attachments for all firearms.
         /// </summary>
-        internal static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new Dictionary<ItemType, AttachmentIdentifier[]>();
+        internal static Dictionary<ItemType, AttachmentIdentifier[]> AvailableAttachmentsValue { get; } = new();
 
         /// <summary>
         /// Adds a <see cref="AttachmentIdentifier"/> to the firearm.

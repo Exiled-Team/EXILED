@@ -33,7 +33,7 @@ namespace Exiled.Events.Patches.Events.Scp096
         /// The hashset of already charged players.
         /// Prevents double calling on the same player.
         /// </summary>
-        public static readonly HashSet<ReferenceHub> ChargedPlayers = new HashSet<ReferenceHub>();
+        public static readonly HashSet<ReferenceHub> ChargedPlayers = new();
 
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {

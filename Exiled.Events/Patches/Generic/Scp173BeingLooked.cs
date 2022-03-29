@@ -49,7 +49,7 @@ namespace Exiled.Events.Patches.Generic
 
             // Player player = Player.Get(gameObject);
             //
-            // if (player == null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
+            // if (player is null || (player.Role == RoleType.Tutorial && Exiled.Events.Events.Instance.Config.CanTutorialBlockScp173)
             //   continue;
             newInstructions.InsertRange(index, new[]
             {

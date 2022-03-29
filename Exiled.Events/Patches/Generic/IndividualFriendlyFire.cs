@@ -49,11 +49,11 @@ namespace Exiled.Events.Patches.Generic
                 return true;
             return false;
             /*
-            if (attackerHub == null || victimHub == null)
+            if (attackerHub is null || victimHub is null)
                 return true;
             Player attacker = Player.Get(attackerHub);
             Player victim = Player.Get(victimHub);
-            if (attacker == null || victim == null)
+            if (attacker is null || victim is null)
                 return true;
 
             return attacker.IsFriendlyFireEnabled || victim.Side != attackerRole.GetSide();*/
@@ -63,14 +63,14 @@ namespace Exiled.Events.Patches.Generic
     /// <summary>
     /// Patches <see cref="HitboxIdentity.CheckFriendlyFire(ReferenceHub, ReferenceHub, bool)"/>.
     /// </summary>
-    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), new[] { typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool) })]
+    [HarmonyPatch(typeof(HitboxIdentity), nameof(HitboxIdentity.CheckFriendlyFire), typeof(ReferenceHub), typeof(ReferenceHub), typeof(bool))]
     internal static class HitboxIdentityCheckFriendlyFire
     {
         private static bool Prefix(ReferenceHub attacker, ReferenceHub victim, bool ignoreConfig, ref bool __result)
         {
             try
             {
-                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker == null ? RoleType.None : attacker.characterClassManager.CurClass);
+                __result = IndividualFriendlyFire.CheckFriendlyFirePlayerFriendly(attacker,  victim, attacker is null ? RoleType.None : attacker.characterClassManager.CurClass);
 
                 return false;
             }

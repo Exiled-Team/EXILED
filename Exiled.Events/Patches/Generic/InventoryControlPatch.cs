@@ -104,7 +104,7 @@ namespace Exiled.Events.Patches.Generic
 #if DEBUG
             Log.Debug($"Removing item ({serial}) from a player (before null check)");
 #endif
-            if (player == null)
+            if (player is null)
             {
 #if DEBUG
                 Log.Debug("Attempted to remove item from null player, returning.");

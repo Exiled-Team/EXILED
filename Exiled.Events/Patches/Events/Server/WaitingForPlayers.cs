@@ -24,7 +24,7 @@ namespace Exiled.Events.Patches.Events.Server
     /// </summary>
     internal static class WaitingForPlayers
     {
-        private static readonly HarmonyMethod PatchMethod = new HarmonyMethod(typeof(WaitingForPlayers), nameof(Transpiler));
+        private static readonly HarmonyMethod PatchMethod = new(typeof(WaitingForPlayers), nameof(Transpiler));
 
         private static Type type;
         private static MethodInfo method;
@@ -35,10 +35,10 @@ namespace Exiled.Events.Patches.Events.Server
             const string methodName = "MoveNext";
 
             type = AccessTools.Inner(typeof(CharacterClassManager), innerName);
-            method = type != null ? AccessTools.Method(type, methodName) : null;
-            if (type == null || method == null)
+            method = type is not null ? AccessTools.Method(type, methodName) : null;
+            if (type is null || method is null)
             {
-                Log.Error($"Couldn't find `{innerName}::{methodName}` ({type == null}, {method == null}) inside `CharacterClassManager`: Server::WaitingForPlayers event won't fire");
+                Log.Error($"Couldn't find `{innerName}::{methodName}` ({type is null}, {method is null}) inside `CharacterClassManager`: Server::WaitingForPlayers event won't fire");
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Server
 
         internal static void Unpatch()
         {
-            if (type != null && method != null)
+            if (type is not null && method is not null)
             {
                 Exiled.Events.Events.Instance.Harmony.Unpatch(method, PatchMethod.method);
 

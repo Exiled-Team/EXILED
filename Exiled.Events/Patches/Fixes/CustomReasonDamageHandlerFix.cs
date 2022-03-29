@@ -20,7 +20,7 @@ namespace Exiled.Events.Patches.Fixes
     /// Patches <see cref="CustomReasonDamageHandler(string, float, string)"/>.
     /// <br>Fixes a NullReferenceException caused by <see cref="Subtitles.SubtitlePart"/>[] initialization.</br>
     /// </summary>
-    [HarmonyPatch(typeof(CustomReasonDamageHandler), MethodType.Constructor, new[] { typeof(string), typeof(float), typeof(string) })]
+    [HarmonyPatch(typeof(CustomReasonDamageHandler), MethodType.Constructor, typeof(string), typeof(float), typeof(string))]
     internal static class CustomReasonDamageHandlerFix
     {
         private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)

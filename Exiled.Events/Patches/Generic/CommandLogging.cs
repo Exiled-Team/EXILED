@@ -55,7 +55,7 @@ namespace Exiled.Events.Patches.Generic
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player == null}\n{e}");
+                    Log.Error($"{nameof(CommandLogging)}: Failed to log command; unable to parse log message.\n{player is null}\n{e}");
                 }
 
                 if (string.IsNullOrEmpty(logMessage))
@@ -70,7 +70,7 @@ namespace Exiled.Events.Patches.Generic
             }
             catch (Exception e)
             {
-                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender == null}\n{e}");
+                Log.Error($"{nameof(CommandLogging)}: Unable to log a command.\n{string.IsNullOrEmpty(query)} - {sender is null}\n{e}");
             }
         }
 

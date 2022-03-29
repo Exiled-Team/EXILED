@@ -45,7 +45,7 @@ namespace Exiled.Events.Patches.Events.Player
             {
                     /*
                      *  var player = Player.Get(__instance._hub);
-                     *  if (player != null)
+                     *  if (player is not null)
                      *  {
                      *      var ev = new ChangingSpectatedPlayerEventArgs(player, Player.Get(__instance.CurrentSpectatedPlayer), Player.Get(value));
                      *
@@ -63,7 +63,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new System.Type[] { typeof(ReferenceHub) })),
                 new CodeInstruction(OpCodes.Dup),
 
-                // if (player != null)
+                // if (player is not null)
                 new CodeInstruction(OpCodes.Stloc, player),
                 new CodeInstruction(OpCodes.Brfalse_S, endLabel),
                 new CodeInstruction(OpCodes.Ldloc, player),
@@ -95,7 +95,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Ldloc, ev).WithLabels(continueLabel),
                 new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(ChangingSpectatedPlayerEventArgs), nameof(ChangingSpectatedPlayerEventArgs.NewTarget))),
 
-                // if(ev.NewTarget == null)
+                // if(ev.NewTarget is null)
                 new CodeInstruction(OpCodes.Dup),
                 new CodeInstruction(OpCodes.Brtrue_S, elseLabel),
 

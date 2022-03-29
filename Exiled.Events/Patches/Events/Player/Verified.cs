@@ -31,13 +31,13 @@ namespace Exiled.Events.Patches.Events.Player
             MethodInfo targetMethod = AccessTools.Method(typeof(ServerRoles), nameof(ServerRoles.RefreshPermissions));
             bool did = false;
 
-            using (NextEnumerator<CodeInstruction> nextEnumerator = new NextEnumerator<CodeInstruction>(instructions.GetEnumerator()))
+            using (NextEnumerator<CodeInstruction> nextEnumerator = new(instructions.GetEnumerator()))
             {
                 while (nextEnumerator.MoveNext())
                 {
                     if (!did
                         && nextEnumerator.Current.opcode == OpCodes.Ldc_I4_0
-                        && nextEnumerator.NextCurrent != null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
+                        && nextEnumerator.NextCurrent is not null && nextEnumerator.NextCurrent.opcode == OpCodes.Call && (MethodInfo)nextEnumerator.NextCurrent.operand == targetMethod)
                     {
                         did = true;
 
@@ -47,7 +47,7 @@ namespace Exiled.Events.Patches.Events.Player
                     }
 
                     yield return nextEnumerator.Current;
-                    if (nextEnumerator.NextCurrent != null)
+                    if (nextEnumerator.NextCurrent is not null)
                         yield return nextEnumerator.NextCurrent;
                 }
             }
@@ -62,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 // Means the player connected before WaitingForPlayers event is fired
                 // Let's call Joined event, since it wasn't called, to avoid breaking the logic of the order of event calls
                 // Blame NorthWood
-                if (player == null)
+                if (player is null)
                     Joined.CallEvent(instance._hub, out player);
 
 #if DEBUG

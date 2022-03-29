@@ -39,7 +39,7 @@ namespace Exiled.Example.Commands
             foreach (PocketDimensionTeleport teleport in Map.PocketDimensionTeleports)
                 Log.Warn($"{teleport._type}");
             player.ClearInventory();
-            response = player != null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
+            response = player is not null ? $"{player.Nickname} sent the command!" : "The command has been sent from the server console!";
 
             // Return true if the command was executed successfully; otherwise, false.
             return true;
