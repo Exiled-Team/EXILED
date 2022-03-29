@@ -78,7 +78,7 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Callvirt &&
             (MethodInfo)instruction.operand == Method(typeof(IActionModule), nameof(IActionModule.ServerAuthorizeDryFire))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -93,7 +93,7 @@ namespace Exiled.Events.Patches.Events.Player
             offset = 2;
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Pop) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -107,7 +107,7 @@ namespace Exiled.Events.Patches.Events.Player
             index = newInstructions.FindIndex(instruction => instruction.opcode == OpCodes.Ldfld &&
             (FieldInfo)instruction.operand == Field(typeof(FirearmStatus), nameof(FirearmStatus.Flags))) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
@@ -120,7 +120,7 @@ namespace Exiled.Events.Patches.Events.Player
             offset = -6;
             index = newInstructions.FindLastIndex(instruction => instruction.opcode == OpCodes.Call) + offset;
 
-            newInstructions.InsertRange(index, new CodeInstruction[]
+            newInstructions.InsertRange(index, new[]
             {
                 new CodeInstruction(OpCodes.Ldloc_0).MoveLabelsFrom(newInstructions[index]),
                 new(OpCodes.Call, Method(typeof(API.Features.Player), nameof(API.Features.Player.Get), new[] { typeof(ReferenceHub) })),
