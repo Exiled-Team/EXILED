@@ -116,7 +116,7 @@ namespace Exiled.Events.Patches.Events.Scp914
             offset = -4;
             index = newInstructions.FindIndex(i => i.opcode == OpCodes.Callvirt && (MethodInfo)i.operand == Method(typeof(Scp914ItemProcessor), nameof(Scp914ItemProcessor.OnInventoryItemUpgraded))) + offset;
             Label continueLabel = generator.DefineLabel();
-            newInstructions[index + 5].WithLabels(continueLabel);
+            newInstructions[index + 5].labels.Add(continueLabel);
             LocalBuilder ev2 = generator.DeclareLocal(typeof(UpgradingInventoryItemEventArgs));
 
             newInstructions.InsertRange(index, new[]
@@ -156,7 +156,7 @@ namespace Exiled.Events.Patches.Events.Scp914
                 new CodeInstruction(OpCodes.Starg, 4),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

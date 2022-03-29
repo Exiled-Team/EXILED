@@ -18,6 +18,7 @@ namespace Exiled.CustomItems.API.Features
     using Exiled.API.Features.Attributes;
     using Exiled.API.Features.Items;
     using Exiled.API.Features.Spawn;
+    using Exiled.API.Interfaces;
     using Exiled.CustomItems.API.EventArgs;
     using Exiled.Events.EventArgs;
     using Exiled.Loader;
@@ -281,26 +282,44 @@ namespace Exiled.CustomItems.API.Features
         /// <summary>
         /// Registers all the <see cref="CustomItem"/>'s present in the current assembly.
         /// </summary>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
-        public static IEnumerable<CustomItem> RegisterItems()
+        public static IEnumerable<CustomItem> RegisterItems(bool skipReflection = false, object overrideClass = null)
         {
-            List<CustomItem> registeredItems = new List<CustomItem>();
-
-            foreach (Type type in Assembly.GetCallingAssembly().GetTypes())
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
                 if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null)
                     continue;
 
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
                 {
-                    CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
-                    customItem.Type = ((CustomItemAttribute)attribute).ItemType;
-                    customItem.TryRegister();
-                    registeredItems.Add(customItem);
+                    CustomItem customItem = null;
+
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customItem = property.GetValue(overrideClass ?? plugin.Config) as CustomItem;
+                        }
+                    }
+
+                    if (customItem is null)
+                        customItem = (CustomItem)Activator.CreateInstance(type);
+
+                    if (customItem.Type == ItemType.None)
+                        customItem.Type = ((CustomItemAttribute)attribute).ItemType;
+
+                    if (customItem.TryRegister())
+                        yield return customItem;
                 }
             }
-
-            return registeredItems;
         }
 
         /// <summary>
@@ -308,12 +327,13 @@ namespace Exiled.CustomItems.API.Features
         /// </summary>
         /// <param name="targetTypes">The <see cref="IEnumerable{T}"/> of <see cref="System.Type"/> containing the target types.</param>
         /// <param name="isIgnored">A value indicating whether the target types should be ignored.</param>
+        /// <param name="skipReflection">Whether or not reflection is skipped (more efficient if you are not using your custom item classes as config objects).</param>
+        /// <param name="overrideClass">The class to search properties for, if different from the plugin's config class.</param>
         /// <returns>A <see cref="IEnumerable{T}"/> of <see cref="CustomItem"/> which contains all registered <see cref="CustomItem"/>'s.</returns>
-        public static IEnumerable<CustomItem> RegisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false)
+        public static IEnumerable<CustomItem> RegisterItems(IEnumerable<Type> targetTypes, bool isIgnored = false, bool skipReflection = false, object overrideClass = null)
         {
-            List<CustomItem> registeredItems = new List<CustomItem>();
-
-            foreach (Type type in Assembly.GetExecutingAssembly().GetTypes())
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            foreach (Type type in assembly.GetTypes())
             {
                 if ((type.BaseType != typeof(CustomItem) && !type.IsSubclassOf(typeof(CustomItem))) || type.GetCustomAttribute(typeof(CustomItemAttribute)) is null ||
                     (isIgnored && targetTypes.Contains(type)) || (!isIgnored && !targetTypes.Contains(type)))
@@ -321,14 +341,32 @@ namespace Exiled.CustomItems.API.Features
 
                 foreach (Attribute attribute in type.GetCustomAttributes(typeof(CustomItemAttribute), true))
                 {
-                    CustomItem customItem = (CustomItem)Activator.CreateInstance(type);
-                    customItem.Type = ((CustomItemAttribute)attribute).ItemType;
-                    customItem.TryRegister();
-                    registeredItems.Add(customItem);
+                    CustomItem customItem = null;
+
+                    if (!skipReflection && Loader.PluginAssemblies.ContainsKey(assembly))
+                    {
+                        IPlugin<IConfig> plugin = Loader.PluginAssemblies[assembly];
+
+                        foreach (PropertyInfo property in overrideClass?.GetType().GetProperties() ?? plugin.Config.GetType().GetProperties())
+                        {
+                            if (property.PropertyType != type)
+                                continue;
+
+                            customItem = property.GetValue(overrideClass ?? plugin.Config) as CustomItem;
+                            break;
+                        }
+                    }
+
+                    if (customItem is null)
+                        customItem = (CustomItem)Activator.CreateInstance(type);
+
+                    if (customItem.Type == ItemType.None)
+                        customItem.Type = ((CustomItemAttribute)attribute).ItemType;
+
+                    if (customItem.TryRegister())
+                        yield return customItem;
                 }
             }
-
-            return registeredItems;
         }
 
         /// <summary>

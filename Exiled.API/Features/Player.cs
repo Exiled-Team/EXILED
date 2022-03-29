@@ -10,6 +10,7 @@ namespace Exiled.API.Features
 #pragma warning disable 1584
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.CompilerServices;
@@ -25,6 +26,8 @@ namespace Exiled.API.Features
     using Exiled.API.Structs;
 
     using Footprinting;
+
+    using global::Scp914;
 
     using Hints;
 
@@ -59,6 +62,7 @@ namespace Exiled.API.Features
     using CustomHandlerBase = Exiled.API.Features.DamageHandlers.DamageHandlerBase;
     using DamageHandlerBase = PlayerStatsSystem.DamageHandlerBase;
     using Firearm = Exiled.API.Features.Items.Firearm;
+    using Random = UnityEngine.Random;
 
     /// <summary>
     /// Represents the in-game player, by encapsulating a <see cref="global::ReferenceHub"/>.
@@ -601,18 +605,11 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is muted.
         /// </summary>
+        /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsMuted
         {
             get => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted;
-            set
-            {
-                ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
-
-                if (value)
-                    MuteHandler.IssuePersistentMute(UserId);
-                else
-                    MuteHandler.RevokePersistentMute(UserId);
-            }
+            set => ReferenceHub.dissonanceUserSetup.AdministrativelyMuted = value;
         }
 
         /// <summary>
@@ -637,6 +634,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a value indicating whether or not the player is intercom muted.
         /// </summary>
+        /// <remarks>This property will NOT persistently mute and unmute the player. For persistent mutes, see <see cref="Mute(bool)"/> and <see cref="UnMute(bool)"/>.</remarks>
         public bool IsIntercomMuted
         {
             get => ReferenceHub.characterClassManager.NetworkIntercomMuted;
@@ -1064,7 +1062,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the player by identifier.
         /// </summary>
-        /// <param name="args">The player's nickname, steamID64 or Discord ID.</param>
+        /// <param name="args">The player's nickname, ID, steamID64 or Discord ID.</param>
         /// <returns>Returns the player found or <see langword="null"/> if not found.</returns>
         public static Player Get(string args)
         {
@@ -1421,6 +1419,18 @@ namespace Exiled.API.Features
         /// <param name="reason">The kick reason.</param>
         /// <param name="issuer">The kick issuer nickname.</param>
         public void Kick(string reason, string issuer = "Console") => Ban(0, reason, issuer);
+
+        /// <summary>
+        /// Persistently mutes the player. For temporary mutes, see <see cref="Player.IsMuted"/> and <see cref="Player.IsIntercomMuted"/>.
+        /// </summary>
+        /// <param name="intercom">Whether or not this mute is for the intercom only.</param>
+        public void Mute(bool intercom = false) => MuteHandler.IssuePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
+
+        /// <summary>
+        /// Revokes a persistent mute. For temporary mutes, see <see cref="Player.IsMuted"/> and <see cref="Player.IsIntercomMuted"/>.
+        /// </summary>
+        /// <param name="intercom">Whether or not this un-mute is for the intercom only.</param>
+        public void UnMute(bool intercom = false) => MuteHandler.RevokePersistentMute(intercom ? ("ICOM-" + UserId) : UserId);
 
         /// <summary>
         /// Blink the player's tag.
@@ -2211,6 +2221,91 @@ namespace Exiled.API.Features
 
         /// <inheritdoc cref="Map.GetNearCameras(Vector3, float)"/>
         public IEnumerable<Camera> GetNearCameras(float toleration = 15f) => Map.GetNearCameras(Position, toleration);
+
+        /// <summary>
+        /// Teleports the player to the given <see cref="Vector3"/> coordinates.
+        /// </summary>
+        /// <param name="position">The <see cref="Vector3"/> coordinates to move the player to.</param>
+        public void Teleport(Vector3 position) => Position = position;
+
+        /// <summary>
+        /// Teleports the player to the given object.
+        /// </summary>
+        /// <param name="obj">The object to teleport the player to.</param>
+        public void Teleport(object obj)
+        {
+            switch (obj)
+            {
+                case Door door:
+                    Teleport(door.Position + Vector3.up);
+                    break;
+                case Room room:
+                    Teleport(room.Position + Vector3.up);
+                    break;
+                case TeslaGate teslaGate:
+                    Teleport((teslaGate.Position + Vector3.up) + (teslaGate.Room.Transform.rotation == new Quaternion(0f, 0f, 0f, 1f) ? new Vector3(3, 0, 0) : new Vector3(0, 0, 3)));
+                    break;
+                case Scp914Controller scp914:
+                    Teleport(scp914._knobTransform.position + Vector3.up);
+                    break;
+                case Player player:
+                    Teleport(player.Position);
+                    break;
+                case Pickup pickup:
+                    Teleport(pickup.Position + Vector3.up);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Teleports the player to a random object.
+        /// </summary>
+        /// <param name="types">The list of object types to choose from.</param>
+        public void RandomTeleport(IEnumerable<Type> types)
+        {
+            Type[] array = types as Type[] ?? types.ToArray();
+            if (array.Length == 0)
+                return;
+            RandomTeleport(array.ElementAt(Random.Range(0, array.Length)));
+        }
+
+        /// <summary>
+        /// Teleports player to a random object of a specific type.
+        /// </summary>
+        /// <param name="type">Object for teleport.</param>
+        public void RandomTeleport(Type type)
+        {
+            object randomObject = null;
+            if (type == typeof(Door))
+            {
+                randomObject = Door.DoorsValue[Random.Range(0, Door.DoorsValue.Count)];
+            }
+            else if (type == typeof(Room))
+            {
+                randomObject = Room.RoomsValue[Random.Range(0, Room.RoomsValue.Count)];
+            }
+            else if (type == typeof(TeslaGate))
+            {
+                randomObject = TeslaGate.TeslasValue[Random.Range(0, TeslaGate.TeslasValue.Count)];
+            }
+            else if (type == typeof(Player))
+            {
+                randomObject = Dictionary.Values.ElementAt(Random.Range(0, Dictionary.Count));
+            }
+            else if (type == typeof(Pickup))
+            {
+                ReadOnlyCollection<Pickup> pickups = Map.Pickups;
+                randomObject = pickups[Random.Range(0, pickups.Count)];
+            }
+
+            if (randomObject == null)
+            {
+                Log.Warn($"{nameof(RandomTeleport)}: {Assembly.GetCallingAssembly().GetName().Name}: Invalid type declared: {type}");
+                return;
+            }
+
+            Teleport(randomObject);
+        }
 
         /// <summary>
         /// Returns the player in a human-readable format.

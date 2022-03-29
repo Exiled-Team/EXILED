@@ -76,6 +76,11 @@ namespace Exiled.Loader
         public static SortedSet<IPlugin<IConfig>> Plugins { get; } = new SortedSet<IPlugin<IConfig>>(PluginPriorityComparer.Instance);
 
         /// <summary>
+        /// Gets a dictionary that pairs assemblies with their associated plugins.
+        /// </summary>
+        public static Dictionary<Assembly, IPlugin<IConfig>> PluginAssemblies { get; } = new Dictionary<Assembly, IPlugin<IConfig>>();
+
+        /// <summary>
         /// Gets a dictionary containing the file paths of assemblies.
         /// </summary>
         public static Dictionary<Assembly, string> Locations { get; } = new Dictionary<Assembly, string>();
@@ -194,6 +199,7 @@ namespace Exiled.Loader
                 if (plugin == null)
                     continue;
 
+                PluginAssemblies.Add(assembly, plugin);
                 Plugins.Add(plugin);
             }
         }
@@ -349,6 +355,7 @@ namespace Exiled.Loader
             }
 
             Plugins.Clear();
+            PluginAssemblies.Clear();
 
             LoadPlugins();
 

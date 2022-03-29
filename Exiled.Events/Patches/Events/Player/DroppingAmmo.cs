@@ -34,7 +34,6 @@ namespace Exiled.Events.Patches.Events.Player
             int offset = -6;
             int index = newInstructions.FindIndex(i => i.opcode == OpCodes.Ret) + offset;
 
-            LocalBuilder ev = generator.DeclareLocal(typeof(DroppingAmmoEventArgs));
             Label returnLabel = generator.DefineLabel();
 
             newInstructions.InsertRange(index, new[]
@@ -63,7 +62,7 @@ namespace Exiled.Events.Patches.Events.Player
                 new CodeInstruction(OpCodes.Brfalse_S, returnLabel),
             });
 
-            newInstructions[newInstructions.Count - 1].WithLabels(returnLabel);
+            newInstructions[newInstructions.Count - 1].labels.Add(returnLabel);
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

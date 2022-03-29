@@ -147,6 +147,33 @@ namespace Exiled.API.Features
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether or not later join is enabled.
+        /// </summary>
+        public static bool LaterJoinEnabled
+        {
+            get => CharacterClassManager.LaterJoinEnabled;
+            set => CharacterClassManager.LaterJoinEnabled = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the late join time, in seconds. If a player joins less than this many seconds into a game, they will be given a random class.
+        /// </summary>
+        public static float LaterJoinTime
+        {
+            get => CharacterClassManager.LaterJoinTime;
+            set => CharacterClassManager.LaterJoinTime = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the spawn protection time, in seconds.
+        /// </summary>
+        public static float SpawnProtectTime
+        {
+            get => CharacterClassManager.SProtectedDuration;
+            set => CharacterClassManager.SProtectedDuration = value;
+        }
+
+        /// <summary>
         /// Restarts the server, reconnects all players.
         /// </summary>
         public static void Restart()

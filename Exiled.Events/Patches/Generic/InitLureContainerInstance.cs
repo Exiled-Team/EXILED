@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// <copyright file="GeneratorListRemove.cs" company="Exiled Team">
+// <copyright file="InitLureContainerInstance.cs" company="Exiled Team">
 // Copyright (c) Exiled Team. All rights reserved.
 // Licensed under the CC BY-SA 3.0 license.
 // </copyright>
@@ -8,6 +8,7 @@
 namespace Exiled.Events.Patches.Generic
 {
 #pragma warning disable SA1118
+
     using System.Collections.Generic;
     using System.Reflection.Emit;
 
@@ -15,35 +16,38 @@ namespace Exiled.Events.Patches.Generic
 
     using HarmonyLib;
 
-    using MapGeneration.Distributors;
-
     using NorthwoodLib.Pools;
+
+    using UnityEngine;
 
     using static HarmonyLib.AccessTools;
 
     /// <summary>
-    /// Patches <see cref="Scp079Generator.OnDestroy"/>.
+    /// Patches <see cref="LureSubjectContainer.Start"/> to initialize <see cref="Scp106Container"/>.
     /// </summary>
-    [HarmonyPatch(typeof(Scp079Generator), nameof(Scp079Generator.OnDestroy))]
-    internal class GeneratorListRemove
+    [HarmonyPatch(typeof(LureSubjectContainer), nameof(LureSubjectContainer.Start))]
+    internal class InitLureContainerInstance
     {
-        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codeInstructions)
+        private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
         {
-            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(codeInstructions);
+            List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             newInstructions.InsertRange(0, new[]
             {
-                new CodeInstruction(OpCodes.Ldsfld, Field(typeof(Generator), nameof(Generator.GeneratorValues))),
                 new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Generator), nameof(Generator.Get), new[] { typeof(Scp079Generator) })),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(List<Generator>), nameof(List<Generator>.Remove))),
-                new CodeInstruction(OpCodes.Pop),
+                new CodeInstruction(OpCodes.Call, Method(typeof(InitLureContainerInstance), nameof(Start))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];
 
             ListPool<CodeInstruction>.Shared.Return(newInstructions);
+        }
+
+        private static void Start(LureSubjectContainer container)
+        {
+            Scp106Container.Base = container;
+            Scp106Container.BoxCollider = container.GetComponent<BoxCollider>();
         }
     }
 }

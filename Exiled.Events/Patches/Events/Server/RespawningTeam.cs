@@ -44,7 +44,7 @@ namespace Exiled.Events.Patches.Events.Server
             newInstructions.InsertRange(index, new[]
             {
                 // List<Player> players = GetPlayers(list1);
-                new CodeInstruction(OpCodes.Ldloc_1).MoveLabelsFrom(newInstructions[index]),
+                new CodeInstruction(OpCodes.Ldloc_1),
                 new CodeInstruction(OpCodes.Call, Method(typeof(RespawningTeam), nameof(GetPlayers))),
 
                 // num
@@ -104,7 +104,5 @@ namespace Exiled.Events.Patches.Events.Server
         private static List<Player> GetPlayers(List<ReferenceHub> hubs) => hubs.Select(Player.Get).ToList();
 
         private static List<ReferenceHub> GetHubs(List<Player> players) => players.Select(p => p.ReferenceHub).ToList();
-
-        private static void LogThing(int i) => Log.Error(i);
     }
 }

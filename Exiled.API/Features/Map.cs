@@ -116,20 +116,6 @@ namespace Exiled.API.Features
         public static ReadOnlyCollection<AdminToy> Toys => ReadOnlyToysValue;
 
         /// <summary>
-        /// Gets the current state of the intercom.
-        /// </summary>
-        public static Intercom.State IntercomState => Intercom.host.IntercomState;
-
-        /// <summary>
-        /// Gets or sets the content of the intercom.
-        /// </summary>
-        public static string IntercomContent
-        {
-            get => Intercom.host.CustomContent;
-            set => Intercom.host.CustomContent = value;
-        }
-
-        /// <summary>
         /// Gets or sets the current seed of the map.
         /// </summary>
         public static int Seed
@@ -141,16 +127,6 @@ namespace Exiled.API.Features
                     MapGeneration.SeedSynchronizer._singleton.Network_syncSeed = value;
             }
         }
-
-        /// <summary>
-        /// Gets a value indicating whether or not the intercom is currently being used.
-        /// </summary>
-        public static bool IntercomInUse => IntercomState == Intercom.State.Transmitting || IntercomState == Intercom.State.TransmittingBypass || IntercomState == Intercom.State.AdminSpeaking;
-
-        /// <summary>
-        /// Gets the <see cref="Player"/> that is using the intercom. Will be <see langword="null"/> if <see cref="IntercomInUse"/> is <see langword="false"/>.
-        /// </summary>
-        public static Player IntercomSpeaker => Player.Get(Intercom.host.speaker);
 
         /// <summary>
         /// Gets the <see cref="global::AmbientSoundPlayer"/>.
@@ -354,13 +330,6 @@ namespace Exiled.API.Features
 
             return gameObject;
         }
-
-        /// <summary>
-        /// Plays the intercom's sound.
-        /// </summary>
-        /// <param name="start">Sets a value indicating whether or not the sound is the intercom's start speaking sound.</param>
-        /// <param name="transmitterId">Sets the transmitterId.</param>
-        public static void PlayIntercomSound(bool start, int transmitterId = 0) => Intercom.host.RpcPlaySound(start, transmitterId);
 
         /// <summary>
         /// Places a blood decal.
