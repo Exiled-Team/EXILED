@@ -36,22 +36,22 @@ namespace Exiled.Events.Patches.Events.Player
 
             LocalBuilder isAllowed = generator.DeclareLocal(typeof(bool));
 
-            newInstructions.InsertRange(index, new[]
+            newInstructions.InsertRange(index, new CodeInstruction[]
             {
                 // new ActivatingWarheadPanelEventArgs(_hub, isAllowed);
-                new CodeInstruction(OpCodes.Stloc_S, isAllowed.LocalIndex),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
-                new CodeInstruction(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
-                new CodeInstruction(OpCodes.Ldloc_S, isAllowed.LocalIndex),
-                new CodeInstruction(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
-                new CodeInstruction(OpCodes.Dup),
+                new(OpCodes.Stloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldfld, Field(typeof(PlayerInteract), nameof(PlayerInteract._hub))),
+                new(OpCodes.Call, Method(typeof(Player), nameof(Player.Get), new[] { typeof(ReferenceHub) })),
+                new(OpCodes.Ldloc_S, isAllowed.LocalIndex),
+                new(OpCodes.Newobj, GetDeclaredConstructors(typeof(ActivatingWarheadPanelEventArgs))[0]),
+                new(OpCodes.Dup),
 
                 // Player.OnActivatingWarheadPanel(ev);
-                new CodeInstruction(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
+                new(OpCodes.Call, Method(typeof(Handlers.Player), nameof(Handlers.Player.OnActivatingWarheadPanel))),
 
                 // Load IsAllowed for the original code to evaluate
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(ActivatingWarheadPanelEventArgs), nameof(ActivatingWarheadPanelEventArgs.IsAllowed))),
             });
 
             for (int z = 0; z < newInstructions.Count; z++)

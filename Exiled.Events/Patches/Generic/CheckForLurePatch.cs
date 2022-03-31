@@ -35,7 +35,7 @@ namespace Exiled.Events.Patches.Generic
             List<CodeInstruction> newInstructions = ListPool<CodeInstruction>.Shared.Rent(instructions);
 
             newInstructions.Clear();
-            newInstructions.Insert(0, new CodeInstruction(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers))));
+            newInstructions.Insert(0, new(OpCodes.Call, Method(typeof(CheckForLurePatch), nameof(CheckPlayers))));
 
             for (int z = 0; z < newInstructions.Count; z++)
                 yield return newInstructions[z];

@@ -22,13 +22,13 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Gets static instance of the <see cref="Plugins"/> command.
         /// </summary>
-        public static Plugins Instance { get; } = new Plugins();
+        public static Plugins Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "plugins";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "pl" };
+        public string[] Aliases { get; } = new[] { "pl" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reloads all plugins.";

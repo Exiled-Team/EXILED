@@ -42,7 +42,7 @@ namespace Exiled.API.Features
         public Ragdoll(Player player, DamageHandlerBase handler, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = player.ReferenceHub.characterClassManager.CurRole.model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = new RagdollInfo(player.ReferenceHub, handler, model_ragdoll.transform.localPosition, model_ragdoll.transform.localRotation);
             this.ragdoll = ragdoll;
@@ -59,7 +59,7 @@ namespace Exiled.API.Features
         public Ragdoll(RagdollInfo ragdollInfo, bool canBeSpawned = false)
         {
             GameObject model_ragdoll = CharacterClassManager._staticClasses.SafeGet(ragdollInfo.RoleType).model_ragdoll;
-            if (model_ragdoll == null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
+            if (model_ragdoll is null || !Object.Instantiate(model_ragdoll).TryGetComponent(out RagDoll ragdoll))
                 return;
             ragdoll.NetworkInfo = ragdollInfo;
             this.ragdoll = ragdoll;
@@ -177,7 +177,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets the time that the ragdoll was spawned.
         /// </summary>
-        public DateTime CreationTime => new DateTime((long)NetworkInfo.CreationTime);
+        public DateTime CreationTime => new((long)NetworkInfo.CreationTime);
 
         /// <summary>
         /// Gets the <see cref="RoleType"/> of the ragdoll.
@@ -244,7 +244,7 @@ namespace Exiled.API.Features
         /// <summary>
         /// Gets or sets a <see cref="HashSet{T}"/> of <see cref="RagDoll"/>'s that will be ignored by clean up event.
         /// </summary>
-        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new HashSet<RagDoll>();
+        internal static HashSet<RagDoll> IgnoredRagdolls { get; set; } = new();
 
         /// <summary>
         /// Gets the <see cref="Ragdoll"/> belonging to the <see cref="RagDoll"/>, if any.

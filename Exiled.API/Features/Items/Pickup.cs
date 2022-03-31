@@ -25,7 +25,7 @@ namespace Exiled.API.Features.Items
         /// <summary>
         /// A dictionary of all <see cref="ItemBase"/>'s that have been converted into <see cref="Item"/>.
         /// </summary>
-        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new Dictionary<ItemPickupBase, Pickup>();
+        internal static readonly Dictionary<ItemPickupBase, Pickup> BaseToItem = new();
 
         private ushort id;
 
@@ -189,7 +189,7 @@ namespace Exiled.API.Features.Items
         /// <param name="pickupBase">The <see cref="ItemPickupBase"/> to convert into a <see cref="Pickup"/>.</param>
         /// <returns>The <see cref="Pickup"/> wrapper for the given <see cref="ItemPickupBase"/>.</returns>
         public static Pickup Get(ItemPickupBase pickupBase) =>
-            pickupBase == null ? null :
+            pickupBase is null ? null :
             BaseToItem.ContainsKey(pickupBase) ? BaseToItem[pickupBase] :
             new Pickup(pickupBase);
 

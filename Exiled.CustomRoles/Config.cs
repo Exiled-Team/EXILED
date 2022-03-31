@@ -32,12 +32,12 @@ namespace Exiled.CustomRoles
         /// Gets the hint that is shown when someone gets a <see cref="CustomRole"/>.
         /// </summary>
         [Description("The hint that is shown when someone gets a custom role.")]
-        public Broadcast GotRoleHint { get; private set; } = new Broadcast("You have spawned as a {0}\n{1}", 6);
+        public Broadcast GotRoleHint { get; private set; } = new("You have spawned as a {0}\n{1}", 6);
 
         /// <summary>
         /// Gets the hint that is shown when someone used a <see cref="CustomAbility"/>.
         /// </summary>
         [Description("The hint that is shown when someone used a custom ability.")]
-        public Broadcast UsedAbilityHint { get; private set; } = new Broadcast("Ability {0} has been activated.\n{1}", 5);
+        public Broadcast UsedAbilityHint { get; private set; } = new("Ability {0} has been activated.\n{1}", 5);
     }
 }

@@ -29,7 +29,7 @@ namespace Exiled.API.Features.Roles
         /// <summary>
         /// Gets the <see cref="DateTime"/> at which the player died.
         /// </summary>
-        public DateTime DeathTime => new DateTime(Owner.ReferenceHub.characterClassManager.DeathTime);
+        public DateTime DeathTime => new(Owner.ReferenceHub.characterClassManager.DeathTime);
 
         /// <summary>
         /// Gets the total amount of time the player has been dead.

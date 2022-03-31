@@ -46,7 +46,7 @@ namespace Exiled.Events.Patches.Events.Player
                 if (!msg.PlayerIsNull)
                 {
                     Vector3 vector3 = msg.PlayerToDisarm.transform.position - hub.transform.position;
-                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance != null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
+                    if (vector3.sqrMagnitude > 20.0 || (msg.PlayerToDisarm.inventory.CurInstance is not null && msg.PlayerToDisarm.inventory.CurInstance.TierFlags != ItemTierFlags.Common))
                     {
                         return false;
                     }
@@ -73,7 +73,7 @@ namespace Exiled.Events.Patches.Events.Player
                 }
                 else if (!flag1 & flag2 && msg.Disarm)
                 {
-                    if (msg.PlayerToDisarm.inventory.CurInstance == null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
+                    if (msg.PlayerToDisarm.inventory.CurInstance is null || msg.PlayerToDisarm.inventory.CurInstance.CanHolster())
                     {
                         if (msg.PlayerToDisarm.characterClassManager.CurRole.team == Team.MTF && hub.characterClassManager.CurClass == RoleType.ClassD)
                         {

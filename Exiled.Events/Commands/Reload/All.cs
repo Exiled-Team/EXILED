@@ -19,13 +19,13 @@ namespace Exiled.Events.Commands.Reload
         /// <summary>
         /// Gets static instance of the <see cref="All"/> command.
         /// </summary>
-        public static All Instance { get; } = new All();
+        public static All Instance { get; } = new();
 
         /// <inheritdoc/>
         public string Command { get; } = "all";
 
         /// <inheritdoc/>
-        public string[] Aliases { get; } = new string[] { "a" };
+        public string[] Aliases { get; } = new[] { "a" };
 
         /// <inheritdoc/>
         public string Description { get; } = "Reload all configs and plugins.";

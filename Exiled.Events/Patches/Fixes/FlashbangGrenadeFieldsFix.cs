@@ -38,29 +38,29 @@ namespace Exiled.Events.Patches.Fixes
             {
                 // if (!FlashGrenade.GrenadeToItem.TryGetValue(this, out FlashGrenade flash)
                 //     goto SKIP_LABEL
-                new CodeInstruction(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloca_S, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.TryGetValue))),
-                new CodeInstruction(OpCodes.Brfalse, skipLabel),
+                new(OpCodes.Call, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.GrenadeToItem))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloca_S, flash.LocalIndex),
+                new(OpCodes.Callvirt, Method(typeof(Dictionary<FlashbangGrenade, FlashGrenade>), nameof(Dictionary<FlashbangGrenade, FlashGrenade>.TryGetValue))),
+                new(OpCodes.Brfalse, skipLabel),
 
                 // this._blindingOverDistance = flash.BlindCurve;
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.BlindCurve))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._blindingOverDistance))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc, flash.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.BlindCurve))),
+                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._blindingOverDistance))),
 
                 // this._deafenDurationOverDistance = flash.DeafenCurve;
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.DeafenCurve))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._deafenDurationOverDistance))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc, flash.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.DeafenCurve))),
+                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._deafenDurationOverDistance))),
 
                 // this._surfaceZoneDistanceIntensifier = flash.SurfaceDistanceIntensifier;
-                new CodeInstruction(OpCodes.Ldarg_0),
-                new CodeInstruction(OpCodes.Ldloc, flash.LocalIndex),
-                new CodeInstruction(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.SurfaceDistanceIntensifier))),
-                new CodeInstruction(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._surfaceZoneDistanceIntensifier))),
+                new(OpCodes.Ldarg_0),
+                new(OpCodes.Ldloc, flash.LocalIndex),
+                new(OpCodes.Callvirt, PropertyGetter(typeof(FlashGrenade), nameof(FlashGrenade.SurfaceDistanceIntensifier))),
+                new(OpCodes.Stfld, Field(typeof(FlashbangGrenade), nameof(FlashbangGrenade._surfaceZoneDistanceIntensifier))),
 
                 // SKIP_LABEL
                 new CodeInstruction(OpCodes.Nop).WithLabels(skipLabel),

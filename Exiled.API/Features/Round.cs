@@ -101,7 +101,7 @@ namespace Exiled.API.Features
         {
             get
             {
-                List<Side> sides = new List<Side>(4);
+                List<Side> sides = new(4);
                 foreach (Player ply in Player.Get(ply => ply.IsAlive))
                 {
                     if (!sides.Contains(ply.Role.Side))

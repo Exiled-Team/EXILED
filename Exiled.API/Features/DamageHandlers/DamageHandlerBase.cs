@@ -158,7 +158,7 @@ namespace Exiled.API.Features.DamageHandlers
         /// <summary>
         /// Gets conversion information between <see cref="DeathTranslation"/>s and <see cref="DamageType"/>s.
         /// </summary>
-        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new Dictionary<DeathTranslation, DamageType>
+        internal static Dictionary<DeathTranslation, DamageType> TranslationConversion { get; } = new()
         {
             { DeathTranslations.Asphyxiated, DamageType.Asphyxiation },
             { DeathTranslations.Bleeding, DamageType.Bleeding },
@@ -298,7 +298,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator BaseHandler.CassieAnnouncement(CassieAnnouncement cassieAnnouncement) =>
-                new BaseHandler.CassieAnnouncement()
+                new()
                 {
                     Announcement = cassieAnnouncement.Announcement,
                     SubtitleParts = cassieAnnouncement.SubtitleParts.ToArray(),
@@ -309,7 +309,7 @@ namespace Exiled.API.Features.DamageHandlers
             /// </summary>
             /// <param name="cassieAnnouncement">The <see cref="CassieAnnouncement"/> instance.</param>
             public static implicit operator CassieAnnouncement(BaseHandler.CassieAnnouncement cassieAnnouncement) =>
-                new CassieAnnouncement(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
+                new(cassieAnnouncement.Announcement, cassieAnnouncement.SubtitleParts);
         }
     }
 }
